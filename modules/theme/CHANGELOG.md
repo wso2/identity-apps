@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.0.56
+
+### Patch Changes
+
+- [#5174](https://github.com/wso2/identity-apps/pull/5174) [`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca) Thanks [@brionmario](https://github.com/brionmario)! - Fix outbound provisioning list
+
+## 2.0.55
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+## 2.0.54
+
+### Patch Changes
+
+- [#5194](https://github.com/wso2/identity-apps/pull/5194) [`05673b852f`](https://github.com/wso2/identity-apps/commit/05673b852f9b0fc80ec2b5e092d310c01a06ceee) Thanks [@brionmario](https://github.com/brionmario)! - Fix federated association image resolving issues.
+
 ## 2.0.53
 
 ### Patch Changes

@@ -536,7 +536,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         readOnly={ isReadOnly }
                     />
 
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
+                    { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input
                                 ariaLabel="regularExpression"
@@ -549,8 +549,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 value={ claim?.regEx }
                                 ref={ regExField }
                                 data-testid={ `${ testId }-form-regex-input` }
-                                maxLength={ 50 }
-                                minLength={ 3 }
+                                maxLength={ ClaimManagementConstants.REGEX_FIELD_MAX_LENGTH }
+                                minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 hint={ t("console:manage.features.claims.local.forms.regExHint") }
                                 readOnly={ isReadOnly }
                             />

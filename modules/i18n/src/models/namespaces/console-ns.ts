@@ -1147,6 +1147,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint?: {
                                     customOidc: string;
+                                    customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {
@@ -5855,6 +5856,7 @@ export interface ConsoleNS {
                         }
                     };
                     dangerZone: {
+                        button: string,
                         title: string;
                         header: string;
                         subheader: string;

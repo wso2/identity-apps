@@ -92,8 +92,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
-    const [ selectedUserStoreDomainId, setSelectedUserStoreDomainId ] = useState<string>(
-        RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME
+    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
+        "Primary"
     );
 
     const {
@@ -111,11 +111,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         null,
         userSearchValue ? `userName co ${ userSearchValue }` : null,
         null,
-        selectedUserStoreDomainId,
+        selectedUserStoreDomainName,
         null,
-        !!selectedUserStoreDomainId
+        !!selectedUserStoreDomainName
     );
-
 
     /**
      * Set initial selected users options
@@ -344,10 +343,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                 <Grid xs={ 12 } sm={ 6 } md={ 2 } alignItems="center">
                                     <FormControl fullWidth size="medium">
                                         <Select
-                                            value={ selectedUserStoreDomainId }
+                                            value={ selectedUserStoreDomainName }
                                             onChange={
                                                 (e: SelectChangeEvent<unknown>) => {
-                                                    setSelectedUserStoreDomainId(e.target.value as string);
+                                                    setSelectedUserStoreDomainName(e.target.value as string);
                                                     setSelectedUsersOption([]);
                                                 }
                                             }
@@ -363,8 +362,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     ...(userStores ?? [])
                                                 ].map((userstore: UserStoreListItem) =>
                                                     (<MenuItem
-                                                        key={ userstore.id }
-                                                        value={ userstore.id }
+                                                        key={ userstore.name }
+                                                        value={ userstore.name }
                                                     >
                                                         { userstore.name }
                                                     </MenuItem>)

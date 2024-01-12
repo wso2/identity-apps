@@ -34,6 +34,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
+import { Policy } from "../../../../extensions/components/application/constants";
 import { AppConstants, history } from "../../../../features/core";
 import { APIResourceInterface } from "../../../api-resources/models";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
@@ -121,7 +122,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
-            if (isNotSelected) {
+            if (isNotSelected && apiResource.policyId == Policy.ROLE) {
                 options.push({
                     key: apiResource?.id,
                     text: apiResource?.displayName,

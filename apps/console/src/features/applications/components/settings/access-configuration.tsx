@@ -179,6 +179,20 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
 }
 
 /**
+ * Interface for the form values when updating an application.
+ */
+interface ApplicationUpdateFormValuesInterface {
+    /**
+     * Inbound protocol configuration values.
+    * */
+    inbound: Record<string, FormValue>;
+    /**
+     * General application configuration values.
+    */
+    general: ApplicationInterface;
+}
+
+/**
  *  Inbound protocols and advance settings component.
  *
  * @param props - Props injected to the component.
@@ -379,10 +393,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * Handles form submit.
      *
      * @param values - Form values.
+     * @param protocol - The protocol to be updated.
      */
-    const handleSubmit = (values: any, protocol: string): void => {
+    const handleSubmit = (
+        values: ApplicationUpdateFormValuesInterface,
+        protocol: string
+    ): void => {
         setIsLoading(true);
-        updateApplicationDetails({ id: appId, ...values.general })
+
+        updateApplicationDetails({ id: appId, ...values.general }, true)
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, protocol);
 
@@ -757,7 +776,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                                     : undefined
                                                             }
                                                             onSubmit={
-                                                                (values: Record<string, FormValue>) =>
+                                                                (values: ApplicationUpdateFormValuesInterface) =>
                                                                     handleSubmit(values, protocol)
                                                             }
                                                             type={ protocol as SupportedAuthProtocolTypes }
@@ -837,7 +856,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     ]
                                                     : undefined
                                             }
-                                            onSubmit={ (values: Record<string, FormValue>) =>
+                                            onSubmit={ (values: ApplicationUpdateFormValuesInterface) =>
                                                 handleSubmit(values, protocol) }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }
                                             readOnly={
@@ -899,7 +918,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     : undefined
                                             }
                                             onSubmit={
-                                                (values: Record<string, FormValue>) =>
+                                                (values: ApplicationUpdateFormValuesInterface) =>
                                                     handleSubmit(values, inboundProtocolList[0])
                                             }
                                             type={ inboundProtocolList[0] as SupportedAuthProtocolTypes }
@@ -964,7 +983,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     : undefined
                                             }
                                             onSubmit={
-                                                (values: Record<string, FormValue>) =>
+                                                (values: ApplicationUpdateFormValuesInterface) =>
                                                     handleSubmit(values, inboundProtocolList[0])
                                             }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }

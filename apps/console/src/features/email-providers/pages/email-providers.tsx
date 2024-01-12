@@ -483,7 +483,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 autoComplete="new-password"
                                             >
                                                 <Grid>
-
                                                     { /* To be added with email template feature
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column>
@@ -567,16 +566,15 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                             ".smtpPort.hint"
                                                                         }
                                                                     >
-                                                                        The default SMTP port is <Code>25</Code>,
-                                                                        but some email service providers may use
-                                                                        alternative ports such as <Code>587</Code>.
+                                                                        For security reasons, we currently support port
+                                                                        <Code>587</Code> only.
                                                                     </Trans>
                                                                 ) }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.smtpPort }
                                                                 readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
-                                                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                                                    .EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                 width={ 16 }

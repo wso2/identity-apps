@@ -86,7 +86,7 @@ export const getUsersList = (
  * @param startIndex - The index of the first user to be returned.
  * @param filter - The filter to be applied to the users.
  * @param attributes - The attributes to be returned.
- * @param domainId - The user store domain ID.
+ * @param domain - The user store domain name.
  * @param excludedAttributes - The attributes to be excluded.
  * @returns `RequestResultInterface<Data, Error>`
  */
@@ -95,7 +95,7 @@ export const useUsersList = (
     startIndex: number,
     filter: string,
     attributes: string,
-    domainId: string,
+    domain: string,
     excludedAttributes?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
@@ -108,7 +108,7 @@ export const useUsersList = (
         params: {
             attributes,
             count,
-            domain: domainId,
+            domain,
             excludedAttributes,
             filter,
             startIndex
