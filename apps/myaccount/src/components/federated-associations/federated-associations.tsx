@@ -320,6 +320,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
+            data-componentid={ `${testId}-settings-section` }
             description={ t("myAccount:sections.federatedAssociations.description") }
             header={ t("myAccount:sections.federatedAssociations.heading") }
             icon={ getSettingsSectionIcons().federatedAssociations }
