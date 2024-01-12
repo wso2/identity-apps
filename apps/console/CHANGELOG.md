@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.10.69
+
+### Patch Changes
+
+- [#5171](https://github.com/wso2/identity-apps/pull/5171) [`7baeffe0ee`](https://github.com/wso2/identity-apps/commit/7baeffe0ee693e027192a5b1672631afbac43aa7) Thanks [@brionmario](https://github.com/brionmario)! - Fix unwanted PATCH request
+
+* [#5174](https://github.com/wso2/identity-apps/pull/5174) [`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca) Thanks [@brionmario](https://github.com/brionmario)! - Fix outbound provisioning list
+
+- [#5207](https://github.com/wso2/identity-apps/pull/5207) [`beaeb3eebe`](https://github.com/wso2/identity-apps/commit/beaeb3eebe45aee005fa5810174d5db9278d20f2) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix left navigation items order
+
+- Updated dependencies [[`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca)]:
+  - @wso2is/theme@2.0.56
+  - @wso2is/react-components@2.0.36
+
 ## 2.10.68
 
 ### Patch Changes
