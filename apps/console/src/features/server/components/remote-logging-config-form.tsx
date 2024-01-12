@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import Divider from "@oxygen-ui/react/Divider";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
-import Switch from "@oxygen-ui/react/Switch";
-import Typography from "@oxygen-ui/react/Typography";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import {
@@ -157,8 +157,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 value={ logConfig?.remoteUrl }
                                 data-componentid={ componentId + "-url-value-input" }
                             />
-                            <Divider className="mt-6 mb-4"/>
-                            <Heading as="h4">
+                            <Heading as="h5" bold="500" className="pt-5">
                                 { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
                                     "title") }
                             </Heading>
@@ -169,35 +168,30 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 ) }
                                 name={ "connectTimeoutMillis" }
                                 type="number"
+                                min="0"
                                 value={ logConfig?.connectTimeoutMillis }
                                 data-componentid={ componentId + "-connection-timeout-input" }
                             />
-                            <Grid container style={ { marginBottom: "1em" } }>
-                                <Grid xs={ 12 } sm={ 6 } md={ 6 } lg={ 6 } xl={ 6 } display="flex" alignItems="center">
-                                    <Typography variant="body1">
-                                        { t(
-                                            "console:manage.features.serverConfigs.remoteLogPublishing." +
-                                                "fields.advanced.verifyHostname.label"
-                                        ) }
-                                    </Typography>
-                                </Grid>
-                                <Grid
-                                    xs={ 12 }
-                                    sm={ 6 }
-                                    display="flex"
-                                    justifyContent={ "flex-end" }
-                                >
-                                    <Switch
-                                        checked={ logConfig?.verifyHostname }
+                            <FormControlLabel
+                                classes={ {
+                                    label: "form-control-label"
+                                } }
+                                control={ (
+                                    <Checkbox
+                                        checked={ isVerifyHostnameEnabled }
                                         onChange={ (_event: React.SyntheticEvent, checked: boolean) => {
                                             setVerifyHostnameEnabled(checked);
                                         } }
                                         inputProps={ { "aria-label": "controlled" } }
+                                        disableRipple
                                     />
-                                </Grid>
-                            </Grid>
-                            <Divider className="mt-6 mb-4"/>
-                            <Heading as="h4">
+                                ) }
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "verifyHostname.label"
+                                ) }
+                            />
+                            <Heading as="h5" bold="500" className="pt-5">
                                 { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
                                         "basicAuthConfig.title") }
                             </Heading>
@@ -223,8 +217,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 value={ logConfig?.password }
                                 data-componentid={ componentId + "-url-value-input" }
                             />
-                            <Divider className="mt-6 mb-4"/>
-                            <Heading as="h4">
+                            <Heading as="h5" bold="500" className="pt-5">
                                 { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
                                         "sslConfig.title") }
                             </Heading>
@@ -295,6 +288,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                     actionTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.title", {
                         logType: startCase(toLower(logType))
                     }) }
+                    buttonText={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.button") }
                     header={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.header", {
                         logType: startCase(toLower(logType))
                     }) }

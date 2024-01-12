@@ -9299,7 +9299,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
                     pageTitle: "Publication de journaux à distance",
-                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    description: "Configurez les paramètres de journalisation à distance pour les journaux d'audit de l'organisation.",
                     fields: {
                         logTypes: {
                             label: "Types de journaux à publier",
@@ -9347,6 +9347,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restaurer",
                         title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",

@@ -9093,7 +9093,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "දුරස්ථ ලොග් ප්‍රකාශනය",
                     pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
-                    description: "සංවිධානය සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
+                    description: "සංවිධානයේ විගණන ලොග සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
                     fields: {
                         logTypes: {
                             label: "පළ කළ යුතු ලොග් වර්ග",
@@ -9141,6 +9141,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "යථා තත්ත්වයට පත් කරන්න",
                         title: "{{logType}} ලොග සඳහා පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
                         header: "{{logType}} ලොග සඳහා පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
                         subheader: "මෙම ක්‍රියාව {{logType}} ලොග සඳහා පවතින වින්‍යාසය මකා දමයි. ඔබ ඉදිරියට යාමට පෙර කරුණාකර සහතික වන්න.",
