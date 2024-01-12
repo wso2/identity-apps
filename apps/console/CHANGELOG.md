@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.68
+
+### Patch Changes
+
+- [#5203](https://github.com/wso2/identity-apps/pull/5203) [`8b95695491`](https://github.com/wso2/identity-apps/commit/8b95695491e698b5f1bb9fe61e91d457938e74ea) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix hover issue with the new connection cards.
+
 ## 2.10.67
 
 ### Patch Changes
