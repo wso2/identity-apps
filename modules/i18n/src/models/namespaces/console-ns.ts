@@ -1147,6 +1147,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint?: {
                                     customOidc: string;
+                                    customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {

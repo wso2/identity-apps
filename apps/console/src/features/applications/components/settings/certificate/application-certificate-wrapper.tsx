@@ -238,6 +238,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             case SupportedAuthProtocolTypes.SAML:
                 return t("console:develop.features.applications.forms.advancedConfig" +
                     ".sections.certificate.hint.customSaml");
+            case SupportedAuthProtocolTypes.WS_FEDERATION:
+                return t("console:develop.features.applications.forms.advancedConfig" +
+                    ".sections.certificate.hint.customPassiveSTS");
             default:
                 return null;
         }
@@ -317,7 +320,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     (event: React.SyntheticEvent, value: string) => {
                                         const certType: CertificateTypeInterface = value as CertificateTypeInterface;
 
-                                        if(CertificateTypeInterface.NONE === certType && 
+                                        if(CertificateTypeInterface.NONE === certType &&
                                             (canDiscardCertificate && !canDiscardCertificate())){
                                             setShowInvalidOperationModal(true);
 
