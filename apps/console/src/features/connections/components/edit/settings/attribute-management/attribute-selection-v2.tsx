@@ -106,7 +106,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                         t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
                             "placeHolder.subtitle")
                     ] }
-                    action={
+                    action={ !isReadOnly &&
                         (<PrimaryButton onClick={ () => setShowAddModal(true) }>
                             <Icon name="plus" />
                             { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
@@ -208,14 +208,19 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                                 </Form>
                                             </Table.Cell>
                                             <Table.Cell textAlign="right">
-                                                <PrimaryButton
-                                                    onClick={ () => setShowAddModal(true) }
-                                                    data-testid={ `${ testId }-list-layout-add-button` }
-                                                >
-                                                    <Icon name="plus" />
-                                                    { t("console:develop.features.idp.forms.attributeSettings." +
-                                                            "attributeMapping.placeHolder.action") }
-                                                </PrimaryButton>
+                                                {
+                                                    !isReadOnly && (
+                                                        <PrimaryButton
+                                                            onClick={ () => setShowAddModal(true) }
+                                                            data-testid={ `${ testId }-list-layout-add-button` }
+                                                        >
+                                                            <Icon name="plus" />
+                                                            { t("console:develop.features.idp.forms." +
+                                                                    "attributeSettings.attributeMapping.placeHolder" +
+                                                                    ".action") }
+                                                        </PrimaryButton>
+                                                    )
+                                                }
                                             </Table.Cell>
                                         </Table.Row>
                                     </Table.Body>

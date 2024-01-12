@@ -130,6 +130,10 @@ export interface FeatureConfigInterface {
      */
     identityVerificationProviders?: FeatureAccessConfigInterface;
     /**
+     * Login and Registration feature.
+     */
+    loginAndRegistration?: FeatureAccessConfigInterface;
+    /**
      * OIDC Scope management feature.
      */
     oidcScopes?: FeatureAccessConfigInterface;

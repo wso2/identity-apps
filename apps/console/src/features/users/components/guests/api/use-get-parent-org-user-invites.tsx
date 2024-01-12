@@ -25,7 +25,9 @@ import { InvitationsInterface } from "../models/invite";
  * Hook to get the parent org user invites list.
  */
 export const useGetParentOrgUserInvites = <Data = InvitationsInterface,
-    Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
+    Error = RequestErrorInterface>(
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -35,7 +37,7 @@ export const useGetParentOrgUserInvites = <Data = InvitationsInterface,
         url: store.getState().config.endpoints.guestsList
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

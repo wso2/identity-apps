@@ -16,6 +16,7 @@
  * under the License.
  */
 import { ProfileConstants } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
@@ -32,8 +33,9 @@ import React,
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
+import { useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreUtils, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
     ConnectorPropertyInterface,
@@ -121,6 +123,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     ] = useState<ConnectorPropertyInterface[]>(undefined);
     const [ forcePasswordReset, setForcePasswordReset ] = useState<string>("false");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     useEffect(() => {
         if (!connectorProperties) {
@@ -288,12 +293,19 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                                     "changePasswordModal.passwordResetConfigDisabled" }>
                                                 Password reset via recovery email is not enabled.
                                                 Please make sure to enable it from
-                                                <a
-                                                    onClick={ handleLoginAndRegistrationPageRedirect }
-                                                    className="ml-1 external-link link pointing primary"
-                                                >
-                                                    Login and Registration
-                                                </a> configurations
+                                                {
+                                                    hasRequiredScopes(featureConfig?.loginAndRegistration,
+                                                        featureConfig?.loginAndRegistration?.scopes?.feature,
+                                                        allowedScopes)
+                                                        ? (
+                                                            <a
+                                                                onClick={ handleLoginAndRegistrationPageRedirect }
+                                                                className="ml-1 external-link link pointing primary"
+                                                            >
+                                                                Login and Registration
+                                                            </a>
+                                                        ) : "Login and Registration"
+                                                } configurations
                                             </Trans>
                                         </>
                                     )
