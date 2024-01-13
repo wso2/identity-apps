@@ -2166,7 +2166,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Autoriser la révocation des jetons de cette application lorsqu'une " +
-                                            "session IDP liée se termine par une déconnexion utilisateur.",
+                                            "session IDP liée se termine par une déconnexion utilisateur. N'oubliez pas d'inclure " +
+                                            "<1>client_id</> ou <3>id_token_hint</3> dans la demande de déconnexion.",
                                         label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                     },
                                     type: {
