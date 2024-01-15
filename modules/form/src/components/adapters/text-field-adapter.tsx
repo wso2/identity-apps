@@ -57,6 +57,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         FormControlProps = {},
         helperText,
         required,
+        readOnly,
         ...rest
     } = props;
 
@@ -75,6 +76,9 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 // TODO: Remove this once the `required` prop is supported by the Oxygen UI TextField component.
                 InputLabelProps={ {
                     required
+                } }
+                InputProps={ {
+                    readOnly
                 } }
             />
             { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }

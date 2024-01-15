@@ -61,7 +61,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="vonageKey"
-                            disabled={ isReadOnly }
+                            readOnly={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-vonage-key` }
                             name="vonageKey"
@@ -87,7 +87,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="vonageSecret"
-                            disabled={ isReadOnly }
+                            readOnly={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-vonage-secret` }
                             name="vonageSecret"
@@ -116,7 +116,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="vonageSender"
-                            disabled={ isReadOnly }
+                            readOnly={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-vonage-sender` }
                             name="vonageSender"
@@ -144,7 +144,6 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                     <PrimaryButton
                                         size="small"
                                         onClick={ onSubmit }
-                                        disabled={ isReadOnly }
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
                                     >

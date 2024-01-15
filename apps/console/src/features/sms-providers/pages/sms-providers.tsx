@@ -60,6 +60,7 @@ import {
     SMSProviderPropertiesInterface,
     SMSProviderSettingsState
 } from "../models";
+import "./sms-providers.scss";
 
 type SMSProviderPageInterface = IdentifiableComponentInterface;
 
@@ -567,7 +568,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             :  {}
                                     }
                                     render={ ({ handleSubmit }: FormRenderProps) => (
-                                        <form onSubmit={ handleSubmit } noValidate>
+                                        <form className="sms-provider-config-form" onSubmit={ handleSubmit } noValidate>
                                             <div className="card-list">
                                                 <Grid>
                                                     <Grid.Row columns={ 3 }>

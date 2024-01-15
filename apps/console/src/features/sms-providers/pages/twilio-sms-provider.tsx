@@ -60,7 +60,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="twilioKey"
-                            disabled={ isReadOnly }
+                            readOnly={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-twilio-key` }
                             name="twilioKey"
@@ -85,7 +85,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            disabled={ isReadOnly }
+                            readOnly={ isReadOnly }
                             ariaLabel="twilioSecret"
                             required={ true }
                             data-componentid={ `${componentId}-twilio-secret` }
@@ -113,7 +113,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            disabled={ isReadOnly }
+                            readOnly={ isReadOnly }
                             ariaLabel="twilioSender"
                             required={ true }
                             data-componentid={ `${componentId}-twilio-sender` }
