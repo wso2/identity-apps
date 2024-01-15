@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.73
+
+### Patch Changes
+
+- [#5211](https://github.com/wso2/identity-apps/pull/5211) [`ff31e57334`](https://github.com/wso2/identity-apps/commit/ff31e57334d56bec64e7b41b9de8605238041c17) Thanks [@Yoshani](https://github.com/Yoshani)! - improve revoke token hint
+
+* [#5219](https://github.com/wso2/identity-apps/pull/5219) [`ceffbde8a3`](https://github.com/wso2/identity-apps/commit/ceffbde8a306ed19f3272e71e23ec28dc343776d) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Test failure fix
+
+* Updated dependencies [[`ff31e57334`](https://github.com/wso2/identity-apps/commit/ff31e57334d56bec64e7b41b9de8605238041c17)]:
+  - @wso2is/i18n@2.0.96
+
 ## 2.10.72
 
 ### Patch Changes
