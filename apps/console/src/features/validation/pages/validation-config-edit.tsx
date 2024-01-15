@@ -83,7 +83,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const { getLink } = useDocumentation();
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);

@@ -20,6 +20,7 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     RoleListInterface,
@@ -36,7 +37,6 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import { FeatureAccessConfigInterface } from "modules/core/src/models";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -298,7 +298,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ roleList?.Resources }
-                onRowClick={(_: SyntheticEvent, role: RolesInterface): void => {
+                onRowClick={ (_: SyntheticEvent, role: RolesInterface): void => {
                     onRoleEdit(role);
                 } }
                 placeholders={ showPlaceholders() }

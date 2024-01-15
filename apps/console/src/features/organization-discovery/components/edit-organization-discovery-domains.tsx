@@ -102,8 +102,6 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         ["data-componentid"]: componentId
     } = props;
 
-    console.log("Hi");
-
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();

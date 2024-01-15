@@ -19,6 +19,7 @@
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     SBACInterface
 } from "@wso2is/core/models";
@@ -33,7 +34,6 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import { FeatureAccessConfigInterface } from "modules/core/src/models";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";

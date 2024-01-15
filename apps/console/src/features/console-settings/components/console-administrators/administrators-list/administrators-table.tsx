@@ -20,6 +20,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     RolesInterface,
     SBACInterface
@@ -35,7 +36,6 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { UserManagementUtils } from "apps/console/src/extensions/components/users/utils/user-management-utils";
-import { FeatureAccessConfigInterface } from "modules/core/src/models";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";

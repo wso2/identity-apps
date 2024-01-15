@@ -170,7 +170,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                         payload: provider.properties.find(
                             (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
                         provider: provider.provider,
-                        providerURL: provider.providerURL
+                        providerURL: provider?.providerURL
                     };
 
                     if (configuredProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER) {
@@ -278,15 +278,15 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         const submittingValues: SMSProviderAPIInterface = {
             contentType: contentType,
             key: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
-                values.twilioKey : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
+                values?.twilioKey : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageKey : values.key,
             properties: properties,
             provider: provider,
             secret: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
-                values.twilioSecret : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
+                values?.twilioSecret : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageSecret : values.secret,
             sender: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
-                values.twilioSender : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
+                values?.twilioSender : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageSender : values.sender
         };
 
@@ -562,9 +562,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                     onSubmit={ handleSubmit }
                                     validate={ validateForm }
                                     initialValues={
-                                        smsProviderSettings.selectedProvider
+                                        smsProviderSettings?.selectedProvider
                                             ? smsProviderSettings
-                                                .providerParams[smsProviderSettings.selectedProvider]
+                                                ?.providerParams[smsProviderSettings?.selectedProvider]
                                             :  {}
                                     }
                                     render={ ({ handleSubmit }: FormRenderProps) => (
@@ -586,14 +586,14 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                             provider.name
                                                                         }
                                                                         className=
-                                                                            {  smsProviderSettings.selectedProvider ===
-                                                                                provider.key
+                                                                            {  smsProviderSettings?.selectedProvider ===
+                                                                                provider?.key
                                                                                 ? "sms-provider-info-card selected"
                                                                                 : "sms-provider-info-card"
                                                                             }
                                                                         key={ provider.id }
                                                                         onClick={ () =>
-                                                                            handleProviderChange(provider.key)
+                                                                            handleProviderChange(provider?.key)
                                                                         }
                                                                         showSetupGuideButton={ false }
                                                                         showCardAction={ false }
@@ -605,21 +605,21 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             </div>
                                             { smsProviderSettings.selectedProvider && (
                                                 <>
-                                                    { smsProviderSettings.selectedProvider ===
+                                                    { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
                                                         <CustomSMSProvider
                                                             isReadOnly={ isReadOnly }
                                                             onSubmit={ handleSubmit }
                                                         />
                                                     ) }
-                                                    { smsProviderSettings.selectedProvider ===
+                                                    { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                                         <TwilioSMSProvider
                                                             isReadOnly={ isReadOnly }
                                                             onSubmit={ handleSubmit }
                                                         />
                                                     ) }
-                                                    { smsProviderSettings.selectedProvider ===
+                                                    { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                                         <VonageSMSProvider
                                                             isReadOnly={ isReadOnly }
