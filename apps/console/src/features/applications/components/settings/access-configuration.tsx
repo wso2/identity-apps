@@ -884,7 +884,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 { !isLoading? resolveProtocolBanner() : null }
                                 { renderProtocolIntegrationHelpMessage() }
                                 { Object.values(SupportedAuthProtocolTypes)
-                                    .includes(inboundProtocolList[0] as SupportedAuthProtocolTypes)
+                                    .includes(selectedProtocol as SupportedAuthProtocolTypes)
                                     ? (
                                         <InboundFormFactory
                                             onUpdate={ onUpdate }
@@ -897,31 +897,31 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             metadata={
                                                 // There's no separate meta for `OAuth2/OIDC` Apps.
                                                 // Need to use `OIDC` for now.
-                                                authProtocolMeta[ inboundProtocolList[0] ===
+                                                authProtocolMeta[ selectedProtocol ===
                                                         SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
-                                                    : inboundProtocolList[0]
+                                                    : selectedProtocol
                                                 ]
                                             }
                                             initialValues={
                                                 get(
-                                                    inboundProtocolConfig, inboundProtocolList[0] ===
+                                                    inboundProtocolConfig, selectedProtocol ===
                                                             SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                         ? SupportedAuthProtocolTypes.OIDC
-                                                        : inboundProtocolList[0]
+                                                        : selectedProtocol
                                                 )
-                                                    ? inboundProtocolConfig[ inboundProtocolList[0] ===
+                                                    ? inboundProtocolConfig[ selectedProtocol ===
                                                             SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                         ? SupportedAuthProtocolTypes.OIDC
-                                                        : inboundProtocolList[0]
+                                                        : selectedProtocol
                                                     ]
                                                     : undefined
                                             }
                                             onSubmit={
                                                 (values: ApplicationUpdateFormValuesInterface) =>
-                                                    handleSubmit(values, inboundProtocolList[0])
+                                                    handleSubmit(values, selectedProtocol)
                                             }
-                                            type={ inboundProtocolList[0] as SupportedAuthProtocolTypes }
+                                            type={ selectedProtocol as SupportedAuthProtocolTypes }
                                             onApplicationRegenerate={ handleApplicationRegenerate }
                                             onApplicationRevoke={ handleApplicationRevoke }
                                             readOnly={
@@ -934,18 +934,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 )
                                             }
                                             showSAMLCreation={
-                                                inboundProtocolList[0] === SupportedAuthProtocolTypes.SAML
+                                                selectedProtocol === SupportedAuthProtocolTypes.SAML
                                             }
                                             SAMLCreationOption={
-                                                (inboundProtocolList[0] === SupportedAuthProtocolTypes.SAML)
+                                                (selectedProtocol === SupportedAuthProtocolTypes.SAML)
                                                 && samlCreationOption
                                             }
                                             template={ template }
                                             data-testid={
-                                                `${ componentId }-inbound-${ inboundProtocolList[0] }-form`
+                                                `${ componentId }-inbound-${ selectedProtocol }-form`
                                             }
                                             data-componentid={
-                                                `${ componentId }-inbound-${ inboundProtocolList[0] }-form`
+                                                `${ componentId }-inbound-${ selectedProtocol }-form`
                                             }
                                             containerRef={ emphasizedSegmentRef }
                                             isDefaultApplication={ isDefaultApplication }
@@ -962,29 +962,29 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             metadata={
                                                 // There's no separate meta for `OAuth2/OIDC` Apps.
                                                 // Need to use `OIDC` for now.
-                                                authProtocolMeta[ inboundProtocolList[0] ===
+                                                authProtocolMeta[ selectedProtocol ===
                                                         SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
-                                                    : inboundProtocolList[0]
+                                                    : selectedProtocol
                                                 ]
                                             }
                                             initialValues={
                                                 get(
-                                                    inboundProtocolConfig, inboundProtocolList[0] ===
+                                                    inboundProtocolConfig, selectedProtocol ===
                                                             SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                         ? SupportedAuthProtocolTypes.OIDC
-                                                        : inboundProtocolList[0]
+                                                        : selectedProtocol
                                                 )
-                                                    ? inboundProtocolConfig[ inboundProtocolList[0] ===
+                                                    ? inboundProtocolConfig[ selectedProtocol ===
                                                             SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                         ? SupportedAuthProtocolTypes.OIDC
-                                                        : inboundProtocolList[0]
+                                                        : selectedProtocol
                                                     ]
                                                     : undefined
                                             }
                                             onSubmit={
                                                 (values: ApplicationUpdateFormValuesInterface) =>
-                                                    handleSubmit(values, inboundProtocolList[0])
+                                                    handleSubmit(values, selectedProtocol)
                                             }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }
                                             readOnly={
