@@ -519,6 +519,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                                 .resolveConnectionResourcePath("", template.image)
                                                         }
                                                         tags={ template.tags }
+                                                        showActions={ true }
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                             setShowWizard(true);

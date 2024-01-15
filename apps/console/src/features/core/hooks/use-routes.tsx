@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,11 +56,12 @@ const useRoutes = (): useRoutesInterface => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
-    const isSuperAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
+    const superAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state?.auth?.isPrivilegedUser);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
     /**
      * Filter the routes based on the user roles and permissions.
      *
@@ -94,7 +95,7 @@ const useRoutes = (): useRoutesInterface => {
                 if (legacyAuthzRuntime) {
                     if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
                         if (isPrivilegedUser) {
-                            if (loggedUserName === isSuperAdmin) {
+                            if (loggedUserName === superAdmin) {
                                 return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
                             } else {
                                 return [
@@ -104,7 +105,7 @@ const useRoutes = (): useRoutesInterface => {
                                 ];
                             }
                         } else {
-                            if (loggedUserName === isSuperAdmin) {
+                            if (loggedUserName === superAdmin) {
                                 return commonHiddenRoutes;
                             } else {
                                 return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
@@ -127,9 +128,9 @@ const useRoutes = (): useRoutesInterface => {
                         ...AppUtils.getHiddenRoutes()
                     ];
                 } else {
-                    if (isCurrentOrgRootAndSuperTenant && loggedUserName === isSuperAdmin) {
+                    if (isCurrentOrgRootAndSuperTenant && loggedUserName === superAdmin) {
                         return commonHiddenRoutes;
-                    } else if (!isCurrentOrgRootAndSuperTenant || loggedUserName !== isSuperAdmin) {
+                    } else if (!isCurrentOrgRootAndSuperTenant || loggedUserName !== superAdmin) {
                         return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
                     }else {
                         return [ ...commonHiddenRoutes ];

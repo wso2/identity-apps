@@ -1,4 +1,4 @@
-/**
+<!--
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
@@ -14,18 +14,12 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
+-->
 
-/**
- * Enum for Remote Logging tab IDs.
- */
-export enum RemoteLoggingTabIds {
-    /**
-     * Audit configurations tab ID.
-     */
-    AUDIT = "audit",
-    /**
-     * Carbon configurations tab ID.
-     */
-    CARBON = "carbon",
-}
+<svg version="1.1" id="microsoft-logo" class="icon" width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
+    <path fill="#f3f3f3" d="M0 0h23v23H0z" />
+    <path fill="#f35325" d="M1 1h10v10H1z" />
+    <path fill="#81bc06" d="M12 1h10v10H12z" />
+    <path fill="#05a6f0" d="M1 12h10v10H1z" />
+    <path fill="#ffba08" d="M12 12h10v10H12z" />
+</svg>

@@ -1877,6 +1877,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "This certificate is used to encrypt the <1>id_token</1>" +
                                         " returned after the authentication.",
+                                    customPassiveSTS: "This certificate is used to validate the signatures of the signed requests.",
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
@@ -2131,7 +2132,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Allow revoking tokens of this application when a bound IDP session " +
-                                            "gets terminated through a user logout.",
+                                            "gets terminated through a user logout. Remember to include either <1>client_id</1> " +
+                                            "or <3>id_token_hint</3> in the logout request.",
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
@@ -11042,7 +11044,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
-                    description: "Configure remote logging settings for the organization.",
+                    description: "Configure remote logging settings for audit logs in the organization.",
                     fields: {
                         logTypes: {
                             label: "Log types to be published",
@@ -11056,9 +11058,9 @@ export const console: ConsoleNS = {
                             label: "Destination URL"
                         },
                         advanced: {
-                            title: "Advanced settings",
+                            title: "Advanced Settings",
                             connectionTimeout: {
-                                label: "Connection Timeout (ms)"
+                                label: "Connection timeout (ms)"
                             },
                             verifyHostname: {
                                 label: "Verify the hostname"
@@ -11090,6 +11092,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restore",
                         title: "Restore Default Configuration",
                         header: "Restore Default Configuration",
                         subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",

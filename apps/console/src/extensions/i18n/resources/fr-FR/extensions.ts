@@ -2061,13 +2061,12 @@ export const extensions: Extensions = {
                 smtpPort: {
                     label: "Port de serveur",
                     placeholder: "Entrez un numéro de port",
-                    hint: "Le port SMTP par défaut est <1>25</1>, mais certains fournisseurs de services de messagerie peuvent utiliser d'autres ports " +
-                        "tels que <3>587</3>. Vérifiez auprès de votre fournisseur de services de messagerie le port SMTP correct."
+                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
                 },
                 fromAddress: {
                     label: "De l'adresse",
                     placeholder: "entrez une adresse email",
-                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
+                    hint: "L'adresse from est l'adresse e-mail que vous souhaitez apparaître comme l'expéditeur de vos e-mails sortants.Cela devrait être une adresse e-mail auquel vous avez accès."
                 },
                 replyToAddress: {
                     label: "Répondre à l'adresse",

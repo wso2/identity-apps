@@ -1,5 +1,106 @@
 # @wso2is/console
 
+## 2.10.72
+
+### Patch Changes
+
+- [#5215](https://github.com/wso2/identity-apps/pull/5215) [`4a1eb0b6ca`](https://github.com/wso2/identity-apps/commit/4a1eb0b6cac18af93f700e683fff465bd7c094a5) Thanks [@brionmario](https://github.com/brionmario)! - Fix Console Maven Release
+
+## 2.10.71
+
+### Patch Changes
+
+- [#5213](https://github.com/wso2/identity-apps/pull/5213) [`c9ad74cd01`](https://github.com/wso2/identity-apps/commit/c9ad74cd01577cbe089b50a9102d96da6edb89c6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger console patch build
+
+## 2.10.70
+
+### Patch Changes
+
+- [#5184](https://github.com/wso2/identity-apps/pull/5184) [`ae505f6899`](https://github.com/wso2/identity-apps/commit/ae505f6899d5f969033a70c1f358f6311f13de2f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Make isReadOnly optional in application config
+
+## 2.10.69
+
+### Patch Changes
+
+- [#5171](https://github.com/wso2/identity-apps/pull/5171) [`7baeffe0ee`](https://github.com/wso2/identity-apps/commit/7baeffe0ee693e027192a5b1672631afbac43aa7) Thanks [@brionmario](https://github.com/brionmario)! - Fix unwanted PATCH request
+
+* [#5174](https://github.com/wso2/identity-apps/pull/5174) [`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca) Thanks [@brionmario](https://github.com/brionmario)! - Fix outbound provisioning list
+
+- [#5207](https://github.com/wso2/identity-apps/pull/5207) [`beaeb3eebe`](https://github.com/wso2/identity-apps/commit/beaeb3eebe45aee005fa5810174d5db9278d20f2) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix left navigation items order
+
+- Updated dependencies [[`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca)]:
+  - @wso2is/theme@2.0.56
+  - @wso2is/react-components@2.0.36
+
+## 2.10.68
+
+### Patch Changes
+
+- [#5203](https://github.com/wso2/identity-apps/pull/5203) [`8b95695491`](https://github.com/wso2/identity-apps/commit/8b95695491e698b5f1bb9fe61e91d457938e74ea) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix hover issue with the new connection cards.
+
+## 2.10.67
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+* [#5202](https://github.com/wso2/identity-apps/pull/5202) [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849) Thanks [@brionmario](https://github.com/brionmario)! - Add passive STS cert hint
+
+* Updated dependencies [[`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf), [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849)]:
+  - @wso2is/react-components@2.0.35
+  - @wso2is/theme@2.0.55
+  - @wso2is/i18n@2.0.95
+  - @wso2is/access-control@2.0.16
+  - @wso2is/common@2.0.22
+  - @wso2is/dynamic-forms@2.0.26
+  - @wso2is/form@2.0.27
+  - @wso2is/forms@2.0.13
+  - @wso2is/core@2.0.28
+
+## 2.10.66
+
+### Patch Changes
+
+- [#5197](https://github.com/wso2/identity-apps/pull/5197) [`9102f67f24`](https://github.com/wso2/identity-apps/commit/9102f67f2409ab375c8ce084b8fdf4b9a8323502) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Allow federated authenticator deletion when there is only one authenticator
+
+* [#5201](https://github.com/wso2/identity-apps/pull/5201) [`681e94273b`](https://github.com/wso2/identity-apps/commit/681e94273bc7561398ab02feeebba678984e3f88) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix application certificate delete issue
+
+* Updated dependencies [[`05673b852f`](https://github.com/wso2/identity-apps/commit/05673b852f9b0fc80ec2b5e092d310c01a06ceee)]:
+  - @wso2is/theme@2.0.54
+
+## 2.10.65
+
+### Patch Changes
+
+- [#5196](https://github.com/wso2/identity-apps/pull/5196) [`bac44d722d`](https://github.com/wso2/identity-apps/commit/bac44d722dc180b8d58bea22a402696f4fe17026) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] Fix the character length of the fields in the email provider
+
+- Updated dependencies [[`bac44d722d`](https://github.com/wso2/identity-apps/commit/bac44d722dc180b8d58bea22a402696f4fe17026)]:
+  - @wso2is/i18n@2.0.94
+
+## 2.10.64
+
+### Patch Changes
+
+- [#5185](https://github.com/wso2/identity-apps/pull/5185) [`3795f19f0e`](https://github.com/wso2/identity-apps/commit/3795f19f0e5523655565c12533b694e1910c14aa) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable a single authenticator for custom connector
+
+* [#5192](https://github.com/wso2/identity-apps/pull/5192) [`3216354305`](https://github.com/wso2/identity-apps/commit/3216354305e6f32ae97596f09871379cc67e3ad3) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add a text field for the ACS Url
+
+- [#5166](https://github.com/wso2/identity-apps/pull/5166) [`ad47e5b21f`](https://github.com/wso2/identity-apps/commit/ad47e5b21f80e54a74058a453255902255d5b925) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Allow assignment of only RBAC-authorized APIs to application roles
+
+* [#5182](https://github.com/wso2/identity-apps/pull/5182) [`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally display the regex field for attributes
+
+- [#5187](https://github.com/wso2/identity-apps/pull/5187) [`1e820725ea`](https://github.com/wso2/identity-apps/commit/1e820725eaddc252ec9540661ebe79cabd4a7d7a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix width issue in attribute mapping search of custom connector
+
+- Updated dependencies [[`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763)]:
+  - @wso2is/core@2.0.27
+  - @wso2is/access-control@2.0.15
+  - @wso2is/common@2.0.21
+  - @wso2is/dynamic-forms@2.0.25
+  - @wso2is/form@2.0.26
+  - @wso2is/forms@2.0.12
+  - @wso2is/i18n@2.0.93
+  - @wso2is/react-components@2.0.34
+
 ## 2.10.63
 
 ### Patch Changes

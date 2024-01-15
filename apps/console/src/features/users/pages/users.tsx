@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { CommonHelpers, hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -190,7 +189,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         data: parentOrgUserInviteList,
         isLoading: isParentOrgUserInviteListLoading,
         mutate: mutateParentOrgUserInviteList
-    } = useGetParentOrgUserInvites();
+    } = useGetParentOrgUserInvites(isSubOrganization());
 
     /**
      * Fetch the list of available userstores.
@@ -1027,13 +1026,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     return (
         <PageLayout
             action={
-                !isUserListRequestLoading
-                && !isParentOrgUserInviteListLoading
-                && (
-                    <Show when={ AccessControlConstants.USER_WRITE }>
-                        { renderUserDropDown() }
-                    </Show>
-                )
+                hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)
+                && !isUserListRequestLoading
+                && (!isSubOrganization() || !isParentOrgUserInviteListLoading)
+                && renderUserDropDown()
             }
             title={ t("console:manage.pages.users.title") }
             pageTitle={ t("console:manage.pages.users.title") }

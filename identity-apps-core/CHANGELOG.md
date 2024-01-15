@@ -1,5 +1,29 @@
 # @wso2is/identity-apps-core
 
+## 2.0.118
+
+### Patch Changes
+
+- [#5174](https://github.com/wso2/identity-apps/pull/5174) [`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca) Thanks [@brionmario](https://github.com/brionmario)! - Fix outbound provisioning list
+
+- Updated dependencies [[`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca)]:
+  - @wso2is/theme@2.0.56
+
+## 2.0.117
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+- Updated dependencies [[`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf)]:
+  - @wso2is/theme@2.0.55
+
+## 2.0.116
+
+### Patch Changes
+
+- [#5190](https://github.com/wso2/identity-apps/pull/5190) [`a556419787`](https://github.com/wso2/identity-apps/commit/a5564197873cf051eaf4182218b28c10cef088f9) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix enterprise login buttons localization
+
 ## 2.0.115
 
 ### Patch Changes

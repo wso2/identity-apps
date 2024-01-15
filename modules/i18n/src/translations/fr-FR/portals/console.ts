@@ -1905,6 +1905,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>" +
                                         " renvoyé après l'authentification.",
+                                    customPassiveSTS: "Ce certificat est utilisé pour valider les signatures des demandes signées.",
                                     customSaml: "Ce certificat permet de valider les signatures des " +
                                         "requêtes signées et de chiffrer les assertions SAML renvoyées " +
                                         "après authentification."
@@ -2165,7 +2166,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Autoriser la révocation des jetons de cette application lorsqu'une " +
-                                            "session IDP liée se termine par une déconnexion utilisateur.",
+                                            "session IDP liée se termine par une déconnexion utilisateur. N'oubliez pas d'inclure " +
+                                            "<1>client_id</> ou <3>id_token_hint</3> dans la demande de déconnexion.",
                                         label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                     },
                                     type: {
@@ -9299,7 +9301,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
                     pageTitle: "Publication de journaux à distance",
-                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    description: "Configurez les paramètres de journalisation à distance pour les journaux d'audit de l'organisation.",
                     fields: {
                         logTypes: {
                             label: "Types de journaux à publier",
@@ -9347,6 +9349,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restaurer",
                         title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
