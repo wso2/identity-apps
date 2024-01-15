@@ -100,14 +100,14 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
     }, [ validationData, isValidationLoading ]);
 
     useEffect(() => {
-        if (initialFormValues !== undefined) {
+        if (initialFormValues) {
             setCurrentValues({ ...initialFormValues });
         }
 
     }, [ initialFormValues ]);
 
     useEffect(() => {
-        if (currentValues !== undefined) {
+        if (currentValues) {
             setTimeout(setPageLoaded, 200, true);
         }
 
