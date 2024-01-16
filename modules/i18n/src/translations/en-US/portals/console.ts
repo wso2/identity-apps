@@ -10230,7 +10230,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "Organizations"
+                title: "Organizations",
+                view: {
+                    description: "View Organization"
+                }
             },
             overview: {
                 widgets: {

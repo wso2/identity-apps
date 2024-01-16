@@ -8460,7 +8460,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "Organisations"
+                title: "Organisations",
+                view: {
+                    description: "Voir l'organisation"
+                }
             },
             overview: {
                 widgets: {

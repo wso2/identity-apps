@@ -3776,6 +3776,9 @@ export interface ConsoleNS {
                         switchOrganization: Notification;
                     }
                 }
+                view: {
+                    description: string;
+                }
             };
             users: {
                 addUserType: {

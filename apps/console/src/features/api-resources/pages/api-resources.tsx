@@ -48,6 +48,7 @@ import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
 import { APIResourceType, APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
+import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
  * Prop-types for the API resources page component.
@@ -85,6 +86,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const {
         data: apiResourcesListData,
@@ -235,6 +237,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     return (
         <PageLayout
             action={
+                APIResourceUtils.isAPIResourceCreateAllowed(
+                    featureConfig, allowedScopes) &&
                 (
                     <PrimaryButton
                         data-testid= { `${componentId}-add-api-resources-button` }
