@@ -521,7 +521,7 @@ importers:
         specifier: ^2.0.16
         version: link:../../modules/access-control
       '@wso2is/common':
-        specifier: ^2.0.22
+        specifier: ^2.0.23
         version: link:../../modules/common
       '@wso2is/core':
         specifier: ^2.0.29
@@ -539,10 +539,10 @@ importers:
         specifier: ^2.0.97
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.0.37
+        specifier: ^2.0.38
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.56
+        specifier: ^2.0.57
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.3
@@ -864,10 +864,10 @@ importers:
         specifier: ^2.0.97
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.0.37
+        specifier: ^2.0.38
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.56
+        specifier: ^2.0.57
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.3
@@ -1160,7 +1160,7 @@ importers:
         specifier: ^2.0.95
         version: link:../i18n
       '@wso2is/react-components':
-        specifier: ^2.0.35
+        specifier: ^2.0.38
         version: link:../react-components
       axios:
         specifier: ^0.19.2
@@ -1721,7 +1721,7 @@ importers:
         specifier: ^2.0.29
         version: link:../core
       '@wso2is/theme':
-        specifier: ^2.0.56
+        specifier: ^2.0.57
         version: link:../theme
       classnames:
         specifier: ^2.2.6

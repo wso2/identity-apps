@@ -1,5 +1,14 @@
 # @wso2is/react-components
 
+## 2.0.38
+
+### Patch Changes
+
+- [#5230](https://github.com/wso2/identity-apps/pull/5230) [`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8) Thanks [@savindi7](https://github.com/savindi7)! - Add WS Fed logo to app template listing page
+
+- Updated dependencies [[`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8)]:
+  - @wso2is/theme@2.0.57
+
 ## 2.0.37
 
 ### Patch Changes
