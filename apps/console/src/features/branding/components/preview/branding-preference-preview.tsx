@@ -128,7 +128,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
      * Update the iframe styles to achieve responsiveness.
      */
     const updateStyles = () => {
-        if (!brandingPreviewContainerRef) {
+
+        if (!brandingPreviewContainerRef?.current) {
             return;
         }
 
