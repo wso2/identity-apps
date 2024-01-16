@@ -309,6 +309,13 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         }
                                                         exclusive
                                                         onChange={ (e: MouseEvent<HTMLElement>, value: string) => {
+                                                            // If no value is selected and exclusive is true
+                                                            // the value is null. Purpose of this if block is
+                                                            // to prevent the submit in the case of null value.
+                                                            if (!value) {
+                                                                return;
+                                                            }
+
                                                             handlePermissionLevelChange(
                                                                 e,
                                                                 collection,
