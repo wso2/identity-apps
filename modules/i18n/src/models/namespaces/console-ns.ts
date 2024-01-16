@@ -1906,6 +1906,13 @@ export interface ConsoleNS {
                             apiToken: FormAttributes;
                             baseUrl: FormAttributes;
                         };
+                        iproov: {
+                            baseUrl: FormAttributes;
+                            oauthUsername: FormAttributes;
+                            oauthPassword: FormAttributes;
+                            apiKey: FormAttributes;
+                            apiSecret: FormAttributes;
+                        };
                         saml: {
                             AuthRedirectUrl: FormAttributes;
                             SPEntityId: FormAttributes;
@@ -2226,6 +2233,40 @@ export interface ConsoleNS {
                             preRequisites: {
                                 rpDescription: string;
                                 tokenDescription: string;
+                                heading: string;
+                            };
+                        }
+                    };
+                    iproov?: {
+                        wizardHelp: {
+                            baseUrl: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthUsername: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthPassword: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                rpDescription: string;
                                 heading: string;
                             };
                         }

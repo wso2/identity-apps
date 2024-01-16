@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -53,36 +53,44 @@ import {
 } from "../../../models";
 
 /**
- * Proptypes for the iProov Authentication Provider Create Wizard.
+ * Proptypes for the Iproov Authentication Provider Create Wizard.
  */
 interface IproovAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
     GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
 /**
- * Proptypes for the iProov Authentication Wizard Form values.
+ * Proptypes for the Iproov Authentication Wizard Form values.
  */
 export interface IproovAuthenticationProviderCreateWizardFormValuesInterface {
     /**
-     * Hypr Authenticator name
+     * Iproov Authenticator name
      */
     name: string;
     /**
-     * Hypr Authenticator app ID
+     * Iproov Authenticator API key
      */
-    appId: string;
+    apiKey: string;
     /**
-     * Hypr Authenticator API token
+     * Iproov Authenticator API secret
      */
-    apiToken: string;
+    apiSecret: string;
     /**
-     * Hypr Authenticator base URL
+     * Iproov Authenticator base URL
      */
     baseUrl: string;
+    /**
+     * Iproov Authenticator Oauth username
+     */
+    oauthUsername: string;
+    /**
+     * Iproov Authenticator Oauth password
+     */
+    oauthPassword: string;
 }
 
 /**
- * iProov Authentication Provider Create Wizard Component.
+ * Iproov Authentication Provider Create Wizard Component.
  *
  * @param props - Props injected to the component.
  *
@@ -156,28 +164,28 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
 
             identityProvider.federatedAuthenticators.authenticators[0].properties = [
                 {
-                    "key": "baseUrl",
-                    "value": values.baseUrl.toString()
-                },
-                {
-                    "key": "oauthUsername",
-                    "value": values.appId.toString()
-                },
-                {
-                    "key": "oauthPassword",
-                    "value": values.apiToken.toString()
-                },
-                {
                     "key": "apiKey",
-                    "value": values.appId.toString()
+                    "value": values.apiKey.toString()
                 },
                 {
                     "key": "apiSecret",
-                    "value": values.apiToken.toString()
+                    "value": values.apiSecret.toString()
+                },
+                {
+                    "key": "oauthUsername",
+                    "value": values.oauthUsername.toString()
+                },
+                {
+                    "key": "oauthPassword",
+                    "value": values.oauthPassword.toString()
+                },
+                {
+                    "key": "baseUrl",
+                    "value": values.baseUrl.toString()
                 }
             ];
 
-            identityProvider.image = "assets/images/logos/hypr.svg";
+            identityProvider.image = "assets/images/logos/iproov.svg";
 
             createNewIdentityProvider(identityProvider);
         };
@@ -455,7 +463,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
     };
 
 /**
- * Default props for the iProov Authentication Provider Create Wizard.
+ * Default props for the HYPR Authentication Provider Create Wizard.
  */
 IproovAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,

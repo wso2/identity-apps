@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,457 +16,376 @@
  * under the License.
  */
 
-import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import {
-    DocumentationLink,
-    GenericIcon,
-    Heading,
-    LinkButton,
-    PrimaryButton,
-    useDocumentation,
-    useWizardAlert
-} from "@wso2is/react-components";
-import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
-import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Field, Wizard, WizardPage } from "@wso2is/form";
+import { AxiosError } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { Grid } from "semantic-ui-react";
 import {
-    IproovAuthenticationProviderCreateWizardContent
-} from "./iproov-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../../extensions/configs";
-import {
-    EventPublisher,
-    ModalWithSidePanel
-} from "../../../../../features/core";
-import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
-import { createIdentityProvider } from "../../../api";
-import { getIdPIcons } from "../../../configs/ui";
+    IproovAuthenticationProviderCreateWizardFormValuesInterface
+} from "./iproov-authentication-provider-create-wizard";
+import { getIdentityProviderList } from "../../../api";
 import { IdentityProviderManagementConstants } from "../../../constants";
-import {
-    GenericIdentityProviderCreateWizardPropsInterface,
-    IdentityProviderInterface
-} from "../../../models";
+import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../../models";
+import { handleGetIDPListCallError } from "../../utils";
 
 /**
- * Proptypes for the iProov Authentication Provider Create Wizard.
+ * Proptypes for the IproovAuthenticationWizardFrom.
  */
-interface IproovAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
-    GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
+interface IproovAuthenticationProviderCreateWizardContentPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Trigger form submit.
+     * @param submitFunctionCallback - Callback.
+     */
+    triggerSubmission: (submitFunctionCallback: () => void) => void;
+    /**
+     * Trigger previous page.
+     * @param previousFunctionCb - Callback.
+     */
+    triggerPrevious: (previousFunctionCb: () => void) => void;
+    /**
+     * Callback to change the wizard page,
+     * @param pageNo - Page Number.
+     */
+    changePageNumber: (pageNo: number) => void;
+    /**
+     * IDP template.
+     */
+    template: IdentityProviderTemplateInterface;
+    /**
+     * Total wizard page count.
+     * @param pageCount - Page number.
+     */
+    setTotalPage: (pageCount: number) => void;
+    /**
+     * Callback to be triggered for form submit.
+     * @param values - Form values.
+     */
+    onSubmit: (values: IproovAuthenticationProviderCreateWizardFormValuesInterface) => void;
 }
 
-/**
- * Proptypes for the iProov Authentication Wizard Form values.
- */
-export interface IproovAuthenticationProviderCreateWizardFormValuesInterface {
-    /**
-     * iProov Authenticator name
-     */
-    name: string;
-    /**
-     * iProov Authenticator base URL
-     */
-    baseUrl: string;
-    /**
-     * iProov Authenticator OAuth Username
-     */
-    oauthUsername: string;
-    /**
-     * iProov Authenticator OAuth Password
-     */
-    oauthPassword: string;
-    /**
-     * iProov Authenticator API Key
-     */
-    apiKey: string;
-    /**
-     * iProov Authenticator API Secret
-     */
-    apiSecret: string;
-}
+const FORM_ID: string = "iproov-authenticator-wizard-form";
 
 /**
- * iProov Authentication Provider Create Wizard Component.
+ * Iproov Authentication Provider Create Wizard content component.
  *
  * @param props - Props injected to the component.
- *
- * @returns React Element
+ * @returns Functional component.
  */
-export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
-    IproovAuthenticationProviderCreateWizardPropsInterface
-    > = (
-        props: IproovAuthenticationProviderCreateWizardPropsInterface
-    ): ReactElement => {
+export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
+    IproovAuthenticationProviderCreateWizardContentPropsInterface
+> = (
+    props: IproovAuthenticationProviderCreateWizardContentPropsInterface
+): ReactElement => {
 
-        const {
-            onWizardClose,
-            onIDPCreate,
-            currentStep,
-            title,
-            subTitle,
-            template,
-            [ "data-testid" ]: testId,
-            [ "data-componentid" ]: componentId
-        } = props;
+    const {
+        triggerSubmission,
+        triggerPrevious,
+        changePageNumber,
+        template,
+        setTotalPage,
+        onSubmit,
+        [ "data-componentid" ]: componentId
+    } = props;
 
-        const dispatch: Dispatch<any> = useDispatch();
-        const { t } = useTranslation();
-        const { getLink } = useDocumentation();
-        const [ alert, setAlert, alertComponent ] = useWizardAlert();
-        const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-        const [ wizStep, setWizStep ] = useState<number>(0);
-        const [ totalStep, setTotalStep ] = useState<number>(0);
-        const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-        const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
-        const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const { t } = useTranslation();
 
-        /**
-        * Track wizard steps from wizard component.
-        */
-        useEffect(() => {
-            setCurrentWizardStep(wizStep + 1);
-        }, [ wizStep ]);
+    const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
+    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
-        /**
-        * Called when modal close event is triggered.
-        */
-        const handleWizardClose = (): void => {
+    /**
+     * Loads the identity provider authenticators on initial component load.
+     */
+    useEffect(() => {
 
-            // Trigger the close method from props.
-            onWizardClose();
-        };
+        getIDPlist();
+    }, []);
 
-        /**
-        * Close the limit reached modal.
-        */
-        const handleLimitReachedModalClose = (): void => {
+    /**
+     * Get Idp List.
+     */
+    const getIDPlist = (): void => {
 
-            setOpenLimitReachedModal(false);
-            handleWizardClose();
-        };
+        setIdPListRequestLoading(true);
 
-        /**
-        * Callback triggered when the form is submitted.
-        *
-        * @param values - Form values.
-        */
-        const onSubmitWizard = (values: IproovAuthenticationProviderCreateWizardFormValuesInterface): void => {
-
-            const identityProvider: IdentityProviderInterface = { ...template.idp };
-
-            identityProvider.name = values.name.toString();
-            identityProvider.templateId = template.templateId;
-            identityProvider.description = template.description;
-
-            identityProvider.federatedAuthenticators.authenticators[0].properties = [
-                {
-                    "key": "baseUrl",
-                    "value": values.baseUrl.toString()
-                },
-                {
-                    "key": "oauthUsername",
-                    "value": values.appId.toString()
-                },
-                {
-                    "key": "oauthPassword",
-                    "value": values.apiToken.toString()
-                },
-                {
-                    "key": "apiKey",
-                    "value": values.appId.toString()
-                },
-                {
-                    "key": "apiSecret",
-                    "value": values.apiToken.toString()
-                }
-            ];
-
-            identityProvider.image = "assets/images/logos/hypr.svg";
-
-            createNewIdentityProvider(identityProvider);
-        };
-
-        /**
-        * Creates a new identity provider.
-        *
-        * @param identityProvider - Identity provider object.
-        */
-        const createNewIdentityProvider = (identityProvider: IdentityProviderInterface): void => {
-
-            setIsSubmitting(true);
-            createIdentityProvider(identityProvider)
-                .then((response: any) => {
-                    eventPublisher.publish("connections-finish-adding-connection", {
-                        type: componentId
-                    });
-
-                    dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                            "success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                            "success.message")
-                    }));
-
-                    // The created resource's id is sent as a location header.
-                    // If that's available, navigate to the edit page.
-                    if (!isEmpty(response.headers.location)) {
-                        const location: any = response.headers.location;
-                        const createdIdpID: any = location.substring(location.lastIndexOf("/") + 1);
-
-                        onIDPCreate(createdIdpID);
-
-                        return;
-                    }
-
-                    // Since the location header is not present, trigger callback without the id.
-                    onIDPCreate();
-                })
-                .catch((error: any) => {
-                    const identityAppsError: IdentityAppsError = identityProviderConfig.useNewConnectionsView
-                        ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
-                        : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
-
-                    if (error.response.status === 403 &&
-                        error?.response?.data?.code === identityAppsError.getErrorCode()) {
-                        setOpenLimitReachedModal(true);
-
-                        return;
-                    }
-
-                    if (error.response && error.response.data && error.response.data.description) {
-                        setAlert({
-                            description: t("console:develop.features.authenticationProvider.notifications." +
-                                "addIDP.error.description",
-                            { description: error.response.data.description }),
-                            level: AlertLevels.ERROR,
-                            message: t("console:develop.features.authenticationProvider.notifications." +
-                                "addIDP.error.message")
-                        });
-
-                        return;
-                    }
-
-                    setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                            "genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
-                            "genericError.message")
-                    });
-                })
-                .finally(() => {
-                    setIsSubmitting(false);
-                });
-        };
-
-        /**
-        * Resolve the step wizard actions.
-        *
-        * @returns React Element
-        */
-        const resolveStepActions = (): ReactElement => {
-
-            return (
-                <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton
-                                floated="left"
-                                onClick={ handleWizardClose }
-                                data-testid={ `${ testId }-modal-cancel-button` }
-                            >
-                                { t("common:cancel") }
-                            </LinkButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            { currentWizardStep !== totalStep ? (
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ () => {
-                                        submitForm();
-                                    } }
-                                    data-testid={ `${ testId }-modal-finish-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
-                                >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
-                                </PrimaryButton>
-                            ) : (
-                                <>
-                                    <PrimaryButton
-                                        floated="right"
-                                        onClick={ () => {
-                                            submitForm();
-                                        } }
-                                        data-testid={ `${ testId }-modal-finish-button` }
-                                        loading={ isSubmitting }
-                                        disabled={ isSubmitting }
-                                    >
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
-                                    </PrimaryButton>
-                                </>
-                            ) }
-                            {
-                                currentWizardStep > 1 &&
-                            (<LinkButton
-                                floated="right"
-                                onClick={ () => {
-                                    triggerPreviousForm();
-                                } }
-                                data-testid={ `${ testId }-modal-previous-button` }
-                            >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
-                            </LinkButton>)
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            );
-        };
-
-        /**
-        * Renders the help panel containing wizard help.
-        *
-        * @returns React Element
-        */
-        const renderHelpPanel = (): ReactElement => {
-
-            // Return null when `showHelpPanel` is false or `wizardHelp` is not defined in `selectedTemplate` object.
-            if (!template?.content?.wizardHelp || currentWizardStep === 0) {
-                return null;
-            }
-
-            const { wizardHelp: WizardHelp } = template?.content;
-
-            return (
-                <ModalWithSidePanel.SidePanel>
-                    <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
-                        <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider" +
-                            ".templates.microsoft.wizardHelp.heading") }
-                        </div>
-                    </ModalWithSidePanel.Header>
-                    <ModalWithSidePanel.Content>
-                        <Suspense fallback={ <ContentLoader/> }>
-                            <WizardHelp/>
-                        </Suspense>
-                    </ModalWithSidePanel.Content>
-                </ModalWithSidePanel.SidePanel>
-            );
-        };
-
-        /**
-        * Closure to submit form.
-        */
-        let submitForm: () => void;
-
-        /**
-        * Closure to trigger previous form.
-        */
-        let triggerPreviousForm: () => void;
-
-        return (
-            <>
-                { openLimitReachedModal &&
-                    (
-                        <TierLimitReachErrorModal
-                            actionLabel={ t(
-                                "console:develop.features.idp.notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.action"
-                            ) }
-                            handleModalClose={ handleLimitReachedModalClose }
-                            header={ t(
-                                "console:develop.features.idp.notifications.tierLimitReachedError.heading"
-                            ) }
-                            description={ t(
-                                "console:develop.features.idp.notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.subtitles"
-                            ) }
-                            message={ t(
-                                "console:develop.features.idp.notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.title"
-                            ) }
-                            openModal={ openLimitReachedModal }
-                        />
-                    )
-                }
-                <ModalWithSidePanel
-                    open={ !openLimitReachedModal }
-                    className="wizard identity-provider-create-wizard"
-                    dimmer="blurring"
-                    onClose={ handleWizardClose }
-                    closeOnDimmerClick={ false }
-                    closeOnEscape
-                    data-testid={ `${ testId }-modal` }
-                >
-                    <ModalWithSidePanel.MainPanel>
-                        <ModalWithSidePanel.Header
-                            className="wizard-header"
-                            data-testid={ `${ testId }-modal-header` }
-                        >
-                            <div className="display-flex">
-                                <GenericIcon
-                                    icon={ getIdPIcons().iproov }
-                                    size="mini"
-                                    transparent
-                                    spaced="right"
-                                    data-testid={ `${ testId }-image` }
-                                />
-                                <div className="ml-1">
-                                    { title }
-                                    { subTitle &&
-                                        (
-                                            <Heading as="h6">
-                                                { subTitle }
-                                                <DocumentationLink
-                                                    link={ getLink("develop.connections.newConnection.iproov.learnMore") }
-                                                >
-                                                    { t("common:learnMore") }
-                                                </DocumentationLink>
-                                            </Heading>
-                                        )
-                                    }
-                                </div>
-                            </div>
-                        </ModalWithSidePanel.Header>
-                        <ModalWithSidePanel.Content
-                            className="content-container"
-                            data-testid={ `${ testId }-modal-content` }
-                        >
-                            { alert && alertComponent }
-                            <IproovAuthenticationProviderCreateWizardContent
-                                onSubmit={ onSubmitWizard }
-                                triggerSubmission={ (submitFunctionCb: () => void) => {
-                                    submitForm = submitFunctionCb;
-                                } }
-                                triggerPrevious={ (previousFunctionCb: () => void) => {
-                                    triggerPreviousForm = previousFunctionCb;
-                                } }
-                                changePageNumber={ (step: number) => setWizStep(step) }
-                                setTotalPage={ (pageNumber: number) => setTotalStep(pageNumber) }
-                                template={ template }
-                            />
-                        </ModalWithSidePanel.Content>
-                        <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
-                            { resolveStepActions() }
-                        </ModalWithSidePanel.Actions>
-                    </ModalWithSidePanel.MainPanel>
-                    { renderHelpPanel() }
-                </ModalWithSidePanel>
-            </>
-        );
+        getIdentityProviderList(null, null, null)
+            .then((response: IdentityProviderListResponseInterface) => {
+                setIdPList(response);
+            })
+            .catch((error: AxiosError) => {
+                handleGetIDPListCallError(error);
+            })
+            .finally(() => {
+                setIdPListRequestLoading(false);
+            });
     };
 
+    /**
+     * Check whether IDP name is already exist or not.
+     *
+     * @param value - IDP name.
+     * @returns error msg if name is already taken.
+     */
+    const idpNameValidation = (value: string): string => {
+
+        let nameExist: boolean = false;
+
+        if (idpList?.count > 0) {
+            idpList?.identityProviders.map((idp: IdentityProviderTemplateInterface) => {
+                if (idp?.name === value) {
+                    nameExist = true;
+                }
+            });
+        }
+        if (nameExist) {
+            return t("console:develop.features." +
+                "authenticationProvider.forms.generalDetails.name." +
+                "validations.duplicate");
+        }
+    };
+
+    /**
+     * Validates the Form.
+     *
+     * @param values - Form Values.
+     * @returns Form validation.
+     */
+    const validateForm = (values: IproovAuthenticationProviderCreateWizardFormValuesInterface):
+        IproovAuthenticationProviderCreateWizardFormValuesInterface => {
+
+        const errors: IproovAuthenticationProviderCreateWizardFormValuesInterface = {
+            apiSecret: undefined,
+            apiKey: undefined,
+            oauthUsername: undefined,
+            oauthPassword: undefined,
+            baseUrl: undefined,
+            name: undefined
+        };
+
+        if (!values.name) {
+            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
+        }
+        if (!values.apiSecret) {
+            errors.apiSecret = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
+        }
+        if (!values.apiKey) {
+            errors.apiKey = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
+        }
+        if (!values.oauthUsername) {
+            errors.oauthUsername = t("console:develop.features.authenticationProvider.forms.common" +
+                        ".requiredErrorMessage");
+        }
+        if (!values.oauthPassword) {
+            errors.oauthPassword = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
+        }
+        if (!values.baseUrl) {
+            errors.baseUrl = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
+        }
+
+        return errors;
+    };
+
+    return (
+        (isIdPListRequestLoading !== undefined && isIdPListRequestLoading === false)
+            ? (
+                <Wizard
+                    id={ FORM_ID }
+                    initialValues={ { name: template?.idp?.name } }
+                    onSubmit={
+                        (values: IproovAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
+                    }
+                    triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                    triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
+                    changePage={ (step: number) => changePageNumber(step) }
+                    setTotalPage={ (step: number) => setTotalPage(step) }
+                    data-testid={ componentId }
+                >
+                    <WizardPage validate={ validateForm }>
+                        <Field.Input
+                            ariaLabel="Iproov IDP Name"
+                            inputType="name"
+                            name="name"
+                            label={
+                                t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms." +
+                                    "generalDetails.name.placeholder")
+                            }
+                            required={ true }
+                            validation={ (value: any) => idpNameValidation(value) }
+                            maxLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
+                            }
+                            minLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
+                            }
+                            data-testid={ `${ componentId }-idp-name` }
+                            width={ 13 }
+                        />
+                        <Field.Input
+                            ariaLabel="Iproov API Key"
+                            inputType="client_id"
+                            name="apiKey"
+                            label={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.apiKey.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.apiKey.placeholder")
+                            }
+                            required={ true }
+                            message={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.apiKey.validations.required")
+                            }
+                            type="text"
+                            maxLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
+                            }
+                            minLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
+                            }
+                            data-testid={ `${ componentId }-idp-api-key` }
+                            width={ 13 }
+                        />
+                        <Field.Input
+                            ariaLabel="Iproov API secret"
+                            inputType="password"
+                            name="apiSecret"
+                            label={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.apiSecret.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.apiSecret.placeholder")
+                            }
+                            required={ true }
+                            message={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.apiSecret.validations.required")
+                            }
+                            type="text"
+                            maxLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
+                            }
+                            minLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
+                            }
+                            data-testid={ `${ componentId }-idp-api-secret` }
+                            width={ 13 }
+                        />
+                        <Field.Input
+                                    ariaLabel="Iproov Oauth Username"
+                                    inputType="client_id"
+                                    name="oauthUsername"
+                                    label={
+                                        t("console:develop.features.authenticationProvider.forms" +
+                                            ".authenticatorSettings.iproov.oauthUsername.label")
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.authenticationProvider.forms" +
+                                            ".authenticatorSettings.iproov.oauthUsername.placeholder")
+                                    }
+                                    required={ true }
+                                    message={
+                                        t("console:develop.features.authenticationProvider.forms" +
+                                            ".authenticatorSettings.iproov.oauthUsername.validations.required")
+                                    }
+                                    type="text"
+                                    maxLength={
+                                        IdentityProviderManagementConstants
+                                            .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
+                                    }
+                                    minLength={
+                                        IdentityProviderManagementConstants
+                                            .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
+                                    }
+                                    data-testid={ `${ componentId }-idp-oauth-username` }
+                                    width={ 13 }
+                                />
+                        <Field.Input
+                            ariaLabel="Iproov Oauth Password"
+                            inputType="password"
+                            name="oauthPassword"
+                            label={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.oauthPassword.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.oauthPassword.placeholder")
+                            }
+                            required={ true }
+                            message={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.oauthPassword.validations.required")
+                            }
+                            type="text"
+                            maxLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
+                            }
+                            minLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
+                            }
+                            data-testid={ `${ componentId }-idp-oauth-password` }
+                            width={ 13 }
+                        />
+                        <Field.Input
+                            ariaLabel="Iproov Base URL"
+                            inputType="url"
+                            name="baseUrl"
+                            label={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.baseUrl.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.baseUrl.placeholder")
+                            }
+                            required={ true }
+                            message={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.baseUrl.validations.required")
+                            }
+                            type="text"
+                            maxLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MAX_LENGTH as number
+                            }
+                            minLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
+                            }
+                            data-testid={ `${ componentId }-idp-base-url` }
+                            width={ 13 }
+                        />
+                    </WizardPage>
+                </Wizard>
+            )
+            : null
+    );
+};
+
 /**
- * Default props for the iProov Authentication Provider Create Wizard.
+ * Default props for the iproov Authentication Provider Create Wizard Page Component.
  */
-IproovAuthenticationProviderCreateWizard.defaultProps = {
-    currentStep: 1,
-    "data-componentid": "iproov-idp",
-    "data-testid": "iproov-idp-create-wizard"
+IproovAuthenticationProviderCreateWizardContent.defaultProps = {
+    "data-componentid": "iproov-idp-create-wizard-page"
 };
