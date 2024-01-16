@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.96
+
+### Patch Changes
+
+- [#5211](https://github.com/wso2/identity-apps/pull/5211) [`ff31e57334`](https://github.com/wso2/identity-apps/commit/ff31e57334d56bec64e7b41b9de8605238041c17) Thanks [@Yoshani](https://github.com/Yoshani)! - improve revoke token hint
+
 ## 2.0.95
 
 ### Patch Changes
