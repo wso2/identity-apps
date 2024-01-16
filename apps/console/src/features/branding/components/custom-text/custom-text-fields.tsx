@@ -42,6 +42,10 @@ import "./custom-text-fields.scss";
 export interface CustomTextFieldsProps extends IdentifiableComponentInterface {
     onSubmit: (values: any) => void;
     fields: Record<string, string>;
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
 }
 
 const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
@@ -71,7 +75,12 @@ const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElemen
  * @returns Text customization fields component.
  */
 const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: CustomTextFieldsProps): ReactElement => {
-    const { fields, onSubmit, "data-componentid": componentId } = props;
+    const {
+        fields,
+        onSubmit,
+        readOnly,
+        "data-componentid": componentId
+    } = props;
 
     const { t, i18n } = useTranslation();
 
@@ -211,6 +220,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             InputProps={ {
                                                 endAdornment: renderInputAdornment(fieldName)
                                             } }
+                                            readOnly={ readOnly }
                                         />
                                     );
                                 }) }
