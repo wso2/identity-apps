@@ -49,7 +49,12 @@ const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
 /**
  * Prop types for the text customization component.
  */
-export type CustomTextProps = IdentifiableComponentInterface;
+export interface CustomTextProps extends IdentifiableComponentInterface {
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
+}
 
 /**
  * Interface for tabs.
@@ -75,10 +80,6 @@ interface DisplayTabInterface extends IdentifiableComponentInterface {
      * Tab pane.
      */
     pane: ReactElement;
-    /**
-     * Is readonly.
-     */
-    readOnly?: boolean;
 }
 
 /**
