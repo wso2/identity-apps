@@ -67,6 +67,11 @@ interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInte
      * Callback to be called when the template delete requested
      */
     onDeleteRequested: () => void;
+
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
 }
 
 const FORM_ID: string = "email-customization-content-form";
@@ -89,6 +94,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
         onTemplateChanged,
         onSubmit,
         onDeleteRequested,
+        readOnly,
         ["data-componentid"]: componentId
     } = props;
 
@@ -131,6 +137,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                             subject: value
                                         });
                                     } }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -192,6 +199,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                             goFullScreen: t("common:goFullScreen")
                                         } }
                                         data-componentId={ `${ componentId }-email-body-editor` }
+                                        readOnly={ readOnly }
                                     />
                                 </div>
                             </Grid.Column>
@@ -221,21 +229,26 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                             footer: value
                                         });
                                     } }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Form>
 
-                <DangerZone
-                    data-componentid={ `${ componentId }-revert-email-provider-config` }
-                    actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
-                    header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
-                    subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
-                    isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
-                    buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
-                    onActionClick={ onDeleteRequested }
-                />
+                {
+                    !readOnly && (
+                        <DangerZone
+                            data-componentid={ `${ componentId }-revert-email-provider-config` }
+                            actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
+                            header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
+                            subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
+                            isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
+                            buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
+                            onActionClick={ onDeleteRequested }
+                        />
+                    )
+                }
             </>
         )
     );
