@@ -96,10 +96,10 @@ import {
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
-import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/secret-grey.svg";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as DarkModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
