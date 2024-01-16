@@ -38,6 +38,7 @@ export interface ApplicationBasicInterface {
     accessUrl?: string;
     clientId?: string;
     issuer?: string;
+    realm?: string;
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
