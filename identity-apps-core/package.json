@@ -14,6 +14,6 @@
     },
     "dependencies": {
         "@wso2is/theme": "^2.0.56",
-    "rimraf": "^3.0.2"
+        "rimraf": "^3.0.2"
     }
 }
