@@ -1,5 +1,15 @@
 # @wso2is/form
 
+## 2.0.28
+
+### Patch Changes
+
+- [#5209](https://github.com/wso2/identity-apps/pull/5209) [`13bcf269e1`](https://github.com/wso2/identity-apps/commit/13bcf269e10e6b9fe83a21011756474f2fca2ec9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix RBAC issues for admin roles
+
+- Updated dependencies [[`c9c2cc1996`](https://github.com/wso2/identity-apps/commit/c9c2cc19968d8985000fb310b98003a1b2934603)]:
+  - @wso2is/core@2.0.29
+  - @wso2is/react-components@2.0.37
+
 ## 2.0.27
 
 ### Patch Changes

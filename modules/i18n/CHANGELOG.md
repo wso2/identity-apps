@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.0.97
+
+### Patch Changes
+
+- [#5222](https://github.com/wso2/identity-apps/pull/5222) [`c9c2cc1996`](https://github.com/wso2/identity-apps/commit/c9c2cc19968d8985000fb310b98003a1b2934603) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix rbac issue with organization and api-resource permissions
+
+- Updated dependencies [[`c9c2cc1996`](https://github.com/wso2/identity-apps/commit/c9c2cc19968d8985000fb310b98003a1b2934603)]:
+  - @wso2is/core@2.0.29
+
 ## 2.0.96
 
 ### Patch Changes
