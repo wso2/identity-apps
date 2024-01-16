@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.10.75
+
+### Patch Changes
+
+- [#5212](https://github.com/wso2/identity-apps/pull/5212) [`7c2ce4bc27`](https://github.com/wso2/identity-apps/commit/7c2ce4bc27d8d40b2abcfffc62d55b0a0333be30) Thanks [@savindi7](https://github.com/savindi7)! - Fix responsive issue in Branding
+
+* [#5224](https://github.com/wso2/identity-apps/pull/5224) [`92a4caccbc`](https://github.com/wso2/identity-apps/commit/92a4caccbc6082fa92da85a250b835145800fdae) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix RBAC issues in user attribute view/edit permissions
+
+- [#5226](https://github.com/wso2/identity-apps/pull/5226) [`3725e7d930`](https://github.com/wso2/identity-apps/commit/3725e7d930b57f6471e511591cfc6a492d15850d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Remove permission validation logic from role creation
+
+* [#5230](https://github.com/wso2/identity-apps/pull/5230) [`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8) Thanks [@savindi7](https://github.com/savindi7)! - Add WS Fed logo to app template listing page
+
+- [#5228](https://github.com/wso2/identity-apps/pull/5228) [`a56b702904`](https://github.com/wso2/identity-apps/commit/a56b7029048943459a4b57e701410bb56429c0e2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Navigate based on tab id when strong auth tab navigation is set to true
+
+- Updated dependencies [[`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8)]:
+  - @wso2is/react-components@2.0.38
+  - @wso2is/theme@2.0.57
+  - @wso2is/common@2.0.23
+
 ## 2.10.74
 
 ### Patch Changes
