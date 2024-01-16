@@ -24,7 +24,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig } from "../../../extensions/configs/common";
 import useAuthorization from "../../authorization/hooks/use-authorization";
-import { OrganizationManagementConstants } from "../../organizations/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getAppViewRoutes } from "../configs/routes";
 import { AppConstants } from "../constants/app-constants";
@@ -114,8 +113,7 @@ const useRoutes = (): useRoutesInterface => {
                     } else {
                         if (window["AppUtils"].getConfig().organizationName) {
                             return [
-                                ...AppUtils.getHiddenRoutes(),
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                                ...AppUtils.getHiddenRoutes()
                             ];
                         } else {
                             return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
