@@ -128,14 +128,15 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
      * Update the iframe styles to achieve responsiveness.
      */
     const updateStyles = () => {
-        if (!brandingPreviewContainerRef) {
+
+        if (!brandingPreviewContainerRef?.current) {
             return;
         }
 
-        const parentHeight: number = brandingPreviewContainerRef.current.clientHeight;
-        const parentWidth: number = brandingPreviewContainerRef.current.clientWidth;
+        const parentHeight: number = brandingPreviewContainerRef?.current?.clientHeight;
+        const parentWidth: number = brandingPreviewContainerRef?.current?.clientWidth;
 
-        const nodeStyle: CSSStyleDeclaration = window.getComputedStyle(brandingPreviewContainerRef.current);
+        const nodeStyle: CSSStyleDeclaration = window?.getComputedStyle(brandingPreviewContainerRef?.current);
         const topPadding: string = nodeStyle.getPropertyValue("padding-top");
 
         const effectedHeight: number = parentHeight - parseInt(topPadding.substring(0, topPadding.length - 2));
