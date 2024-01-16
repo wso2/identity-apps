@@ -82,7 +82,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
 
         // Check if all scopes are selected from the api resource
         const isAllScopesSelected = (): boolean =>
-            apiResource?.scopes?.length === selectedPermissions?.length;
+            apiResource?.scopes?.length != 0 && apiResource?.scopes?.length === selectedPermissions?.length;
 
         /**
          * Handles the remove API resource action.
