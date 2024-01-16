@@ -458,7 +458,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                                             selectedPermission.apiResourceId === apiResource?.id
                                                     )?.scopes
                                                 }
-                                                hasError={ false }
                                                 errorMessage={ t("console:manage.features.roles.addRoleWizard." +
                                                     "forms.rolePermission.permissions.validation.empty") }
                                             />
