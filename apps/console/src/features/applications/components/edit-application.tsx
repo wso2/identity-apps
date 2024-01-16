@@ -246,8 +246,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                     inboundProtocolConfig?.oidc?.clientId,
                                     ApplicationTabTypes.GENERAL,
                                     GeneralApplicationSettingsTabPane(),
-                                    application.name,
-                                    application.id,
+                                    application?.name,
+                                    application?.id,
                                     tenantDomain
                                 )
                     });
@@ -274,7 +274,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isFragmentApp
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -290,8 +290,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                 inboundProtocolConfig?.oidc?.clientId,
                                 ApplicationTabTypes.USER_ATTRIBUTES,
                                 AttributeSettingTabPane(),
-                                application.name,
-                                application.id,
+                                application?.name,
+                                application?.id,
                                 tenantDomain
                             )
                 });
@@ -318,7 +318,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isFragmentApp
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
@@ -333,7 +333,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isFragmentApp
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -871,12 +871,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralApplicationSettings
-                accessUrl={ application.accessUrl }
-                appId={ application.id }
-                description={ application.description }
-                discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
-                imageUrl={ application.imageUrl }
-                name={ application.name }
+                accessUrl={ application?.accessUrl }
+                appId={ application?.id }
+                description={ application?.description }
+                discoverability={ application?.advancedConfigurations?.discoverableByEndUsers }
+                imageUrl={ application?.imageUrl }
+                name={ application?.name }
                 application = { application }
                 isLoading={ isLoading }
                 onDelete={ onDelete }
@@ -896,12 +896,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AccessConfiguration
                 application={ application }
                 allowedOriginList={ allowedOrigins }
-                certificate={ application.advancedConfigurations?.certificate }
+                certificate={ application?.advancedConfigurations?.certificate }
                 onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
                 onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
-                appId={ application.id }
-                appName={ application.name }
-                applicationTemplateId={ application.templateId }
+                appId={ application?.id }
+                appName={ application?.name }
+                applicationTemplateId={ application?.templateId }
                 extendedAccessConfig={ tabPaneExtensions !== undefined }
                 isLoading={ isLoading }
                 setIsLoading={ setIsLoading }
