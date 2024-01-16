@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -23,11 +24,11 @@ import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-comp
 import { ServerConfigurationsConstants } from "apps/console/src/features/server-configurations/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppConstants, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { getConnectorDetails, updateGovernanceConnector } from "../../server-configurations/api";
 import {
     ConnectorPropertyInterface,
@@ -93,9 +94,20 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isFormInitialized, setIsFormInitialized ] = useState<boolean>(false);
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     // TODO: Enable connector based on the feature flag.
     const isConnectorEnabled: boolean = true;
-    const readOnly: boolean = false;
+    const isReadOnly: boolean = useMemo(
+        () =>
+            !hasRequiredScopes(
+                featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
 
     /**
      * Load Attributes verification connector details on page load.
@@ -349,7 +361,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     }
                     defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION ] == true }
-                    readOnly={ readOnly }
+                    readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
                     data-componentid={ `${ componentId }-enable-auto-login` }
@@ -376,7 +388,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     labelPosition="top"
                     minLength={ 3 }
                     maxLength={ 100 }
-                    readOnly={ readOnly }
+                    readOnly={ isReadOnly }
                     initialValue={ formValues?.[
                         CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME ] }
                     data-componentId={ `${ componentId }-otp-length` }
@@ -410,7 +422,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     }
                     defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION ] == true }
-                    readOnly={ readOnly }
+                    readOnly={ isReadOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
                     data-componentid={ `${ componentId }-enable-auto-login` }
@@ -430,7 +442,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     disabled={ !isConnectorEnabled || isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
-                    hidden={ !isConnectorEnabled || readOnly }
+                    hidden={ !isConnectorEnabled || isReadOnly }
                 />
             </Form>
         );
