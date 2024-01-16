@@ -31,10 +31,9 @@ import { OrganizationType } from "@wso2is/common";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
+import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -62,8 +61,6 @@ import {
 } from "../../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
-import { getApplicationList } from "../../applications/api";
-import { ApplicationListInterface } from "../../applications/models";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
