@@ -19,12 +19,12 @@
 import { OrganizationType } from "@wso2is/common";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, FeatureConfigInterface } from "../../../../core";
+import { AppState } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { BasicRoleDetails } from "../../../../roles/components/edit-role/edit-role-basic";
 import { RoleConnectedApps } from "../../../../roles/components/edit-role/edit-role-connected-apps";
@@ -60,7 +60,8 @@ interface ConsoleRolesEditPropsInterface extends IdentifiableComponentInterface 
  *
  * @param props - contains role details to be edited.
  */
-const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (props: ConsoleRolesEditPropsInterface): ReactElement => {
+const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
+    props: ConsoleRolesEditPropsInterface): ReactElement => {
 
     const {
         isLoading,
@@ -72,7 +73,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (pro
     const { t } = useTranslation();
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
@@ -98,7 +100,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (pro
                         <BasicRoleDetails
                             isReadOnly={ isSubOrg || isAdminRole
                                 || !hasRequiredScopes(
-                                    featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                                    featureConfig, featureConfig?.scopes?.update, allowedScopes) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
@@ -125,7 +127,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (pro
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
                             isReadOnly={ !hasRequiredScopes(
-                                featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                                featureConfig, featureConfig?.scopes?.update, allowedScopes) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -139,7 +141,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (pro
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleUsersList
                             isReadOnly={ !hasRequiredScopes(
-                                featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                                featureConfig, featureConfig?.scopes?.update, allowedScopes) }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 3 }
@@ -155,7 +157,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (pro
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleConnectedApps
                                 isReadOnly={ !hasRequiredScopes(
-                                    featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                                    featureConfig, featureConfig?.scopes?.update, allowedScopes) }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 4 }

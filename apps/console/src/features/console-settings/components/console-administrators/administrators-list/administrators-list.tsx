@@ -324,7 +324,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             } }
             disableRightActionPanel={ true }
             topActionPanelExtension={ (
-                <Show when={ AccessControlConstants.USER_WRITE }>
+                <Show when={ [ AccessControlConstants.USER_WRITE, AccessControlConstants.ROLE_EDIT ] }>
                     { renderAdministratorAddOptions() }
                 </Show>
             ) }

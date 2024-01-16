@@ -220,7 +220,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
             emailDomainList.pop();
 
             return;
-        } 
+        }
 
         const isEmailDomainAvailable: boolean = await checkEmailDomainAvailability(emailDomainList[
             emailDomainList.length-1]);
@@ -314,7 +314,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             { ...params }
                                             margin="dense"
                                             error={ isEmailDomainDataError || isEmailDomainAvailableError }
-                                            helperText= { 
+                                            helperText= {
                                                 isEmailDomainDataError
                                                     ? t(
                                                         "console:manage.features.organizationDiscovery.edit.form." +

@@ -19,6 +19,7 @@
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     SBACInterface
 } from "@wso2is/core/models";
@@ -137,7 +138,6 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
         isLoading,
         onIsLoading,
         readOnlyUserStores,
-        featureConfig,
         onColumnSelectionChange,
         onListItemClick,
         onSearchQueryClear,
@@ -155,6 +155,9 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
     const [ deletingUser, setDeletingUser ] = useState<UserInviteInterface>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.users;
+    });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
@@ -247,10 +250,10 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                         ? user?.username?.split("/")[0]
                         : UserstoreConstants.PRIMARY_USER_STORE;
 
-                    return !isFeatureEnabled(featureConfig?.users,
+                    return !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                         || isPrivilegedUser
-                        || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                        || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
                         || readOnlyUserStores?.includes(userStore.toString())
                         || ((getUserNameWithoutDomain(user?.username) === serverConfigs?.realmConfig?.adminUser
                         || authenticatedUser?.includes(getUserNameWithoutDomain(user?.username))));

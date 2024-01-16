@@ -72,8 +72,8 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.server,
-        featureConfig?.server?.scopes?.update,
+        featureConfig?.governanceConnectors,
+        featureConfig?.governanceConnectors?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
@@ -372,23 +372,30 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                     }
                                                 </Grid>
                                             </Form>
-                                            <Divider hidden />
-                                            <Grid.Row columns={ 1 } className="mt-6">
-                                                <Grid.Column width={ 10 }>
-                                                    <PrimaryButton
-                                                        size="small"
-                                                        loading={ isSubmitting }
-                                                        disabled={ isReadOnly }
-                                                        onClick={ () => {
-                                                            formRef?.current?.triggerSubmit();
-                                                        } }
-                                                        ariaLabel="saml2 configuration form update button"
-                                                        data-componentid={ `${ componentId }-update-button` }
-                                                    >
-                                                        { t("common:update") }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
+                                            {
+                                                !isReadOnly && (
+                                                    <>
+                                                        <Divider hidden />
+                                                        <Grid.Row columns={ 1 } className="mt-6">
+                                                            <Grid.Column width={ 10 }>
+                                                                <PrimaryButton
+                                                                    size="small"
+                                                                    loading={ isSubmitting }
+                                                                    onClick={ () => {
+                                                                        formRef?.current?.triggerSubmit();
+                                                                    } }
+                                                                    ariaLabel="saml2 configuration form update button"
+                                                                    data-componentid={
+                                                                        `${ componentId }-update-button`
+                                                                    }
+                                                                >
+                                                                    { t("common:update") }
+                                                                </PrimaryButton>
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </>
+                                                )
+                                            }
                                         </>
                                     )
                                 }

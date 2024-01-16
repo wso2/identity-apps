@@ -97,26 +97,30 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         componentId: string,
         passwordExpiryEnabled: boolean,
         setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly: boolean = false
     ): ReactElement => {
         return generatePasswordExpiry(
             componentId,
             passwordExpiryEnabled,
             setPasswordExpiryEnabled,
-            t
+            t,
+            isReadOnly
         );
     },
     passwordHistoryCountComponent: (
         componentId: string,
         passwordHistoryEnabled: boolean,
         setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly: boolean = false
     ): ReactElement => {
         return generatePasswordHistoryCount(
             componentId,
             passwordHistoryEnabled,
             setPasswordHistoryEnabled,
-            t
+            t,
+            isReadOnly
         );
     },
     predefinedConnectorCategories: [

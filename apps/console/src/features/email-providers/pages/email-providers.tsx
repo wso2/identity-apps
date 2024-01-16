@@ -449,6 +449,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             } }
             action={
                 featureConfig.emailProviders?.enabled &&
+                hasRequiredScopes(featureConfig?.emailTemplates, featureConfig?.emailTemplates?.scopes?.read,
+                    allowedScopes) &&
                 (
                     <SecondaryButton
                         onClick={ goToEmailTemplates }
@@ -717,24 +719,31 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                     </Grid.Row>
                                                 </Grid>
                                             </Form>
-                                            <Divider hidden />
-                                            <Grid.Row columns={ 1 } className="mt-6">
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <PrimaryButton
-                                                        size="small"
-                                                        loading={ isSubmitting }
-                                                        disabled={ isReadOnly }
-                                                        onClick={ () => {
-                                                            formRef?.current?.triggerSubmit();
-                                                        } }
-                                                        ariaLabel="Email provider form update button"
-                                                        data-componentid={ `${ componentId }-update-button` }
-                                                    >
-                                                        { t("extensions:develop.emailProviders" +
-                                                                ".updateButton") }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
+                                            {
+                                                !isReadOnly && (
+                                                    <>
+                                                        <Divider hidden />
+                                                        <Grid.Row columns={ 1 } className="mt-6">
+                                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                                <PrimaryButton
+                                                                    size="small"
+                                                                    loading={ isSubmitting }
+                                                                    onClick={ () => {
+                                                                        formRef?.current?.triggerSubmit();
+                                                                    } }
+                                                                    ariaLabel="Email provider form update button"
+                                                                    data-componentid={
+                                                                        `${ componentId }-update-button`
+                                                                    }
+                                                                >
+                                                                    { t("extensions:develop.emailProviders" +
+                                                                            ".updateButton") }
+                                                                </PrimaryButton>
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </>
+                                                )
+                                            }
                                         </>
                                     )
                                 }
