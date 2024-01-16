@@ -471,10 +471,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         onClick={ () => {
                                                                             setUpdateMapIndex(mapIndex);
                                                                         } }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 ) }
                                                                 position="top center"
                                                                 content="Update"
+                                                                disabled={ readOnly }
                                                                 inverted
                                                             />
                                                         )
@@ -491,10 +493,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                             setEditKey(field.key);
                                                                             setEditValue(field.value);
                                                                         } }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 ) }
                                                                 position="top center"
                                                                 content="Edit"
+                                                                disabled={ readOnly }
                                                                 inverted
                                                             />
                                                         )
@@ -511,10 +515,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         onClick={ () => {
                                                                             setEditIndex(null);
                                                                         } }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 ) }
                                                                 position="top center"
                                                                 content="Cancel"
+                                                                disabled={ readOnly }
                                                                 inverted
                                                             />
                                                         )
@@ -538,10 +544,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         listen(Array.from(tempFields.values()));
                                                                     }
                                                                 } }
+                                                                disabled={ readOnly }
                                                             />
                                                         ) }
                                                         position="top center"
                                                         content="Delete"
+                                                        disabled={ readOnly }
                                                         inverted
                                                     />
                                                 </List.Item>

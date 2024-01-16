@@ -8284,7 +8284,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "සංවිධාන"
+                title: "සංවිධාන",
+                view: {
+                    description: "සංවිධානය බලන්න"
+                }
             },
             overview: {
                 widgets: {
