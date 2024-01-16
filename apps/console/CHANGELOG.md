@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.10.74
+
+### Patch Changes
+
+- [#5195](https://github.com/wso2/identity-apps/pull/5195) [`193fbdfae6`](https://github.com/wso2/identity-apps/commit/193fbdfae6632bed0d81cc4246b8cce9ffb8b786) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Hide inbound auth key in the applications list when there is multiple inbound authenticators for an app
+
+* [#5209](https://github.com/wso2/identity-apps/pull/5209) [`13bcf269e1`](https://github.com/wso2/identity-apps/commit/13bcf269e10e6b9fe83a21011756474f2fca2ec9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix RBAC issues for admin roles
+
+- [#5222](https://github.com/wso2/identity-apps/pull/5222) [`c9c2cc1996`](https://github.com/wso2/identity-apps/commit/c9c2cc19968d8985000fb310b98003a1b2934603) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix rbac issue with organization and api-resource permissions
+
+- Updated dependencies [[`13bcf269e1`](https://github.com/wso2/identity-apps/commit/13bcf269e10e6b9fe83a21011756474f2fca2ec9), [`c9c2cc1996`](https://github.com/wso2/identity-apps/commit/c9c2cc19968d8985000fb310b98003a1b2934603)]:
+  - @wso2is/form@2.0.28
+  - @wso2is/forms@2.0.14
+  - @wso2is/i18n@2.0.97
+  - @wso2is/core@2.0.29
+  - @wso2is/react-components@2.0.37
+
 ## 2.10.73
 
 ### Patch Changes
