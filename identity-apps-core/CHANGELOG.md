@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.120
+
+### Patch Changes
+
+- [#5236](https://github.com/wso2/identity-apps/pull/5236) [`19ce780ed2`](https://github.com/wso2/identity-apps/commit/19ce780ed2198798f517ea69b95ffa923426493d) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add error page for Duo
+
+* [#5146](https://github.com/wso2/identity-apps/pull/5146) [`95d84e333f`](https://github.com/wso2/identity-apps/commit/95d84e333fb11ed8ff8fb00a6dbd5e9203234040) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] Unmask OTP in Email OTP UI by default
+
 ## 2.0.119
 
 ### Patch Changes
