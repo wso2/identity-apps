@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { APIResourceCollectionResponseInterface } from "../models/console-roles";
-
 /**
  * Class containing constants related to Console roles onboarding.
  */
