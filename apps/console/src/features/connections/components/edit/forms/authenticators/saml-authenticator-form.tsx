@@ -215,6 +215,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         { key: 25, text: "Custom Authentication Context Class", value: "Custom Authentication Context Class" }
     ];
 
+    const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth";
+
     /**
      * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other
      * fields states. Basically, algorithms fields enable and disable states will be
@@ -235,7 +237,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         return {
             ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
-            AuthRedirectUrl: findPropVal<string>({ defaultValue: "", key: "AuthRedirectUrl" }),
+            AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
@@ -416,7 +418,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             <Field.Input
                 name="AuthRedirectUrl"
                 value={ formValues?.AuthRedirectUrl }
-                inputType="default"
+                inputType="copy_input"
                 placeholder={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.placeholder`) }
                 ariaLabel={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.ariaLabel`) }
                 data-testid={ `${ testId }-authorized-redirect-url` }
@@ -431,10 +433,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     productName: config.ui.productName
                 }) }
                 readOnly={ readOnly }
-                validate={ composeValidators(
-                    isUrl,
-                    hasLength(IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH)
-                ) }
             />
 
             <Field.Input
