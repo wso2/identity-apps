@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -11449,8 +11449,7 @@ export const console: ConsoleNS = {
                             alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                            emailVerificationDisabled: "To invite users to set the password, enable email verification from " +
-                                "Login & Registration settings.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
                             inviteOffline: "Invite offline",
                             inviteViaEmail: "Invite via email"
                         },

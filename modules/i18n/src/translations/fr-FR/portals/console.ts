@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -9715,8 +9715,7 @@ export const console: ConsoleNS = {
                                 "Fonction de nom d'utilisateur alphanumérique.",
                             emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
                                 "l'identifiant.",
-                            emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
-                                "Configuration d'un fournisseur de messagerie.",
+                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez la vérification par e-mail à partir des <1>paramètres de connexion et d'enregistrement</1>.",
                             inviteOffline: "Inviter hors ligne",
                             inviteViaEmail: "Inviter par e-mail"
                         },
