@@ -431,10 +431,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     productName: config.ui.productName
                 }) }
                 readOnly={ readOnly }
-                validate={ composeValidators(
-                    isUrl,
-                    hasLength(IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH)
-                ) }
             />
 
             <Field.Input
