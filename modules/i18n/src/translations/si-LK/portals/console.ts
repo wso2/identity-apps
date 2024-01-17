@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -9502,8 +9502,7 @@ export const console: ConsoleNS = {
                                 "අක්ෂර සංඛ්යා පරිශීලක නාම ලක්ෂණය.",
                             emailInvalid: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, කරුණාකර වලංගු විද්යුත් තැපැල් ලිපිනයක් භාවිතා කරන්න " +
                                 "පරිශීලක නාමය.",
-                            emailVerificationDisabled: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, විද්යුත් තැපෑල සත්යාපනය සක්රීය කරන්න විසින් " +
-                                "විද්යුත් තැපැල් සැපයුම්කරුවෙකු වින්යාස කිරීම.",
+                            emailVerificationDisabled: "මුරපදය සැකසීමට පරිශීලකයින්ට ආරාධනා කිරීම, <1>පිවිසුම් සහ ලියාපදිංචි සැකසුම්</1> වලින් විද්යුත් තැපැල් සත්යාපනය සක්රීය කරන්න.",
                             inviteOffline: "නොබැඳි ලෙස ආරාධනා කරන්න",
                             inviteViaEmail: "විද්යුත් තැපෑලෙන් ආරාධනා කරන්න"
                         },
