@@ -186,11 +186,15 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
         // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
         // current template is a new template or not
-        if (emailTemplateError.response.status === 404 && !isReadOnly) {
-            setIsTemplateNotAvailable(true);
-            setShowReplicatePreviousTemplateModal(true);
+        if (emailTemplateError.response.status === 404) {
+            if (!isReadOnly) {
+                setIsTemplateNotAvailable(true);
+                setShowReplicatePreviousTemplateModal(true);
 
-            return;
+                return;
+            } else {
+                setCurrentEmailTemplate(undefined);
+            }
         }
 
         if (emailTemplateError.response.data.description) {
