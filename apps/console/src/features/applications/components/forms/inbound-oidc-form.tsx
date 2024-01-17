@@ -2256,7 +2256,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        isValidateTokenBindingEnabled ? [ "validateTokenBinding" ] : []
+                                        isValidateTokenBindingEnabled() ? [ "validateTokenBinding" ] : []
                                     }
                                     children={ [
                                         {
