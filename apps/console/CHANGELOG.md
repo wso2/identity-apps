@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.78
+
+### Patch Changes
+
+- [#5241](https://github.com/wso2/identity-apps/pull/5241) [`60ea4b692f`](https://github.com/wso2/identity-apps/commit/60ea4b692f1d824046e56fb4e953be3986691082) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix `Validate token bindings` checkbox update issue
+
+* [#5231](https://github.com/wso2/identity-apps/pull/5231) [`6048ba0c6f`](https://github.com/wso2/identity-apps/commit/6048ba0c6f18a6b8cb08f87d679fb36392db19aa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix suborgs menu item being not visible in the side panel inside a suborg in legacy authz runtime
+
 ## 2.10.77
 
 ### Patch Changes
