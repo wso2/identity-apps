@@ -25,8 +25,10 @@ import { store } from "../../core";
 import useRequest,
 { RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { ServerConstants } from "../constants/server";
-import { 
-    AdminAdvisoryBannerConfigurationInterface, LogType, RemoteLogPublishingConfigurationInterface 
+import {
+    AdminAdvisoryBannerConfigurationInterface,
+    LogTypeEndpoint,
+    RemoteLogPublishingConfigurationInterface
 } from "../models/server";
 
 /**
@@ -35,10 +37,10 @@ import {
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
     httpRequest.bind(AsgardeoSPAClient.getInstance());
-    
+
 /**
  * Hook to get the admin advisory banner configurations.
- * 
+ *
  * @returns admin advisory banner configurations.
  */
 export const useAdminAdvisoryBannerConfigs = <Data = AdminAdvisoryBannerConfigurationInterface,
@@ -120,7 +122,7 @@ export const updateAdminAdvisoryBannerConfiguration = (
 
 /**
  * Hook to get the remote log publishing configurations.
- * 
+ *
  * @returns remote log publishing configurations.
  */
 export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigurationInterface[],
@@ -147,12 +149,12 @@ export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigur
 
 /**
  * Restore remote log publishing configurations.
- * 
+ *
  * @param logType - Log type.
  *
  * @returns a promise containing the response.
  */
-export const restoreRemoteLogPublishingConfigurationByLogType = (logType: LogType): Promise<AxiosResponse> => {
+export const restoreRemoteLogPublishingConfigurationByLogType = (logType: LogTypeEndpoint): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {

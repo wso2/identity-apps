@@ -28,7 +28,7 @@ import {
     useRemoteLogPublishingConfigs
 } from "../api/server";
 import { RemoteLoggingConfigForm } from "../components/remote-logging-config-form";
-import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
+import { LogType, LogTypeEndpoint, RemoteLogPublishingConfigurationInterface } from "../models/server";
 
 type RemoteLoggingPageInterface = IdentifiableComponentInterface;
 
@@ -85,7 +85,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         >
             <RemoteLoggingConfigForm
                 mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
-                logType={ LogType.AUDIT }
+                logType={ LogTypeEndpoint.AUDIT }
                 logConfig={ remoteLogPublishingConfigs?.find(
                     (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT
                 ) }
