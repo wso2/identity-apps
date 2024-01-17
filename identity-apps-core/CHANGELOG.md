@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.119
+
+### Patch Changes
+
+- [#5223](https://github.com/wso2/identity-apps/pull/5223) [`34d6d31b3f`](https://github.com/wso2/identity-apps/commit/34d6d31b3f5784584940b32f7380a5bbf8581d27) Thanks [@Avarjana](https://github.com/Avarjana)! - Remove unsupported special chars from username.
+
 ## 2.0.118
 
 ### Patch Changes
