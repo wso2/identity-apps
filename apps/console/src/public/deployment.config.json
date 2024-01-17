@@ -302,19 +302,19 @@
                 "enabled": true,
                 "scopes": {
                     "feature": [
-                        "console:applications"
+                        "console:branding"
                     ],
                     "update": [
-                        "internal_application_mgt_update"
+                        "internal_branding_preference_update"
                     ],
                     "delete": [
-                        "internal_application_mgt_update"
+                        "internal_branding_preference_update"
                     ],
                     "read": [
                         "internal_application_mgt_view"
                     ],
                     "create": [
-                        "internal_application_mgt_update"
+                        "internal_branding_preference_update"
                     ]
                 }
             },

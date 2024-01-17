@@ -372,7 +372,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText />
+            <CustomText readOnly={ readOnly } />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {
