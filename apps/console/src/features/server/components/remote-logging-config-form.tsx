@@ -42,10 +42,10 @@ import {
     restoreRemoteLogPublishingConfigurationByLogType,
     updateRemoteLogPublishingConfigurationByLogType
 } from "../api/server";
-import { LogTypeEndpoint, RemoteLogPublishingConfigurationInterface } from "../models/server";
+import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
 
 interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
-    logType: LogTypeEndpoint;
+    logType: LogType;
     logConfig: RemoteLogPublishingConfigurationInterface,
     mutateRemoteLoggingRequest: () => void;
 }

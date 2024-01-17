@@ -29,11 +29,6 @@ export enum LogType {
     CARBON = "CARBON"
 }
 
-export enum LogTypeEndpoint {
-    AUDIT = "audit",
-    CARBON = "carbon"
-}
-
 export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Destination to where the logs should be published.
@@ -50,7 +45,7 @@ export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Log type for which the configurations should be applied.
 	 */
-	logType: LogType.AUDIT | LogType.CARBON | LogTypeEndpoint.AUDIT | LogTypeEndpoint.CARBON,
+	logType: LogType.AUDIT | LogType.CARBON,
 	/**
 	 * Remote server username
 	 */
