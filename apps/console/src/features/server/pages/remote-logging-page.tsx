@@ -87,7 +87,8 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
                 mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
                 logType={ LogType.AUDIT }
                 logConfig={ remoteLogPublishingConfigs?.find(
-                    (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT
+                    (config: RemoteLogPublishingConfigurationInterface) =>
+                        config.logType.toLowerCase() === LogType.AUDIT.toString()
                 ) }
             />
         </PageLayout>
