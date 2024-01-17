@@ -1733,7 +1733,7 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
-                            useNumericChars: {
+                            useAlphanumericChars: {
                                 hint: string;
                                 label: string;
                                 validations: {

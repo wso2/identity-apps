@@ -3874,11 +3874,11 @@ export const console: ConsoleNS = {
                                     required: "Email OTP length is a required field."
                                 }
                             },
-                            useNumericChars: {
-                                hint: "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP",
+                            useAlphanumericChars: {
+                                hint: "Please check this checkbox to enable alphanumeric characters. Otherwise numeric characters will be used.",
+                                label: "Use alphanumeric characters for OTP",
                                 validations: {
-                                    required: "Use only numeric characters for OTP is a required field."
+                                    required: "Use alphanumeric characters for OTP is a required field."
                                 }
                             }
                         },
