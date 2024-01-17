@@ -150,7 +150,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     useEffect(() => {
         if (!isEmpty(profileInfo)) {
             if ((commonConfig.userProfilePage.showEmail && usernameConfig?.enableValidator === "true")
-                    || getUserNameWithoutDomain(profileInfo.get("userName")) != profileInfo.get("emails")) {
+                    || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
                 setShowEmail(true);
             } else {
                 setShowEmail(false);
