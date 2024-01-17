@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.77
+
+### Patch Changes
+
+- [#5233](https://github.com/wso2/identity-apps/pull/5233) [`ac032a8cc1`](https://github.com/wso2/identity-apps/commit/ac032a8cc131ea9ddf2df6b7a49d5f4d4ed7358f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change logo onclick based on getting-stated scope
+
 ## 2.10.76
 
 ### Patch Changes
