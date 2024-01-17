@@ -30,18 +30,19 @@ import useRequest, {
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
-import { 
-    ApplicationBasicInterface, 
-    ConnectedAppsInterface, 
-    ConnectionClaimsInterface, 
-    ConnectionGroupInterface, 
-    ConnectionInterface, 
-    ConnectionListResponseInterface, 
-    ConnectionRolesInterface, 
+import {
+    ApplicationBasicInterface,
+    ConnectedAppsInterface,
+    ConnectionClaimsInterface,
+    ConnectionGroupInterface,
+    ConnectionInterface,
+    ConnectionListResponseInterface,
+    ConnectionRolesInterface,
     ConnectionTemplateInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
+    ImplicitAssociaionConfigInterface,
     JITProvisioningResponseInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
@@ -63,7 +64,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 export const createConnection = (
     connection: ConnectionInterface
 ): Promise<AxiosResponse<ConnectionInterface>> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: connection,
         headers: {
@@ -73,7 +74,7 @@ export const createConnection = (
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if ((response.status !== 201)) {
@@ -93,6 +94,8 @@ export const createConnection = (
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
  * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ * @param shouldFetch - Should fetch from the network. If false, will return results from cache.
+ * @param expectEmpty - If true, will allow returning empty results.
  *
  * @returns Requested connections.
  */
@@ -101,9 +104,10 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     offset?: number,
     filter?: string,
     requiredAttributes?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    expectEmpty: boolean = false
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -126,10 +130,67 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     return {
         data,
         error: error,
-        isLoading: !error && !data,
+        isLoading: !expectEmpty && !error && !data,
         isValidating,
         mutate
     };
+};
+
+/**
+ * Function to get the connection list with limit and offset.
+ *
+ * @param limit - Maximum Limit of the connection List.
+ * @param offset - Offset for get to start.
+ * @param filter - Search filter.
+ * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ *
+ * @returns Requested connections.
+ * @throws IdentityAppsApiException.
+ */
+export const getConnections = (
+    limit?: number,
+    offset?: number,
+    filter?: string,
+    requiredAttributes?: string
+): Promise<ConnectionListResponseInterface> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset,
+            requiredAttributes
+        },
+        url: store?.getState()?.config?.endpoints?.identityProviders
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response?.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ConnectionManagementConstants.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response?.status,
+                    response?.request,
+                    response,
+                    response?.config);
+            }
+
+            return Promise.resolve(response?.data as ConnectionListResponseInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ConnectionManagementConstants.CONNECTIONS_FETCH_ERROR,
+                error?.stack,
+                error?.response?.data?.code,
+                error?.request,
+                error?.response,
+                error?.config);
+        });
 };
 
 /**
@@ -142,9 +203,9 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
 export const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error = RequestErrorInterface>(
     id?: string
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -169,15 +230,15 @@ export const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error
  * Hook to get connected apps of the connection.
  *
  * @param idpId - ID of the Connection.
- * 
+ *
  * @returns requested connected apps.
  */
 export const useGetConnectionConnectedApps = <Data = ConnectedAppsInterface, Error = RequestErrorInterface>(
     idpId: string
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -231,16 +292,16 @@ export const deleteConnection = (id: string): Promise<any> => {
  * Hook to get the connection template.
  *
  * @param templateId - Id value of the template.
- * 
+ *
  * @returns Requested connection template.
  */
 export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Error = RequestErrorInterface>(
     templateId: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
-    
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -275,7 +336,7 @@ export const useGetConnectionTemplates = <Data = any, Error = RequestErrorInterf
     offset?: number,
     filter?: string
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -309,7 +370,7 @@ export const useGetConnectionTemplates = <Data = any, Error = RequestErrorInterf
  * @param limit - Maximum Limit of the connection templates.
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
- * 
+ *
  * @returns Requested connections.
  */
 export const getConnectionTemplates = (
@@ -355,7 +416,7 @@ export const useGetConnectionMetaData = <Data = any, Error = RequestErrorInterfa
     extensionId?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -758,7 +819,7 @@ export const updateIdentityProviderDetails = (connection: ConnectionInterface): 
  * @returns A promise containing the response.
  */
 export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId: string): Promise<any> => {
-    
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -815,7 +876,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList - 
+ * @param authenticatorList -
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
@@ -986,6 +1047,47 @@ export const updateClaimsConfigs = (
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionManagementConstants.CONNECTION_CLAIMS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Update implicit association configuration of the specified IDP.
+ *
+ * @param idpId - ID of the Identity Provider.
+ * @param configs - implicit association configs.
+ * @returns A promise containing the response.
+ */
+export const updateImplicitAssociationConfig = (
+    idpId: string,
+    configs: ImplicitAssociaionConfigInterface
+): Promise<ConnectionInterface> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: configs,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/implicit-association"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update implicit association" +
+                " configs for identity provider: " + idpId));
+            }
+
+            return Promise.resolve(response.data as ConnectionInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ConnectionManagementConstants.CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,

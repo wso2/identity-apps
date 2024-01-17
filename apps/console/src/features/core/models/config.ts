@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import {
 import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
+import { ConsoleSettingsResourceEndpointsInterface } from "../../console-settings/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";
 import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";
@@ -61,6 +62,10 @@ export interface FeatureConfigInterface {
      */
     administrators?: FeatureAccessConfigInterface;
     /**
+     * Analytics feature.
+     */
+    analytics?: FeatureAccessConfigInterface;
+    /**
      * API resources feature.
      */
     apiResources?: FeatureAccessConfigInterface;
@@ -68,6 +73,10 @@ export interface FeatureConfigInterface {
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;
+    /**
+     * Application roles feature.
+     */
+    applicationRoles?: FeatureAccessConfigInterface;
     /**
      * Workflow approvals feature.
      */
@@ -88,6 +97,18 @@ export interface FeatureConfigInterface {
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
+    /**
+     * Getting started feature.
+     */
+    gettingStarted?: FeatureAccessConfigInterface;
+    /**
+     * SMS providers feature.
+     */
+    smsProviders?: FeatureAccessConfigInterface;
+    /**
+     * Notification channels feature.
+     */
+    notificationChannels?: FeatureAccessConfigInterface;
     /**
      * Email templates feature.
      */
@@ -117,6 +138,10 @@ export interface FeatureConfigInterface {
      */
     identityVerificationProviders?: FeatureAccessConfigInterface;
     /**
+     * Login and Registration feature.
+     */
+    loginAndRegistration?: FeatureAccessConfigInterface;
+    /**
      * OIDC Scope management feature.
      */
     oidcScopes?: FeatureAccessConfigInterface;
@@ -124,6 +149,10 @@ export interface FeatureConfigInterface {
      * Organization management feature.
      */
     organizations?: FeatureAccessConfigInterface;
+    /**
+     * Organization discovery feature.
+     */
+    organizationDiscovery?: FeatureAccessConfigInterface;
     /**
      * Organization role management feature.
      */
@@ -133,9 +162,21 @@ export interface FeatureConfigInterface {
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
     /**
+     * Resident IDP Config management feature.
+     */
+    server?: FeatureAccessConfigInterface;
+    /**
      * Role management feature.
      */
     roles?: FeatureAccessConfigInterface;
+    /**
+     * Saml2 Configurations feature.
+     */
+    saml2Configuration?: FeatureAccessConfigInterface;
+    /**
+     * Session management Configurations feature
+     */
+    sessionManagement?: FeatureAccessConfigInterface;
     /**
      * User store configurations feature.
      */
@@ -144,6 +185,10 @@ export interface FeatureConfigInterface {
      * User management feature.
      */
     users?: FeatureAccessConfigInterface;
+    /**
+     * User roles feature.
+     */
+    userRoles?: FeatureAccessConfigInterface;
     /**
      * Secret Management Feature UI Access Scopes.
      */
@@ -161,6 +206,14 @@ export interface FeatureConfigInterface {
      */
     insights?: FeatureAccessConfigInterface
     /**
+     * Diagnostic Logs feature.
+     */
+    diagnosticLogs?: FeatureAccessConfigInterface
+    /**
+     * Audit Logs feature.
+     */
+    auditLogs?: FeatureAccessConfigInterface
+    /**
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
@@ -168,6 +221,10 @@ export interface FeatureConfigInterface {
      * Bulk Import Feature
      */
     bulkUserImport?: FeatureAccessConfigInterface;
+    /**
+     * WS Federation Configurations feature
+     */
+    wsFedConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -295,6 +352,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMarketingConsentBannerEnabled: boolean;
     /**
+     * Whether a SAAS deployment or not.
+     */
+    isSAASDeployment: boolean;
+    /**
+     * Enable/Disable custom email template feature
+     */
+    enableCustomEmailTemplates: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
@@ -314,6 +379,17 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * Email templates
+     */
+    emailTemplates: {
+        defaultLogoUrl: string;
+        defaultWhiteLogoUrl: string;
+    };
+    /**
+     * is XACML connector enabled.
+     */
+    isXacmlConnectorEnabled?: boolean;
 }
 
 /**
@@ -378,7 +454,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
     JWTAuthenticationServiceEndpointsInterface,
-    BrandingPreferenceResourceEndpointsInterface {
+    BrandingPreferenceResourceEndpointsInterface,
+    ConsoleSettingsResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

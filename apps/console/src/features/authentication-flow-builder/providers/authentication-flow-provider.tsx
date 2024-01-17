@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { applicationConfig } from "apps/console/src/extensions";
@@ -38,6 +39,10 @@ import {
 } from "../../applications/models/application";
 import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "../../applications/utils/sign-in-method-utils";
+import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
+import { AuthenticatorMeta } from "../../connections/meta/authenticator-meta";
+import { ConnectionInterface } from "../../connections/models/connection";
+import { ConnectionsManagementUtils } from "../../connections/utils/connection-utils";
 import { AppState } from "../../core/store";
 import {
     IdentityProviderManagementConstants
@@ -81,6 +86,14 @@ export interface AuthenticationFlowProviderProps {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     */
+    isSystemApplication?: boolean;
+    /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
 }
 
 /**
@@ -90,7 +103,15 @@ export interface AuthenticationFlowProviderProps {
  * @returns Authentication flow provider.
  */
 const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowProviderProps>): ReactElement => {
-    const { application, authenticators, children, onUpdate, onAuthenticatorsRefetch } = props;
+    const {
+        application,
+        authenticators,
+        children,
+        isSystemApplication,
+        onUpdate,
+        onAuthenticatorsRefetch,
+        hiddenAuthenticators
+    } = props;
 
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
@@ -98,6 +119,9 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const { data: adaptiveAuthTemplates } = useGetAdaptiveAuthTemplates();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const { t } = useTranslation();
 
@@ -138,6 +162,13 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     }, []);
 
     /**
+     * When `application` state changes, update the `authenticationSequence`.
+     */
+    useEffect(() => {
+        setAuthenticationSequence(application?.authenticationSequence);
+    }, [ application ]);
+
+    /**
      * Separates out the different authenticators to their relevant categories.
      */
     useEffect(() => {
@@ -172,6 +203,15 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         });
 
         federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
+            authenticator.image = authenticator.defaultAuthenticator?.authenticatorId ===
+            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                ? AuthenticatorMeta.getAuthenticatorIcon(
+                    (authenticator as ConnectionInterface)
+                        .federatedAuthenticators?.defaultAuthenticatorId
+                            ?? authenticator.defaultAuthenticator?.authenticatorId)
+                : ConnectionsManagementUtils
+                    .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
+
             if (
                 ApplicationManagementConstants.SOCIAL_AUTHENTICATORS.includes(
                     authenticator.defaultAuthenticator.authenticatorId
@@ -213,7 +253,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     }, [ featureConfig ]);
 
     const isValidAuthenticationFlow: boolean = useMemo(() => {
-        const stepsHaveOptions: boolean = authenticationSequence.steps.every(
+        const stepsHaveOptions: boolean = authenticationSequence?.steps?.every(
             (step: AuthenticationStepInterface) => !isEmpty(step.options)
         );
 
@@ -321,16 +361,24 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             // TODO: setShowHandlerDisclaimerModal(true);
         }
 
+        const isFirstFactorAuth: boolean =
+            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isSecondFactorAuth: boolean =
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
+            authenticator.defaultAuthenticator.authenticatorId,
+            stepIndex,
+            steps
+        );
+
         // If the adding option is a second factor, and if the adding step is the first or there are no
         // first factor authenticators in previous steps, show a warning and stop adding the option.
         if (
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId) &&
-            (stepIndex === 0 ||
-                !SignInMethodUtils.isSecondFactorAdditionValid(
-                    authenticator.defaultAuthenticator.authenticatorId,
-                    stepIndex,
-                    steps
-                ))
+            isSecondFactorAuth
+            && (
+                (!isFirstFactorAuth && (stepIndex === 0 || !isValidSecondFactorAddition))
+                || (isFirstFactorAuth && stepIndex !== 0 && !isValidSecondFactorAddition)
+            )
         ) {
             dispatch(
                 addAlert({
@@ -350,6 +398,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         }
 
         if (
+            applicationConfig.signInMethod.authenticatorSelection.customAuthenticatorAdditionValidation &&
             !applicationConfig.signInMethod.authenticatorSelection.customAuthenticatorAdditionValidation(
                 authenticatorId,
                 stepIndex,
@@ -711,10 +760,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 authenticationSequence,
                 authenticators: filteredAuthenticators,
                 defaultAuthenticationSequence,
+                hiddenAuthenticators,
                 isAdaptiveAuthAvailable,
                 isAuthenticationSequenceDefault,
                 isConditionalAuthenticationEnabled,
                 isLegacyEditorEnabled,
+                isSystemApplication,
                 isValidAuthenticationFlow,
                 isVisualEditorEnabled,
                 onConditionalAuthenticationToggle: (enabled: boolean) => setIsConditionalAuthenticationEnabled(enabled),

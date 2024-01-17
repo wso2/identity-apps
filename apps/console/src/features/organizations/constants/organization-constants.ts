@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,20 +32,20 @@ export class OrganizationManagementConstants {
     /**
      * Super organization id as per alpha pack 2
      */
-    public static readonly ROOT_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
+    public static readonly SUPER_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
 
     /**
      * Super organization object.
      *
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
-        id: this.ROOT_ORGANIZATION_ID,
+        id: this.SUPER_ORGANIZATION_ID,
         name: "Super",
         ref: "",
         status: "ACTIVE"
     };
 
-    public static readonly ORGANIZATION_ROUTES: string = "organizations";
+    public static readonly ORGANIZATION_ROUTES: string[] = [ "organizations" ];
 
     /**
      * Sub Organization creation limit reached error.
@@ -63,7 +63,7 @@ export class OrganizationManagementConstants {
         "console:develop.features.suborganizations.notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
-    
+
 }
 
 export enum ORGANIZATION_TYPE {

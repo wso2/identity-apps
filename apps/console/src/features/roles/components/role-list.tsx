@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,67 +17,45 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { RoleConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
     LoadableComponentInterface,
     RoleListInterface,
-    RolesInterface,
-    TestableComponentInterface
+    RolesInterface
 } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
     DataTable,
-    DataTablePropsInterface,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import moment from "moment";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../core";
-import { APPLICATION_DOMAIN } from "../constants";
+import { RoleDeleteErrorConfirmation } from "./wizard/role-delete-error-confirmation";
+import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+import { AppConstants } from "../../core/constants/app-constants";
+import { history } from "../../core/helpers/history";
+import { AppState } from "../../core/store/index";
+import { RoleAudienceTypes, RoleConstants } from "../constants/role-constants";
 
-interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
-    /**
-     * Advanced Search component.
-     */
-    advancedSearch?: ReactNode;
-    /**
-     * Default list item limit.
-     */
-    defaultListItemLimit?: number;
-    /**
-     * Flag for Group list.
-     */
-    isGroup: boolean;
+interface RoleListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
      * Roles list.
      */
     roleList: RoleListInterface;
     /**
      * Role delete callback.
-     * @param {RolesInterface} role - Deleting role.
      */
     handleRoleDelete?: (role: RolesInterface) => void;
-    /**
-     * On list item select callback.
-     */
-    onListItemClick?: (event: SyntheticEvent, role: RolesInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -91,127 +69,77 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
      */
     searchQuery?: string;
     /**
-     * Enable selection styles.
+     * Is the current org a sub org.
      */
-    selection?: boolean;
-    /**
-     * Show/Hide header cells.
-     */
-    showHeader?: DataTablePropsInterface["showHeader"];
-    /**
-     * Show list item actions.
-     */
-    showListItemActions?: boolean;
-    /**
-     * Show/Hide meta content.
-     */
-    showMetaContent?: boolean;
-    /**
-     * Show/Hide role type label.
-     */
-    showRoleType?: boolean;
+    isSubOrg?: boolean;
 }
 
 /**
  * List component for Role Management list
  *
- * @param props contains the role list as a prop to populate
+ * @param props - contains the role list as a prop to populate
  */
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
 
     const {
-        advancedSearch,
-        defaultListItemLimit,
         handleRoleDelete,
-        isLoading,
+        isSubOrg,
         onEmptyListPlaceholderActionClick,
-        onListItemClick,
         onSearchQueryClear,
         roleList,
-        selection,
         searchQuery,
-        showListItemActions,
-        showMetaContent,
-        showHeader,
-        showRoleType,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles);
+
+    const isReadOnly: boolean = useMemo(() => {
+        return !isFeatureEnabled(featureConfig,
+            RoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
+            !hasRequiredScopes(featureConfig,
+                featureConfig?.scopes?.update, allowedScopes);
+    }, [ featureConfig, allowedScopes ]);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
+    const [ showDeleteErrorConnectedAppsModal, setShowDeleteErrorConnectedAppsModal ] = useState<boolean>(false);
 
     const handleRoleEdit = (roleId: string) => {
         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
     };
 
     /**
-     * Util method to generate listing header content.
+     * Function to handle role deletion button click.
+     * If the role is in Application audience type, Info Modal will be shown
+     * to inform the user that the role is connected to applications.
      *
-     * @param displayName - display name of the role/group
-     *
-     * @returns - React element if containing a prefix or the string
+     * @param role - Role to be deleted.
      */
-    const generateHeaderContent = (displayName: string): ReactElement | string => {
-
-        if (displayName.includes(APPLICATION_DOMAIN)) {
-
-            // Show only the role name.
-            if (!showRoleType) {
-                return displayName.split("/")[ 1 ];
-            }
-
-            // Show role name with type label.
-            return (
-                <>
-                    <Label
-                        data-testid={ `${ testId }-role-${ displayName.split("/")[ 1 ] }-label` }
-                        content={ "Application" }
-                        size="mini"
-                        className={ "application-label" }
-                    />
-                    { "/ " + displayName.split("/")[ 1 ] }
-                </>
-            );
+    const onRoleDeleteClicked = (role: RolesInterface) => {
+        setCurrentDeletedRole(role);
+        if (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION) {
+            setShowDeleteErrorConnectedAppsModal(true);
+        } else {
+            setShowDeleteConfirmationModal(true);
         }
-
-        // Show only the role name.
-        if (!showRoleType) {
-            return displayName;
-        }
-
-        // Show role name with type label.
-        return (
-            <>
-                <Label
-                    data-testid={ `${ testId }-role-${ displayName }-label` }
-                    content={ "Internal" }
-                    size="mini"
-                    className={ "internal-label" }
-                />
-                { "/ " + displayName }
-            </>
-        );
     };
 
     /**
      * Shows list placeholders.
-     *
-     * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery && roleList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    data-testid={ `${ testId }-search-empty-placeholder` }
+                    data-componentid={ `${ componentId }-search-empty-placeholder` }
                     action={ (
                         <LinkButton
-                            data-testid={ `${ testId }-search-empty-placeholder-clear-button` }
+                            data-componentid={ `${ componentId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
                             { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
@@ -232,11 +160,11 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         if (roleList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
-                    data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                    action={ (
+                    data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
+                    action={ !isSubOrg && (
                         <Show when={ AccessControlConstants.ROLE_WRITE }>
                             <PrimaryButton
-                                data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
+                                data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
                                 <Icon name="add"/>
@@ -247,16 +175,22 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
+                    title={ !isSubOrg && t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }
-                    subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                            { type: "roles" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
-                            { type: "role" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
-                            { type: "role" })
-                    ] }
+                    subtitle={ isSubOrg
+                        ? [
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                { type: "roles" })
+                        ]
+                        : [
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                { type: "roles" }),
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                                { type: "role" }),
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                                { type: "role" })
+                        ]
+                    }
                 />
             );
         }
@@ -266,8 +200,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     /**
      * Resolves data table columns.
-     *
-     * @return {TableColumnInterface[]}
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -281,22 +213,22 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         image
                         as="h6"
                         className="header-with-icon"
-                        data-testid={ `${ testId }-item-heading` }
+                        data-componentid={ `${ componentId }-item-heading` }
                     >
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
                                     name={ role?.displayName[ 0 ] }
                                     size="mini"
-                                    data-testid={ `${ testId }-item-image-inner` }
+                                    data-componentid={ `${ componentId }-item-image-inner` }
                                 />
                             ) }
                             size="mini"
                             spaced="right"
-                            data-testid={ `${ testId }-item-image` }
+                            data-componentid={ `${ componentId }-item-image` }
                         />
                         <Header.Content>
-                            { generateHeaderContent(role?.displayName) }
+                            { role?.displayName }
                         </Header.Content>
                     </Header>
                 ),
@@ -304,19 +236,26 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             },
             {
                 allowToggleVisibility: false,
-                dataIndex: "lastModified",
-                hidden: !showMetaContent,
-                id: "lastModified",
-                key: "lastModified",
-                render: (role: RolesInterface) => {
-                    const now = moment(new Date());
-                    const receivedDate = moment(role?.meta?.created);
-
-                    return t("console:common.dateTime.humanizedDateString", {
-                        date: moment.duration(now.diff(receivedDate)).humanize()
-                    });
-                },
-                title: t("console:manage.features.roles.list.columns.lastModified")
+                dataIndex: "audience",
+                id: "audience",
+                key: "audience",
+                render: (role: RolesInterface) => (
+                    role?.audience && (
+                        <Label size="mini">
+                            { role.audience.type }
+                            {
+                                role.audience.type.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                    ? ` | ${role.audience.display} `
+                                    : ""
+                            }
+                        </Label>
+                    )
+                ),
+                title: (
+                    <div className="pl-3">
+                        { t("console:manage.features.roles.list.columns.audience") }
+                    </div>
+                )
             },
             {
                 allowToggleVisibility: false,
@@ -331,38 +270,31 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     /**
      * Resolves data table actions.
-     *
-     * @return {TableActionsInterface[]}
      */
     const resolveTableActions = (): TableActionsInterface[] => {
-        if (!showListItemActions) {
-            return;
-        }
-
         return [
             {
                 icon: (): SemanticICONS =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    !isReadOnly
                         ? "pencil alternate"
                         : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
-                        && handleRoleEdit(role?.id),
+                    !isReadOnly && handleRoleEdit(role?.id),
                 popupText: (): string =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
-                        ? t("console:manage.features.roles.list.popups.edit",
-                            { type: "Role" })
+                    !isReadOnly
+                        ? t("common:edit")
                         : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP)
-                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
+                hidden: () => isSubOrg
+                    || !isFeatureEnabled(featureConfig,
+                        RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
+                    || !hasRequiredScopes(featureConfig,
+                        featureConfig?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
-                    setCurrentDeletedRole(role);
-                    setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                    onRoleDeleteClicked(role);
                 },
                 popupText: (): string => t("console:manage.features.roles.list.popups.delete",
                     { type: "Role" }),
@@ -374,39 +306,29 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     return (
         <>
             <DataTable<RolesInterface>
-                className="roles-list"
-                externalSearch={ advancedSearch }
-                isLoading={ isLoading }
-                loadingStateOptions={ {
-                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                    imageType: "square"
-                } }
+                loadingStateOptions={ { imageType: "square" } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ roleList?.Resources }
                 onRowClick={
                     (e: SyntheticEvent, role: RolesInterface): void => {
                         handleRoleEdit(role?.id);
-                        onListItemClick(e, role);
                     }
                 }
                 placeholders={ showPlaceholders() }
-                selectable={ selection }
-                showHeader={ showHeader }
-                transparent={ !isLoading && (showPlaceholders() !== null) }
-                data-testid={ testId }
+                data-componentid={ componentId }
             />
             {
                 showRoleDeleteConfirmation && (
                     <ConfirmationModal
-                        data-testid={ `${ testId }-delete-item-confirmation-modal` }
+                        data-componentid={ `${ componentId }-delete-item-confirmation-modal` }
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showRoleDeleteConfirmation }
                         assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => {
                             handleRoleDelete(currentDeletedRole);
@@ -428,6 +350,19 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     </ConfirmationModal>
                 )
             }
+            {
+                showDeleteErrorConnectedAppsModal && (
+                    <RoleDeleteErrorConfirmation
+                        isOpen={ showDeleteErrorConnectedAppsModal }
+                        onClose={ (): void => {
+                            setShowDeleteErrorConnectedAppsModal(false);
+                            setCurrentDeletedRole(undefined);
+                        } }
+                        selectedRole={ currentDeletedRole }
+                        data-componentid={ `${ componentId }-role-delete-error-confirmation-modal` }
+                    />
+                )
+            }
         </>
     );
 };
@@ -436,9 +371,5 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
  * Default props for the component.
  */
 RoleList.defaultProps = {
-    selection: true,
-    showHeader: false,
-    showListItemActions: true,
-    showMetaContent: true,
-    showRoleType: false
+    "data-componentid": "role-mgt-roles-list"
 };

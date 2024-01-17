@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,16 +36,23 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import { AuthenticatorManagementConstants } from "../../../../connections";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
-import { 
+import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
+import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../identity-providers/models/identity-provider";
 import { OrganizationType } from "../../../../organizations/constants";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "../../../../server-configurations/models/governance-connectors";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -56,6 +63,7 @@ import {
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
+import "./sign-in-method-customization.scss";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -67,6 +75,14 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * ID of the application.
      */
     appId: string;
+    /**
+     * Name of the application.
+     */
+    applicationName?: string;
+    /**
+     * Whether the application is shared between organizations or not.
+     */
+    isApplicationShared: boolean;
     /**
      * All authenticators in the system.
      */
@@ -115,6 +131,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const {
         appId,
+        applicationName,
         authenticators,
         authenticationSequence,
         clientId,
@@ -124,26 +141,33 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onReset,
         onUpdate,
         readOnly,
+        isApplicationShared,
         [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
+
     const { getLink } = useDocumentation();
+
     const dispatch: Dispatch = useDispatch();
+
+    const { isSystemApplication } = useAuthenticationFlow();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
 
-    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(undefined);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
     const [ steps, setSteps ] = useState<number>(1);
-    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
+    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(false);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
     const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
+    const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
+        useState<boolean>(false);
 
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
@@ -151,7 +175,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
+
     useEffect(() => {
 
         const FEDERATED_CONNECTIONS: number = 1;
@@ -190,7 +214,25 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      * Fetch data on component load
      */
     useEffect(() => {
+        if (readOnly) return;
+
         fetchRequestPathAuthenticators();
+    }, []);
+
+    useEffect(() => {
+        if (readOnly) return;
+
+        getMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+            .then((response: GovernanceConnectorInterface) => {
+                const properties: ConnectorPropertyInterface[] = response?.properties;
+                const passkeyProgressiveEnrollmentProperty: ConnectorPropertyInterface | undefined =
+                    properties?.find((property: ConnectorPropertyInterface) =>
+                        property.name === "FIDO.EnablePasskeyProgressiveEnrollment");
+                const isPasskeyProgressiveEnrollmentEnabled: boolean =
+                    passkeyProgressiveEnrollmentProperty?.value === "true";
+
+                setIsPasskeyProgressiveEnrollmentEnabled(isPasskeyProgressiveEnrollmentEnabled);
+            });
     }, []);
 
     /**
@@ -202,6 +244,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             return;
         }
 
+        setSequence(authenticationSequence);
         setSteps(authenticationSequence.steps.length);
     }, [ authenticationSequence ]);
 
@@ -288,6 +331,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     script: adaptiveScript
                 }
             };
+        }
+
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            requestBody.name = applicationName;
         }
 
         setIsLoading(true);
@@ -426,7 +475,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish(
-                "application-sign-in-method-click-update-button", 
+                "application-sign-in-method-click-update-button",
                 { "client-id": clientId, type: eventPublisherProperties }
             );
         });
@@ -630,6 +679,122 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         );
     };
 
+    const renderPasskeyWarnMessages = (): ReactElement => {
+        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps.some(
+            (step: AuthenticationStepInterface) =>
+                !!step?.options.find(
+                    (authenticator: AuthenticatorInterface) =>
+                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                )
+        );
+
+        if (isPasskeyIncludedInAnyStep) {
+            if (isPasskeyProgressiveEnrollmentEnabled) {
+                const isPasskeyIncludedAsAFirstFatorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
+                    (authenticator: AuthenticatorInterface) =>
+                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                );
+
+                if (isPasskeyIncludedAsAFirstFatorOption) {
+                    return (
+                        <Message
+                            type="info"
+                            content={
+                                (
+                                    <>
+                                        { t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.passkey.info.progressiveEnrollmentEnabled") }
+                                        <p>
+                                            <Trans
+                                                i18nKey={
+                                                    t("console:develop.features.applications.edit.sections" +
+                                                    ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
+                                                    "info.passkeyAsFirstStepWhenprogressiveEnrollmentEnabled")
+                                                }
+                                            >
+                                                <strong>Note : </strong> For on-the-fly user enrollment with passkeys,
+                                                use the <strong>Passkeys Progressive Enrollment</strong> template in
+                                                <strong> Conditional Authentication</strong> section.
+                                            </Trans>
+                                            <DocumentationLink
+                                                link={
+                                                    getLink("develop.applications.editApplication.signInMethod.fido")
+                                                }
+                                                showEmptyLink={ false }
+                                            >
+                                                { t("common:learnMore") }
+                                            </DocumentationLink>
+                                        </p>
+                                    </>
+                                )
+                            }
+                        />
+                    );
+                } else {
+                    return (
+                        <Message
+                            type="info"
+                            content={
+                                (<>
+                                    {
+                                        t("console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder." +
+                                        "types.passkey.info.progressiveEnrollmentEnabled")
+                                    }
+                                    <p>
+                                        <Trans
+                                            i18nKey={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
+                                                "info.passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled")
+                                            }
+                                        >
+                                            Users can enroll passkeys on-the-fly. If users wish to enroll multiple
+                                            passkeys they should do so via <strong>My Account</strong>.
+                                        </Trans>
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                            showEmptyLink={ false }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
+                                    </p>
+                                </>)
+                            }
+                        />
+                    );
+                }
+            } else {
+                return (
+                    <Message
+                        type="info"
+                        content={
+                            (<>
+                                <Trans
+                                    i18nKey={
+                                        t("console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder." +
+                                        "types.passkey.info.progressiveEnrollmentDisabled")
+                                    }
+                                >
+                                Passkey progressive enrollment is disabled. Users must enroll
+                                their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                                </Trans>
+                                <DocumentationLink
+                                    link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                    showEmptyLink={ false }
+                                >
+                                    { t("common:learnMore") }
+                                </DocumentationLink>
+                            </>)
+                        }
+                    />
+                );
+            }
+        }
+    };
+
     return (
         <div>
             <div>
@@ -649,7 +814,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 className="pr-0"
                                 onClick={ () => {
                                     eventPublisher.publish(
-                                        "application-revert-sign-in-method-default", 
+                                        "application-revert-sign-in-method-default",
                                         { "client-id": clientId }
                                     );
                                     handleSequenceUpdate(null, true);
@@ -676,41 +841,13 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             </div>
             <Divider hidden />
-            {
-                authenticationSequence.steps[ 0 ].options.find((authenticator: AuthenticatorInterface) =>
-                    authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR)
-                && (
-                    <Message
-                        type="warning"
-                        content={
-                            (<>
-                                <Trans
-                                    i18nKey={
-                                        t("console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.landing.flowBuilder." +
-                                            "types.usernameless.info")
-                                    }
-                                >
-                                    To sign in with passwordless login, your users
-                                    should have their FIDO2 security keys or biometrics
-                                    registered via My Account.
-                                </Trans>
-                                <DocumentationLink
-                                    link={ getLink("develop.applications.editApplication.signInMethod.fido") }
-                                    showEmptyLink={ false }
-                                >
-                                    { t("common:learnMore") }
-                                </DocumentationLink>
-                            </>)
-                        }
-                    />
-                )
-            }
+            { renderPasskeyWarnMessages() }
             { !validationResult?.conflicting && smsValidationResult?.conflicting && smsValidationResult?.idpList.length
                 ? SMSOTPConflictMessage()
                 : null
             }
             <StepBasedFlow
+                isApplicationShared={ isApplicationShared }
                 authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
@@ -748,9 +885,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 )
             }
             {
-                (config?.ui?.isRequestPathAuthenticationEnabled === false)
-                    ? null
-                    : requestPathAuthenticators && showRequestPathAuthenticators
+                (config?.ui?.legacyMode?.applicationRequestPathAuthentication && requestPathAuthenticators)
+                    ? showRequestPathAuthenticators
+                    : null
             }
             { renderUpdateButton() }
         </div>

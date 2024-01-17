@@ -19,6 +19,8 @@
 export * from "./adapters/__DEPRECATED__adapters";
 export * from "./adapters/text-field-adapter";
 export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
+export { default as SelectFieldAdapter } from "./adapters/select-field-adapter";
+export { default as AutocompleteFieldAdapter } from "./adapters/autocomplete-field-adapter";
 export * from "./adapters/url-field-adapter";
 export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
 export * from "./adapters/checkbox-field-adapter";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -55,7 +55,7 @@ export enum AlertLevels {
 
 /**
  * Interface for the runtime config.
- * 
+ *
  * TODO: Remove this and use the ones passed from portals.
  * @deprecated Maintain this on the app side.
  */
@@ -92,7 +92,7 @@ export interface RuntimeConfigInterface {
 
 /**
  * Common interface to extend testable components.
- * 
+ *
  * @deprecated Use IdentifiableComponentInterface instead.
  */
 export interface TestableComponentInterface {
@@ -208,4 +208,20 @@ export interface SVGRLoadedInterface {
      * Image as Data URL.
      */
     default: string;
+}
+
+export interface LegacyModeInterface {
+    apiResources: boolean;
+    applicationListSystemApps: boolean;
+    applicationOIDCSubjectIdentifier: boolean;
+    applicationRequestPathAuthentication: boolean;
+    applicationSystemAppsSettings: boolean;
+    approvals: boolean;
+    certificates: boolean;
+    loginAndRegistrationEmailDomainDiscovery: boolean;
+    organizations: boolean;
+    rolesV1: boolean;
+    roleMapping: boolean;
+    secretsManagement: boolean;
+    saasApplications: boolean;
 }

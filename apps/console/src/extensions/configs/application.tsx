@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -33,11 +32,11 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
-import { Dispatch } from "redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
-import { ApplicationConfig } from "./models";
+import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { APIAuthorization } from "../../features/applications/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -51,11 +50,15 @@ import {
     additionalSpProperty
 } from "../../features/applications/models";
 import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
-import { EventPublisher } from "../../features/core";
+import { EventPublisher, FeatureConfigInterface } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
-import {
-    IdentityProviderManagementConstants
-} from "../../features/identity-providers/constants/identity-provider-management-constants";
+import { ApplicationRoles } from "../../features/roles/components/application-roles";
+import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
+import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
+import SamlWebAppTemplate
+    from "../application-templates/templates/saml-web-application/saml-web-application.json";
+import SinglePageAppTemplate from
+    "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 import { UsersConstants } from "../components/users/constants";
@@ -71,6 +74,13 @@ function isClaimInterface(
 }
 
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
+
+// Relative tab indexes.
+const API_AUTHORIZATION_INDEX: number = 4;
+const APPLICATION_ROLES_INDEX: number = 4;
+const M2M_API_AUTHORIZATION_INDEX: number = 2;
+
+const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -90,8 +100,10 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
+        showDefaultMyAccountApplicationEditPage: true,
         showEnableAuthorization: true,
         showMyAccount: true,
+        showMyAccountStatus: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
@@ -123,7 +135,11 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.DEVICE_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
             ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER
+            ApplicationManagementConstants.JWT_BEARER,
+            ApplicationManagementConstants.IWA_NTLM
+        ],
+        [ "m2m-application" ]: [
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -140,10 +156,11 @@ export const applicationConfig: ApplicationConfig = {
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
+            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,
-            showUseMappedLocalSubject: true
+            showValidateLinkedLocalAccount: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -161,7 +178,11 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: [ SupportedAuthProtocolTypes.OAUTH2_OIDC, SupportedAuthProtocolTypes.SAML ],
+        allowedProtocolTypes: [
+            SupportedAuthProtocolTypes.OAUTH2_OIDC,
+            SupportedAuthProtocolTypes.SAML,
+            SupportedAuthProtocolTypes.WS_FEDERATION
+        ],
         defaultTabIndex: 1
     },
     editApplication: {
@@ -341,19 +362,102 @@ export const applicationConfig: ApplicationConfig = {
         },
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
-            tenantDomain: string,
-            templateId: string,
-            customApplicationTemplateId: string
+            tenantDomain: string
         ): number => {
             if (clientId === getTryItClientId(tenantDomain)) {
-                return 2; // For Asgardeo Try It App
-            } else if (templateId === customApplicationTemplateId) {
-                return 3; // For other apps built on Custom Application Templates
+                return ApplicationManagementConstants.TRY_IT_SIGNIN_TAB; // For Asgardeo Try It App
             } else {
-                return 4; // Anything else
+                return ApplicationManagementConstants.APPLICATION_SIGNIN_TAB; // For other applications
             }
         },
-        getTabExtensions: (): ResourceTabPaneInterface[] => [],
+        getTabExtensions: (
+            props: Record<string, unknown>,
+            features: FeatureConfigInterface,
+            isReadOnly: boolean
+        ): ResourceTabPaneInterface[] => {
+            const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
+            const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
+            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
+
+            const application: ApplicationInterface = props?.application as ApplicationInterface;
+
+            const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
+
+            const tabExtensions: ResourceTabPaneInterface[] = [];
+
+            const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+
+            // Enable the API authorization tab for supported templates when the api resources config is enabled.
+            if (
+                apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
+                legacyMode?.apiResources &&
+                (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                )
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+            ) {
+                tabExtensions.push(
+                    {
+                        componentId: "api-authorization",
+                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
+                            : API_AUTHORIZATION_INDEX + tabExtensions.length,
+                        menuItem: I18n.instance.t(
+                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                        ),
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation>
+                                <APIAuthorization
+                                    templateId={ application?.templateId }
+                                    readOnly={ isReadOnly }
+                                />
+                            </ResourceTab.Pane>
+                        )
+                    }
+                );
+            }
+
+            // Enable the roles tab for supported templates when the api resources config is enabled.
+            if (apiResourceFeatureEnabled
+                && applicationRolesFeatureEnabled
+                && !legacyMode?.rolesV1
+                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
+                    applicationRoles?.enabled)
+                && (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === SamlWebAppTemplate?.id
+                )
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+            ) {
+                tabExtensions.push(
+                    {
+                        componentId: "application-roles",
+                        index: APPLICATION_ROLES_INDEX + tabExtensions.length,
+                        menuItem: I18n.instance.t(
+                            "extensions:develop.applications.edit.sections.roles.heading"
+                        ),
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation>
+                                <ApplicationRoles
+                                    onUpdate={ onApplicationUpdate }
+                                    readOnly={ isReadOnly }
+                                />
+                            </ResourceTab.Pane>
+                        )
+                    }
+                );
+            }
+
+            return tabExtensions;
+        },
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface): boolean => {
             // Restrict modifying configurations for Enterprise IDP Login Applications.
             let isEnterpriseLoginMgt: string;
@@ -380,6 +484,7 @@ export const applicationConfig: ApplicationConfig = {
             if(clientId === getTryItClientId(tenantDomain)) {
                 if(tabType === ApplicationTabTypes.PROVISIONING
                     || tabType === ApplicationTabTypes.INFO
+                    || tabType === ApplicationTabTypes.ROLES
                     || tabType === ApplicationTabTypes.PROTOCOL){
                     return false;
                 }
@@ -450,7 +555,7 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     excludeIdentityClaims: true,
-    excludeSubjectClaim: true,
+    excludeSubjectClaim: false,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
             let isEnterpriseLoginMgt: string;
@@ -510,40 +615,86 @@ export const applicationConfig: ApplicationConfig = {
         getBannerComponent: (): ReactElement =>
             !window[ "AppUtils" ].getConfig().organizationName && <MarketingConsentModalWrapper />
     },
+    quickstart: {
+        oidcWeb: {
+            dotNet: {
+                readme: "",
+                sample: {
+                    artifact: "",
+                    repository: ""
+                }
+            },
+            tomcatOIDCAgent: {
+                catalog: "",
+                integrate: {
+                    defaultCallbackContext: ""
+                },
+                readme: "",
+                sample: {
+                    artifact: "",
+                    home: "",
+                    repository: "",
+                    sigInRedirectURL: ""
+                }
+            }
+        },
+        samlWeb: {
+            tomcatSAMLAgent: {
+                catalog: "",
+                readme: "",
+                sample: {
+                    acsURLSuffix: "",
+                    artifact: "",
+                    home: "",
+                    repository: ""
+                }
+            }
+        },
+        spa: {
+            javascript: {
+                apis: "",
+                artifact: "",
+                cdn: "",
+                npmInstallCommand: "",
+                readme: "",
+                repository: "",
+                samples: {
+                    javascript: {
+                        artifact: "",
+                        repository: ""
+                    },
+                    react: {
+                        artifact: "",
+                        repository: ""
+                    },
+                    root: ""
+                }
+            },
+            react: {
+                links: {
+                    authClientConfig: "",
+                    secureRoute: "",
+                    useContextDocumentation: ""
+                },
+                npmInstallCommand: "",
+                readme: "",
+                repository: "",
+                samples: {
+                    basicUsage: {
+                        artifact:"",
+                        repository: ""
+                    },
+                    root: "",
+                    routing: {
+                        artifact: "",
+                        repository: ""
+                    }
+                }
+            }
+        }
+    },
     signInMethod: {
         authenticatorSelection: {
-            customAuthenticatorAdditionValidation: (
-                authenticatorID: string,
-                stepIndex: number,
-                dispatch: Dispatch
-            ): boolean => {
-                // Prevent FIDO2 from being added as a second factor
-                if (
-                    [
-                        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-                        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
-                    ].includes(authenticatorID)
-                    && stepIndex > 0
-                ) {
-                    dispatch(
-                        addAlert({
-                            description: I18n.instance.t(
-                                "console:develop.features.applications.notifications." +
-                                "firstFactorAuthenticatorToSecondStep.genericError.description"
-                            ),
-                            level: AlertLevels.WARNING,
-                            message: I18n.instance.t(
-                                "console:develop.features.applications.notifications." +
-                                "firstFactorAuthenticatorToSecondStep.genericError.message"
-                            )
-                        })
-                    );
-
-                    return false;
-                }
-
-                return true;
-            },
             messages: {
                 secondFactorDisabled: (
                     <Trans
@@ -553,7 +704,7 @@ export const applicationConfig: ApplicationConfig = {
                         }
                     >
                         Second factor authenticators can only be used if <Code>Username & Password
-                        </Code>, <Code>Social Login</Code> or <Code>Security Key/Biometrics</Code>
+                        </Code>, <Code>Social Login</Code> or <Code>Passkey</Code>
                         is present in a previous step.
                     </Trans>
                 ),
@@ -563,6 +714,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,
         saml: false,

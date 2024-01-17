@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
-import { AppState, FeatureConfigInterface, UIConstants, sortList } from "../../core";
+import { ClaimManagementConstants } from "../../claims/constants";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../core";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
@@ -97,23 +98,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     }, [ sortOrder, sortByStrategy ]);
 
     /**
-     * Filter the list when the seach query changes.
-     * NOTE: This is a fron-end level search since the API does not support search.
-     */
-    useEffect(() => {
-        if (searchQuery.length > 0) {
-            const result: OIDCScopesListInterface[] = scopeList.filter((item: OIDCScopesListInterface) =>
-                item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1);
-
-            setFilteredScopeList(result);
-
-            return;
-        }
-
-        setFilteredScopeList(undefined);
-    }, [ searchQuery ]);
-
-    /**
      * Show errors when the API request fails.
      */
     useEffect(() => {
@@ -144,15 +128,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     }, [ scopeListFetchRequestError ]);
 
     /**
-     * Search the scope list.
-     *
-     * @param event - Input change event.
-     */
-    const searchScopeList = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
-
-    /**
     * Handles sort order change.
     *
     * @param isAscending - Sort order.
@@ -170,6 +145,29 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const handleSortStrategyChange = (_event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortByStrategy(SORT_BY.filter(
             (option: { key: number; text: string; value: string; }) => option.value === data.value)[ 0 ]);
+    }; 
+
+    /**
+     * This the the function which is called when the user types 
+     * in the search box and hits enter.
+     * 
+     * @param event - Keyboard event of the search input.
+     */
+    const handleEnterKeyInSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+          
+            if (searchQuery.length > 0) {
+                const result: OIDCScopesListInterface[] = scopeList.filter((item: OIDCScopesListInterface) =>
+                    item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1);
+
+                setFilteredScopeList(result);
+
+                return;
+            }
+
+            setFilteredScopeList(undefined);
+        }
     };
 
     return (
@@ -196,6 +194,15 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             title={ t("console:manage.pages.oidcScopes.title") }
             description={ t("console:manage.pages.oidcScopes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
+            backButton={ {
+                onClick: () => {
+                    history.push(AppConstants.getPaths().get("ATTRIBUTE_MAPPINGS")
+                        .replace(":type", ClaimManagementConstants.OIDC)
+                        .replace(":customAttributeMappingID", "")
+                    );
+                },
+                text: t("console:manage.features.claims.local.pageLayout.local.back")
+            } }
         >
             <ListLayout
                 showTopActionPanel={ (!isScopeListFetchRequestLoading && !(scopeList?.length == 0)) }
@@ -212,10 +219,11 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             icon="search"
                             iconPosition="left"
                             value={ searchQuery }
-                            onChange={ searchScopeList }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value) }
                             placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
                             floated="right"
                             size="small"
+                            onKeyPress={ (e: React.KeyboardEvent<HTMLInputElement>) => handleEnterKeyInSearch(e) }
                         />
                     </div>
                 ) }
@@ -232,7 +240,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                     data-testid={ `${ testId }-list` }
                     searchResult={ filteredScopeList?.length }
-                    getOIDCScopesList={  () => setSearchQuery("") }
+                    clearSearchQuery={ () => { 
+                        setSearchQuery(""); 
+                        setFilteredScopeList(undefined);
+                    } }
                 />
                 {
                     showWizard && (

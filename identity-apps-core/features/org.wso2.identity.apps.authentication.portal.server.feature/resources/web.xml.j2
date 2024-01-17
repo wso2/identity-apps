@@ -435,6 +435,11 @@
         <jsp-file>/smsOtpError.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>duo_error.do</servlet-name>
+        <jsp-file>/duoError.jsp</jsp-file>
+    </servlet>
+
     {% for custom_servlet in servlet %}
     <servlet>
         <servlet-name>{{custom_servlet.name}}</servlet-name>
@@ -459,6 +464,11 @@
     <servlet>
         <servlet-name>org_name.do</servlet-name>
         <jsp-file>/org_name.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>org_discovery.do</servlet-name>
+        <jsp-file>/org_discovery.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -524,6 +534,11 @@
     <servlet-mapping>
         <servlet-name>org_name.do</servlet-name>
         <url-pattern>/org_name.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>org_discovery.do</servlet-name>
+        <url-pattern>/org_discovery.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -669,6 +684,11 @@
     <servlet-mapping>
         <servlet-name>error.do</servlet-name>
         <url-pattern>/error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>duo_error.do</servlet-name>
+        <url-pattern>/duo_error.do</url-pattern>
     </servlet-mapping>
 
     <error-page>

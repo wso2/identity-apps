@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
 import { AuthenticatorSettingsFormModes } from "./authenticators";
 
@@ -72,6 +73,12 @@ export interface ConnectionInterface extends StrictConnectionInterface {
     provisioning?: ProvisioningInterface;
     docLink?: string;
     type?: string;
+    implicitAssociation?: ImplicitAssociaionConfigInterface;
+}
+
+export interface ImplicitAssociaionConfigInterface {
+    isEnabled: boolean;
+    lookupAttribute: string[];
 }
 
 /**
@@ -186,8 +193,21 @@ export interface FederatedAuthenticatorMetaInterface extends CommonPluggableComp
 }
 
 export interface OutboundProvisioningConnectorWithMetaInterface {
+    /**
+     * Id of the connector.
+     */
     id?: string;
+    /**
+     * API metadata of the connector.
+     */
     meta?: FederatedAuthenticatorMetaInterface;
+    /**
+     * Local metadata of the connector.
+     */
+    localMeta?: FederatedAuthenticatorMetaInterface & { icon: GenericIconProps };
+    /**
+     * Metadata object.
+     */
     data?: FederatedAuthenticatorInterface;
 }
 
@@ -209,6 +229,7 @@ export interface JITProvisioningResponseInterface {
     scheme?: SupportedJITProvisioningSchemes;
     userstore?: string;
     associateLocalUser?: boolean;
+    attributeSyncMethod?: string;
 }
 
 /**
@@ -606,6 +627,7 @@ export enum SupportedQuickStartTemplateTypes {
 export interface ConnectionAdvanceInterface {
     isFederationHub?: boolean;
     homeRealmIdentifier?: string;
+    issuer?: string;
     alias?: string;
     certificate?: CertificateConfigInterface;
 }
@@ -623,6 +645,11 @@ export enum ConnectionTabTypes {
     SETTINGS ="settings",
     USER_ATTRIBUTES = "user-attributes",
     ADVANCED = "advanced",
+    ATTRIBUTES = "attributes",
+    CONNECTED_APPS = "connected-apps",
+    IDENTITY_PROVIDER_GROUPS = "identity-provider-groups",
+    OUTBOUND_PROVISIONING = "outbound-provisioning",
+    JIT_PROVISIONING = "jit-provisioning",
 }
 
 export interface FederatedAuthenticatorWithMetaInterface {
@@ -721,4 +748,18 @@ export interface OutboundProvisioningConnectorMetaDataInterface {
      * Icon for the connector.
      */
     icon: any;
+}
+
+/**
+ * Interface representing the cache for IDP name validation results.
+ */
+export interface IdpNameValidationCache {
+    /**
+     * The previously validated IDP name.
+     */
+    value: string;
+    /**
+     * Indicates whether the above IDP name is already taken.
+     */
+    state: boolean;
 }

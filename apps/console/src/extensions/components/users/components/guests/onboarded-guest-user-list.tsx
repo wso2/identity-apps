@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -60,6 +61,7 @@ import {
     UserListInterface
 } from "../../../../../features/users/models";
 import { SCIMConfigs } from "../../../../configs/scim";
+import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import { deleteGuestUser } from "../../api";
 import { AdminAccountTypes, GUEST_ADMIN_ASSOCIATION_TYPE, UserAccountTypes, UsersConstants } from "../../constants";
 import { UserManagementUtils } from "../../utils";
@@ -189,6 +191,8 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
     /**
      * Set users list.
      */
@@ -300,6 +304,49 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     setShowDeleteConfirmationModal(false);
                     setDeletingUser(undefined);
                 });
+        } else if (accountType === UserAccountTypes.CUSTOMER && "id" in user) {
+
+            const roleData: PatchRoleDataInterface = {
+                Operations: [
+                    {
+                        op: "remove",
+                        path: `users[value eq ${user.id}]`,
+                        value: {}
+                    }
+                ],
+                schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            };
+
+            return updateRoleDetails(adminRoleId, roleData)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("console:manage.features.users.notifications.revokeAdmin.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.users.notifications.revokeAdmin.success.message")
+                    }));
+                    onUserDelete();
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.users.notifications.revokeAdmin.error.message")
+                        }));
+
+                        return;
+                    }
+                    dispatch(addAlert({
+                        description: t("console:manage.features.users.notifications.revokeAdmin." +
+                            "genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users.notifications.revokeAdmin.genericError.message")
+                    }));
+                }).finally(() => {
+                    setLoading(false);
+                    setShowDeleteConfirmationModal(false);
+                    setDeletingUser(undefined);
+                });
         }
     };
 
@@ -356,8 +403,11 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     );
                 },
                 title: "User"
-            },
-            {
+            }
+        ];
+
+        if (saasFeatureStatus === FeatureStatus.ENABLED) {
+            const managedByColumn: TableColumnInterface = {
                 allowToggleVisibility: false,
                 dataIndex: "idpType",
                 id: "idpType",
@@ -394,16 +444,19 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         </div>
                     </>
                 )
-            },
-            {
-                allowToggleVisibility: false,
-                dataIndex: "action",
-                id: "actions",
-                key: "actions",
-                textAlign: "right",
-                title: ""
-            }
-        ];
+            };
+
+            defaultColumns.push(managedByColumn);
+        }
+
+        defaultColumns.push({
+            allowToggleVisibility: false,
+            dataIndex: "action",
+            id: "actions",
+            key: "actions",
+            textAlign: "right",
+            title: ""
+        });
 
         const internalAdminColumns: TableColumnInterface[] = [
             {
@@ -635,7 +688,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ true }
+                showHeader={ saasFeatureStatus === FeatureStatus.ENABLED }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-componentid={ componentId }
             />

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -485,6 +485,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently delete the API resource.",
+                header: "Are you sure?",
+                message: "If you delete this API resource, some functionalities may not work properly. " +
+                    "Please proceed with caution."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently remove the scope from the API resource.",
+                header: "Are you sure?",
+                message: "If you remove this scope from the API resource, some functionalities may not work properly. " +
+                    "Please proceed with caution."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "Add Scope",
+                label: "Scopes",
+                title: "List of Scopes",
+                subTitle: "List of scopes uses by the API Resource.",
+                learnMore: "Learn More",
+                search: "Search scopes by display name",
+                empty: {
+                    title: "No scope is assigned",
+                    subTitle: "Click on the + icon to add a new scope"
+                },
+                emptySearch: {
+                    title: "No results found",
+                    subTitle: {
+                        0: "We couldn't find the scope you searched for.",
+                        1: "Please try using a different parameter."
+                    },
+                    viewAll: "Clear search query"
+                },
+                copyPopupText: "Copy the Identifier",
+                copiedPopupText: "Copied the Identifier",
+                removeScopePopupText: "Remove the scope",
+                form: {
+                    button: "Add Scope",
+                    cancelButton: "Cancel",
+                    submitButton: "Finish",
+                    title: "Add Scope",
+                    subTitle: "Create a new Scope",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "Display name cannot be empty",
+                            label: "Display Name",
+                            placeholder: "Read Bookings"
+                        },
+                        scope: {
+                            emptyValidate: "Scope cannot be empty",
+                            label: "Scope",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter the Description"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "No scope is assigned",
+                            subTitle: "Click on the + icon to add a new scope"
+                        },
+                        stepTitle: "Scopes",
+                        form: {
+                            button: "Add Scope",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "Display name cannot be empty",
+                                    label: "Display Name",
+                                    placeholder: "Read Bookings",
+                                    hint: "Provide a meaningful name as it will be displayed on the user consent screen."
+                                },
+                                permission: {
+                                    emptyValidate: "Scope cannot be empty",
+                                    uniqueValidate: "This scope already exists in the organization. Please choose a different one.",
+                                    invalid: "Scope cannot contain spaces",
+                                    label: "Scope",
+                                    placeholder: "read_bookings",
+                                    hint: "A unique value that acts as the scope when requesting an access token. <1>Note that the scope cannot be modified once created.</1>"
+                                },
+                                permissionList: {
+                                    label: "Added Scopes"
+                                },
+                                description: {
+                                    label: "Description",
+                                    placeholder: "Enter the Description",
+                                    hint: "Provide a description for your scope. This will be displayed on the user consent screen."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "Remove the scope"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {
@@ -592,6 +699,34 @@ export const console: ConsoleNS = {
         screenSelectDropdown: {
             label: "Screen",
             placeholder: "Select screen"
+        }
+    },
+    consoleSettings: {
+        administrators: {
+            add: {
+                action: "Add Administrator",
+                options: {
+                    addExistingUser: "Add Existing User",
+                    inviteNewUser: "Invite New User"
+                }
+            },
+            edit: {
+                backButton: "Go back to Administrators"
+            },
+            tabLabel: "Administrators"
+        },
+        loginFlow: {
+            tabLabel: "Login Flow"
+        },
+        protocol: {
+            tabLabel: "Protocol"
+        },
+        roles: {
+            tabLabel: "Roles",
+            permissionLevels: {
+                edit: "Edit",
+                view: "View"
+            }
         }
     },
     featureGate: {
@@ -1046,7 +1181,15 @@ export const console: ConsoleNS = {
                             samlHeading: "Connection Details",
                             samlSubHeading: "The following IdP details will be useful for you to implement and " +
                                 "configure authentication for your application using SAML 2.0.",
+                            wsFedHeading: "Connection Details",
+                            wsFedSubHeading: "The following IdP details will be useful for you to implement and " +
+                                "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
+                        },
+                        protocol: {
+                            title: "Protocol Configuration",
+                            subtitle: "Configure the protocol for your application.",
+                            button: "Configure Protocol"
                         },
                         provisioning: {
                             inbound: {
@@ -1087,7 +1230,7 @@ export const console: ConsoleNS = {
                                     message: "Application sharing failed!"
                                 },
                                 success: {
-                                    description: "Application Shared with the organization(s) successfully",
+                                    description: "Application shared with the organization(s) successfully",
                                     message: "Application shared!"
                                 }
                             },
@@ -1105,8 +1248,18 @@ export const console: ConsoleNS = {
                                     message: "Application sharing stop failed!"
                                 },
                                 success: {
-                                    description: "Application Sharing stopped with the {{organization}} successfully",
+                                    description: "Application sharing stopped with the {{organization}} successfully",
                                     message: "Application shared stopped successfully!"
+                                }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing stop failed for all organizations",
+                                    message: "Application sharing stop failed!"
+                                },
+                                success: {
+                                    description: "Application sharing stopped with all the organizations successfully",
+                                    message: "Application sharing stopped successfully!"
                                 }
                             }
                         },
@@ -1386,12 +1539,32 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a passkey, security key or "
+                                                description: "Enable users to log in using a passkey, FIDO security key or "
                                                     + "biometrics.",
-                                                heading: "Add Security Key/Biometrics login",
-                                                info: "To sign in with passwordless login, your users "
-                                                    + "should have their FIDO2 security keys or biometrics "
-                                                    + "registered via My Account."
+                                                heading: "Add Passkey Login",
+                                                info: "On-the-fly passkey enrollment is available exclusively " +
+                                                "for FIDO2 supported passkeys and further users wishing to enroll " +
+                                                "multiple passkeys, they must do so via MyAccount."
+                                            },
+                                            passkey: {
+                                                description: "Enable users to log in using a passkey, FIDO security key or " +
+                                                "biometrics.",
+                                                heading: "Add Passkey Login",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>Note : </0> For " +
+                                                    "on-the-fly user enrollment with passkeys, use the <2>Passkeys Progressive " +
+                                                    "Enrollment</2> template in <4>Conditional Authentication</4> section.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Users can enroll " +
+                                                    "passkeys on-the-fly. If users wish to enroll multiple passkeys they should do " +
+                                                    "so via <1>My Account</1>.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> When setting " +
+                                                    "the Passkey in the <2>first step</2>, users need to add an adaptive " +
+                                                    "script. Use the <4>Passkeys Progressive Enrollment</4> template in " +
+                                                    "the <6>Sign-In-Method</6> tab of the application.",
+                                                    progressiveEnrollmentDisabled: "Passkey progressive enrollment is disabled. " +
+                                                    "Users must enroll their passkeys through <1>My Account</1> to use passwordless sign-in."
+                                                }
                                             },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
@@ -1443,12 +1616,41 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tabName: "Sign-in Method"
+                        },
+                        apiAuthorization: {
+                            m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
+                        },
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: "Create Application Role",
+                                subTitle: "Create a new application role in the system.",
+                                button: "Create Role"
+                            }
                         }
                     }
                 },
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Invalid configuration",
+                                    description: "Linked local account validation should be enabled to mandate a linked local account"
+                                },
+                                heading: "Linked Accounts",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Validate linked local account",
+                                        hint: "This option will decide whether the linked local user account is validated with the " +
+                                        "authenticated identity."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandate linked local account",
+                                        hint: "These options will decide how the linked local user account is validated with the " +
+                                            "authenticated identity."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {
@@ -1508,6 +1710,35 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "This is a required field."
                                         }
+                                    },
+                                    subjectType: {
+                                        label: "Subject type",
+                                        public: {
+                                            label: "Public",
+                                            hint: "This option will use the public subject identifier as the" +
+                                                " subject. Subject identifier URI is used in subject value" +
+                                                " calculation."
+                                        },
+                                        pairwise: {
+                                            label: "Pairwise",
+                                            hint: "Enable pairwise to assign a unique pseudonymous ID " +
+                                                "to each client. The subject identifier URI and callback URI or " +
+                                                "sector identifier URI is considered in calculating the subject value."
+                                        }
+                                    },
+                                    sectorIdentifierURI: {
+                                        label: "Sector Identifier URI",
+                                        hint: "Must configure this value if multiple callback URIs with" +
+                                            " different hostnames are configured.",
+                                        placeholder: "Enter the subject identifier URI",
+                                        validations: {
+                                            invalid: "The entered URL is not HTTPS. Please add a valid URL.",
+                                            required: "This field is required if multiple callback URIs are" +
+                                                " configured."
+                                        },
+                                        multipleCallbackError: "Need to configure a sector identifier URI if " +
+                                            "multiple callback URLs are configured with subject type pairwise. Go to" +
+                                            " User attributes -> Subject to configure the sector identifier URI."
                                     }
                                 },
                                 heading: "Subject"
@@ -1559,6 +1790,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Application native authentication",
+                                alerts: {
+                                    clientAttestation: "For client attestation to work, the application native authentication API must be enabled."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Select to authorize application to perform browserless, in-app authentication via application native authentication API.",
+                                        label: "Enable app-native authentication API"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                                        label: "Enable client attestation"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Enter the package name of your application. It is the unique identifier of your application and is typically in the reverse domain format.",
+                                                label: "Package name",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Application package name is required for client attestation."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                                                label: "Service account credentials",
+                                                placeholder: "Content of the JSON key file for the Google service account credentials",
+                                                validations: {
+                                                    empty: "Google service account credentials are required for client attestation."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Enter the Apple app ID, the unique identifier assigned by Apple to your app.",
+                                                label: "App id",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
@@ -1599,6 +1877,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "This certificate is used to encrypt the <1>id_token</1>" +
                                         " returned after the authentication.",
+                                    customPassiveSTS: "This certificate is used to validate the signatures of the signed requests.",
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
@@ -1623,7 +1902,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                ariaLabel: "Application access URL"
                             },
                             description: {
                                 label: "Description",
@@ -1651,6 +1931,10 @@ export const console: ConsoleNS = {
                             isManagementApp: {
                                 hint: "Enable to allow the application to access management API of this organization.",
                                 label: "Management Application"
+                            },
+                            isFapiApp: {
+                                hint: "Enable to allow the application to be FAPI compliant.",
+                                label: "FAPI Compliant Application"
                             },
                             name: {
                                 label: "Name",
@@ -1797,6 +2081,9 @@ export const console: ConsoleNS = {
                                 "can access this application from the <1>{{ myAccount }}</1> portal.",
                             mobileAppPlaceholder: "myapp://oauth2"
                         },
+                        dropdowns: {
+                            selectOption: "Select Option"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
@@ -1845,7 +2132,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Allow revoking tokens of this application when a bound IDP session " +
-                                            "gets terminated through a user logout.",
+                                            "gets terminated through a user logout. Remember to include either <1>client_id</1> " +
+                                            "or <3>id_token_hint</3> in the logout request.",
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
@@ -1860,6 +2148,17 @@ export const console: ConsoleNS = {
                                             "needs to present the <1>access_token</1> + cookie for successful "+
                                             "authorization.",
                                         label: "Validate token bindings"
+                                    },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>access_token</1> is intended for." +
+                                        " By default, the client ID of this application is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
                                     }
                                 },
                                 heading: "Access Token",
@@ -1919,6 +2218,12 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty:  "This is a required field."
                                         }
+                                    },
+                                    signing: {
+                                        hint: "The dropdown contains the supported <1>id_token</1> signing "+
+                                            "algorithms.",
+                                        label: "ID token response signing algorithm",
+                                        placeholder: "Select Algorithm"
                                     }
                                 },
                                 heading: "ID Token"
@@ -1969,6 +2274,60 @@ export const console: ConsoleNS = {
                                 heading: "PKCE",
                                 hint: "Select to make it mandatory for the application to " +
                                 "include a code_challenge in the authorization request."
+                            },
+                            clientAuthentication: {
+                                fields: {
+                                    authenticationMethod: {
+                                        hint: "The dropdown contains the supported client authentication methods.",
+                                        label: "Client authentication method",
+                                        placeholder: "Select method"
+                                    },
+                                    signingAlgorithm: {
+                                        hint: "The dropdown contains the supported client assertion signing" +
+                                            " algorithms.",
+                                        label: "Signing algorithm",
+                                        placeholder: "Select algorithm"
+                                    },
+                                    subjectDN: {
+                                        label: "TLS client authentication subject domain name",
+                                        placeholder: "Enter the tls client authentication subject domain name",
+                                        hint: "Enter the DN of the transport certificate."
+                                    }
+                                },
+                                heading: "Client Authentication"
+                            },
+                            pushedAuthorization: {
+                                fields: {
+                                    requirePushAuthorizationRequest: {
+                                        hint: "Select to make it mandatory for the application to send authorization " +
+                                            "requests as pushed authorization requests.",
+                                        label: "Mandatory"
+                                    }
+                                },
+                                heading: "Pushed Authorization Requests"
+                            },
+                            requestObject: {
+                                fields: {
+                                    requestObjectSigningAlg: {
+                                        hint: "The dropdown contains the supported <1>request object</1> signing" +
+                                            " algorithms.",
+                                        label: "Request object signing algorithm",
+                                        placeholder: "Select Algorithm"
+                                    },
+                                    requestObjectEncryptionAlgorithm: {
+                                        hint: "The dropdown contains the supported <1>request object</1> encryption" +
+                                            " algorithms.",
+                                        label: "Request object encryption algorithm",
+                                        placeholder: "Select Algorithm"
+                                    },
+                                    requestObjectEncryptionMethod: {
+                                        hint: "The dropdown contains the supported <1>request object</1> encryption" +
+                                            " methods.",
+                                        label: "Request object encryption method",
+                                        placeholder: "Select Method"
+                                    }
+                                },
+                                heading: "Request Object"
                             },
                             refreshToken: {
                                 fields: {
@@ -2350,7 +2709,7 @@ export const console: ConsoleNS = {
                     inboundSTS: {
                         fields: {
                             realm: {
-                                hint: "Enter realm identifier for passive sts",
+                                hint: "Enter realm identifier for ws-federation",
                                 label: "Realm",
                                 placeholder: "Enter realm.",
                                 validations: {
@@ -2361,6 +2720,15 @@ export const console: ConsoleNS = {
                                 hint: "Enter RP endpoint URL that handles the response.",
                                 label: "Reply URL",
                                 placeholder: "Enter Reply URL",
+                                validations: {
+                                    empty: "This is a required field.",
+                                    invalid: "Enter a valid URL"
+                                }
+                            },
+                            replyToLogout: {
+                                hint: "Enter RP endpoint URL that handles the response at logout.",
+                                label: "Reply Logout URL",
+                                placeholder: "Enter Reply Logout URL",
                                 validations: {
                                     empty: "This is a required field.",
                                     invalid: "Enter a valid URL"
@@ -2520,14 +2888,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        dynamicClientRegistration: "Dynamic Client Registration",
                                         endSession: "Logout",
                                         introspection: "Introspection",
                                         issuer: "Issuer",
                                         jwks: "JWKS",
                                         keystore: "Key Set",
+                                        openIdServer: "OpenID Server",
+                                        pushedAuthorizationRequest: "Pushed Authorization Request",
                                         revoke: "Revoke",
+                                        sessionIframe: "Session Iframe",
                                         token: "Token",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "Discovery"
                                     }
                                 },
@@ -2541,7 +2914,9 @@ export const console: ConsoleNS = {
                                         issuer: "Issuer",
                                         metadata: "IdP Metadata",
                                         slo: "Single Logout",
-                                        sso: "Single Sign-On"
+                                        sso: "Single Sign-On",
+                                        destinationURL: "Destination URLs",
+                                        artifactResolutionUrl: "Artifact Resolution URL"
                                     }
                                 },
                                 trySample: {
@@ -2558,6 +2933,11 @@ export const console: ConsoleNS = {
                                     subTitle: "Install and use our SDKs to integrate authentication to your " +
                                         "application with minimum number of code lines.",
                                     title: "Integrate your own app"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "WS-Federation URL"
+                                    }
                                 }
                             },
                             heading: "What's Next?"
@@ -2654,6 +3034,12 @@ export const console: ConsoleNS = {
                             description: "Second factor authenticators require having a Username & "
                                 + "Password authenticator in a prior step.",
                             message: "Step cannot be deleted"
+                        }
+                    },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "This authenticator is required for the shared application.",
+                            message: "Cannot delete this authenticator"
                         }
                     },
                     authenticationStepMin: {
@@ -2756,6 +3142,20 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Successfully retrieved application details.",
+                            message: "Retrieval successful"
+                        }
+                    },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve the My Account application details.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved the My Account application details.",
                             message: "Retrieval successful"
                         }
                     },
@@ -3265,7 +3665,7 @@ export const console: ConsoleNS = {
                         actionTitle: "{{ state }} Connection",
                         header: "{{ state }} connection",
                         subheader: "Once you disable it, it can no longer be used until you enable it again.",
-                        subheader2: "Enable the identity provider to use it with your applications."
+                        subheader2: "Enable the connection to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
@@ -3530,6 +3930,16 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                label: "Allow passkey progressive enrollment",
+                                hint: "Please clear this checkbox to disable passkey progressive enrollment."
+                            },
+                            allowUsernamelessAuthentication: {
+                                label: "Allow passkey usernameless authentication",
+                                hint: "Please clear this checkbox to disable usernameless authentication."
+                            }
+                        },
                         facebook: {
                             callbackUrl: {
                                 hint: "The redirect URI specified as valid in the Facebook OAuth app.",
@@ -3614,7 +4024,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             clientId: {
-                                hint: "The <1>Client ID</> you received from GitHub for your OAuth app.",
+                                hint: "The <1>Client ID</1> you received from GitHub for your OAuth app.",
                                 label: "Client ID",
                                 placeholder: "Enter Client ID from Github application.",
                                 validations: {
@@ -3889,6 +4299,71 @@ export const console: ConsoleNS = {
                             commonAuthQueryParams: {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
+                            },
+                            isAssertionSigned: {
+                                ariaLabel: "Enable assertion signing",
+                                hint: "Specify if SAMLAssertion element is signed",
+                                label: "Enable assertion signing"
+                            },
+                            includeCert:  {
+                                ariaLabel: "Include public certificate",
+                                hint: "Include public certificate in the request",
+                                label: "Include public certificate"
+                            },
+                            includeNameIDPolicy: {
+                                ariaLabel: "Include Name ID Policy",
+                                hint: "Include NameIDPolicy in the request",
+                                label: "Include Name ID Policy"
+                            },
+                            isEnableAssertionEncryption: {
+                                ariaLabel: "Enable assertion encryption",
+                                hint: "Specify if SAMLAssertion element is encrypted",
+                                label: "Enable assertion encryption"
+                            },
+                            authenticationContextClass: {
+                                ariaLabel: "Authentication context class",
+                                hint: "Authentication context class",
+                                label: "Authentication context class",
+                                placeholder: "Search available authentication context classes"
+                            },
+                            customAuthenticationContextClass: {
+                                ariaLabel: "Custom Authentication context class",
+                                hint: "Specify the custom authentication context class",
+                                label: "Custom authentication context class",
+                                placeholder: "Enter custom authentication context class"
+                            },
+                            attributeConsumingServiceIndex: {
+                                ariaLabel: "Attribute consuming service index",
+                                hint: "Specify the Attribute Consuming Service Index",
+                                label: "Attribute consuming service index",
+                                placeholder: "Enter attribute consuming service index"
+                            },
+                            isArtifactBindingEnabled: {
+                                ariaLabel: "Enable artifact binding",
+                                hint: "Enable artifact binding",
+                                label: "Enable artifact binding"
+                            },
+                            artifactResolveEndpointUrl: {
+                                ariaLabel: "Artifact resolve endpoint URL",
+                                hint: "Specify the artifact resolve endpoint URL",
+                                label: "Artifact resolve endpoint URL",
+                                placeholder: "Enter artifact resolve endpoint URL"
+                            },
+                            isArtifactResolveReqSigned: {
+                                ariaLabel: "Sign artifact resolve request",
+                                hint: "Sign artifact resolve request",
+                                label: "Sign artifact resolve request"
+                            },
+                            isArtifactResponseSigned: {
+                                ariaLabel: "Sign artifact response",
+                                hint: "Sign artifact response",
+                                label: "Sign artifact response"
+                            },
+                            authContextComparisonLevel: {
+                                ariaLabel: "Authentication context comparison level",
+                                hint: "Authentication context comparison level",
+                                label: "Authentication context comparison level",
+                                placeholder: ""
                             }
                         }
                     },
@@ -3901,12 +4376,12 @@ export const console: ConsoleNS = {
                     },
                     generalDetails: {
                         description: {
-                            hint: "A text description of the identity provider.",
+                            hint: "A text description of the connection.",
                             label: "Description",
-                            placeholder: "Enter a description of the identity provider."
+                            placeholder: "Enter a description of the connection."
                         },
                         image: {
-                            hint: "A URL for the image of the identity provider for display purposes. If not provided" +
+                            hint: "A URL for the image of the connection for display purposes. If not provided" +
                                 " a generated thumbnail will be displayed. Recommended size is 200x200 pixels.",
                             label: "Logo",
                             placeholder: "https://myapp-resources.io/my_app_image.png"
@@ -3916,10 +4391,10 @@ export const console: ConsoleNS = {
                             label: "Name",
                             placeholder: "Enter a name for the connection.",
                             validations: {
-                                duplicate: "An identity provider already exists with this name",
-                                empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters.",
-                                required: "Identity Provider name is required"
+                                duplicate: "A connection already exists with this name",
+                                empty: "Connection name is required",
+                                maxLengthReached: "Connection name cannot exceed {{ maxLength }} characters.",
+                                required: "Connection name is required"
                             }
                         },
                         issuer: {
@@ -4047,11 +4522,11 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addAuthenticator: {
-                        subTitle: "Add new authenticator to the identity provider: {{ idpName }}",
+                        subTitle: "Add new authenticator to the connection",
                         title: "Add New Authenticator"
                     },
                     addCertificate: {
-                        subTitle: "Add new certificate to the identity provider: {{ idpName }}",
+                        subTitle: "Add new certificate to the connection",
                         title: "Configure Certificates"
                     },
                     addProvisioningConnector: {
@@ -5048,7 +5523,7 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed suborganizations."
+                            title: "You have reached the maximum number of allowed organizations."
                         },
                         heading: "You've reached the maximum limit for organizations"
                     },
@@ -5057,13 +5532,13 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed suborganization levels."
+                            title: "You have reached the maximum number of allowed organization levels."
                         },
-                        heading: "You’ve reached the maximum suborganization levels allowed for the organization."
+                        heading: "You’ve reached the maximum organization levels allowed for the organization."
                     },
                     duplicateOrgError: {
-                        message: "A suborganization with the same name already exists.",
-                        description: "The suborganization you are trying to create already exists."
+                        message: "An organization with the same name already exists.",
+                        description: "The organization you are trying to create already exists."
                     }
                 }
             },
@@ -5210,6 +5685,20 @@ export const console: ConsoleNS = {
                         homeRealmIdentifier: {
                             hint: "Enter the home realm identifier for this connection",
                             label: "Home Realm Identifier"
+                        },
+                        implicitAssociation: {
+                            enable: {
+                                label: "Implicit account linking",
+                                hint: "During token exchange if there is a matching local account found," +
+                                    " it will be linked implicitly"
+                            },
+                            attributes: {
+                                label: "Select attributes to cross check",
+                                hint: "Select up to three attributes that will be used to cross check if" +
+                                    " there is a matching local user account",
+                                placeholder: "No attributes are selected"
+                            },
+                            warning: "Ensure that the selected attributes are verified by the token issuer"
                         }
                     },
                     attributeSettings: {
@@ -6207,8 +6696,8 @@ export const console: ConsoleNS = {
                         attributeMappingListItem: {
                             validation: {
                                 duplicate: "There's already an attribute mapped with this name.",
-                                required: "This field cannot be empty",
-                                invalid: "Please enter a valid input"
+                                required: "This field cannot be empty.",
+                                invalid: "Please enter a valid input."
                             },
                             placeholders: {
                                 mappedValue: "Enter external IDVP attribute",
@@ -6540,6 +7029,9 @@ export const console: ConsoleNS = {
             },
             authenticationProviderTemplate: {
                 backButton: "Go back to Connections",
+                disabledHint: {
+                    apple: "The Sign in with Apple feature cannot be configured with localhost or 127.0.0.1. Attempting this setup results in an invalid domain error from Apple's configuration step. For testing, use a real or DNS-resolvable domain name. For local development, domain mappings in the `etc/hosts` file can be utilized."
+                },
                 search: {
                     placeholder: "Search by name"
                 },
@@ -7167,10 +7659,6 @@ export const console: ConsoleNS = {
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "The OpenID protocol representation for user attributes.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
@@ -7201,7 +7689,7 @@ export const console: ConsoleNS = {
                     confirmations: {
                         action: "Confirm",
                         content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
-                            + "also be deleted.Please proceed with caution.",
+                            + "also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the selected attribute " +
@@ -8053,7 +8541,11 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies : {
                         name: "Password Policies",
+                        description: "Configure password policies to enhance user password strength.",
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: "Password Expiry"
+                            },
                             passwordHistory: {
                                 friendlyName: "Password History",
                                 properties: {
@@ -8096,7 +8588,11 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding : {
                         name: "User Onboarding",
+                        description: "Configure user onboarding settings.",
                         connectors: {
+                            askPassword: {
+                                friendlyName: "Invite user to set the password"
+                            },
                             selfSignUp: {
                                 friendlyName: "Self Registration",
                                 properties: {
@@ -8236,6 +8732,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity : {
                         name: "Login Attempts Security",
+                        description: "Configure login attempt security settings.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Account Lock",
@@ -8287,6 +8784,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement : {
                         name: "Account Management",
+                        description: "Configure account management settings.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Idle Account Suspend",
@@ -8431,6 +8929,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings : {
                         name: "Other Settings",
+                        description: "Configure other settings.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Consent Information Controller",
@@ -8530,6 +9029,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "ELK Analytics",
+                                warningModal: {
+                                    configure: "<1>Configure</1> ELK Analytics settings for proper functionality.",
+                                    reassure: "You can update your settings anytime."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "Elasticsearch Host",
@@ -8566,7 +9069,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             userClaimUpdate: {
-                                friendlyName: "User Claim Update",
+                                friendlyName: "User Attribute Change Verification",
                                 properties: {
                                     userClaimUpdateEmailEnableVerification: {
                                         hint: "Trigger a verification notification when user's email address is updated.",
@@ -8598,6 +9101,8 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        friendlyName: "Authenticator Settings",
+                        description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Backup Code Authenticator",
@@ -8613,6 +9118,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    sessionManagement: {
+                        description: "Manage settings related to the session of your users."
+                    },
+                    saml2WebSsoConfiguration: {
+                        description: "Configure SAML2 Web SSO for your applications."
+                    },
+                    wsFederationConfiguration: {
+                        description: "Configure WS-Federation protocol for your applications."
                     }
                 },
                 disabled: "Disabled",
@@ -8662,7 +9176,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "{{ name }} Connector updated successfully.",
+                            description: "{{ name }} configuration updated successfully.",
                             message: "Update Successful."
                         }
                     }
@@ -8698,12 +9212,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "There are no roles assigned to this group at the moment.",
+                                title: "No Roles Assigned"
+                            }
+                        },
+                        heading: "Assigned Roles",
                         addRolesModal: {
                             heading: "Update Group Roles",
                             subHeading: "Add new roles or remove existing roles assigned to the group."
                         },
-                        subHeading: "Add or remove the roles this group is assigned with and note that this " +
-                            "will affect performing certain tasks."
+                        subHeading: "View assigned roles for the group."
                     }
                 },
                 list: {
@@ -8938,7 +9458,53 @@ export const console: ConsoleNS = {
                     onBoard: "Onboarded Users"
                 }
             },
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: "Invite Parent User",
+                    description: "Invite a user from the parent organization.",
+                    hint: "Invited users are managed by the parent organization.",
+                    username: {
+                        label: "Username",
+                        placeholder: "Enter the username",
+                        hint: "Username should belong to a user from the parent organization.",
+                        validations: {
+                            required: "Username is a required field."
+                        }
+                    },
+                    roles: {
+                        label: "Roles",
+                        placeholder: "Select roles",
+                        hint: "Assign roles for the user that is being invited.",
+                        validations: {
+                            required: "Roles is a required field."
+                        }
+                    },
+                    inviteButton: "Invite"
+                },
+                tab: {
+                    usersTab: "Users",
+                    invitationsTab: "Invitations"
+                },
+                searchPlaceholder: "Search by Username",
+                searchdropdown: {
+                    pendingLabel: "Pending",
+                    expiredLabel: "Expired"
+                },
+                createDropdown: {
+                    createLabel: "Create User",
+                    inviteLabel: "Invite Parent User"
+                },
+                filterLabel: "Filter by: ",
+                emptyPlaceholder: {
+                    noPendingInvitations: "There are no pending invitations at the moment.",
+                    noExpiredInvitations: "There are expired invitations at the moment.",
+                    noInvitations: "There are no invitations at the moment.",
+                    noCollaboratorUserInvitations: "There are no collaborator users with expired invitations at the moment."
+                },
+                invitedUserLabel: "Managed by parent organization"
+            },
             oidcScopes: {
+                back: "Go back to OpenID Connect Attrbute Mappings",
                 viewAttributes: "View Attributes",
                 manageAttributes: "Manage Attributes",
                 addAttributes: {
@@ -9006,7 +9572,8 @@ export const console: ConsoleNS = {
                                 label: "Scope",
                                 placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "This field cannot be empty",
+                                    duplicate: "This scope already exists.",
+                                    empty: "This field cannot be empty.",
                                     invalid: "Scope can only contain alphanumeric characters and _. " +
                                     "And must be of length between 3 to 40 characters."
                                 }
@@ -9054,7 +9621,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully the new OIDC scope.",
+                            description: "Successfully created the new OIDC scope.",
                             message: "Creation successful"
                         }
                     },
@@ -9161,7 +9728,7 @@ export const console: ConsoleNS = {
                         title: "Add a new OIDC Scope"
                     },
                     emptySearch: {
-                        action: "View all",
+                        action: "Clear search query",
                         subtitles: {
                             0: "We couldn't find the scope you searched for.",
                             1: "Please try a different name."
@@ -9221,6 +9788,165 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "Organization Name"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Organization Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Organization Name"
+                },
+                assign: {
+                    title: "Assign Email Domains",
+                    description: "Assign email domains for organizations.",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Email Domains",
+                                placeholder: "Enter email domains",
+                                hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Please enter a valid email domain.",
+                                        1: "Provided email domain is already mapped to a different organization."
+                                    }
+                                }
+                            },
+                            organizationName: {
+                                label: "Organization Name",
+                                placeholder: "Select an organization",
+                                emptyPlaceholder: {
+                                    0: "There are no organizations available.",
+                                    1: "All the organizations have assigned domains."
+                                },
+                                hint: "Enter the name of the organization you wish to add the domain mapping."
+                            }
+                        }
+                    },
+                    buttons: {
+                        assign: "Assign"
+                    }
+                },
+                emailDomains: {
+                    actions: {
+                        assign: "Assign Email Domain",
+                        enable: "Enable email domain discovery"
+                    }
+                },
+                edit: {
+                    back: "Back",
+                    description: "Edit Email Domains",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Email Domains",
+                                placeholder: "Enter email domains",
+                                hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Please enter a valid email domain.",
+                                        1: "Provided email domain is already mapped to a different organization."
+                                    }
+                                }
+                            },
+                            organizationName: {
+                                label: "Organization Name",
+                                hint: "The name of the organization to which the domain mappings are added."
+                            }
+                        },
+                        message: "Changing email domain mappings may result in existing users being unable to log in."
+                    }
+                },
+                message: "Email domain discovery feature can only be used when email address is configured as the username.",
+                notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: "Adding the email domains to the organization was unsuccessful.",
+                            message: "Adding unsuccessful"
+                        },
+                        success: {
+                            description: "Email domains added successfully.",
+                            message: "Added successfully"
+                        }
+                    },
+                    checkEmailDomain: {
+                        error: {
+                            description: "Validating the email domain existence was unsuccessful.",
+                            message: "Validating unsuccessful"
+                        }
+                    },
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: "An error occurred while disabling email domain discovery.",
+                            message: "Disabling unsuccessful"
+                        },
+                        success: {
+                            description: "Successfully disabled email domain discovery.",
+                            message: "Disabled successfully"
+                        }
+                    },
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: "An error occurred while enabling email domain discovery.",
+                            message: "Enabling unsuccessful"
+                        },
+                        success: {
+                            description: "Successfully enabled email domain discovery.",
+                            message: "Enabled successfully"
+                        }
+                    },
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "An error occurred while fetching the organization discovery attributes.",
+                            message: "Retrieval unsuccessful"
+                        }
+                    },
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: "An error occurred while retrieving email domain discovery configuration.",
+                            message: "Retrieval unsuccessful"
+                        }
+                    },
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: "An error occurred while getting the organization list with discovery attributes.",
+                            message: "Retrieval unsuccessful"
+                        }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "An error occurred while updating the organization discovery attributes.",
+                            message: "Update unsuccessful"
+                        },
+                        success: {
+                            description: "Successfully updated the organization discovery attributes.",
+                            message: "Update successful"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Assign Email Domain",
+                        subtitles: "There are no organizations with email domains assigned.",
+                        title: "Assign Email Domain"
+                    }
+                },
+                title: "Email Domain Discovery"
+            },
             organizations: {
                 advancedSearch: {
                     form: {
@@ -9260,8 +9986,8 @@ export const console: ConsoleNS = {
                         disableOrganization: {
                             disableActionTitle: "Disable Organization",
                             enableActionTitle: "Enable Organization",
-                            subheader: "Disabling an organization can make you lose access to the " +
-                                "organization relates. Proceed with caution."
+                            subheader: "Disabling an organization will make it unavailable for all users. " +
+                                "Proceed with caution."
                         },
                         subHeader: "Are you sure you want to delete this organization?",
                         title: "Delete Organization"
@@ -9493,9 +10219,21 @@ export const console: ConsoleNS = {
                         placeholder: "Search by Name"
                     },
                     subOrganizations: "Organizations",
-                    switchLabel: "Organization"
+                    switchLabel: "Organization",
+                    switchButton: "Switch to Organization",
+                    notifications: {
+                        switchOrganization: {
+                            genericError: {
+                                description: "Couldn't switch to the selected organization.",
+                                message: "Something went wrong"
+                            }
+                        }
+                    }
                 },
-                title: "Organizations"
+                title: "Organizations",
+                view: {
+                    description: "View Organization"
+                }
             },
             overview: {
                 widgets: {
@@ -9772,6 +10510,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter {{type}} name",
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
+                                    duplicateInAudience: "A role with this name already exists in the selected audience.",
                                     empty: "{{type}} Name is required to proceed.",
                                     invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
                                         + "And must be of length between 3 to 30 characters."
@@ -9781,25 +10520,60 @@ export const console: ConsoleNS = {
                                 hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
                                 label: "Select the role audience",
                                 values: {
-                                    organization: "Organization-scoped role",
-                                    application: "Application-scoped role"
+                                    organization: "Organization",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "When the role audience is organization-scoped, you can only assign the role to applications that support organization-scoped roles exclusively.",
-                                appNote: "When the role audience is application-scoped, you can only assign the role to applications that support application-scoped roles exclusively.",
-                                cannotCreateRole: "You cannot create an application-scoped role because there are currently no applications that support application-scoped role. Please <1>create an application</1> that supports application-scoped roles to proceed."
+                                orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
+                                appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
+                                cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed."
                             },
                             assignedApplication: {
                                 hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles",
-                                    organization: "Support organization-scoped roles"
+                                    application: "Support application-scoped roles.",
+                                    organization: "Support organization-scoped role. ",
+                                    changeAudience: "Change the audience"
                                 },
                                 validations: {
                                     empty: "Assigned application is required to create an application-scoped role."
+                                },
+                                note: "Note that assigned application for this role cannot be edited after the role is created."
+                            }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Select API Resource",
+                                placeholder: "Select an API resource to assign permissions(scopes)",
+                                hint: {
+                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                }
+                            },
+                            permissions: {
+                                label: "Select permissions(scopes) from the selected API resources",
+                                placeholder: "Select permissions(scopes)",
+                                tooltips: {
+                                    noScopes: "No scopes available for the selected API resource",
+                                    selectAllScopes: "Select all permissions(scopes)",
+                                    removeAPIResource: "Remove API resource"
+                                },
+                                validation: {
+                                    empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
+                                },
+                                permissionsLabel: "Permissions (scopes)"
+                            },
+                            notes: {
+                                applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Something went wrong while fetching API resources. Please try again.",
+                                        message: "Something went wrong"
+                                    }
                                 }
                             }
                         }
@@ -9813,6 +10587,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Create a new {{type}} in the system.",
+                    back: "Go back",
                     summary: {
                         labels: {
                             domain: {
@@ -9822,6 +10597,7 @@ export const console: ConsoleNS = {
                             groups: "Assigned Group(s)",
                             permissions: "Permission(s)",
                             roleName: "{{type}} Name",
+                            roles: "Assigned Role(s)",
                             users: "Assigned User(s)"
                         }
                     },
@@ -9863,6 +10639,16 @@ export const console: ConsoleNS = {
                     placeholder: "Search by role name"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Go back",
+                            subtitles: {
+                                0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
+                                1: "Please try again."
+                            },
+                            title: "Something went wrong"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Update"
@@ -9930,7 +10716,9 @@ export const console: ConsoleNS = {
                                 description: "We were unable to fetch the groups assigned to the role."
                             }
                         },
+                        externalGroupsHeading: "External Groups",
                         heading: "Assigned Groups",
+                        localGroupsHeading: "Local Groups",
                         subHeading: "Add or remove the groups assigned to this role. Note that this "
                             + "will affect performing certain tasks.",
                         actions: {
@@ -9945,10 +10733,11 @@ export const console: ConsoleNS = {
                                 placeholder: "Restore groups"
                             }
                         }
-                        
+
                     },
                     menuItems: {
                         basic: "Basics",
+                        connectedApps: "Connected Apps",
                         groups: "Groups",
                         permissions: "Permissions",
                         roles: "Roles",
@@ -9962,7 +10751,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Search users"
                             },
                             assign: {
-                                placeholder: "Assign users"
+                                placeholder: "Type username/s to search and assign users"
                             },
                             remove: {
                                 label: "Removing users",
@@ -10013,6 +10802,12 @@ export const console: ConsoleNS = {
                             user: "User",
                             organization: "Managed By"
                         }
+                    },
+                    permissions: {
+                        heading: "Assigned Permissions",
+                        readOnlySubHeading: "View the assigned permissions of the role.",
+                        removedPermissions: "Removed Permissions",
+                        subHeading: "Manage assigned permissions in the role."
                     }
                 },
                 list: {
@@ -10022,7 +10817,16 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
+                        audience: "Audience",
                         lastModified: "Modified Time",
+                        managedByApp: {
+                            label: "Can be used only in the application: ",
+                            header: "Managed By"
+                        },
+                        managedByOrg: {
+                            label: "Can be used within the organization: ",
+                            header: "Managed By"
+                        },
                         name: "Role"
                     },
                     confirmations: {
@@ -10033,6 +10837,11 @@ export const console: ConsoleNS = {
                                 "intended actions which were previously allowed. Please proceed with caution.",
                             header: "Are you sure?",
                             message: "This action is irreversible and will permanently delete the selected {{type}}"
+                        },
+                        deleteItemError: {
+                            content: "Remove the associations from following application before deleting:",
+                            header: "Unable to Delete",
+                            message: "There is an application using this role."
                         }
                     },
                     emptyPlaceholders: {
@@ -10057,6 +10866,26 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Delete {{type}}",
                         edit: "Edit {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Show All",
+                        applicationRoles: "Application Roles",
+                        organizationRoles: "Organization Roles"
+                    },
+                    filterAttirbutes: {
+                        name: "Name",
+                        audience: "Role Audience"
+                    }
+                },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "We couldn't find any results for the specified role name and audience combination.",
+                                1: "Please try a different combination."
+                            },
+                            title: "No results found"
+                        }
                     }
                 },
                 notifications: {
@@ -10091,7 +10920,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "Error deleting the selected role."
+                            message: "Unable to delete the selected role."
                         },
                         genericError: {
                             description: "Couldn't remove the selected role.",
@@ -10105,6 +10934,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "An error occurred while retrieving roles.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "An error occurred while retrieving the role.",
                             message: "Something went wrong"
                         }
                     },
@@ -10205,16 +11040,20 @@ export const console: ConsoleNS = {
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },
+                manageNotificationSendingInternally: {
+                    title: "Internal Notification Sending",
+                    description: "Manage notification sending internally."
+                },
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
-                    description: "Configure remote logging settings for the organization.",
+                    description: "Configure remote logging settings for audit logs in the organization.",
                     fields: {
                         logTypes: {
                             label: "Log types to be published",
                             values: {
-                                carbonLogs: "Carbon Logs",
-                                auditLogs: "Audit Logs",
+                                carbonLogs: "Carbon logs",
+                                auditLogs: "Audit logs",
                                 allLogs: "All Logs"
                             }
                         },
@@ -10222,9 +11061,9 @@ export const console: ConsoleNS = {
                             label: "Destination URL"
                         },
                         advanced: {
-                            title: "Advanced settings",
+                            title: "Advanced Settings",
                             connectionTimeout: {
-                                label: "Connection Timeout (ms)"
+                                label: "Connection timeout (ms)"
                             },
                             verifyHostname: {
                                 label: "Verify the hostname"
@@ -10256,15 +11095,16 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restore",
                         title: "Restore Default Configuration",
                         header: "Restore Default Configuration",
-                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
                             header: "Are you sure?",
-                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            message: "If you restore the default configuration, remote log publishing for {{logType}} logs may not work properly. " +
                             "Please proceed with caution.",
-                            content: "This action will restore the default log publishing configuration."
+                            content: "This action will restore the default log publishing configuration for {{logType}} logs."
                         }
                     },
                     notification: {
@@ -10273,9 +11113,13 @@ export const console: ConsoleNS = {
                             message: "Updated successfully."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "An error occurred while updating remote log publishing configuration.",
                                 message: "Something went wrong"
+                            },
+                            fetchError: {
+                                description: "An error occurred while getting the remote log publishing configuration.",
+                                message: "Couldn't get remote log publishing configuration."
                             }
                         }
                     }
@@ -10349,6 +11193,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Server",
+                    description: "Configure server settings."
                 }
             },
             sidePanel: {
@@ -10375,6 +11223,7 @@ export const console: ConsoleNS = {
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
                 editUserstore: "Edit User Store",
+                emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
@@ -10415,7 +11264,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domain",
-                        1: "Name"
+                        1: "Name",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Search {{type}}"
@@ -10521,7 +11371,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the email address",
                                 validations: {
                                     empty: "Email address cannot be empty",
-                                    invalid: "Please enter a valid email address"
+                                    invalid: "Please enter a valid email address. You can use alphanumeric " +
+                                        "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                                        "and an at sign (@)."
                                 }
                             },
                             firstName: {
@@ -10553,7 +11405,7 @@ export const console: ConsoleNS = {
                                     empty: "Username is a required field",
                                     invalid: "A user already exists with this username.",
                                     invalidCharacters: "Username seems to contain invalid characters.",
-                                    regExViolation: "Please enter a valid email address."
+                                    regExViolation: "Please enter a valid username."
                                 }
                             }
                         },
@@ -10593,6 +11445,14 @@ export const console: ConsoleNS = {
                             "wish to assign roles to this user please click on the button below."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "To invite users to set the password, disable " +
+                                "alphanumeric username feature.",
+                            emailInvalid: "To invite users to set the password, please enter a valid email address.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
+                            inviteOffline: "Invite offline",
+                            inviteViaEmail: "Invite via email"
+                        },
                         buttons: {
                             next: "Next",
                             previous: "Previous"
@@ -10601,7 +11461,8 @@ export const console: ConsoleNS = {
                             basicDetails: "Basic Details",
                             groups: "User Groups",
                             roles: "User Roles",
-                            summary: "Summary"
+                            summary: "Summary",
+                            method: "Method"
                         },
                         subTitle: "Follow the steps to create the new user",
                         title: "Create User",
@@ -10621,12 +11482,14 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk Import Users",
-                        subTitle: "Import multiple users using a CSV file.",
+                        title: "Add multiple users",
+                        subTitle: "Add multiple users manually or using a CSV file.",
                         wizardSummary: {
+                            inviteEmailInfo: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
-                            totalCount: "Total Count",
+                            totalUserCreationCount: "Total user creation count",
+                            totalUserAssignmentCount: "Total group assigment count ",
                             tableHeaders: {
                                 username: "Username",
                                 status: "Status",
@@ -10637,7 +11500,11 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "Invalid data provided",
                                 userAlreadyExistsMessage: "User already exists",
                                 userCreationAcceptedMessage: "User creation accepted",
-                                internalErrorMessage: "Error occured while importing users"
+                                internalErrorMessage: "Error occured while importing users",
+                                userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}",
+                                userAssignmentFailedMessage: "User assignment to {{resource}} failed",
+                                userAssignmentInternalErrorMessage: "An error occurred while assigning users to " +
+                                    "{{resource}}"
                             },
                             tableStatus: {
                                 success: "Success",
@@ -10650,16 +11517,77 @@ export const console: ConsoleNS = {
                                     message: "Import Successful"
                                 },
                                 importFailed: {
-                                    description: "Issues encountered in <1>{{failedCount}} import(s)</1>.",
+                                    userCreation: "Issues encountered in <1>{{failedUserCreationCount}} user " +
+                                        "creation operations(s)</1>",
+                                    groupAssignment: "Issues encountered in <1>{{failedUserAssignmentCount}} group " +
+                                        "assignment(s)</1>. Users in the affected groups were created but not assigned. " +
+                                        "Please navigate to User Management section to review  and assign groups to " +
+                                        "the users.",
                                     message: "Review Required"
                                 }
                             },
                             advanceSearch: {
-                                placeholder: "Search by Username"
-                            }
+                                searchByUsername: "Search by Username",
+                                searchByGroup: "Search by Group",
+                                roleGroupFilterAttributePlaceHolder: "Group Name"
+                            },
+                            manualCreation: {
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "The user accounts were created successfully.",
+                                        message: "User Creation Successful"
+                                    }
+                                },
+                                hint: "Add the email address of the user you wish to invite and press enter.",
+                                emailsLabel: "Emails",
+                                emailsPlaceholder: "Enter email addresses",
+                                disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
+                                upload: {
+                                    buttonText: "Upload CSV File",
+                                    description: "Drag and drop a CSV file here."
+                                },
+                                primaryButton: "Add",
+                                groupsLabel: "Groups",
+                                groupsPlaceholder: "Enter groups",
+                                warningMessage: "This option can only be used when email address is configured " +
+                                    "as the username."
+                            },
+                            fileBased: {
+                                hint: "Bulk invite multiple users using a CSV file."
+                            },
+                            responseOperationType: {
+                                userCreation: "User Creation",
+                                roleAssignment: "Group Assignment"
+                            },
+                            userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },
                         buttons: {
                             import: "Import"
+                        },
+                        sidePanel: {
+                            manual: "Manual",
+                            fileBased: "File Based",
+                            fileFormatTitle: "CSV File Format",
+                            fileFormatContent: "Headers of the CSV file should be user attributes that are " +
+                                    "mapped to <1>local attributes</1>.",
+                            fileFormatSampleHeading: "Sample CSV file format:"
+                        }
+                    },
+                    inviteParentUserWizard: {
+                        totalInvitations: "Total Invitation(s)",
+                        successAlert: {
+                            description: "Successfully invited the user(s).",
+                            message: "Invitation(s) Sent"
+                        },
+                        errorAlert: {
+                            description: "An error occurred while inviting {{ failedCount }} user(s).",
+                            message: "Review Required"
+                        },
+                        tableMessages: {
+                            userNotFound: "User not found",
+                            activeInvitationExists: "An active invitation for the user already exists",
+                            userEmailNotFound: "Could not find the email of the invited user",
+                            userAlreadyExist: "User already exists"
                         }
                     },
                     changePasswordModal: {
@@ -10714,6 +11642,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "Enter your {{fieldName}}",
+                                dropdownPlaceholder: "Select your {{fieldName}}",
                                 validations: {
                                     empty: "{{fieldName}} is a required field",
                                     invalidFormat: "The {{fieldName}} is not of the correct format"
@@ -11010,6 +11939,13 @@ export const console: ConsoleNS = {
                                 header: "Are you sure?",
                                 message: "This action will modify the role of this user."
                             },
+                            infoMessage: "Roles inherited via groups are not shown here.",
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "No roles assigned",
+                                    subtitles: "There are no roles assigned to the user at the moment."
+                                }
+                            },
                             heading: "Assigned Roles",
                             popups: {
                                 viewPermissions: "View Permissions"
@@ -11029,8 +11965,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Search Roles",
-                            subHeading: "Add or remove the roles this user is assigned with and note that this " +
-                                "will affect performing certain tasks."
+                            subHeading: "View roles assigned directly to the user."
                         },
                         notifications: {
                             addUserRoles: {
@@ -11099,6 +12034,16 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
+                addUserType: {
+                    createUser: {
+                        title: "Create user",
+                        description: "Create a user in your organization."
+                    },
+                    inviteParentUser: {
+                        title: "Invite parent user",
+                        description: "Invite user from the parent organization."
+                    }
+                },
                 advancedSearch: {
                     form: {
                         dropdown: {
@@ -11119,7 +12064,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by Email"
+                    placeholder: "Search by Username"
                 },
                 all: {
                     heading: "Users",
@@ -11131,8 +12076,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "Columns"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "Single User",
+                    bulkImport: "Multiple Users"
                 },
                 confirmations: {
                     terminateAllSessions: {
@@ -11148,6 +12093,13 @@ export const console: ConsoleNS = {
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate the session."
+                    },
+                    addMultipleUser: {
+                        header: "Before you proceed",
+                        message: "Invite users option is disabled",
+                        content: "Invite User to Set Password should be enabled to add multiple users. " +
+                            "Please enable email verification from Login & Registration settings.",
+                        assertionHint: "Please confirm your action."
                     }
                 },
                 consumerUsers: {
@@ -11226,6 +12178,20 @@ export const console: ConsoleNS = {
                             message: "User added successfully"
                         }
                     },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error adding the new user"
+                        },
+                        genericError: {
+                            description: "Couldn't add the new user",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The new user was accepted and pending approval.",
+                            message: "User accepted for creation"
+                        }
+                    },
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
@@ -11261,6 +12227,14 @@ export const console: ConsoleNS = {
                             emptyDataField: {
                                 description: "The data field '{{dataField}}' must not be empty.",
                                 message: "Empty Data Field"
+                            },
+                            invalidRole: {
+                                description: "{{role}} does not exist.",
+                                message: "Role Not Found"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} does not exist.",
+                                message: "Group Not Found"
                             }
                         },
                         submit: {
@@ -11276,6 +12250,10 @@ export const console: ConsoleNS = {
                                 description: "The users were imported successfully.",
                                 message: "Users Imported Successfully"
                             }
+                        },
+                        timeOut: {
+                            description: "Some users may not have been created.",
+                            message: "The request has timed out"
                         }
                     },
                     deleteUser: {
@@ -11527,6 +12505,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Update connection password",
                         connectionErrorMessage: "Please ensure the provided connection "
                             + "URL, name, password and driver name are correct",
                         testButton: "Test Connection"
@@ -11662,10 +12641,14 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyList: {
                         action: "New User Store",
-                        subtitles: "There are currently no user stores available."
+                        subtitles: "There are currently no user stores available. "
                             + "You can add a new user store easily by following the "
                             + "steps in the user store creation wizard.",
                         title: "Add a new user store"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "There are currently no user stores available.",
+                        title: "No user stores"
                     },
                     emptySearch: {
                         action: "Clear search query",
@@ -11914,6 +12897,10 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "{{template}}"
             },
+            emailDomainDiscovery: {
+                subTitle: "Configure email domain discovery for organizations.",
+                title: "Email Domain Discovery"
+            },
             emailLocaleAdd: {
                 backButton: "Go back to {{name}} template",
                 subTitle: null,
@@ -11965,6 +12952,7 @@ export const console: ConsoleNS = {
                 title: "Welcome, {{firstName}}"
             },
             roles: {
+                alternateSubTitle: "View and manage roles.",
                 subTitle: "Create and manage roles, assign permissions for roles.",
                 title: "Roles"
             },
@@ -11972,6 +12960,11 @@ export const console: ConsoleNS = {
                 backButton: "Go back to {{type}}",
                 subTitle: null,
                 title: "Edit Role"
+            },
+            groupsEdit: {
+                backButton: "Go back to {{type}}",
+                subTitle: null,
+                title: "Edit Group"
             },
             serverConfigurations: {
                 subTitle: "Manage general configurations of the server.",
@@ -11982,7 +12975,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to Users",
+                backButton: "Go back to {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }
@@ -12003,6 +12996,110 @@ export const console: ConsoleNS = {
                     1: "Please bare with us and come back later. Thank you for your patience."
                 },
                 title: "Page under construction"
+            }
+        }
+    },
+    saml2Config: {
+        title: "SAML2 Web SSO Configuration",
+        description: "Configure SAML2 Web SSO for your applications.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "Set the SAML metadata validity period in minutes.",
+                label: "Metadata Validity Period"
+            },
+            destinationUrl: {
+                hint: "The location to send the SAML Response, as defined in the SAML assertion.",
+                label: "Destination URLs"
+            },
+            enableMetadataSigning: {
+                label: "Enable Metadata Signing"
+            },
+            validation: {
+                metadataValidityPeriod: "Metadata validity period should be a positive integer.",
+                destinationURLs: "Destination URL should be a valid URL."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching saml2 configurations.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating saml2 configurations.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the saml2 configurations.",
+                    message: "Update successful"
+                }
+            }
+        }
+    },
+    sessionManagement: {
+        description: "Manage settings related to the session of your users.",
+        title: "Session Management",
+        form: {
+            idleSessionTimeout: {
+                hint: "The user will be logged out automatically after the configured time.",
+                label: "Idle Session Timeout",
+                placeholder: "Enter the idle session timeout in minutes"
+            },
+            rememberMePeriod: {
+                hint: "The user will be prompted to login again after the configured time.",
+                label: "Remember Me Period",
+                placeholder: "Enter the remember me period in minutes"
+            },
+            validation: {
+                idleSessionTimeout: "Idle Session Timeout should be a positive integer.",
+                rememberMePeriod: "Remember Me Period should be a positive integer."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching session management settings.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating session management settings.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the session management settings.",
+                    message: "Update successful"
+                }
+            }
+        }
+    },
+    wsFederationConfig: {
+        title: "WS-Federation Configuration",
+        description: "Configure WS-Federation protocol for your applications.",
+        form: {
+            enableRequestSigning: {
+                label: "Enable Authentication Requests Signing"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching WS-Federation configurations.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating WS-Federation configurations.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the WS-Federation configurations.",
+                    message: "Update successful"
+                }
             }
         }
     }

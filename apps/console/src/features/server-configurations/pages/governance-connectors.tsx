@@ -22,7 +22,6 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,12 +29,10 @@ import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
-import { OrganizationUtils } from "../../organizations/utils";
-import { getConnectorCategory } from "../api";
+import { getConnectorCategory } from "../api/governance-connectors";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
-import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Props for the Server Configurations page.
@@ -96,32 +93,6 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-                    response.connectors = 
-                        GovernanceConnectorUtils
-                            .filterGovernanceConnectorCategories(categoryId, response.connectors);
-
-                    // If the given connector is not available for an organization domains
-                    if (response.connectors.length==0) {
-                        dispatch(
-                            addAlert({
-                                description: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
-                                    "getConnector.genericError.description"
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
-                                    "getConnector.genericError.message"
-                                )
-                            })
-                        );
-
-                        return;
-                        
-                    }
-                }
-
                 response.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
@@ -170,12 +141,30 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
+    /**
+     * TODO: Remove this once the response name is fixed from the backend.
+     */
+    const resolveConnectorCategoryTitle = (connectorCategory : GovernanceConnectorCategoryInterface): string => {
+
+        if (!connectorCategory?.connectors) {
+            return;
+        }
+
+        switch (connectorCategory.connectors[0].categoryId) {
+            case ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID:
+                return (
+                    t("console:manage.features.governanceConnectors.connectorCategories.multiFactorAuthenticators." +
+                    "friendlyName")
+                );
+            default:
+                return connectorCategory.name;
+        }
+    };
+
     return (
         <PageLayout
-            title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) &&
-                t("console:manage.features.governanceConnectors.connectorCategories."
-                    + camelCase(connectorCategory?.name) + ".name") }
-            pageTitle={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
+            title={ serverConfigurationConfig.showPageHeading && resolveConnectorCategoryTitle(connectorCategory) }
+            pageTitle={ serverConfigurationConfig.showPageHeading && resolveConnectorCategoryTitle(connectorCategory) }
             description={
                 serverConfigurationConfig.showPageHeading && (connectorCategory?.description
                     ? connectorCategory.description
@@ -206,7 +195,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                                 || serverConfigurationConfig.connectorsToShow.includes(
                                                     ServerConfigurationsConstants.ALL) && 
                                                     !serverConfigurationConfig.connectorsToHide.includes(
-                                                        connector.name
+                                                        connector.id
                                                     ) ) {
                                                 const connectorElement: ReactElement = (
                                                     <Grid.Row ref={ connector.ref }>

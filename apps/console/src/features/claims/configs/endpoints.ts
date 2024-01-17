@@ -30,9 +30,9 @@ export const getClaimResourceEndpoints = (
     serverHostWithOrgPath: string
 ): ClaimResourceEndpointsInterface => {
     return {
-        claims: `${ serverHost }/api/server/v1/claim-dialects`,
-        externalClaims:`${ serverHost }/api/server/v1/claim-dialects/{}/claims`,
+        claims: `${ serverHostWithOrgPath }/api/server/v1/claim-dialects`,
+        externalClaims:`${ serverHostWithOrgPath }/api/server/v1/claim-dialects/{}/claims`,
         localClaims: `${serverHostWithOrgPath}/api/server/v1/claim-dialects/local/claims`,
-        resourceTypes: `${ serverHost }/scim2/ResourceTypes`
+        resourceTypes: `${ serverHostWithOrgPath }/scim2/ResourceTypes`
     };
 };

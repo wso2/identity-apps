@@ -50,6 +50,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ValidationConfigurationRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
@@ -83,6 +85,7 @@
     String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -91,7 +94,8 @@
     boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
     boolean isPasswordProvisionEnabled = Boolean.parseBoolean(request.getParameter("passwordProvisionEnabled"));
     boolean piisConfigured = false;
-
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
     String backToUrl = callback;
     String sp = Encode.forHtmlAttribute(request.getParameter("sp"));
@@ -118,7 +122,7 @@
 
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
-
+    boolean isUsernameValidationEnabled = Boolean.parseBoolean(IdentityUtil.getProperty("InputValidation.Username.Enabled"));
     ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
     try {
         // Retrieve application Id.
@@ -411,6 +415,77 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
+        <% if(skipSignUpEnableCheck) {%>
+            <div class="ui segment">
+                <h3 class="ui header">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Initiate.sign.up")%>
+                </h3>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
+                <% if (error) { %>
+                <div class="ui negative message" id="server-error-msg">
+                    <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
+                </div>
+                <% } %>
+                <div class="ui divider hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" action="signup.do" method="post" id="register">
+                        <div class="field">
+                            <label for="username">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Enter.your.username.here")%>
+                            </label>
+                            <input id="username" name="username" type="text" required
+                                <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                        </div>
+                        <% if (isSaaSApp) { %>
+                        <p class="ui tiny compact info message">
+                            <i class="icon info circle"></i>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
+                        </p>
+                        <% } %>
+                        <input id="callback" name="callback" type="hidden" value="<%=callback%>"
+                               class="form-control" required>
+                        <% Map<String, String[]> requestMap = request.getParameterMap();
+                            for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
+                                String key = Encode.forHtmlAttribute(entry.getKey());
+                                String value = Encode.forHtmlAttribute(entry.getValue()[0]);
+                                if (StringUtils.equalsIgnoreCase("reCaptcha", key)) {
+                                    continue;
+                                } %>
+                        <div class="field">
+                            <input id="<%= key%>" name="<%= key%>" type="hidden"
+                                   value="<%=value%>" class="form-control">
+                        </div>
+                        <% } %>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                data-size="invisible"
+                                data-callback="onCompleted"
+                                data-action="register"
+                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                            >
+                            </div>
+                        </div>
+                        <% }  %>
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
+                            <button id="registrationSubmit" class="ui primary fluid large button mb-2" type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Proceed.to.self.register")%>
+                            </button>
+                            <a href="javascript:goBack()" class="ui button secondary fluid large button">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <% } else {%>
             <div class="ui segment">
                 <h3 class="ui header" data-testid="self-registration-username-request-page-header">
                     <%=i18n(recoveryResourceBundle, customText, "sign.up.heading")%>
@@ -435,9 +510,27 @@
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with.email")%>
                         </button>
                     </div>
-                    <div class="ui horizontal divider">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
-                    </div>
+
+                    <!-- Do not show the horizontal divider, if the only federated authenticator available is the OrganizationAuthenticator. -->
+                    <%
+                        if (federatedAuthenticators.length() > 0) {
+                            Boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
+
+                            if (federatedAuthenticators.length() == 1) {
+                                JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+                                String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+                                isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
+                            }
+
+                            if (!isSSOLoginTheOnlyAuthenticatorConfigured) {
+                    %>
+                                <div class="ui horizontal divider">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
+                                </div>
+                    <%       }
+                        }
+                    %>
+
                 </div>
 
                 <!-- federated authenticators -->
@@ -531,8 +624,15 @@
                         </div>
                     </div>
                     <br>
-                    <%
-                        } else {
+                    <% } else if (!StringUtils.equals(type, SSO_AUTHENTICATOR)) {
+
+                        String logoPath = imageURL;
+                        if (!imageURL.isEmpty() && imageURL.contains("/")) {
+                            String[] imageURLSegements = imageURL.split("/");
+                            String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+
+                            logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                        }
                     %>
                     <div class="social-login blurring social-dimmer">
                         <div class="field">
@@ -548,7 +648,7 @@
                                         role="presentation"
                                         alt="sign-up-with-<%=Encode.forHtmlContent(name)%> logo"
                                         class="ui image"
-                                        src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                        src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                     <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
                             </button>
                         </div>
@@ -662,7 +762,7 @@
                             <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         <% if (emailPII != null) { %>
                         <div id="usernameField"
-                            <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
+                            <%if (isSelfRegistrationLockOnCreationEnabled || emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
                                 class="field required"
                             <%} else { %>
                                 class="field"
@@ -679,7 +779,7 @@
                                     placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.email")%>"
                                     data-testid="self-register-page-username-input"
                                     autocomplete="off"
-                                    <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) {%> required <%}%>
+                                    <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled || isSelfRegistrationLockOnCreationEnabled) {%> required <%}%>
                                 />
                                 <i aria-hidden="true" class="envelope outline icon"></i>
                             </div>
@@ -1173,6 +1273,7 @@
                     </form>
                 </div>
             </div>
+        <% }%>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
@@ -1201,6 +1302,8 @@
     <% } %>
 
     <script>
+        const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^_.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
@@ -1266,13 +1369,26 @@
 
         // Prepare the alphanumeric username message text.
         var alphanumericUsernameText = $("#alphanumeric-username-msg-text");
-        alphanumericUsernameText.text(
-            "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
-            + " " + (usernameConfig?.minLength ?? 3) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
-            + " " + (usernameConfig.maxLength ?? 255) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
-        );
+        if (usernameConfig.enableSpecialCharacters) {
+            alphanumericUsernameText.html(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.may.contain")%>"
+            );
+        } else {
+            alphanumericUsernameText.text(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
+            );
+        }
+        if (!<%=isUsernameValidationEnabled%>) {
+            $("#alphanumeric-username-msg").hide();
+        }
 
         // Check whether the alphanumeric username is enabled or disabled.
         function isAlphanumericUsernameEnabled() {
@@ -1283,6 +1399,9 @@
         if (isAlphanumericUsernameEnabled()) {
             $("#alphanumericUsernameField").show();
             document.getElementById("alphanumericUsernameUserInput").setAttribute("name", "alphanumericUsernameUserInput");
+        }
+        if (!<%=isUsernameValidationEnabled%>) {
+            $("#alphanumericUsernameField").show();
         }
 
         // Reloads the page if the page is loaded by going back in history.
@@ -1310,7 +1429,11 @@
 
         // Fires when username field lose focus.
         $('#alphanumericUsernameUserInput').bind('blur', function () {
-            showAlphanumericUsernameValidationStatus();
+            if (<%=isUsernameValidationEnabled%>) {
+                showAlphanumericUsernameValidationStatus();
+            } else {
+            	showUsernameRegexValidationStatus();
+            }
         });
 
         // Fires when password field lose focus.
@@ -1480,8 +1603,16 @@
                         var error_msg = $("#error-msg");
                         var server_error_msg = $("#server-error-msg");
 
-                        // Username validation.
-                        if (isAlphanumericUsernameEnabled()) {
+                        if (!<%=isUsernameValidationEnabled%>) {
+                            if (showUsernameRegexValidationStatus()) {
+                                userName.value = alphanumericUsernameUserInput.value.trim();
+                            } else {
+                                validInput = false;
+                            }
+                            if (<%=isSelfRegistrationLockOnCreationEnabled%> && !showUsernameValidationStatus()) {
+                                validInput = false
+                            }
+                        } else if (isAlphanumericUsernameEnabled()) {
                             if (showAlphanumericUsernameValidationStatus()) {
                                 userName.value = alphanumericUsernameUserInput.value.trim();
                             } else {
@@ -1598,7 +1729,16 @@
                 var server_error_msg = $("#server-error-msg");
 
                 // Username validation.
-                if (isAlphanumericUsernameEnabled()) {
+                if (!<%=isUsernameValidationEnabled%>) {
+                    if (showUsernameRegexValidationStatus()) {
+                        userName.value = alphanumericUsernameUserInput.value.trim();
+                    } else {
+                        validInput = false;
+                    }
+                    if (<%=isSelfRegistrationLockOnCreationEnabled%> && !showUsernameValidationStatus()) {
+                        validInput = false
+                    }
+		        } else if (isAlphanumericUsernameEnabled()) {
                     if (showAlphanumericUsernameValidationStatus()) {
                         userName.value = alphanumericUsernameUserInput.value.trim();
                     } else {
@@ -1769,6 +1909,18 @@
 
                 return false;
             }
+            if (element.type === 'text' && element.value != null && !element.checkValidity()) {
+                $("#" + error_msg_txt).text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Please.enter.valid.input")%>");
+                $("#" + error_msg_element).show();
+                $("#" + element_field).addClass("error");
+                var error_msg_txt_element = document.getElementById(error_msg_txt);
+                if (error_msg_txt_element) {
+                    $("html, body").animate({scrollTop: $("#" + error_msg_txt).offset().top}, 'slow');
+                }
+
+                return false;
+            }
 
             return true;
         }
@@ -1787,6 +1939,31 @@
             // Remove previous errors.
             $("#" + error_msg_element).hide();
             $("#" + element_field).removeClass("error");
+        }
+
+        function showUsernameRegexValidationStatus() {
+
+            var alphanumericUsernameUserInput = document.getElementById("alphanumericUsernameUserInput");
+            var alphanumericUsernameField = $("#alphanumericUsernameField");
+            var alphanumeric_username_error_msg = $("#alphanumeric-username-error-msg");
+            var server_error_msg = $("#server-error-msg");
+            var alphanumeric_username_error_msg_text = $("#alphanumeric-username-error-msg-text");
+            if (server_error_msg.text() !== null && server_error_msg.text().trim() !== "") {
+                alphanumeric_username_error_msg.hide();
+                alphanumericUsernameField.removeClass("error");
+            }
+
+            if (alphanumericUsernameUserInput.value.trim() === "")  {
+                alphanumeric_username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.username")%>");
+                alphanumeric_username_error_msg.show();
+                alphanumericUsernameField.addClass("error");
+                $("html, body").animate({scrollTop: alphanumeric_username_error_msg_text.offset().top}, 'slow');
+
+                return false;
+            }
+            alphanumeric_username_error_msg.hide();
+            alphanumericUsernameField.removeClass("error");
+            return true
         }
 
         function showAlphanumericUsernameValidationStatus() {
@@ -1819,7 +1996,14 @@
                     alphanumeric_username_error_msg.show();
                     alphanumericUsernameField.addClass("error");
 
-                } else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                } else if (usernameConfig.enableSpecialCharacters
+                    && !USERNAME_WITH_SPECIAL_CHARS_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
+                    alphanumeric_username_error_msg_text.text(
+                        "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.special.character.symbols")%>");
+                    alphanumeric_username_error_msg.show();
+                    alphanumericUsernameField.addClass("error");
+                } else if (!usernameConfig.enableSpecialCharacters
+                    && !ALPHANUMERIC_USERNAME_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
                     alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.symbols")%>");
                     alphanumeric_username_error_msg.show();
@@ -1841,7 +2025,9 @@
             var username_error_msg = $("#username-error-msg");
             var server_error_msg = $("#server-error-msg");
             var username_error_msg_text = $("#username-error-msg-text");
-            <% if (emailPII != null) { %>
+            <% if (isSelfRegistrationLockOnCreationEnabled) { %>
+            	var emailRequired = true;
+            <% } else if (emailPII != null) { %>
                 var emailRequired = <%=emailPII.getRequired()%>;
             <% } else { %>
                 var emailRequired = false;

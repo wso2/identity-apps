@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,8 @@ import { TenantResourceEndpointsInterface } from "../models";
 export const getTenantResourceEndpoints = (): TenantResourceEndpointsInterface => {
     return {
         tenantAssociationApi: Config.getDeploymentConfig().serverOrigin + "/api/asgardeo/v1/tenant/me",
-        tenantManagementApi: Config.getDeploymentConfig().serverOrigin + "/api/asgardeo/v1/tenant"
+        tenantManagementApi: Config.getDeploymentConfig().serverOrigin + "/api/asgardeo/v1/tenant",
+        tenantSubscriptionApi: Config.getDeploymentConfig().serverOrigin + 
+            Config.getDeploymentConfig().extensions?.subscriptionApiPath
     };
 };

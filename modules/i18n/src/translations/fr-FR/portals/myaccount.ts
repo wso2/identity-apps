@@ -851,90 +851,84 @@ export const myAccount: MyAccountNS = {
                 remaining: "restant"
             },
             fido: {
-                description: "Vous pouvez utiliser une <1>Passkey</1>, <1>Clé de Sécurité FIDO2</1> ou " +
-                    "<1>Des Données Biométriques</1> dans votre appareil pour vous connecter à votre compte.",
+                description: "Vous pouvez utiliser une <1>clé d'accès</1>, une " +
+                    "<1>clé de sécurité FIDO</1> ou des <1>données biométriques</1> " +
+                    "sur votre appareil pour vous connecter à votre compte.",
                 form: {
-                    label: "Clé de sécurité/Biométrie",
-                    placeholder: "Entrez un nom pour la clé de sécurité/biométrique",
-                    remove: "Retirer la clé de sécurité/biométrique",
-                    required: "Veuillez entrer un nom pour votre clé de sécurité/biométrique"
+                    label: "Clé d'accès",
+                    placeholder: "Entrez un nom pour le mot de passe",
+                    remove: "Supprimer le mot de passe",
+                    required: "Veuillez saisir un nom pour votre mot de passe"
                 },
-                heading: "Clé de sécurité/Biométrie",
+                heading: "Clé d'accès",
                 modals: {
                     deleteConfirmation: {
                         assertionHint: "Veuillez confirmer votre action.",
-                        content: "Cette action est irréversible et supprimera définitivement " +
-                            "la clé de sécurité/biométrique.",
-                        description: "Si vous supprimez cette clé de sécurité/biométrique, vous ne pourrez " +
-                            "peut-être plus vous connecter à votre compte. Veuillez procéder avec prudence.",
+                        content: "Cette action est irréversible et supprimera définitivement le mot de passe.",
+                        description: "Si vous supprimez ce mot de passe, vous ne pourrez peut-être " +
+                            "pas vous reconnecter à votre compte. Veuillez procéder avec prudence.",
                         heading: "Es-tu sûr?"
                     },
                     deviceRegistrationErrorModal: {
-                        description: "La clé de sécurité/l'enregistrement biométrique a " +
-                            "été interrompu. Si ce n'était pas intentionnel, vous pouvez réessayer le flux.",
-                        heading: "Échec de l'enregistrement de la clé de sécurité/biométrique",
-                        tryWithOlderDevice: "Vous pouvez également réessayer avec une " +
-                            "ancienne clé de sécurité/biométrique."
+                        description: "L'enregistrement du mot de passe a été interrompu. " +
+                            "Si ce n'était pas intentionnel tu peut réessayer le flux.",
+                        heading: "Échec de l'enregistrement du mot de passe",
+                        tryWithOlderDevice: "VVous pouvez également réessayer avec un mot de passe plus ancien."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de la suppression " +
-                                "de la clé de sécurité/biométrique"
+                            message: "Une erreur s'est produite lors de la suppression du mot de passe"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la " +
+                            description: "Une erreur s'est produite lors de la suppression du mot de passe " +
                                 "suppression de la clé de sécurité/biométrique",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "La clé de sécurité/biométrique a été supprimée avec succès de la liste",
-                            message: "Votre clé de sécurité/biométrique a été supprimée avec succès"
+                            description: "Le mot de passe a été supprimé avec succès de la liste",
+                            message: "Votre mot de passe supprimé avec succès"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de la récupération " +
-                                "de la clé de sécurité/biométrique"
+                            message: "Une erreur s'est produite lors de la récupération du mot de passe"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération" +
-                                " de la clé de sécurité/biométrique",
+                            description: "Une erreur s'est produite lors de la récupération du mot de passe",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "La clé de sécurité/biométrique a été enregistrée " +
-                                "avec succès et vous pouvez maintenant l'utiliser pour l'authentification.",
-                            message: "Votre clé de sécurité/biométrique enregistrée avec succès"
+                            description: "Le mot de passe a été enregistré avec succès et maintenant vous " +
+                                "peut l'utiliser pour l'authentification.",
+                            message: "Votre mot de passe enregistré avec succès"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Une erreur s'est produite lors de la mise à jour " +
-                                "de la clé de sécurité/du nom biométrique"
+                            message: "Une erreur s'est produite lors de la mise à jour du nom du mot de passe"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la mise à " +
-                                "jour de la clé de sécurité/du nom biométrique",
+                            description: "Une erreur s'est produite lors de la mise à jour du nom du mot de passe",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le nom de votre clé de sécurité/biométrique a été mis à jour avec succès",
-                            message: "Clé de sécurité/Nom biométrique mis à jour avec succès"
+                            description: "Le nom de votre mot de passe a été mis à jour avec succès",
+                            message: "Le nom du mot de passe a été mis à jour avec succès"
                         }
                     }
                 },
-                tryButton: "Essayez avec une ancienne clé de sécurité/biométrique"
+                tryButton: "Essayez avec un ancien mot de passe"
             },
             smsOtp: {
                 descriptions: {
                     hint: "Vous recevrez un SMS contenant un code de vérification à usage unique"
                 },
-                heading: "à l'aide d'un SMS",
+                heading: "Mobile number",
                 notifications: {
                     updateMobile: {
                         error: {
@@ -1771,6 +1765,7 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description: "Gérer les informations de récupération que nous pouvons utiliser pour vous aider à récupérer votre mot de passe",
+            emptyPlaceholderText: "Aucune option de récupération de compte disponible",
             heading: "Récupération de votre compte"
         },
         changePassword: {

@@ -21,11 +21,14 @@ import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
+import { getAPIResourceEndpoints } from "../../api-resources/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
 import { getConnectionResourceEndpoints } from "../../connections";
+import { getConsoleSettingsResourceEndpoints } from "../../console-settings/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
@@ -66,15 +69,23 @@ export class Config {
      *
      * @returns Server host.
      */
-    public static resolveServerHost(enforceOrgPath?: boolean): string {
-        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
-            || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
-        } else {
-            return `${
-                window[ "AppUtils" ]?.getConfig()?.serverOrigin }/o/${ store.getState().organization.organization.id
-            }`;
+    public static resolveServerHost(enforceOrgPath?: boolean, skipAuthzRuntimePath?: boolean): string {
+        if (isLegacyAuthzRuntime()) {
+            if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
+                || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
+                return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+            } else {
+                return `${
+                    window[ "AppUtils" ]?.getConfig()?.serverOrigin }/o/${ store.getState().organization.organization.id
+                }`;
+            }
         }
+
+        if (skipAuthzRuntimePath) {
+            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o", "");
+        }
+
+        return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
     }
 
     /**
@@ -85,7 +96,7 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHostforFG(enforceOrgPath?: boolean): string {
-        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+        if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
             || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
             return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
         } else {
@@ -137,6 +148,7 @@ export class Config {
             extensions: window[ "AppUtils" ]?.getConfig()?.extensions,
             idpConfigs: window[ "AppUtils" ]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window[ "AppUtils" ]?.getConfig()?.loginCallbackURL,
+            organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
             serverHost: window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window[ "AppUtils" ]?.getConfig()?.serverOrigin,
             superTenant: window[ "AppUtils" ]?.getConfig()?.superTenant,
@@ -210,9 +222,10 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
+            ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getBrandingResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getBrandingResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
@@ -231,14 +244,15 @@ export class Config {
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
-            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
-            saml2Meta: `${ this.getDeploymentConfig()?.serverHost }/identity/metadata/saml2`,
-            wellKnown: `${ this.getDeploymentConfig()?.serverHost }/oauth2/token/.well-known/openid-configuration`
+            saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
+            wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
         };
     }
 
@@ -258,6 +272,12 @@ export class Config {
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
+            cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
+            emailTemplates: {
+                defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
+                defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
+            },
+            enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
@@ -277,10 +297,14 @@ export class Config {
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
             isLeftNavigationCategorized: window[ "AppUtils" ]?.getConfig()?.ui?.isLeftNavigationCategorized,
             isMarketingConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isMarketingConsentBannerEnabled,
+            isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isRequestPathAuthenticationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isRequestPathAuthenticationEnabled,
+            isSAASDeployment: window[ "AppUtils" ]?.getConfig()?.ui?.isSAASDeployment,
             isSignatureValidationCertificateAliasEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isSignatureValidationCertificateAliasEnabled,
+            isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
+            legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,

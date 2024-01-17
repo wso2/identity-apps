@@ -46,6 +46,7 @@
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
     String spId = request.getParameter("spId");
+    String sp = Encode.forJava(request.getParameter("sp"));
     boolean passwordExpired = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("passwordExpired"));
     String tenantDomainFromQuery = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     String ASGARDEO_USERSTORE = "ASGARDEO-USER";
@@ -66,8 +67,16 @@
     // Get validation configuration.
     ValidationConfigurationRetrievalClient validationConfigurationRetrievalClient = new ValidationConfigurationRetrievalClient();
     JSONObject passwordConfig = null;
+    /*
+     This variable exists for backward compatibility.If isPasswordInputValidationEnabled is true, the password 
+     validation will be done via the new input validation listener. Otherwise, it will be done via the old password
+     policy validation handler.
+    */
+    Boolean isPasswordInputValidationEnabled = Boolean.parseBoolean(getServletContext().getInitParameter("isPasswordInputValidationEnabled"));
     try {
-        passwordConfig = validationConfigurationRetrievalClient.getPasswordConfiguration(tenantDomain);
+        if (isPasswordInputValidationEnabled){
+            passwordConfig = validationConfigurationRetrievalClient.getPasswordConfiguration(tenantDomain);
+        }
     } catch (Exception e) {
         passwordConfig = null;
     }
@@ -211,6 +220,13 @@
                             </div>
                             <%
                                 }
+                                if (StringUtils.isNotBlank(sp)) {
+                            %>
+                            <div>
+                                <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(sp) %>"/>
+                            </div>
+                            <%
+                                }
                                 if (StringUtils.isNotBlank(userStoreDomain)) {
                             %>
                             <div>
@@ -316,65 +332,69 @@
             var numbers = /[0-9]/g;
             var specialChr = /[!#$%&'()*+,\-\.\/:;<=>?@[\]^_{|}~]/g;
             var consecutiveChr = /([^])\1+/g;
+            const isPasswordInputValidationEnabled = <%=isPasswordInputValidationEnabled%>;
 
-            if (!passwordConfig) {
-                passwordConfig = {
-                    "minLength": 8,
-                    "maxLength": 30,
-                    "minNumber": 1,
-                    "minUpperCase": 1,
-                    "minLowerCase": 1,
-                    "minSpecialChr": 1
+            if (isPasswordInputValidationEnabled) {
+
+                if (!passwordConfig) {
+                    passwordConfig = {
+                        "minLength": 8,
+                        "maxLength": 30,
+                        "minNumber": 1,
+                        "minUpperCase": 1,
+                        "minLowerCase": 1,
+                        "minSpecialChr": 1
+                    }
                 }
-            }
 
-            if (passwordConfig.minLength> 0 || passwordConfig.maxLength > 0) {
-                document.getElementById("length").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>' +
-                    " " + (passwordConfig.minLength ?? 8) +
-                " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +
+                if (passwordConfig.minLength > 0 || passwordConfig.maxLength > 0) {
+                    document.getElementById("length").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>' +
+                        " " + (passwordConfig.minLength ?? 8) +
+                        " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +
                         " " + (passwordConfig.maxLength ?? 30) + " " +
-                '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters")%>';
-                $("#length-block").css("display", "block");
-            }
-            if (passwordConfig.minNumber > 0) {
-                document.getElementById("number").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                    + " " + passwordConfig.minNumber + " "
-                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "numbers")%>';
-                $("#number-block").css("display", "block");
-            }
-            if ((passwordConfig.minUpperCase > 0) || passwordConfig.minLowerCase > 0) {
-                let cases = [];
-                if (passwordConfig.minUpperCase > 0) {
-                    cases.push(passwordConfig.minUpperCase + " "
-                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "uppercase")%>');
+                        '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters")%>';
+                    $("#length-block").css("display", "block");
                 }
-                if (passwordConfig.minLowerCase > 0) {
-                    cases.push(passwordConfig.minLowerCase + " "
-                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lowercase")%>');
+                if (passwordConfig.minNumber > 0) {
+                    document.getElementById("number").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                        + " " + passwordConfig.minNumber + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "numbers")%>';
+                    $("#number-block").css("display", "block");
                 }
-                document.getElementById("case").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                    + " " + (cases.length > 1
-                        ? cases.join(" " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +  " ")
-                        : cases[0]) + " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "character.s")%>';
-                $("#case-block").css("display", "block");
-            }
-            if (passwordConfig.minSpecialChr > 0) {
-                document.getElementById("special-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                    + " " + passwordConfig.minSpecialChr + " "
-                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "special.characters")%>';
-                $("#special-chr-block").css("display", "block");
-            }
-            if (passwordConfig.minUniqueChr > 0) {
-                document.getElementById("unique-chr").innerHTML =' <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                    + " " + passwordConfig.minUniqueChr + " "
-                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "unique.characters")%>';
-                $("#unique-chr-block").css("display", "block");
-            }
-            if (passwordConfig.maxConsecutiveChr > 0) {
-                document.getElementById("repeated-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.more.than")%>'
-                    + " " + passwordConfig.maxConsecutiveChr + " "
-                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "repeated.characters")%>';
-                $("#repeated-chr-block").css("display", "block");
+                if ((passwordConfig.minUpperCase > 0) || passwordConfig.minLowerCase > 0) {
+                    let cases = [];
+                    if (passwordConfig.minUpperCase > 0) {
+                        cases.push(passwordConfig.minUpperCase + " "
+                            + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "uppercase")%>');
+                    }
+                    if (passwordConfig.minLowerCase > 0) {
+                        cases.push(passwordConfig.minLowerCase + " "
+                            + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lowercase")%>');
+                    }
+                    document.getElementById("case").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                        + " " + (cases.length > 1
+                            ? cases.join(" " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' + " ")
+                            : cases[0]) + " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "character.s")%>';
+                    $("#case-block").css("display", "block");
+                }
+                if (passwordConfig.minSpecialChr > 0) {
+                    document.getElementById("special-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                        + " " + passwordConfig.minSpecialChr + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "special.characters")%>';
+                    $("#special-chr-block").css("display", "block");
+                }
+                if (passwordConfig.minUniqueChr > 0) {
+                    document.getElementById("unique-chr").innerHTML = ' <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                        + " " + passwordConfig.minUniqueChr + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "unique.characters")%>';
+                    $("#unique-chr-block").css("display", "block");
+                }
+                if (passwordConfig.maxConsecutiveChr > 0) {
+                    document.getElementById("repeated-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.more.than")%>'
+                        + " " + passwordConfig.maxConsecutiveChr + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "repeated.characters")%>';
+                    $("#repeated-chr-block").css("display", "block");
+                }
             }
 
             $(document).ready(function () {
@@ -436,6 +456,10 @@
              * Util function to validate password
              */
             function validatePassword() {
+                
+                if (!isPasswordInputValidationEnabled){
+                    return;
+                }
 
                 $("#reset-password-container").removeClass("error");
 
@@ -520,9 +544,23 @@
             }
 
             /**
-             * Function to enable cross marks on unmet criteria when submitting.
+             * Function to enable cross-marks on unmet criteria when submitting. When isPasswordInputValidationEnabled 
+             * is false, only the basic password validation will be performed.
              */
             function passwordSubmitValidation() {
+                
+                if (!isPasswordInputValidationEnabled){
+                    const errorMsg = $("#error-msg");
+                    if (!passwordField.val() && passwordField.val().length === 0) {
+                        errorMsg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Password.cannot.be.empty")%>");
+                        errorMsg.show();
+                        $("html, body").animate({scrollTop: errorMsg.offset().top}, 'slow');
+                        return false;
+                    }
+
+                    return passwordField.val() === passwordConfirmField.val();
+                }
 
                 var validPassword = true;
 
@@ -555,6 +593,10 @@
             }
 
             function displayPasswordCross() {
+                
+                if (!isPasswordInputValidationEnabled){
+                    return;
+                }
                 var displayError = false;
 
                 $("#reset-password-container").removeClass("error");

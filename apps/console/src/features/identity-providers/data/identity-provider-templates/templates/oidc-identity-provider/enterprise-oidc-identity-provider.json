@@ -6,6 +6,8 @@
     "id": "enterprise-oidc-idp",
     "tags": [ "OIDC" ],
     "idp": {
+        "alias": "",
+        "idpIssuerName": "",
         "certificate": {},
         "claims": {
             "provisioningClaims": [],

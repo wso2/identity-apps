@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,11 +26,16 @@ import {
 } from "../../../features/applications/components/settings";
 import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
 import { FeatureConfigInterface } from "../../../features/core";
+import { OIDCSDKMeta } from "../../application-templates/templates/oidc-web-application/models";
+import { SAMLSDKMeta } from "../../application-templates/templates/saml-web-application/models";
+import { SDKMetaInterface } from "../../application-templates/templates/single-page-application/models";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showMyAccount: boolean;
+        showMyAccountStatus: boolean;
+        showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };
@@ -43,9 +48,10 @@ export interface ApplicationConfig {
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
+            showMandateLinkedLocalAccount: boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
-            showUseMappedLocalSubject: boolean;
+            showValidateLinkedLocalAccount: boolean;
             showSubjectAttribute: boolean;
         };
         attributeSelection: {
@@ -71,6 +77,7 @@ export interface ApplicationConfig {
         getTabExtensions: (
             props: Record<string, unknown>,
             features: FeatureConfigInterface,
+            isReadOnly?: boolean,
             tenantDomain?: string
         ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
@@ -98,8 +105,8 @@ export interface ApplicationConfig {
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string,
-            templateId: string,
-            customApplicationTemplateId: string
+            templateId?: string,
+            customApplicationTemplateId?: string
         ) => number
     };
     inboundOIDCForm: {
@@ -129,11 +136,11 @@ export interface ApplicationConfig {
     };
     signInMethod: {
         authenticatorSelection: {
-            customAuthenticatorAdditionValidation(
+            customAuthenticatorAdditionValidation ?: (
                 authenticatorID: string,
                 stepIndex: number,
                 dispatch: Dispatch
-            ): boolean;
+            ) => boolean;
             messages: {
                 secondFactorDisabled: ReactNode;
                 secondFactorDisabledInFirstStep: ReactNode;
@@ -147,6 +154,7 @@ export interface ApplicationConfig {
         windows: boolean;
         custom: boolean;
         mobile: boolean;
+        m2m: boolean;
     };
     customApplication: {
         allowedProtocolTypes: string[];
@@ -154,4 +162,9 @@ export interface ApplicationConfig {
     };
     excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;
+    quickstart: {
+        oidcWeb: OIDCSDKMeta;
+        samlWeb: SAMLSDKMeta;
+        spa: SDKMetaInterface
+    };
 }

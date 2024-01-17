@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -246,9 +246,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const {
         data: serverConfigs,
         error: serverConfigsFetchRequestError
-    } = useServerConfigs(
-        saasFeatureStatus === FeatureStatus.ENABLED
-    );
+    } = useServerConfigs();
 
     /**
      * Handles the invitation status option changes.
@@ -580,7 +578,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
          * Checks whether administrator role is present in the user.
          */
         const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user.roles.some((role: UserRoleInterface) => 
+            return user?.roles?.some((role: UserRoleInterface) => 
                 role.display === administratorConfig.adminRoleName
             );
         };
@@ -1411,6 +1409,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     rolesList={ rolesList }
                     emailVerificationEnabled={ false }
                     isAdminUser={ true }
+                    defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
                 />
             );
         }

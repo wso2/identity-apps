@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,15 +32,16 @@ import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/rea
 import { useOIDCScopesList } from "apps/console/src/features/oidc-scopes/api/oidc-scopes";
 import {
     OIDCScopesClaimsListInterface,
-    OIDCScopesListInterface 
+    OIDCScopesListInterface
 } from "apps/console/src/features/oidc-scopes/models/oidc-scopes";
+import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
@@ -50,16 +51,18 @@ import { AccessControlConstants } from "../../../../access-control/constants/acc
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
-import { updateClaimConfiguration } from "../../../api/";
+import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     InboundProtocolListItemInterface,
+    OIDCDataInterface,
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface
+    SubjectConfigInterface,
+    SupportedAuthProtocolTypes
 } from "../../../models";
 
 export interface SelectedDialectInterface {
@@ -91,6 +94,7 @@ export interface ExtendedExternalClaimInterface extends ExternalClaim {
 export interface AdvanceSettingsSubmissionInterface {
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
+    oidc: OIDCDataInterface
 }
 
 interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
@@ -123,6 +127,10 @@ interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInt
      * Template ID of the application.
      */
     applicationTemplateId?: string;
+    /**
+     * Protocol configurations.
+     */
+    inboundProtocolConfig: any;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -182,6 +190,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         onlyOIDCConfigured,
         onUpdate,
         readOnly,
+        inboundProtocolConfig,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -199,7 +208,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const [ scopes, setScopes ] = useState<OIDCScopesListInterface[]>(null);
     const [ externalClaimsGroupedByScopes, setExternalClaimsGroupedByScopes ]
         = useState<OIDCScopesClaimsListInterface[]>(null);
-    const [ unfilteredExternalClaimsGroupedByScopes, setUnfilteredExternalClaimsGroupedByScopes ] 
+    const [ unfilteredExternalClaimsGroupedByScopes, setUnfilteredExternalClaimsGroupedByScopes ]
         = useState<OIDCScopesClaimsListInterface[]>([]);
 
     // Manage available claims in local and external dialects.
@@ -235,7 +244,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const {
         data: OIDCScopeList,
-        isLoading: isOIDCScopeListLoading
+        isLoading: isOIDCScopeListLoading,
+        isValidating: isOIDCScopeListValidating
     } = useOIDCScopesList();
 
     const [ duplicatedMappingValues,setDuplicatedMappingValues ] = useState<Array<string>>([]);
@@ -269,7 +279,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     }, [ claims, unfilteredExternalClaims ]);
 
     useEffect(() => {
-        if (!isOIDCScopeListLoading) {
+        if (!isOIDCScopeListLoading && !isOIDCScopeListValidating) {
             setScopes(OIDCScopeList);
             getClaims();
             getAllDialects();
@@ -277,7 +287,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
             return;
         }
-    }, [ isOIDCScopeListLoading, OIDCScopeList ]);
+    }, [ isOIDCScopeListLoading, isOIDCScopeListValidating, OIDCScopeList ]);
 
     useEffect(() => {
         getExternalClaimsGroupedByScopes();
@@ -542,7 +552,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     }
                 };
 
-                if (!(claimMappingList.some((claimMapping: ExtendedClaimMappingInterface) => 
+                if (!(claimMappingList.some((claimMapping: ExtendedClaimMappingInterface) =>
                     claimMapping.localClaim.uri === claim.claimURI))) {
                     claimMappingList.push(newClaimMapping);
                 }
@@ -641,7 +651,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      * @param claimURI - URI of the mapping updated
      * @param mappedValue - mapped claims value
      * @param isUpdatingOnInputChange - whether the updating happens on mapping attribute input change
-     * 
+     *
      */
     const updateClaimMapping = (claimURI: string, mappedValue: string, isUpdatingOnInputChange?: boolean) => {
         const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
@@ -655,7 +665,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }
 
             /**
-             * Detect duplicate values only when updating the mapping attributes. 
+             * Detect duplicate values only when updating the mapping attributes.
              * This check will not be executed on initial loading of mapping attributes.
              */
             if (isUpdatingOnInputChange) {
@@ -667,7 +677,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }
         });
 
-        /** 
+        /**
          * Update state with duplicate values for mapping attributes.
          * This state is passed to children components for identifying duplicate values.
          */
@@ -853,8 +863,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 }
             });
             if (!usernameAdded) {
-                const allExternalClaims: ExtendedExternalClaimInterface[] = [ 
-                    ...externalClaims, ...selectedExternalClaims 
+                const allExternalClaims: ExtendedExternalClaimInterface[] = [
+                    ...externalClaims, ...selectedExternalClaims
                 ];
                 const userclaim: ExtendedExternalClaimInterface = allExternalClaims.filter(
                     (element: ExtendedExternalClaimInterface) =>
@@ -1005,7 +1015,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             mandatory: claim.mandatory
                         };
 
-                        if (!RequestedClaims.find((claimRequested: RequestedClaimConfigurationInterface) => 
+                        if (!RequestedClaims.find((claimRequested: RequestedClaimConfigurationInterface) =>
                             claimRequested.claim.uri === requestedClaim.claim.uri)) {
                             RequestedClaims.push(requestedClaim);
                         }
@@ -1015,7 +1025,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         if (claimMappingFinal
-            .findIndex((mapping: ExtendedClaimMappingInterface) => 
+            .findIndex((mapping: ExtendedClaimMappingInterface) =>
                 mapping.localClaim.uri === DefaultSubjectAttribute) < 0
             && subjectClaim && subjectClaim.toString() === DefaultSubjectAttribute) {
             isSubjectSelectedWithoutMapping = true;
@@ -1051,10 +1061,12 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     },
                     includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
                     includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
+                    mappedLocalSubjectMandatory: advanceSettingValues?.subject.mappedLocalSubjectMandatory,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 }
             }
         };
+        const oidcSubmitValue: OIDCDataInterface = advanceSettingValues?.oidc;
 
         if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;
@@ -1070,25 +1082,48 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
 
+        /**
+         * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
+         * update failure alert.
+         */
+        const onClaimConfigUpdateError = () => {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateClaimConfig" +
+                    ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications.updateClaimConfig.genericError" +
+                    ".message")
+            }));
+        };
+
+        /**
+         * Handles the successful claim configuration update scenario by executing the `onUpdate` callback and
+         * displaying a success alert.
+         */
+        const onSuccessfulClaimConfigUpdate = () => {
+            onUpdate(appId);
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
+                    ".description"),
+                level: AlertLevels.SUCCESS,
+                message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
+            }));
+        };
+
+        const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) =>
+            protocol.type === SupportedAuthProtocolTypes.OAUTH2);
+
         updateClaimConfiguration(appId, submitValue)
             .then(() => {
-                onUpdate(appId);
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
-                        ".description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
-                }));
+                if (isProtocolOAuth) {
+                    updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC)
+                        .then(onSuccessfulClaimConfigUpdate)
+                        .catch(onClaimConfigUpdateError);
+                } else {
+                    onSuccessfulClaimConfigUpdate();
+                }
             })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateClaimConfig" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateClaimConfig.genericError" +
-                        ".message")
-                }));
-            });
+            .catch(onClaimConfigUpdateError);
     };
 
     /**
@@ -1120,17 +1155,17 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                 {
-                                    onlyOIDCConfigured 
+                                    onlyOIDCConfigured
                                         ? (
                                             <AttributeSelectionOIDC
                                                 claims={ claims }
                                                 externalClaims={ externalClaims }
                                                 externalClaimsGroupedByScopes = { externalClaimsGroupedByScopes }
                                                 setExternalClaimsGroupedByScopes = { setExternalClaimsGroupedByScopes }
-                                                unfilteredExternalClaimsGroupedByScopes = { 
-                                                    unfilteredExternalClaimsGroupedByScopes 
+                                                unfilteredExternalClaimsGroupedByScopes = {
+                                                    unfilteredExternalClaimsGroupedByScopes
                                                 }
-                                                setUnfilteredExternalClaimsGroupedByScopes = { 
+                                                setUnfilteredExternalClaimsGroupedByScopes = {
                                                     setUnfilteredExternalClaimsGroupedByScopes
                                                 }
                                                 setExternalClaims={ setExternalClaims }
@@ -1221,6 +1256,14 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         technology={ technology }
                                         applicationTemplateId={ applicationTemplateId }
                                         onlyOIDCConfigured={ onlyOIDCConfigured }
+                                        oidcInitialValues={
+                                            get(
+                                                inboundProtocolConfig,
+                                                SupportedAuthProtocolTypes.OIDC
+                                            )
+                                                ? inboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
+                                                : undefined
+                                        }
                                         data-testid={ `${ componentId }-advanced-attribute-settings-form` }
                                     />
                                 </Grid.Column>
@@ -1259,7 +1302,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                     }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
-                            { applicationConfig.attributeSettings.roleMapping && (
+                            { !readOnly && applicationConfig.attributeSettings.roleMapping && (
                                 <RoleMapping
                                     onChange={ setRoleMapping }
                                     initialMappings={ claimConfigurations?.role?.mappings }
@@ -1278,6 +1321,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                     <Show
                                         when={ AccessControlConstants.APPLICATION_EDIT }
                                     >
+                                        <Divider hidden/>
                                         <Grid.Row>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                 <Button

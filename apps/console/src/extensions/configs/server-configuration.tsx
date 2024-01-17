@@ -28,8 +28,10 @@ import {
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
     ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
 } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
@@ -46,51 +48,89 @@ import { generatePasswordHistoryCount } from "../components/password-history-cou
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
-    autoEnableConnectorToggleProperty: true,
+    autoEnableConnectorToggleProperty: false,
+    backButtonDisabledConnectorIDs: [
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+    ],
+    connectorCategoriesToIgnore: [
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
+    ],
     connectorCategoriesToShow: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
-        ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
+        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
     ],
     connectorPropertiesToShow: [ "all" ],
-    connectorToggleName: {},
-    connectorsToHide: [
-        "analytics-engine",
-        "elastic-analytics-engine",
-        "pii-controller"
+    connectorStatusViewDisabledConnectorIDs: [
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
-    connectorsToShow: [ "all" ],
+    connectorToggleName: {
+        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        "account-recovery-username": ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
+        "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
+        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+    },
+    connectorsToHide: [
+        ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
+        ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
+        ServerConfigurationsConstants.USERNAME_VALIDATION
+    ],
+    connectorsToShow: [
+        "account-recovery",
+        "self-sign-up",
+        "user-email-verification"
+    ],
+    customConnectors: [
+        ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
+        ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
+        ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID
+    ],
     dynamicConnectors: true,
+    extendedConnectors: [],
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,
         passwordExpiryEnabled: boolean,
         setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly: boolean = false
     ): ReactElement => {
         return generatePasswordExpiry(
             componentId,
             passwordExpiryEnabled,
             setPasswordExpiryEnabled,
-            t
+            t,
+            isReadOnly
         );
     },
     passwordHistoryCountComponent: (
         componentId: string,
         passwordHistoryEnabled: boolean,
         setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly: boolean = false
     ): ReactElement => {
         return generatePasswordHistoryCount(
             componentId,
             passwordHistoryEnabled,
             setPasswordHistoryEnabled,
-            t
+            t,
+            isReadOnly
         );
     },
+    predefinedConnectorCategories: [
+        "UGFzc3dvcmQgUG9saWNpZXM",
+        "VXNlciBPbmJvYXJkaW5n",
+        "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
+        "T3RoZXIgU2V0dGluZ3M",
+        "QWNjb3VudCBNYW5hZ2VtZW50",
+        "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
+    ],
     processInitialValues: (
         initialValues: ValidationFormInterface,
         passwordHistoryCount: GovernanceConnectorInterface,
@@ -194,8 +234,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
 
         return updatePasswordExpiryProperties(passwordExpiryData);
     },
-    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {   
-        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));     
+    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface, isLegacy: boolean) => {
+        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
         const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
@@ -212,6 +252,43 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         if (passwordHistoryCountEnabled && passwordHistoryCount === 0) {
             passwordHistoryCount = 1;
         }
+
+        const legacyPasswordPoliciesData: {
+            id: string, properties: UpdateGovernanceConnectorConfigPropertyInterface[] } = {
+                id: ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID,
+                properties: [
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE) ]?.toString()
+                    }
+                ]
+            };
 
         const passwordPoliciesData: UpdateMultipleGovernanceConnectorsInterface = {
             connectors: [
@@ -244,6 +321,10 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             ],
             operation: "UPDATE"
         };
+
+        if (isLegacy) {
+            passwordPoliciesData.connectors.push(legacyPasswordPoliciesData);
+        }
 
         return updatePasswordPolicyProperties(passwordPoliciesData);
     },

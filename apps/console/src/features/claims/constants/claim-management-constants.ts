@@ -105,14 +105,11 @@ export class ClaimManagementConstants {
     ];
 
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
-    public static readonly OPENID_MAPPING: string = "http://schema.openid.net/2007/05/claims";
-    public static readonly XMLSOAP_MAPPING: string = "http://schemas.xmlsoap.org/ws/2005/05/identity";
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
     public static readonly AXSCHEMA: string = "axschema";
     public static readonly EIDAS: string = "eidas";
-    public static readonly OPENID: string = "openid";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {
@@ -134,7 +131,7 @@ export class ClaimManagementConstants {
     ];
 
     /**
-     * Display names of User Id & Username to 
+     * Display names of User Id & Username to
      * identify.
      */
     public static readonly USER_ID_CLAIM_URI: string = "http://wso2.org/claims/userid";
@@ -156,4 +153,10 @@ export class ClaimManagementConstants {
      * The error code that is returned when there is no item in the list
      */
      public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
+
+     /**
+     * The character length of the regex field.
+     */
+     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
+     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
 }

@@ -99,6 +99,7 @@ import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/imag
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/secret-grey.svg";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as DarkModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
@@ -141,11 +142,12 @@ import {
 } from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
 import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
 import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
+import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
-import OpenidLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
+import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
 import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
@@ -184,15 +186,16 @@ interface GetTechnologyLogosInterface {
     javascript: FunctionComponent | ReactNode,
     macos: string,
     nodejs: FunctionComponent | ReactNode,
+    oauth2: string,
     oidc: string,
     openidconnect: string,
-    openid: string,
     python: FunctionComponent | ReactNode,
     react: FunctionComponent | ReactNode,
     saml: string,
     scim: string,
     vue: FunctionComponent | ReactNode,
-    windows: FunctionComponent | ReactNode
+    windows: FunctionComponent | ReactNode,
+    wsFed: FunctionComponent | ReactNode,
 }
 
 /**
@@ -217,15 +220,16 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         javascript: JavaScriptLogo,
         macos: MacOSLogo,
         nodejs: NodeJSLogo,
+        oauth2: OAuth2Logo,
         oidc: OIDCLogo,
-        openid: OpenidLogo,
         openidconnect: OIDCFullLogo,
         python: PythonLogo,
         react: ReactLogo,
         saml: SamlLogo,
         scim: SCIMLogo,
         vue: VueLogo,
-        windows: WindowsLogo
+        windows: WindowsLogo,
+        wsFed: WSFedLogo
     };
 };
 
@@ -244,6 +248,7 @@ export type GetSidePanelIconsInterface = {
     connections: FunctionComponent | ReactNode,
     connectors: Record<string, FunctionComponent | ReactNode>,
     emailTemplates: FunctionComponent | ReactNode,
+    gears: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
@@ -259,6 +264,7 @@ export type GetSidePanelIconsInterface = {
     scopes: FunctionComponent | ReactNode,
     secrets: FunctionComponent | ReactNode,
     serverConfigurations: FunctionComponent | ReactNode,
+    sms: FunctionComponent | ReactNode,
     userStore: FunctionComponent | ReactNode,
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode
@@ -292,6 +298,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             default: PlugIcon
         },
         emailTemplates: EmailIcon,
+        gears: GearsIcon,
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,
@@ -308,6 +315,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,
         serverConfigurations: GearsIcon,
+        sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon
     };

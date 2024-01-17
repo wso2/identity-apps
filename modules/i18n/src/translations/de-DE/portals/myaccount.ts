@@ -802,78 +802,78 @@ export const myAccount: MyAccountNS = {
                 "remaining": "Verbleibend"
             },
             "fido": {
-                "description": "Sie können einen FIDO2-Sicherheitsschlüssel oder biometrische Daten in Ihrem Gerät verwenden, um sich bei Ihrem Konto anzumelden.",
+                "description": "Sie können einen <1>Passkey</1>, <1>FIDO-Sicherheitsschlüssel</1> oder <1>Biometrische Daten</1> in Ihrem Gerät verwenden, um sich bei Ihrem Konto anzumelden.",
                 "form": {
-                    "label": "Sicherheitsschlüssel/biometrisch",
-                    "placeholder": "Geben Sie einen Namen für den Sicherheitsschlüssel/die Biometrie ein",
-                    "remove": "Entfernen Sie den Sicherheitsschlüssel/die Biometrie",
-                    "required": "Bitte geben Sie einen Namen für Ihren Sicherheitsschlüssel/Ihre Biometrie ein"
+                    "label": "Passkey",
+                    "placeholder": "Geben Sie einen Namen für den Passkey ein",
+                    "remove": "Entfernen Sie den Passkey",
+                    "required": "Bitte geben Sie einen Namen für Ihren Passkey ein"
                 },
-                "heading": "Sicherheitsschlüssel/Biometrie",
+                "heading": "Passkey",
                 "modals": {
                     "deleteConfirmation": {
                         "assertionHint": "Bitte bestätigen Sie Ihre Aktion.",
-                        "content": "Diese Aktion ist irreversibel und löscht den Sicherheitsschlüssel/die Biometrie dauerhaft.",
-                        "description": "Wenn Sie diesen Sicherheitsschlüssel/ diese biometrischen Daten löschen, können Sie sich möglicherweise nicht mehr bei Ihrem Konto anmelden. Bitte gehen Sie vorsichtig vor.",
+                        "content": "Diese Aktion ist irreversibel und löscht den Passkey dauerhaft.",
+                        "description": "Wenn Sie diesen Passkey löschen, können Sie sich möglicherweise nicht mehr bei Ihrem Konto anmelden. Bitte gehen Sie vorsichtig vor.",
                         "heading": "Bist du sicher?"
                     },
                     "deviceRegistrationErrorModal": {
-                        "description": "Die Registrierung des Sicherheitsschlüssels/der biometrischen Daten wurde unterbrochen. Wenn dies nicht beabsichtigt war, können Sie den Flow wiederholen.",
-                        "heading": "Sicherheitsschlüssel/biometrische Registrierung fehlgeschlagen",
-                        "tryWithOlderDevice": "Sie können es auch mit einem älteren Sicherheitsschlüssel/einer älteren Biometrie versuchen."
+                        "description": "Die Passkey-Registrierung wurde unterbrochen. Wenn dies nicht beabsichtigt war, können Sie den Ablauf wiederholen.",
+                        "heading": "Die Registrierung des Passkeys ist fehlgeschlagen",
+                        "tryWithOlderDevice": "Sie können es auch mit einem älteren Passkey noch einmal versuchen."
                     }
                 },
                 "notifications": {
                     "removeDevice": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "Beim Entfernen des Sicherheitsschlüssels/der biometrischen Daten ist ein Fehler aufgetreten"
+                            "message": "Beim Entfernen des Passkeys ist ein Fehler aufgetreten"
                         },
                         "genericError": {
-                            "description": "Beim Entfernen des Sicherheitsschlüssels/der biometrischen Daten ist ein Fehler aufgetreten",
+                            "description": "Beim Entfernen des Passkeys ist ein Fehler aufgetreten",
                             "message": "Etwas ist schief gelaufen"
                         },
                         "success": {
-                            "description": "Der Sicherheitsschlüssel/die Biometrie wurde erfolgreich aus der Liste entfernt",
-                            "message": "Ihr Sicherheitsschlüssel/Ihr biometrischer Schlüssel wurde erfolgreich entfernt"
+                            "description": "Der Passkey wurde erfolgreich aus der Liste entfernt",
+                            "message": "Ihr Passkey wurde erfolgreich entfernt"
                         }
                     },
                     "startFidoFlow": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "Beim Abrufen des Sicherheitsschlüssels/der biometrischen Daten ist ein Fehler aufgetreten"
+                            "message": "Beim Abrufen des Passkeys ist ein Fehler aufgetreten"
                         },
                         "genericError": {
-                            "description": "Beim Abrufen des Sicherheitsschlüssels/der biometrischen Daten ist ein Fehler aufgetreten",
+                            "description": "Beim Abrufen des Passkeys ist ein Fehler aufgetreten",
                             "message": "Etwas ist schief gelaufen"
                         },
                         "success": {
-                            "description": "Der Sicherheitsschlüssel/die Biometrie wurde erfolgreich registriert und Sie können ihn jetzt zur Authentifizierung verwenden.",
-                            "message": "Ihr Sicherheitsschlüssel/Ihr biometrischer Schlüssel wurde erfolgreich registriert"
+                            "description": "Der Passkey wurde erfolgreich registriert und Sie verwenden ihn nun zur Authentifizierung.",
+                            "message": "Ihr Passkey wurde erfolgreich registriert"
                         }
                     },
                     "updateDeviceName": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "Beim Aktualisieren des Sicherheitsschlüssels/Biometrienamens ist ein Fehler aufgetreten"
+                            "message": "Beim Aktualisieren des Passkey-Namens ist ein Fehler aufgetreten"
                         },
                         "genericError": {
-                            "description": "Beim Aktualisieren des Sicherheitsschlüssels/Biometrienamens ist ein Fehler aufgetreten",
+                            "description": "Beim Aktualisieren des Passkey-Namens ist ein Fehler aufgetreten",
                             "message": "Etwas ist schief gelaufen"
                         },
                         "success": {
-                            "description": "Der Name Ihres Sicherheitsschlüssels/Ihrer biometrischen Daten wurde erfolgreich aktualisiert",
-                            "message": "Sicherheitsschlüssel/biometrischer Name erfolgreich aktualisiert"
+                            "description": "Der Name Ihres Passkeys wurde erfolgreich aktualisiert",
+                            "message": "Der Passkey-Name wurde erfolgreich aktualisiert"
                         }
                     }
                 },
-                "tryButton": "Versuchen Sie es mit einem älteren Sicherheitsschlüssel/biometrisch"
+                "tryButton": "Versuchen Sie es mit einem älteren Passkey"
             },
             "smsOtp": {
                 "descriptions": {
                     "hint": "Sie erhalten eine SMS mit einem einmaligen Bestätigungscode"
                 },
-                "heading": "SMS-Nummer",
+                "heading": "Handynummer",
                 "notifications": {
                     "updateMobile": {
                         "error": {
@@ -1587,6 +1587,7 @@ export const myAccount: MyAccountNS = {
     "sections": {
         "accountRecovery": {
             "description": "Verwalten Sie Wiederherstellungsinformationen, mit denen Sie Ihr Passwort wiederherstellen können",
+            "emptyPlaceholderText": "Keine Optionen zur Wiederherstellung von Kontos zur Verfügung stehen",
             "heading": "Konto-Wiederherstellung"
         },
         "changePassword": {

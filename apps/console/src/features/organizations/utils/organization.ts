@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,18 +33,8 @@ export class OrganizationUtils {
      *
      * @returns if selected organization is the Super organization
      */
-    public static isRootOrganization(organization: GenericOrganization): boolean {
-        return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
-    }
-
-    /**
-     * Returns true if the current organization is the root organization.
-     *
-     * @returns if the current organization is the root organization.
-     */
-    public static isCurrentOrganizationRoot(): boolean {
-        return store.getState().organization?.organization?.id
-            === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
+    public static isSuperOrganization(organization: GenericOrganization): boolean {
+        return !organization || organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID;
     }
 
     /**

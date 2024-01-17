@@ -450,6 +450,10 @@ export const extensions: Extensions = {
                         "කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
                 }
             },
+            managementAPI: {
+                header: "කළමනාකරණ API",
+                description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API (root)"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -541,6 +545,10 @@ export const extensions: Extensions = {
                         message: "API සම්පත නිර්මාණය කරන ලදි"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "සංවිධානය API",
+                description: "ඔබේ අනෙකුත් ආයතනවල සම්පත් කළමනාකරණය කිරීමට API"
             },
             table: {
                 name: {
@@ -693,14 +701,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "ප්රදර්ශන නම හිස් විය නොහැක",
                                         label: "ප්රදර්ශන නාමය",
-                                        hint: "Asgardeo හි ඔබගේ API සම්පත හඳුනා ගැනීම සඳහා අර්ථවත් නම.",
+                                        hint: "{{ productName }} හි ඔබගේ API සම්පත හඳුනා ගැනීම සඳහා අර්ථවත් නම.",
                                         placeholder: "වෙන්කරවා ගැනීම සදහා වූ API"
                                     },
                                     identifier: {
                                         emptyValidate: "හඳුනාගැනුම හිස් විය නොහැක",
                                         alreadyExistsError: "හඳුනාගැනුම දැනටමත් සංවිධානය තුළ පවතී.කරුණාකර වෙනත් එකක් තෝරන්න",
                                         invalid: "හඳුනාගැනුමක අවකාශයන් අඩංගු විය නොහැක",
-                                        hint: "අනන්යතාවය ලෙස URI එකක් භාවිතා කිරීම අපි නිර්දේශ කරමු, නමුත් Asgardeo ඔබගේ API වෙත ප්‍රවේශ නොවන බැවින් ඔබට URI ප්‍රසිද්ධ කිරීමට අවශ්‍ය නොවේ. Asgardeo විසින් නිකුත් කරන ලද JWT ටෝකනවල ප්රේක්ෂක(aud) ප්රකාශය ලෙස මෙම හඳුනාගැනීම් අගය භාවිතා කරනු ඇත. <1>මෙම ක්ෂේත්රය අද්විතීය විය යුතුය;මැවූ පසු, එය සංස්කරණය කළ නොහැක.</1>",
+                                        hint: "අනන්යතාවය ලෙස URI එකක් භාවිතා කිරීම අපි නිර්දේශ කරමු, නමුත් {{ productName }} ඔබගේ API වෙත ප්‍රවේශ නොවන බැවින් ඔබට URI ප්‍රසිද්ධ කිරීමට අවශ්‍ය නොවේ. {{ productName }} විසින් නිකුත් කරන ලද JWT ටෝකනවල ප්රේක්ෂක(aud) ප්රකාශය ලෙස මෙම හඳුනාගැනීම් අගය භාවිතා කරනු ඇත. <1>මෙම ක්ෂේත්රය අද්විතීය විය යුතුය;මැවූ පසු, එය සංස්කරණය කළ නොහැක.</1>",
                                         label: "හඳුනාගැනුම",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -714,7 +722,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "බලය පැවරීම",
                             form: {
-                                rbacMessage: "මේ වන විට Asgardeo අවසරය සඳහා Role Based Access Control (RBAC) සදහා පමණක් සීමා වේ.",
+                                rbacMessage: "මේ වන විට {{ productName }} අවසරය සඳහා Role Based Access Control (RBAC) සදහා පමණක් සීමා වේ.",
                                 fields: {
                                     authorize: {
                                         label: "අවසරය අවශ්ය වේ",
@@ -1136,6 +1144,32 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "භූමිකාවන්",
+                        subHeading: "අයදුම්පතේ පවරා ඇති කාර්යභාරය කළමනාකරණය කරන්න.",
+                        roleAudience: "භූමිකාව ප්රේක්ෂකයින්",
+                        organization: "ආයතනය",
+                        application: "අයදුම්පත",
+                        assignedRoles: "පවරා ඇති භූමිකාවන්",
+                        removedRoles: "ඉවත් කරන ලද භූමිකාවන්",
+                        searchPlaceholder: "භූමිකාව අනුව සොයන්න",
+                        switchRoleAudience: {
+                            applicationConfirmationModal: {
+                                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                                content: "ඔබ යෙදීමේ කාර්යභාර ප්රේක්ෂකයින් වෙනස් කරන්නේ නම්, ඇසුරු කිරීම "+
+                                    "සංවිධාන භූමිකාවන් අයදුම්පතෙන් මකා දමනු ඇත. කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+                                header: "භූමිකාව ප්රේක්ෂකයින් යෙදවීමට මාරු කරන්න?",
+                                message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර පවතින භූමිකාවන් ඉවත් කරනු ඇත."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                                content: "ඔබ සංවිධානාත්මක ප්රේක්ෂකයින් වෙනස් කළහොත්, යෙදුම් භූමිකාවන් දැනට "+
+                                    "අයදුම්පත සමඟ සම්බන්ධ වීම ස්ථිරවම මකා දැමෙනු ඇත. කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+                                header: "භූමිකාව ප්රේක්ෂකයින් ලෙස මාරු කරන්න?",
+                                message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර පවතින භූමිකාවන් ස්ථිරවම මකා දමනු ඇත."
+                            }
+                        }
                     }
                 }
             },
@@ -1273,28 +1307,30 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "වලංගු URL එකක් ඇතුලත් කරන්න"
+                                }
+                            },
                             cookiePolicyURL: {
-                                hint:
-                                    "ඔබගේ යෙදුම් භාවිතා කරන සියලුම කුකීස් අඩංගු ලේඛනයකට හෝ පිටුවකට සම්බන්ධ කරන්න. " +
-                                    "සකසා නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
-                                label: "කුකී ප්‍රතිපත්තිය",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                hint: "ඔබගේ යෙදුම් සහ ඒ සෑම එකක්ම භාවිතා කරන සියලුම කුකීස් පිළිබඳ සවිස්තරාත්මක තොරතුරු සහිත ලේඛනයකට හෝ වෙබ් පිටුවකට සම්බන්ධ කරන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
+                                label: "කුකී ප්රතිපත්තිය",
+                                placeholder: "https://myapp.com/{{locale}}/cookie-policy"
                             },
                             privacyPolicyURL: {
-                                hint:
-                                    "ඔබේ සංවිධානයේ යෙදුම් හෝ වෙනත් සේවාවන් භාවිතා කිරීම සඳහා ඔබේ පාරිභෝගික " +
-                                    "පරිශීලකයා එකඟ විය යුතු සහ පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ කරන්න. සකසා " +
-                                    "නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
+                                hint: "ඔබගේ සංවිධානය එකතු කරන ආකාරය, හසුරුවන සහ නරඹන්නන්ගේ දත්ත පවසන පරිදි ප්රකාශයක් හෝ නෛතික ලේඛනයක් සමඟ සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
                                 label: "රහස්යතා ප්රතිපත්තිය",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/{{locale}}/privacy-policy"
+                            },
+                            selfSignUpURL: {
+                                hint: "ඔබේ සංවිධානයේ ස්වයං ලියාපදිංචි වීමේ වෙබ් පිටුවට සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
+                                label: "ස්වයං ලියාපදිංචි වීම",
+                                placeholder: "https://myapp.com/self-signup"
                             },
                             termsOfUseURL: {
-                                hint:
-                                    "ඔබේ සංවිධානය ඔබේ ගනුදෙනුකරුවන්ගේ සහ අමුත්තන්ගේ දත්ත රැස් කරන, හසුරුවන සහ සකසන " +
-                                    "ආකාරය සඳහන් කරන ප්‍රකාශයකට හෝ නීතිමය ලේඛනයකට සබැඳිය. සකසා නොමැති නම්, " +
-                                    "{{ productName }} පෙරනිමි භාවිතා වේ.",
+                                hint: "ඔබේ ආයෝජන යෙදුම් හෝ වෙනත් සේවාවන් භාවිතා කිරීම සඳහා ඔබේ ගනුදෙනුකරුවන් ඊට එකඟ වී පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
                                 label: "සේවා කොන්දේසි",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
                         heading: "සබැඳි"
@@ -1326,7 +1362,7 @@ export const extensions: Extensions = {
                                         hint: "වඩා හොඳ කාර්ය සාධනයක් සඳහා අවම වශයෙන් <1>1920x1080 පික්සල</1> සහ"
                                             + " <3>1 mb</3> ප්‍රමාණයෙන් අඩු රූපයක් භාවිතා කරන්න.",
                                         label: "පැති රූප URL",
-                                        placeholder: "https://asgardeo.io/placeholder.jpeg"
+                                        placeholder: "https://myapp.com/placeholder.jpeg"
                                     }
                                 },
                                 heading: "පැති රූපය",
@@ -1606,7 +1642,7 @@ export const extensions: Extensions = {
                                             "<1>16x16 පික්සල</1> හෝ ඊට වැඩි රූපයක් භාවිත කරන්න. සකසා නොමැති නම්, " +
                                             "{{ productName }} පෙරනිමි භාවිතා වේ.",
                                         label: "Favicon URL",
-                                        placeholder: "https://asgardeo.io/favicon.ico"
+                                        placeholder: "https://myapp.com/favicon.ico"
                                     }
                                 },
                                 heading: "Favicon",
@@ -1630,7 +1666,7 @@ export const extensions: Extensions = {
                                             "{{ productName }} පෙරනිමි " +
                                             "භාවිතා වේ.",
                                         label: "ලාංඡනයේ URL",
-                                        placeholder: "https://asgardeo.io/logo.png"
+                                        placeholder: "https://myapp.com/logo.png"
                                     }
                                 },
                                 heading: "ලාංඡනය",
@@ -1651,7 +1687,7 @@ export const extensions: Extensions = {
                                     url: {
                                         hint: "අවම වශයෙන් <1>250x50 pixels</1> සහ වඩා හොඳ කාර්ය සාධනයක් සඳහා ප්රමාණයේ සහ ප්රමාණයෙන් <3>1mb</3> ට වඩා අඩු රූපයක් භාවිතා කරන්න.සකසා නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
                                         label: "මගේ ගිණුම ලාංඡනය URL",
-                                        placeholder: "https://myaccount.asgardeo.io/logo.png"
+                                        placeholder: "https://myaccount.myapp.com/logo.png"
                                     }
                                 },
                                 heading: "මගේ ගිණුම් ලාංඡනය",
@@ -1786,6 +1822,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "{{ tenant }} සඳහා සන්නම් මනාපයන් සාර්ථකව ප්‍රතිවර්තනය කරන ලදී.",
                         message: "ප්‍රතිවර්තනය සාර්ථකයි"
+                    },
+                    successWaiting: {
+                        description: "{{ tenant }} සඳහා වෙළඳනාම මනාපයන් ආපසු හැරීම."+
+                            "වෙනස්කම් පිළිබිඹු වන වෙනස්කම් සඳහා ටික කාලයක් ගතවනු ඇත.",
+                        message: "සන්නම් මනාප ආපසු හැරවීම"
+                    },
+                    successWaitingAlert: {
+                        description: "{{{ tenant }} සඳහා වෙළඳනාම මනාපයන් ආපසු හැරීම."+
+                            "පිළිබිඹු කළ යුතු වෙනස්කම් සඳහා මිනිත්තු 10 ක් පමණ ගතවිය හැකි බව සලකන්න.",
+                        message: "සන්නම් මනාප ආපසු හැරවීම"
                     }
                 },
                 fetch: {
@@ -1819,6 +1865,16 @@ export const extensions: Extensions = {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                     },
+                    successWaiting: {
+                        description: "{{ tenant }} සඳහා වෙළඳ නාමකරණ මනාප යාවත්කාලීන කිරීම."+
+                            "වෙනස්කම් පිළිබිඹු වන වෙනස්කම් සඳහා ටික කාලයක් ගතවනු ඇත.",
+                        message: "සන්නම් මනාප යාවත්කාලීන කිරීම"
+                    },
+                    successWaitingAlert: {
+                        description: "{{ tenant }} සඳහා වෙළඳ නාමකරණ මනාප යාවත්කාලීන කිරීම."+
+                            "පිළිබිඹු කළ යුතු වෙනස්කම් සඳහා මිනිත්තු 10 ක් පමණ ගතවිය හැකි බව සලකන්න.",
+                        message: "සන්නම් මනාප යාවත්කාලීන කිරීම"
+                    },
                     tenantMismatch: {
                         description: "{{ tenant }} සඳහා සන්නම් මනාප යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
                         message: "යාවත්කාලීන දෝෂයක්"
@@ -1828,6 +1884,10 @@ export const extensions: Extensions = {
             pageHeader: {
                 description: "ඔබේ සංවිධානයේ යෙදුම්වල පාරිභෝගිකයින්ට මුහුණ දෙන පරිශීලක අතුරුමුහුණත් අභිරුචිකරණය කරන්න.",
                 title: "වෙළඳ නාමය අභිරුචිකරණය"
+            },
+            pageResolution: {
+                hint: "පෙරදසුන් කොටසේ පිටු සැබෑ පිටුවට වඩා වෙනස් ලෙස පෙනෙනු ඇත. " +
+                    "මෙම ගැටළුව විසඳීමට කරුණාකර ඔබගේ තිරය ඉහළ විභේදනයකට සකසන්න."
             },
             publishToggle: {
                 hint: "වෙනස්කම් සක්රිය / අක්රිය කරන්න",
@@ -1908,13 +1968,15 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "පණිවුඩකරණ සැපයුම්කරු වින්යාස කරන්න",
-            heading: "ඊමේල් සපයන්නා",
+            configureEmailTemplates: "විද්‍යුත් තැපැල් සැකිලි වින්‍යාස කරන්න",
+            heading: "අභිරුචි ඊමේල් සපයන්නා",
             subHeading: "ඔබගේම ඊමේල් ලිපිනය සමඟ තැපැල් යැවීමට අභිරුචි SMTP සේවාදායකයන් වින්‍යාස කරන්න.",
-            description: "ඔබගේ SMTP සේවාදායකයට අනුව පහත සැකසුම් වින්‍යාස කරන්න.",
+            description: "ඔබගේ SMTP සේවාදායකයට අනුව විද්‍යුත් තැපැල් සැපයුම්කරු සැකසුම් වින්‍යාස කරන්න.",
+            note: "සුපිරි සංවිධානය සඳහා ඊමේල් සපයන්නා <1>deployment.toml</1> හරහා පමණක් වින්‍යාස කළ හැක.",
             info: "ඔබට <1>ඊමේල් සැකිලි</1> භාවිතයෙන් ඊමේල් අන්තර්ගතය අභිරුචිකරණය කළ හැක.",
             updateButton: "යාවත්කාලීන කරන්න",
             sendTestMailButton: "පරීක්ෂණ විද්‍යුත් තැපෑල යවන්න",
+            goBack: "ඊමේල් සහ කෙටි පණිවුඩ වෙත ආපසු යන්න",
             confirmationModal: {
                 assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
                 content: "ඔබ මෙම වින්‍යාසය මකා දැමුවහොත්, ඊමේල් Asgardeo විද්‍යුත් තැපැල් ලිපිනයෙන් යවනු ලැබේ. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
@@ -1939,14 +2001,13 @@ export const extensions: Extensions = {
                 },
                 smtpPort: {
                     label: "සේවාදායක වරාය",
-                    placeholder: "වරාය අංකයක් ඇතුළත් කරන්න",
-                    hint: "පෙරනිමි SMTP තොට <1>25</1> වේ, නමුත් සමහර විද්‍යුත් තැපැල් සේවා සපයන්නන් <3>587</3> වැනි විකල්ප වරායන් " +
-                        "භාවිතා කළ හැක. නිවැරදි SMTP තොට සඳහා ඔබේ විද්‍යුත් තැපැල් සේවා සපයන්නා සමඟ පරීක්ෂා කරන්න."
+                    placeholder: "කෙවෙනි අංකය ඇතුළත් කරන්න",
+                    hint: "ආරක්ෂක හේතූන් මත, අපි දැනට කෙවෙනි අංකය <1>587</1> පමණක් සහාය දක්වමු."
                 },
                 fromAddress: {
                     label: "ලිපිනයෙන්",
                     placeholder: "ඊමේල් ලිපිනයක් ඇතුලත් කරන්න",
-                    hint: "ආරක්ෂක හේතූන් මත, අපි දැනට වරාය <1>587</1> පමණක් සහාය දක්වමු."
+                    hint: "ඔබේ පිටතට යන ඊමේල් යවන්නා ලෙස ඔබට පෙනී සිටීමට අවශ්ය විද්යුත් තැපැල් ලිපිනය ලිපිනයකි.මෙය ඔබට ප්රවේශය ඇති ඊමේල් ලිපිනයක් විය යුතුය."
                 },
                 replyToAddress: {
                     label: "පිළිතුරු-ලිපිනයට",
@@ -2001,6 +2062,159 @@ export const extensions: Extensions = {
                     success: {
                         message: "සාර්ථකව යාවත්කාලීන කරන ලදී",
                         description: "විද්‍යුත් තැපැල් සපයන්නාගේ වින්‍යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදී."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "SMS / ඊමේල් සපයන්නන්",
+            title: "SMS / ඊමේල් සපයන්නන්",
+            description: "ඔබේ සංවිධානය සඳහා SMS සහ විද්‍යුත් තැපැල් සපයන්නන් වින්‍යාස කරන්න."
+        },
+        smsProviders: {
+            heading: "අභිරුචි කෙටි පණිවුඩ සපයන්නා",
+            subHeading: "ඔබගේ පරිශීලකයින්ට SMS යැවීමට අභිරුචි SMS සපයන්නෙකු වින්‍යාස කරන්න.",
+            description: "ඔබගේ SMS සපයන්නාට අනුව SMS සපයන්නාගේ සැකසුම් වින්‍යාස කරන්න.",
+            info: "ඔබට <1>SMS සැකිලි</1> භාවිතයෙන් SMS අන්තර්ගතය අභිරුචිකරණය කළ හැක.",
+            updateButton: "යාවත්කාලීන කරන්න",
+            sendTestSMSButton: "පරීක්ෂණ SMS යවන්න",
+            goBack: "ඊමේල් සහ කෙටි පණිවුඩ වෙත ආපසු යන්න",
+            confirmationModal: {
+                assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                content: "ඔබ මෙම වින්‍යාසය මකා දැමුවහොත්, ඔබට SMS නොලැබෙනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                header: "ඔයාට විශ්වාස ද?",
+                message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර SMS සපයන්නාගේ වින්‍යාසයන් ස්ථිරවම මකනු ඇත."
+            },
+            dangerZoneGroup: {
+                header: "අවදානම් කලාපය",
+                revertConfig: {
+                    heading: "සැකසුම් මකන්න",
+                    subHeading: "මෙම ක්‍රියාව sms සපයන්නාගේ වින්‍යාසයන් මකනු ඇත. මකා දැමූ පසු, ඔබට SMS නොලැබේ.",
+                    actionTitle: "මකන්න"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Twilio සැකසුම්",
+                    accountSID: {
+                        label: "Twilio ගිණුම් SID",
+                        placeholder: "Twilio ගිණුමේ SID ඇතුලත් කරන්න",
+                        hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Twilio ගිණුම් තන්තු හඳුනාගැනීම"
+                    },
+                    authToken: {
+                        label: "Twilio Auth ටෝකනය",
+                        placeholder: "Twilio auth ටෝකනය ඇතුළු කරන්න",
+                        hint: "Twilio auth සේවාදායකය විසින් ජනනය කරන ලද ප්‍රවේශ ටෝකනය."
+                    },
+                    sender: {
+                        label: "යවන්නා",
+                        placeholder: "යවන්නාගේ දුරකථන අංකය ඇතුළත් කරන්න",
+                        hint: "යවන්නාගේ දුරකථන අංකය."
+                    },
+                    validations: {
+                        required: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක"
+                    }
+                },
+                vonage: {
+                    subHeading: "Vonage සැකසුම්",
+                    accountSID: {
+                        label: "Vonage API යතුර",
+                        placeholder: "Vonage API යතුර ඇතුලත් කරන්න",
+                        hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Vonage API යතුර."
+                    },
+                    authToken: {
+                        label: "Vonage API රහස",
+                        placeholder: "Vonage API රහස ඇතුලත් කරන්න",
+                        hint: "Vonage auth සේවාදායකය විසින් ජනනය කරන ලද API රහස."
+                    },
+                    sender: {
+                        label: "යවන්නා",
+                        placeholder: "යවන්නාගේ දුරකථන අංකය ඇතුළත් කරන්න",
+                        hint: "යවන්නාගේ දුරකථන අංකය."
+                    },
+                    validations: {
+                        required: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක"
+                    }
+                },
+                custom: {
+                    subHeading: "අභිරුචි සැකසුම්",
+                    providerName: {
+                        label: "SMS සපයන්නාගේ නම",
+                        placeholder: "SMS සපයන්නාගේ නම ඇතුළත් කරන්න",
+                        hint: "SMS සපයන්නාගේ නම."
+                    },
+                    providerUrl: {
+                        label: "SMS සපයන්නාගේ URL",
+                        placeholder: "SMS සපයන්නාගේ URL එක ඇතුලත් කරන්න",
+                        hint: "SMS සපයන්නාගේ URL එක."
+                    },
+                    httpMethod: {
+                        label: "HTTP ක්‍රමයHTTP ක්‍රමය",
+                        placeholder: "POST",
+                        hint: "SMS යැවීම සඳහා භාවිතා කරන API ඉල්ලීමේ HTTP ක්‍රමය."
+                    },
+                    contentType: {
+                        label: "අන්තර්ගතයේ වර්ගය",
+                        placeholder: "JSON",
+                        hint: "SMS යැවීම සඳහා භාවිතා කරන API ඉල්ලීමේ අන්තර්ගත වර්ගය."
+                    },
+                    headers: {
+                        label: "ශීර්ෂ",
+                        placeholder: "http ශීර්ෂ ඇතුළත් කරන්න",
+                        hint: "Send SMS API ඉල්ලීමට ඇතුළත් කළ යුතු HTTP ශීර්ෂයන්."
+                    },
+                    payload: {
+                        label: "ගෙවීම",
+                        placeholder: "ගෙවීම ඇතුළත් කරන්න",
+                        hint: "SMS API ඉල්ලීමේ ගෙවීම."
+                    },
+                    key: {
+                        label: "SMS සපයන්නාගේ සත්‍යාපන යතුර",
+                        placeholder: "SMS සපයන්නා auth යතුර ඇතුළත් කරන්න",
+                        hint: "SMS සපයන්නාගේ සත්‍යාපන යතුර."
+                    },
+                    secret: {
+                        label: "SMS සපයන්නාගේ සත්‍යාපන රහස",
+                        placeholder: "SMS සපයන්නාගේ සත්‍යාපන රහස ඇතුලත් කරන්න",
+                        hint: "SMS සපයන්නාගේ සත්‍යාපන රහස."
+                    },
+                    sender: {
+                        label: "යවන්නා",
+                        placeholder: "යවන්නා ඇතුළු කරන්න",
+                        hint: "SMS යවන්නා."
+                    },
+                    validations: {
+                        required: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක",
+                        methodInvalid: "HTTP ක්‍රමය වලංගු නැත",
+                        contentTypeInvalid: "අන්තර්ගත වර්ගය වලංගු නොවේ"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2430,17 +2644,17 @@ export const extensions: Extensions = {
             fido: {
                 quickStart: {
                     addLoginModal: {
-                        heading: "FIDO2 එකතු කරන්න",
-                        subHeading: "FIDO2 පිවිසුම සැකසීමට යෙදුමක් තෝරන්න."
+                        heading: "මුර යතුර පිවිසුම එක් කරන්න",
+                        subHeading: "මුර යතුර පිවිසුම සැකසීමට යෙදුමක් තෝරන්න."
                     },
-                    heading: "FIDO2 සැකසුම් මාර්ගෝපදේශය",
+                    heading: "මුර යතුර සැකසුම් මාර්ගෝපදේශය",
                     passkeys: {
-                        docLinkText: "FIDO2 ආරක්ෂක යතුර/ජීවමිතික",
+                        docLinkText: "FIDO මුර යතුර",
                         content:
                             "මුර යතුරු ඔබගේ යෙදුම් සඳහා සරල සහ ආරක්ෂිත මුරපද රහිත සත්‍යාපන ක්‍රමයක් සපයන අතර එය " +
                             "උපාංග නැතිවීමෙන් ආරක්ශිත අතර ඕනෑම උපාංගයකට ක්‍රියා කරයි. " +
-                            "ඔබට \"ආරක්‍ෂක යතුර/ ජීවමිතික\" සමඟ Asgardeo හි මුරපද සත්‍යාපනය උත්සාහ කළ හැක. ",
-                        heading: "මුර යතුරු සමඟ FIDO2 සත්‍යාපනය"
+                            "ඔබට \"මුර යතුර\" සමඟ Asgardeo හි මුරපද සත්‍යාපනය උත්සාහ කළ හැක. ",
+                        heading: "මුර යතුරු සමඟ FIDO සත්‍යාපනය"
                     },
                     steps: {
                         customizeFlow: {
@@ -2448,17 +2662,44 @@ export const extensions: Extensions = {
                             heading: "ප්රවාහය අභිරුචිකරණය කරන්න"
                         },
                         selectApplication: {
-                            content: "ඔබට FIDO2 පිවිසුම සැකසීමට අවශ්‍ය <1>යෙදුම</1> තෝරන්න.",
+                            content: "ඔබට මුර යතුර පිවිසුම සැකසීමට අවශ්‍ය <1>යෙදුම</1> තෝරන්න.",
                             heading: "යෙදුම තෝරන්න"
                         },
                         selectFIDO: {
                             content:
-                                "මූලික FIDO ප්‍රවාහයක් වින්‍යාස කිරීම සඳහා <1>පුරනය වීමේ ක්‍රමය</1> ටැබයට ගොස් " +
-                                "<3>FIDO2 පිවිසුම එක් කරන්න</3> මත ක්ලික් කරන්න.",
-                            heading: "<1>FIDO2 පිවිසුම එක් කරන්න</1> තෝරන්න"
+                                "මූලික මුර යතුර ප්‍රවාහයක් වින්‍යාස කිරීම සඳහා <1>පුරනය වීමේ ක්‍රමය</1> ටැබයට ගොස් " +
+                                "<3>මුර යතුර පිවිසුම එක් කරන්න</3> මත ක්ලික් කරන්න.",
+                            heading: "<1>මුර යතුර පිවිසුම එක් කරන්න</1> තෝරන්න"
+                        },
+                        configureParameters: {
+                            heading: "මුර යතුර විකල්ප වින්‍යාස කරන්න",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "පුරනය වීමේදී මුර යතුර සඳහා ලියාපදිංචි වීමට පරිශීලකයින්ට ඉඩ දීමට මෙම විකල්පය සක්‍රිය කරන්න.",
+                                        label: "ප්‍රගතිශීලී මුර යතුර ලියාපදිංචිය:",
+                                        note: "මුරපදය <1>පළමු සාධක</1> විකල්පය ලෙස සකසා ඇති විට, පරිශීලකයන් " +
+                                        "මුරපදය ඇතුළත් කිරීමට පෙර පරිශීලකයාගේ අනන්‍යතාවය තහවුරු කිරීමට <3>අනුවර්තන ස්ක්‍රිප්ට්</3> " +
+                                        "එකක් එක් කිරීමට අවශ්‍ය වේ. ස්ක්‍රිප්ට් ඇතුළත් කිරීමට, පරිශීලකයින්ට <5>යෙදුමේ පුරනය වීමේ</5> " +
+                                        "ක්‍රම පටිත්තෙහි ඇති <7>මුරපද ප්‍රගතිශීලී ලියාපදිංචි වීමේ අච්චුව</7> භාවිතා කළ හැක."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "මෙම විශේෂාංගය සක්‍රීය කිරීමෙන් පරිශීලකයින්ට පරිශීලක " +
+                                        "නාමය ඇතුළත් නොකර මුරපදයක් සමඟින් පුරනය වීමට ඉඩ සලසයි, එය වඩාත් " +
+                                        "විධිමත් පුරනය වීමේ අත්දැකීමක් නිර්මාණය කරයි.",
+                                        label: "පරිශීලක නාම රහිත සත්‍යාපනය:"
+                                    }
+                                },
+                                steps: {
+                                    info: "වින්‍යාස කිරීමට, කරුණාකර පහත පියවර අනුගමනය කරන්න:",
+                                    1: "<1>සම්බන්ධතා</1> ප්රදේශයට සංචාලනය කරන්න.",
+                                    2: "<1>මුර යතුර</1> සම්බන්ධතාවය සොයාගෙන තෝරන්න.",
+                                    3: "<1>සැකසීම්</1> ටැබය වෙත සංචාලනය කරන්න."
+                                }
+                            }
                         }
                     },
-                    subHeading: "ඔබේ පිවිසුම් ප්‍රවාහයේ සාධකයක් ලෙස FIDO2 සැකසීම සඳහා පහත දැක්වෙන උපදෙස් අනුගමනය කරන්න."
+                    subHeading: "ඔබේ පිවිසුම් ප්‍රවාහයේ සාධකයක් ලෙස මුර යතුර සැකසීම සඳහා පහත දැක්වෙන උපදෙස් අනුගමනය කරන්න."
                 }
             },
             magicLink: {
@@ -2543,7 +2784,8 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "ට්‍රේස් හැඳුනුම්පත, ක්‍රියා හැඳුනුම්පත, සේවාලාභී හැඳුනුම්පත, ප්‍රතිඵල පණිවිඩය හෝ ප්‍රතිඵල තත්ත්වය අනුව ලොග් සොයන්න"
+                    placeholderDiagnostic: "ට්‍රේස් හැඳුනුම්පත, ක්‍රියා හැඳුනුම්පත, සේවාලාභී හැඳුනුම්පත, ප්‍රතිඵල පණිවිඩය හෝ ප්‍රතිඵල තත්ත්වය අනුව ලොග් සොයන්න",
+                    placeholderAudit : "ක්‍රියාව, ඉලක්ක හැඳුනුම්පත, ආරම්භක හැඳුනුම්පත, ඉල්ලීම් හැඳුනුම්පත අනුව ලොග සොයන්න"
                 },
                 refreshMessage: {
                     text: "අවසන් වරට ලොග ලබා ගත්තේ ",
@@ -2554,6 +2796,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "ලොග ලබා ගන්න"
+                },
+                downloadButton : {
+                    label : "ලොග් දත්ත බාගන්න"
                 },
                 delayMessage: {
                     text: "සමහර විමසුම් පූරණය වීමට වැඩි කාලයක් ගත විය හැක."
@@ -2567,7 +2812,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "විනිශ්චය ලොග ලබා ගැනීමට නොහැකි විය.",
+                        0: "ලොග ලබා ගැනීමට නොහැකි විය.",
                         1: "කරුණාකර නැවත උත්සාහ කරන්න."
                     },
                     title: "යමක් වැරදී ඇත"
@@ -2597,8 +2842,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "නිෂ්පාදන යෙදුම් ගැටළු නිරාකරණය කිරීමට ඔබගේ ලඝු-සටහන් විමසන්න.",
-                title: "විනිශ්චය ලොග්"
+                description: "ගැටළු නිරාකරණය කිරීමට සහ සම්පත් ක්‍රියාකාරකම් නිරීක්ෂණය කිරීමට ඔබගේ ලඝු-සටහන් විමසන්න.",
+                title: "ලොග්"
             },
             tooltips: {
                 copy: "ක්ලිප් පුවරුවට පිටපත් කරන්න"
@@ -2613,9 +2858,11 @@ export const extensions: Extensions = {
                 apiResources: "API සම්පත්",
                 branding: "වෙළඳ නාමකරණය",
                 emailProvider: "ඊමේල් සපයන්නා",
+                smsProvider: "SMS සපයන්නා",
                 monitor: "සටහන්"
             },
             emailProvider: "ඊමේල් සපයන්නා",
+            smsProvider: "SMS සපයන්නා",
             eventPublishing :"සිද්ධීන්",
             emailTemplates : "ඊමේල් සැකිලි",
             organizationInfo: "සංවිධානය තොරතුරු"
@@ -2776,12 +3023,16 @@ export const extensions: Extensions = {
                 pageTitle: "පරිශීලක නාමය වලංගු කිරීම",
                 description: "පරිශීලක නාම වර්ගය යාවත්කාලීන කර ඔබේ පරිශීලකයින් සඳහා පරිශීලක නාම වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 usernameType: "පරිශීලක නාම වර්ගය තෝරන්න",
-                usernameTypeHint: "පරිශීලක නාමය සඳහා ඊමේල් හෝ අක්ෂරාංක අක්ෂර එකතුවක් සැකසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
+                usernameTypeHint: "පරිශීලක නාමය සඳහා විද්‍යුත් තැපෑලක් හෝ අක්ෂර එකතුවක් සැකසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                 emailType: "විද්යුත් තැපෑල",
-                alphanumericType: "අක්ෂරාංක (a-z, A-Z, 0-9)",
-                usernameLength: "පරිශීලක නාමය දිග සකසන්න",
-                usernameLengthMin: "අවම",
-                usernameLengthMax: "උපරිම"
+                customType: "අභිරුචි",
+                usernameLength: {
+                    0: "අක්ෂර",
+                    1: "සහ",
+                    2: "අතර විය යුතුය."
+                },
+                usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "අකුරු (a-z, A-Z), අංක (0-9) සහ පහත දැක්වෙන අක්ෂරවල ඕනෑම සංයෝජනයක්: !@#$&'+\\=^_.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "විකල්ප පිවිසුම් හඳුනාගැනීම්",
@@ -3019,8 +3270,11 @@ export const extensions: Extensions = {
                             passwordValidation: "මුරපදය පහත සීමාවන් සපුරාලිය යුතුය."
                         },
                         usernameHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා අක්ෂරාංක (a-z, A-Z, 0-9) තන්තුවක් විය යුතුය.",
+                        usernameSpecialCharHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා දිගු " +
+                            "විය යුතු අතර, පහත දැක්වෙන අක්ෂරවල එකතුවක් අඩංගු විය හැක: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
                         usernameLength: "පරිශීලක නාමයේ දිග {{minLength}} සහ {{maxLength}} අතර විය යුතුය.",
-                        usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය."
+                        usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය.",
+                        usernameSpecialCharSymbols: "කරුණාකර ලබා දී ඇති මාර්ගෝපදේශවලට අනුකූල වන වලංගු පරිශීලක නාමයක් තෝරන්න."
                     }
                 }
             },
@@ -3536,6 +3790,63 @@ export const extensions: Extensions = {
                 subHeading: "පරිශීලක ගිණුම් ආරක්‍ෂා කිරීම සඳහා ආරක්‍ෂක සැකසුම් සකසන්න."
             },
             additionalSettings: "අමතර සැකසුම්",
+            analytics: {
+                heading: "විශ්ලේෂණ එන්ජිම",
+                subHeading: "ඔබේ සංවිධානය සඳහා විශ්ලේෂණ එන්ජිම වින්යාස කරන්න.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "ධාරක URL",
+                            placeholder: "ධාරක URL ඇතුලත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිමේ URL."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "මූලික සත්යාපනය සක්රීය කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිම සඳහා මූලික සත්යාපනය සක්රීය කරන්න."
+                        },
+                        hostUsername: {
+                            label: "පරිශීලක නාමය",
+                            placeholder: "පරිශීලක නාමය ඇතුළත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිමට සත්යාපනය කිරීමේ පරිශීලක නාමය."
+                        },
+                        hostPassword: {
+                            label: "මුරපදය",
+                            placeholder: "මුරපදය ඇතුළත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිමට සත්යාපනය කිරීමේ මුරපදය."
+                        },
+                        hostConnectionTimeout: {
+                            label: "Http සම්බන්ධතා කාලය",
+                            placeholder: "සම්බන්ධතා කාලය ඇතුළත් කරන්න",
+                            hint: "මිලි තත්පර වලින් සම්බන්ධ වීමේ කාලකණ්ණි අගය ඇතුළත් කරන්න."
+                        },
+                        hostReadTimeout: {
+                            label: "Http කියවන්න කල් ඉකුත් වීම",
+                            placeholder: "කියවීමේ කාල සීමාව ඇතුළත් කරන්න",
+                            hint: "ඇඹරූ කල් ඉකුත් වීමේ අගය මිලි තත්පර වලින් ඇතුළත් කරන්න."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "Http සම්බන්ධතා ඉල්ලීම් කල් ඉකුත් වීම",
+                            placeholder: "සම්බන්ධතා ඉල්ලීම් කල් ඉකුත් වීම ඇතුළත් කරන්න",
+                            hint: "සම්බන්ධතා ඉල්ලීම මිලි තත්පරවල කල් ඉකුත් වීමේ වටිනාකම ඇතුළත් කරන්න."
+                        },
+                        hostNameVerification: {
+                            label: "ධාරක නාම සත්යාපනය",
+                            placeholder: "ධාරක නාම සත්යාපනය ඇතුළත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිම සඳහා සත්කාරක නාම සත්යාපනය සක්රීය කරන්න.(දැඩි | Act_all)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "විශ්ලේෂණ එන්ජින් වින්යාසයන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "දෝෂයක් සිදුවී"
+                        },
+                        success: {
+                            description: "විශ්ලේෂණ එන්ජින් වින්යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    }
+                }
+            },
             generalBackButton: "ආපසු යන්න",
             generalDisabledLabel: "අක්‍රිය කර ඇත",
             generalEnabledLabel: "සක්‍රීය කර ඇත",
@@ -3624,6 +3935,18 @@ export const extensions: Extensions = {
                         "<1> ගිණුමක් සාදන්න </ 1> සබැඳිය හරහා ලියාපදිංචි විය හැකිය. මෙය සංවිධානයේ නව " +
                         "<3> ගනුදෙනුකරුවෙකු </ 3> ගිණුමක් නිර්මාණය කරයි."
                 },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "මුරපද සම්බන්ධකය සැකසීමට පරිශීලකයාට ආරාධනා කිරීම සඳහා වින්‍යාසය යාවත්කාලීන කිරීමට අසමත් විය.",
+                            message: "වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        success: {
+                            description: "මුරපදය සම්බන්ධකය සැකසීමට පරිශීලකයාට ආරාධනා කිරීම සඳහා වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    }
+                },
                 subHeading: "ස්වයං ලියාපදිංචිය හා සම්බන්ධ සැකසුම්"
             }
         },
@@ -3667,7 +3990,9 @@ export const extensions: Extensions = {
                         emailUnavailableWarning: "අවවාදයයි: පරිශීලක ගිණුම සඳහා ඊමේල් ලිපිනයක් සොයාගත නොහැක. " +
                             "මුරපදය යළි පිහිටුවීමට පරිශීලකයාට ආරාධනා කිරීම සඳහා කරුණාකර ඊමේල් ලිපිනයක් සපයන්න.",
                         emailResetWarning: "මුරපදය යළි පිහිටුවීම සඳහා සබැඳියක් සහිත විද්‍යුත් තැපෑලක් පරිශීලකයාට " +
-                            "තමන්ගේම මුරපදයක් සැකසීමට සපයා ඇති විද්‍යුත් තැපැල් ලිපිනයට යවනු ලැබේ"
+                            "තමන්ගේම මුරපදයක් සැකසීමට සපයා ඇති විද්‍යුත් තැපැල් ලිපිනයට යවනු ලැබේ",
+                        passwordResetConfigDisabled: "ප්‍රතිසාධන විද්‍යුත් තැපෑල හරහා මුරපද යළි පිහිටුවීම සබල කර නැත. " +
+                            "කරුණාකර එය <1> පුරනය වීම සහ ලියාපදිංචිය </1> වින්‍යාස කිරීම් වලින් සබල කිරීමට වග බලා ගන්න."
                     }
                 }
             },

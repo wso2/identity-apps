@@ -21,7 +21,10 @@ import { ProfileInfoInterface } from "@wso2is/core/models";
 export interface User {
     bulkUserImportLimit: {
         fileSize: number;
+        inviteEmails: number;
         userCount: number;
     };
+    enableBulkImportSecondaryUserStore: boolean;
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
+    disableManagedByColumn: boolean;
 }

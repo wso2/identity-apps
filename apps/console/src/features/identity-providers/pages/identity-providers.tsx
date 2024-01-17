@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,7 @@ import {
     history
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorTags, getAuthenticators, getIdentityProviderList } from "../api";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
 import { IdentityProviderList } from "../components/identity-provider-list";
@@ -123,7 +123,8 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
     const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
     const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const orgType: OrganizationType = useGetOrganizationType();
+
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -178,7 +179,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                     }
 
                     if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                        orgType === OrganizationType.SUBORGANIZATION) {
+                        organizationType === OrganizationType.SUBORGANIZATION) {
                         return false;
                     }
 
@@ -271,7 +272,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                         }
 
                         if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                            orgType === OrganizationType.SUBORGANIZATION) {
+                            organizationType === OrganizationType.SUBORGANIZATION) {
                             return false;
                         }
 

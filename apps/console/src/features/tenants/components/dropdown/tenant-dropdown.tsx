@@ -45,7 +45,7 @@ import {
     Item,
     Menu,
     Placeholder,
-    SemanticICONS
+    SemanticICONS 
 } from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { 
@@ -56,7 +56,7 @@ import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers/history";
 import { AppState } from "../../../core/store";
 import { OrganizationType } from "../../../organizations/constants";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";
@@ -118,7 +118,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ organizationName, setOrganizationName ] = useState<string>("");
     const [ isCopying, setIsCopying ] = useState<boolean>(false);
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -380,251 +380,253 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                 trigger={ dropdownTrigger }
             >
                 {
-                    !isSwitchTenantsSelected ? (
-                        <Dropdown.Menu className="tenant-dropdown-menu" onClick={ handleDropdownClick }>
-                            <Item.Group className="current-tenant" unstackable>
-                                <Item
-                                    className={ isSubOrg || !organizationConfigs.showOrganizationDropdown 
-                                        ? "header sub-org-header" : "header" } 
-                                    key={ "current-tenant" }
-                                >
-                                    {
-                                        <GenericIcon
-                                            transparent
-                                            inline
-                                            className="associated-tenant-icon"
-                                            data-testid="associated-tenant-icon"
-                                            icon={ getMiscellaneousIcons().tenantIcon }
-                                            size="mini"
-                                        />
-                                    }
-                                    <Item.Content verticalAlign="middle">
-                                        <Item.Description>
-                                            <div
-                                                className="name ellipsis"
-                                                data-testid={
-                                                    "tenant-dropdown-display-name"
-                                                }
-                                            >
-                                                {
-                                                    orgType === OrganizationType.SUBORGANIZATION
-                                                        ? organizationName
-                                                        : tenantAssociations
-                                                            ? tenantAssociations.currentTenant
-                                                            : (
-                                                                <Placeholder>
-                                                                    <Placeholder.Line />
-                                                                </Placeholder>
-                                                            )
-                                                }
-                                            </div>
-                                            <Grid className="middle aligned content">
-                                                <Grid.Row>
-                                                    <div
-                                                        className="org-id ellipsis"
-                                                        data-componentId={
-                                                            "tenant-dropdown-organization-id"
-                                                        }
-                                                    >
-                                                        { organizationId }
-                                                    </div>
-                                                    <div>
-                                                        <Button
-                                                            basic
-                                                            inline
-                                                            data-componentid="org-id-copy-icon"
-                                                            data-inverted
-                                                            data-tooltip={ isCopying
-                                                                ? t("extensions:manage.features.tenant." +
-                                                                    "header.copied") 
-                                                                : t("extensions:manage.features.tenant." +
-                                                                    "header.copyOrganizationId")
+                    organizationConfigs.showOrganizationDropdown ? 
+                        !isSwitchTenantsSelected ? (
+                            <Dropdown.Menu className="tenant-dropdown-menu" onClick={ handleDropdownClick }>
+                                <Item.Group className="current-tenant" unstackable>
+                                    <Item
+                                        className={ isSubOrg || !organizationConfigs.showOrganizationDropdown 
+                                            ? "header sub-org-header" : "header" } 
+                                        key={ "current-tenant" }
+                                    >
+                                        {
+                                            <GenericIcon
+                                                transparent
+                                                inline
+                                                className="associated-tenant-icon"
+                                                data-testid="associated-tenant-icon"
+                                                icon={ getMiscellaneousIcons().tenantIcon }
+                                                size="mini"
+                                            />
+                                        }
+                                        <Item.Content verticalAlign="middle">
+                                            <Item.Description>
+                                                <div
+                                                    className="name ellipsis"
+                                                    data-testid={
+                                                        "tenant-dropdown-display-name"
+                                                    }
+                                                >
+                                                    {
+                                                        organizationType === OrganizationType.SUBORGANIZATION
+                                                            ? organizationName
+                                                            : tenantAssociations
+                                                                ? tenantAssociations.currentTenant
+                                                                : (
+                                                                    <Placeholder>
+                                                                        <Placeholder.Line />
+                                                                    </Placeholder>
+                                                                )
+                                                    }
+                                                </div>
+                                                <Grid className="middle aligned content">
+                                                    <Grid.Row>
+                                                        <div
+                                                            className="org-id ellipsis"
+                                                            data-componentId={
+                                                                "tenant-dropdown-organization-id"
                                                             }
-                                                            icon={ (
-                                                                <Icon
-                                                                    name="copy outline"
-                                                                    color="grey"
-                                                                />
-                                                            ) }
-                                                            className="org-id-copy-btn"
-                                                            onClick={ () => copyOrganizationId() }
-                                                        />
-                                                    </div>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </Item.Description>
-                                    </Item.Content>
-                                </Item>
-                            </Item.Group>
-                            {
-                                organizationConfigs.showOrganizationDropdown &&  (
-                                    <>
-                                        {
-                                            !isSubOrg && (
-                                                <Dropdown.Header
-                                                    className="tenant-dropdown-links-category-header"
-                                                    content="Primary organizations"
-                                                />
-                                            )
-                                        }
-                                        {
-                                            !isSubOrg &&
-                                            orgType !== OrganizationType.SUBORGANIZATION &&
+                                                        >
+                                                            { organizationId }
+                                                        </div>
+                                                        <div>
+                                                            <Button
+                                                                basic
+                                                                inline
+                                                                data-componentid="org-id-copy-icon"
+                                                                data-inverted
+                                                                data-tooltip={ isCopying
+                                                                    ? t("extensions:manage.features.tenant." +
+                                                                        "header.copied") 
+                                                                    : t("extensions:manage.features.tenant." +
+                                                                        "header.copyOrganizationId")
+                                                                }
+                                                                icon={ (
+                                                                    <Icon
+                                                                        name="copy outline"
+                                                                        color="grey"
+                                                                    />
+                                                                ) }
+                                                                className="org-id-copy-btn"
+                                                                onClick={ () => copyOrganizationId() }
+                                                            />
+                                                        </div>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </Item.Description>
+                                        </Item.Content>
+                                    </Item>
+                                </Item.Group>
+                                {
+                                    organizationConfigs.showOrganizationDropdown &&  (
+                                        <>
+                                            {
+                                                !isSubOrg && (
+                                                    <Dropdown.Header
+                                                        className="tenant-dropdown-links-category-header"
+                                                        content="Primary organizations"
+                                                    />
+                                                )
+                                            }
+                                            {
+                                                !isSubOrg &&
+                                                organizationType !== OrganizationType.SUBORGANIZATION &&
                                             tenantAssociations ? (
-                                                    tenantAssociations.currentTenant ===
+                                                        tenantAssociations.currentTenant ===
                                                     tenantAssociations.defaultTenant ? (
-                                                            <Dropdown.Item
-                                                                className="action-panel"
-                                                                data-testid={ "default-button" }
-                                                                disabled={ true }
-                                                            >
-                                                                <BuildingCircleCheckIcon fill="black" />
-                                                                { 
-                                                                    t("extensions:manage.features.tenant." +
+                                                                <Dropdown.Item
+                                                                    className="action-panel"
+                                                                    data-testid={ "default-button" }
+                                                                    disabled={ true }
+                                                                >
+                                                                    <BuildingCircleCheckIcon fill="black" />
+                                                                    { 
+                                                                        t("extensions:manage.features.tenant." +
                                                                         "header.makeDefaultOrganization")
-                                                                }
-                                                            </Dropdown.Item>
-                                                        ) : (
-                                                            <Dropdown.Item
-                                                                className="action-panel"
-                                                                onClick={ () =>
-                                                                    setDefaultTenantInDropdown(tenantAssociations.
-                                                                        currentTenant)
-                                                                }
-                                                                data-testid={ "default-button" }
-                                                                disabled={ isSetDefaultTenantInProgress }
-                                                            >
-                                                                <BuildingCircleCheckIcon fill="black" />
-                                                                { 
-                                                                    t("extensions:manage.features.tenant." +
+                                                                    }
+                                                                </Dropdown.Item>
+                                                            ) : (
+                                                                <Dropdown.Item
+                                                                    className="action-panel"
+                                                                    onClick={ () =>
+                                                                        setDefaultTenantInDropdown(tenantAssociations.
+                                                                            currentTenant)
+                                                                    }
+                                                                    data-testid={ "default-button" }
+                                                                    disabled={ isSetDefaultTenantInProgress }
+                                                                >
+                                                                    <BuildingCircleCheckIcon fill="black" />
+                                                                    { 
+                                                                        t("extensions:manage.features.tenant." +
                                                                         "header.makeDefaultOrganization")
-                                                                }
-                                                            </Dropdown.Item>
-                                                        )
-                                                ) : null
-                                        }
-                                        {
-                                            !isSubOrg &&
+                                                                    }
+                                                                </Dropdown.Item>
+                                                            )
+                                                    ) : null
+                                            }
+                                            {
+                                                !isSubOrg &&
                                             tenantAssociations &&
                                             tenantAssociations.associatedTenants &&
                                             Array.isArray(tenantAssociations.associatedTenants) &&
                                             tenantAssociations.associatedTenants.length > 0
-                                                ? (
-                                                    <Dropdown.Item
-                                                        className="action-panel"
-                                                        onClick={ () => setIsSwitchTenantsSelected(true) }
-                                                        data-testid={ "tenant-switch-menu" }
-                                                    >
-                                                        <ArrowLeftArrowRightIcon fill="black" />
-                                                        { 
-                                                            t("extensions:manage.features." + 
+                                                    ? (
+                                                        <Dropdown.Item
+                                                            className="action-panel"
+                                                            onClick={ () => setIsSwitchTenantsSelected(true) }
+                                                            data-testid={ "tenant-switch-menu" }
+                                                        >
+                                                            <ArrowLeftArrowRightIcon fill="black" />
+                                                            { 
+                                                                t("extensions:manage.features." + 
                                                                 "tenant.header.tenantSwitchHeader") 
-                                                        }
-                                                    </Dropdown.Item>
-                                                )
-                                                : null
-                                        }
-                                        {
-                                            !isSubOrg &&
+                                                            }
+                                                        </Dropdown.Item>
+                                                    )
+                                                    : null
+                                            }
+                                            {
+                                                !isSubOrg &&
                                             (tenantDropdownLinks
                                                 && tenantDropdownLinks.length
                                                 && tenantDropdownLinks.length > 0)
-                                                ? tenantDropdownLinks.map(
-                                                    (link: TenantDropdownLinkInterface, index: number) => {
+                                                    ? tenantDropdownLinks.map(
+                                                        (link: TenantDropdownLinkInterface, index: number) => {
 
-                                                        const {
-                                                            content,
-                                                            icon,
-                                                            name,
-                                                            onClick
-                                                        } = link;
+                                                            const {
+                                                                content,
+                                                                icon,
+                                                                name,
+                                                                onClick
+                                                            } = link;
                 
-                                                        return (
-                                                            <Dropdown.Item
-                                                                key={ index }
-                                                                className="action-panel"
-                                                                onClick={ onClick }
-                                                                // Temporarily hiding dropdown item until
-                                                                // modal is implemented.
-                                                                // style={{display:'none'}}
-                                                                data-testid={ 
-                                                                    `tenant-dropdown-link-
-                                                                        ${ name.replace(" ", "-") }` 
-                                                                }
-                                                            >
-                                                                {
-                                                                    icon
-                                                                }
-                                                                { name }
-                                                                { content }
-                                                            </Dropdown.Item>
-                                                        );
-                                                    }
+                                                            return (
+                                                                <Dropdown.Item
+                                                                    key={ index }
+                                                                    className="action-panel"
+                                                                    onClick={ onClick }
+                                                                    // Temporarily hiding dropdown item until
+                                                                    // modal is implemented.
+                                                                    // style={{display:'none'}}
+                                                                    data-testid={ 
+                                                                        `tenant-dropdown-link-${ 
+                                                                            name.replace(" ", "-") }`
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        icon
+                                                                    }
+                                                                    { name }
+                                                                    { content }
+                                                                </Dropdown.Item>
+                                                            );
+                                                        }
+                                                    )
+                                                    : null
+                                            }
+                                            {
+                                                !isSubOrg && (
+                                                    <>
+                                                        <Divider />
+                                                        <Dropdown.Item
+                                                            className="action-panel"
+                                                            onClick={ handleOrganizationsPageRoute }
+                                                            data-componentid={ "sub-organizations-menu" }
+                                                        >
+                                                            <HierarchyIcon fill="black" />
+                                                        Organizations
+                                                        </Dropdown.Item>
+                                                    </>
                                                 )
-                                                : null
-                                        }
-                                        {
-                                            !isSubOrg && (
-                                                <>
-                                                    <Divider />
-                                                    <Dropdown.Item
-                                                        className="action-panel"
-                                                        onClick={ handleOrganizationsPageRoute }
-                                                        data-componentid={ "sub-organizations-menu" }
-                                                    >
-                                                        <HierarchyIcon fill="black" />
-                                                        Sub Organizations
-                                                    </Dropdown.Item>
-                                                </>
-                                            )
-                                        }
-                                    </>
-                                )
-                            }
-                        </Dropdown.Menu>
-                    ) : (
-                        <Dropdown.Menu onClick={ handleDropdownClick }>
-                            <Item.Group className="current-tenant" unstackable>
-                                <Item
-                                    className="header back-button-wrapper"
-                                    key={ "current-tenant" }
-                                >
-                                    <div className="link pointing" onClick={ resetTenantDropdown }>
-                                        <Icon
-                                            className="link-icon spaced-right"
-                                            name="arrow left"
-                                        />
-                                        {
-                                            t("extensions:manage.features.tenant.header.backButton")
-                                        }
-                                    </div>
-                                </Item>
-                            </Item.Group>
-                            <Item.Group className="search-bar tenant">
-                                <div
-                                    className={ `tenant-dropdown-search
+                                            }
+                                        </>
+                                    )
+                                }
+                            </Dropdown.Menu>
+                        ) : (
+                            <Dropdown.Menu onClick={ handleDropdownClick }>
+                                <Item.Group className="current-tenant" unstackable>
+                                    <Item
+                                        className="header back-button-wrapper"
+                                        key={ "current-tenant" }
+                                    >
+                                        <div className="link pointing" onClick={ resetTenantDropdown }>
+                                            <Icon
+                                                className="link-icon spaced-right"
+                                                name="arrow left"
+                                            />
+                                            {
+                                                t("extensions:manage.features.tenant.header.backButton")
+                                            }
+                                        </div>
+                                    </Item>
+                                </Item.Group>
+                                <Item.Group className="search-bar tenant">
+                                    <div
+                                        className={ `tenant-dropdown-search
                                     advanced-search-wrapper aligned-left fill-default` }>
-                                    <Input
-                                        className="advanced-search with-add-on"
-                                        data-testid="list-search-input"
-                                        icon="search"
-                                        iconPosition="left"
-                                        onChange={ searchTenantList }
-                                        placeholder={
-                                            t("extensions:manage.features.tenant.header.tenantSearch.placeholder")
-                                        }
-                                        floated="right"
-                                        size="small"
-                                    />
-                                </div>
-                            </Item.Group>
-                            {
-                                tenantAssociations
-                                    ? resolveAssociatedTenants()
-                                    : null
-                            }
-                        </Dropdown.Menu>
-                    )
+                                        <Input
+                                            className="advanced-search with-add-on"
+                                            data-testid="list-search-input"
+                                            icon="search"
+                                            iconPosition="left"
+                                            onChange={ searchTenantList }
+                                            placeholder={
+                                                t("extensions:manage.features.tenant.header.tenantSearch.placeholder")
+                                            }
+                                            floated="right"
+                                            size="small"
+                                        />
+                                    </div>
+                                </Item.Group>
+                                {
+                                    tenantAssociations
+                                        ? resolveAssociatedTenants()
+                                        : null
+                                }
+                            </Dropdown.Menu>
+                        )
+                        : null
                 }
             </Dropdown>
         </Menu.Item>

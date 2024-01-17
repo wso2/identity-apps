@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,23 @@ import Axios from "axios";
 import Joi, { ValidationResult } from "joi";
 
 type ValidationFunction = (value: string) => boolean;
+
+/**
+ * This validates domains. Returns true if valid. False if not valid.
+ *
+ * @param value - string to be validated.
+ */
+export const domain: ValidationFunction = (value: string): boolean => {
+    if (
+        Joi.string()
+            .domain({ allowUnicode: false, tlds: false })
+            .validate(value).error
+    ) {
+        return false;
+    }
+
+    return true;
+};
 
 /**
  * This validates email addresses. Returns true if valid. False if not valid.
@@ -307,6 +324,26 @@ export const isValidResourceKey = (value: string): boolean => {
     try {
         const result: ValidationResult = Joi.string()
             .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_]+$"))
+            .validate(value);
+
+        return !result.error;
+    } catch (error) {
+        return false;
+    }
+};
+
+/**
+ * This validates the role name. Returns true if valid. False if not valid.
+ *
+ * @param value - Input to be validated.
+ * @returns whether input is accepted or not.
+ */
+export const isValidRoleName = (value: string): boolean => {
+    try {
+        const result: ValidationResult = Joi.string()
+            .regex(new RegExp("^[a-zA-Z][a-zA-Z0-9-_. ]+$"))
+            .min(3)
+            .max(255)
             .validate(value);
 
         return !result.error;

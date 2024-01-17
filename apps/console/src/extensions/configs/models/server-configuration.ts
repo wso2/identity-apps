@@ -24,11 +24,17 @@ import { ValidationFormInterface } from "../../../features/validation/models";
 
 export interface ServerConfigurationConfig {
     autoEnableConnectorToggleProperty: boolean;
+    backButtonDisabledConnectorIDs: string[];
+    connectorCategoriesToIgnore: string[];
     connectorCategoriesToShow: string[];
     connectorPropertiesToShow: string[];
     connectorToggleName: Record<string, string>;
     connectorsToShow: string[];
+    connectorStatusViewDisabledConnectorIDs: string[];
     connectorsToHide: string[];
+    customConnectors: string[];
+    extendedConnectors: string[];
+    predefinedConnectorCategories: string[];
     dynamicConnectors: boolean,
     intendSettings: boolean;
     renderConnector: (
@@ -54,13 +60,15 @@ export interface ServerConfigurationConfig {
         componentId: string,
         passwordHistoryEnabled: boolean,
         setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly?: boolean
     ) => ReactElement;
     passwordExpiryComponent: (
         componentId: string,
         passwordExpiryEnabled: boolean,
         setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly?: boolean
     ) => ReactElement;
     usePasswordExpiry: () => RequestResultInterface<GovernanceConnectorInterface, RequestErrorInterface>;
     processPasswordExpiryInitialValues: (
@@ -69,7 +77,7 @@ export interface ServerConfigurationConfig {
         setPasswordExpiryEnabled: (state: boolean) => void
     ) => PasswordExpiryInterface;
     processPasswordExpirySubmitData: (data: ValidationFormInterface) => Promise<any>;
-    processPasswordPoliciesSubmitData: (data: ValidationFormInterface) => Promise<void>;
+    processPasswordPoliciesSubmitData: (data: ValidationFormInterface, isLegacy: boolean) => Promise<void>;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {

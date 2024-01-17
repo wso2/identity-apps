@@ -97,6 +97,15 @@ interface BrandingPreferenceTabsInterface extends IdentifiableComponentInterface
      * @param shouldShowNotifications - Should show success/error notifications on UI.
      */
     onSubmit: (values: Partial<BrandingPreferenceInterface>, shouldShowNotifications?: boolean) => void;
+    /**
+     * On layout change callback.
+     * @param values - Form Values.
+     */
+    onLayoutChange: (values: DesignFormValuesInterface) => void;
+    /**
+     * On preview resize callback.
+     */
+    onPreviewResize: (width: number) => void;
 }
 
 /**
@@ -118,7 +127,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         isSplitView,
         isUpdating,
         readOnly,
-        onSubmit
+        onSubmit,
+        onLayoutChange,
+        onPreviewResize
     } = props;
 
     const { t } = useTranslation();
@@ -142,6 +153,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
@@ -253,6 +265,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                 theme: values.theme
                             })
                         });
+                        onLayoutChange(values);
                     } }
                     readOnly={ readOnly }
                     data-componentid="branding-preference-design-form"
@@ -290,6 +303,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         urls: {
                             cookiePolicyURL: brandingPreference.urls?.cookiePolicyURL,
                             privacyPolicyURL: brandingPreference.urls?.privacyPolicyURL,
+                            selfSignUpURL: brandingPreference.urls?.selfSignUpURL,
                             termsOfUseURL: brandingPreference.urls?.termsOfUseURL
                         }
                     } }
@@ -350,6 +364,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                 screenType={ selectedScreen }
                 isLoading={ isLoading }
                 brandingPreference={ brandingPreferenceForPreview }
+                onPreviewResize={ onPreviewResize }
                 data-componentid="branding-preference-preview"
             />
         </ResourceTab.Pane>
@@ -357,7 +372,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText />
+            <CustomText readOnly={ readOnly } />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {
@@ -434,12 +449,14 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             menuItem: (
                 <Menu.Item key="text">
                     { t("console:branding.tabs.text.label") }
-                    <Chip
-                        size="small"
-                        sx={ { marginLeft: 1 } }
-                        label={ t("common:beta").toUpperCase() }
-                        className="oxygen-chip-beta"
-                    />
+                    { isSAASDeployment && (
+                        <Chip
+                            size="small"
+                            sx={ { marginLeft: 1 } }
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta"
+                        />
+                    ) }
                 </Menu.Item>
             ),
             render: TextPreferenceTabPane

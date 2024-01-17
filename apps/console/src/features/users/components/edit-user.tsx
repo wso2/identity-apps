@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
@@ -23,20 +24,24 @@ import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
-import { UserRolesList } from "./user-roles-edit";
+import { UserRolesList } from "./user-roles-list";
+import { UserRolesV1List } from "./user-roles-v1-list";
 import { UserSessions } from "./user-sessions";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
-import { getServerConfigs } from "../../../features/server-configurations";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
+import useUserManagement from "../hooks/use-user-management";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -85,11 +90,15 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const { activeTab, updateActiveTab } = useUserManagement();
+    const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { UIConfig } = useUIConfig();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
@@ -100,15 +109,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
-
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
+    const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
+    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
         //see if they are the same values. If they are the same values we do not do anything.
-        //This makes sure the child components or side effects depending on the user object won't 
+        //This makes sure the child components or side effects depending on the user object won't
         //re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
@@ -117,7 +125,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ selectedUser ]);
 
     useEffect(() => {
-        const userStore = user?.userName?.split("/").length > 1
+        const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
             : UserstoreConstants.PRIMARY_USER_STORE;
 
@@ -132,11 +140,18 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
         checkIsSuperAdmin();
+    }, [ user ]);
+
+    useEffect(() => {
+        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+            setIsUserManagedByParentOrg(true);
+            setIsUserProfileReadOnly(true);
+        }
     }, [ user ]);
 
     const handleAlerts = (alert: AlertInterface) => {
@@ -150,9 +165,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         setIsSuperAdminIdentifierFetchRequestLoading(true);
 
         getServerConfigs()
-            .then((response) => {
+            .then((response: ServerConfigurationsInterface) => {
                 const loggedUserName: string = store.getState().profile.profileInfo.userName;
                 const adminUser: string = response?.realmConfig.adminUser;
+
+                setAdminUsername(adminUser);
 
                 if (loggedUserName === adminUser) {
                     setIsSuperAdmin(true);
@@ -202,12 +219,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
+                        adminUsername={ adminUsername }
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
+                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
+                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
                     />
                 </ResourceTab.Pane>
             )
@@ -225,12 +244,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isRootOrganization ? {
+        isSuperOrganization && roleV1Enabled ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesList
+                    <UserRolesV1List
                         isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
                         onAlertFired={ handleAlerts }
                         user={ user }
@@ -240,7 +258,16 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         } : null,
-        OrganizationUtils.isCurrentOrganizationRoot() && {
+        // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
+        isSuperOrganization && !roleV1Enabled ? {
+            menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <UserRolesList user={ user } />
+                </ResourceTab.Pane>
+            )
+        } : null,
+        isSuperOrganization && {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -258,7 +285,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     return (
         <ResourceTab
+            activeIndex={ activeTab }
             isLoading={ isLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
             panes={ panes() }
         />
     );

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -23,11 +23,14 @@ import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { WizardStepInterface } from "../../../users/models";
 import { addDialect, addExternalClaim } from "../../api";
 import { getAddDialectWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
+import { resolveType } from "../../utils/resolve-type";
 import { DialectDetails, ExternalClaims, SummaryAddDialect } from "../wizard";
 
 /**
@@ -55,9 +58,9 @@ interface AddDialectPropsInterface extends TestableComponentInterface {
 /**
  * A component that lets you add a dialect.
  *
- * @param {AddDialectPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement} component.
+ * @returns AddDialect component.
  */
 export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     props: AddDialectPropsInterface
@@ -79,7 +82,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -92,10 +95,11 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
         addDialect(dialectDetailsData?.get("dialectURI").toString())
             .then(() => {
 
-                const dialectID = window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
-                const externalClaimPromises = [];
+                const dialectID: string = 
+                    window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
+                const externalClaimPromises: Promise<any>[] = [];
 
-                externalClaims.forEach(claim => {
+                externalClaims.forEach((claim: AddExternalClaim) => {
                     externalClaimPromises.push(addExternalClaim(dialectID, claim));
                 });
 
@@ -122,7 +126,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                         onClose();
                         update();
                     });
-            }).catch((error) => {
+            }).catch((error: any) => {
 
                 setAlert({
                     description: error?.description
@@ -140,7 +144,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     /**
      * Handler that is called when the `Dialect Details` wizard step is completed.
      *
-     * @param {Map<string, FormValue>} values Form values.
+     * @param values - Form values.
      */
     const onSubmitDialectDetails = (values: Map<string, FormValue>): void => {
         setCurrentWizardStep(1);
@@ -150,7 +154,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     /**
      * Handler that is called when the `Add External Claims` step of the wizard is completed.
      *
-     * @param {AddExternalClaim[]} claims - Claim Values.
+     * @param claims - Claim Values.
      */
     const onSubmitExternalClaims = (claims: AddExternalClaim[]): void => {
         setCurrentWizardStep(2);
@@ -162,13 +166,13 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
      * adding, editing, and deleting functionality to child components
      * {@link ExternalClaims}, {@link ClaimsList} respectively.
      *
-     * So, this will also delegate the state changes {@code externalClaims}
+     * So, this will also delegate the state changes {@link externalClaims}
      * to its child components down below to keep itself updated. Since,
      * this is a wizard, the user is able go back and fourth to different steps
      * and we need to ensure the state is preserved till the wizard submission.
      *
      * @see ExternalClaims nested handler functions for further information.
-     * @param {AddExternalClaim[]} claims
+     * @param claims - Claim Values.
      */
     const onExternalClaimsChanged = (claims: AddExternalClaim[]) => {
         setExternalClaims([ ...claims ]);
@@ -177,7 +181,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
     /**
      * An array of objects that contains data of each step of the wizard.
      */
-    const STEPS = [
+    const STEPS: WizardStepInterface[] = [
         {
             content: (
                 <DialectDetails
@@ -202,7 +206,10 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 />
             ),
             icon: getAddDialectWizardStepIcons().general,
-            title: t("console:manage.features.claims.dialects.wizard.steps.externalAttribute")
+            title: t(
+                "console:manage.features.claims.dialects.wizard.steps.externalAttribute",
+                { type: resolveType(attributeType, true) }
+            )
         },
         {
             content: (
@@ -268,7 +275,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 <Steps.Group
                     current={ currentWizardStep }
                 >
-                    { STEPS.map((step, index) => (
+                    { STEPS.map((step: WizardStepInterface, index: number) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

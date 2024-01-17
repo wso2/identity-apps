@@ -802,78 +802,78 @@ export const myAccount: MyAccountNS = {
                 "remaining": "Restante"
             },
             "fido": {
-                "description": "Puede usar una clave de seguridad FIDO2 o datos biométricos en su dispositivo para iniciar sesión en su cuenta.",
+                "description": "Puede utilizar una <1>Clave de acceso</1>, una <1>Clave de seguridad FIDO</1> o una <1>Datos biométricos</1> en su dispositivo para iniciar sesión en su cuenta.",
                 "form": {
-                    "label": "Clave de seguridad/biométrica",
-                    "placeholder": "Ingrese un nombre para la clave de seguridad/biometría",
-                    "remove": "Quitar la clave de seguridad/biometría",
-                    "required": "Ingrese un nombre para su clave de seguridad/biometría"
+                    "label": "Llave maestra",
+                    "placeholder": "Introduzca un nombre para la clave de acceso",
+                    "remove": "Quitar la clave de acceso",
+                    "required": "Por favor ingrese un nombre para su clave de acceso"
                 },
-                "heading": "Clave de seguridad/Biometría",
+                "heading": "Llave maestra",
                 "modals": {
                     "deleteConfirmation": {
                         "assertionHint": "Por favor, confirme su acción.",
-                        "content": "Esta acción es irreversible y eliminará de forma permanente la clave de seguridad/biometría.",
-                        "description": "Si elimina esta clave de seguridad/biometría, es posible que no pueda volver a iniciar sesión en su cuenta. Proceda con precaución.",
+                        "content": "Esta acción es irreversible y eliminará permanentemente la clave de acceso.",
+                        "description": "Si elimina esta clave de acceso, es posible que no pueda volver a iniciar sesión en su cuenta. Proceda con precaución.",
                         "heading": "¿Está seguro?"
                     },
                     "deviceRegistrationErrorModal": {
-                        "description": "Se interrumpió el registro de datos biométricos/clave de seguridad. Si esto no fue intencional, puede volver a intentar el flujo.",
-                        "heading": "Clave de seguridad/registro biométrico fallido",
-                        "tryWithOlderDevice": "También puede volver a intentarlo con una clave de seguridad o datos biométricos más antiguos."
+                        "description": "Se interrumpió el registro de la clave de acceso. Si esto no fue intencional, puede volver a intentar el flujo.",
+                        "heading": "Error al registrar la clave de acceso",
+                        "tryWithOlderDevice": "También puedes volver a intentarlo con una clave anterior."
                     }
                 },
                 "notifications": {
                     "removeDevice": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "Ocurrió un error al quitar la clave de seguridad o datos biométricos"
+                            "message": "Se produjo un error al eliminar la clave de acceso"
                         },
                         "genericError": {
-                            "description": "Ocurrió un error al quitar la clave de seguridad o datos biométricos",
+                            "description": "Se produjo un error al eliminar la clave de acceso",
                             "message": "Algo salió mal"
                         },
                         "success": {
-                            "description": "La clave de seguridad/los datos biométricos se eliminaron correctamente de la lista",
-                            "message": "Su clave de seguridad/biométrica eliminada con éxito"
+                            "description": "La clave de acceso se eliminó correctamente de la lista.",
+                            "message": "Su clave de acceso se eliminó con éxito"
                         }
                     },
                     "startFidoFlow": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "Ocurrió un error al recuperar la clave de seguridad/datos biométricos"
+                            "message": "Se produjo un error al recuperar la clave de acceso"
                         },
                         "genericError": {
-                            "description": "Ocurrió un error al recuperar la clave de seguridad/datos biométricos",
+                            "description": "Se produjo un error al recuperar la clave de acceso",
                             "message": "Algo salió mal"
                         },
                         "success": {
-                            "description": "La clave de seguridad/biometría se registró con éxito y ahora puede usarla para la autenticación.",
-                            "message": "Su clave de seguridad/biométrica registrada con éxito"
+                            "description": "La clave de acceso se registró correctamente y ahora puede utilizarla para la autenticación.",
+                            "message": "Su clave de acceso se registró correctamente"
                         }
                     },
                     "updateDeviceName": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "Ocurrió un error al actualizar la clave de seguridad/nombre biométrico"
+                            "message": "Se produjo un error al actualizar el nombre de la clave de acceso"
                         },
                         "genericError": {
-                            "description": "Ocurrió un error al actualizar la clave de seguridad/nombre biométrico",
+                            "description": "Se produjo un error al actualizar el nombre de la clave de acceso",
                             "message": "Algo salió mal"
                         },
                         "success": {
-                            "description": "El nombre de su clave de seguridad/biometría se actualizó con éxito",
-                            "message": "Clave de seguridad/nombre biométrico actualizado correctamente"
+                            "description": "El nombre de su clave de acceso se actualizó correctamente",
+                            "message": "Nombre de clave de acceso actualizado correctamente"
                         }
                     }
                 },
-                "tryButton": "Pruebe con una clave de seguridad/biométrica más antigua"
+                "tryButton": "Pruebe con una clave anterior"
             },
             "smsOtp": {
                 "descriptions": {
                     "hint": "Recibirás un mensaje de texto que contiene un código de verificación único"
                 },
-                "heading": "Número SMS",
+                "heading": "Número de teléfono móvil",
                 "notifications": {
                     "updateMobile": {
                         "error": {
@@ -1587,6 +1587,7 @@ export const myAccount: MyAccountNS = {
     "sections": {
         "accountRecovery": {
             "description": "Administre la información de recuperación que podemos usar para ayudarlo a recuperar su contraseña",
+            "emptyPlaceholderText": "No hay opciones de recuperación de cuenta disponibles",
             "heading": "Recuperación de Cuenta"
         },
         "changePassword": {

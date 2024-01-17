@@ -32,18 +32,20 @@ export const getExtendedFeatureResourceEndpoints = (serverHost: string,
     const authzServiceHost: string = deploymentConfig.extensions?.authzServiceHost as string;
 
     return {
+        auditLogsEndpoint: `${ serverHost }/api/asgardeo/v2/logs/audit/search`,
         authzEndpoint: `${ authzServiceHost }/o/${ orgId }`,
         choreoEventingEndpoint: deploymentConfig.extensions?.choreoEventingEndpoint as string,
-        diagnosticLogsEndpoint: `${ serverHost }/api/asgardeo/v1/logs/diagnostics/search`,
+        diagnosticLogsEndpoint: `${ serverHost }/api/asgardeo/v2/logs/diagnostics/search`,
         emailManagement: `${ serverHost }/api/server/v1/email`,
         emailProviderEndpoint: `${ serverHost }/api/server/v1/notification-senders/email`,
         eventsEndpoint: `${ serverHost }/api/event-configurations/v1/events`,
         inviteEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users/invite`,
-        inviteLinkEndpoint: "/api/asgardeo-onboard/v1/users/invite-link",
+        inviteLinkEndpoint: "/api/users/v1/offline-invite-link",
         notificationSendersEndPoint: `${ serverHost }/api/server/v1/notification-senders`,
         organizationEndpoint: `${ serverHost }/api/asgardeo-enterprise-login/v1/business-user-login/{organization}`,
         organizationPatchEndpoint: `${ serverHost }/api/asgardeo-enterprise-login/v1/business-user-login`,
         resendEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users/invite/{}/resend`,
+        smsProviderEndpoint: `${ serverHost }/api/server/v1/notification-senders/sms`,
         userEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users`,
         userStoreAgentConnection: `${ serverHost }/api/onprem-userstore/v1/connection`,
         userStoreAgentToken: `${ serverHost }/api/onprem-userstore/v1/token`

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,21 +17,23 @@
  */
 
 import { UserstoreConstants } from "@wso2is/core/constants";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { DangerZoneGroup } from "@wso2is/react-components/src";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { userstoresConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED } from "../../constants";
-import { PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models";
+import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -53,6 +55,10 @@ interface EditBasicDetailsUserStorePropsInterface extends TestableComponentInter
      * The connection properties.
      */
     properties: RequiredBinary;
+    /**
+     * Readonly attribute for the component.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -69,6 +75,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         userStore,
         id,
         properties,
+        readOnly,
         update,
         [ "data-testid" ]: testId
     } = props;
@@ -81,25 +88,25 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
         if (properties) {
-            const tempSql = new Map<string, string>();
+            const tempSql: Map<string, string> = new Map<string, string>();
 
-            properties.optional.sql.delete.forEach(property => {
+            properties.optional.sql.delete.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
-            properties.optional.sql.insert.forEach(property => {
+            properties.optional.sql.insert.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
-            properties.optional.sql.select.forEach(property => {
+            properties.optional.sql.select.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
-            properties.optional.sql.update.forEach(property => {
+            properties.optional.sql.update.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
@@ -114,19 +121,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             open={ confirmDelete }
             assertion={ userStore?.name }
             assertionHint={
-                (<p>
-                    <Trans
-                        i18nKey="console:manage.features.userstores.confirmation.hint"
-                        i18nOptions={ { name: userStore?.name } }
-                    >
-                        Please type
-                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
-                            { userStore?.name }
-                        </strong > to confirm.
-                    </Trans>
-                </p>)
+                t("console:manage.features.userstores.confirmation.hint")
             }
-            assertionType="input"
+            assertionType="checkbox"
             primaryAction={ t("console:manage.features.userstores.confirmation.confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
@@ -151,7 +148,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
                         history.push(AppConstants.getPaths().get("USERSTORES"));
                     })
-                    .catch(error => {
+                    .catch((error: IdentityAppsError) => {
                         dispatch(addAlert({
                             description: error?.description
                                 ?? t("console:manage.features.userstores.notifications." +
@@ -174,7 +171,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
-                warning
+                negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
                 { t("console:manage.features.userstores.confirmation.message") }
@@ -189,13 +186,13 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
     const onSubmitHandler = (values: Map<string, FormValue>): void => {
 
-        const description = {
+        const description: PatchData = {
             operation: "REPLACE",
             path: "/description",
             value: values.get("description")?.toString()
         };
 
-        const requiredData = properties?.required.map((property: TypeProperty) => {
+        const requiredData: PatchData[] = properties?.required.map((property: TypeProperty) => {
             if (property.name !== DISABLED) {
                 return {
                     operation: "REPLACE",
@@ -207,7 +204,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
         requiredData.push(description);
 
-        const optionalNonSqlData = showMore
+        const optionalNonSqlData: PatchData[] = showMore
             ? properties?.optional.nonSql.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
@@ -217,7 +214,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             })
             : null;
 
-        const optionalSqlInsertData = showMore
+        const optionalSqlInsertData: PatchData[] = showMore
             ? properties?.optional.sql.insert.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
@@ -227,7 +224,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             })
             : null;
 
-        const optionalSqlUpdateData = showMore
+        const optionalSqlUpdateData: PatchData[] = showMore
             ? properties?.optional.sql.update.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
@@ -237,7 +234,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             })
             : null;
 
-        const optionalSqlDeleteData = showMore
+        const optionalSqlDeleteData: PatchData[] = showMore
             ? properties?.optional.sql.delete.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
@@ -247,7 +244,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             })
             : null;
 
-        const optionalSqlSelectData = showMore
+        const optionalSqlSelectData: PatchData[] = showMore
             ? properties?.optional.sql.select.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
@@ -257,7 +254,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             })
             : null;
 
-        const patchData = showMore
+        const patchData: PatchData[] = showMore
             ? [
                 ...requiredData,
                 ...optionalNonSqlData,
@@ -291,7 +288,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
             // Re-fetch the userstore details
             update();
-        }).catch(error => {
+        }).catch((error: IdentityAppsError) => {
             dispatch(addAlert({
                 description: error?.description
                     || t("console:manage.features.userstores.notifications." +
@@ -312,11 +309,11 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
      * @param data - The checkbox data.
      */
     const handleUserstoreDisable = (event: any, data: CheckboxProps): void => {
-        const name = properties?.required?.find(
+        const name: string = properties?.required?.find(
             (property: TypeProperty) => property?.name === DISABLED
         )?.name;
 
-        const patchData = {
+        const patchData: PatchData = {
             operation: "REPLACE",
             path: `/properties/${ name }`,
             value: data.checked ? "false" : "true"
@@ -347,7 +344,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 // Re-fetch the userstore details
                 update();
             })
-            .catch(error => {
+            .catch((error: IdentityAppsError) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
                         || t("console:manage.features.userstores.notifications." +
@@ -409,7 +406,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                         label={
                                             t("console:manage.features.userstores.forms.general.description.label") }
                                         name="description"
-                                        disabled={ id == CONSUMER_USERSTORE_ID }
+                                        disabled={ id == CONSUMER_USERSTORE_ID || readOnly }
                                         type="textarea"
                                         required={ false }
                                         requiredErrorMessage=""
@@ -426,17 +423,20 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                 {
                                     id !== CONSUMER_USERSTORE_ID ?
                                         properties?.required?.map((property: TypeProperty, index: number) => {
-                                            const isDisabledField = property.description.split("#")[ 0 ] === DISABLED;
+                                            const isDisabledField: boolean = property.description
+                                                .split("#")[ 0 ] === DISABLED;
 
                                             if (isDisabledField) {
                                                 return;
                                             }
 
-                                            const name = property.description.split("#")[ 0 ];
-                                            const isPassword = property.attributes
-                                                .find(attribute => attribute.name === "type").value === "password";
-                                            const toggle = property.attributes
-                                                .find(attribute => attribute.name === "type")?.value === "boolean";
+                                            const name: string = property.description.split("#")[ 0 ];
+                                            const isPassword: boolean = property.attributes
+                                                .find((attribute: PropertyAttribute) =>
+                                                    attribute.name === "type").value === "password";
+                                            const toggle: boolean = property.attributes
+                                                .find((attribute: PropertyAttribute) =>
+                                                    attribute.name === "type")?.value === "boolean";
 
                                             return (
                                                 isPassword
@@ -465,6 +465,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                             hidePassword={ t("common:hidePassword") }
                                                             data-testid={ `${ testId }-form-password-input-${
                                                                 property.name }` }
+                                                            disabled={ readOnly }
                                                         />
                                                     )
                                                     : toggle
@@ -494,6 +495,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 data-testid={
                                                                     `${ testId }-form-toggle-${ property.name }`
                                                                 }
+                                                                disabled={ readOnly }
                                                             />
                                                         ) :
                                                         (
@@ -520,6 +522,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 }
                                                                 data-testid={ `${ testId }-form-text-input-${
                                                                     property.name }` }
+                                                                disabled={ readOnly }
                                                             />
                                                         )
                                             );
@@ -557,12 +560,12 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                             properties?.optional?.nonSql
                                                 .map((property: TypeProperty, index: number) => {
 
-                                                    const name = property.description.split("#")[ 0 ];
-                                                    const isPassword = property.attributes
+                                                    const name: string = property.description.split("#")[ 0 ];
+                                                    const isPassword: boolean = property.attributes
                                                         .find((attribute: PropertyAttribute) => {
                                                             return attribute.name === "type";
                                                         }).value === "password";
-                                                    const toggle = property.attributes
+                                                    const toggle: boolean = property.attributes
                                                         .find((attribute: PropertyAttribute) => {
                                                             return attribute.name === "type";
                                                         })?.value === "boolean";
@@ -596,6 +599,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                         `${ testId }-form-non-sql-password-input-${
                                                                             property.name }`
                                                                     }
+                                                                    disabled={ readOnly }
                                                                 />
                                                             )
                                                             : toggle
@@ -628,6 +632,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                             `${ testId }-form-non-sql-toggle-${
                                                                                 property.name }`
                                                                         }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 )
                                                                 : (
@@ -658,6 +663,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                             `${ testId }-form-non-sql-text-input-${
                                                                                 property.name }`
                                                                         }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 )
                                                     );
@@ -678,7 +684,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     <Grid.Column width={ 16 }>
                                         <SqlEditor
                                             onChange={ (name: string, value: string) => {
-                                                const tempSql = new Map(sql);
+                                                const tempSql: Map<string, string> = new Map(sql);
 
                                                 tempSql.set(name, value);
                                                 setSql(tempSql);
@@ -686,6 +692,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                             properties={ properties?.optional.sql }
                                             values={ sql }
                                             data-testid={ `${ testId }-sql-editor` }
+                                            readOnly={ readOnly }
                                         />
                                     </Grid.Column>
                                 </Grid>
@@ -693,13 +700,17 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
-                                <PrimaryButton
-                                    data-testid={ `${ testId }-form-submit-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
-                                >
-                                    { t("common:update") }
-                                </PrimaryButton>
+                                {
+                                    !readOnly && (
+                                        <PrimaryButton
+                                            data-testid={ `${ testId }-form-submit-button` }
+                                            loading={ isSubmitting }
+                                            disabled={ isSubmitting }
+                                        >
+                                            { t("common:update") }
+                                        </PrimaryButton>
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -709,7 +720,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             <Divider hidden />
 
             {
-                id !== CONSUMER_USERSTORE_ID &&
+                id !== CONSUMER_USERSTORE_ID && !readOnly &&
                 (<Grid columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -65,7 +65,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
         {
             authenticatorId: IdentityProviderManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
             description: "Login users with WS Federation.",
-            displayName: "Passive STS",
+            displayName: "WS-Federation",
             icon: getIdPIcons().wsFed,
             name: IdentityProviderManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
         },

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,12 +20,14 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
-import { AppState, AuthenticatorAccordion, FeatureConfigInterface, store } from "../../../../core";
-import { OrganizationUtils } from "../../../../organizations/utils";
+import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../../core";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../../../userstores/api";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
@@ -62,8 +64,8 @@ interface InboundProvisioningConfigurationsPropsInterface extends SBACInterface<
 /**
  * Inbound Provisioning configurations form component.
  *
- * @param {ProvisioningConfigurationFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Inbound Provisioning configurations form component.
  */
 export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisioningConfigurationsPropsInterface> = (
     props: InboundProvisioningConfigurationsPropsInterface
@@ -80,8 +82,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     } = props;
 
     const { t } = useTranslation();
-
-    const dispatch = useDispatch();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const dispatch: Dispatch = useDispatch();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
@@ -127,18 +129,18 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     /**
      * Handles accordion title click.
      *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {AccordionTitleProps} SegmentedAuthenticatedAccordion - Clicked title.
+     * @param e - Click event.
+     * @param SegmentedAuthenticatedAccordion - Clicked title.
      */
     const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
         SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
         if (!SegmentedAuthenticatedAccordion) {
             return;
         }
-        const newIndexes = [ ...accordionActiveIndexes ];
+        const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
         if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+            const removingIndex: number = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
 
             newIndexes.splice(removingIndex, 1);
         } else {
@@ -149,14 +151,16 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     };
 
     useEffect(() => {
+        if (readOnly) return;
+
         const userstore: SimpleUserStoreListItemInterface[] = [];
 
         userstore.push({
             id: "PRIMARY",
             name: "PRIMARY"
         });
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
-            getUserStoreList().then((response) => {
+        if (isSuperOrganization()) {
+            getUserStoreList().then((response: AxiosResponse) => {
                 userstore.push(...response.data);
                 setUserStore(userstore);
             }).catch(() => {

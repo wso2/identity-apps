@@ -129,3 +129,19 @@ input[type=password]::-ms-reveal, input[type=password]::-ms-clear {
         }
     }  
 }
+
+/**
+ * When the autocomplete input from Oxygen UI is wrapped in `Forms` component,
+ * its styles are being overridden by the `Forms` component styles. To avoid this,
+ * we need to override the styles of the autocomplete input from Oxygen UI.
+*/
+
+.forms-wrapped-autocomplete-render-input {
+    border: none !important;
+    padding: 0.4% !important;
+}
+
+.forms-wrapped-autocomplete {
+    padding-top: 0.6% !important;
+    padding-bottom: 0% !important;
+}

@@ -17,6 +17,7 @@
  */
 
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -54,22 +55,35 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         meta,
         fullWidth = true,
         FormControlProps = {},
+        helperText,
+        required,
+        readOnly,
         ...rest
     } = props;
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
     return (
-        <TextField
-            fullWidth={ fullWidth }
-            variant="outlined"
-            error={ isError }
-            helperText={ isError ? meta.error || meta.submitError : undefined }
-            margin="dense"
-            { ...FormControlProps }
-            { ...input }
-            { ...rest }
-        />
+        <>
+            <TextField
+                fullWidth={ fullWidth }
+                variant="outlined"
+                error={ isError }
+                margin="dense"
+                { ...FormControlProps }
+                { ...input }
+                { ...rest }
+                // TODO: Remove this once the `required` prop is supported by the Oxygen UI TextField component.
+                InputLabelProps={ {
+                    required
+                } }
+                InputProps={ {
+                    readOnly
+                } }
+            />
+            { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
+            { helperText && <FormHelperText>{ helperText }</FormHelperText> }
+        </>
     );
 };
 

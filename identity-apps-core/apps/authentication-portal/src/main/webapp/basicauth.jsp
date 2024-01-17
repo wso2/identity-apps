@@ -267,17 +267,22 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
-        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+        isMultiAttributeLoginEnabledInTenant = false;
+        allowedAttributes = "";
+    } else {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
+            allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                    .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     }
 
     if (isEmailUsernameEnabled == true) {
@@ -334,7 +339,7 @@
         }
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
+            url = IdentityManagementEndpointUtil.getBasePath(tenantDomain, path, false);
         } else {
             url = IdentityUtil.getServerURL(path, true, false);
         }
@@ -589,7 +594,13 @@
             }
 
             // For self sign-up build the normal callback URL.
-            String srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+            String srURI;
+
+            if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+                srURI = application.getInitParameter("IdentityManagementEndpointLoginURL");
+            } else {
+                srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+            }
             String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String srURLWithoutEncoding = srURI + "?" + srprmstr;
             srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
@@ -599,6 +610,7 @@
     <div class="buttons mt-2">
         <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant)) { %>
         <div class="field external-link-container text-small">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
@@ -624,10 +636,10 @@
                     target="_blank" rel="noopener noreferrer"
                 <% } %>
             >
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>?
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             <% } %>
+            ?
         </div>
         <% } %>
     </div>
@@ -665,26 +677,27 @@
     </div>
 
     <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) { %>
-        <div class="mt-0">
-            <div class="buttons">
-                <button
-                    type="button"
+        <div class="mt-4 mb-4">
+            <div class="mt-3 external-link-container text-small">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
+                <a
                     <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                    onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(selfSignUpOverrideURL)%>';"
+                    href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
-                    onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, srURLEncodedURL, urlParameters))%>';"
+                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
                     <% } %>
-                    class="ui large fluid button secondary"
+                    target="_self"
+                    class="clickable-link"
+                    rel="noopener noreferrer"
                     id="registerLink"
-                    role="button"
                     data-testid="login-page-create-account-button"
+                    style="cursor: pointer;"
                 >
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.an.account")%>
-                </button>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
+                </a>
             </div>
         </div>
     <% } %>
-
     <% if (isIdentifierFirstLogin(inputType) && !StringUtils.equals("true", promptAccountLinking)) { %>
         <div class="field external-link-container text-small mt-4">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>

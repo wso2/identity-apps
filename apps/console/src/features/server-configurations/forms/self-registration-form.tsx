@@ -29,12 +29,13 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
+import { serverConfigurationConfig } from "../../../extensions/configs";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "../models/governance-connectors";
+    GovernanceConnectorInterface } from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Form initial values interface.
@@ -56,6 +57,10 @@ interface SelfRegistrationFormInitialValuesInterface {
      * Auto login after self registration.
      */
     autoLogin: boolean;
+    /**
+     * Dynamic properties.
+     */
+    [ key: string ]: string | boolean;
 }
 
 /**
@@ -146,7 +151,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     useEffect(() => {
         const emailSchema: ProfileSchemaInterface = profileSchemas
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
-        
+
         if (emailSchema) {
             setEmailRequired(emailSchema.required);
         }
@@ -173,9 +178,19 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             = null;
 
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
-            if (allowedConnectorFields.includes(property.name)) {
+
+            if (serverConfigurationConfig.dynamicConnectors) {
                 resolvedInitialValues.set(property.name, property);
+                resolvedInitialFormValues = {
+                    ...resolvedInitialFormValues,
+                    [ property.name ]: property.value
+                };
+            } else {
+                if (allowedConnectorFields.includes(property.name)) {
+                    resolvedInitialValues.set(property.name, property);
+                }
             }
+
             if (property.name === LOCK_ON_CREATION) {
                 if (property.value === "false") {
                     setEnableAccountActivateImmediately(true);
@@ -229,6 +244,16 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 }
             }
         });
+
+        if ((get(resolvedInitialFormValues, "SelfRegistration.SendConfirmationOnCreation") === "true") ||
+        (get(resolvedInitialFormValues, "SelfRegistration.LockOnCreation") === "true")) {
+            setEnableAccountConfirmation(true);
+            resolvedInitialFormValues = {
+                ...resolvedInitialFormValues,
+                signUpConfirmation: true
+            };
+        }
+
         // Make accountActivateImmediately false if the account confirmation is false.
         if (get(resolvedInitialFormValues, "signUpConfirmation") !== true) {
             resolvedInitialFormValues.accountActivateImmediately = false;
@@ -255,10 +280,10 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
-            "SelfRegistration.LockOnCreation": (values.accountActivateImmediately !== undefined
-                || enableAccountConfirmation !== undefined)
-                ? !values.accountActivateImmediately && !!enableAccountConfirmation
-                : initialConnectorValues?.get("SelfRegistration.LockOnCreation").value,
+            "SelfRegistration.LockOnCreation": values.accountActivateImmediately === true ||
+            enableAccountConfirmation == false
+                ? false
+                : true,
             "SelfRegistration.NotifyAccountConfirmation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
                 : initialConnectorValues?.get("SelfRegistration.NotifyAccountConfirmation").value,
@@ -278,11 +303,34 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             };
         }
 
-        // Temporarily make SelfRegistration.NotifyAccountConfirmation false.
-        data = {
-            ...data,
-            "SelfRegistration.NotifyAccountConfirmation": false
-        };
+        if (serverConfigurationConfig.dynamicConnectors) {
+
+            const keysToOmit: string[] = [
+                "autoLogin",
+                "accountActivateImmediately",
+                "verificationLinkExpiryTime",
+                "signUpConfirmation",
+                "SelfRegistration.LockOnCreation",
+                "SelfRegistration.VerificationCode.ExpiryTime",
+                "SelfRegistration.SendConfirmationOnCreation",
+                "SelfRegistration",
+                "SelfRegistration.Notification.InternallyManage",
+                "SelfRegistration.ReCaptcha",
+                "SelfRegistration.AutoLogin.Enable",
+                "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+                "SelfRegistration.CallbackRegex",
+                "SelfRegistration.SMSOTP.Regex"
+            ];
+
+            for (const key in values) {
+                if (!keysToOmit.includes(key)) {
+                    data = {
+                        ...data,
+                        [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
+                    };
+                }
+            }
+        }
 
         return data;
     };
@@ -468,10 +516,12 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     return (
         <Form
             id={ FORM_ID }
-            initialValues={ initialFormValues }
             uncontrolledForm={ false }
             validate={ validateForm }
-            onSubmit={ (values: Record<string, unknown>) => onSubmit(getUpdatedConfigurations(values)) }
+            initialValues={ initialFormValues }
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
+            }
         >
             <Field.Checkbox
                 ariaLabel="signUpConfirmation"
@@ -491,9 +541,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             />
             {
                 isAlphanumericUsernameEnabled && !emailRequired && (
-                    <Text 
+                    <Text
                         compact
-                        weight={ "300" } 
+                        weight={ "300" }
                         className="field-compact-description pb-3 pt-0"
                         size={ "13px" }
                     >
@@ -574,6 +624,28 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 hint={
                     t("extensions:manage.serverConfigurations.userOnboarding." +
                         "selfRegistration.form.fields.enableAutoLogin.hint")
+                }
+            />
+            <Field.Checkbox
+                ariaLabel="SelfRegistration.NotifyAccountConfirmation"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    "SelfRegistration.NotifyAccountConfirmation")
+                }
+                className="toggle"
+                label={ GovernanceConnectorUtils.resolveFieldLabel(
+                    "User Onboarding",
+                    "SelfRegistration.NotifyAccountConfirmation",
+                    "Send sign up confirmation email") }
+                defaultValue={ initialFormValues?.[
+                    "SelfRegistration.NotifyAccountConfirmation" ] === "true" }
+                readOnly={ readOnly }
+                disabled={ !isConnectorEnabled }
+                width={ 16 }
+                data-componentid={ `${ testId }-enable-notification-sign-up-confirmation` }
+                hint={ GovernanceConnectorUtils.resolveFieldHint(
+                    "User Onboarding",
+                    "SelfRegistration.NotifyAccountConfirmation",
+                    "Enable sending notification for self sign up confirmation.")
                 }
             />
             <Field.Button

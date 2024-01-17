@@ -45,8 +45,8 @@ export class AuthenticatorMeta {
                 "credentials.",
             [ AuthenticatorManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
-            [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Login users with Biometrics, Passkeys " +
-                "or Security Keys.",
+            [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Login users with passkey, FIDO security key " +
+                "or biometrics.",
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "Time-Based One Time passcode.",
             [ AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
@@ -59,7 +59,7 @@ export class AuthenticatorMeta {
                 "using one-time passcode sent via email.",
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
-            [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID ]: "Two-factor authentication using " +
+            [ AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
@@ -157,8 +157,8 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.smsOTP,
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getConnectionIcons()?.magicLink,
             [ AuthenticatorManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: getConnectionIcons()?.backupCode,
-            [ 
-            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID 
+            [
+            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
             ]: getConnectionIcons()?.organizationSSO
         }, authenticatorId);
 
@@ -202,7 +202,8 @@ export class AuthenticatorMeta {
             AuthenticatorLabels.OIDC,
             AuthenticatorLabels.SOCIAL,
             AuthenticatorLabels.SAML,
-            AuthenticatorLabels.PASSKEY
+            AuthenticatorLabels.PASSKEY,
+            AuthenticatorLabels.API_AUTHENTICATION
         ];
     }
 

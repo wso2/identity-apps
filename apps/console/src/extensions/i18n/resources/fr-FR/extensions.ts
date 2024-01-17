@@ -460,6 +460,10 @@ export const extensions: Extensions = {
                         "Veuillez procéder avec prudence."
                 }
             },
+            managementAPI: {
+                header: "API de gestion",
+                description: "API pour gérer les ressources de votre organisation (racine)"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -551,6 +555,10 @@ export const extensions: Extensions = {
                         message: "Ressource API créée"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "API d'organisation",
+                description: "API pour gérer les ressources de vos autres organisations"
             },
             table: {
                 name: {
@@ -703,14 +711,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "Le nom de l'affichage ne peut pas être vide",
                                         label: "Afficher un nom",
-                                        hint: "Nom significatif pour identifier votre ressource API dans Asgardeo.",
+                                        hint: "Nom significatif pour identifier votre ressource API dans {{ productName }}.",
                                         placeholder: "API des réservations"
                                     },
                                     identifier: {
                                         emptyValidate: "L'identifiant ne peut pas être vide",
                                         alreadyExistsError: "L'identifiant existe déjà dans l'organisation.Veuillez en choisir un autre",
                                         invalid: "L'identifiant ne peut pas contenir d'espaces",
-                                        hint: "Nous vous recommandons d'utiliser une URI comme identifiant, mais vous n'avez pas besoin de rendre l'URI accessible au public car Asgardeo n'accèdera pas à votre API. Asgardeo utilisera cette valeur d'identifiant comme la réclamation d'audience(aud) dans les jetons JWT émis. <1>Ce champ devrait être unique;Une fois créé, il n'est pas modifiable.</1>",
+                                        hint: "Nous vous recommandons d'utiliser une URI comme identifiant, mais vous n'avez pas besoin de rendre l'URI accessible au public car {{ productName }} n'accèdera pas à votre API. {{ productName }} utilisera cette valeur d'identifiant comme la réclamation d'audience(aud) dans les jetons JWT émis. <1>Ce champ devrait être unique;Une fois créé, il n'est pas modifiable.</1>",
                                         label: "Identifiant",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -724,7 +732,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "Autorisation",
                             form: {
-                                rbacMessage: "À l'heure actuelle, Asgardeo prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
+                                rbacMessage: "À l'heure actuelle, {{ productName }} prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
                                 fields: {
                                     authorize: {
                                         label: "Nécessite une autorisation",
@@ -920,7 +928,7 @@ export const extensions: Extensions = {
                                                 hint: "Sélectionnez la politique pour autoriser l'API pour l'application."
                                             }
                                         },
-                                        rbacPolicyMessage: "Cette ressource API nécessite l'autorisation et Asgardeo prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
+                                        rbacPolicyMessage: "Cette ressource API nécessite l'autorisation et {{ productName }} prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
                                         buttons: {
                                             finish: "Finir",
                                             cancel: "Annuler"
@@ -1150,6 +1158,32 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Les rôles",
+                        subHeading: "Gérer les rôles attribués dans l'application.",
+                        roleAudience: "Rôle public",
+                        organization: "Organisation",
+                        application: "application",
+                        assignedRoles: "Rôles attribués",
+                        removedRoles: "Rôles supprimés",
+                        searchPlaceholder: "Recherche par nom de rôle",
+                        switchRoleAudience: {
+                            applicationConfirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous changez le rôle de rôle en application, l'association avec "+
+                                    "Les rôles de l'organisation seront supprimés de la demande. Veuillez procéder à la prudence.",
+                                header: "Passer à l'application du rôle de rôle?",
+                                message: "Cette action est irréversible et supprimera les associations de rôle existantes."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous modifiez le rôle de rôle en organisation, les rôles d'application "+
+                                    "Associé à la demande sera supprimé en permanence. Veuillez procéder à la prudence.",
+                                header: "Changer le rôle de rôle à l'organisation?",
+                                message: "Cette action est irréversible et supprimera en permanence les rôles existants."
+                            }
+                        }
                     }
                 }
             },
@@ -1292,32 +1326,30 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "Veuillez saisir une URL valide"
+                                }
+                            },
                             cookiePolicyURL: {
-                                hint:
-                                    "Lien vers un document ou une page contenant tous les cookies utilisés par " +
-                                    "vos applications avec des informations détaillées sur la finalité de chacun " +
-                                    "d'entre eux. S'il n'est pas défini, les valeurs par défaut de " +
-                                    "{{ productName }} seront utilisées.",
-                                label: "Politique relative aux cookies",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                hint: "Lien vers un document ou une page Web avec des informations détaillées sur tous les cookies utilisés par vos applications et le but de chacun d'eux.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
+                                label: "Politique de cookie",
+                                placeholder: "https://myapp.com/{{locale}}/cookie-policy"
                             },
                             privacyPolicyURL: {
-                                hint:
-                                    "Lien vers un accord que l'utilisateur de votre client doit accepter et " +
-                                    "respecter afin d'utiliser les applications ou d'autres services de votre " +
-                                    "organisation. S'il n'est pas défini, les valeurs par défaut de " +
-                                    "{{ productName }} seront utilisées.",
-                                label: "Politique de confidentialité",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                hint: "Lien vers une déclaration ou un document juridique qui indique comment votre organisation collecte, gère et traite les données de vos clients et visiteurs.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
+                                label: "politique de confidentialité",
+                                placeholder: "https://myapp.com/{{locale}}/privacy-policy"
+                            },
+                            selfSignUpURL: {
+                                hint: "Lien vers la page Web d'auto-inscription de votre organisation. Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
+                                label: "Auto-inscription",
+                                placeholder: "https://myapp.com/self-signup"
                             },
                             termsOfUseURL: {
-                                hint:
-                                    "Lien vers une déclaration ou un document juridique qui indique " +
-                                    "comment votre organisation collecte, gère et traite les données de " +
-                                    "vos clients et visiteurs. S'il n'est pas défini, les valeurs par défaut " +
-                                    "de {{ productName }} seront utilisées.",
+                                hint: "Lien vers un accord que vos clients doivent accepter et respecter afin d'utiliser les applications ou d'autres services de votre organisation.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
                                 label: "Conditions d'utilisation",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
                         heading: "Liens"
@@ -1350,7 +1382,7 @@ export const extensions: Extensions = {
                                             + " et d'une taille inférieure à <3>1 mb</3> pour de meilleures"
                                             + " performances.",
                                         label: "URL de l'image latérale",
-                                        placeholder: "https://asgardeo.io/placeholder.jpeg"
+                                        placeholder: "https://myapp.com/placeholder.jpeg"
                                     }
                                 },
                                 heading: "Image latérale",
@@ -1638,7 +1670,7 @@ export const extensions: Extensions = {
                                             "S'il n'est pas défini, les valeurs par défaut de {{ productName }} " +
                                             "seront utilisées.",
                                         label: "URL de l'icône de favori",
-                                        placeholder: "https://asgardeo.io/favicon.ico"
+                                        placeholder: "https://myapp.com/favicon.ico"
                                     }
                                 },
                                 heading: "Icône de favori",
@@ -1663,7 +1695,7 @@ export const extensions: Extensions = {
                                             "S'il n'est pas défini, les valeurs par défaut de {{ productName }} " +
                                             "seront utilisées.",
                                         label: "URL du logo",
-                                        placeholder: "https://asgardeo.io/logo.png"
+                                        placeholder: "https://myapp.com/logo.png"
                                     }
                                 },
                                 heading: "Logo",
@@ -1684,7 +1716,7 @@ export const extensions: Extensions = {
                                     url: {
                                         hint: "Utilisez une image au moins <1>250x50 pixels</1> et moins de <3>1mb</3> de taille pour de meilleures performances.Si ce n'est pas défini, {{ productName }} Les défauts sont utilisés.",
                                         label: "URL du logo de mon compte",
-                                        placeholder: "https://myaccount.asgardeo.io/logo.png"
+                                        placeholder: "https://myaccount.myapp.com/logo.png"
                                     }
                                 },
                                 heading: "Le logo de mon compte",
@@ -1831,6 +1863,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Les préférences de marque ont été rétablies avec succès pour {{ tenant }}.",
                         message: "Rétablissement réussi"
+                    },
+                    successWaiting: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Retour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Retour des préférences de marque"
                     }
                 },
                 fetch: {
@@ -1874,6 +1916,16 @@ export const extensions: Extensions = {
                         description: "Préférence de marque mise à jour avec succès pour {{ tenant }}.",
                         message: "Mise à jour réussie"
                     },
+                    successWaiting: {
+                        description: "Mise à jour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Mise à jour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Mise à jour des préférences de marque pour {{ teant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Mise à jour des préférences de marque"
+                    },
                     tenantMismatch: {
                         description:
                             "Une erreur s'est produite lors de la mise à jour des préférences de " +
@@ -1887,6 +1939,10 @@ export const extensions: Extensions = {
                     "Personnalisez les interfaces utilisateur destinées aux consommateurs dans " +
                     "les applications de votre organisation.",
                 title: "l'image de marque"
+            },
+            pageResolution: {
+                hint: "Les pages de la section Aperçu peuvent différer de la page réelle. " +
+                    "Pour résoudre ce problème, veuillez régler votre écran sur une résolution supérieure."
             },
             publishToggle: {
                 hint: "Activer/Désactiver les modifications",
@@ -1970,13 +2026,15 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configurer le fournisseur de messagerie",
-            heading: "Fournisseur de messagerie",
+            configureEmailTemplates: "Configurer les modèles d'e-mail",
+            heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
-            description: "Configurez les paramètres suivants en fonction de votre serveur SMTP.",
+            description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
+            note: "Le fournisseur de messagerie de la super-organisation ne peut être configuré que via <1>deployment.toml</1>.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2003,13 +2061,12 @@ export const extensions: Extensions = {
                 smtpPort: {
                     label: "Port de serveur",
                     placeholder: "Entrez un numéro de port",
-                    hint: "Le port SMTP par défaut est <1>25</1>, mais certains fournisseurs de services de messagerie peuvent utiliser d'autres ports " +
-                        "tels que <3>587</3>. Vérifiez auprès de votre fournisseur de services de messagerie le port SMTP correct."
+                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
                 },
                 fromAddress: {
                     label: "De l'adresse",
                     placeholder: "entrez une adresse email",
-                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
+                    hint: "L'adresse from est l'adresse e-mail que vous souhaitez apparaître comme l'expéditeur de vos e-mails sortants.Cela devrait être une adresse e-mail auquel vous avez accès."
                 },
                 replyToAddress: {
                     label: "Répondre à l'adresse",
@@ -2066,6 +2123,160 @@ export const extensions: Extensions = {
                     success: {
                         message: "Configurations mises à jour avec succès",
                         description: "Mise à jour réussie des configurations du fournisseur de messagerie."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "Fournisseurs SMS/e-mail",
+            title: "Fournisseurs SMS/e-mail",
+            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
+        },
+        smsProviders: {
+            heading: "Fournisseur de SMS personnalisé",
+            subHeading: "Configurez un fournisseur SMS personnalisé pour envoyer des SMS à vos utilisateurs.",
+            description: "Configurez les paramètres du fournisseur SMS en fonction de votre fournisseur SMS.",
+            info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
+            updateButton: "Mise à jour",
+            sendTestSMSButton: "Envoyer un SMS test",
+            goBack: "Revenir à E-mail et SMS",
+            confirmationModal: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
+                    "Veuillez procéder avec prudence.",
+                header: "Es-tu sûr?",
+                message: "Cette action est irréversible et supprimera définitivement les configurations du fournisseur SMS."
+            },
+            dangerZoneGroup: {
+                header: "Zone dangereuse",
+                revertConfig: {
+                    heading: "Supprimer les configurations",
+                    subHeading: "Cette action supprimera les configurations du fournisseur de SMS. Une fois supprimé, vous ne recevrez plus de SMS.",
+                    actionTitle: "Supprimer"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Paramètres Twilio",
+                    accountSID: {
+                        label: "SID du compte Twilio",
+                        placeholder: "Entrez le SID du compte Twilio",
+                        hint: "Identifiant de chaîne de compte Twilio qui fait office de nom d'utilisateur pour le compte"
+                    },
+                    authToken: {
+                        label: "Jeton d'authentification Twilio",
+                        placeholder: "Entrez le jeton d'authentification Twilio",
+                        hint: "Le jeton d'accès généré par le serveur d'authentification Twilio."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide"
+                    }
+                },
+                vonage: {
+                    subHeading: "Paramètres Vonage",
+                    accountSID: {
+                        label: "Clé API Vonage",
+                        placeholder: "Entrez la clé API Vonage",
+                        hint: "Clé API Vonage qui fait office de nom d'utilisateur pour le compte."
+                    },
+                    authToken: {
+                        label: "Secret de l'API Vonage",
+                        placeholder: "Entrez le secret de l'API Vonage",
+                        hint: "Le secret API généré par le serveur d'authentification Vonage."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide"
+                    }
+                },
+                custom: {
+                    subHeading: "Paramètres personnalisés",
+                    providerName: {
+                        label: "Nom du fournisseur SMS",
+                        placeholder: "Entrez le nom du fournisseur SMS",
+                        hint: "Le nom du fournisseur SMS."
+                    },
+                    providerUrl: {
+                        label: "URL du fournisseur SMS",
+                        placeholder: "Entrez l'URL du fournisseur de SMS",
+                        hint: "L'URL du fournisseur SMS."
+                    },
+                    httpMethod: {
+                        label: "Méthode HTTP",
+                        placeholder: "POST",
+                        hint: "La méthode HTTP de la requête API utilisée pour l'envoi du SMS."
+                    },
+                    contentType: {
+                        label: "Type de contenu",
+                        placeholder: "JSON",
+                        hint: "Le type de contenu de la requête API utilisée pour l'envoi du SMS."
+                    },
+                    headers: {
+                        label: "En-têtes",
+                        placeholder: "Saisir les en-têtes",
+                        hint: "En-têtes à inclure dans la requête API d'envoi de SMS."
+                    },
+                    payload: {
+                        label: "Charge utile",
+                        placeholder: "Entrez la charge utile",
+                        hint: "Charge utile de la requête API SMS."
+                    },
+                    key: {
+                        label: "Clé d'authentification du fournisseur SMS",
+                        placeholder: "Entrez la clé d'authentification du fournisseur SMS",
+                        hint: "La clé d'authentification du fournisseur SMS."
+                    },
+                    secret: {
+                        label: "Secret d'authentification du fournisseur SMS",
+                        placeholder: "Entrez le secret d'authentification du fournisseur SMS",
+                        hint: "Le secret d'authentification du fournisseur SMS."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide",
+                        methodInvalid: "La méthode HTTP n'est pas valide",
+                        contentTypeInvalid: "Le type de contenu n'est pas valide"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2525,18 +2736,18 @@ export const extensions: Extensions = {
             fido: {
                 quickStart: {
                     addLoginModal: {
-                        heading: "Ajouter FIDO2",
-                        subHeading: "Sélectionnez une application pour configurer la connexion FIDO2."
+                        heading: "Ajouter une connexion par mot de passe",
+                        subHeading: "Sélectionnez une application pour configurer la connexion par mot de passe."
                     },
-                    heading: "Guide de configuration FIDO2",
+                    heading: "Guide de configuration du mot de passe",
                     passkeys: {
-                        docLinkText: "FIDO2 Clé de sécurité/biométrie",
+                        docLinkText: "Clé d'accès FIDO",
                         content:
-                            "Les clés de passe fournissent une connexion sans mot de passe simple et sécurisée " +
-                            "pour vos applications qui survit à la perte de l'appareil et fonctionne sur toutes " +
-                            "les plates-formes. Vous pouvez essayer l'authentification par clé d'accès sur " +
-                            "Asgardeo avec « Clé FIDO2.",
-                        heading: "Authentification FIDO2 avec clés d'accès"
+                            "Passkey fournit une connexion sans mot de passe simple et sécurisée pour vos " +
+                            "applications qui survit à la perte de l'appareil et fonctionne sur toutes les " +
+                            "plates-formes. Vous pouvez essayer l'authentification par mot de passe sur " +
+                            "Asgardeo avec \"Passkey\".",
+                        heading: "Authentification FIDO avec mot de passe"
                     },
                     steps: {
                         customizeFlow: {
@@ -2546,19 +2757,50 @@ export const extensions: Extensions = {
                         selectApplication: {
                             content:
                                 "Choisissez l'<1>application</1> pour laquelle vous souhaitez configurer " +
-                                "la connexion FIDO2.",
+                                "la connexion par mot de passe.",
                             heading: "Sélectionner l'application"
                         },
                         selectFIDO: {
                             content:
-                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur <3>Ajouter une " +
-                                "connexion FIDO2</3> pour configurer un flux FIDO de base.",
-                            heading: "Sélectionnez <1>Ajouter une connexion FIDO2</1>"
+                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur " +
+                                "<3>Ajouter une connexion par clé d'accès</3> pour configurer " +
+                                " un flux de clé d'accès de base.",
+                            heading: "Sélectionnez <1>Ajouter une connexion par mot de passe</1>."
+                        },
+                        configureParameters: {
+                            heading: "Configurer les options de clé d'accès",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activez cette option pour permettre aux utilisateurs " +
+                                        "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
+                                        label: "Inscription progressive du mot de passe:",
+                                        note: "Lorsque la clé d'accès est définie comme <1>première option de facteur</1>, " +
+                                        "les utilisateurs doivent ajouter un <3>script adaptatif</3> pour vérifier l'identité" +
+                                        " de l'utilisateur avant l'inscription de la clé d'accès. Pour inclure le script, les " +
+                                        "utilisateurs peuvent utiliser le modèle <5>d'inscription progressive des</5> clés " +
+                                        "d'accès disponible dans l'onglet <7>Méthode de connexion<7> de l'application."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "L'activation de cette fonctionnalité permet aux " +
+                                        "utilisateurs de se connecter avec un mot de passe sans saisir " +
+                                        "de nom d'utilisateur, créant ainsi une expérience de " +
+                                        "connexion plus rationalisée.",
+                                        label: "Authentification sans nom d'utilisateur:"
+                                    }
+                                },
+                                steps: {
+                                    info: "Pour configurer, veuillez suivre les étapes ci-dessous:",
+                                    1: "Accédez à la zone <1>Connexions</1>.",
+                                    2: "Recherchez et sélectionnez la connexion <1>Passkey</1>.",
+                                    3: "Accédez à l'onglet <1>Paramètres</1>."
+                                }
+                            }
                         }
                     },
                     subHeading:
-                        "Suivez les instructions ci-dessous pour configurer la connexion FIDO2 dans votre flux " +
-                        "de connexion."
+                        "Suivez les instructions ci-dessous pour configurer la connexion par mot de " +
+                        "passe dans votre flux de connexion."
                 }
             },
             magicLink: {
@@ -2646,7 +2888,9 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "Rechercher des journaux par ID de suivi, ID d'action, ID client, message de résultat ou état de résultat"
+                    placeholderDiagnostic: "Rechercher des journaux par ID de suivi, ID d'action, ID client, message de résultat ou état de résultat",
+                    placeholderAudit: "Rechercher les journaux par action, ID cible, ID initiateur, ID de demande"
+
                 },
                 refreshMessage: {
                     text: "Derniers journaux récupérés à",
@@ -2657,6 +2901,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "Exécuter la requête"
+                },
+                downloadButton : {
+                    label : "Télécharger les données du journal"
                 },
                 delayMessage: {
                     text: "Certaines requêtes peuvent prendre plus de temps à charger."
@@ -2670,7 +2917,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "Impossible de récupérer les journaux de diagnostic.",
+                        0: "Impossible de récupérer les journaux.",
                         1: "Veuillez réessayer."
                     },
                     title: "Quelque chose s'est mal passé"
@@ -2700,8 +2947,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "Interrogez vos journaux pour résoudre les problèmes d'application de production.",
-                title: "Journaux de diagnostic"
+                description: "Interrogez vos journaux pour résoudre les problèmes et surveiller les activités des ressources.",
+                title: "Journaux"
             },
             tooltips: {
                 copy: "Copier dans le presse-papier"
@@ -2716,9 +2963,11 @@ export const extensions: Extensions = {
                 apiResources: "Ressources de l'API",
                 branding: "l'image de marque",
                 emailProvider: "Fournisseur de messagerie",
+                smsProvider: "Fournisseur SMS",
                 monitor: "Journaux"
             },
             emailProvider: "Fournisseur de messagerie",
+            smsProvider: "Fournisseur SMS",
             eventPublishing : "Événements",
             emailTemplates : "Modèles d'e-mails",
             organizationInfo: "Informations sur l'organisation"
@@ -2880,12 +3129,16 @@ export const extensions: Extensions = {
                 pageTitle: "Validation du nom d'utilisateur",
                 description: "Mettez à jour le type de nom d'utilisateur et personnalisez les règles de validation du nom d'utilisateur pour vos utilisateurs.",
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
-                usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
+                usernameTypeHint: "Autoriser les utilisateurs à définir un e-mail ou une combinaison de caractères pour le nom d'utilisateur.",
                 emailType: "Email",
-                alphanumericType: "Alphanumérique (a-z, A-Z, 0-9)",
-                usernameLength: "Définir la longueur du nom d'utilisateur",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                customType: "Coutume",
+                usernameLength: {
+                    0: "Doit contenir entre",
+                    1: "et",
+                    2: "caractères."
+                },
+                usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants: !@#$&'+\\=^_.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
@@ -3136,9 +3389,13 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Doit être une chaîne alphanumérique (a-z, A-Z, 0-9) entre {{minLength}} et {{maxLength}} caractères comprenant " +
                             "au moins une lettre.",
+                        usernameSpecialCharHint: "TDoit contenir entre {minLength}} et {{maxLength}} caractères, dont au " +
+                            "moins une lettre, et peut contenir une combinaison des caractères " +
+                            "suivants: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",
-                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre."
+                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",
+                        usernameSpecialCharSymbols: "Veuillez choisir un nom d'utilisateur valide qui respecte les directives données."
                     }
                 }
             },
@@ -3712,6 +3969,63 @@ export const extensions: Extensions = {
                 subHeading: "Configurez les paramètres de sécurité pour protéger les comptes d'utilisateurs."
             },
             additionalSettings: "Paramètres additionnels",
+            analytics: {
+                heading: "Moteur d'analyse",
+                subHeading: "Configurez le moteur d'analyse pour votre organisation.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "URL de l'hôte",
+                            placeholder: "Entrez l'URL de l'hôte",
+                            hint: "L'URL du moteur d'analyse."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Activer l'authentification de base",
+                            hint: "Activez l'authentification de base pour le moteur d'analyse."
+                        },
+                        hostUsername: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez le nom d'utilisateur",
+                            hint: "Le nom d'utilisateur pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostPassword: {
+                            label: "Mot de passe",
+                            placeholder: "Entrer le mot de passe",
+                            hint: "Le mot de passe pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostConnectionTimeout: {
+                            label: "Délai d'expiration de la connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la connexion en millisecondes."
+                        },
+                        hostReadTimeout: {
+                            label: "Délai d'expiration de lecture HTTP",
+                            placeholder: "Entrez le délai de lecture",
+                            hint: "Entrez la valeur du délai de lecture en millisecondes."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "Expiration du délai de demande de connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la demande de connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la demande de connexion en millisecondes."
+                        },
+                        hostNameVerification: {
+                            label: "Vérification du nom d'hôte",
+                            placeholder: "Entrez la vérification du nom d'hôte",
+                            hint: "Activez la vérification du nom d'hôte pour le moteur d'analyse. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la mise à jour des configurations du moteur d'analyse.",
+                            message: "Erreur est survenue"
+                        },
+                        success: {
+                            description: "Mis à jour avec succès les configurations du moteur d'analyse.",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Retourner",
             generalDisabledLabel: "désactivé",
             generalEnabledLabel: "activé",
@@ -3810,6 +4124,20 @@ export const extensions: Extensions = {
                         "lien <1>Créer un compte</1> sur la page de connexion de l'application. " +
                         "Cela crée un nouveau compte <3>client</3> dans l'organisation."
                 },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Échec de la mise à jour de la configuration du connecteur " +
+                                "Inviter un utilisateur à définir un mot de passe.",
+                            message: "Erreur de mise à jour de la configuration"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de la configuration du connecteur Inviter " +
+                                "un utilisateur à définir un mot de passe",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                },
                 subHeading: "Paramètres liés à l'auto-enregistrement"
             }
         },
@@ -3858,7 +4186,10 @@ export const extensions: Extensions = {
                             " le compte d'utilisateur. Veuillez fournir une adresse e-mail pour inviter" +
                             " l'utilisateur à réinitialiser le mot de passe.",
                         emailResetWarning: "Un e-mail avec un lien pour réinitialiser le mot de passe sera envoyé à " +
-                            "l'adresse e-mail fournie pour que l'utilisateur puisse définir son propre mot de passe."
+                            "l'adresse e-mail fournie pour que l'utilisateur puisse définir son propre mot de passe.",
+                        passwordResetConfigDisabled: "La réinitialisation du mot de passe via l'e-mail de récupération " +
+                            "n'est pas activée. Veuillez vous assurer de l'activer dans les configurations " +
+                            "<1> Connexion et inscription </1>."
                     }
                 }
             },

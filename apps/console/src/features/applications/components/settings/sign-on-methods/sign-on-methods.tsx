@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
@@ -34,12 +35,13 @@ import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json"
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
 import MicrosoftLoginSequenceTemplate from "./templates/microsoft-login-sequence.json";
+import PasskeyLoginSequenceTemplate from "./templates/passkey-login-sequence.json";
 import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
-import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
 import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
+import { ConnectionsManagementUtils } from "../../../../connections/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory
@@ -62,7 +64,8 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticatorInterface,
-    LoginFlowTypes
+    LoginFlowTypes,
+    additionalSpProperty
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 
@@ -98,6 +101,14 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     */
+    isSystemApplication?: boolean;
+    /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
 }
 
 /**
@@ -125,10 +136,17 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         isLoading,
         onUpdate,
         readOnly,
+        isSystemApplication,
+        hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
+    const isApplicationShared: boolean = application?.advancedConfigurations?.additionalSpProperties?.find(
+        (property: additionalSpProperty) => property?.name === "isAppShared")?.value === "true";
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
     const [ socialDisclaimerModalType, setSocialDisclaimerModalType ] = useState<LoginFlowTypes>(undefined);
@@ -343,7 +361,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
-                ...cloneDeep(UsernamelessSequenceTemplate)
+                ...cloneDeep(PasskeyLoginSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
             eventPublisher.publish(
@@ -759,7 +777,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         className="authenticator-card"
                                         size="tiny"
                                         selected={ selectedSocialAuthenticator?.id === authenticator.id }
-                                        image={ authenticator.image }
+                                        image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
+                                            connectionResourcesUrl, authenticator.image)
+                                        }
                                         label={ authenticator.displayName }
                                         labelEllipsis={ true }
                                         data-componentid={ `${componentId}-authenticator-${authenticator.name}` }
@@ -842,7 +862,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <AuthenticationFlowProvider
             application={ cloneDeep(application) }
+            isSystemApplication={ isSystemApplication }
             authenticators={ authenticators }
+            hiddenAuthenticators={ hiddenAuthenticators }
             onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
             onUpdate={ onUpdate }
             isLoading={ isAuthenticatorsFetchRequestLoading }
@@ -871,6 +893,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             ) : (
                                 <SignInMethodCustomization
                                     appId={ appId }
+                                    applicationName={ application?.name }
+                                    isApplicationShared={ isApplicationShared }
                                     authenticators={ authenticators }
                                     clientId={ clientId }
                                     authenticationSequence={ moderatedAuthenticationSequence }
@@ -903,6 +927,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     setShowIDPCreateWizard(true);
                     broadcastIDPCreateSuccessMessage = cb;
                 } }
+                readOnly={ readOnly }
             />
             { showIDPCreateWizard && renderIDPCreateWizard() }
             { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }

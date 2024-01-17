@@ -108,6 +108,10 @@ export class CustomTextPreferenceConstants {
             BUTTON: string;
             HEADING: string;
         };
+        REGISTER_TEXT: {
+            MESSAGE: string;
+            REGISTER: string;
+        },
         SIGN_UP: {
             BUTTON: string;
             HEADING: string;
@@ -126,6 +130,10 @@ export class CustomTextPreferenceConstants {
         LOGIN: {
             BUTTON: "login.button",
             HEADING: "login.heading"
+        },
+        REGISTER_TEXT: {
+            MESSAGE: "dont.have.an.account",
+            REGISTER: "register"
         },
         SIGN_UP: {
             BUTTON: "sign.up.button",

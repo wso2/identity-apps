@@ -354,10 +354,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
                             <AttributesSelectionV2
-                                onAttributesSelected={ 
+                                onAttributesSelected={
                                     (mappingsToBeAdded : ConnectionCommonClaimMappingInterface[]) => {
                                         setSelectedClaimsWithMapping([ ...mappingsToBeAdded ]);
-                                    } 
+                                    }
                                 }
                                 attributeList={
                                     hideIdentityClaimAttributes
@@ -372,7 +372,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     </Grid.Row>
                     <Divider hidden/>
 
-                    { 
+                    {
                         selectedClaimsWithMapping && (
                             <UriAttributesSettings
                                 dropDownOptions={
@@ -392,7 +392,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
                                 isSaml={ isSaml }
                             />
-                        ) 
+                        )
                     }
                     <Divider hidden/>
 

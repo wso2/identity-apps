@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,8 +34,14 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { UIConstants, UserBasicInterface, getEmptyPlaceholderIllustrations, getUsersList } from "../../../core";
+import { Grid, Icon, Input, InputOnChangeData, Modal, Table } from "semantic-ui-react";
+import { 
+    UIConstants,
+    UserBasicInterface,
+    UserListInterface,
+    getEmptyPlaceholderIllustrations,
+    getUsersList
+} from "../../../core";
 import { GroupsMemberInterface } from "../../models";
 
 /**
@@ -111,10 +117,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
 
     const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
         getUsersList(limit, offset, filter, attribute, userStore)
-            .then((response) => {
-                const responseUsers = response.Resources;
+            .then((response: UserListInterface) => {
+                const responseUsers: UserBasicInterface[] = response.Resources;
 
-                responseUsers.sort((userObject, comparedUserObject) =>
+                responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                 );
                 setUsersList(responseUsers);
@@ -124,16 +130,17 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                     const selectedUserList: UserBasicInterface[] = [];
 
                     if (responseUsers && responseUsers instanceof Array ) {
-                        responseUsers.slice().reverse().forEach(user => {
-                            assignedUsers.forEach(assignedUser => {
+                        responseUsers.slice().reverse().forEach((user: UserBasicInterface) => {
+                            assignedUsers.forEach((assignedUser: GroupsMemberInterface) => {
                                 if (user.id === assignedUser.value) {
                                     selectedUserList.push(user);
                                     responseUsers.splice(responseUsers.indexOf(user), 1);
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) =>
-                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+                        selectedUserList.sort(
+                            (userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
+                                userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
@@ -144,17 +151,18 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                     const selectedUserList: UserBasicInterface[] = [];
 
                     if (responseUsers && responseUsers instanceof Array ) {
-                        responseUsers.forEach(user => {
-                            initialValues.forEach(assignedUser => {
+                        responseUsers.forEach((user: UserBasicInterface) => {
+                            initialValues.forEach((assignedUser: UserBasicInterface) => {
                                 if (user.id === assignedUser.id) {
                                     selectedUserList.push(user);
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) =>
-                            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
+                        selectedUserList.sort(
+                            (userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
+                                userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
-                        setUsersList(responseUsers.filter(function(user) {
+                        setUsersList(responseUsers.filter(function(user: UserBasicInterface) {
                             return selectedUserList.indexOf(user) == -1;
                         }));
                         setSelectedUsers(selectedUserList);
@@ -182,11 +190,11 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
      * The following method accepts a Map and returns the values as a string.
      *
      * @param attributeMap - IterableIterator<string>
-     * @return string
+     * @returns string
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-        const attArray = [];
-        const iterator1 = attributeMap[Symbol.iterator]();
+        const attArray: string[] = [];
+        const iterator1: IterableIterator<string> = attributeMap[Symbol.iterator]();
 
         for (const attribute of iterator1) {
             if (attribute !== "") {
@@ -199,15 +207,15 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
 
     useEffect(() => {
         if (userListMetaContent) {
-            const attributes = generateAttributesString(userListMetaContent.values());
+            const attributes: string = generateAttributesString(userListMetaContent.values());
 
             getList(listItemLimit, 0, null, attributes, userStore);
 
         }
-    }, [ listItemLimit ]);
+    }, [ listItemLimit, userStore ]);
 
-    const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedGroups = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (role: UserBasicInterface) => {
+        const checkedGroups: UserBasicInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedGroups.includes(role)) {
             checkedGroups.splice(checkedGroups.indexOf(role), 1);
@@ -218,14 +226,14 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         }
     };
 
-    const handleSearchFieldChange = (e, { value }) => {
-        let isMatch = false;
+    const handleSearchFieldChange = (e: React.FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
         const filteredGroupList: UserBasicInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            usersList && usersList.map((user) => {
+            usersList && usersList.map((user: UserBasicInterface) => {
                 isMatch = re.test(user.userName);
                 if (isMatch) {
                     filteredGroupList.push(user);
@@ -237,8 +245,8 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         }
     };
 
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedGroups = [ ...checkedAssignedListItems ];
+    const handleAssignedItemCheckboxChange = (role: UserBasicInterface) => {
+        const checkedGroups: UserBasicInterface[] = [ ...checkedAssignedListItems ];
 
         if (checkedGroups.includes(role)) {
             checkedGroups.splice(checkedGroups.indexOf(role), 1);
@@ -250,16 +258,16 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     };
 
     const addUser = () => {
-        const addedGroups = [ ...tempUserList ];
+        const addedGroups: UserBasicInterface[] = [ ...tempUserList ];
 
         if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((user) => {
+            checkedUnassignedListItems.map((user: UserBasicInterface) => {
                 if (!(tempUserList.includes(user))) {
                     addedGroups.push(user);
                 }
             });
         }
-        setUsersList(usersList.filter(user => (
+        setUsersList(usersList.filter((user: UserBasicInterface) => (
             checkedUnassignedListItems.indexOf(user) === -1
         )));
         setTempUserList(addedGroups);
@@ -267,10 +275,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
     };
 
     const removeUser = () => {
-        const removedUsers = [ ...tempUserList ];
+        const removedUsers: UserBasicInterface[] = [ ...tempUserList ];
 
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map(user => {
+            checkedAssignedListItems.map((user: UserBasicInterface) => {
                 removedUsers.splice(removedUsers.indexOf(user), 1);
                 usersList.push(user);
             });
@@ -290,14 +298,14 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         setAddNewUserModalView(false);
     };
 
-    const handleAssignedUserListSearch = (e, { value }) => {
-        let isMatch = false;
+    const handleAssignedUserListSearch = (e: React.ChangeEvent<HTMLInputElement>, { value }: InputOnChangeData) => {
+        let isMatch: boolean = false;
         const filteredUserList: UserBasicInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            selectedUsers && selectedUsers.map((user) => {
+            selectedUsers && selectedUsers.map((user: UserBasicInterface) => {
                 isMatch = re.test(user.userName);
                 if (isMatch) {
                     filteredUserList.push(user);
@@ -361,7 +369,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             "transferList.list.emptyPlaceholders.default") }
                     >
                         {
-                            usersList?.map((user, index)=> {
+                            usersList?.map((user: UserBasicInterface, index: number)=> {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -394,7 +402,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                             "transferList.list.emptyPlaceholders.default") }
                     >
                         {
-                            tempUserList?.map((user, index)=> {
+                            tempUserList?.map((user: UserBasicInterface, index: number)=> {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -478,7 +486,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                         </Table.Header>
                                                         <Table.Body>
                                                             {
-                                                                selectedUsers?.map((user) => {
+                                                                selectedUsers?.map((user: UserBasicInterface) => {
                                                                     return (
                                                                         <Table.Row key={ user.id }>
                                                                             <Table.Cell collapsing>
@@ -568,7 +576,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                             "transferList.list.emptyPlaceholders.default") }
                                     >
                                         {
-                                            usersList?.map((user, index)=> {
+                                            usersList?.map((user: UserBasicInterface, index: number)=> {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={ () =>
@@ -602,7 +610,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                             "transferList.list.emptyPlaceholders.default") }
                                     >
                                         {
-                                            tempUserList?.map((user, index)=> {
+                                            tempUserList?.map((user: UserBasicInterface, index: number)=> {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={ () =>

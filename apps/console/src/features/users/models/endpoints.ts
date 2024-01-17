@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { UserDetailsInterface } from "./user";
+import { PatchRoleDataInterface } from "../../roles/models";
+
 /**
  * Interface for the Users feature resource endpoints.
  */
@@ -27,6 +30,8 @@ export interface UsersResourceEndpointsInterface {
     userStores: string;
     users: string;
     schemas: string;
+    guests: string;
+    guestsList: string;
 }
 
 /**
@@ -46,7 +51,7 @@ export interface SCIMBulkOperation {
     method: string;
     bulkId: string;
     path: string;
-    data: Record<string, unknown>;
+    data: Record<string, unknown> | UserDetailsInterface | PatchRoleDataInterface;
 }
 
 /**

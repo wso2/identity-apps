@@ -83,6 +83,10 @@
         border: 1px solid @red;
         border-radius: @defaultBorderRadius;
 
+        .header-wrapper {
+            max-width: 75%;
+        }
+
         .sub-header {
             margin-top: 5px;
         }
@@ -258,6 +262,11 @@
             &.internal-label {
                 background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
                 border-color: @TransferComponentSegmentInternalLabelBorderColor;
+            }
+
+            &.audience-label {
+                color: @TransferComponentSegmentAudienceLabelTextColor;
+                background-color: @TransferComponentSegmentAudienceLabelBackgroundColor;
             }
         }
     }

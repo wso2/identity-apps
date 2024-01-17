@@ -25,6 +25,7 @@ import {
     FormField,
     HelpPanelActionsInterface,
     HelpPanelInterface,
+    InfoModal,
     Message,
     ModalInterface,
     Notification,
@@ -302,6 +303,111 @@ export interface ConsoleNS {
             branding: string
         };
     };
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+            deleteAPIResourcePermission: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+        };
+        tabs: {
+            scopes: {
+                button: string;
+                label: string;
+                title: string;
+                subTitle: string;
+                learnMore: string;
+                search: string;
+                empty: {
+                    title: string;
+                    subTitle: string;
+                };
+                emptySearch: {
+                    title: string;
+                    subTitle: {
+                        0: string;
+                        1: string;
+                    },
+                    viewAll: string;
+                };
+                copyPopupText: string;
+                copiedPopupText: string;
+                removeScopePopupText: string;
+                form: {
+                    button: string;
+                    cancelButton: string;
+                    submitButton: string;
+                    title: string;
+                    subTitle: string;
+                    fields: {
+                        displayName: {
+                            emptyValidate: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        scope: {
+                            emptyValidate: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+            };
+        };
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: string;
+                            subTitle: string;
+                        };
+                        stepTitle: string;
+                        form: {
+                            button: string;
+                            fields: {
+                                displayName: {
+                                    emptyValidate: string;
+                                    label: string;
+                                    placeholder: string;
+                                    hint: string;
+                                };
+                                permission: {
+                                    emptyValidate: string;
+                                    uniqueValidate: string;
+                                    invalid: string;
+                                    label: string;
+                                    placeholder: string;
+                                    hint: string;
+                                };
+                                permissionList: {
+                                    label: string;
+                                }
+                                description: {
+                                    label: string;
+                                    placeholder: string;
+                                    hint: string;
+                                };
+                            };
+                        };
+                        removeScopePopupText: string;
+                    };
+                };
+            };
+        };
+    };
     branding: {
         form: {
             actions: {
@@ -409,6 +515,34 @@ export interface ConsoleNS {
         screenSelectDropdown: {
             label: string;
             placeholder: string;
+        };
+    };
+    consoleSettings: {
+        administrators: {
+            add: {
+                action: string;
+                options: {
+                    addExistingUser: string;
+                    inviteNewUser: string;
+                }
+            },
+            edit: {
+                backButton: string;
+            };
+            tabLabel: string;
+        };
+        loginFlow: {
+            tabLabel: string;
+        };
+        protocol: {
+            tabLabel: string;
+        };
+        roles: {
+            tabLabel: string;
+            permissionLevels: {
+                edit: string;
+                view: string;
+            };
         };
     };
     featureGate: {
@@ -672,10 +806,17 @@ export interface ConsoleNS {
                             oidcSubHeading: string;
                             samlHeading: string;
                             samlSubHeading: string;
+                            wsFedHeading: string;
+                            wsFedSubHeading: string;
                             tabName: string;
                         };
                         general: {
                             tabName: string;
+                        };
+                        protocol: {
+                            title: string;
+                            subtitle: string;
+                            button: string;
                         };
                         provisioning: {
                             tabName: string;
@@ -858,6 +999,17 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: string;
                                             },
+                                            passkey: {
+                                                description: string;
+                                                heading: string;
+                                                info: {
+                                                    progressiveEnrollmentEnabled: string;
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    progressiveEnrollmentEnabledCheckbox: string;
+                                                    progressiveEnrollmentDisabled: string;
+                                                }
+                                            }
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
@@ -909,20 +1061,44 @@ export interface ConsoleNS {
                             heading: string;
                             shareApplication: string;
                             addSharingNotification: Notification;
-                            stopSharingNotification: Notification
+                            stopSharingNotification: Notification;
                             getSharedOrganizations: Notification;
+                            stopAllSharingNotification: Notification;
                         };
+                        apiAuthorization: {
+                            m2mPolicyMessage: string;
+                        };
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: string;
+                                subTitle: string;
+                                button: string;
+                            };
+                        }
                     };
                 };
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: string;
+                                    description: string;
+                                }
+                                heading: string;
+                                fields: {
+                                    validateLocalAccount: FormAttributes;
+                                    mandateLocalAccount: FormAttributes;
+                                }
+                            }
                             subject: {
                                 fields: {
                                     subjectAttribute: FormAttributes;
                                     subjectIncludeTenantDomain: FormAttributes;
                                     subjectIncludeUserDomain: FormAttributes;
                                     subjectUseMappedLocalSubject: FormAttributes;
+                                    subjectType: FormAttributes;
+                                    sectorIdentifierURI: FormAttributes;
                                 };
                                 heading: string;
                             };
@@ -944,10 +1120,34 @@ export interface ConsoleNS {
                             skipConsentLogout: FormAttributes;
                         };
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: string;
+                                alerts: {
+                                    clientAttestation: string;
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: FormAttributes;
+                                    enableClientAttestation: FormAttributes;
+                                    android: {
+                                        heading: string;
+                                        fields: {
+                                            androidPackageName: FormAttributes;
+                                            androidAttestationServiceCredentials: FormAttributes;
+                                        }
+                                    },
+                                    apple: {
+                                        heading: string;
+                                        fields: {
+                                            appleAppId: FormAttributes;
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 heading: string;
                                 hint?: {
                                     customOidc: string;
+                                    customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {
@@ -971,6 +1171,7 @@ export interface ConsoleNS {
                             accessUrl: FormAttributes;
                             isSharingEnabled: FormAttributes;
                             isManagementApp: FormAttributes;
+                            isFapiApp: FormAttributes;
                         };
                         managementAppBanner: string;
 
@@ -998,6 +1199,9 @@ export interface ConsoleNS {
                             discoverableHint: string;
                             mobileAppPlaceholder: string;
                         },
+                        dropdowns: {
+                            selectOption: string;
+                        },
                         sections: {
                             accessToken: {
                                 heading: string;
@@ -1009,6 +1213,7 @@ export interface ConsoleNS {
                                     type: FormAttributes;
                                     revokeToken: FormAttributes;
                                     validateBinding: FormAttributes;
+                                    audience: FormAttributes;
                                 };
                             };
                             idToken: {
@@ -1018,6 +1223,7 @@ export interface ConsoleNS {
                                     algorithm: FormAttributes;
                                     audience: FormAttributes;
                                     encryption: FormAttributes;
+                                    signing: FormAttributes;
                                     method: FormAttributes;
                                 };
                             };
@@ -1034,6 +1240,28 @@ export interface ConsoleNS {
                                 hint: string;
                                 fields: {
                                     pkce: FormAttributes;
+                                };
+                            };
+                            clientAuthentication: {
+                                heading: string;
+                                fields: {
+                                    authenticationMethod: FormAttributes;
+                                    signingAlgorithm: FormAttributes;
+                                    subjectDN: FormAttributes;
+                                };
+                            };
+                            pushedAuthorization: {
+                                heading: string;
+                                fields: {
+                                    requirePushAuthorizationRequest: FormAttributes;
+                                };
+                            };
+                            requestObject: {
+                                heading: string;
+                                fields: {
+                                    requestObjectSigningAlg: FormAttributes;
+                                    requestObjectEncryptionAlgorithm: FormAttributes;
+                                    requestObjectEncryptionMethod: FormAttributes;
                                 };
                             };
                             refreshToken: {
@@ -1160,6 +1388,7 @@ export interface ConsoleNS {
                         fields: {
                             realm: FormAttributes;
                             replyTo: FormAttributes;
+                            replyToLogout: FormAttributes;
                         };
                     };
                     inboundWSTrust: {
@@ -1257,6 +1486,7 @@ export interface ConsoleNS {
                     apiLimitReachedError: Notification;
                     authenticationStepMin: Notification;
                     authenticationStepDeleteErrorDueToSecondFactors: Notification;
+                    authenticationStepDeleteErrorDueToAppShared: Notification;
                     deleteApplication: Notification;
                     deleteOptionErrorDueToSecondFactorsOnRight: Notification;
                     deleteProtocolConfig: Notification;
@@ -1264,6 +1494,7 @@ export interface ConsoleNS {
                     emptyAuthenticationStep: Notification;
                     fetchAllowedCORSOrigins: Notification;
                     fetchApplication: Notification;
+                    fetchMyAccountApplication: Notification;
                     fetchApplications: Notification;
                     fetchCustomInboundProtocols: Notification;
                     fetchInboundProtocols: Notification;
@@ -1556,7 +1787,17 @@ export interface ConsoleNS {
                                     range: string;
                                 };
                             };
-                        }
+                        };
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                hint: string;
+                                label: string;
+                            };
+                            allowUsernamelessAuthentication: {
+                                hint: string;
+                                label: string;
+                            };
+                        };
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
@@ -1691,6 +1932,21 @@ export interface ConsoleNS {
                             IncludeProtocolBinding: FormAttributes;
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
+
+                            isAssertionSigned: FormAttributes;
+                            includeCert: FormAttributes;
+                            includeNameIDPolicy: FormAttributes;
+                            isEnableAssertionEncryption: FormAttributes;
+
+                            authenticationContextClass: FormAttributes;
+                            customAuthenticationContextClass: FormAttributes;
+                            attributeConsumingServiceIndex: FormAttributes;
+
+                            isArtifactBindingEnabled: FormAttributes;
+                            artifactResolveEndpointUrl: FormAttributes;
+                            isArtifactResolveReqSigned: FormAttributes;
+                            isArtifactResponseSigned: FormAttributes;
+                            authContextComparisonLevel: FormAttributes;
                         }
                     },
                     outboundConnectorAccordion: {
@@ -2324,6 +2580,18 @@ export interface ConsoleNS {
                             certificatePEM: FormAttributes;
                             certificateJWKS: FormAttributes;
                         };
+                        implicitAssociation: {
+                            enable: {
+                                label: string;
+                                hint: string;
+                            };
+                            attributes: {
+                                label: string;
+                                placeholder: string;
+                                hint: string;
+                            };
+                            warning: string;
+                        };
                     };
                     attributeSettings: {
                         attributeMapping: {
@@ -2904,10 +3172,13 @@ export interface ConsoleNS {
             applications: Page;
             applicationsEdit: EditPage;
             authenticationProvider?: Page;
-            authenticationProviderTemplate?: {
+            authenticationProviderTemplate: {
                 title: string;
                 subTitle: string;
                 backButton: string;
+                disabledHint: {
+                    apple: string;
+                };
                 search: {
                     placeholder: string;
                 };
@@ -3226,6 +3497,161 @@ export interface ConsoleNS {
                     groupName: FormAttributes;
                 };
             };
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: string;
+                            };
+                        };
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                assign: {
+                    title: string;
+                    description: string;
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : string;
+                                placeholder: string;
+                                hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
+                            },
+                            organizationName: {
+                                label: string;
+                                placeholder: string;
+                                emptyPlaceholder: {
+                                    0: string;
+                                    1: string;
+                                }
+                                hint: string;
+                            }
+                        }
+                    },
+                    buttons: {
+                        assign: string;
+                    }
+                },
+                emailDomains: {
+                    actions: {
+                        assign: string;
+                        enable: string;
+                    }
+                };
+                edit: {
+                    back: string;
+                    description: string;
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : string;
+                                placeholder: string;
+                                hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
+                            };
+                            organizationName: {
+                                label: string;
+                                hint: string;
+                            };
+                        };
+                        message: string;
+                    };
+                };
+                message: string;
+                notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    checkEmailDomain: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                },
+                placeholders: {
+                    emptyList: Placeholder;
+                };
+                title: string;
+            };
             organizations: {
                 advancedSearch: {
                     form: {
@@ -3345,9 +3771,26 @@ export interface ConsoleNS {
                     subOrganizations: string;
                     goBack: string;
                     switchLabel: string;
+                    switchButton: string;
+                    notifications: {
+                        switchOrganization: Notification;
+                    }
+                }
+                view: {
+                    description: string;
                 }
             };
             users: {
+                addUserType: {
+                    createUser: {
+                        title: string;
+                        description: string
+                    };
+                    inviteParentUser: {
+                        title: string;
+                        description: string
+                    };
+                };
                 consumerUsers: {
                     fields: {
                        username: {
@@ -3379,6 +3822,7 @@ export interface ConsoleNS {
                 confirmations: {
                     terminateAllSessions: Confirmation;
                     terminateSession: Confirmation;
+                    addMultipleUser: Confirmation
                 };
                 editUser: {
                     tab: {
@@ -3477,6 +3921,7 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
+                    addUserPendingApproval: Notification;
                     bulkImportUser: {
                         validation: {
                             emptyRowError: NotificationItem;
@@ -3487,8 +3932,11 @@ export interface ConsoleNS {
                             duplicateHeaderError: NotificationItem;
                             invalidHeaderError: NotificationItem;
                             emptyDataField: NotificationItem;
+                            invalidRole: NotificationItem;
+                            invalidGroup: NotificationItem;
                         },
                         submit: Notification;
+                        timeOut: NotificationItem;
                     }
                     deleteUser: Notification;
                     fetchUsers: Notification;
@@ -3700,10 +4148,6 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
-                    openid: {
-                        heading: string;
-                        description: string;
-                    },
                     scim: {
                         heading: string;
                         description: string;
@@ -4181,7 +4625,11 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
+                        heading: string;
                         subHeading: string;
+                        placeHolders: {
+                            emptyListPlaceholder: Placeholder;
+                        };
                     };
                 };
                 list: {
@@ -4231,7 +4679,11 @@ export interface ConsoleNS {
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;
+                        description: string;
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: string;
+                            };
                             passwordHistory: {
                                 friendlyName: string;
                                 properties: {
@@ -4274,7 +4726,11 @@ export interface ConsoleNS {
                     };
                     userOnboarding : {
                         name: string;
+                        description: string;
                         connectors: {
+                            askPassword: {
+                                friendlyName: string;
+                            },
                             selfSignUp: {
                                 friendlyName: string;
                                 properties: {
@@ -4414,6 +4870,7 @@ export interface ConsoleNS {
                     };
                     loginAttemptsSecurity : {
                         name: string;
+                        description: string;
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: string;
@@ -4465,6 +4922,7 @@ export interface ConsoleNS {
                     };
                     accountManagement : {
                         name: string;
+                        description: string;
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: string;
@@ -4609,6 +5067,7 @@ export interface ConsoleNS {
                     };
                     otherSettings : {
                         name: string;
+                        description: string;
                         connectors: {
                             piiController: {
                                 friendlyName: string;
@@ -4708,6 +5167,10 @@ export interface ConsoleNS {
                             };
                             elasticAnalyticsEngine: {
                                 friendlyName: string;
+                                warningModal: {
+                                    configure: string,
+                                    reassure: string
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: string;
@@ -4776,6 +5239,8 @@ export interface ConsoleNS {
                     };
                     multiFactorAuthenticators : {
                         name: string;
+                        friendlyName: string;
+                        description: string;
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: string;
@@ -4792,6 +5257,15 @@ export interface ConsoleNS {
                             };
                         };
                     };
+                    sessionManagement: {
+                        description: string;
+                    };
+                    saml2WebSsoConfiguration: {
+                        description: string;
+                    };
+                    wsFederationConfiguration: {
+                        description: string;
+                    };
                 };
             };
             helpPanel: {
@@ -4800,6 +5274,7 @@ export interface ConsoleNS {
                 };
             };
             oidcScopes: {
+                back: string;
                 viewAttributes: string;
                 manageAttributes: string;
                 buttons: {
@@ -4837,6 +5312,7 @@ export interface ConsoleNS {
                                 label: string;
                                 placeholder: string;
                                 validations: {
+                                    duplicate: string;
                                     empty: string;
                                     invalid: string;
                                 };
@@ -5036,7 +5512,17 @@ export interface ConsoleNS {
                                     };
                                 };
                             };
-                            roleName: FormAttributes;
+                            roleName: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    duplicate: string;
+                                    duplicateInAudience: string;
+                                    empty: string;
+                                    invalid: string;
+                                }
+                            };
                             roleAudience: FormAttributes;
                             assignedApplication: FormAttributes;
                             notes: {
@@ -5044,6 +5530,34 @@ export interface ConsoleNS {
                                 appNote: string,
                                 cannotCreateRole: string
                             }
+                        };
+                        rolePermission: {
+                            apiResource: {
+                                label: string;
+                                placeholder: string;
+                                hint: {
+                                    empty: string;
+                                }
+                            };
+                            permissions: {
+                                label: string;
+                                placeholder: string;
+                                tooltips: {
+                                    noScopes: string;
+                                    selectAllScopes: string;
+                                    removeAPIResource: string;
+                                },
+                                validation: {
+                                    empty: string;
+                                };
+                                permissionsLabel: string;
+                            };
+                            notes: {
+                                applicationRoles: string;
+                            };
+                            notifications: {
+                                fetchAPIResourceError: Notification;
+                            };
                         };
                     };
                     heading: string;
@@ -5055,6 +5569,7 @@ export interface ConsoleNS {
                         };
                     };
                     subHeading: string;
+                    back: string;
                     summary: {
                         labels: {
                             domain: {
@@ -5063,6 +5578,7 @@ export interface ConsoleNS {
                             };
                             permissions: string;
                             roleName: string;
+                            roles: string;
                             users: string;
                             groups: string;
                         };
@@ -5105,6 +5621,9 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: Placeholder;
+                    };
                     basics: {
                         buttons: {
                             update: string;
@@ -5135,6 +5654,8 @@ export interface ConsoleNS {
                             fetchError: NotificationItem;
                         };
                         heading: string;
+                        localGroupsHeading: string;
+                        externalGroupsHeading: string;
                         subHeading: string;
                         actions: {
                             search: {
@@ -5151,6 +5672,7 @@ export interface ConsoleNS {
                     };
                     menuItems: {
                         basic: string;
+                        connectedApps: string;
                         permissions: string;
                         groups: string;
                         users: string;
@@ -5187,6 +5709,12 @@ export interface ConsoleNS {
                             }
                         };
                     };
+                    permissions: {
+                        heading: string;
+                        subHeading: string;
+                        readOnlySubHeading: string;
+                        removedPermissions: string;
+                    };
                 };
                 list: {
                     buttons: {
@@ -5197,9 +5725,19 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
+                        managedByOrg: {
+                            label: string;
+                            header: string;
+                        };
+                        managedByApp: {
+                            label: string;
+                            header: string;
+                        };
+                        audience: string;
                     };
                     confirmations: {
                         deleteItem: Confirmation;
+                        deleteItemError: InfoModal;
                     };
                     emptyPlaceholders: {
                         search: Placeholder;
@@ -5209,16 +5747,35 @@ export interface ConsoleNS {
                         delete: string;
                         edit: string;
                     };
+                    filterOptions: {
+                        all: string;
+                        applicationRoles: string;
+                        organizationRoles: string;
+                    };
+                    filterAttirbutes: {
+                        name: string;
+                        audience: string;
+                    };
                 };
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: Placeholder;
+                    }
+                }
                 notifications: {
                     deleteRole: Notification;
                     fetchRoles: Notification;
+                    fetchRole: Notification;
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;
                 };
             };
             serverConfigs: {
+                server: {
+                    title: string;
+                    description: string;
+                };
                 adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: string;
@@ -5246,6 +5803,10 @@ export interface ConsoleNS {
                     };
                     pageHeading: string;
                     pageSubheading: string;
+                };
+                manageNotificationSendingInternally: {
+                    title: string;
+                    description: string;
                 };
                 remoteLogPublishing: {
                     title: string;
@@ -5298,6 +5859,7 @@ export interface ConsoleNS {
                         }
                     };
                     dangerZone: {
+                        button: string,
                         title: string;
                         header: string;
                         subheader: string;
@@ -5314,7 +5876,11 @@ export interface ConsoleNS {
                             message: string;
                         };
                         error: {
-                            genericError: {
+                            updateError: {
+                                description: string;
+                                message: string;
+                            };
+                            fetchError: {
                                 description: string;
                                 message: string;
                             };
@@ -5367,6 +5933,7 @@ export interface ConsoleNS {
                 editRoles: string;
                 editUsers: string;
                 editUserstore: string;
+                emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
                 generalConfigurations: string;
@@ -5391,6 +5958,7 @@ export interface ConsoleNS {
                     headers: {
                         0: string;
                         1: string;
+                        2: string;
                     };
                     emptyPlaceholders: {
                         default: string;
@@ -5542,11 +6110,19 @@ export interface ConsoleNS {
                     addUserWizard: {
                         title: string;
                         subTitle: string;
+                        askPassword: {
+                            emailVerificationDisabled: string;
+                            emailInvalid: string;
+                            alphanumericUsernameEnabled: string;
+                            inviteViaEmail: string;
+                            inviteOffline: string;
+                        };
                         steps: {
                             basicDetails: string;
                             roles: string;
                             groups: string;
                             summary: string;
+                            method: string;
                         };
                         buttons: {
                             next: string;
@@ -5571,9 +6147,11 @@ export interface ConsoleNS {
                         title: string;
                         subTitle: string;
                         wizardSummary: {
+                            inviteEmailInfo: string;
                             successCount: string;
                             failedCount: string;
-                            totalCount: string;
+                            totalUserCreationCount: string;
+                            totalUserAssignmentCount: string;
                             tableHeaders: {
                                 username: string;
                                 status: string;
@@ -5585,6 +6163,9 @@ export interface ConsoleNS {
                                 userAlreadyExistsMessage: string;
                                 userCreationAcceptedMessage: string;
                                 internalErrorMessage: string;
+                                userAssignmentSuccessMessage: string;
+                                userAssignmentFailedMessage: string;
+                                userAssignmentInternalErrorMessage: string;
                             };
                             tableStatus: {
                                 success: string;
@@ -5593,16 +6174,65 @@ export interface ConsoleNS {
                             };
                             alerts: {
                                 importSuccess: NotificationItem;
-                                importFailed: NotificationItem;
+                                importFailed: {
+                                    message: string;
+                                    userCreation: string;
+                                    groupAssignment: string;
+                                }
                             };
                             advanceSearch: {
-                                placeholder: string;
-                            }
+                                searchByUsername: string;
+                                searchByGroup: string;
+                                roleGroupFilterAttributePlaceHolder: string;
+                            };
+                            manualCreation: {
+                                alerts: {
+                                    creationSuccess: NotificationItem;
+                                };
+                                hint: string;
+                                emailsLabel: string;
+                                emailsPlaceholder: string;
+                                disabledHint: string;
+                                upload: {
+                                    buttonText: string;
+                                    description: string;
+                                };
+                                primaryButton: string;
+                                groupsLabel: string;
+                                groupsPlaceholder: string;
+                                warningMessage: string;
+                            };
+                            fileBased: {
+                                hint: string;
+                            };
+                            responseOperationType: {
+                                userCreation: string;
+                                roleAssignment: string;
+                            };
+                            userstoreMessage: string;
                         };
                         buttons: {
                             import: string;
+                        },
+                        sidePanel: {
+                            manual: string;
+                            fileBased: string;
+                            fileFormatTitle: string;
+                            fileFormatContent: string;
+                            fileFormatSampleHeading: string;
                         }
                     };
+                    inviteParentUserWizard: {
+                        totalInvitations: string;
+                        successAlert: NotificationItem;
+                        errorAlert: NotificationItem;
+                        tableMessages: {
+                            userNotFound: string;
+                            activeInvitationExists: string;
+                            userEmailNotFound: string;
+                            userAlreadyExist: string;
+                        }
+                    }
                     changePasswordModal: {
                         header: string;
                         message: string;
@@ -5638,6 +6268,7 @@ export interface ConsoleNS {
                         generic: {
                             inputs: {
                                 placeholder: string;
+                                dropdownPlaceholder: string;
                                 validations: {
                                     empty: string;
                                     invalidFormat: string;
@@ -5762,6 +6393,7 @@ export interface ConsoleNS {
                         };
                         editRoles: {
                             confirmationModal: Confirmation;
+                            infoMessage: string;
                             roleList: {
                                 emptyListPlaceholder: {
                                     subTitle: {
@@ -5775,6 +6407,9 @@ export interface ConsoleNS {
                                     0: string;
                                     1: string;
                                 };
+                            };
+                            placeholders: {
+                                emptyPlaceholder: Placeholder;
                             };
                             heading: string;
                             popups: {
@@ -5866,6 +6501,7 @@ export interface ConsoleNS {
                         description: FormField;
                     };
                     connection: {
+                        updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };
@@ -5887,6 +6523,7 @@ export interface ConsoleNS {
                 placeholders: {
                     emptySearch: Placeholder;
                     emptyList: Placeholder;
+                    emptyListReadOnly: Placeholder;
                 };
                 sqlEditor: {
                     reset: string;
@@ -5966,6 +6603,51 @@ export interface ConsoleNS {
                     subHeader: string;
                     searchPlaceholder: string;
                 };
+            };
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: string;
+                    description: string;
+                    hint: string;
+                    username: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                        validations: {
+                            required: string;
+                        }
+                    },
+                    roles: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                        validations: {
+                            required: string;
+                        }
+                    },
+                    inviteButton: string;
+                };
+                tab: {
+                    usersTab: string
+                    invitationsTab: string;
+                };
+                searchPlaceholder: string;
+                searchdropdown: {
+                    pendingLabel: string;
+                    expiredLabel: string;
+                };
+                createDropdown: {
+                    createLabel: string;
+                    inviteLabel: string;
+                };
+                filterLabel: string;
+                emptyPlaceholder: {
+                    noPendingInvitations: string;
+                    noExpiredInvitations: string;
+                    noInvitations: string;
+                    noCollaboratorUserInvitations: string;
+                };
+                invitedUserLabel: string;
             };
             onboarded?: {
                 notifications?: {
@@ -6144,6 +6826,7 @@ export interface ConsoleNS {
             addEmailTemplate: EditPage;
             approvalsPage: Page;
             editTemplate: EditPage;
+            emailDomainDiscovery: Page;
             emailLocaleAdd: EditPage;
             emailLocaleAddWithDisplayName: EditPage;
             emailTemplateTypes: Page;
@@ -6156,6 +6839,7 @@ export interface ConsoleNS {
             oidcScopesEdit: EditPage;
             roles: Page;
             rolesEdit: EditPage;
+            groupsEdit: EditPage;
             serverConfigurations: Page;
             users: Page;
             usersEdit: EditPage;
@@ -6164,6 +6848,68 @@ export interface ConsoleNS {
         placeholders: {
             emptySearchResult: Placeholder;
             underConstruction: Placeholder;
+        };
+    };
+    saml2Config: {
+        title: string;
+        description: string;
+        form: {
+            metadataValidityPeriod: {
+                hint: string;
+                label: string;
+            };
+            destinationUrl: {
+                hint: string;
+                label: string;
+            };
+            enableMetadataSigning: {
+                label: string;
+            };
+            validation: {
+                metadataValidityPeriod: string;
+                destinationURLs: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    };
+    sessionManagement: {
+        title: string;
+        description: string;
+        form: {
+            idleSessionTimeout: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            rememberMePeriod: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            validation: {
+                rememberMePeriod: string;
+                idleSessionTimeout: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    };
+    wsFederationConfig: {
+        title: string;
+        description: string;
+        form: {
+            enableRequestSigning: {
+                label: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
         };
     };
 }

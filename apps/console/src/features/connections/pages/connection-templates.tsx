@@ -22,6 +22,7 @@ import {
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -38,14 +39,14 @@ import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
 import startCase from "lodash-es/startCase";
 import union from "lodash-es/union";
-import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core"; 
+import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core";
 import { useGetConnectionTemplates } from "../api/connections";
-import { 
-    AuthenticatorCreateWizardFactory 
+import {
+    AuthenticatorCreateWizardFactory
 } from "../components/create/authenticator-create-wizard-factory";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
@@ -55,12 +56,16 @@ import {
     ConnectionTemplateItemInterface
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
+import {
+    ConnectionsManagementUtils,
+    handleGetConnectionTemplateListError,
+    resolveConnectionName
+} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connection template page component.
  */
-type ConnectionTemplatePagePropsInterface = IdentifiableComponentInterface & RouteComponentProps 
+type ConnectionTemplatePagePropsInterface = IdentifiableComponentInterface & RouteComponentProps
 
 /**
  * Connection template page component page.
@@ -82,6 +87,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { deploymentConfig } = useDeploymentConfig();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -108,7 +114,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
     const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
-    
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -141,7 +147,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         handleGetConnectionTemplateListError(connectionTemplatesFetchRequestError);
         setFilteredCategorizedTemplates([]);
     }, [ connectionTemplatesFetchRequestError ]);
- 
+
     /**
      *  Group the connection templates.
      */
@@ -161,15 +167,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                     };
                 }
 
-                if (template.id === "linkedin-idp") {
-                    return {
-                        ...template,
-                        comingSoon: true
-                    };
-                }
-
                 if (template.displayOrder < 0) {
-                
+
                     return;
                 }
 
@@ -477,28 +476,41 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 template: ConnectionTemplateInterface,
                                                 templateIndex: number
                                             ) => {
-                                                
+
                                                 // if the template is "organization-enterprise-idp",
                                                 // then prevent rendering it.
                                                 if (template.id === ConnectionManagementConstants
                                                     .ORG_ENTERPRISE_CONNECTION_ID) {
-                                                        
+
                                                     return null;
+                                                }
+
+                                                let isTemplateDisabled: boolean = template.disabled;
+                                                let disabledHint: ReactNode = undefined;
+
+                                                // Disable the Apple template in localhost as it's not supported.
+                                                if (template.id === ConnectionManagementConstants
+                                                    .IDP_TEMPLATE_IDS.APPLE &&
+                                                    new URL(deploymentConfig?.serverOrigin)?.
+                                                        hostname === "localhost") {
+                                                    isTemplateDisabled = true;
+                                                    disabledHint = t("console:develop.pages." +
+                                                        "authenticationProviderTemplate.disabledHint.apple");
                                                 }
 
                                                 return (
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
                                                         resourceName={
-                                                            template.name === "Enterprise" ? "Standard-Based IdP"
-                                                                : template.name
+                                                            resolveConnectionName(template?.name)
                                                         }
                                                         isResourceComingSoon={ template.comingSoon }
-                                                        disabled={ template.disabled }
+                                                        disabled={ isTemplateDisabled }
+                                                        disabledHint={ disabledHint }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
-                                                        resourceDocumentationLink={ 
+                                                        resourceDocumentationLink={
                                                             getLink(ConnectionsManagementUtils
                                                                 .resolveConnectionDocLink(template.id))
                                                         }
@@ -507,15 +519,16 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                                 .resolveConnectionResourcePath("", template.image)
                                                         }
                                                         tags={ template.tags }
+                                                        showActions={ true }
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                             setShowWizard(true);
                                                         } }
-                                                        showTooltips={ 
-                                                            { 
-                                                                description: true, 
-                                                                header: false 
-                                                            } 
+                                                        showTooltips={
+                                                            {
+                                                                description: true,
+                                                                header: false
+                                                            }
                                                         }
                                                         data-testid={ `${ componentId }-${ template.name }` }
                                                     />

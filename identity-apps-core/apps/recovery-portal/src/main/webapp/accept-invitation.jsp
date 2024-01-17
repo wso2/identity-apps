@@ -22,7 +22,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%-- Localization --%>
@@ -36,17 +35,18 @@
 
 <%
     // URL of the REST API you want to call
-    String apiUrl = IdentityUtil.getServerURL("/api/server/v1/guests/invitation/accept", true, true);
+    String apiUrl = IdentityManagementEndpointUtil.getBasePath(IdentityManagementEndpointConstants.SUPER_TENANT,
+                    "/api/server/v1/guests/invitation/accept", false);
     String confCode = request.getParameter("code");
     String acceptApiResponse = "";
-    
+
     try {
         // Create a URL object with the API URL
         URL url = new URL(apiUrl);
-        
+
         // Open a connection to the URL
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        
+
         // Set the HTTP request method to POST
         connection.setRequestMethod("POST");
 
@@ -65,17 +65,17 @@
             byte[] input = requestBody.getBytes("UTF-8");
             os.write(input, 0, input.length);
         }
-        
+
         // Get the response code from the server
         int responseCode = connection.getResponseCode();
-        
+
         // Check if the response code is successful (e.g., 200 OK)
         if (responseCode == 204) {
             acceptApiResponse="SUCCESS";
         } else {
             acceptApiResponse="FAIL";
         }
-        
+
         // Close the connection
         connection.disconnect();
     } catch (Exception e) {

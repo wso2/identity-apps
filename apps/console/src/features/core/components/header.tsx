@@ -27,16 +27,18 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import { OrganizationType } from "@wso2is/common";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
+import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
+    useContext,
     useEffect,
     useMemo,
     useState
@@ -45,6 +47,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
+import { SubscriptionContext } from "../../../extensions/components/subscription/contexts/subscription-context";
+import {
+    TenantTier,
+    TenantTierRequestResponse
+} from "../../../extensions/components/subscription/models/subscription";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -54,9 +61,9 @@ import {
 } from "../../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
-import { getApplicationList } from "../../applications/api";
-import { ApplicationListInterface } from "../../applications/models";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
@@ -115,8 +122,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes: string = useSelector(
         (state: AppState) => state.auth.allowedScopes
     );
+    const userOrganizationID: string = useSelector((state: AppState) =>
+        state?.organization?.userOrganizationId);
 
+    const { UIConfig } = useUIConfig();
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
+
+    const { organizationType } = useGetCurrentOrganizationType();
+
+    const { legacyAuthzRuntime }  = useAuthorization();
 
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
@@ -152,24 +167,45 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 setUpgradeButtonURL(upgradeButtonURL);
             }
         );
-    }, []);
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Show the organization switching dropdown only if
+     *  - the organizations feature is enabled
      *  - the extensions config enables this
      *  - the requires scopes are there
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
     const isOrgSwitcherEnabled: boolean = useMemo(() => {
+        // If the organizations feature is disabled, do not show the org switcher.
+        if (!UIConfig?.legacyMode?.organizations) {
+            return false;
+        }
+
+        if (legacyAuthzRuntime) {
+            return (
+                isOrganizationManagementEnabled &&
+                // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+                // So, we cannot use `tenantDomain` to check
+                // if the user is logged in to a non-super-tenant account reliably.
+                // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+                (tenantDomain === AppConstants.getSuperTenant() ||
+                    window[ "AppUtils" ].getConfig().organizationName ||
+                    organizationConfigs.showSwitcherInTenants) &&
+                hasRequiredScopes(
+                    feature?.organizations,
+                    feature?.organizations?.scopes?.read,
+                    scopes
+                )
+            );
+        }
+
         return (
             isOrganizationManagementEnabled &&
-            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
-            // So, we cannot use `tenantDomain` to check
-            // if the user is logged in to a non-super-tenant account reliably.
-            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-            (tenantDomain === AppConstants.getSuperTenant() ||
-                window[ "AppUtils" ].getConfig().organizationName ||
+            (organizationType === OrganizationType.SUPER_ORGANIZATION ||
+                organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                organizationType === OrganizationType.SUBORGANIZATION ||
                 organizationConfigs.showSwitcherInTenants) &&
             hasRequiredScopes(
                 feature?.organizations,
@@ -181,33 +217,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         tenantDomain,
         feature.organizations
     ]);
-
-    /**
-     * Check if there are applications registered and set the value to local storage.
-     */
-    useEffect(() => {
-        if (
-            !isEmpty(
-                LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable")
-            ) &&
-            LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") ===
-            "true"
-        ) {
-            return;
-        }
-
-        getApplicationList(null, null, null)
-            .then((response: ApplicationListInterface) => {
-                LocalStorageUtils.setValueInLocalStorage(
-                    "IsAppsAvailable",
-                    response.totalResults > 0 ? "true" : "false"
-                );
-            })
-            .catch(() => {
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
-    }, []);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
@@ -326,13 +335,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Menu>
                 </>
             ),
-            billingPortalURL && !isPrivilegedUser &&
+            tierName === TenantTier.FREE && billingPortalURL && !isPrivilegedUser &&
             window[ "AppUtils" ].getConfig().extensions
                 .upgradeButtonEnabled && (
                 <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                    <a 
-                        href={ upgradeButtonURL } 
-                        target="_blank" 
+                    <a
+                        href={ upgradeButtonURL }
+                        target="_blank"
                         rel="noreferrer"
                         data-componentid="upgrade-button-link"
                     >
@@ -352,55 +361,56 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         ];
     };
 
+    const isShowAppSwitchButton = (): boolean => {
+        if (!showAppSwitchButton) {
+            return false;
+        }
+
+        // Show the app switch button only if the user is logged in to the
+        // user resident organization.
+        if (!legacyAuthzRuntime) {
+            return (!userOrganizationID
+                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
+        }
+
+        return true;
+    };
+
+    const LOGO_IMAGE = () => {
+        return (
+            <Image
+                src={ resolveAppLogoFilePath(
+                    window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                    `${ window[ "AppUtils" ].getConfig().clientOrigin
+                    }/` +
+                    `${ StringUtils.removeSlashesFromPath(
+                        window[ "AppUtils" ].getConfig()
+                            .appBase
+                    ) !== ""
+                        ? StringUtils.removeSlashesFromPath(
+                            window[ "AppUtils" ].getConfig()
+                                .appBase
+                        ) + "/"
+                        : ""
+                    }libs/themes/` +
+                    config.ui.theme.name
+                ) }
+                alt="logo"
+            />
+        );
+    };
+
     return (
         <OxygenHeader
             className="is-header"
             brand={ {
                 logo: {
-                    desktop: (
-                        <Image
-                            src={ resolveAppLogoFilePath(
-                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                `${ window[ "AppUtils" ].getConfig().clientOrigin
-                                }/` +
-                                `${ StringUtils.removeSlashesFromPath(
-                                    window[ "AppUtils" ].getConfig()
-                                        .appBase
-                                ) !== ""
-                                    ? StringUtils.removeSlashesFromPath(
-                                        window[ "AppUtils" ].getConfig()
-                                            .appBase
-                                    ) + "/"
-                                    : ""
-                                }libs/themes/` +
-                                config.ui.theme.name
-                            ) }
-                            alt="logo"
-                        />
-                    ),
-                    mobile: (
-                        <Image
-                            src={ resolveAppLogoFilePath(
-                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                `${ window[ "AppUtils" ].getConfig().clientOrigin
-                                }/` +
-                                `${ StringUtils.removeSlashesFromPath(
-                                    window[ "AppUtils" ].getConfig()
-                                        .appBase
-                                ) !== ""
-                                    ? StringUtils.removeSlashesFromPath(
-                                        window[ "AppUtils" ].getConfig()
-                                            .appBase
-                                    ) + "/"
-                                    : ""
-                                }libs/themes/` +
-                                config.ui.theme.name
-                            ) }
-                            alt="logo"
-                        />
-                    )
+                    desktop: (<LOGO_IMAGE />),
+                    mobile: (<LOGO_IMAGE />)
                 },
-                onClick: () => history.push(config.deployment.appHomePath),
+                onClick: () => hasRequiredScopes(feature?.gettingStarted,
+                    feature?.gettingStarted?.scopes?.feature, scopes)
+                    && history.push(config.deployment.appHomePath),
                 title: config.ui.appName
             } }
             user={ {
@@ -451,7 +461,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Box>
                 ],
                 menuItems: [
-                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl && 
+                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl &&
                     !isPrivilegedUser && (
                         <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <MenuItem
@@ -472,33 +482,34 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             </MenuItem>
                         </Show>
                     ),
-                    showAppSwitchButton ? (
-                        <MenuItem
-                            color="inherit"
-                            key={ t(
-                                "myAccount:components.header.appSwitch.console.name"
-                            ) }
-                            onClick={ () => {
-                                eventPublisher.publish(
-                                    "console-click-visit-my-account"
-                                );
-                                window.open(
-                                    isPrivilegedUser
-                                        ? privilegedUserAccountURL
-                                        : accountAppURL,
-                                    "_blank",
-                                    "noopener"
-                                );
-                            } }
-                        >
-                            <ListItemIcon>
-                                <MyAccountIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                                { t("console:common.header.appSwitch.myAccount.name") }
-                            </ListItemText>
-                        </MenuItem>
-                    ) : null
+                    isShowAppSwitchButton()
+                        ? (
+                            <MenuItem
+                                color="inherit"
+                                key={ t(
+                                    "myAccount:components.header.appSwitch.console.name"
+                                ) }
+                                onClick={ () => {
+                                    eventPublisher.publish(
+                                        "console-click-visit-my-account"
+                                    );
+                                    window.open(
+                                        isPrivilegedUser
+                                            ? privilegedUserAccountURL
+                                            : accountAppURL,
+                                        "_blank",
+                                        "noopener"
+                                    );
+                                } }
+                            >
+                                <ListItemIcon>
+                                    <MyAccountIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    { t("console:common.header.appSwitch.myAccount.name") }
+                                </ListItemText>
+                            </MenuItem>
+                        ) : null
                 ],
                 onActionClick: () =>
                     history.push(AppConstants.getAppLogoutPath()),

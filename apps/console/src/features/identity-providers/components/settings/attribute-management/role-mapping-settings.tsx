@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,9 @@
  * under the License.
  */
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { DynamicField, Heading, Hint, KeyValue } from "@wso2is/react-components";
+import { DynamicField, KeyValue } from "@wso2is/forms";
+import { Heading, Hint } from "@wso2is/react-components";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,7 +31,6 @@ import {
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../../organizations/models";
-import { OrganizationUtils } from "../../../../organizations/utils";
 import { getRolesList } from "../../../../roles/api/roles";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
@@ -83,6 +84,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     } = props;
 
     const { t } = useTranslation();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Filter out Application related and Internal roles
@@ -102,7 +104,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (isSuperOrganization()) {
             getRolesList(null)
                 .then((response: AxiosResponse) => {
                     if (response.status === 200) {

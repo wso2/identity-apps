@@ -29,7 +29,7 @@
     String spAppName = request.getParameter("sp");
 
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+        tenantDomain = IdentityTenantUtil.resolveTenantDomain();
         String tenantDomainFromURL = request.getParameter("t");
         if (IdentityManagementEndpointConstants.SUPER_TENANT.equals(tenantDomain) &&
                 !StringUtils.isBlank(tenantDomainFromURL)) {

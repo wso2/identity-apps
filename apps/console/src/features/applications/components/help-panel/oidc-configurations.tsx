@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,16 +15,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Form, Grid, Icon } from "semantic-ui-react";
+import { Form, Grid } from "semantic-ui-react";
+import { FeatureConfigInterface } from "../../../core";
+import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs/ui";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     OIDCApplicationConfigurationInterface,
     OIDCEndpointsInterface
@@ -41,6 +45,10 @@ const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
  */
 interface OIDCConfigurationsPropsInterface extends TestableComponentInterface {
     oidcConfigurations: OIDCApplicationConfigurationInterface;
+    /**
+     * Application template ID.
+     */
+    templateId?: string;
 }
 
 /**
@@ -57,8 +65,12 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features);
+
     const {
         oidcConfigurations,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -96,7 +108,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
         <Form>
             <Grid verticalAlign="middle">
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.issuer }
                             size="micro"
@@ -112,7 +124,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.issuer") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.tokenEndpoint }
                             data-testid={ `${ testId }-introspection-readonly-input` }
@@ -120,7 +132,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.wellKnown }
                             size="micro"
@@ -136,7 +148,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.wellKnown") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.wellKnownEndpoint  }
                             data-testid={ `${ testId }-introspection-readonly-input` }
@@ -144,7 +156,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.authorize }
                             size="micro"
@@ -160,7 +172,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.authorize") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.authorizeEndpoint }
                             data-testid={ `${ testId }-authorize-readonly-input` }
@@ -168,7 +180,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.token }
                             size="micro"
@@ -184,7 +196,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.token") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.tokenEndpoint }
                             data-testid={ `${ testId }-token-readonly-input` }
@@ -192,7 +204,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.userInfo }
                             size="micro"
@@ -208,7 +220,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.userInfo") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.userEndpoint }
                             data-testid={ `${ testId }-userInfo-readonly-input` }
@@ -216,7 +228,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.introspect }
                             size="micro"
@@ -232,7 +244,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.introspection") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.introspectionEndpoint }
                             data-testid={ `${ testId }-introspection-readonly-input` }
@@ -240,7 +252,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.jwks }
                             size="micro"
@@ -256,7 +268,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.jwks") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.jwksEndpoint }
                             data-testid={ `${ testId }-jwks-readonly-input` }
@@ -264,7 +276,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
                             icon={ getHelpPanelIcons().endpoints.revoke }
                             size="micro"
@@ -280,7 +292,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.revoke") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.tokenRevocationEndpoint }
                             data-testid={ `${ testId }-token-revoke-readonly-input` }
@@ -288,9 +300,9 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                         <GenericIcon
-                            icon={ <Icon className={ "mr-0" } name="power off" /> }
+                            icon={ getHelpPanelIcons().endpoints.logout }
                             size="micro"
                             square
                             transparent
@@ -304,13 +316,73 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 "oidcConfigurations.labels.endSession") }
                         </label>
                     </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <CopyInputField
                             value={ oidcConfigurations?.endSessionEndpoint  }
                             data-testid={ `${ testId }-logout-readonly-input` }
                         />
                     </Grid.Column>
                 </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                        <GenericIcon
+                            icon={ getHelpPanelIcons().endpoints.par }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-pushed-authorization-request-label` }>
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.pushedAuthorizationRequest") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <CopyInputField
+                            value={ oidcConfigurations?.pushedAuthorizationRequestEndpoint  }
+                            data-testid={ `${ testId }-pushed-authorization-request-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                {
+                    featureConfig?.server?.enabled && (
+                        <>
+                            { (
+                                templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                                templateId === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb") ||
+                                templateId === ApplicationManagementConstants.TEMPLATE_IDS.get("spa")
+                            ) && (
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 8 } computer={ 6 }>
+                                        <GenericIcon
+                                            icon={ getHelpPanelIcons().endpoints.sessionIframe }
+                                            size="micro"
+                                            square
+                                            transparent
+                                            inline
+                                            className="left-icon"
+                                            verticalAlign="middle"
+                                            spaced="right"
+                                        />
+                                        <label data-testid={ `${ testId }-session-iframe-label` }>
+                                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                                "oidcConfigurations.labels.sessionIframe") }
+                                        </label>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 8 } computer={ 10 }>
+                                        <CopyInputField
+                                            value={ oidcConfigurations?.sessionIframeEndpoint }
+                                            data-testid={ `${ testId }-session-iframe-readonly-input` }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+                        </>
+                    )
+                }
             </Grid>
         </Form>
     );

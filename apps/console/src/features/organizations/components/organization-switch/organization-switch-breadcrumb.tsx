@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { BasicUserInfo } from "@asgardeo/auth-react";
+import { OrganizationType } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
@@ -33,9 +35,14 @@ import { Dispatch } from "redux";
 import { Breadcrumb, Dropdown, Icon } from "semantic-ui-react";
 import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { organizationConfigs } from "../../../../extensions";
+import useSignIn from "../../../authentication/hooks/use-sign-in";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { AppConstants, AppState } from "../../../core";
+import { history } from "../../../core/helpers/history";
 import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
+import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-type";
+import useOrganizationSwitch from "../../hooks/use-organization-switch";
 import {
     BreadcrumbItem,
     GenericOrganization
@@ -52,6 +59,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 ): ReactElement => {
     const { "data-componentid": componentId } = props;
 
+    const { onSignIn } = useSignIn();
+
+    const { switchOrganization } = useOrganizationSwitch();
+
+    const { legacyAuthzRuntime }  = useAuthorization();
+
+    const { organizationType } = useGetCurrentOrganizationType();
+
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
@@ -59,21 +74,40 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state?.organization?.isFirstLevelOrganization
     );
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const shouldSendRequest: boolean = useMemo(() => {
+        if (legacyAuthzRuntime) {
+            return (
+                isFirstLevelOrg ||
+                window[ "AppUtils" ].getConfig().organizationName ||
+                tenantDomain === AppConstants.getSuperTenant()
+            );
+        }
+
         return (
-            isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
+            organizationType === OrganizationType.SUPER_ORGANIZATION ||
+            organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organizationType === OrganizationType.SUBORGANIZATION ||
             tenantDomain === AppConstants.getSuperTenant()
         );
-    }, [ isFirstLevelOrg, tenantDomain ]);
+    }, [ isFirstLevelOrg, organizationType, tenantDomain ]);
 
-    const { data: breadcrumbList, error, isLoading } = useGetOrganizationBreadCrumb(
+    const {
+        data: breadcrumbList,
+        error,
+        isLoading,
+        mutate: mutateOrganizationBreadCrumbFetchRequest
+    } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
+
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
+    const isShowSwitcher: boolean = organizationConfigs?.showOrganizationDropdown || isSubOrg;
 
     useEffect(() => {
         if (!error) {
@@ -88,45 +122,72 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     }, [ error ]);
 
-    const handleOrganizationSwitch = (
+    const handleOrganizationSwitch = async (
         organization: GenericOrganization
-    ): void => {
-        let newOrgPath: string = "";
+    ): Promise<void> => {
+        if (legacyAuthzRuntime) {
+            let newOrgPath: string = "";
 
-        if (
-            breadcrumbList && breadcrumbList.length > 0 &&
-            OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
-            breadcrumbList[ 1 ]?.id === organization.id &&
-            organizationConfigs.showSwitcherInTenants
-        ) {
-            newOrgPath =
-                "/t/" +
-                organization.name +
-                "/" +
-                window[ "AppUtils" ].getConfig().appBase;
-        } else if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
-        } else {
-            newOrgPath =
-                "/o/" +
-                organization.id +
-                "/" +
-                window[ "AppUtils" ].getConfig().appBase;
+            if (
+                breadcrumbList && breadcrumbList.length > 0 &&
+                OrganizationUtils.isSuperOrganization(breadcrumbList[ 0 ]) &&
+                breadcrumbList[ 1 ]?.id === organization.id &&
+                organizationConfigs.showSwitcherInTenants
+            ) {
+                newOrgPath =
+                    "/t/" +
+                    organization.name +
+                    "/" +
+                    window[ "AppUtils" ].getConfig().appBase;
+            } else if (OrganizationUtils.isSuperOrganization(organization)) {
+                newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
+            } else {
+                newOrgPath =
+                    "/o/" +
+                    organization.id +
+                    "/" +
+                    window[ "AppUtils" ].getConfig().appBase;
+            }
+
+            // Clear the callback url of the previous organization.
+            SessionStorageUtils.clearItemFromSessionStorage(
+                "auth_callback_url_console"
+            );
+
+            // Redirect the user to the newly selected organization path.
+            window.location.replace(newOrgPath);
+
+            return;
         }
 
-        // Clear the callback url of the previous organization.
-        SessionStorageUtils.clearItemFromSessionStorage(
-            "auth_callback_url_console"
-        );
+        let response: BasicUserInfo = null;
+        const isFirstLevelOrganization: boolean = breadcrumbList[0].id === organization.id;
 
-        // Redirect the user to the newly selected organization path.
-        window.location.replace(newOrgPath);
+        try {
+            response = await switchOrganization(organization.id);
+            await onSignIn(
+                response,
+                () => null,
+                () => {
+                    // If first level org, remove the `/o/` path from the location.
+                    if (isFirstLevelOrganization) {
+                        window["AppUtils"].updateOrganizationName("");
+                    }
+                },
+                () => null
+            );
+
+            mutateOrganizationBreadCrumbFetchRequest();
+            history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+        } catch(e) {
+            // TODO: Handle error
+        }
     };
 
     const generateSuperBreadcrumbItem = (
         item?: BreadcrumbItem
     ): ReactElement => {
-        return OrganizationUtils.isRootOrganization(item) ? (
+        return OrganizationUtils.isSuperOrganization(item) ? (
             <>
                 <Breadcrumb.Section
                     onClick={
@@ -143,12 +204,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         { item?.name }
                     </span>
                 </Breadcrumb.Section>
-                { breadcrumbList.length === 1 && (
-                    <Icon
-                        name={ isDropDownOpen ? "angle up" : "angle down" }
-                        className="separator-icon organization-breadcrumb-icon"
-                    />
-                ) }
             </>
         ) : (
             <Breadcrumb.Section
@@ -173,22 +228,15 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         ) : (
             <>
                 {
-                    !organizationConfigs.showSwitcherInTenants
-                        ? (
+                    organizationConfigs?.showSwitcherInTenants ? (
+                        breadcrumbList.length <= 4 && (
                             <Icon
                                 key={ index }
                                 name={ isDropDownOpen ? "angle up" : "angle down" }
                                 className="separator-icon organization-breadcrumb-icon"
                             />
-                        ) : (
-                            breadcrumbList.length <= 4 && (
-                                <Icon
-                                    key={ index }
-                                    name={ isDropDownOpen ? "angle up" : "angle down" }
-                                    className="separator-icon organization-breadcrumb-icon"
-                                />
-                            )
                         )
+                    ) : null
                 }
             </>
         );
@@ -204,7 +252,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0 && !organizationConfigs.showSwitcherInTenants) {
+                            if (index === 0 && !isSAASDeployment) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
@@ -289,7 +337,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         className="breadcrumb-dropdown breadcrumb"
                         data-componentid={ `${ componentId }-breadcrumb-ellipsis` }
                     >
-                        <Dropdown.Menu>
+                        <Dropdown.Menu open={ false }>
                             { (breadcrumbList && breadcrumbList?.length > 0) && breadcrumbList?.map(
                                 (breadcrumb: BreadcrumbItem, index: number) => {
                                     if (
@@ -368,16 +416,18 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         );
     };
 
-    return (
-        <TenantDropdown 
-            dropdownTrigger={ triggerOrganizationDropdown() } 
-            disable={ 
-                organizationConfigs.showSwitcherInTenants
-                    ? breadcrumbList?.length > 4
-                    : false
-            } 
-        />
-    );
+    if (isShowSwitcher) {
+        return (
+            <TenantDropdown
+                dropdownTrigger={ triggerOrganizationDropdown() }
+                disable={
+                    organizationConfigs.showSwitcherInTenants
+                        ? breadcrumbList?.length > 4
+                        : isShowSwitcher ?? false
+                }
+            />
+        );
+    }
 };
 
 OrganizationSwitchBreadcrumb.defaultProps = {

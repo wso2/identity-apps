@@ -28,16 +28,16 @@ import {
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { 
-    FC, 
-    ReactElement, 
-    useEffect, 
-    useState 
+import React, {
+    FC,
+    ReactElement,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
-import { 
+import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "../../../extensions/configs";
@@ -51,27 +51,27 @@ import {
     history
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
-import { 
-    ConnectionsManagementUtils,
-    handleGetAuthenticatorTagsError,
-    handleGetConnectionListCallError 
-} from "../utils/connection-utils";
+import { getAuthenticatorList } from "../components/common";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorInterface,
     AuthenticatorLabels,
-    AuthenticatorTypes,
+    AuthenticatorTypes
 } from "../models/authenticators";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface
 } from "../models/connection";
-import { getAuthenticatorList } from "../components/common";
+import {
+    ConnectionsManagementUtils,
+    handleGetAuthenticatorTagsError,
+    handleGetConnectionListCallError
+} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connections page component.
@@ -90,7 +90,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -105,9 +105,11 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const [ connectionsList, setConnectionsList ] = useState<ConnectionListResponseInterface>({});
     const [ authenticatorList, setAuththenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
+    const [ filteredAuthenticatorList, setFilteredAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filter, setFilter ] = useState<string>(null);
+    const [ filterAuthenticatorsOnly, setFilterAuthenticatorsOnly ] = useState<boolean>(false);
     const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
-    const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
+    const isPaginating: boolean = false;
 
     const {
         data: authenticators,
@@ -121,12 +123,19 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError,
         mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(listItemLimit, listOffset, filter, "federatedAuthenticators");
+    } = useGetConnections(
+        listItemLimit,
+        listOffset,
+        filter,
+        "federatedAuthenticators",
+        !filterAuthenticatorsOnly,
+        filterAuthenticatorsOnly
+    );
 
     const {
         data: authenticatorTags,
         isLoading: isAuthenticatorTagsFetchRequestLoading,
-        error: authenticatorTagsFetchRequestError,
+        error: authenticatorTagsFetchRequestError
     } = useGetAuthenticatorTags();
 
     useEffect(() => {
@@ -141,7 +150,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         }
 
         if (connectionsFetchRequestError) {
-            handleGetConnectionListCallError(connectionsFetchRequestError); 
+            handleGetConnectionListCallError(connectionsFetchRequestError);
 
             return;
         }
@@ -202,18 +211,18 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
             // Set the FIDO authenticator display name and tags.
             if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY ];
-                authenticator.displayName = "FIDO2";
+                authenticator.displayName = "Passkey";
             }
 
             // Set the magic link authenticator tags.
             if (authenticator.id === AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
-                authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
+                authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
             }
 
             // Hide the SMS OTP authenticator for sub organizations.
             if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                orgType === OrganizationType.SUBORGANIZATION) {
+                organizationType === OrganizationType.SUBORGANIZATION &&
+                identityProviderConfig?.disableSMSOTPInSubOrgs) {
                 return false;
             }
 
@@ -241,6 +250,26 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     }, [ authenticators ]);
 
     /**
+     * Filters the filtered authenticator list based on the configurable local authenticator list.
+     */
+    useEffect(() => {
+        const filtered: AuthenticatorInterface[] = authenticatorList.filter((authenticator: AuthenticatorInterface) => {
+
+            // Filtered authenticator list should only contain local authenticators that are configurable.
+            if (authenticator.type === AuthenticatorTypes.LOCAL) {
+
+                return localAuthenticatorList.some((localAuthenticator: AuthenticatorInterface) => {
+                    return localAuthenticator.id === authenticator.id;
+                });
+            }
+
+            return true;
+        });
+
+        setFilteredAuthenticatorList(filtered);
+    }, [ authenticatorList, localAuthenticatorList ]);
+
+    /**
      * Fetches the local authenticators and stores them in the internal state.
      */
     useEffect(() => {
@@ -259,21 +288,17 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
                     authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
                         authenticator.id, authenticator.displayName);
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
-                }
-
-                if (authenticator.id === AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR ];
+                    authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                    orgType === OrganizationType.SUBORGANIZATION) {
+                    organizationType === OrganizationType.SUBORGANIZATION &&
+                    identityProviderConfig?.disableSMSOTPInSubOrgs) {
                     return false;
                 }
 
@@ -360,6 +385,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
         setSelectedFilterTags(filterTags);
         setFilter(ConnectionsManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
+        setFilterAuthenticatorsOnly(filterTags && filterTags.length > 0);
 
         if (isEmpty(query) && isEmpty(filterTags)) {
             setShowFilteredList(false);
@@ -393,7 +419,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             action={ (
                 (!isConnectionsFetchRequestLoading || !isAuthenticatorsFetchRequestLoading) &&
                 !(!searchQuery && connectionsList?.identityProviders?.length <= 0)) &&
-                identityProviderConfig.useNewConnectionsView !== undefined && 
+                identityProviderConfig.useNewConnectionsView !== undefined &&
                 (
                     <Show when={ AccessControlConstants.IDP_WRITE }>
                         <PrimaryButton
@@ -417,12 +443,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                     : t("console:develop.pages.idp.title")
             }
             description={
-                <>
+                (<>
                     { t("console:develop.pages.authenticationProvider.subTitle") }
                     <DocumentationLink link={ getLink("develop.connections.learnMore") }>
                         { t("common:learnMore") }
                     </DocumentationLink>
-                </>
+                </>)
             }
             data-testid={ `${ testId }-page-layout` }
             actionColumnWidth={ 4 }
@@ -495,7 +521,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             >
                 <AuthenticatorGrid
                     isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
-                    authenticators={ showFilteredList ? authenticatorList : connectionsList?.identityProviders }
+                    authenticators={ showFilteredList ? filteredAuthenticatorList : connectionsList?.identityProviders }
                     onEmptyListPlaceholderActionClick={ () => {
                         eventPublisher.publish("connections-click-new-connection-button");
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));

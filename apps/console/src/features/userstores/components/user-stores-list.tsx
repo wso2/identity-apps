@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { UserstoreConstants } from "@wso2is/core/constants";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -39,6 +40,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions";
 import {
@@ -131,7 +133,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -193,7 +195,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         }));
                         update();
                     })
-                    .catch(error => {
+                    .catch((error: IdentityAppsError) => {
                         dispatch(addAlert({
                             description: error?.description
                                 ?? t("console:manage.features.userstores.notifications." +
@@ -258,6 +260,21 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         }
 
         if (list?.length === 0) {
+            if (!hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.create,
+                allowedScopes)) {
+                return (
+                    <EmptyPlaceholder
+                        image={ getEmptyPlaceholderIllustrations().newList }
+                        imageSize="tiny"
+                        title={ t("console:manage.features.userstores.placeholders.emptyListReadOnly.title") }
+                        subtitle={ [
+                            t("console:manage.features.userstores.placeholders.emptyListReadOnly.subtitles")
+                        ] }
+                        data-testid={ `${ testId }-empty-placeholder` }
+                    />
+                );
+            }
+
             if (!userstoresConfig.userstoreList.renderEmptyPlaceholder(onEmptyListPlaceholderActionClick)) {
                 return (
                     <EmptyPlaceholder
@@ -390,9 +407,11 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
         return [
             {
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (): SemanticICONS => hasRequiredScopes(featureConfig?.userStores,
+                    featureConfig?.userStores?.scopes?.update, allowedScopes) ?  "pencil alternate" : "eye",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void => handleUserstoreEdit(userstore?.id),
-                popupText: (): string => t("common:edit"),
+                popupText: (): string => hasRequiredScopes(featureConfig?.userStores,
+                    featureConfig?.userStores?.scopes?.update, allowedScopes) ? t("common:edit") : t("common:view"),
                 renderer: "semantic-icon"
             },
             {

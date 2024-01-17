@@ -1,0 +1,13 @@
+.add-organization-email-domain-form {
+    margin-top: 20px;
+    max-width: 650px;
+
+    // TODO: Fix this from `@oxygen-ui` side.
+    .MuiFormHelperText-root {
+        margin-left: 0;
+    }
+
+    .ui.primary.button{
+        margin-top: 20px;
+    }
+}

@@ -72,7 +72,7 @@ export class ServerConfigurationsConstants {
 	 * UUID of the identity governance analytics engine connector.
 	 *
 	 */
-	public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
+	public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l";
 
 	/**
 	 * UUID of the identity governance user claim update connector.
@@ -132,7 +132,7 @@ export class ServerConfigurationsConstants {
 	/**
 	 * UUID of the identity governance password expiry connector.
 	 */
-	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnlWMg";
+	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
@@ -145,7 +145,7 @@ export class ServerConfigurationsConstants {
      *
      */
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN: RegExp =
-        new RegExp("^(?:[a-zA-Z0-9:./]+,)+[a-zA-Z0-9:./]+$");
+        new RegExp("^(?:[a-zA-Z0-9:./]+,)*[a-zA-Z0-9:./]+$");
 
 	/**
 	 * UUID of the user on boarding connector.
@@ -158,7 +158,7 @@ export class ServerConfigurationsConstants {
 	public static readonly USER_EMAIL_VERIFICATION_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
 
 	/**
-	 * UUID of the Other Sttings governance connector category.
+	 * UUID of the Other Settings governance connector category.
 	 */
 	public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
 
@@ -242,6 +242,8 @@ export class ServerConfigurationsConstants {
 	 * Login policies - account locking API Keyword constants.
 	 */
 	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.lock.on.max.failed.attempts.enable";
+	public static readonly ANALYTICS_ENGINE_ENABLE: string = "adaptive_authentication.analytics.basicAuth.enabled";
+
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK: string =
 		"account.lock.handler.On.Failure.Max.Attempts";
 
@@ -326,12 +328,70 @@ export class ServerConfigurationsConstants {
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
 
 	/**
+	 * Analytics Engine Connector Constants.
+	 */
+	public static readonly ANALYTICS_HOST: string = "adaptive_authentication.elastic.receiver";
+	public static readonly ANALYTICS_BASIC_AUTH_ENABLE: string = "adaptive_authentication.elastic.basicAuth.enabled";
+	public static readonly ANALYTICS_BASIC_AUTH_USERNAME: string = "adaptive_authentication.elastic.basicAuth.username";
+	public static readonly ANALYTICS_BASIC_AUTH_PASSWORD: string =
+		"__secret__adaptive_authentication.elastic.basicAuth.password";
+
+	public static readonly ANALYTICS_HTTP_CONNECTION_TIMEOUT: string =
+		"adaptive_authentication.elastic.HTTPConnectionTimeout";
+
+	public static readonly ANALYTICS_HTTP_READ_TIMEOUT: string = "adaptive_authentication.elastic.HTTPReadTimeout";
+	public static readonly ANALYTICS_HTTP_CONNECTION_REQUEST_TIMEOUT: string =
+		"adaptive_authentication.elastic.HTTPConnectionRequestTimeout";
+
+	public static readonly ANALYTICS_HOSTNAME_VERIFICATION: string = "adaptive_authentication.elastic.hostnameVerfier";
+
+	/**
 	 * Extensions Constants.
 	 */
-	public  static  readonly ALL: string = "all";
-	
+	public static readonly ALL: string = "all";
+
+	/**
+	 * Custom connector IDs.
+	 */
+	public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso"
+	public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management"
+	public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed"
+
+    /**
+     * Predefined connector catergory IDs.
+     */
+    public static readonly SSO_SETTINGS_CATEGORY_ID: string = "sso-settings";
+    public static readonly LOGIN_SECURITY_SETTINGS_CATEGORY_ID: string = "login-security";
+
 	/**
 	 * Multi Attribute Login Constants.
 	 */
 	public static readonly MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID: string = "bXVsdGlhdHRyaWJ1dGUubG9naW4uaGFuZGxlcg";
+	public static readonly MULTI_ATTRIBUTE_LOGIN_ENABLE: string = "account.multiattributelogin.handler.enable";
+    public static readonly ALTERNATIVE_LOGIN_IDENTIFIER: string = "alternative-login-identifier";
+    public static readonly USERNAME_VALIDATION: string = "username-validation";
+    public static readonly PASSWORD_RECOVERY: string = "password-recovery";
+    public static readonly USERNAME_RECOVERY: string = "username-recovery";
+
+    /**
+     * User Onboarding Catergory Constants.
+     */
+    public static readonly ORGANIZATION_SELF_SERVICE_CONNECTOR_ID: string = "b3JnYW5pemF0aW9uLXNlbGYtc2VydmljZQ";
+    public static readonly ORGANIZATION_SELF_SERVICE_ENABLE: string = "Organization.SelfService.Enable";
+    public static readonly ASK_PASSWORD_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
+    public static readonly ASK_PASSWORD_ENABLE: string = "EmailVerification.Enable";
+
+    /**
+     * Account Management Catergory Constants.
+     */
+    public static readonly ADMIN_FORCED_PASSWORD_RESET: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
+    public static readonly PRIVATE_KEY_JWT_CLIENT_AUTH: string = "private-key-jwt-configuration";
+
+    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
+
+	/**
+	 * Organization Settings Category Constants.
+	 */
+	public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
+	public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
 }

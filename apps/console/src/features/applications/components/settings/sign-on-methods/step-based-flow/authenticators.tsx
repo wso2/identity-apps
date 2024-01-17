@@ -16,20 +16,25 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
+import { AppState } from "apps/console/src/features/core";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
+import { AuthenticatorManagementConstants } from "../../../../../connections";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
 import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
-    FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers/models/identity-provider";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
@@ -104,12 +109,17 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
     const authenticatorCardClasses: string = classNames("authenticator", {
         "with-labels": showLabels
     });
+
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     /**
      * Updates the internal selected authenticators state when the prop changes.
@@ -218,7 +228,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                             The second-factor authenticators can only be used if{ " " }
                                         <Code withBackground>Username & Password</Code>,{ " " }
                                         <Code withBackground>Social Login</Code>,
-                                        <Code withBackground>Security Key/Biometrics</Code>
+                                        <Code withBackground>Passkey</Code>
                                             or any other handlers that can handle these factors are
                                             present in a previous step.
                                     </Trans>
@@ -291,7 +301,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     { InfoLabel }
                     <Text>
                         {
-                            (authenticationSteps[currentStep]?.options?.length !== 0) 
+                            (authenticationSteps[currentStep]?.options?.length !== 0)
                                 ? t(
                                     "console:develop.features.applications.edit.sections" +
                                     ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
@@ -343,12 +353,37 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      *
      * @returns Authenticator labels.
      */
-    const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface): string[] => {
+    const resolveAuthenticatorLabels = (authenticator: GenericAuthenticatorInterface): string[] => {
         if (!authenticator) {
             return [];
         }
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.authenticatorId) ?? [];
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
+    };
+
+    /**
+     * Render feature status chip.
+     *
+     * @param authenticator - Authenticator.
+     *
+     * @returns Feature status chip.
+     */
+    const renderFeatureStatusChip = (authenticator: GenericAuthenticatorInterface): ReactElement => {
+        if (
+            isSAASDeployment &&
+          authenticator?.defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
+              .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+        ) {
+            return (
+                <Chip
+                    size="small"
+                    label={ t("common:beta").toUpperCase() }
+                    className="oxygen-chip-beta"
+                />
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -384,8 +419,17 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
-                                image={ authenticator.image }
-                                tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
+                                featureStatus={ renderFeatureStatusChip(authenticator) }
+                                image={
+                                    authenticator.idp === AuthenticatorCategories.LOCAL ||
+                                    authenticator
+                                        .defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
+                                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                        ? authenticator.image
+                                        : ConnectionsManagementUtils
+                                            .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+                                }
+                                tags={ showLabels && resolveAuthenticatorLabels(authenticator) }
                                 onClick={ () => {
                                     isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
                                 } }

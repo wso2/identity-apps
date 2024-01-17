@@ -55,6 +55,18 @@
         String localeFromCookie = null;
         // Check cookie for the user selected language first
         Cookie[] cookies = request.getCookies();
+
+        // Map to store default supported language codes.
+        List<String> languageSupportedCountries = new ArrayList<>();
+        languageSupportedCountries.add("US");
+        languageSupportedCountries.add("FR");
+        languageSupportedCountries.add("ES");
+        languageSupportedCountries.add("PT");
+        languageSupportedCountries.add("DE");
+        languageSupportedCountries.add("CN");
+        languageSupportedCountries.add("JP");
+        languageSupportedCountries.add("BR");
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(COOKIE_NAME)) {
@@ -66,8 +78,17 @@
         if (localeFromCookie != null) {
             lang = localeFromCookie;
             try {
-                String langStr = lang.split("_")[0];
-                String langLocale = lang.split("_")[1];
+                String langStr = "en";
+                String langLocale = "US";
+
+                if (lang.contains("_")) {
+                    langStr = lang.split("_")[0];
+                    langLocale = lang.split("_")[1];
+                } else if (lang.contains("-")) {
+                    langStr = lang.split("-")[0];
+                    langLocale = lang.split("-")[1];
+                }
+
                 userLocale = new Locale(langStr, langLocale);
             } catch (Exception e) {
                 // In case the language is defined but not in the correct format
@@ -75,8 +96,17 @@
             }
         } else if (uiLocaleFromURL != null) {
             for (String localeStr : uiLocaleFromURL.split(" ")) {
-                String langStr = localeStr.split("_")[0];
-                String langLocale = localeStr.split("_")[1];
+                String langStr = "en";
+                String langLocale = "US";
+
+                if (localeStr.contains("_")) {
+                    langStr = localeStr.split("_")[0];
+                    langLocale = localeStr.split("_")[1];
+                } else if (localeStr.contains("-")) {
+                    langStr = localeStr.split("-")[0];
+                    langLocale = localeStr.split("-")[1];
+                }
+
                 Locale tempLocale = new Locale(langStr, langLocale);
                 // Trying to find out whether we have a resource bundle for the given locale
                 try {
@@ -98,6 +128,15 @@
                 } catch (Exception e) {
                     userLocale = browserLocale;
                 }
+            }
+        } else {
+            // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
+            String countryCode = browserLocale.getCountry();
+
+            if (StringUtils.isNotBlank(countryCode) && languageSupportedCountries.contains(countryCode)) {
+                userLocale = new Locale(browserLocale.getLanguage(), countryCode);
+            } else {
+                userLocale = new Locale("en","US");
             }
         }
         return userLocale;
@@ -398,7 +437,8 @@
                     if (customTextPreferenceResponse.has(PREFERENCE_KEY)) {
                         if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY) != null && customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).has(TEXT_KEY)) {
                             if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY) != null) {
-                                for (String key : customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).keySet()) {
+                                for (Object keyObj : customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).keySet()) {
+                                    String key = (String) keyObj;
                                     customText.put(key, customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).getString(key));
                                 }
                             }

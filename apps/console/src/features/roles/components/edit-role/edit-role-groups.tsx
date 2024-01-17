@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,70 +16,37 @@
  * under the License.
  */
 
-import {
-    AlertLevels,
-    IdentifiableComponentInterface,
-    RoleGroupsInterface,
-    RolesInterface
-} from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    ContentLoader,
-    EmphasizedSegment,
-    EmptyPlaceholder,
-    Heading,
-    ItemTypeLabelPropsInterface,
-    LinkButton,
-    PrimaryButton,
-    TransferComponent,
-    TransferList,
-    TransferListItem,
-    useWizardAlert
-} from "@wso2is/react-components";
+import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import escapeRegExp from "lodash-es/escapeRegExp";
-import forEach from "lodash-es/forEach";
-import forEachRight from "lodash-es/forEachRight";
-import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { Divider } from "semantic-ui-react";
+import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
+import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
+import { useGetApplication } from "../../../applications/api/use-get-application";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../applications/models/application";
+import { AuthenticatorManagementConstants } from "../../../connections/constants/autheticator-constants";
 import {
-    Button,
-    Divider,
-    Grid,
-    Icon,
-    Input,
-    Label,
-    Modal,
-    Table
-} from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
-import { getGroupList } from "../../../groups/api";
-import {
-    GroupListInterface,
-    GroupsInterface,
     PatchGroupAddOpInterface,
-    PatchGroupOpInterface,
     PatchGroupRemoveOpInterface
-} from "../../../groups/models";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
+} from "../../../groups";
+import { useIdentityProviderList } from "../../../identity-providers/api/identity-provider";
+import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../identity-providers/models";
+import { updateRoleDetails } from "../../api";
+import { RoleAudienceTypes, Schemas } from "../../constants";
+import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
+import { RoleManagementUtils } from "../../utils";
 
-interface RoleGroupsPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * User profile
-     */
-    role: RolesInterface;
-    /**
-     * Handle user update callback.
-     */
-    onRoleUpdate: (roleId: string) => void;
-    /**
-     * Show if the user is read only.
-     */
-    isReadOnly?: boolean;
-}
+type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
 export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     props: RoleGroupsPropsInterface
@@ -88,690 +55,256 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const {
         role,
         onRoleUpdate,
-        isReadOnly
+        isReadOnly,
+        tabIndex
     } = props;
+
+    const roleAudience: string = role.audience?.type?.toUpperCase();
+    const assignedGroups: Map<string, RoleGroupsInterface[]> = RoleManagementUtils
+        .getRoleGroupsGroupedByIdp(role?.groups);
+    const LOCAL_GROUPS_IDENTIFIER_ID: string = "LOCAL";
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
-    const [ groupList, setGroupList ] = useState<GroupsInterface[]>([]);
-    const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
-    const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
-    const [ primaryGroups, setPrimaryGroups ] = useState(undefined);
-    const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, string>>(undefined);
-    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<GroupsInterface[]>([]);
-    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<GroupsInterface[]>([]);
-    const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
-    const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
-    const [ assignedGroups, setAssignedGroups ] = useState<RoleGroupsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isLoadingAssignedGroups, setIsLoadingAssignedGroups ] = useState<boolean>(true);
+    const [ filteredIdpList, setFilteredIdpList ] = useState<IdentityProviderInterface[]>([]);
+    const [ selectedGroupsIds, setSelectedGroupsIds ] = useState<Map<string, string[]>>(new Map<string, string[]>());
+    const [ removedGroupsIds, setRemovedGroupsIds ] = useState<Map<string, string[]>>(new Map<string, string[]>());
+    const [ expandedGroupIndex, setExpandedGroupIndex ] = useState<string>(LOCAL_GROUPS_IDENTIFIER_ID);
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const {
+        data: idpList,
+        isLoading: isIdPListRequestLoading,
+        error: idpListError
+    } = useIdentityProviderList(null, null, null, "federatedAuthenticators", true);
 
+    const {
+        data: applicationData,
+        isLoading: isApplicationRequestLoading,
+        error: applicationRequestError
+    } = useGetApplication(role.audience?.value, roleAudience === RoleAudienceTypes.APPLICATION);
+
+    const excludedIDPs: string[] = [
+        AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+        AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID,
+        AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID
+    ];
+
+    /**
+     * Filter out the IDPs.
+     */
     useEffect(() => {
-        if (!(role)) {
+        if (isIdPListRequestLoading || idpListError) {
             return;
         }
-        mapUserRoles();
-        setAssignedGroups(role.groups);
-    }, []);
 
-    useEffect(() => {
-        if (isSelectAssignedAllRolesChecked) {
-            setCheckedAssignedListItems(tempGroupList);
-        } else {
-            setCheckedAssignedListItems([]);
-        }
-    }, [ isSelectAssignedAllRolesChecked ]);
-
-    useEffect(() => {
-        if (isSelectUnassignedRolesAllRolesChecked) {
-            setCheckedUnassignedListItems(groupList);
-        } else {
-            setCheckedUnassignedListItems([]);
-        }
-    }, [ isSelectUnassignedRolesAllRolesChecked ]);
-
-    /**
-     * The following useEffect will be triggered when the
-     * roles are updated.
-     */
-    useEffect(() => {
-        if (!(role)) {
+        if (roleAudience === RoleAudienceTypes.APPLICATION
+            && (isApplicationRequestLoading || applicationRequestError)) {
             return;
         }
-        mapUserRoles();
-        setAssignedGroups(role.groups);
-    }, [ role ]);
 
-    useEffect(() => {
-        getGroupList(null)
-            .then((response: GroupListInterface | any) => {
-                setPrimaryGroups(response.data.Resources);
-            });
-        setIsLoadingAssignedGroups(false);
-    }, []);
+        const filteredList: StrictIdentityProviderInterface[] = idpList?.identityProviders?.filter(
+            (provider: StrictIdentityProviderInterface) => {
+                return !excludedIDPs.includes(provider.federatedAuthenticators.defaultAuthenticatorId);
+            }
+        );
 
-    const mapUserRoles = () => {
-        const groupsMap: Map<string, string> = new Map<string, string> ();
+        // If the role is an application role, filter out the IDPs that are configured for the application.
+        if (roleAudience === RoleAudienceTypes.APPLICATION) {
+            const applicationIDPList: StrictIdentityProviderInterface[] = [];
 
-        if (role.groups && role.groups instanceof Array) {
-            forEachRight (role.groups, (group: RoleGroupsInterface) => {
-                const groupName: string[] = group.display.split("/");
+            applicationData.authenticationSequence.steps.forEach((step: AuthenticationStepInterface) => {
+                step.options.forEach((option: AuthenticatorInterface) => {
+                    const idp: StrictIdentityProviderInterface = filteredList?.find(
+                        (idp: StrictIdentityProviderInterface) => idp.name === option.idp);
 
-                if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
-                    groupsMap.set(group.display, group.value);
-                }
-            });
-            setPrimaryGroupsList(groupsMap);
-        } else {
-            setPrimaryGroupsList(undefined);
-        }
-    };
-
-    /**
-     * The following function remove already assigned roles from the initial roles.
-     */
-    const removeExistingRoles = () => {
-        const groupListCopy: GroupsInterface[] = primaryGroups ? [ ...primaryGroups ] : [];
-
-        const addedGroups: GroupsInterface[] = [];
-
-        if (groupListCopy && primaryGroupsList) {
-            const primaryGroupValues: string[] = Array.from(primaryGroupsList?.values());
-
-            forEach(groupListCopy, (group: GroupsInterface) => {
-                if (primaryGroupValues.includes(group?.id)) {
-                    addedGroups.push(group);
-                }
-            });
-        }
-        setTempGroupList(addedGroups);
-        setInitialTempGroupList(addedGroups);
-        setGroupList(groupListCopy.filter((group: GroupsInterface) => !addedGroups?.includes(group)));
-        setInitialGroupList(groupListCopy.filter((group: GroupsInterface) => !addedGroups?.includes(group)));
-    };
-
-    /**
-     * The following function enables the user to select all the groups at once.
-     */
-    const selectAllUnAssignedList = () => {
-        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
-    };
-
-    /**
-     * The following function enables the user to deselect all the groups at once.
-     */
-    const selectAllAssignedList = () => {
-        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
-    };
-
-    /**
-     * The following method handles the onChange event of the
-     * checkbox field of an unassigned item.
-     */
-    const handleUnassignedItemCheckboxChange = (group: GroupsInterface) => {
-        const checkedGroups: GroupsInterface[] = [ ...checkedUnassignedListItems ];
-
-        if (checkedGroups?.includes(group)) {
-            checkedGroups.splice(checkedGroups.indexOf(group), 1);
-            setCheckedUnassignedListItems(checkedGroups);
-        } else {
-            checkedGroups.push(group);
-            setCheckedUnassignedListItems(checkedGroups);
-        }
-    };
-
-    /**
-     * The following method handles the onChange event of the
-     * checkbox field of an assigned item.
-     *
-     * @param group - The role that's changed
-     */
-    const handleAssignedItemCheckboxChange = (group: GroupsInterface) => {
-        const checkedGroups: GroupsInterface[] = [ ...checkedAssignedListItems ];
-
-        if (checkedGroups?.includes(group)) {
-            checkedGroups.splice(checkedGroups.indexOf(group), 1);
-            setCheckedAssignedListItems(checkedGroups);
-        } else {
-            checkedGroups.push(group);
-            setCheckedAssignedListItems(checkedGroups);
-        }
-    };
-
-    const addGroups = () => {
-        const addedRoles: GroupsInterface[] = [ ...tempGroupList ];
-
-        if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((role: GroupsInterface) => {
-                if (!(tempGroupList?.includes(role))) {
-                    addedRoles.push(role);
-                }
-            });
-        }
-        setTempGroupList(addedRoles);
-        setInitialTempGroupList(addedRoles);
-        setGroupList(groupList.filter((group: GroupsInterface) => !addedRoles?.includes(group)));
-        setInitialGroupList(groupList.filter((group: GroupsInterface) => !addedRoles?.includes(group)));
-        setCheckedAssignedListItems([]);
-        setIsSelectUnassignedAllRolesChecked(false);
-    };
-
-    const removeGroups = () => {
-        const removedRoles: GroupsInterface[] = [ ...groupList ];
-
-        if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((role: GroupsInterface) => {
-                if (!(groupList?.includes(role))) {
-                    removedRoles.push(role);
-                }
-            });
-        }
-        setGroupList(removedRoles);
-        setInitialGroupList(removedRoles);
-        setTempGroupList(tempGroupList?.filter((group: GroupsInterface) => !removedRoles?.includes(group)));
-        setInitialTempGroupList(tempGroupList?.filter((group: GroupsInterface) => !removedRoles?.includes(group)));
-        setCheckedUnassignedListItems([]);
-        setIsSelectAssignedAllRolesChecked(false);
-    };
-
-    const handleOpenAddNewGroupModal = () => {
-        removeExistingRoles();
-        setAddNewRoleModalView(true);
-    };
-
-    const handleCloseAddNewGroupModal = () => {
-        setAddNewRoleModalView(false);
-    };
-
-    const handleUnselectedListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
-        let isMatch: boolean = false;
-        const filteredGroupList: GroupsInterface[] = [];
-
-        if (!isEmpty(value)) {
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
-
-            groupList && groupList.map((role: GroupsInterface) => {
-                isMatch = re.test(role.displayName);
-                if (isMatch) {
-                    filteredGroupList.push(role);
-                    setGroupList(filteredGroupList);
-                }
-            });
-        } else {
-            setGroupList(initialGroupList);
-        }
-    };
-
-    const handleSelectedListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
-        let isMatch: boolean = false;
-        const filteredGroupList: GroupsInterface[] = [];
-
-        if (!isEmpty(value)) {
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
-
-            tempGroupList && tempGroupList?.map((role: GroupsInterface) => {
-                isMatch = re.test(role.displayName);
-                if (isMatch) {
-                    filteredGroupList.push(role);
-                    setTempGroupList(filteredGroupList);
-                }
-            });
-        } else {
-            setTempGroupList(initialTempGroupList);
-        }
-    };
-
-    /**
-     * This function handles assigning the roles to the user.
-     *
-     * @param role - Role object
-     * @param groups - Assigned groups
-     */
-    const updateRoleGroup = (role: RolesInterface, groups: GroupsInterface[]) => {
-        const groupIds: string[] = [];
-
-        groups.map((group: GroupsInterface) => {
-            groupIds.push(group.id);
-        });
-
-        const bulkData: any = {
-            Operations: [],
-            failOnErrors: 1,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
-        };
-
-        const operation: PatchGroupOpInterface = {
-            data: {
-                "Operations": []
-            },
-            method: "PATCH",
-            path: "/Roles/" + role.id
-        };
-
-        const removeOperations: PatchGroupRemoveOpInterface[] = [];
-        const addOperations: PatchGroupAddOpInterface[] = [];
-        let removedIds: string[] = [];
-        const addedIds: string[] = [];
-
-        if (primaryGroupsList) {
-            removedIds = [ ...primaryGroupsList.values() ];
-        }
-
-        if (groupIds?.length > 0) {
-            groupIds.map((groupId: string) => {
-                if (removedIds?.includes(groupId)) {
-                    removedIds.splice(removedIds.indexOf(groupId), 1);
-                } else {
-                    addedIds.push(groupId);
-                }
-            });
-        }
-
-        if (removedIds && removedIds?.length > 0) {
-            removedIds.map((id: string) => {
-                const operation: PatchGroupRemoveOpInterface = {
-                    op: "remove",
-                    path: `groups[value eq ${ id }]`
-                };
-
-                removeOperations.push(operation);
-            });
-
-            operation.data.Operations.push(...removeOperations);
-            bulkData.Operations.push(operation);
-        }
-
-        if (addedIds && addedIds?.length > 0) {
-            addedIds.map((id: string) => {
-                addOperations.push({
-                    "op": "add",
-                    "value": {
-                        "groups": [ {
-                            "value": id
-                        } ]
+                    if (idp) {
+                        applicationIDPList.push(idp);
                     }
                 });
             });
-
-            operation.data.Operations.push(...addOperations);
-            bulkData.Operations.push(operation);
+            setFilteredIdpList(applicationIDPList);
+        } else {
+            setFilteredIdpList(filteredList);
         }
+    }, [ isIdPListRequestLoading, idpListError, isApplicationRequestLoading, applicationRequestError ]);
 
+    /**
+     * Handles the change of the selected groups list.
+     *
+     * @param idpID - Identity provider ID.
+     * @param selectedGroupsIDs - List of selected groups IDs.
+     * @param removedGroupsIDs - List of removed groups IDs.
+     */
+    const onSelectedGroupsChange = (idpID: string, selectedGroupsIDs: string[], removedGroupsIDs: string[]) => {
+        setSelectedGroupsIds((prevState: Map<string, string[]>) => {
+            const newState: Map<string, string[]> = new Map<string, string[]>(prevState);
+
+            newState.set(idpID ?? LOCAL_GROUPS_IDENTIFIER_ID, selectedGroupsIDs);
+
+            return newState;
+        });
+
+        setRemovedGroupsIds((prevState: Map<string, string[]>) => {
+            const newState: Map<string, string[]> = new Map<string, string[]>(prevState);
+
+            newState.set(idpID ?? LOCAL_GROUPS_IDENTIFIER_ID, removedGroupsIDs);
+
+            return newState;
+        });
+    };
+
+    /**
+     * Listener for the group accordion expansion.
+     *
+     * @param idpID - Identity provider ID.
+     * @param isExpanded - Is the accordion expanded.
+     */
+    const onGroupAccordionExpanded = (idpID: string, isExpanded: boolean) => {
+        if (!isExpanded) {
+            setExpandedGroupIndex(undefined);
+        } else {
+            setExpandedGroupIndex(idpID);
+        }
+    };
+
+    /**
+     * Handles the update of the groups list.
+     */
+    const onGroupsUpdate = (): void => {
         setIsSubmitting(true);
+        const groupIDsToBeRemoved: string[] = [];
 
-        updateResources(bulkData)
+        removedGroupsIds?.forEach((groupIDs: string[]) => {
+            if (groupIDs?.length > 0) {
+                groupIDsToBeRemoved.push(...groupIDs);
+            }
+        });
+
+        const groupIDsToBeAdded: string[] = [];
+        const flattenedSelectedGroupsIds: string[][] = Array.from(selectedGroupsIds.values());
+
+        flattenedSelectedGroupsIds.forEach((groupIDs: string[]) => {
+            groupIDs?.forEach((groupID: string) => {
+                if (!role.groups?.find((group: RoleGroupsInterface) => group.value === groupID)) {
+                    groupIDsToBeAdded.push(groupID);
+                }
+            });
+        });
+
+        const patchOperations: PatchGroupAddOpInterface[] | PatchGroupRemoveOpInterface[] = [];
+
+        patchOperations.push({
+            "op": "add",
+            "value": {
+                "groups": groupIDsToBeAdded?.map((groupID: string) => {
+                    return {
+                        "value": groupID
+                    };
+                })
+            }
+        });
+
+        groupIDsToBeRemoved.forEach((groupID: string) => {
+            patchOperations.push({
+                "op": "remove",
+                "path": `groups[value eq ${ groupID }]`
+            });
+        });
+
+        const roleUpdateData: PatchRoleDataInterface = {
+            Operations: patchOperations,
+            schemas: [ Schemas.PATCH_OP ]
+        };
+
+        updateRoleDetails(role.id, roleUpdateData)
             .then(() => {
-                dispatch(addAlert({
-                    description: t(
-                        "console:manage.features.roles.notifications.updateRole.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "console:manage.features.roles.notifications.updateRole.success.message"
-                    )
-                }));
-                handleCloseAddNewGroupModal();
-                onRoleUpdate(role.id);
+                dispatch(
+                    addAlert({
+                        description: t("console:manage.features.roles.edit.groups.notifications.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.roles.edit.groups.notifications.success.message")
+                    })
+                );
+                onRoleUpdate(tabIndex);
             })
-            .catch((error: AxiosError) => {
-                if (error?.response?.status === 404) {
-                    return;
+            .catch( (error: AxiosError) => {
+                if (error.response && error.response.data.detail) {
+                    dispatch(
+                        addAlert({
+                            description:
+                                t("console:manage.features.roles.edit.groups.notifications.error.description",
+                                    { description: error.response.data.detail }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.edit.groups.notifications.error.message")
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" +
+                                ".description"),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.edit.groups.notifications.genericError.message")
+                        })
+                    );
                 }
-
-                if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                    setAlert({
-                        description: error.response?.data?.description,
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.roles.notifications.updateRole.error.message"
-                        )
-                    });
-
-                    return;
-                }
-
-                setAlert({
-                    description: t(
-                        "console:manage.features.roles.notifications.updateRole.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.roles.notifications.updateRole.genericError.message"
-                    )
-                });
             })
             .finally(() => {
                 setIsSubmitting(false);
-            })
-        ;
-    };
-
-    const resolveListItemLabel = (displayName: string): ItemTypeLabelPropsInterface => {
-        const userGroup: string[] = displayName?.split("/");
-
-        let item: ItemTypeLabelPropsInterface = {
-            labelColor: "olive",
-            labelText: PRIMARY_DOMAIN
-        };
-
-        if (userGroup[0] !== APPLICATION_DOMAIN &&
-            userGroup[0] !== INTERNAL_DOMAIN) {
-            if (userGroup?.length > 1) {
-                item = {
-                    ...item,
-                    labelText: userGroup[0]
-                };
-            }
-        }
-
-        return item;
-    };
-
-    const resolveListItem = (displayName: string): string => {
-        const userGroup: string[] = displayName?.split("/");
-
-        if (userGroup?.length !== 1) {
-            displayName = userGroup[1];
-        }
-
-        return displayName;
-    };
-
-    const addNewGroupModal = () => (
-        <Modal
-            data-testid="role-mgt-update-groups-modal"
-            open={ showAddNewRoleModal }
-            size="small"
-            className="user-roles"
-        >
-            <Modal.Header>
-                { t("console:manage.features.roles.edit.groups.addGroupsModal.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.roles.edit.groups.addGroupsModal.subHeading") }
-                </Heading>
-            </Modal.Header>
-            <Modal.Content image>
-                { alert && alertComponent }
-                <TransferComponent
-                    searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
-                        { type: "groups" }) }
-                    addItems={ addGroups }
-                    removeItems={ removeGroups }
-                    handleUnelectedListSearch={ handleUnselectedListSearch }
-                    handleSelectedListSearch={ handleSelectedListSearch }
-                    data-testid="role-mgt-update-groups-modal"
-                >
-                    <TransferList
-                        isListEmpty={ !(groupList?.length > 0) }
-                        listType="unselected"
-                        listHeaders={ [
-                            t("console:manage.features.transferList.list.headers.0"),
-                            t("console:manage.features.transferList.list.headers.1"), ""
-                        ] }
-                        handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                        isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
-                                "emptyPlaceholders.roles.unselected", { type: "groups" }) }
-                        data-testid="role-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
-                            + "emptyPlaceholders.default") }
-                    >
-                        {
-                            groupList?.map((group: GroupsInterface, index:number)=> {
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={
-                                            () => handleUnassignedItemCheckboxChange(group)
-                                        }
-                                        key={ index }
-                                        listItem={ resolveListItem(group?.displayName) }
-                                        listItemId={ group.id }
-                                        listItemIndex={ index }
-                                        listItemTypeLabel={ resolveListItemLabel(group?.displayName) }
-                                        isItemChecked={ checkedUnassignedListItems.includes(group) }
-                                        showSecondaryActions={ false }
-                                        data-testid="role-mgt-update-groups-modal-unselected-groups"
-                                    />
-                                );
-                            })
-                        }
-                    </TransferList>
-                    <TransferList
-                        isListEmpty={ !(tempGroupList?.length > 0) }
-                        listType="selected"
-                        listHeaders={ [
-                            t("console:manage.features.transferList.list.headers.0"),
-                            t("console:manage.features.transferList.list.headers.1")
-                        ] }
-                        handleHeaderCheckboxChange={ selectAllAssignedList }
-                        isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
-                                "emptyPlaceholders.roles.selected", { type: "groups" }) }
-                        data-testid="role-mgt-update-groups-modal-selected-groups-select-all-checkbox"
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
-                            + "emptyPlaceholders.default") }
-                    >
-                        {
-                            tempGroupList?.map((group: GroupsInterface, index: number)=> {
-                                return (
-                                    <TransferListItem
-                                        handleItemChange={
-                                            () => handleAssignedItemCheckboxChange(group)
-                                        }
-                                        key={ index }
-                                        listItem={ resolveListItem(group?.displayName) }
-                                        listItemId={ group?.id }
-                                        listItemIndex={ index }
-                                        listItemTypeLabel={ resolveListItemLabel(group?.displayName) }
-                                        isItemChecked={ checkedAssignedListItems.includes(group) }
-                                        showSecondaryActions={ false }
-                                        data-testid="role-mgt-update-groups-modal-selected-groups"
-                                    />
-                                );
-                            })
-                        }
-                    </TransferList>
-                </TransferComponent>
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid>
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton
-                                data-testid="role-mgt-update-groups-modal-cancel-button"
-                                floated="left"
-                                onClick={ handleCloseAddNewGroupModal }
-                            >
-                                { t("common:cancel") }
-                            </LinkButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton
-                                data-testid="role-mgt-update-groups-modal-save-button"
-                                floated="right"
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                                onClick={ () => updateRoleGroup(role, tempGroupList) }
-                            >
-                                { t("common:save") }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Modal.Actions>
-        </Modal>
-    );
-
-    const handleAssignedGroupListSearch = (_e: FormEvent<HTMLInputElement>, { value }: { value: string; }) => {
-        let isMatch: boolean = false;
-        const filteredGroupList: RoleGroupsInterface[] = [];
-
-        if (!isEmpty(value)) {
-            const re: RegExp = new RegExp(escapeRegExp(value), "i");
-
-            assignedGroups && assignedGroups?.map((group: RoleGroupsInterface) => {
-                const groupName: string[] = group.display.split("/");
-
-                if (groupName.length === 1) {
-                    isMatch = re.test(group.display);
-                    if (isMatch) {
-                        filteredGroupList.push(group);
-                        setAssignedGroups(filteredGroupList);
-                    }
-                }
             });
-        } else {
-            setAssignedGroups(role.groups);
-        }
-    };
-
-    const resolveTableContent = (): ReactElement => {
-        return (
-            <Table.Body>
-                {
-                    assignedGroups?.map((group: RoleGroupsInterface, index: number) => {
-                        const userGroup: string[] = group?.display?.split("/");
-
-                        if (userGroup[0] !== APPLICATION_DOMAIN &&
-                            userGroup[0] !== INTERNAL_DOMAIN) {
-                            return (
-                                <Table.Row key={ index }>
-                                    <Table.Cell>
-                                        {
-                                            userGroup?.length === 1
-                                                ? (
-                                                    <Label color="olive">
-                                                        { PRIMARY_DOMAIN }
-                                                    </Label>
-                                                )
-                                                : (
-                                                    <Label color="olive">
-                                                        { userGroup[ 0 ] }
-                                                    </Label>
-                                                )
-                                        }
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {
-                                            userGroup?.length === 1
-                                                ? group?.display
-                                                : userGroup[ 1 ]
-                                        }
-                                    </Table.Cell>
-                                </Table.Row>
-                            );
-                        }
-                    })
-                }
-            </Table.Body>
-        );
     };
 
     return (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.groups.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.roles.edit.groups.subHeading") }
-                </Heading>
             </Heading>
-            <Divider hidden />
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column>
-                        {
-                            primaryGroupsList?.size > 0 ? (
-                                <EmphasizedSegment
-                                    data-testid="role-mgt-groups-list"
-                                    className="user-role-edit-header-segment"
-                                >
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            <Input
-                                                data-testid="role-mgt-groups-list-search-input"
-                                                icon={ <Icon name="search" /> }
-                                                onChange={ handleAssignedGroupListSearch }
-                                                placeholder={ t("console:manage.features.user.updateUser.groups." +
-                                                    "editGroups.searchPlaceholder") }
-                                                floated="left"
-                                                size="small"
-                                            />
-                                            {
-                                                !isReadOnly && (
-                                                    <Button
-                                                        data-testid="role-mgt-groups-list-update-button"
-                                                        size="medium"
-                                                        icon="pencil"
-                                                        floated="right"
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                    />
-                                                )
-                                            }
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                        <Table singleLine compact>
-                                            <Table.Header>
-                                                <Table.Row>
-                                                    <Table.HeaderCell>
-                                                        <strong>
-                                                            { t("console:manage.features.user.updateUser.groups." +
-                                                                "editGroups.groupList.headers.0") }
-                                                        </strong>
-                                                    </Table.HeaderCell>
-                                                    <Table.HeaderCell>
-                                                        <strong>
-                                                            { t("console:manage.features.user.updateUser.groups." +
-                                                                "editGroups.groupList.headers.1") }
-                                                        </strong>
-                                                    </Table.HeaderCell>
-                                                </Table.Row>
-                                            </Table.Header>
-                                            { resolveTableContent() }
-                                        </Table>
-                                    </Grid.Row>
-                                </EmphasizedSegment>
-                            ) : (
-                                !isLoadingAssignedGroups
-                                    ? (
-                                        <EmphasizedSegment>
-                                            <EmptyPlaceholder
-                                                data-testid="role-mgt-empty-groups-list"
-                                                title={ t("console:manage.features.roles.edit.groups." +
-                                                        "emptyPlaceholder.title") }
-                                                subtitle={ [
-                                                    t("console:manage.features.roles.edit.groups." +
-                                                            "emptyPlaceholder.subtitles")
-                                                ] }
-                                                action={
-                                                    !isReadOnly && (
-                                                        <PrimaryButton
-                                                            data-testid="role-mgt-empty-groups-list-assign-group-button"
-                                                            icon="plus"
-                                                            onClick={ handleOpenAddNewGroupModal }
-                                                        >
-                                                            { t("console:manage.features.roles.edit.groups." +
-                                                                    "emptyPlaceholder.action") }
-                                                        </PrimaryButton>
-                                                    )
-                                                }
-                                                image={ getEmptyPlaceholderIllustrations().emptyList }
-                                                imageSize="tiny"
-                                            />
-                                        </EmphasizedSegment>
-                                    )
-                                    : <ContentLoader className="p-3" active />
-                            )
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            { addNewGroupModal() }
+            <Heading subHeading ellipsis as="h6">
+                { t("console:manage.features.roles.edit.groups.subHeading") }
+            </Heading>
+            <Heading as="h5">
+                { t("console:manage.features.roles.edit.groups.localGroupsHeading") }
+            </Heading>
+            {
+                <EditRoleLocalGroupsAccordion
+                    key={ "role-group-accordion-local" }
+                    isReadOnly={ isReadOnly }
+                    onUpdate={ onGroupsUpdate }
+                    initialSelectedGroups={ assignedGroups[LOCAL_GROUPS_IDENTIFIER_ID] }
+                    onSelectedGroupsListChange={ onSelectedGroupsChange }
+                    isUpdating={ isSubmitting }
+                />
+            }
+            {
+                filteredIdpList?.length > 0 && (
+                    <>
+                        <Divider hidden />
+                        <Divider />
+                        <Heading as="h5">
+                            { t("console:manage.features.roles.edit.groups.externalGroupsHeading") }
+                        </Heading>
+                    </>
+                )
+            }
+            { filteredIdpList?.map((idp: IdentityProviderInterface) => {
+                const initialSelectedGroupsOptions: RoleGroupsInterface[] = assignedGroups[idp.id];
+
+                return (
+                    <EditRoleFederatedGroupsAccordion
+                        key={ `role-group-accordion-${idp.id}` }
+                        isReadOnly={ isReadOnly }
+                        onUpdate={ onGroupsUpdate }
+                        initialSelectedGroups={ initialSelectedGroupsOptions }
+                        identityProvider={ idp }
+                        onSelectedGroupsListChange={ onSelectedGroupsChange }
+                        isExpanded={ expandedGroupIndex === idp.id }
+                        onExpansionChange={ onGroupAccordionExpanded }
+                        isUpdating={ isSubmitting }
+                    />
+                );
+            }) }
         </EmphasizedSegment>
     );
 };

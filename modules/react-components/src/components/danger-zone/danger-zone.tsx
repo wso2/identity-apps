@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,10 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
      * Title for the danger zone action.
      */
     actionTitle: string;
+    /**
+     * Button text for the danger zone.
+     */
+    buttonText?: string;
     /**
      * Heading for the danger zone.
      */
@@ -88,10 +92,9 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
     props: DangerZoneProps
 ): ReactElement => {
 
-
-
     const {
         actionTitle,
+        buttonText,
         header,
         subheader,
         onActionClick,
@@ -106,22 +109,24 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
 
     return (
         <Segment data-testid={ testId } data-componentid={ componentId } className="danger-zone" padded clearing>
-            <Header
-                as="h5"
-                color="red"
-                floated="left"
-                data-componentid={ `${ componentId }-header` }
-                data-testid={ `${ testId }-header` }
-            >
-                { header }
-                <Header.Subheader
-                    className="sub-header"
-                    data-componentid={ `${ componentId }-sub-header` }
-                    data-testid={ `${ testId }-sub-header` }
+            <div className="header-wrapper">
+                <Header
+                    as="h5"
+                    color="red"
+                    floated="left"
+                    data-componentid={ `${ componentId }-header` }
+                    data-testid={ `${ testId }-header` }
                 >
-                    { subheader }
-                </Header.Subheader>
-            </Header>
+                    { header }
+                    <Header.Subheader
+                        className="sub-header"
+                        data-componentid={ `${ componentId }-sub-header` }
+                        data-testid={ `${ testId }-sub-header` }
+                    >
+                        { subheader }
+                    </Header.Subheader>
+                </Header>
+            </div>
             {
                 toggle
                     ? (
@@ -153,7 +158,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                         onClick={ onActionClick }
                                         disabled={ isButtonDisabled }
                                     >
-                                        { actionTitle }
+                                        { buttonText ?? actionTitle }
                                     </Button>
                                 </div>
                             ) }

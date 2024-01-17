@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,14 +15,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ArrowRightToBracketIcon, CirclesOverlapIcon, DocumentIcon } from "@oxygen-ui/react-icons";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Form, Grid, Icon } from "semantic-ui-react";
-import { store } from "../../../core";
+import { AppState, FeatureConfigInterface, store } from "../../../core";
 import { getHelpPanelIcons } from "../../configs/ui";
 import { SAMLApplicationConfigurationInterface } from "../../models";
 
@@ -44,12 +46,16 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
     props: SAMLConfigurationsPropsInterface
 ): ReactElement => {
 
-    const { t } = useTranslation();
     const {
         samlConfigurations,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
+
     const tenantName: string = store.getState().config.deployment.tenant;
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features);
 
     const exportMetadataFile = () => {
         const blob: Blob = new Blob([ samlConfigurations?.metadata ], {
@@ -89,7 +95,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.samlSSO }
+                            icon={ <ArrowRightToBracketIcon className="icon" /> }
                             size="micro"
                             square
                             transparent
@@ -113,7 +119,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.samlSLO }
+                            icon={ getHelpPanelIcons().endpoints.logout }
                             size="micro"
                             square
                             transparent
@@ -134,6 +140,60 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                         />
                     </Grid.Column>
                 </Grid.Row>
+                {
+                    featureConfig?.server?.enabled && (
+                        <>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                    <GenericIcon
+                                        icon={ getHelpPanelIcons().endpoints.destination }
+                                        size="micro"
+                                        square
+                                        transparent
+                                        inline
+                                        className="left-icon"
+                                        verticalAlign="middle"
+                                        spaced="right"
+                                    />
+                                    <label data-testid={ `${ testId }-destination-url-label` }>
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                            "samlConfigurations.labels.destinationURL") }
+                                    </label>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                    <CopyInputField
+                                        value={ samlConfigurations?.destinationURLs?.toString()?.replace(/,/g, ", ") }
+                                        data-testid={ `${ testId }-destination-url-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                                    <GenericIcon
+                                        icon={ <CirclesOverlapIcon className="icon" /> }
+                                        size="micro"
+                                        square
+                                        transparent
+                                        inline
+                                        className="left-icon"
+                                        verticalAlign="middle"
+                                        spaced="right"
+                                    />
+                                    <label data-testid={ `${ testId }-artifact-resolution-url-label` }>
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                            "samlConfigurations.labels.artifactResolutionUrl") }
+                                    </label>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                                    <CopyInputField
+                                        value={ samlConfigurations?.artifactResolutionUrl }
+                                        data-testid={ `${ testId }-artifact-resolution-url-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    )
+                }
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
@@ -170,7 +230,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ getHelpPanelIcons().endpoints.metadata }
+                            icon={ <DocumentIcon className="icon" /> }
                             size="micro"
                             square
                             transparent

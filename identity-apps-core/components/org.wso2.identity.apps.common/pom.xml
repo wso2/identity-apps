@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps-core</artifactId>
-        <version>2.0.19-SNAPSHOT</version>
+        <version>2.0.121-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -53,12 +53,20 @@
             <artifactId>org.wso2.carbon.core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.user.core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.application.common</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.application.mgt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.role.v2.mgt.core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
@@ -71,17 +79,20 @@
         <dependency>
             <groupId>org.wso2.carbon.commons</groupId>
             <artifactId>org.wso2.carbon.tenant.common</artifactId>
-            <version>${carbon.commons.version}</version>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
             <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.organization.management</groupId>
+            <artifactId>org.wso2.carbon.identity.organization.management.application</artifactId>
+        </dependency>
         <!-- To fix travis build -->
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
-            <version>2.7.2</version>
+            <version>2.7.3</version>
         </dependency>
     </dependencies>
 
@@ -98,10 +109,12 @@
             org.apache.commons.lang; version="${commons-lang.version.range}",
             org.apache.commons.logging; version="${commons-logging.imp.pkg.version.range}",
 
+            org.wso2.carbon; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.base; version="${carbon.base.imp.pkg.version.range}",
             org.wso2.carbon.core; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.utils; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.context.*; version="${carbon.kernel.imp.pkg.version.range}",
+            org.wso2.carbon.stratos.common.*;version="${carbon.commons.imp.pkg.version}",
             org.wso2.carbon.user.api; version="${carbon.user.api.imp.pkg.version.range}",
             org.wso2.carbon.user.core.*; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.utils.multitenancy.*; version="${carbon.kernel.imp.pkg.version.range}",
@@ -114,7 +127,10 @@
             org.wso2.carbon.identity.core.util.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.common.*; version="${carbon.identity.framework.imp.pkg.version.range}",
-            org.wso2.carbon.identity.organization.management.service; version="${identity.org.mgt.core.version.range}"
+            org.wso2.carbon.identity.role.v2.mgt.core.*; version="${carbon.identity.framework.imp.pkg.version.range}",
+            org.wso2.carbon.identity.organization.management.service.*; version="${identity.org.mgt.core.version.range}",
+            org.wso2.carbon.identity.organization.management.application.*; version="${identity.org.mgt.application.version.range}",
+            org.wso2.carbon.identity.api.resource.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}"
         </import.package>
         <dsannotations>*</dsannotations>
     </properties>

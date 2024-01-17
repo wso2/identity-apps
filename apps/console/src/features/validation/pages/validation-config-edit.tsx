@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -26,6 +27,7 @@ import {
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
+    Hint,
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
@@ -35,20 +37,27 @@ import React, {
     MutableRefObject,
     ReactElement,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Ref } from "semantic-ui-react";
+import { Divider, Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, history } from "../../core";
-import { ServerConfigurationsConstants } from "../../server-configurations";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
+    ServerConfigurationsConstants,
+    getConnectorDetails
+} from "../../server-configurations";
 import { getConfiguration } from "../../users/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
-import { ValidationFormInterface } from "../models";
+import { ValidationDataInterface, ValidationFormInterface } from "../models";
 
 /**
  * Props for validation configuration page.
@@ -72,6 +81,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isPasswordInputValidationEnabled);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
@@ -89,50 +102,66 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(
         undefined
     );
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ passwordHistoryEnabled, setPasswordHistoryEnabled ] = useState<
         boolean
     >(false);
-
     const [ passwordExpiryEnabled, setPasswordExpiryEnabled ] = useState<boolean>(false);
+
+    // State variables required to support legacy password policies.
+    const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
+    const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
+
+    const isReadOnly: boolean = useMemo(
+        () =>
+            !hasRequiredScopes(
+                featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
 
     const {
         data: passwordHistoryCountData,
         error: passwordHistoryCountError,
-        isLoading: isPasswordCountLoading,
         mutate: mutatePasswordHistoryCount
     } = serverConfigurationConfig.usePasswordHistory();
 
     const {
         data: passwordExpiryData,
         error: passwordExpiryError,
-        isLoading: isPasswordExpiryLoading,
         mutate: mutatePasswordExpiry
     } = serverConfigurationConfig.usePasswordExpiry();
 
     const {
         data: validationData,
-        isLoading: isValidationLoading,
         error: ValidationConfigStatusFetchRequestError,
         mutate: mutateValidationConfigFetchRequest
-    } = useValidationConfigData();
+    } = useValidationConfigData(isPasswordInputValidationEnabled);
 
     useEffect(() => {
-        if (isValidationLoading || isPasswordCountLoading || isPasswordExpiryLoading) {
+        if (!isPasswordInputValidationEnabled) {
+            getLegacyPasswordPolicyProperties();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!passwordHistoryCountData || !passwordExpiryData ||
+            (isPasswordInputValidationEnabled && !validationData) ||
+            (!isPasswordInputValidationEnabled &&
+            (!legacyPasswordPolicies && legacyPasswordPolicies?.length > 0))) {
+
             return;
         }
 
         initializeForm();
     }, [
-        validationData,
         passwordHistoryCountData,
-        isValidationLoading,
-        isPasswordCountLoading,
         validationData,
         passwordExpiryData,
-        isValidationLoading,
-        isPasswordExpiryLoading
+        legacyPasswordPolicies
     ]);
 
     useEffect(() => {
@@ -243,7 +272,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Initialize the initial form values.
      */
     const initializeForm = (): void => {
-        let updatedInitialFormValues: ValidationFormInterface = serverConfigurationConfig.processInitialValues(
+        let updatedInitialFormValues: any = serverConfigurationConfig?.processInitialValues(
             getConfiguration(validationData),
             passwordHistoryCountData,
             setPasswordHistoryEnabled
@@ -255,9 +284,72 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             setPasswordExpiryEnabled
         );
 
+        if (!isPasswordInputValidationEnabled) {
+
+            updatedInitialFormValues = legacyPasswordPolicies.reduce(
+                (formValues: any, property: ConnectorPropertyInterface) => {
+                    const encodedPropertyName: any = GovernanceConnectorUtils
+                        .encodeConnectorPropertyName(property.name);
+
+                    return {
+                        ...formValues,
+                        [ encodedPropertyName ]: property.value
+                    };
+                },
+                updatedInitialFormValues
+            );
+
+            setIsLegacyPasswordPolicyEnabled(updatedInitialFormValues?.[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ] === "true"
+            );
+        }
+
         setInitialFormValues(
             updatedInitialFormValues
         );
+    };
+
+    const getLegacyPasswordPolicyProperties = (): void => {
+        getConnectorDetails(
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+            ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID
+        )
+            .then((response: GovernanceConnectorInterface) => {
+                setLegacyPasswordPolicies(response?.properties);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.message"
+                            )
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.message"
+                            )
+                        })
+                    );
+                }
+            });
     };
 
     /**
@@ -353,7 +445,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         const processedFormValues: ValidationFormInterface = { ...values };
 
         const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
-            processedFormValues
+            processedFormValues,
+            !isPasswordInputValidationEnabled
         );
 
         if (
@@ -375,14 +468,24 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         }
 
         setSubmitting(true);
-        Promise.all([
-            updatePasswordPolicies,
-            updateValidationConfigData(processedFormValues, null, validationData[0])
-        ])
+
+        const promises: Promise<void | ValidationDataInterface[]>[] = [ updatePasswordPolicies ];
+
+        if (isPasswordInputValidationEnabled) {
+            promises.push(updateValidationConfigData(processedFormValues, null, validationData[0]));
+        }
+
+        Promise.all(promises)
             .then(() => {
-                mutateValidationConfigFetchRequest();
                 mutatePasswordHistoryCount();
                 mutatePasswordExpiry();
+
+                if (!isPasswordInputValidationEnabled) {
+                    getLegacyPasswordPolicyProperties();
+                } else {
+                    mutateValidationConfigFetchRequest();
+                }
+
                 dispatch(
                     addAlert({
                         description: t(
@@ -433,6 +536,899 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             });
     };
 
+    const resolveLegacyPasswordValidation: () => ReactElement = (): ReactElement => {
+        return (
+            <>
+                <Field.Checkbox
+                    className="toggle mb-4"
+                    ariaLabel="passwordPolicy.enable"
+                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.enable") }
+                    required={ false }
+                    checked={ isLegacyPasswordPolicyEnabled }
+                    label={ GovernanceConnectorUtils.resolveFieldLabel(
+                        "Password Policies",
+                        "passwordPolicy.enable",
+                        "Validate passwords based on a policy pattern") }
+                    width={ 16 }
+                    data-componentid={ `${ componentId }-enable-password-policy` }
+                    listen={ (data: boolean) => setIsLegacyPasswordPolicyEnabled(data) }
+                    readOnly={ isReadOnly }
+                />
+                <div className="validation-configurations-form mt-3 mb-3">
+                    <div className="criteria">
+                        <label>Must be between</label>
+                        <Field.Input
+                            ariaLabel="Minimum length of the password"
+                            inputType="number"
+                            name={
+                                GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.min.length")
+                            }
+                            validation={ (
+                                value: string,
+                                allValues: Record<string, unknown>
+                            ): string | undefined => {
+                                const numValue: number = parseInt(value);
+                                const min: number = ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_VALUE;
+
+                                if (numValue < min) {
+                                    return t("common:minValidation", { min });
+                                }
+                                const max: number = allValues.maxLength
+                                    ? parseInt(allValues.maxLength as string)
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MAX_VALUE;
+
+                                if (numValue > max) {
+                                    return t("common:maxValidation", { max });
+                                }
+                            } }
+                            min={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_VALUE
+                            }
+                            max={
+                                currentValues.maxLength
+                                    ? currentValues.maxLength
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MAX_VALUE
+                            }
+                            listen={ (
+                                value: string
+                            ) => {
+                                setCurrentValues(
+                                    {
+                                        ...currentValues,
+                                        [ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                            "passwordPolicy.min.length") ]: value
+                                    }
+                                );
+                            } }
+                            width={ 2 }
+                            required
+                            hidden={ false }
+                            placeholder={ "min" }
+                            maxLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_LENGTH
+                            }
+                            minLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_LENGTH
+                            }
+                            readOnly={ isReadOnly }
+                            disabled={ !isLegacyPasswordPolicyEnabled }
+                            data-testid={ `${ componentId }-min-length` }
+                        />
+                        <label>and</label>
+                        <Field.Input
+                            ariaLabel="Minimum length of the password"
+                            inputType="number"
+                            name={
+                                GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.max.length")
+                            }
+                            validation={ (
+                                value: string,
+                                allValues: Record<string, unknown>
+                            ): string | undefined => {
+                                const numValue: number = parseInt(value);
+                                const min: number = allValues.minLength
+                                    ? parseInt(allValues.minLength as string)
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MIN_VALUE;
+
+                                if (numValue < min) {
+                                    return t("common:minValidation", { min });
+                                }
+
+                                const max: number = ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                                if (numValue > max) {
+                                    return t("common:maxValidation", { max });
+                                }
+                            } }
+                            min={
+                                currentValues.minLength
+                                    ? currentValues.minLength
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MIN_VALUE
+                            }
+                            max={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                            }
+                            width={ 2 }
+                            required
+                            hidden={ false }
+                            placeholder={ "max" }
+                            listen={ (
+                                value: string
+                            ) => {
+                                setCurrentValues(
+                                    {
+                                        ...currentValues,
+                                        [ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                            "passwordPolicy.max.length") ]: value
+                                    }
+                                );
+                            } }
+                            maxLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_LENGTH
+                            }
+                            labelPosition="top"
+                            minLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_LENGTH
+                            }
+                            readOnly={ isReadOnly }
+                            disabled={ !isLegacyPasswordPolicyEnabled  }
+                            data-testid={ `${ componentId }-max-length` }
+                        />
+                        <label>characters</label>
+                    </div>
+                </div>
+                <Field.Input
+                    ariaLabel="passwordPolicy.pattern"
+                    inputType="text"
+                    name={
+                        GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.pattern")
+                    }
+                    type="text"
+                    width={ 12 }
+                    required
+                    placeholder={ "Enter password pattern regex" }
+                    labelPosition="top"
+                    minLength={ 3 }
+                    maxLength={ 100 }
+                    readOnly={ isReadOnly }
+                    listen={ (
+                        value: string
+                    ) => {
+                        setCurrentValues(
+                            {
+                                ...currentValues,
+                                [ GovernanceConnectorUtils
+                                    .encodeConnectorPropertyName("passwordPolicy.pattern") ]: value
+                            }
+                        );
+                    } }
+                    data-componentid={ `${ componentId }-password-pattern-regex` }
+                    label={
+                        GovernanceConnectorUtils.resolveFieldLabel(
+                            "Password Validation",
+                            "passwordPolicy.pattern",
+                            "Password pattern regex")
+                    }
+                    disabled={ !isLegacyPasswordPolicyEnabled }
+                />
+                <Hint className="mb-4">
+                    {
+                        GovernanceConnectorUtils.resolveFieldHint(
+                            "Password Validation",
+                            "passwordPolicy.pattern",
+                            "Length of the OTP for SMS and" +
+                            " e-mail verifications. OTP length" +
+                            " must be 4-10."
+                        )
+                    }
+                </Hint>
+                <Field.Input
+                    ariaLabel="passwordPolicy.errorMsg"
+                    inputType="text"
+                    name={
+                        GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.errorMsg")
+                    }
+                    type="text"
+                    width={ 12 }
+                    required
+                    placeholder={ "Enter password pattern regex" }
+                    labelPosition="top"
+                    minLength={ 3 }
+                    maxLength={ 100 }
+                    readOnly={ isReadOnly }
+                    listen={ (
+                        value: string
+                    ) => {
+                        setCurrentValues(
+                            {
+                                ...currentValues,
+                                [ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                    "passwordPolicy.errorMsg") ]: value
+                            }
+                        );
+                    } }
+                    data-componentid={ `${ componentId }-password-policy-error-msg` }
+                    label={
+                        GovernanceConnectorUtils.resolveFieldLabel(
+                            "Password Validation",
+                            "passwordPolicy.errorMsg",
+                            "Error message on pattern violation")
+                    }
+                    disabled={ !isLegacyPasswordPolicyEnabled }
+                />
+                <Hint>
+                    {
+                        GovernanceConnectorUtils.resolveFieldHint(
+                            "Password Validation",
+                            "passwordPolicy.errorMsg",
+                            "This error message will be displayed" +
+                            " when a pattern violation is detected."
+                        )
+                    }
+                </Hint>
+            </>
+        );
+    };
+
+    const resolvePasswordValidation: () => ReactElement = (): ReactElement => {
+        return (
+            <div className="validation-configurations-form">
+                <div className="criteria">
+                    <label>
+                                Must be between
+                    </label>
+                    <Field.Input
+                        ariaLabel="minLength"
+                        inputType="number"
+                        name="minLength"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+                            const min: number = ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_VALUE;
+
+                            if (numValue < min) {
+                                return t("common:minValidation", { min });
+                            }
+                            const max: number = allValues.maxLength
+                                ? parseInt(allValues.maxLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_VALUE
+                        }
+                        max={
+                            currentValues.maxLength
+                                ? currentValues.maxLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "min" }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_LENGTH
+                        }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    minLength: value
+                                }
+                            );
+                        } }
+                        readOnly={ isReadOnly }
+                        disabled={ false }
+                        data-testid={ `${ componentId }-min-length` }
+                    />
+                    <label>and</label>
+                    <Field.Input
+                        ariaLabel="maxLength"
+                        inputType="number"
+                        name="maxLength"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+                            const min: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_VALUE;
+
+                            if (numValue < min) {
+                                return t("common:minValidation", { min });
+                            }
+
+                            const max: number = ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_VALUE
+                        }
+                        max={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "max" }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    maxLength: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_LENGTH
+                        }
+                        labelPosition="top"
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={ false }
+                        data-testid={ `${ componentId }-max-length` }
+                    />
+                    <label>
+                                characters
+                    </label>
+                </div>
+                <label
+                    className={ "labelName" }
+                >
+                    Must contain at least
+                </label>
+                <div
+                    className={
+                        "criteria rule mt-3"
+                    }
+                >
+                    <Field.Input
+                        ariaLabel="minNumbers"
+                        inputType="number"
+                        name="minNumbers"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+                            const min: number = ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE;
+
+                            if (numValue < min ) {
+                                return t("common:minValidation", { min });
+                            }
+
+                            const max: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE
+                        }
+                        max={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "min" }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    minNumbers: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={ false }
+                        data-componentid={ `${ componentId }-min-numbers` }
+                    ></Field.Input>
+                    <label>
+                        numbers (0-9).
+                    </label>
+                </div>
+                <div className="criteria rule">
+                    <Field.Input
+                        ariaLabel="minUpperCaseCharacters"
+                        inputType="number"
+                        name="minUpperCaseCharacters"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+                            const min: number = ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE;
+
+                            if (numValue < min) {
+                                return t("common:minValidation", { min });
+                            }
+
+                            const max: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE
+                        }
+                        max={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "min" }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    minUpperCaseCharacters: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={ false }
+                        data-testid={ `${ componentId }-min-upper-case-characters` }
+                    />
+                    <label>
+                        upper-case
+                        characters (A-Z).
+                    </label>
+                </div>
+                <div className="criteria rule">
+                    <Field.Input
+                        ariaLabel="minLowerCaseCharacters"
+                        inputType="number"
+                        name="minLowerCaseCharacters"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+                            const min: number = ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE;
+
+                            if (numValue < min) {
+                                return t("common:minValidation", { min });
+                            }
+
+                            const max: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE
+                        }
+                        max={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "min" }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    minLowerCaseCharacters: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MAX_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={ false }
+                        data-testid={ `${ componentId }-min-lower-case-characters` }
+                    />
+                    <label>
+                        lower-case
+                        characters (a-z).
+                    </label>
+                </div>
+                <div className="criteria rule">
+                    <Field.Input
+                        ariaLabel="minSpecialCharacters"
+                        inputType="number"
+                        name="minSpecialCharacters"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+                            const min: number = ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE;
+
+                            if (numValue < min) {
+                                return t("common:minValidation", { min });
+                            }
+
+                            const max: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_VALUE
+                        }
+                        max={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "min" }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    minSpecialCharacters: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={ false }
+                        data-testid={ `${ componentId }-min-special-characters` }
+                    />
+                    <label>
+                        special characters
+                        (!@#$%^&*).
+                    </label>
+                </div>
+                <div className="criteria">
+                    <Field.Checkbox
+                        ariaLabel="uniqueCharacterValidatorEnabled"
+                        name="uniqueCharacterValidatorEnabled"
+                        required={ false }
+                        label={
+                            "Must contain at least"
+                        }
+                        listen={ (
+                            value: boolean
+                        ) => {
+                            setUniqueChrValidatorEnabled(
+                                value
+                            );
+                        } }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-unique-chr-enable` }
+                        readOnly={ isReadOnly }
+                    />
+                    <Field.Input
+                        ariaLabel="minUniqueCharacters"
+                        inputType="number"
+                        name="minUniqueCharacters"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+
+                            if (numValue < 1) {
+                                return t("common:minValidation", { min: 1 });
+                            }
+
+                            const max: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={ 1 }
+                        max={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "min" }
+                        value={
+                            Number(
+                                initialFormValues.minUniqueCharacters
+                            ) > 0
+                                ? initialFormValues.minUniqueCharacters
+                                : 1
+                        }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    minUniqueCharacters: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={
+                            !isUniqueChrValidatorEnabled
+                        }
+                        data-testid={ `${ componentId }-min-unique-chr` }
+                    />
+                    <label>
+                        unique characters.
+                    </label>
+                </div>
+                <div className="criteria">
+                    <Field.Checkbox
+                        ariaLabel="consecutiveCharacterValidatorEnabled"
+                        name="consecutiveCharacterValidatorEnabled"
+                        label={
+                            "Must not contain more than"
+                        }
+                        required={ false }
+                        disabled={ false }
+                        listen={ (
+                            value: boolean
+                        ) => {
+                            setConsecutiveChrValidatorEnabled(
+                                value
+                            );
+                        } }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-consecutive-chr-enable` }
+                        readOnly={ isReadOnly }
+                    />
+                    <Field.Input
+                        ariaLabel="maxConsecutiveCharacters"
+                        inputType="number"
+                        name="maxConsecutiveCharacters"
+                        validation={ (
+                            value: string,
+                            allValues: Record<string, unknown>
+                        ): string | undefined => {
+                            const numValue: number = parseInt(value);
+
+                            if (numValue < 1) {
+                                return t("common:minValidation", { min: 1 });
+                            }
+
+                            const max: number = allValues.minLength
+                                ? parseInt(allValues.minLength as string)
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                            if (numValue > max) {
+                                return t("common:maxValidation", { max });
+                            }
+                        } }
+                        min={ 1 }
+                        max={
+                            currentValues.minLength
+                                ? currentValues.minLength
+                                : ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                        }
+                        width={ 2 }
+                        required
+                        hidden={ false }
+                        placeholder={ "max" }
+                        value={
+                            Number(
+                                initialFormValues.maxConsecutiveCharacters
+                            ) > 0
+                                ? initialFormValues.maxConsecutiveCharacters
+                                : 1
+                        }
+                        listen={ (
+                            value: string
+                        ) => {
+                            setCurrentValues(
+                                {
+                                    ...currentValues,
+                                    maxConsecutiveCharacters: value
+                                }
+                            );
+                        } }
+                        maxLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .MIN_LENGTH
+                        }
+                        minLength={
+                            ValidationConfigConstants
+                                .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                .PASSWORD_MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={
+                            !isConsecutiveChrValidatorEnabled
+                        }
+                        data-testid={ `${ componentId }-max-consecutive-chr` }
+                    />
+                    <label>
+                        repeated characters.
+                    </label>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <PageLayout
             pageTitle={ t("console:manage.features.validation.pageTitle") }
@@ -455,9 +1451,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t(
-                    "console:manage.features.validation.goBackToValidationConfig"
-                )
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -472,7 +1466,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 padded={ "very" }
                             >
                                 <div className="validation-configurations password-validation-configurations">
-                                    { !isValidationLoading && !isLoading ? (
+                                    { !isLoading ? (
                                         <Form
                                             id={ FORM_ID }
                                             initialValues={ initialFormValues }
@@ -493,642 +1487,23 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                         componentId,
                                                         passwordExpiryEnabled,
                                                         setPasswordExpiryEnabled,
-                                                        t
+                                                        t,
+                                                        isReadOnly
                                                     ) }
+                                                    <Divider className="mt-4 mb-5" />
                                                     { serverConfigurationConfig.passwordHistoryCountComponent(
                                                         componentId,
                                                         passwordHistoryEnabled,
                                                         setPasswordHistoryEnabled,
-                                                        t
+                                                        t,
+                                                        isReadOnly
                                                     ) }
-                                                    <div className="criteria">
-                                                        <label>
-                                                            Must be between
-                                                        </label>
-                                                        <Field.Input
-                                                            ariaLabel="minLength"
-                                                            inputType="number"
-                                                            name="minLength"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-                                                                const min: number = ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_VALUE;
-
-                                                                if (numValue < min) {
-                                                                    return t("common:minValidation", { min });
-                                                                }
-                                                                const max: number = allValues.maxLength
-                                                                    ? parseInt(allValues.maxLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_VALUE
-                                                            }
-                                                            max={
-                                                                currentValues.maxLength
-                                                                    ? currentValues.maxLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "min" }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_LENGTH
-                                                            }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        minLength: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            readOnly={ false }
-                                                            disabled={ false }
-                                                            data-testid={ `${ componentId }-min-length` }
-                                                        />
-                                                        <label>and</label>
-                                                        <Field.Input
-                                                            ariaLabel="maxLength"
-                                                            inputType="number"
-                                                            name="maxLength"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-                                                                const min: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MIN_VALUE;
-
-                                                                if (numValue < min) {
-                                                                    return t("common:minValidation", { min });
-                                                                }
-
-                                                                const max: number = ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MIN_VALUE
-                                                            }
-                                                            max={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "max" }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        maxLength: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_LENGTH
-                                                            }
-                                                            labelPosition="top"
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={ false }
-                                                            data-testid={ `${ componentId }-max-length` }
-                                                        />
-                                                        <label>
-                                                            characters
-                                                        </label>
-                                                    </div>
-                                                    <label
-                                                        className={ "labelName" }
-                                                    >
-                                                        Must contain at least
-                                                    </label>
-                                                    <div
-                                                        className={
-                                                            "criteria rule mt-3"
-                                                        }
-                                                    >
-                                                        <Field.Input
-                                                            ariaLabel="minNumbers"
-                                                            inputType="number"
-                                                            name="minNumbers"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-                                                                const min: number = ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE;
-
-                                                                if (numValue < min ) {
-                                                                    return t("common:minValidation", { min });
-                                                                }
-
-                                                                const max: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE
-                                                            }
-                                                            max={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "min" }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        minNumbers: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={ false }
-                                                            data-testid={ `${ componentId }-min-numbers` }
-                                                        ></Field.Input>
-                                                        <label>
-                                                            numbers (0-9).
-                                                        </label>
-                                                    </div>
-                                                    <div className="criteria rule">
-                                                        <Field.Input
-                                                            ariaLabel="minUpperCaseCharacters"
-                                                            inputType="number"
-                                                            name="minUpperCaseCharacters"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-                                                                const min: number = ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE;
-
-                                                                if (numValue < min) {
-                                                                    return t("common:minValidation", { min });
-                                                                }
-
-                                                                const max: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE
-                                                            }
-                                                            max={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "min" }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        minUpperCaseCharacters: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={ false }
-                                                            data-testid={ `${ componentId }-min-upper-case-characters` }
-                                                        />
-                                                        <label>
-                                                            upper-case
-                                                            characters (A-Z).
-                                                        </label>
-                                                    </div>
-                                                    <div className="criteria rule">
-                                                        <Field.Input
-                                                            ariaLabel="minLowerCaseCharacters"
-                                                            inputType="number"
-                                                            name="minLowerCaseCharacters"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-                                                                const min: number = ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE;
-
-                                                                if (numValue < min) {
-                                                                    return t("common:minValidation", { min });
-                                                                }
-
-                                                                const max: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE
-                                                            }
-                                                            max={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "min" }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        minLowerCaseCharacters: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MAX_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={ false }
-                                                            data-testid={ `${ componentId }-min-lower-case-characters` }
-                                                        />
-                                                        <label>
-                                                            lower-case
-                                                            characters (a-z).
-                                                        </label>
-                                                    </div>
-                                                    <div className="criteria rule">
-                                                        <Field.Input
-                                                            ariaLabel="minSpecialCharacters"
-                                                            inputType="number"
-                                                            name="minSpecialCharacters"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-                                                                const min: number = ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE;
-
-                                                                if (numValue < min) {
-                                                                    return t("common:minValidation", { min });
-                                                                }
-
-                                                                const max: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_VALUE
-                                                            }
-                                                            max={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "min" }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        minSpecialCharacters: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={ false }
-                                                            data-testid={ `${ componentId }-min-special-characters` }
-                                                        />
-                                                        <label>
-                                                            special characters
-                                                            (!@#$%^&*).
-                                                        </label>
-                                                    </div>
-                                                    <div className="criteria">
-                                                        <Field.Checkbox
-                                                            ariaLabel="uniqueCharacterValidatorEnabled"
-                                                            name="uniqueCharacterValidatorEnabled"
-                                                            required={ false }
-                                                            label={
-                                                                "Must contain at least"
-                                                            }
-                                                            listen={ (
-                                                                value: boolean
-                                                            ) => {
-                                                                setUniqueChrValidatorEnabled(
-                                                                    value
-                                                                );
-                                                            } }
-                                                            width={ 16 }
-                                                            data-testid={ `${ componentId }-unique-chr-enable` }
-                                                        />
-                                                        <Field.Input
-                                                            ariaLabel="minUniqueCharacters"
-                                                            inputType="number"
-                                                            name="minUniqueCharacters"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-
-                                                                if (numValue < 1) {
-                                                                    return t("common:minValidation", { min: 1 });
-                                                                }
-
-                                                                const max: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={ 1 }
-                                                            max={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "min" }
-                                                            value={
-                                                                Number(
-                                                                    initialFormValues.minUniqueCharacters
-                                                                ) > 0
-                                                                    ? initialFormValues.minUniqueCharacters
-                                                                    : 1
-                                                            }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        minUniqueCharacters: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={
-                                                                !isUniqueChrValidatorEnabled
-                                                            }
-                                                            data-testid={ `${ componentId }-min-unique-chr` }
-                                                        />
-                                                        <label>
-                                                            unique characters.
-                                                        </label>
-                                                    </div>
-                                                    <div className="criteria">
-                                                        <Field.Checkbox
-                                                            ariaLabel="consecutiveCharacterValidatorEnabled"
-                                                            name="consecutiveCharacterValidatorEnabled"
-                                                            label={
-                                                                "Must not contain more than"
-                                                            }
-                                                            required={ false }
-                                                            disabled={ false }
-                                                            listen={ (
-                                                                value: boolean
-                                                            ) => {
-                                                                setConsecutiveChrValidatorEnabled(
-                                                                    value
-                                                                );
-                                                            } }
-                                                            width={ 16 }
-                                                            data-testid={ `${ componentId }-consecutive-chr-enable` }
-                                                        />
-                                                        <Field.Input
-                                                            ariaLabel="maxConsecutiveCharacters"
-                                                            inputType="number"
-                                                            name="maxConsecutiveCharacters"
-                                                            validation={ (
-                                                                value: string,
-                                                                allValues: Record<string, unknown>
-                                                            ): string | undefined => {
-                                                                const numValue: number = parseInt(value);
-
-                                                                if (numValue < 1) {
-                                                                    return t("common:minValidation", { min: 1 });
-                                                                }
-
-                                                                const max: number = allValues.minLength
-                                                                    ? parseInt(allValues.minLength as string)
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE;
-
-                                                                if (numValue > max) {
-                                                                    return t("common:maxValidation", { max });
-                                                                }
-                                                            } }
-                                                            min={ 1 }
-                                                            max={
-                                                                currentValues.minLength
-                                                                    ? currentValues.minLength
-                                                                    : ValidationConfigConstants
-                                                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                        .PASSWORD_MAX_VALUE
-                                                            }
-                                                            width={ 2 }
-                                                            required={ true }
-                                                            hidden={ false }
-                                                            placeholder={ "max" }
-                                                            value={
-                                                                Number(
-                                                                    initialFormValues.maxConsecutiveCharacters
-                                                                ) > 0
-                                                                    ? initialFormValues.maxConsecutiveCharacters
-                                                                    : 1
-                                                            }
-                                                            listen={ (
-                                                                value: string
-                                                            ) => {
-                                                                setCurrentValues(
-                                                                    {
-                                                                        ...currentValues,
-                                                                        maxConsecutiveCharacters: value
-                                                                    }
-                                                                );
-                                                            } }
-                                                            maxLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .MIN_LENGTH
-                                                            }
-                                                            minLength={
-                                                                ValidationConfigConstants
-                                                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
-                                                                    .PASSWORD_MIN_LENGTH
-                                                            }
-                                                            readOnly={ false }
-                                                            disabled={
-                                                                !isConsecutiveChrValidatorEnabled
-                                                            }
-                                                            data-testid={ `${ componentId }-max-consecutive-chr` }
-                                                        />
-                                                        <label>
-                                                            repeated characters.
-                                                        </label>
-                                                    </div>
                                                 </div>
                                             ) }
+                                            { isPasswordInputValidationEnabled
+                                                ? resolvePasswordValidation()
+                                                : resolveLegacyPasswordValidation()
+                                            }
                                             <Field.Button
                                                 form={ FORM_ID }
                                                 size="small"
@@ -1138,7 +1513,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                 data-testid={ `${ componentId }-submit-button` }
                                                 loading={ isSubmitting }
                                                 label={ t("common:update") }
-                                            ></Field.Button>
+                                                hidden={ isReadOnly }
+                                            />
                                         </Form>
                                     ) : (
                                         <ContentLoader />

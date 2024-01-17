@@ -101,6 +101,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
     const [ after, setAfter ] = useState<string>("");
     const [ before, setBefore ] = useState<string>("");
+    const [ authorizedListPrevCursor, setAuthorizedListPrevCursor ] = useState<string>("");
+    const [ authorizedListNextCursor, setAuthorizedListNextCursor ] = useState<string>("");
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
@@ -224,6 +226,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         setOrganizationList(response);
                     })
                     .catch((error: any) => {
+                        setOrganizationList(null);
+
                         if (error?.description) {
                             dispatch(
                                 addAlert({
@@ -272,7 +276,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError,
         mutate: updateAuthorizedList
-    } = useAuthorizedOrganizationsList(filterQuery, listItemLimit, null, null, false);
+    } = useAuthorizedOrganizationsList(
+        filterQuery,
+        listItemLimit,
+        authorizedListNextCursor,
+        authorizedListPrevCursor,
+        false
+    );
 
     /**
      * Handles the authorized list fetch request error.
@@ -313,7 +323,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 )
             })
         );
-        
+
         return;
     };
 
@@ -358,11 +368,15 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             data: PaginationProps
         ): void => {
             const newPage: number = parseInt(data?.activePage as string);
-
+            
             if (newPage > activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, after, null);
+                setAuthorizedListNextCursor(after);
+                setAuthorizedListPrevCursor(null);
             } else if (newPage < activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, null, before);
+                setAuthorizedListNextCursor(null);
+                setAuthorizedListPrevCursor(before);
             }
 
             setActivePage(newPage);
@@ -593,6 +607,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         data-componentid="organization-list"
                         onListItemClick={ handleListItemClick }
                         parentOrganization={ parent }
+                        onListMutate={ handleOrganizationListUpdate }
                     />
                 </ListLayout>
                 { showWizard && (

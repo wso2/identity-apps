@@ -26,8 +26,9 @@ import {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { store } from "../../core";
-import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import {
     AddOrganizationInterface,
     BreadcrumbList,
@@ -132,8 +133,8 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             recursive
         },
         url: `${ isRoot
-            ? store.getState().config.endpoints.rootOrganization
-            : store.getState().config.endpoints.organizations }/organizations/me`
+            ? store.getState().config.endpoints.rootUsersOrganization
+            : store.getState().config.endpoints.usersOrganization }/me/organizations`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -334,8 +335,9 @@ export const shareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share`
+        url: isLegacyAuthzRuntime() ?
+            `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share` : `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -395,8 +397,9 @@ export const getSharedOrganizations = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share`
+        url: isLegacyAuthzRuntime() ?
+            `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share` : `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -434,9 +437,9 @@ export const useGetUserSuperOrganization = (): RequestResultInterface<Organizati
  *
  * @returns The breadcrumb list of organizations.
  */
-export const useGetOrganizationBreadCrumb = (
+export const useGetOrganizationBreadCrumb = <data = BreadcrumbList, Error = RequestErrorInterface>(
     shouldSendRequest: boolean
-): { data: BreadcrumbList, error: Error; isLoading: boolean; } => {
+) : RequestResultInterface<data, Error> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -446,17 +449,15 @@ export const useGetOrganizationBreadCrumb = (
         url: shouldSendRequest ? store.getState().config.endpoints.breadcrumb : ""
     };
 
-    const { data, error } = useRequest<BreadcrumbList, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<data, Error>(shouldSendRequest ? requestConfig : null);
 
-    if (error && !shouldSendRequest) {
-        return {
-            data: null,
-            error: null,
-            isLoading: null
-        };
-    }
-
-    return { data, error, isLoading: !data && !error };
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
 };
 
 /**
@@ -476,9 +477,10 @@ export const unshareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${
-            store.getState().config.endpoints.organizations
-        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/shared-apps`
+        url: isLegacyAuthzRuntime() ?
+            `${store.getState().config.endpoints.organizations
+            }/organizations/${currentOrganizationId}/applications/${applicationId}/shared-apps` :
+            `${store.getState().config.endpoints.applications}/${applicationId}/shared-apps`
     };
 
     return httpClient(requestConfig).catch((error: HttpError) => {

@@ -61,7 +61,7 @@
             .pre-loader-logo {
                 margin-top: -0.1rem;
             }
-    
+
             .content-loader {
                 display: flex;
                 flex-direction: column;
@@ -69,24 +69,24 @@
                 align-items: center;
                 user-select: none;
             }
-    
+
             .content-loader .ui.loader {
                 display: block;
                 position: relative;
                 margin-top: 10px;
                 margin-bottom: 25px;
             }
-    
+
             @keyframes loader {
                 0% {
                     transform: rotate(0)
                 }
-    
+
                 to {
                     transform: rotate(1turn)
                 }
             }
-    
+
             .content-loader .ui.loader:before {
                 content: "";
                 display: block;
@@ -95,7 +95,7 @@
                 border: .2em solid rgba(0,0,0,.1);
                 border-radius: 500rem;
             }
-    
+
             .content-loader .ui.loader:after {
                 content: "";
                 position: absolute;
@@ -149,7 +149,7 @@
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
-        
+
                 if (userTenant && userTenant == startupConfig.superTenantProxy) {
                     if (startupConfig.enableDefaultPreLoader) {
                         defaultPreLoader.style.display = 'block';
@@ -166,12 +166,12 @@
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-            
-            if(isSignOutSuccess && userTenant) {
+
+            if(startupConfig.legacyAuthzRuntime && isSignOutSuccess && userTenant) {
                 if (startupConfig.subdomainApplication) {
                     window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
                 } else {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
+                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/myaccount";
                 }
             }
 
@@ -191,39 +191,201 @@
         function authenticateWithSDK() {
 
             if(!authorizationCode) {
+                function getTenantName() {
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+                    var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    if (tenantPrefixIndex !== -1) {
+                        return pathChunks[ tenantPrefixIndex + 1 ];
+                    }
+                    return "";
+                }
+
                 function getApiPath(path) {
-                    if(path) {
-                        return serverOrigin + path;
+                    if (startupConfig.legacyAuthzRuntime) {
+                        if(path) {
+                            return serverOrigin + path;
+                        }
+
+                        return serverOrigin;
+                    }
+                    var basePath = serverOrigin;
+
+                    if (getTenantName()) {
+                        basePath = serverOrigin + getTenantPath();
                     }
 
-                    return serverOrigin;
+                    if(path) {
+                        return basePath + path;
+                    }
+
+                    return basePath;
+                }
+
+                function getTenantPath() {
+                    return getTenantName() !== ""
+                        ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                        : "";
+                };
+
+                /**
+                 * Construct the sign-in redirect URL.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function signInRedirectURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    }
+                    if (getTenantName() === startupConfig.superTenant) {
+                        return applicationDomain.replace(/\/+$/, '')
+                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    }
+                    return applicationDomain.replace(/\/+$/, '') + getTenantPath()
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                }
+
+                /**
+                 * Construct the sign-out redirect URL.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                function getSignOutRedirectURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
+                    }
+                    if (getTenantName() === startupConfig.superTenant) {
+                        return applicationDomain.replace(/\/+$/, '');
+                    }
+                    return applicationDomain.replace(/\/+$/, '') + getTenantPath();
+                }
+
+                /**
+                 * Construct the authorization endpoint.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function getAuthorizationEndpoint() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return getApiPath(
+                            userTenant ?
+                            "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize");
+                    }
+                    return getApiPath("/oauth2/authorize");
+                }
+
+                /**
+                 * Construct the logout endpoint.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function getLogoutEndpointURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
+                    }
+                    getApiPath("/oidc/logout");
+                }
+
+                /**
+                 * Construct the oidc check session endpoint.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function getOIDCSessionIFrameEndpointURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
+                    }
+                    return getApiPath("/oidc/checksession");
+                }
+
+                /**
+                 * Get the organization name.
+                 *
+                 * @returns {string}
+                 */
+                function getOrganizationName() {
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+
+                    var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+
+                    if (orgPrefixIndex !== -1) {
+                        return pathChunks[ orgPrefixIndex + 1 ];
+                    }
+
+                    return "";
+                };
+
+                /**
+                 * Get the organization path.
+                 *
+                 * @returns {string}
+                 */
+                function getOrganizationPath() {
+                    return getOrganizationName() !== ""
+                        ? "/" + startupConfig.orgPrefix + "/" + getOrganizationName()
+                        : "";
+                };
+
+                /**
+                 * Construct the auth params for organization login `authorize` requets.
+                 *
+                 * @remarks This only applies to the new authz runtime.
+                 *
+                 * @params orginalPrams - Original auth params.
+                 * @returns {string} Contructed auth params.
+                 */
+                function getAuthParamsForOrganizationLogins(orginalPrams) {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return orginalPrams;
+                    }
+
+                    var authParams = Object.assign({}, orginalPrams);
+
+                    if (getOrganizationPath()) {
+                        var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
+                        var orgIdInLocalStorage = localStorage.getItem("org-id");
+
+                        if (orgIdInLocalStorage) {
+                            if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        } else {
+                            authParams["fidp"] = "OrganizationSSO";
+                            authParams["orgId"] = getOrganizationName();
+                        }
+                    }
+
+                    return authParams;
                 }
 
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  
-                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
-                    signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                    signInRedirectURL: signInRedirectURL(),
+                    signOutRedirectURL: getSignOutRedirectURL(),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
+                        authorizationEndpoint: getAuthorizationEndpoint(),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
+                        logoutEndpointURL: getLogoutEndpointURL(),
+                        oidcSessionIFrameEndpointURL: getOIDCSessionIFrameEndpointURL(),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
                     enablePKCE: true
                 }
-                
+
                 auth.initialize(authConfig);
-                auth.signIn();
+                auth.signIn(getAuthParamsForOrganizationLogins({}));
             }
         }
     </script>
@@ -235,7 +397,7 @@
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
-            let head = document.head;
+            var head = document.head;
             head.insertBefore(authSPAJS, head.firstElementChild);
 
             authSPAJS.addEventListener("load", authenticateWithSDK, false);

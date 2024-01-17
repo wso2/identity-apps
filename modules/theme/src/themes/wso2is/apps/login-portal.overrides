@@ -576,38 +576,15 @@
                 img {
                     width: 80px;
                     max-height: 20px;
-                    margin-top: 6px;
                     margin-left: 4px;
                 }
             }
         }
 
         &.policy-page-layout {
-            background-image: @policyPageBackgroundImage;
-
-            .policy-page {
-                .policy-page-content {
-                    color: @white;
-
-                    .toc {
-                        background: @policyPageTOCBackground;
-                        border: none;
-                        box-shadow: none;
-                        color: @white;
-
-                        ul.ui.list.nav>li>a {
-                            color: @white;
-
-                            &:hover {
-                                color: @primaryColor;
-                            }
-                        }
-
-                        ul.ui.list li:before {
-                            color: @white;
-                        }
-                    }
-                }
+            .app-header {
+                background: @policyHeaderBackground;
+                border-bottom: @policyHeaderBorderBotton;
             }
         }
 
@@ -860,6 +837,22 @@
     text-align: left;
     color: @mutedTextColor;
     font-size: .9em;
+}
+
+.login-portal-app-consent-request {
+    margin: .1em 0;
+    text-align: left;
+    color: @mutedTextColor;
+    font-size: .9em;
+}
+
+/* Specific class for larger font size */
+p.login-portal-app-consent-request.larger-font {
+    font-size: 1.0em !important;
+}
+
+.consentItem {
+    font-size: 0.9em;
 }
 
 .field-validation-error-description {

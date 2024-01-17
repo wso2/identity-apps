@@ -52,6 +52,10 @@ export type AuthenticationFlowContextProps = {
         recovery: GenericAuthenticatorInterface[];
     };
     /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
+    /**
      * Callback to be fired when a new authentication step needs to be added.
      */
     addSignInStep: () => void;
@@ -89,6 +93,10 @@ export type AuthenticationFlowContextProps = {
      * Is the legacy editor enabled or not.
      */
     isLegacyEditorEnabled: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     */
+    isSystemApplication?: boolean;
     /**
      * Callback to be fired when the conditional authentication toggle is switched.
      * @param enabled - Is conditional authentication enabled or not.

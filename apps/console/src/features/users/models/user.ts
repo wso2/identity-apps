@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,8 +21,8 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
-import { GroupsMemberInterface } from "../../groups";
-import { BulkUserImportStatus } from "../constants";
+import { GroupsInterface, GroupsMemberInterface } from "../../groups";
+import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 
 /**
  * Captures meta details of the user.
@@ -151,7 +151,7 @@ export interface AddUserWizardStateInterface {
     newPassword: string;
     confirmPassword: string;
     passwordOption: string;
-    groups: RolesInterface[];
+    groups: GroupsInterface[];
     roles: RolesInterface[];
 }
 
@@ -168,7 +168,7 @@ export interface EmailsInterface {
  */
 export interface UserDetailsInterface {
     emails: EmailsInterface[];
-    name: NameInterface;
+    name?: NameInterface;
     userName: string;
     password?: string;
     /*
@@ -179,7 +179,7 @@ export interface UserDetailsInterface {
     [key: string]: {
         askPassword: string;
     } | any;
-    profileUrl: string;
+    profileUrl?: string;
 }
 
 /**
@@ -322,6 +322,7 @@ export interface WizardStepInterface {
     content: ReactElement;
     icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     title: string;
+    name?: string;
 }
 
 /**
@@ -353,18 +354,21 @@ export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
  * Interface for the bulk user import operation response.
  */
 export interface BulkUserImportOperationResponse {
-    username: string;
+    resourceIdentifier: string;
     status: BulkUserImportOperationStatus;
     message: string;
     statusCode: BulkUserImportStatus;
+    operationType?: BulkImportResponseOperationTypes;
 }
 
 /**
  * Interface for the bulk user import operation summary.
  */
 export interface BulkResponseSummary {
-    successCount: number;
-    failedCount: number;
+    successUserCreation: number;
+    failedUserCreation: number;
+    successUserAssignment: number;
+    failedUserAssignment: number;
 }
 
 export interface PatchBulkUserDataInterface {
@@ -391,4 +395,41 @@ export interface PatchUserAddOpInterface {
     value: {
         users: { value: string }[]
     }
+}
+
+/**
+ * Enum for the multiple invites modes.
+ *
+ */
+export enum MultipleInviteMode {
+    MANUAL = "manualConfiguration",
+    META_FILE = "metadataFile"
+}
+
+/**
+ * Multiple Invites mode display name mapping.
+ */
+export const MultipleInvitesDisplayNames: { manualConfiguration: string; metadataFile: string; } = {
+    [ MultipleInviteMode.MANUAL ]: "Manual",
+    [ MultipleInviteMode.META_FILE ]: "File Based"
+};
+
+/**
+ * Interface to store data for create group api.
+ */
+export interface UserInviteInterface {
+    id?: string;
+    roles?: string[];
+    email: string;
+    status?: InviteUserStatus;
+}
+
+/**
+ * Enum for Invite User Status.
+ *
+ * @readonly
+ */
+export enum InviteUserStatus {
+    PENDING = "PENDING",
+    EXPIRED = "EXPIRED"
 }

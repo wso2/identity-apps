@@ -42,7 +42,7 @@ import { SIWEAuthenticationProviderCreateWizard } from "../identity-provider-tem
  */
 export class IdentityProviderExtensionConstants {
 
-    public static readonly FIDO_AUTHENTICATOR_DISPLAY_NAME: string = "FIDO2";
+    public static readonly FIDO_AUTHENTICATOR_DISPLAY_NAME: string = "Passkey";
 }
 
 export const identityProviderConfig: IdentityProviderConfig = {
@@ -79,7 +79,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             },
             isComingSoon: false,
             isEnabled: true,
-            useAuthenticatorsAPI: true
+            useAuthenticatorsAPI: false
         },
         [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
             content: {
@@ -121,6 +121,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             return null;
         }
     },
+    disableSMSOTPInSubOrgs: false,
     editIdentityProvider: {
         attributesSettings: true,
         getCertificateOptionsForTemplate: (templateId: string): { JWKS: boolean; PEM: boolean } | undefined => {
@@ -214,6 +215,46 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         SIWEIdPTemplate.templateId
                     ])
+                ],
+                [
+                    IdentityProviderTabTypes.SETTINGS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.ATTRIBUTES, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.CONNECTED_APPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.CONNECTED_APPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.OUTBOUND_PROVISIONING, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.ADVANCED, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
                 ]
             ]);
 
@@ -223,16 +264,30 @@ export const identityProviderConfig: IdentityProviderConfig = {
 
             return undefined;
         },
-        showAdvancedSettings: false,
+        showAdvancedSettings: true,
+        showIssuerSettings: true,
         showJitProvisioning: true,
         showOutboundProvisioning: true
+    },
+    extendedSamlConfig: {
+        attributeConsumingServiceIndexEnabled: true,
+        authContextComparisonLevelEnabled: true,
+        enableAssertionSigningEnabled: true,
+        forceAuthenticationEnabled: true,
+        includeAuthenticationContextEnabled: true,
+        includeNameIDPolicyEnabled: true,
+        includePublicCertEnabled: true,
+        isArtifactBindingEnabled: true,
+        isAssertionEncryptionEnabled: true,
+        responseAuthenticationContextClassEnabled: true,
+        saml2WebSSOUserIdLocationEnabled: true
     },
     fidoTags: [
         AuthenticatorLabels.PASSWORDLESS,
         AuthenticatorLabels.PASSKEY
     ],
     filterFidoTags: (tags: string[]): string[] => {
-        return tags.filter((tag: string) => 
+        return tags.filter((tag: string) =>
             tag === AuthenticatorLabels.PASSWORDLESS || tag === AuthenticatorLabels.PASSKEY);
     },
     generalDetailsForm: {
@@ -252,17 +307,17 @@ export const identityProviderConfig: IdentityProviderConfig = {
     },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
-            show: !!window[ "AppUtils" ].getConfig().organizationName
+            show: true
         },
         enableJitProvisioningField: {
             show: true
         },
-        menuItemName: "Advanced",
+        menuItemName: "Just-in-Time Provisioning",
         provisioningSchemeField: {
-            show: false
+            show: true
         },
         userstoreDomainField: {
-            show: false
+            show: true
         }
     },
     templates: {
@@ -277,7 +332,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
         oidc: true,
         organizationEnterprise: true,
         saml: true,
-        trustedTokenIssuer: false
+        trustedTokenIssuer: false,
+        useTemplateExtensions: false
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.

@@ -341,7 +341,7 @@
         if (theme.has(PAGE_KEY) || theme.has(LOGIN_PAGE_KEY)) {
 
             JSONObject pageBody = null;
-            
+
             if (theme.has(PAGE_KEY)) {
                 pageBody = theme.optJSONObject(PAGE_KEY);
             }
@@ -1318,6 +1318,11 @@
         color: var(--asg-input-field-base-label-text-color);
     }
 
+    .ui.checkbox:not(.toggle, .radio) input[type="checkbox"]:checked~label:after {
+        background: var(--asg-colors-primary-main);
+        color: var(--asg-primary-button-base-text-color);
+    }
+
     /* Input Addons */
     .addon-field-wrapper .ui.input {
         border-color: var(--asg-input-field-base-border-color);
@@ -1569,6 +1574,33 @@
 
     .ui.items>.item.application-list-item {
         border-color: var(--asg-colors-outlined-default);
+    }
+
+    /*-----------------------------
+              Policy Pages
+    ------------------------------*/
+
+    .login-portal.layout .ui.segment.toc ul.ui.list.nav>li>a {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .login-portal.layout .ui.segment.toc ul.ui.list.nav>li:before {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .login-portal.layout.policy-page-layout .ui.table thead th {
+        background: var(--asg-colors-background-surface-light);
+        color: var(--asg-colors-text-primary);
+    }
+
+    .login-portal.layout.policy-page-layout .ui.table {
+        color: var(--asg-colors-text-primary);
+        background: var(--asg-colors-background-surface-main);
+    }
+
+    .login-portal.layout.policy-page-layout .app-header {
+        background: var(--asg-colors-background-body-main);
+        border-bottom: 1px solid var(--asg-footer-border-color);
     }
 </style>
 <% } %>

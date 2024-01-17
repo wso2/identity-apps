@@ -14,11 +14,11 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%
-    String TENANT_DOMAIN = "tenantDomain";
+    String TENANT_DOMAIN_KEY = "tenantDomain";
     String TENANT_DOMAIN_SHORT = "t";
     String USER_TENANT_DOMAIN_SHORT = "ut";
     String SERVICE_PROVIDER_NAME_SHORT = "sp";
-    
+
     String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
     String samlssoURL = "../samlsso";
     String commonauthURL = "../commonauth";
@@ -27,14 +27,14 @@
     String openidServerURL = "../openidserver";
     String logincontextURL = "../logincontext";
     String longwaitstatusURL = "/longwaitstatus";
-    
+
     String tenantDomain;
     String userTenantDomain;
     String tenantForTheming;
     String userTenant;
     String spAppName;
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+        tenantDomain = IdentityTenantUtil.resolveTenantDomain();
         tenantForTheming = tenantDomain;
         userTenant = tenantDomain;
 
@@ -75,9 +75,9 @@
             }
         }
     } else {
-        tenantDomain = request.getParameter(TENANT_DOMAIN);
-        if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN))) {
-            tenantDomain = (String) request.getAttribute(TENANT_DOMAIN);
+        tenantDomain = request.getParameter(TENANT_DOMAIN_KEY);
+        if (StringUtils.isBlank(tenantDomain) && StringUtils.isNotBlank((String) request.getAttribute(TENANT_DOMAIN_KEY))) {
+            tenantDomain = (String) request.getAttribute(TENANT_DOMAIN_KEY);
         }
 
         String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
@@ -131,9 +131,10 @@
         }
     }
 
-    if (!StringUtils.equals(tenantDomain, "carbon.super")) {
-        identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build()
-                .getAbsolutePublicURL();
+    if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+        identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
+    } else {
+        identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
     }
 
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {

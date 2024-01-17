@@ -18,28 +18,47 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { FormValue } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
+    EmptyPlaceholder,
     GenericIcon,
     Message,
     Popup,
+    PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import sortBy from "lodash-es/sortBy";
-import React, { Fragment, FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    Fragment,
+    FunctionComponent,
+    MouseEvent,
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
+import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
-import { AppState, FeatureConfigInterface, store } from "../../../core";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
+import {
+    AppState,
+    AuthenticatorAccordion,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    store
+} from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -48,15 +67,18 @@ import {
     updateApplicationDetails,
     updateAuthProtocolConfig
 } from "../../api";
+import { useGetApplication } from "../../api/use-get-application";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
+    ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaInterface,
-    CertificateInterface, OIDCDataInterface,
+    CertificateInterface,
+    OIDCDataInterface,
     OIDCMetadataInterface,
     SAML2ConfigurationInterface,
     SAMLConfigModes,
@@ -111,7 +133,7 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      */
     onUpdate: (id: string) => void;
 
-    onProtocolUpdate: () => void;
+    onProtocolUpdate?: () => void;
     /**
      *  Is inbound protocol config request is still loading.
      */
@@ -144,6 +166,30 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Application template.
      */
     applicationTemplateId?: string;
+    /**
+     * Flag to determine if the updated application a default application.
+     * ex: My Account
+     */
+    isDefaultApplication?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     * ex: Console
+     */
+    isSystemApplication?: boolean;
+}
+
+/**
+ * Interface for the form values when updating an application.
+ */
+interface ApplicationUpdateFormValuesInterface {
+    /**
+     * Inbound protocol configuration values.
+    * */
+    inbound: Record<string, FormValue>;
+    /**
+     * General application configuration values.
+    */
+    general: ApplicationInterface;
 }
 
 /**
@@ -175,6 +221,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         template,
         extendedAccessConfig,
         applicationTemplateId,
+        isDefaultApplication,
+        isSystemApplication,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -183,12 +231,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     const dispatch: Dispatch = useDispatch();
 
+    const {
+        mutate: mutateApplicationGetRequest
+    } = useGetApplication(application.id);
+
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
         (state: AppState) => state.application.meta.protocolMeta);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const tenantName: string = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -196,12 +250,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showProtocolSwitchModal, setShowProtocolSwitchModal ] = useState<boolean>(false);
-    const [ protocolToDelete ] = useState<string>(undefined);
+    const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
     const [ requestLoading, setRequestLoading ] = useState<boolean>(false);
 
     const [ samlCreationOption, setSAMLCreationOption ] = useState<SAMLConfigModes>(undefined);
 
     const emphasizedSegmentRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
 
     /**
      * Handles the inbound config delete action.
@@ -338,12 +393,19 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * Handles form submit.
      *
      * @param values - Form values.
+     * @param protocol - The protocol to be updated.
      */
-    const handleSubmit = (values: any): void => {
+    const handleSubmit = (
+        values: ApplicationUpdateFormValuesInterface,
+        protocol: string
+    ): void => {
         setIsLoading(true);
-        updateApplicationDetails({ id: appId, ...values.general })
+
+        updateApplicationDetails({ id: appId, ...values.general }, true)
             .then(async () => {
-                await handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
+                await handleInboundConfigFormSubmit(values.inbound, protocol);
+
+                mutateApplicationGetRequest();
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -455,6 +517,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
         }
 
+        if (applicationTemplateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID) {
+            return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
+        }
+
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
             return [ SupportedAuthProtocolTypes.WS_FEDERATION ];
         }
@@ -493,6 +559,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         if (inboundProtocols.length > 0) {
             setInboundProtocolList(inboundProtocols);
         }
+        setSelectedProtocol(null);
+        loadSupportedProtocols();
     }, [ inboundProtocols ]);
 
 
@@ -531,6 +599,51 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         if (!supportedProtocolList) {
             setSupportedProtocolList(supportedProtocols);
         }
+    };
+
+    /**
+     * Handles Authenticator delete button on click action.
+     *
+     * @param e - Click event.
+     * @param name - Protocol name.
+     */
+    const handleProtocolDeleteOnClick = (e: MouseEvent<HTMLDivElement>, name: string): void => {
+        if (!name) {
+            return;
+        }
+
+        const deletingProtocol: string = inboundProtocols.find((protocol: string) => protocol === name);
+
+        if (!deletingProtocol) {
+            return;
+        }
+
+        setProtocolToDelete(deletingProtocol);
+        setShowDeleteConfirmationModal(true);
+    };
+
+    /**
+     * Handles accordion title click.
+     *
+     * @param e - Click event.
+     * @param SegmentedAuthenticatedAccordion - Clicked title.
+     */
+    const handleAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
+        SegmentedAuthenticatedAccordion: AccordionTitleProps): void => {
+        if (!SegmentedAuthenticatedAccordion) {
+            return;
+        }
+        const newIndexes: number[] = [ ...accordionActiveIndexes ];
+
+        if (newIndexes?.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex: number = newIndexes?.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(SegmentedAuthenticatedAccordion.accordionIndex);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
     };
 
     /**
@@ -608,113 +721,311 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 padded="very"
                 ref={ emphasizedSegmentRef }
             >
-                <div className="form-container with-max-width">
-                    { !isLoading? resolveProtocolBanner() : null }
-                    { renderProtocolIntegrationHelpMessage() }
-                    {
-                        Object
-                            .values(SupportedAuthProtocolTypes)
-                            .includes(selectedProtocol as SupportedAuthProtocolTypes)
-                            ? (
-                                <InboundFormFactory
-                                    onUpdate={ onUpdate }
-                                    application={ application }
-                                    isLoading={ isLoading }
-                                    setIsLoading={ setIsLoading }
-                                    certificate={ certificate }
-                                    tenantDomain={ tenantName }
-                                    allowedOrigins={ allowedOriginList }
-                                    metadata={
-                                        authProtocolMeta[
-                                            // There's no separate meta for `OAuth2/OIDC` Apps.
-                                            // Need to use `OIDC` for noe.
-                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-                                                ? SupportedAuthProtocolTypes.OIDC
-                                                : selectedProtocol
-                                        ]
-                                    }
-                                    initialValues={
-                                        get(
-                                            inboundProtocolConfig,
-                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-                                                ? SupportedAuthProtocolTypes.OIDC
-                                                : selectedProtocol
-                                        )
-                                            ? inboundProtocolConfig[
-                                                selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                { inboundProtocolList.length > 1
+                    ? ( inboundProtocolList.map(
+                        (protocol: string, index: number) => {
+                            return (
+                                Object.values(SupportedAuthProtocolTypes)
+                                    .includes(protocol as SupportedAuthProtocolTypes)
+                                    ? (
+                                        <AuthenticatorAccordion
+                                            key={ index }
+                                            globalActions={
+                                                !readOnly && [
+                                                    {
+                                                        icon: "trash alternate",
+                                                        onClick: handleProtocolDeleteOnClick,
+                                                        type: "icon"
+                                                    }
+                                                ]
+                                            }
+                                            authenticators={
+                                                [ {
+                                                    actions: [],
+                                                    content: protocol && (
+                                                        <InboundFormFactory
+                                                            onUpdate={ onUpdate }
+                                                            application={ application }
+                                                            isLoading={ isLoading }
+                                                            setIsLoading={ setIsLoading }
+                                                            certificate={ certificate }
+                                                            tenantDomain={ tenantName }
+                                                            allowedOrigins={ allowedOriginList }
+                                                            metadata={
+                                                                // There's no separate meta for `OAuth2/OIDC`
+                                                                // Apps. Need to use `OIDC` for now.
+                                                                authProtocolMeta[
+                                                                    protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                                        : protocol
+                                                                ]
+                                                            }
+                                                            initialValues={
+                                                                get(
+                                                                    inboundProtocolConfig,
+                                                                    protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                                        : protocol
+                                                                )
+                                                                    ? inboundProtocolConfig[
+                                                                        protocol === SupportedAuthProtocolTypes
+                                                                            .OAUTH2_OIDC
+                                                                            ? SupportedAuthProtocolTypes.OIDC
+                                                                            : protocol
+                                                                    ]
+                                                                    : undefined
+                                                            }
+                                                            onSubmit={
+                                                                (values: ApplicationUpdateFormValuesInterface) =>
+                                                                    handleSubmit(values, protocol)
+                                                            }
+                                                            type={ protocol as SupportedAuthProtocolTypes }
+                                                            onApplicationRegenerate={
+                                                                handleApplicationRegenerate
+                                                            }
+                                                            onApplicationRevoke={ handleApplicationRevoke }
+                                                            readOnly={
+                                                                readOnly || !hasRequiredScopes(
+                                                                    featureConfig?.applications,
+                                                                    featureConfig?.applications?.scopes?.update,
+                                                                    allowedScopes,
+                                                                    organizationType,
+                                                                    legacyAuthzRuntime
+                                                                )
+                                                            }
+                                                            showSAMLCreation={
+                                                                protocol === SupportedAuthProtocolTypes.SAML
+                                                            }
+                                                            SAMLCreationOption={
+                                                                (protocol === SupportedAuthProtocolTypes.SAML)
+                                                                        && samlCreationOption
+                                                            }
+                                                            template={ template }
+                                                            data-testid={
+                                                                `${ componentId }-inbound-${ protocol }-form`
+                                                            }
+                                                            data-componentid={
+                                                                `${ componentId }-inbound-${ protocol }-form`
+                                                            }
+                                                            containerRef={ emphasizedSegmentRef }
+                                                            isDefaultApplication={ isDefaultApplication }
+                                                            isSystemApplication={ isSystemApplication }
+                                                        />
+                                                    ),
+                                                    icon: {
+                                                        icon: getInboundProtocolLogos()[protocol], size: "micro"
+                                                    },
+                                                    id: protocol,
+                                                    title: resolveProtocolDisplayName(protocol)
+                                                } ]
+                                            }
+                                            accordionActiveIndexes={ accordionActiveIndexes }
+                                            accordionIndex={ index }
+                                            handleAccordionOnClick={ handleAccordionOnClick }
+                                            data-testid={ `${ componentId }-accordion` }
+                                            data-componentid={ `${ componentId }-accordion` }
+                                        />
+                                    )
+                                    : (
+                                        <InboundFormFactory
+                                            onUpdate={ onUpdate }
+                                            application={ application }
+                                            isLoading={ isLoading }
+                                            setIsLoading={ setIsLoading }
+                                            certificate={ certificate }
+                                            metadata={
+                                                // There's no separate meta for `OAuth2/OIDC` Apps.
+                                                // Need to use `OIDC` for now.
+                                                authProtocolMeta[
+                                                    protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                        : protocol
+                                                ]
+                                            }
+                                            initialValues={
+                                                get(
+                                                    inboundProtocolConfig,
+                                                    protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                        : protocol
+                                                )
+                                                    ? inboundProtocolConfig[
+                                                        protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                            ? SupportedAuthProtocolTypes.OIDC
+                                                            : protocol
+                                                    ]
+                                                    : undefined
+                                            }
+                                            onSubmit={ (values: ApplicationUpdateFormValuesInterface) =>
+                                                handleSubmit(values, protocol) }
+                                            type={ SupportedAuthProtocolTypes.CUSTOM }
+                                            readOnly={
+                                                !hasRequiredScopes(
+                                                    featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes,
+                                                    organizationType,
+                                                    legacyAuthzRuntime
+                                                )
+                                            }
+                                            template={ template }
+                                            data-testid={ `${ componentId }-inbound-custom-form` }
+                                            data-componentid={ `${ componentId }-inbound-custom-form` }
+                                            containerRef={ emphasizedSegmentRef }
+                                        />
+                                    )
+                            );
+                        }
+                    )
+                    )
+                    : ( inboundProtocolList.length === 1
+                        ? (
+                            <div className="form-container with-max-width">
+                                { !isLoading? resolveProtocolBanner() : null }
+                                { renderProtocolIntegrationHelpMessage() }
+                                { Object.values(SupportedAuthProtocolTypes)
+                                    .includes(selectedProtocol as SupportedAuthProtocolTypes)
+                                    ? (
+                                        <InboundFormFactory
+                                            onUpdate={ onUpdate }
+                                            application={ application }
+                                            isLoading={ isLoading }
+                                            setIsLoading={ setIsLoading }
+                                            certificate={ certificate }
+                                            tenantDomain={ tenantName }
+                                            allowedOrigins={ allowedOriginList }
+                                            metadata={
+                                                // There's no separate meta for `OAuth2/OIDC` Apps.
+                                                // Need to use `OIDC` for now.
+                                                authProtocolMeta[ selectedProtocol ===
+                                                        SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
                                                     : selectedProtocol
-                                            ]
-                                            : undefined
-                                    }
-                                    onSubmit={ handleSubmit }
-                                    type={ selectedProtocol as SupportedAuthProtocolTypes }
-                                    onApplicationRegenerate={ handleApplicationRegenerate }
-                                    onApplicationRevoke={ handleApplicationRevoke }
-                                    readOnly={
-                                        readOnly
-                                        || !hasRequiredScopes(
-                                            featureConfig?.applications,
-                                            featureConfig?.applications?.scopes?.update,
-                                            allowedScopes
-                                        )
-                                    }
-                                    showSAMLCreation={ selectedProtocol === SupportedAuthProtocolTypes.SAML }
-                                    SAMLCreationOption={
-                                        (selectedProtocol === SupportedAuthProtocolTypes.SAML) && samlCreationOption }
-                                    template={ template }
-                                    data-testid={ `${ componentId }-inbound-${ selectedProtocol }-form` }
-                                    containerRef={ emphasizedSegmentRef }
-                                />
-                            )
-                            : (
-                                <InboundFormFactory
-                                    onUpdate={ onUpdate }
-                                    application={ application }
-                                    isLoading={ isLoading }
-                                    setIsLoading={ setIsLoading }
-                                    certificate={ certificate }
-                                    metadata={
-                                        // There's no separate meta for `OAuth2/OIDC` Apps. Need to use `OIDC` for noe.
-                                        authProtocolMeta[
-                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-                                                ? SupportedAuthProtocolTypes.OIDC
-                                                : selectedProtocol
-                                        ]
-                                    }
-                                    initialValues={
-                                        get(
-                                            inboundProtocolConfig,
-                                            selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-                                                ? SupportedAuthProtocolTypes.OIDC
-                                                : selectedProtocol
-                                        )
-                                            ? inboundProtocolConfig[
-                                                selectedProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                ]
+                                            }
+                                            initialValues={
+                                                get(
+                                                    inboundProtocolConfig, selectedProtocol ===
+                                                            SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                        : selectedProtocol
+                                                )
+                                                    ? inboundProtocolConfig[ selectedProtocol ===
+                                                            SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                        : selectedProtocol
+                                                    ]
+                                                    : undefined
+                                            }
+                                            onSubmit={
+                                                (values: ApplicationUpdateFormValuesInterface) =>
+                                                    handleSubmit(values, selectedProtocol)
+                                            }
+                                            type={ selectedProtocol as SupportedAuthProtocolTypes }
+                                            onApplicationRegenerate={ handleApplicationRegenerate }
+                                            onApplicationRevoke={ handleApplicationRevoke }
+                                            readOnly={
+                                                readOnly || !hasRequiredScopes(
+                                                    featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes,
+                                                    organizationType,
+                                                    legacyAuthzRuntime
+                                                )
+                                            }
+                                            showSAMLCreation={
+                                                selectedProtocol === SupportedAuthProtocolTypes.SAML
+                                            }
+                                            SAMLCreationOption={
+                                                (selectedProtocol === SupportedAuthProtocolTypes.SAML)
+                                                && samlCreationOption
+                                            }
+                                            template={ template }
+                                            data-testid={
+                                                `${ componentId }-inbound-${ selectedProtocol }-form`
+                                            }
+                                            data-componentid={
+                                                `${ componentId }-inbound-${ selectedProtocol }-form`
+                                            }
+                                            containerRef={ emphasizedSegmentRef }
+                                            isDefaultApplication={ isDefaultApplication }
+                                            isSystemApplication={ isSystemApplication }
+                                        />
+                                    ):
+                                    (
+                                        <InboundFormFactory
+                                            onUpdate={ onUpdate }
+                                            application={ application }
+                                            isLoading={ isLoading }
+                                            setIsLoading={ setIsLoading }
+                                            certificate={ certificate }
+                                            metadata={
+                                                // There's no separate meta for `OAuth2/OIDC` Apps.
+                                                // Need to use `OIDC` for now.
+                                                authProtocolMeta[ selectedProtocol ===
+                                                        SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
                                                     : selectedProtocol
-                                            ]
-                                            : undefined
-                                    }
-                                    onSubmit={ handleSubmit }
-                                    type={ SupportedAuthProtocolTypes.CUSTOM }
-                                    readOnly={
-                                        !hasRequiredScopes(
-                                            featureConfig?.applications,
-                                            featureConfig?.applications?.scopes?.update,
-                                            allowedScopes
-                                        )
-                                    }
-                                    template={ template }
-                                    data-testid={ `${ componentId }-inbound-custom-form` }
-                                    containerRef={ emphasizedSegmentRef }
-                                />
-                            )
-                    }
-                </div>
+                                                ]
+                                            }
+                                            initialValues={
+                                                get(
+                                                    inboundProtocolConfig, selectedProtocol ===
+                                                            SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                        : selectedProtocol
+                                                )
+                                                    ? inboundProtocolConfig[ selectedProtocol ===
+                                                            SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                        ? SupportedAuthProtocolTypes.OIDC
+                                                        : selectedProtocol
+                                                    ]
+                                                    : undefined
+                                            }
+                                            onSubmit={
+                                                (values: ApplicationUpdateFormValuesInterface) =>
+                                                    handleSubmit(values, selectedProtocol)
+                                            }
+                                            type={ SupportedAuthProtocolTypes.CUSTOM }
+                                            readOnly={
+                                                !hasRequiredScopes(
+                                                    featureConfig?.applications,
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes,
+                                                    organizationType,
+                                                    legacyAuthzRuntime
+                                                )
+                                            }
+                                            template={ template }
+                                            data-testid={ `${ componentId }-inbound-custom-form` }
+                                            data-componentid={ `${ componentId }-inbound-custom-form` }
+                                            containerRef={ emphasizedSegmentRef }
+                                        />
+                                    )
+                                }
+                            </div>
+                        )
+                        : undefined
+                    )
+                }
             </EmphasizedSegment>
         );
     };
+
+    /**
+     * Resolve protocol display name when there are multiple protocols.
+     *
+     * @param protocol - Protocol name.
+     */
+    const resolveProtocolDisplayName = ((protocol: string): string => {
+        let protocolName: SupportedAuthProtocolTypes = protocol as SupportedAuthProtocolTypes;
+
+        if (protocolName === "oidc") {
+            protocolName = SupportedAuthProtocolTypes.OAUTH2_OIDC;
+        }
+
+        return ApplicationManagementUtils.resolveProtocolDisplayName(protocolName);
+    });
 
     const resolveProtocolBanner =(): ReactElement => {
 
@@ -773,6 +1084,34 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         <Divider/>
                     </Grid.Column>
                 </Grid.Row>
+            );
+        }
+
+        if (applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            return (
+                <>
+                    <Header as="h3" className="display-flex">
+                        <GenericIcon
+                            transparent
+                            width="auto"
+                            icon={ getInboundProtocolLogos()[ SupportedAuthProtocolTypes.OAUTH2 ] }
+                            size="x30"
+                            verticalAlign="middle"
+                        />
+                        <Header.Content
+                            className={ "mt-1" }
+                        >
+                            <strong>
+                                {
+                                    ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2)
+                                }
+                            </strong>
+                        </Header.Content>
+                    </Header>
+                    { resolveProtocolDescription() }
+                    <Divider hidden/>
+                </>
             );
         }
 
@@ -852,7 +1191,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             "console:develop.features.applications.forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
-                                    .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2_OIDC)
+                                    .resolveProtocolDisplayName(
+                                        applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION
+                                            ? SupportedAuthProtocolTypes.OAUTH2
+                                            : SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                    )
                             }
                         )
                     }
@@ -955,11 +1298,45 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     <Grid>
                         <>
                             { loadSupportedProtocols() }
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    { resolveInboundProtocolSettingsForm() }
-                                </Grid.Column>
-                            </Grid.Row>
+                            {
+                                template && (
+                                    <Grid.Row>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { resolveInboundProtocolSettingsForm() }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                !template && (
+                                    <Grid.Row>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <EmphasizedSegment
+                                                className="protocol-settings-section form-wrapper"
+                                                padded="very"
+                                                ref={ emphasizedSegmentRef }
+                                            >
+                                                <EmptyPlaceholder
+                                                    title={ t("console:develop.features.applications.edit" +
+                                                        ".sections.protocol.title") }
+                                                    subtitle={ [
+                                                        t("console:develop.features.applications.edit" +
+                                                            ".sections.protocol.subtitle")
+                                                    ] }
+                                                    action={ (
+                                                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                                            { t("console:develop.features.applications.edit" +
+                                                                ".sections.protocol.button") }
+                                                        </PrimaryButton>
+                                                    ) }
+                                                    image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                    imageSize="tiny"
+                                                />
+                                            </EmphasizedSegment>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
                             {
                                 showWizard && (
                                     <ApplicationCreateWizard

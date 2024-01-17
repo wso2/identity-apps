@@ -25,6 +25,20 @@ import {
     GenericIdentityProviderCreateWizardPropsInterface
 } from "../../../features/identity-providers/models";
 
+export interface ExtendedSamlConfigInterface {
+    isArtifactBindingEnabled: boolean;
+    attributeConsumingServiceIndexEnabled: boolean;
+    saml2WebSSOUserIdLocationEnabled: boolean;
+    authContextComparisonLevelEnabled: boolean;
+    responseAuthenticationContextClassEnabled: boolean;
+    forceAuthenticationEnabled: boolean;
+    includeAuthenticationContextEnabled: boolean;
+    isAssertionEncryptionEnabled: boolean;
+    includeNameIDPolicyEnabled: boolean;
+    enableAssertionSigningEnabled: boolean;
+    includePublicCertEnabled: boolean;
+}
+
 export interface IdentityProviderConfig {
     /**
      * To extend the Authenticators API response.
@@ -49,6 +63,7 @@ export interface IdentityProviderConfig {
     },
     editIdentityProvider: {
         showAdvancedSettings: boolean;
+        showIssuerSettings: boolean;
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
         /**
@@ -135,10 +150,13 @@ export interface IdentityProviderConfig {
         oidc: boolean;
         organizationEnterprise: boolean;
         trustedTokenIssuer: boolean;
+        useTemplateExtensions: boolean;
     };
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
     getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string) => string;
+    extendedSamlConfig: ExtendedSamlConfigInterface;
+    disableSMSOTPInSubOrgs: boolean;
 }
 
 /**

@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Heading } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { Trans, useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
-import { AppState } from "../../../core/store";
 import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";
 import { BrandingPreferenceInterface } from "../../models";
 
 /**
@@ -91,11 +92,10 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
 
     const { t } = useTranslation();
 
-    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
-
     const [ privacyPolicyURL, setPrivacyPolicyURL ] = useState<string>(initialValues.urls.privacyPolicyURL);
     const [ termsOfUseURL, setTermsOfUseURL ] = useState<string>(initialValues.urls.termsOfUseURL);
     const [ cookiePolicyURL, setCookiePolicyURL ] = useState<string>(initialValues.urls.cookiePolicyURL);
+    const [ selfSignUpURL, setSelfSignUpURL ] = useState<string>(initialValues.urls.selfSignUpURL);
 
     /**
      * Broadcast values to the outside when internals change.
@@ -108,6 +108,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 ...initialValues.urls,
                 cookiePolicyURL: cookiePolicyURL,
                 privacyPolicyURL: privacyPolicyURL,
+                selfSignUpURL: selfSignUpURL,
                 termsOfUseURL: termsOfUseURL
             }
         });
@@ -132,6 +133,35 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
         );
     }
 
+    /**
+     * Templatable URLs may have placeholders like `{{lang}}`, `{{country}}`, or `{{locale}}`.
+     * This function validates the URL after removing those placeholders.
+     *
+     * @param value - Value to be validated.
+     * @returns Error message.
+     */
+    const validateTemplatableURLs = (value: string): string => {
+        let moderatedValue: string = value?.trim();
+        let errorMsg: string;
+        
+        const placeholdersPattern: string = `${
+            BrandingURLPreferenceConstants.LANGUAGE_PLACEHOLDER
+        }|${
+            BrandingURLPreferenceConstants.COUNTRY_PLACEHOLDER
+        }|${
+            BrandingURLPreferenceConstants.LOCALE_PLACEHOLDER
+        }`;
+
+        // Use a regex to replace {{lang}}, {{country}}, and {{locale}} placeholders while preserving other characters
+        moderatedValue = value?.trim().replace(new RegExp(placeholdersPattern, "g"), "");
+
+        if (!FormValidation.url(moderatedValue)) {
+            errorMsg = t("extensions:develop.branding.forms.advance.links.fields.common.validations.invalid");
+        }
+
+        return errorMsg;
+    };
+
     return (
         <Form
             id={ FORM_ID }
@@ -151,10 +181,17 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 placeholder={
                     t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.placeholder")
                 }
-                hint={
-                    t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.hint",
-                        { productName })
-                }
+                hint={ (
+                    <Trans
+                        i18nKey="extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.hint"
+                    >
+                        Link to a statement or a legal document that states how your organization collects,
+                        handles, and processes the data of your customers and visitors. You can use placeholders like
+                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
+                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                        regions or languages.
+                    </Trans>
+                ) }
                 required={ false }
                 value={ initialValues.urls.privacyPolicyURL }
                 readOnly={ readOnly }
@@ -163,6 +200,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 listen={ (value: string) =>  setPrivacyPolicyURL(value) }
                 width={ 16 }
                 data-testid={ `${ componentId }-tos-url` }
+                validation={ validateTemplatableURLs }
             />
             <Field.Input
                 ariaLabel="Branding preference terms of service URL"
@@ -172,10 +210,17 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 placeholder={
                     t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.placeholder")
                 }
-                hint={
-                    t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.hint",
-                        { productName })
-                }
+                hint={ (
+                    <Trans
+                        i18nKey="extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.hint"
+                    >
+                        Link to an agreement that your customers must agree to and abide by in order to use your
+                        organization&apos;s applications or other services. You can use placeholders like
+                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
+                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                        regions or languages.
+                    </Trans>
+                ) }
                 required={ false }
                 value={ initialValues.urls.termsOfUseURL }
                 readOnly={ readOnly }
@@ -184,6 +229,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 listen={ (value: string) =>  setTermsOfUseURL(value) }
                 width={ 16 }
                 data-testid={ `${ componentId }-tos-url` }
+                validation={ validateTemplatableURLs }
             />
             <Field.Input
                 ariaLabel="Branding preference cookie policy URL"
@@ -193,10 +239,17 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 placeholder={
                     t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.placeholder")
                 }
-                hint={
-                    t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.hint",
-                        { productName })
-                }
+                hint={ (
+                    <Trans
+                        i18nKey="extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.hint"
+                    >
+                        Link to a document or a webpage with detailed information on all cookies used by your
+                        applications and the purpose of each of them. You can use placeholders like
+                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
+                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                        regions or languages.
+                    </Trans>
+                ) }
                 required={ false }
                 value={ initialValues.urls.cookiePolicyURL }
                 readOnly={ readOnly }
@@ -205,6 +258,35 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 listen={ (value: string) =>  setCookiePolicyURL(value) }
                 width={ 16 }
                 data-testid={ `${ componentId }-cookie-policy-url` }
+                validation={ validateTemplatableURLs }
+            />
+            <Field.Input
+                ariaLabel="Branding preference self signup URL"
+                inputType="url"
+                name="urls.selfSignUpURL"
+                label={ t("extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.label") }
+                placeholder={
+                    t("extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.placeholder")
+                }
+                hint={ (
+                    <Trans
+                        i18nKey="extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.hint"
+                    >
+                        Link to your organization&apos;s Self Signup webpage. You can use placeholders like
+                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
+                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                        regions or languages.
+                    </Trans>
+                ) }
+                required={ false }
+                value={ initialValues.urls.selfSignUpURL }
+                readOnly={ readOnly }
+                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH }
+                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH }
+                listen={ (value: string) =>  setSelfSignUpURL(value) }
+                width={ 16 }
+                data-testid={ `${ componentId }-self-signup-url` }
+                validation={ validateTemplatableURLs }
             />
         </Form>
     );

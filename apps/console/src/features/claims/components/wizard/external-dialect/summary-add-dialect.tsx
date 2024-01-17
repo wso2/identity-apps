@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
-*
-* WSO2 LLC. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AnimatedAvatar, Message } from "@wso2is/react-components";
@@ -44,12 +44,12 @@ interface SummaryAddDialectPropsInterface extends TestableComponentInterface {
 }
 
 /**
- * This generates the first letter of a claim
- * @param {string} name
- * @return {string} The first letter of a claim
+ * This generates the first letter of a claim.
+ * @param name - Claim uri.
+ * @returns The first letter of a claim.
  */
 const generateClaimLetter = (name: string): string => {
-    const stringArray = name.replace("http://", "").split("/");
+    const stringArray: string[] = name.replace("http://", "").split("/");
 
     return stringArray[ stringArray.length - 1 ][ 0 ].toLocaleUpperCase();
 };
@@ -57,9 +57,9 @@ const generateClaimLetter = (name: string): string => {
 /**
  * Renders teh summary step of the add dialect wizard.
  *
- * @param {SummaryAddDialectPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns SummaryAddDialect component
  */
 export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterface> = (
     props: SummaryAddDialectPropsInterface
@@ -134,7 +134,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                                 type="warning"
                                                 content={
                                                     t("console:manage.features.claims.dialects.wizard." +
-                                                        "summary.notFound")
+                                                        "summary.notFound", { type: resolveType(attributeType, true) })
                                                 }
                                             />
                                         </Table.Cell>

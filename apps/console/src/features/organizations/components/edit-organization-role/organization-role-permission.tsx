@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -95,11 +95,11 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
             if (initialValues && initialValues.length > 0) {
                 const previousFormCheckedKeys: string[] = [];
 
-                initialValues.forEach(initialKey => {
+                initialValues.forEach((initialKey: TreeNode) => {
                     previousFormCheckedKeys.push(initialKey.key.toString());
                 });
                 setPreviouslyCheckedKeys(previousFormCheckedKeys);
-                previouslyCheckedKeys?.forEach(key => {
+                previouslyCheckedKeys?.forEach((key: string) => {
                     const nodeByKey: TreeNode = getNodeByKey(key, permissions);
 
                     if (nodeByKey !== null) {
@@ -110,10 +110,10 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
             }
 
             if (isRole && roleObject) {
-                setPreviouslyCheckedKeys(roleObject.permissions);
-                previouslyCheckedKeys?.forEach(key => {
+                setPreviouslyCheckedKeys(roleObject.permissions as string[]);
+                previouslyCheckedKeys?.forEach((key: string) => {
 
-                    const nodeByKey = getNodeByKey(key, permissions);
+                    const nodeByKey: TreeNode = getNodeByKey(key, permissions);
 
                     if (nodeByKey !== null) {
                         checkedNodes.push(nodeByKey);
@@ -134,7 +134,7 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
             info: { checked: boolean, checkedNodes: DataNode[], node: EventDataNode }
         ): void => {
             if (info.checked) {
-                if (!checkedPermission.find(permission => permission.key === info.node.key)) {
+                if (!checkedPermission.find((permission: TreeNode) => permission.key === info.node.key)) {
                     const parentNode: TreeNode = getNodeByKey(info.node.key.toString(), permissions, true);
                     let checkedChildren: number = 1;
 
@@ -145,10 +145,11 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
                         }
                     });
                     if (parentNode?.children?.length === checkedChildren) {
-                        const filteredCheckedPermissions = checkedPermission.filter((permission: TreeNode) => {
-                            permission.key.toString().replace(/^\/|\/$/g, "").split("/") === parentNode.key.toString()
-                                .replace(/^\/|\/$/g, "").split("/");
-                        });
+                        const filteredCheckedPermissions: TreeNode[] = checkedPermission.filter(
+                            (permission: TreeNode) => {
+                                permission.key.toString().replace(/^\/|\/$/g, "").split("/") === 
+                                    parentNode.key.toString().replace(/^\/|\/$/g, "").split("/");
+                            });
 
                         setCheckedPermission([ ...filteredCheckedPermissions, parentNode ]);
                     } else {
@@ -168,10 +169,10 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
          * @param isParent - condition to find the parent of the key node
          */
         const getNodeByKey = (key: string, permissionTree: TreeNode[], isParent: boolean = false): TreeNode => {
-            const flattenedTree = [ permissionTree[0] ];
+            const flattenedTree: TreeNode[] = [ permissionTree[0] ];
 
             while (flattenedTree.length) {
-                const node = flattenedTree.shift();
+                const node: TreeNode = flattenedTree.shift();
 
                 if (isParent) {
                     if (node.key === key.slice(0, key.lastIndexOf("/"))) {
@@ -196,6 +197,7 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
          * the tree nodes.
          * @param eventObject - event object
          */
+        // eslint-disable-next-line @typescript-eslint/typedef
         const switcherIcon = eventObject => {
             if (eventObject.isLeaf) {
                 return null;
@@ -227,7 +229,7 @@ export const OrganizationPermissionList: FunctionComponent<OrganizationPermissio
                                         className={ "customIcon" }
                                         data-testid={ `${testId}-tree` }
                                         disabled={ isReadOnly }
-                                        checkedKeys={ checkedPermission.map(permission => permission.key) }
+                                        checkedKeys={ checkedPermission.map((permission: TreeNode) => permission.key) }
                                         defaultExpandedKeys={ defaultExpandedKeys }
                                         showLine
                                         showIcon={ false }

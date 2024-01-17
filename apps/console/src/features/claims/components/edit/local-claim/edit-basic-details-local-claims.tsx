@@ -49,7 +49,7 @@ import React, {
     useEffect,
     useMemo,
     useRef,
-    useState 
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -135,7 +135,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { t } = useTranslation();
 
     const { data: validationData } = useValidationConfigData();
- 
+
     /**
      * Get username configuration.
      */
@@ -144,7 +144,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             setUsernameConfig(getUsernameConfiguration(validationData));
         }
     }, [ validationData ]);
- 
+
     /**
      * Get username configuration.
      */
@@ -154,7 +154,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             usernameConfig?.enableValidator === "true"
             && attributeConfig?.systemClaims.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)
         ){
-            const emailClaimIndex: number 
+            const emailClaimIndex: number
                 = attributeConfig?.systemClaims.indexOf(ClaimManagementConstants.EMAIL_CLAIM_URI);
 
             attributeConfig?.systemClaims.splice(emailClaimIndex, 1);
@@ -174,7 +174,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (claim?.readOnly) {
             setIsClaimReadOnly(true);
         }
-        if (claim 
+        if (claim
             && (
                 attributeConfig?.systemClaims.length <= 0
                 || attributeConfig?.systemClaims.indexOf(claim?.claimURI) === -1
@@ -227,7 +227,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         return result.status === "fulfilled" ? result.value : [];
                     });
 
-                if (claims.find((externalClaim: ExternalClaim) => 
+                if (claims.find((externalClaim: ExternalClaim) =>
                     externalClaim.mappedLocalClaimURI === claim.claimURI)) {
                     setHasMapping(true);
                 }
@@ -236,7 +236,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, [ claim ]);
 
     useEffect(() => {
-        getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID, 
+        getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
             ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
@@ -276,7 +276,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     }, []);
 
     useEffect(() => {
- 
+
         if (isEmpty(connector?.properties)) {
             return;
         }
@@ -536,7 +536,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         readOnly={ isReadOnly }
                     />
 
-                    { attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
+                    { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
                         && (
                             <Field.Input
                                 ariaLabel="regularExpression"
@@ -549,8 +549,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 value={ claim?.regEx }
                                 ref={ regExField }
                                 data-testid={ `${ testId }-form-regex-input` }
-                                maxLength={ 50 }
-                                minLength={ 3 }
+                                maxLength={ ClaimManagementConstants.REGEX_FIELD_MAX_LENGTH }
+                                minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 hint={ t("console:manage.features.claims.local.forms.regExHint") }
                                 readOnly={ isReadOnly }
                             />
@@ -611,7 +611,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 } }
                                 data-testid={ `${testId}-form-supported-by-default-input` }
                                 readOnly={ isReadOnly }
-                                disabled={ 
+                                disabled={
                                     !hasMapping
                                     || (
                                         accountVerificationEnabled
@@ -630,7 +630,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        attributeConfig.editAttributes.showDisplayOrderInput 
+                        attributeConfig.editAttributes.showDisplayOrderInput
                         && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                         && isShowDisplayOrder
                         && !hideSpecialClaims

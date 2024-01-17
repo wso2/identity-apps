@@ -28,6 +28,7 @@ import {
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
 import React, {
@@ -45,9 +46,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { 
+import {
     AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig 
+    identityProviderConfig
 } from "../../../extensions/configs";
 import {
     AppConstants,
@@ -55,17 +56,17 @@ import {
     FeatureConfigInterface,
     history
 } from "../../core";
-import { 
-    EditMultiFactorAuthenticator 
+import {
+    EditMultiFactorAuthenticator
 } from "../../identity-providers/components/edit-multi-factor-authenticator";
-import { 
+import {
     getLocalAuthenticator,
-    getMultiFactorAuthenticatorDetails 
+    getMultiFactorAuthenticatorDetails
 } from "../api/authenticators";
-import { 
-    getConnectionDetails, 
-    getConnectionMetaData, 
-    getConnectionTemplates 
+import {
+    getConnectionDetails,
+    getConnectionMetaData,
+    getConnectionTemplates
 } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
@@ -76,15 +77,14 @@ import {
     AuthenticatorInterface,
     MultiFactorAuthenticatorInterface
 } from "../models/authenticators";
-import { 
+import {
     ConnectionInterface,
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface,
-    SupportedQuickStartTemplateTypes 
+    SupportedQuickStartTemplateTypes
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
-import { AxiosError } from "axios";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -141,7 +141,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
-    const [ connectionSettings, setConnectionSettings ] = useState(undefined); 
+    const [ connectionSettings, setConnectionSettings ] = useState(undefined);
     const [
         isConnectorMetaDataFetchRequestLoading,
         setConnectorMetaDataFetchRequestLoading
@@ -170,13 +170,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     return {
                         ...template,
                         templateGroup: "enterprise-protocols"
-                    };
-                }
-
-                if (template.id === "linkedin-idp") {
-                    return {
-                        ...template,
-                        comingSoon: true
                     };
                 }
 
@@ -258,15 +251,28 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     /**
      * Checks if the user needs to go to a specific tab index.
-     */    
+     */
     useEffect(() => {
-        const tabName: string =  location.state as string;
+        redirectToSpecificTab();
+    }, []);
+
+    /**
+     * Function to redirect the user to a specific tab.
+     *
+     * @param useLocationStateData - Whether the `tabName` should be extracted from the location data.
+     * @param tabName - The tab name to which the user needs to be redirected. However, this will
+     * be overridden if there is a tab name in the location data.
+     */
+    const redirectToSpecificTab = (useLocationStateData: boolean = true, tabName?: string): void => {
+        if (useLocationStateData) {
+            tabName =  location?.state as string;
+        }
 
         if (tabName !== undefined) {
             setIsAutomaticTabRedirectionEnabled(true);
             setTabIdentifier(tabName);
         }
-    }, []);
+    };
 
     /**
      * Load the template that the IDP is built on.
@@ -286,17 +292,21 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         if (!(UIConfig?.connectionTemplates
             && UIConfig?.connectionTemplates instanceof Array
             && UIConfig?.connectionTemplates.length > 0)) {
-                
+
             resolveConnectionTemplates();
 
             return;
+        }
+
+        if (!connector.templateId) {
+            connector.templateId = ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID;
         }
 
         let template: ConnectionTemplateInterface = {};
         let templateId: string = connector.templateId;
 
         if (!templateId) {
-            const authenticatorId: string = (connector as ConnectionInterface) 
+            const authenticatorId: string = (connector as ConnectionInterface)
                 ?.federatedAuthenticators?.defaultAuthenticatorId;
 
             if (authenticatorId === ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
@@ -314,7 +324,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             }
         }
 
-        if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC || 
+        if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
             templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
 
             const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates
@@ -341,7 +351,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID || 
+        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID ||
             identityProviderTemplate?.id === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID ||
             identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
             identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
@@ -366,9 +376,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      */
     const getConnectionMetaDetails = (id: string): void => {
         setConnectorMetaDataFetchRequestLoading(true);
-        
+
         getConnectionMetaData(id)
-            .then((response: any) => { 
+            .then((response: any) => {
                 setConnectionSettings(response);
             }).catch ((error: AxiosError) => {
                 handleGetConnectionsMetaDataError(error);
@@ -387,7 +397,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorDetailFetchRequestLoading(true);
 
         getConnectionDetails(id)
-            .then((response: ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) => 
+            .then((response: ConnectionInterface | MultiFactorAuthenticatorInterface | AuthenticatorInterface) =>
             {
                 setConnector(response);
             })
@@ -496,9 +506,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      *
      * @param id - IDP id.
      */
-    const handleIdentityProviderUpdate = (id: string): void => {
+    const handleIdentityProviderUpdate = (id: string, tabName?: string): void => {
 
         getIdentityProvider(id);
+        redirectToSpecificTab(false, tabName);
     };
 
     /**
@@ -591,9 +602,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     <AppAvatar
                         hoverable={ false }
                         name={ connector.name }
-                        image={ 
+                        image={
                             ConnectionsManagementUtils
-                                .resolveConnectionResourcePath(connectionResourcesUrl, connector.image) 
+                                .resolveConnectionResourcePath(connectionResourcesUrl, connector?.image)
                         }
                         size="tiny"
                     />
@@ -615,7 +626,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 hoverable={ false }
                 name={ connector.name }
                 image={ !isOrganizationSSOIDP
-                    ? AuthenticatorMeta.getAuthenticatorIcon(connector.id) 
+                    ? AuthenticatorMeta.getAuthenticatorIcon(connector?.id)
                     : AuthenticatorMeta.getAuthenticatorIcon((connector as ConnectionInterface)
                         .federatedAuthenticators?.defaultAuthenticatorId)
                 }
@@ -678,8 +689,16 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return (
                 <div className="with-label ellipsis" ref={ idpDescElement }>
                     {
-                        identityProviderTemplate?.name &&
-                        <Label size="small">{ identityProviderTemplate.name }</Label>
+                        identityProviderTemplate?.name
+                        && (
+                            <Label size="small">
+                                {
+                                    identityProviderTemplate.name === "Expert Mode"
+                                        ? "Custom Connector"
+                                        : identityProviderTemplate?.name
+                                }
+                            </Label>
+                        )
                     }
                     <Popup
                         disabled={ !isDescTruncated }
@@ -715,7 +734,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     return (
         <TabPageLayout
-            pageTitle="Edit Connection" 
+            pageTitle="Edit Connection"
             isLoading={ isConnectorDetailsFetchRequestLoading }
             loadingStateOptions={ {
                 count: 5,
@@ -740,9 +759,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         <EditConnection
                             connectionSettingsMetaData={ connectionSettings }
                             identityProvider={ connector }
-                            isLoading={ 
-                                isConnectorDetailsFetchRequestLoading || 
-                                isConnectorMetaDataFetchRequestLoading 
+                            isLoading={
+                                isConnectorDetailsFetchRequestLoading ||
+                                isConnectorMetaDataFetchRequestLoading
                             }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleIdentityProviderUpdate }
@@ -768,6 +787,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
                             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                            setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
                             tabIdentifier={ tabIdentifier }
                         />
                     )

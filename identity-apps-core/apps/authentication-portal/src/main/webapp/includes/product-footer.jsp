@@ -32,32 +32,15 @@
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
 
-<%-- Appending locale to privacy policy and ToC links --%>
-<%
-    String localeString = userLocale.toLanguageTag();
-
-    if (!StringUtils.isBlank(privacyPolicyURL)) {
-        if (privacyPolicyURL.contains("?")) {
-            privacyPolicyURL = privacyPolicyURL.concat("&ui_locales=" + localeString);
-        } else {
-            privacyPolicyURL = privacyPolicyURL.concat("?ui_locales=" + localeString);
-        }
-    }
-
-    if (!StringUtils.isBlank(termsOfUseURL)) {
-        if (termsOfUseURL.contains("?")) {
-            termsOfUseURL = termsOfUseURL.concat("&ui_locales=" + localeString);
-        } else {
-            termsOfUseURL = termsOfUseURL.concat("?ui_locales=" + localeString);
-        }
-    }
-%>
-
 <%-- Cookie Consent Banner --%>
 <%
     if (config.getServletContext().getResource("extensions/cookie-consent-banner.jsp") != null) {
 %>
         <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
+<%
+    } else {
+%>
+        <jsp:include page="/includes/cookie-consent-banner.jsp"/>
 <%
     }
 %>
@@ -82,11 +65,11 @@
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(logoURL)) {%>
+                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(productLogoURL)) {%>
                             <div class="powered-by-logo-divider">|</div>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "powered.by")%>
                             <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
-                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
+                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                             </div>
                         <% } %>
                     <% } %>
@@ -99,7 +82,7 @@
                 <a
                     id="privacy-policy"
                     class="item"
-                    href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>"
+                    href="<%= i18nLink(userLocale, privacyPolicyURL) %>"
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
@@ -113,7 +96,7 @@
                 <a
                     id="terms-of-service"
                     class="item"
-                    href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>"
+                    href="<%= i18nLink(userLocale, termsOfUseURL) %>"
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
@@ -125,11 +108,18 @@
             <%
                 List<String> langSwitcherEnabledServlets = Arrays.asList("/oauth2_login.do", "/oauth2_error.do",
                     "/confirmregistration.do", "/confirmrecovery.do", "/claims.do", "/oauth2_consent.do",
-                    "/fido2-auth.jsp", "/email_otp.do", "/org_name.do", "/retry.do", "/totp_enroll.do", "/backup_code.do", "/device.do", "/error.do");
+                    "/fido2-auth.jsp", "/fido2-identifierfirst.jsp", "/fido2-enroll.jsp", "/fido2-passkey-status.jsp",
+                    "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
+                    "/backup_code.do", "/device.do", "/error.do");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
+                    File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
+                    if (languageSwitcherFile.exists()) {
             %>
-                <jsp:include page="language-switcher.jsp"/>
-            <% } %>
+                        <jsp:include page="../extensions/language-switcher.jsp"/>
+                    <% } else { %>
+                        <jsp:include page="language-switcher.jsp"/>
+                    <% } %>
+                <% } %>
             </div>
         </div>
     </div>

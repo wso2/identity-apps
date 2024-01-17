@@ -13,7 +13,14 @@
     "templateGroup": "",
     "types": [
         "oidc",
-        "saml"
+        "saml",
+        "wsFed"
     ],
-    "application": null
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "skipLogoutConsent": true,
+            "skipLoginConsent": true
+        }
+    }
 }

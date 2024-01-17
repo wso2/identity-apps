@@ -37,9 +37,10 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FC, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FC, MutableRefObject, ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -48,10 +49,11 @@ import CreateConnectionWizardHelp from "./create-wizard-help";
 import { EventPublisher } from "../../../core";
 import { createConnection, useGetConnectionMetaData } from "../../api/connections";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
-import { 
-    ConnectionInterface, 
-    GenericConnectionCreateWizardPropsInterface, 
-    OutboundProvisioningConnectorInterface 
+import {
+    ConnectionInterface,
+    GenericConnectionCreateWizardPropsInterface,
+    IdpNameValidationCache,
+    OutboundProvisioningConnectorInterface
 } from "../../models/connection";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../../utils/connection-utils";
 
@@ -66,7 +68,6 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     props: CreateConnectionWizardPropsInterface): ReactElement => {
 
     const {
-        connectionNamesList,
         currentStep,
         isLoading,
         onIDPCreate,
@@ -92,6 +93,9 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const [ totalStep, setTotalStep ] = useState<number>(0);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ connectionMetaDetails, setConnectionMetaDetails ] = useState<any>(undefined);
+
+    const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+    const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -192,7 +196,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 error?.response?.data?.code ===
                 identityAppsError.getErrorCode()) {
                     setOpenLimitReachedModal(true);
-    
+
                     return;
                 }
 
@@ -239,27 +243,60 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     };
 
     /**
+     * Check if the typed IDP name is already taken.
+     *
+     * @param value - User input for the IDP name.
+     */
+    const isIdpNameAlreadyTaken: DebouncedFunc<(value: string) => void> = debounce(
+        async (value: string) => {
+            let idpExist: boolean;
+
+            if (idpNameValidationCache?.current?.value === value) {
+                idpExist = idpNameValidationCache?.current?.state;
+            }
+
+            if (idpExist === undefined) {
+                try {
+                    idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                } catch (e) {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    idpExist = false;
+                }
+
+                idpNameValidationCache.current = {
+                    state: idpExist,
+                    value
+                };
+            }
+
+            setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+        },
+        500
+    );
+
+    /**
      * Check whether IDP name is already exist or not.
      *
      * @param value - IDP name - IDP Name.
      * @returns error msg if name is already taken.
      */
-    const connectionNameValidation = (value: string): string => {
+    const connectionNameValidation = (_value: string): Promise<string> => {
 
-        let nameExist: boolean = false;
-
-        if (connectionNamesList?.length > 0) {
-            connectionNamesList?.map((name: string) => {
-                if (name === value) {
-                    nameExist = true;
-                }
-            });
-        }
-        if (nameExist) {
-            return t("console:develop.features." +
+        if (isUserInputIdpNameAlreadyTaken) {
+            return t(
+                "console:develop.features." +
                 "authenticationProvider.forms.generalDetails.name." +
-                "validations.duplicate");
+                "validations.duplicate"
+            );
         }
+
+        return null;
     };
 
     /**
@@ -295,17 +332,19 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         const updatedProperties: { key: string; value: string }[] = connectionMetaDetails?.create?.properties?.map(
             (property: { key: string; value: string }) => {
 
+                const CALLBACK_URL_KEY: string = "callbackUrl";
+
                 const convertedKey: string = property?.key?.charAt(0)
                     .toLowerCase() + property?.key?.slice(1);
-          
+
                 if (!isEmpty(values[convertedKey])) {
                     return { ...property, value: values[convertedKey] };
                 }
-          
-                if (convertedKey === "callbackUrl") {
-                    return { ...property, value: deploymentConfig.clientHost + property.value };
+
+                if (convertedKey.toString().toLowerCase() === CALLBACK_URL_KEY.toString().toLowerCase()) {
+                    return { ...property, value: deploymentConfig.customServerHost + property.value };
                 }
-          
+
                 return property;
             });
 
@@ -313,7 +352,13 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
         connection.name = values?.name.toString();
         connection.templateId = template.templateId;
-        connection.federatedAuthenticators.authenticators[ 0 ].properties = updatedProperties;
+
+        if(connection?.templateId === "swe-idp") {
+            connection.federatedAuthenticators.authenticators[ 0 ].properties = connection.federatedAuthenticators
+                .authenticators[ 0 ].properties.concat(updatedProperties);
+        } else {
+            connection.federatedAuthenticators.authenticators[ 0 ].properties = updatedProperties;
+        }
 
         // Allow to set empty client ID and client secret but make the authenticator disabled.
         if (values?.clientId) {
@@ -326,7 +371,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 .isEnabled = !(isEmpty(values?.clientSecret?.toString()));
         }
 
-        if (URLUtils.isHttpsUrl(connectionMetaData?.create?.image) || 
+        if (URLUtils.isHttpsUrl(connectionMetaData?.create?.image) ||
             URLUtils.isHttpUrl(connectionMetaData?.create?.image)) {
             connection.image = connectionMetaData?.create?.image;
         } else {
@@ -376,7 +421,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("console:develop.features.authenticationProvider." + 
+                                        { t("console:develop.features.authenticationProvider." +
                                             "wizards.buttons.next") }
                                     </PrimaryButton>
                                 )
@@ -457,11 +502,12 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const modifyFormFields = (fields: any) => {
         return fields?.map((field: any) => {
             if (field?.name === "name") {
+                field.listen = isIdpNameAlreadyTaken;
                 field.validation = connectionNameValidation;
             }
 
             if (field?.autoComplete) {
-                field.autoComplete = "" + Math.random(); 
+                field.autoComplete = "" + Math.random();
             }
 
             return field;
@@ -486,12 +532,12 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }
                     />
-                ) 
+                )
             }
             <HelpPanelModal
                 isLoading={ isLoading || isConnectionMetaDataFetchRequestLoading }
@@ -511,7 +557,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                     >
                         <div className="display-flex">
                             <GenericIcon
-                                icon={ 
+                                icon={
                                     ConnectionsManagementUtils.resolveConnectionResourcePath(
                                         "", connectionMetaData?.create?.image
                                     )
@@ -555,6 +601,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                             changePage={ (step: number) => setWizStep(step) }
                             setTotalPages={ (pageNumber: number) => setTotalStep(pageNumber) }
                             data-componentid={ componentId }
+                            uncontrolledForm={ true }
                         >
                             <DynamicWizardPage>
                                 { renderFormFields(modifyFormFields(connectionMetaData?.create?.modal?.form?.fields)) }

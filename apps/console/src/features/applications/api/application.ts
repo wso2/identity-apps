@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgar
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -64,8 +65,8 @@ const httpClientAll: (config: HttpRequestConfig[]) => Promise<AxiosResponse[]> =
 /**
  * Gets the basic information about the application.
  *
+ * @deprecated Use `useGetApplication` SWR hook instead.
  * @param id - ID of the application.
- *
  * @returns A promise containing the response.
  */
 export const getApplicationDetails = (id: string): Promise<any> => {
@@ -124,12 +125,19 @@ export const deleteApplication = (id: string): Promise<any> => {
  * Updates the application with basic details.
  *
  * @param app - Basic info about the application.
+ * @param skipEmptyPayloads - Skip empty payloads.
  *
  * @returns A promise containing the response.
  */
-export const updateApplicationDetails = (app: ApplicationInterface): Promise<any> => {
-
+export const updateApplicationDetails = (
+    app: ApplicationInterface,
+    skipEmptyPayloads?: boolean
+): Promise<ApplicationBasicInterface | void> => {
     const { id, ...rest } = app;
+
+    if (skipEmptyPayloads && isEmpty(rest)) {
+        return Promise.resolve();
+    }
 
     const requestConfig: AxiosRequestConfig = {
         data: rest,
@@ -208,7 +216,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const requestConfig: AxiosRequestConfig = shouldFetch 
+    const requestConfig: AxiosRequestConfig = shouldFetch
         ? {
             headers: {
                 "Accept": "application/json",
@@ -271,6 +279,48 @@ export const getApplicationsByIds = async (
         );
     }
 
+};
+
+/**
+ * Hook to get the My Account application details.
+ *
+ * @returns My Account application data as the first element of the applications array.
+ */
+export const useMyAccountApplicationData = <Data = ApplicationListInterface, Error = RequestErrorInterface>(
+    attributes?: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
+
+    const FILTERES: string = `name eq ${ ApplicationManagementConstants.MY_ACCOUNT_APP_NAME }`;
+    const LIMIT: number = 1;
+    const OFFSET: number = 0;
+
+    const requestConfig: AxiosRequestConfig = shouldFetch
+        ? {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            params: {
+                attributes,
+                filter: FILTERES,
+                limit: LIMIT,
+                offset: OFFSET
+            },
+            url: store.getState().config.endpoints.applications
+        }
+        : null;
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
 };
 
 /**
@@ -375,6 +425,8 @@ export const getOIDCData = (id: string): Promise<any> => {
  * Generic function to get the relevant inbound protocol config
  * when the path provided in the `self` attribute of the application
  * response is passed in.
+ *
+ * @deprecated Use `useGetApplicationInboundConfigs` SWR hook instead.
  *
  * @param applicationId - ID of the application.
  * @param inboundProtocolId - Protocol ID.
@@ -935,12 +987,16 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
 
             const oidcConfigs: OIDCApplicationConfigurationInterface = {
                 authorizeEndpoint: response.data.authorization_endpoint,
+                dynamicClientRegistrationEndpoint: response.data.registration_endpoint,
                 endSessionEndpoint: response.data.end_session_endpoint,
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
+                pushedAuthorizationRequestEndpoint: response.data.pushed_authorization_request_endpoint,
+                sessionIframeEndpoint: response.data.check_session_iframe,
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
+                webFingerEndpoint: response.data.webfinger_endpoint,
                 wellKnownEndpoint: `${ response.data.token_endpoint }/.well-known/openid-configuration`
             };
 

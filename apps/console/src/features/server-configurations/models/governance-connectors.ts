@@ -54,6 +54,7 @@ export interface GovernanceConnectorCategoryInterface {
 	name?: string;
 	description?: string;
 	connectors?: GovernanceConnectorInterface[];
+	route?: string;
 }
 
 export interface GovernanceConnectorsInterface {
@@ -93,35 +94,3 @@ export interface GovernanceConnectorForOrgsInterface {
 	properties: string[]
 }
 
-/**
- * Interface for the admin advisory banner configuration.
- */
-export interface AdminAdvisoryBannerConfigurationInterface {
-    bannerContent: string;
-    enableBanner: boolean;
-}
-
-export enum LogType {
-    AUDIT = "AUDIT",
-    CARBON = "CARBON",
-    ALL = "ALL"
-}
-
-export interface RemoteLogPublishingConfigurationInterface {
-	remoteUrl: string,
-	connectTimeoutMillis: string,
-	verifyHostname: boolean,
-	logType: LogType.AUDIT | LogType.CARBON,
-	/**
-	 * Remote server username
-	 */
-	username: string,
-	/**
-	 * Remote server password
-	 */
-	password: string,
-	keystoreLocation: string,
-	keystorePassword: string,
-	truststoreLocation: string,
-	truststorePassword: string
-}

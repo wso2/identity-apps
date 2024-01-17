@@ -80,7 +80,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         >
                             Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                                 application </Link>
-                            for which you want to set up FIDO2 login.
+                            for which you want to set up passkey login.
                         </Trans>
                     </Text>
                 </>
@@ -94,7 +94,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add FIDO2
+                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
                             login</strong> to configure a basic FIDO flow.
                         </Trans>
                     </Text>
@@ -103,7 +103,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add FIDO2 login</strong>
+                    Select <strong>Add Passkey login</strong>
                 </Trans>
             )
         },
@@ -126,8 +126,8 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
 
     return (
         <>
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
-                <Grid md={ 12 } sm={ 8 } xs={ 4 }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
+                <Grid xs={ 4 } sm={ 8 } md={ 12 }>
                     <PageHeader
                         className="mb-2"
                         imageSpaced={ false }

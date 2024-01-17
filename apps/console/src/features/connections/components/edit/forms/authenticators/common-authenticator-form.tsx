@@ -23,9 +23,7 @@ import { CommonPluggableComponentForm } from "../components";
 /**
  * Common authenticator configurations form.
  *
- * @param {CommonPluggableComponentFormPropsInterface} props
- * @return { ReactElement }
- * @constructor
+ * @param CommonPluggableComponentFormPropsInterface - Props injected to the component.
  */
 export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props: CommonPluggableComponentFormPropsInterface
@@ -40,7 +38,6 @@ export const CommonAuthenticatorForm: FunctionComponent<CommonPluggableComponent
         enableSubmitButton,
         showCustomProperties,
         readOnly,
-        isSubmitting,
         [ "data-testid" ]: testId
     } = props;
 

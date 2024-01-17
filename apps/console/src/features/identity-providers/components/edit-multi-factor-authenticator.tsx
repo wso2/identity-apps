@@ -29,8 +29,8 @@ import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
 import {
-    AuthenticatorExtensionsConfigInterface,  
-    identityProviderConfig 
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
 } from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -182,7 +182,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
             return true;
         }
-        
+
         return false;
     };
 
@@ -213,7 +213,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                             />
                                         </EmphasizedSegment>
                                         {
-                                            displayExternalResourcesButton() && 
+                                            displayExternalResourcesButton() &&
                                             authenticatorConfig.externalResourceButton
                                         }
                                     </Grid.Column>
@@ -246,11 +246,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             panes.push(...tabPaneExtensions);
         }
 
-        // If the MFA is TOTP/FIDO/Magic Link skip the settings tab.
+        // If the MFA is TOTP/Magic Link skip the settings tab.
         if (
             ![
                 IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
                 IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
             ].includes(authenticator.id)
         ) {
@@ -273,7 +272,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
         if (![
             IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
         ].includes(authenticator.id)) {
             return activeIndex;

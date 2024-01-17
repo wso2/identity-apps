@@ -25,7 +25,6 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
-    ContentLoader,
     DocumentationLink,
     FilePicker,
     GenericIcon,
@@ -42,13 +41,13 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FC,
     MutableRefObject,
     PropsWithChildren,
     ReactElement,
-    useEffect,
     useRef,
     useState
 } from "react";
@@ -59,7 +58,6 @@ import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -72,14 +70,14 @@ import {
     IdentityProviderFormValuesInterface,
     IdentityProviderInitialValuesInterface,
     IdentityProviderInterface,
-    StrictIdentityProviderInterface,
     TrsutedTokenIssuerWizardStep,
     TrustedTokenIssuerWizardStepInterface
 } from "../../../identity-providers/models";
-import { createConnection, useGetConnections } from "../../api/connections";
+import { createConnection } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
-import { handleGetConnectionsError } from "../../utils/connection-utils";
+import { IdpNameValidationCache } from "../../models/connection";
+import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -119,8 +117,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
     const [ finishShouldBeDisabled, setFinishShouldBeDisabled ] = useState<boolean>(true);
-    const [ idpList, setIdPList ] = useState<StrictIdentityProviderInterface[]>([]);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
+
+    const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+    const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
     const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
     const { t } = useTranslation();
@@ -129,17 +129,17 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     // Options list for the certificate type switcher.
-    const certificateOptions: [SwitcherOptionProps, SwitcherOptionProps] = [ 
+    const certificateOptions: [SwitcherOptionProps, SwitcherOptionProps] = [
         {
             label: t("console:develop.features.authenticationProvider." +
                 "templates.trustedTokenIssuer.forms.jwksUrl.optionLabel"),
             value: CertificateType.JWKS
-        }, 
+        },
         {
             label: t("console:develop.features.authenticationProvider." +
                 "templates.trustedTokenIssuer.forms.pem.optionLabel"),
             value: CertificateType.PEM
-        } 
+        }
     ];
 
     /**
@@ -151,33 +151,9 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         name: ""
     };
 
-    const {
-        data: connections,
-        isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError
-    } = useGetConnections(null, null, null, null);
-
-    /**
-         * Loads the connections on initial component load.
-         */
-    useEffect(() => {
-        if (connections?.identityProviders?.length > 0) {
-            setIdPList(connections.identityProviders);
-        }
-    }, [ connections ]);
-
-    /**
-     * Check if the get connection list call has returned an error.
-     */
-    useEffect(() => {
-        if (connectionsFetchRequestError) {
-            handleGetConnectionsError(connectionsFetchRequestError);
-        }
-    }, [ connectionsFetchRequestError ]);
-
     /**
      * Get the list of steps for the wizard.
-     * 
+     *
      * @returns `TrustedTokenIssuerWizardStepInterface[]`
      */
     const getWizardSteps = (): TrustedTokenIssuerWizardStepInterface[] => [
@@ -191,34 +167,62 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             content: certificatesPage(),
             icon: getConnectionWizardStepIcons().general,
             name: TrsutedTokenIssuerWizardStep.CERTIFICATES,
-            title: t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer.forms.steps." + 
+            title: t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer.forms.steps." +
                 "certificate")
         }
     ];
 
     /**
      * Check if the typed IDP name is already taken.
-     *  
-     * @param userInput - User input for the IDP name.
-     * @returns `true` if the IDP name is already taken else `false`.
+     *
+     * @param value - User input for the IDP name.
      */
-    const isIdpNameAlreadyTaken = (userInput: string): boolean =>  idpList?.some(
-        ({ name }: StrictIdentityProviderInterface) => name === userInput
+    const idpNameValidation: DebouncedFunc<(value: string) => void> = debounce(
+        async (value: string) => {
+            let idpExist: boolean;
+
+            if (idpNameValidationCache?.current?.value === value) {
+                idpExist = idpNameValidationCache?.current?.state;
+            }
+
+            if (idpExist === undefined) {
+                try {
+                    idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                } catch (e) {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    idpExist = false;
+                }
+
+                idpNameValidationCache.current = {
+                    state: idpExist,
+                    value
+                };
+            }
+
+            setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+        },
+        500
     );
 
     /**
      * Check whether loop back call is allowed or not.
-     * 
+     *
      * @param value - URL to check.
      */
-    const isLoopBackCall = (value: string): string => 
-        !(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls) 
-            ? undefined 
+    const isLoopBackCall = (value: string): string =>
+        !(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)
+            ? undefined
             : t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
 
     /**
      * Create the token issuer body.
-     * 
+     *
      * @param values - Form values
      * @returns - `IdentityProviderFormValuesInterface`
      */
@@ -234,17 +238,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         identityProvider.alias = values?.alias?.toString();
 
         // Trusted token placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-            }
-        }
-        
+        identityProvider.image = "assets/images/icons/trusted-token-issuer.svg";
+
         // Populate certificate settings.
         identityProvider[ "certificate" ][ "jwksUri" ] = jwksUrl ?? "";
         identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : "" ];
@@ -254,7 +249,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
 
     /**
      * Handle the form submit action.
-     * 
+     *
      * @param values - Form values
      */
     const handleFormSubmit = (values: IdentityProviderFormValuesInterface) => {
@@ -291,10 +286,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             .catch((error: AxiosError) => {
                 const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
 
-                if (error?.response?.status === 403 && 
+                if (error?.response?.status === 403 &&
                     error?.response?.data?.code ===identityAppsError.getErrorCode()) {
                     setOpenLimitReachedModal(true);
-        
+
                     return;
                 }
 
@@ -324,7 +319,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             });
 
     };
-    
+
     /**
      * This function returns the first page of the wizard.
      *
@@ -347,14 +342,15 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 required={ true }
                 width={ 15 }
                 format = { (values: string) => values.trimStart() }
+                listen={ idpNameValidation }
                 validation={ (values: string) => {
                     let errorMsg: string;
 
-                    if (isIdpNameAlreadyTaken(values)) {
+                    if (values && isUserInputIdpNameAlreadyTaken) {
                         errorMsg = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
-                    
+
                     if (!FormValidation.isValidResourceName(values)) {
                         errorMsg = t("console:develop.features.authenticationProvider." +
                             "templates.enterprise.validation.invalidName", { idpName: values });
@@ -426,10 +422,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             />
         </WizardPage>
     );
-    
+
     /**
      * This function returns the certificates page of the wizard.
-     * 
+     *
      * @returns `ReactElement`
      */
     const certificatesPage = () => (
@@ -452,7 +448,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                             defaultOptionValue={ certificateOptions[0].value }
                             selectedValue={ selectedCertInputType }
                             onChange={ ({ value }: SwitcherOptionProps) => {
-                                
+
                                 switch (value) {
                                     case CertificateType.JWKS:
                                         setFinishShouldBeDisabled(jwksUrl === null);
@@ -463,7 +459,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
 
                                         break;
                                 }
-                                        
+
                                 setSelectedCertInputType(value as CertificateType);
                             } }
                             options={ certificateOptions }
@@ -490,12 +486,12 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                 "templates.trustedTokenIssuer.forms.jwksUrl.hint") }
                             validation={ (values: string) => {
                                 let errorMsg: string;
-            
+
                                 if (!FormValidation.url(values)) {
                                     errorMsg = t("console:develop.features.authenticationProvider." +
                                         "templates.trustedTokenIssuer.forms.jwksUrl.validation.notValid");
                                 }
-                                
+
                                 if(!errorMsg) {
                                     errorMsg = isLoopBackCall(values);
                                 }
@@ -560,7 +556,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
 
     /**
      * Resolves the documentation link when a protocol is selected.
-     * 
+     *
      * @returns Documentation link.
      */
     const resolveDocumentationLink = (): ReactElement => (
@@ -584,17 +580,17 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             { openLimitReachedModal &&
                 (
                     <TierLimitReachErrorModal
-                        actionLabel={ t("console:develop.features.idp.notifications.tierLimitReachedError." + 
+                        actionLabel={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
                             "emptyPlaceholder.action") }
                         handleModalClose={ handleLimitReachedModalClose }
                         header={ t("console:develop.features.idp.notifications.tierLimitReachedError.heading") }
-                        description={ t("console:develop.features.idp.notifications.tierLimitReachedError." + 
+                        description={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
                             "emptyPlaceholder.subtitles") }
-                        message={ t("console:develop.features.idp.notifications.tierLimitReachedError." + 
+                        message={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
                             "emptyPlaceholder.title") }
                         openModal={ openLimitReachedModal }
                     />
-                ) 
+                )
             }
             <Modal
                 open={ !openLimitReachedModal }
@@ -649,28 +645,24 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     data-componentid={ `${ componentId }-modal-content-2` }
                 >
                     { alert && alertComponent }
-                    { !isConnectionsFetchRequestLoading
-                        ? (
-                            <Wizard2
-                                ref={ wizardRef }
-                                initialValues={ initialValues }
-                                onSubmit={ handleFormSubmit }
-                                uncontrolledForm={ true }
-                                pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                                data-componentid={ componentId }
-                            >
-                                { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step.content) }
-                            </Wizard2>
-                        ) : <ContentLoader />
-                    }
+                    <Wizard2
+                        ref={ wizardRef }
+                        initialValues={ initialValues }
+                        onSubmit={ handleFormSubmit }
+                        uncontrolledForm={ true }
+                        pageChanged={ (index: number) => setCurrentWizardStep(index) }
+                        data-componentid={ componentId }
+                    >
+                        { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step?.content) }
+                    </Wizard2>
                 </Modal.Content>
                 <Modal.Actions
                     data-componentid={ `${ componentId }-modal-actions` }
                 >
                     <Grid container>
-                        <Grid 
-                            xs={ 6 } 
-                            container 
+                        <Grid
+                            xs={ 6 }
+                            container
                             justifyContent="flex-start"
                         >
                             <LinkButton

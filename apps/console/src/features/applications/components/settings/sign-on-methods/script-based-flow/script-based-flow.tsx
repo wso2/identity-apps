@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -31,6 +33,7 @@ import {
     DocumentationLink,
     GenericIcon,
     Heading,
+    Link,
     Popup,
     SegmentedAccordion,
     Text,
@@ -56,13 +59,14 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
+import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../../../../authentication-flow-builder/constants/template-constants";
 import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
-import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
+import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "../../../../../core";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
@@ -172,6 +176,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
     const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
     const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
+    const [ isELKConfigureClicked, setIsELKConfigureClicked ] = useState<boolean>(false);
 
     /**
      * List of secrets for the selected `secretType`. It can hold secrets of
@@ -190,11 +195,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
     /**
      * Calls method to load secrets to secret list.
      */
     useEffect(() => {
-        loadSecretListForSecretType();
+        hasRequiredScopes(featureConfig?.secretsManagement,
+            featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && loadSecretListForSecretType();
     }, []);
 
     /**
@@ -397,6 +406,28 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     }, [ authenticationSequence?.steps, authenticationSequence?.script, authenticationSteps ]);
 
     /**
+     * Check whether the script is a user untouched default script.
+     *
+     * @param script - Script passed through props.
+     *
+     * @returns whether the script is a user untouched default script.
+     */
+    const isScriptUntouchedDefaultOne = (script: string): boolean => {
+        let isDefault: boolean = false;
+        const stepsCount: number = internalStepCount > authenticationSteps ? internalStepCount : authenticationSteps;
+
+        for (let localStepsCount: number = stepsCount; localStepsCount > 0; localStepsCount--) {
+            if (AdaptiveScriptUtils.isDefaultScript(script, localStepsCount)) {
+                isDefault = true;
+
+                break;
+            }
+        }
+
+        return isDefault;
+    };
+
+    /**
      * Resolves the adaptive script.
      *
      * @param script - Script passed through props.
@@ -440,11 +471,23 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             return;
         }
 
+        // If the script is untouched, then the script will be generated according to the current
+        // authentication steps.
+        if (script && isScriptUntouchedDefaultOne(script)
+                && AdaptiveScriptUtils.minifyScript(internalScript) === AdaptiveScriptUtils.minifyScript(sourceCode)) {
+            setInternalStepCount(authenticationSteps);
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+            setIsScriptFromTemplate(false);
+
+            return;
+        }
+
         // If a script is defined, checks whether if it is a default. If so, generates the basic default script
         // based on the number of steps.
         if (script
             && AdaptiveScriptUtils.isDefaultScript(internalScript ?? script,
-                internalStepCount ?? authenticationSteps)) {
+                internalStepCount ?? authenticationSteps)
+            && AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(sourceCode)) {
 
             setInternalStepCount(authenticationSteps);
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
@@ -461,7 +504,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             setInternalStepCount(authenticationSteps);
 
             // Checks if the editor content is different to the externally provided script.
-            if (AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(script)) {
+            if (AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(script)
+                && AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(sourceCode)) {
                 setSourceCode(internalScript ?? script);
 
                 return;
@@ -905,7 +949,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-                    { (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
+                    { hasRequiredScopes(featureConfig?.secretsManagement,
+                        featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
+                        (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                         OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
                         OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
                         <Dropdown.Menu
@@ -1107,6 +1153,38 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ componentId }-reset-confirmation-modal-content` }>
+                    {
+                        selectedAdaptiveAuthTemplate.name === ELK_RISK_BASED_TEMPLATE_NAME && (
+                            <>
+                                <Text>
+                                    <Trans
+                                        i18nKey={
+                                            "console:manage.features.governanceConnectors.connectorCategories." +
+                                            "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
+                                        }
+                                    >
+                                        (<Link
+                                            onClick={ () => setIsELKConfigureClicked(true) }
+                                            external={ false }
+                                        >
+                                            Configure
+                                        </Link>
+                                            ELK Analytics settings for proper functionality.)
+                                    </Trans>
+                                </Text>
+                                <Text>
+                                    <Trans
+                                        i18nKey={
+                                            "console:manage.features.governanceConnectors.connectorCategories." +
+                                            "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
+                                        }
+                                    >
+                                        You can update your settings anytime.
+                                    </Trans> (<Code><GearIcon size={ 14 } /></Code>)
+                                </Text>
+                            </>
+                        )
+                    }
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.edit.sections.signOnMethod.sections" +
@@ -1240,6 +1318,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         <Sidebar.Pushable className="script-editor-with-template-panel no-border">
                             { !readOnly && (
                                 <ScriptTemplatesSidePanel
+                                    onELKModalClose={ () => setIsELKConfigureClicked(false) }
+                                    isELKConfigureClicked={ isELKConfigureClicked }
                                     title={
                                         t("console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections" +
@@ -1264,15 +1344,20 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            <Menu.Item
-                                                className={ `action ${ isSecretsDropdownOpen
-                                                    ? "selected-secret"
-                                                    : ""
-                                                }` }>
-                                                <div>
-                                                    { renderSecretListDropdown() }
-                                                </div>
-                                            </Menu.Item>
+                                            {
+                                                hasRequiredScopes(featureConfig?.secretsManagement,
+                                                    featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
+                                                    <Menu.Item
+                                                        className={ `action ${ isSecretsDropdownOpen
+                                                            ? "selected-secret"
+                                                            : ""
+                                                        }` }>
+                                                        <div>
+                                                            { renderSecretListDropdown() }
+                                                        </div>
+                                                    </Menu.Item>
+                                                )
+                                            }
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact

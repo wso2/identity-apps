@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,23 +16,31 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
-import { GroupRolesList } from "./edit-group-roles";
+import { EditGroupRoles } from "./edit-group-roles";
+import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
+import { GenericOrganization } from "../../../organizations/models/organizations";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
-import { UserBasicInterface } from "../../../users/models";
+import { UserBasicInterface, UserListInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
-import { GroupsInterface } from "../../models";
+import useGroupManagement from "../../hooks/use-group-management";
+import { GroupsInterface, GroupsMemberInterface } from "../../models";
 
 /**
  * Captures props needed for edit group component
@@ -77,17 +85,22 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+    const { UIConfig } = useUIConfig();
+
+    const { activeTab, updateActiveTab } = useGroupManagement();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
     const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isSuperOrganization: boolean = useMemo(() =>
+        OrganizationUtils.isSuperOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
 
@@ -99,7 +112,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             return;
         }
 
-        const userStore = group?.displayName.split("/");
+        const userStore: string[] = group?.displayName.split("/");
 
         if (!isFeatureEnabled(featureConfig?.groups, GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
@@ -121,9 +134,30 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
         setIsUsersFetchRequestLoading(true);
 
         getUsersList(null, null, null, null, userstore)
-            .then((response) => {
+            .then((response: UserListInterface) => {
                 setUsersList(response.Resources);
                 setSelectedUsersList(filterUsersList([ ...response.Resources ]));
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    "description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                }));
+
             })
             .finally(() => {
                 setIsUsersFetchRequestLoading(false);
@@ -148,7 +182,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             .slice()
             .reverse()
             .forEach((user: UserBasicInterface) => {
-                group.members.forEach(assignedUser => {
+                group.members.forEach((assignedUser: GroupsMemberInterface) => {
                     if (user.id === assignedUser.value) {
                         selectedUserList.push(user);
                         usersToFilter.splice(usersToFilter.indexOf(user), 1);
@@ -156,7 +190,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 });
             });
 
-        selectedUserList.sort((userObject, comparedUserObject) =>
+        selectedUserList.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
         );
 
@@ -164,7 +198,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     };
 
     const resolveResourcePanes = () => {
-        const panes = [
+        const panes: ResourceTabPaneInterface[] = [
             {
                 menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
                 render: () => (
@@ -196,17 +230,25 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },
-            // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-            isRootOrganization ? {
+            isSuperOrganization && roleV1Enabled ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <GroupRolesList
-                            data-testid="group-mgt-edit-group-roles"
+                        <GroupRolesV1List
+                            data-testid="group-mgt-edit-group-roles-v1"
                             group={ group }
                             onGroupUpdate={ onGroupUpdate }
                             isReadOnly={ isReadOnly }
                         />
+                    </ResourceTab.Pane>
+                )
+            } : null,
+            // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
+            isSuperOrganization && !roleV1Enabled ? {
+                menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <EditGroupRoles group={ group } />
                     </ResourceTab.Pane>
                 )
             } : null
@@ -217,7 +259,12 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     return (
         <ResourceTab
-            isLoading={ isLoading } 
-            panes={ resolveResourcePanes() } />
+            activeIndex={ activeTab }
+            isLoading={ isLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
+            panes={ resolveResourcePanes() }
+        />
     );
 };

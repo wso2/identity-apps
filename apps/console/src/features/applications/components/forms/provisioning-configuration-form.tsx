@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,12 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../models";
+import {
+    InboundProvisioningFormValuesInterface,
+    ProvisioningConfigurationInterface,
+    ProvisioningFormDataInterface,
+    SimpleUserStoreListItemInterface
+} from "../../models";
 
 /**
  *  Provisioning Configurations for the Application.
@@ -67,8 +72,8 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const updateConfiguration = (values: any): void => {
-        const formData = {
+    const updateConfiguration = (values: InboundProvisioningFormValuesInterface): void => {
+        const formData: ProvisioningFormDataInterface = {
             provisioningConfigurations: {
                 inboundProvisioning: {
                     provisioningUserstoreDomain: values.provisioningUserstoreDomain,
@@ -85,10 +90,10 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
      *
      */
     const getUserStoreOption = () => {
-        const allowedOptions = [];
+        const allowedOptions: any[] = [];
 
         if (useStoreList) {
-            useStoreList?.map((userStore) => {
+            useStoreList?.map((userStore: SimpleUserStoreListItemInterface) => {
                 allowedOptions.push({
                     key: useStoreList.indexOf(userStore),
                     text: userStore?.name,
@@ -110,7 +115,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => {
+            onSubmit={ (values: InboundProvisioningFormValuesInterface) => {
                 updateConfiguration(values);
             } }
         >
@@ -120,28 +125,51 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                 label={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.label") }
                 required={ false }
                 value={ config?.inboundProvisioning?.proxyMode ? [ "modeOn" ] : [] }
-                listen={ (value) => setIsProxyModeOn(value) }
+                listen={ (value: boolean) => setIsProxyModeOn(value) }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-proxy-mode-checkbox` }
                 hint={ t("console:develop.features.applications.forms.provisioningConfig.fields.proxyMode.hint") }
             />
-            <Field.Dropdown
-                ariaLabel="Provisioning userstore domain"
-                name="provisioningUserstoreDomain"
-                label={
-                    t("console:develop.features.applications.forms.provisioningConfig.fields" +
-                        ".userstoreDomain.label")
-                }
-                required={ false }
-                default={ useStoreList && useStoreList.length > 0 && useStoreList[0].name }
-                value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
-                children={ getUserStoreOption() }
-                disabled={ isProxyModeOn }
-                readOnly={ readOnly }
-                data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
-                hint={ t("console:develop.features.applications.forms.provisioningConfig.fields." +
-                    "userstoreDomain.hint") }
-            />
+            {
+                readOnly ? (
+                    <Field.Input
+                        ariaLabel="Provisioning userstore domain"
+                        name="provisioningUserstoreDomain"
+                        inputType="text"
+                        minLength={ null }
+                        maxLength={ null }
+                        label={
+                            t("console:develop.features.applications.forms.provisioningConfig.fields" +
+                                ".userstoreDomain.label")
+                        }
+                        required={ false }
+                        value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
+                        disabled={ isProxyModeOn }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-provisioning-userstore-domain-input` }
+                        hint={ t("console:develop.features.applications.forms.provisioningConfig.fields." +
+                            "userstoreDomain.hint") }
+                    />
+                ) : (
+                    <Field.Dropdown
+                        ariaLabel="Provisioning userstore domain"
+                        name="provisioningUserstoreDomain"
+                        label={
+                            t("console:develop.features.applications.forms.provisioningConfig.fields" +
+                                ".userstoreDomain.label")
+                        }
+                        required={ false }
+                        default={ useStoreList && useStoreList.length > 0 && useStoreList[0].name }
+                        value={ config?.inboundProvisioning?.provisioningUserstoreDomain }
+                        children={ getUserStoreOption() }
+                        disabled={ isProxyModeOn }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-provisioning-userstore-domain-dropdown` }
+                        hint={ t("console:develop.features.applications.forms.provisioningConfig.fields." +
+                            "userstoreDomain.hint") }
+                    />
+                )
+            }
             <Field.Button
                 form={ FORM_ID }
                 size="small"

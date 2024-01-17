@@ -45,9 +45,19 @@ export interface ExtendedFeatureResourceEndpointsInterface {
     diagnosticLogsEndpoint: string;
 
     /**
+     * Audit logs API endpoint.
+     */
+    auditLogsEndpoint: string;
+
+    /**
      * Event Publishing API endpoint.
      */
     emailProviderEndpoint : string;
+
+    /**
+     * SMS Publishing API endpoint.
+     */
+    smsProviderEndpoint : string;
 
     /**
      * Event Publishing API endpoint.

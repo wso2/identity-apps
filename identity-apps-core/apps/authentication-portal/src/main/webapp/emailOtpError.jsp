@@ -18,6 +18,7 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.authenticator.emailotp.EmailOTPAuthenticatorConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -64,6 +65,8 @@
                 if (unlockTime != null) {
                     errorMessage = String.format(AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.temporarly.locked"), unlockTime);
                 }
+            } else if (errorMessage.equalsIgnoreCase(EmailOTPAuthenticatorConstants.ERROR_TENANT_MISMATCH_MSG)) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "user.tenant.domain.mismatch.message");
             }
         }
     }

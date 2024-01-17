@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,20 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
-import { EventPublisher } from "../../../../../core";
+import { AuthenticatorManagementConstants } from "../../../../../connections/constants/autheticator-constants";
+import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../core";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
@@ -50,7 +52,10 @@ import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
  * Proptypes for the applications settings component.
  */
 interface AuthenticationFlowPropsInterface extends IdentifiableComponentInterface {
-
+    /**
+     * Whether the application is shared between organizations or not.
+     */
+    isApplicationShared: boolean;
     /**
      * All authenticators in the system.
      */
@@ -110,6 +115,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         updateSteps,
         onAuthenticationSequenceChange,
+        isApplicationShared,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -136,6 +142,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const authenticationStepsDivRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -342,6 +351,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         const isValid: boolean = validateStepAddition(authenticator, steps[ stepIndex ].options);
+        const isFirstFactorAuth: boolean =
+            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isSecondFactorAuth: boolean =
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
+            authenticator?.defaultAuthenticator?.authenticatorId,
+            stepIndex,
+            steps
+        );
 
         if (ApplicationManagementConstants.HANDLER_AUTHENTICATORS.includes(authenticatorId)) {
             setShowHandlerDisclaimerModal(true);
@@ -349,10 +367,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         // If the adding option is a second factor, and if the adding step is the first or there are no
         // first factor authenticators in previous steps, show a warning and stop adding the option.
-        if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)
-            && (stepIndex === 0
-                || !SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
-                    stepIndex, steps))) {
+        if (
+            isSecondFactorAuth
+            && (
+                (!isFirstFactorAuth && (stepIndex === 0 || !isValidSecondFactorAddition))
+                || (isFirstFactorAuth && stepIndex !== 0 && !isValidSecondFactorAddition)
+            )
+        )  {
 
             dispatch(
                 addAlert({
@@ -371,7 +392,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
-        if(!applicationConfig.signInMethod.authenticatorSelection
+        if(applicationConfig.signInMethod.authenticatorSelection
+            .customAuthenticatorAdditionValidation && !applicationConfig.signInMethod.authenticatorSelection
             .customAuthenticatorAdditionValidation(authenticatorId, stepIndex, dispatch)) {
             return;
         }
@@ -406,6 +428,23 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const currentStep: AuthenticationStepInterface = steps[stepIndex];
         const currentAuthenticator: string = currentStep.options[optionIndex].authenticator;
+
+        // Do not allow deleting SSO authenticator if the application is shared.
+        if (stepIndex === 0
+            && currentAuthenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME
+            && isApplicationShared) {
+            dispatch(
+                addAlert({
+                    description: t("console:develop.features.applications.notifications" +
+                        ".authenticationStepDeleteErrorDueToAppShared.genericError.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("console:develop.features.applications.notifications" +
+                        ".authenticationStepDeleteErrorDueToAppShared.genericError.message")
+                })
+            );
+
+            return;
+        }
 
         // check whether the authenticator to be deleted is a 2FA
         if (currentAuthenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
@@ -484,7 +523,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 // If the step that the deleting authenticator has no other first factors or handlers,
                 // start evaluation other options.
                 if ((onlySecondFactorsRequiringHandlersOnRight && secondFactorHandlersInTheStep <= 1)
-                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1 
+                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1
                     && isDeletingOptionFirstFactor)) {
 
                     // If there is TOTP or Email OTP on the right, evaluate if the left side has necessary handlers.
@@ -821,7 +860,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         return (
             <AddAuthenticatorModal
                 authenticationSteps={ authenticationSteps }
-                allowSocialLoginAddition={ true }
+                allowSocialLoginAddition={ hasRequiredScopes(featureConfig?.identityProviders,
+                    featureConfig?.identityProviders?.scopes?.create, allowedScopes) }
                 currentStep={ authenticatorAddStep }
                 open={ showAuthenticatorAddModal }
                 onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {
@@ -886,7 +926,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     );
 
     /**
-     * Subject or attribute step needs to be increased when the identifier first authenticator 
+     * Subject or attribute step needs to be increased when the identifier first authenticator
      * is added to a step, and it's set as subject or attribute step.
      * This handles the related validations.
      */

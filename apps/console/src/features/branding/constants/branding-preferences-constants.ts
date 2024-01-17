@@ -42,6 +42,8 @@ export class BrandingPreferencesConstants {
     public static readonly BRANDING_PREFERENCE_UPDATE_ERROR_CODE: string = "ASG-CON-BPM-60006";
     public static readonly BRANDING_PREFERENCE_DELETE_ERROR_CODE: string = "ASG-CON-BPM-60008";
     public static readonly BRANDING_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-BPM-60007";
+    public static readonly BRANDING_PREVIEW_MIN_WIDTH_SIDE_ALIGNED: number = 519;
+    public static readonly BRANDING_PREVIEW_MIN_WIDTH_SIDE_IMAGE: number = 556;
 
     /**
      * Branding Related Error Messages.

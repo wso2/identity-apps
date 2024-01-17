@@ -17,6 +17,10 @@
  */
 
 import { RolesMemberInterface } from "@wso2is/core/models";
+import { GenericIconProps } from "@wso2is/react-components";
+import { ReactElement } from "react";
+import { BasicRoleInterface } from "../../roles/models";
+import { UserBasicInterface } from "../../users/models";
 
 /**
  * Interface to store data for create group api.
@@ -33,6 +37,14 @@ export interface CreateGroupInterface {
 export interface CreateGroupMemberInterface {
     value: string;
     display?: string;
+}
+
+/**
+ * Interface to get User information related to create group api
+ */
+export interface CreateGroupUserInterface {
+    id: string;
+    userName?: string;
 }
 
 /**
@@ -73,12 +85,12 @@ export interface PatchGroupOpInterface {
 
 export interface PatchGroupRemoveOpInterface {
     op: string;
-    path: string;
+    path?: string;
 }
 
 export interface PatchGroupAddOpInterface {
     op: string;
-    value: {
+    value?: {
         groups: { value: string }[]
     }
 }
@@ -92,6 +104,7 @@ export interface GroupsInterface {
     meta?: GroupsMetaInterface;
     members?: GroupsMemberInterface[];
     roles?: RolesMemberInterface[];
+    schemas?: string[];
 }
 
 /**
@@ -109,9 +122,9 @@ export interface GroupListInterface {
  * Interface to contain Group meta information
  */
 export interface GroupsMetaInterface {
-    created: string;
+    created?: string;
     location: string;
-    lastModified: string;
+    lastModified?: string;
 }
 
 /**
@@ -144,4 +157,53 @@ export interface SearchGroupInterface {
     domain?: string;
     startIndex: number;
     filter: string;
+}
+
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ */
+export enum WizardStepsFormTypes {
+    BASIC_DETAILS = "BasicDetails",
+    ROLE_LIST = "RoleList"
+}
+
+/**
+ * Interface to capture current wizard state
+ */
+export interface WizardStateInterface {
+    [ key: string ]: any;
+}
+
+/**
+ * Interface for wizard step.
+ */
+export interface WizardStepInterface {
+    content: ReactElement;
+    icon: GenericIconProps | any;
+    name: string;
+    title: string;
+}
+
+/**
+ * Interface for group creation.
+ */
+export interface GroupCreateInterface {
+    BasicDetails: GroupCreateBasicDetailsInterface;
+    RoleList?: {
+        roles: BasicRoleInterface[]
+    }
+}
+
+/**
+ * Interface to capture group creation basic data.
+ */
+export interface GroupCreateBasicDetailsInterface {
+    basic?: {
+        basicDetails: CreateGroupFormData
+    },
+    domain?: string;
+    groupName?: string;
+    users?: UserBasicInterface[]
 }

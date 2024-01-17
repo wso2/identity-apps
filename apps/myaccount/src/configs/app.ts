@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -53,6 +53,7 @@ export class Config {
             customServerHost: window["AppUtils"]?.getConfig()?.customServerHost,
             idpConfigs: window["AppUtils"]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window["AppUtils"]?.getConfig()?.loginCallbackURL,
+            organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
             serverHost: window["AppUtils"]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,
@@ -139,6 +140,7 @@ export class Config {
             appName: window["AppUtils"]?.getConfig()?.ui?.appName,
             appTitle: window["AppUtils"]?.getConfig()?.ui?.appTitle,
             authenticatorApp: window["AppUtils"]?.getConfig()?.ui?.authenticatorApp,
+            cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             copyrightText: window["AppUtils"]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
@@ -150,6 +152,7 @@ export class Config {
             i18nConfigs: window["AppUtils"]?.getConfig()?.ui?.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"]?.getConfig()?.ui?.isCookieConsentBannerEnabled,
             isHeaderAvatarLabelAllowed: window["AppUtils"]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
+            isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isProfileUsernameReadonly: window["AppUtils"]?.getConfig()?.ui?.isProfileUsernameReadonly,
             privacyPolicyConfigs: window["AppUtils"]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,

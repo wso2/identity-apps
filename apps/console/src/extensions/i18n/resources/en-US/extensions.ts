@@ -184,7 +184,7 @@ export const extensions: Extensions = {
             },
             authenticatorGroups: {
                 goToConnections: "Go to Connections",
-                groupsList:{
+                groupsList: {
                     assignGroups: "Assign Groups",
                     notifications: {
                         fetchAssignedGroups: {
@@ -220,7 +220,7 @@ export const extensions: Extensions = {
                     subTitle: {
                         0: "There are no external groups available at the moment.",
                         1: "You can add a new external group by visiting the " +
-                        "Groups tab in a connection."
+                            "Groups tab in a connection."
                     }
                 }
             },
@@ -267,10 +267,10 @@ export const extensions: Extensions = {
                 confirmation: {
                     deleteRole: {
                         message: "This action is irreversible and will remove " +
-                        "the group from the application role.",
+                            "the group from the application role.",
                         content: "If you remove this group from the application role, the permissions " +
-                        "associated with this role will be removed from the group. Please proceed " +
-                        "with caution."
+                            "associated with this role will be removed from the group. Please proceed " +
+                            "with caution."
                     }
                 }
             },
@@ -431,8 +431,8 @@ export const extensions: Extensions = {
     develop: {
         apiResource: {
             pageHeader: {
-                description: "Create and manage the API resources used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "API Resources"
+                description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
+                title: "APIs"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
@@ -443,7 +443,7 @@ export const extensions: Extensions = {
                 },
                 title: "Something went wrong"
             },
-            addApiResourceButton: "New API Resource",
+            addApiResourceButton: "New API",
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
@@ -459,6 +459,10 @@ export const extensions: Extensions = {
                     message: "If you remove this permission from the API resource, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 }
+            },
+            managementAPI: {
+                header: "Management APIs",
+                description: "APIs to manage resources in your organization (root)"
             },
             notifications: {
                 deleteAPIResource: {
@@ -551,6 +555,10 @@ export const extensions: Extensions = {
                         message: "API resource created"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "Organization APIs",
+                description: "APIs to manage resources in your other organizations"
             },
             table: {
                 name: {
@@ -693,8 +701,8 @@ export const extensions: Extensions = {
                     nextButton: "Next",
                     previousButton: "Previous",
                     submitButton: "Finish",
-                    title: "Add API Resource",
-                    subtitle: "Create a new API resource",
+                    title: "Add API",
+                    subtitle: "Create a new API",
                     steps: {
                         basic: {
                             stepTitle: "Basic Details",
@@ -703,14 +711,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "Display name cannot be empty",
                                         label: "Display Name",
-                                        hint: "Meaningful name to identify your API resource in Asgardeo.",
+                                        hint: "Meaningful name to identify your API resource in {{ productName }}.",
                                         placeholder: "Bookings API"
                                     },
                                     identifier: {
                                         emptyValidate: "Identifier cannot be empty",
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
                                         invalid: "Identifier cannot contain spaces",
-                                        hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since Asgardeo will not access your API. Asgardeo will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
+                                        hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since {{ productName }} will not access your API. {{ productName }} will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
                                         label: "Identifier",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -724,7 +732,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "Authorization",
                             form: {
-                                rbacMessage: "At present, Asgardeo exclusively supports Role-Based Access Control (RBAC) for authorization.",
+                                rbacMessage: "At present, {{ productName }} exclusively supports Role-Based Access Control (RBAC) for authorization.",
                                 fields: {
                                     authorize: {
                                         label: "Requires authorization",
@@ -783,7 +791,7 @@ export const extensions: Extensions = {
                                         secondFactorDisabled:
                                             "Second factor authenticators can only be used if " +
                                             "<1>Username & Password</1>, <3>Social Login</3> or " +
-                                            "<5>FIDO2</5> is present in a " +
+                                            "<5>Passkey</5> is present in a " +
                                             "previous step."
                                     }
                                 }
@@ -919,7 +927,7 @@ export const extensions: Extensions = {
                                                 hint: "Select the policy to authorize the API for the application."
                                             }
                                         },
-                                        rbacPolicyMessage: "This API resource requires authorization and Asgardeo exclusively supports Role-Based Access Control (RBAC) for authorization.",
+                                        rbacPolicyMessage: "This API resource requires authorization and {{ productName }} exclusively supports Role-Based Access Control (RBAC) for authorization.",
                                         buttons: {
                                             finish: "Finish",
                                             cancel: "Cancel"
@@ -1148,6 +1156,32 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Roles",
+                        subHeading: "Manage assigned roles in the application.",
+                        roleAudience: "Role Audience",
+                        organization: "Organization",
+                        application: "Application",
+                        assignedRoles: "Assigned Roles",
+                        removedRoles: "Removed Roles",
+                        searchPlaceholder: "Search by Role name",
+                        switchRoleAudience: {
+                            applicationConfirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience to Application, the association with " +
+                                    "organization roles will be deleted from the application. Please proceed with caution.",
+                                header: "Switch role audience to Application?",
+                                message: "This action is irreversible and will remove the existing role associations."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience to Organization, the application roles currently " +
+                                    "associated with the application will be permanently deleted. Please proceed with caution.",
+                                header: "Switch role audience to Organization?",
+                                message: "This action is irreversible and will permanently delete the existing roles."
+                            }
+                        }
                     }
                 }
             },
@@ -1291,26 +1325,30 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "Please enter a valid URL"
+                                }
+                            },
                             cookiePolicyURL: {
-                                hint:
-                                    "Link to a document or a webpage with detailed information on all cookies " +
-                                    "used by your applications and the purpose of each of them.",
+                                hint: "Link to a document or a webpage with detailed information on all cookies used by your applications and the purpose of each of them. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Cookie Policy",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/{{locale}}/cookie-policy"
                             },
                             privacyPolicyURL: {
-                                hint:
-                                    "Link to a statement or a legal document that states how your organization " +
-                                    "collects, handles, and processes the data of your customers and visitors.",
+                                hint: "Link to a statement or a legal document that states how your organization collects, handles, and processes the data of your customers and visitors. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Privacy Policy",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/{{locale}}/privacy-policy"
+                            },
+                            selfSignUpURL: {
+                                hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                label: "Self Signup",
+                                placeholder: "https://myapp.com/self-signup"
                             },
                             termsOfUseURL: {
-                                hint:
-                                    "Link to an agreement that your customers must agree to and abide by in " +
-                                    "order to use your organization's applications or other services.",
+                                hint: "Link to an agreement that your customers must agree to and abide by in order to use your organization's applications or other services. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Terms of Service",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
                         heading: "Links"
@@ -1342,7 +1380,7 @@ export const extensions: Extensions = {
                                         hint: "Use an image that’s at least <1>1920x1080 pixels</1> and less than"
                                             + " <3>1 mb</3> in size for better performance.",
                                         label: "Side Image URL",
-                                        placeholder: "https://asgardeo.io/placeholder.jpeg"
+                                        placeholder: "https://myapp.com/placeholder.jpeg"
                                     }
                                 },
                                 heading: "Side Image",
@@ -1567,7 +1605,7 @@ export const extensions: Extensions = {
                         font: {
                             fields: {
                                 fontFamilyDropdown: {
-                                    hint: "Pick a web safe font (fonts that are pre-installed by many "+
+                                    hint: "Pick a web safe font (fonts that are pre-installed by many " +
                                         "operating systems) as the font family for the pages.",
                                     label: "Font Family",
                                     placeholder: "Select a font family."
@@ -1625,7 +1663,7 @@ export const extensions: Extensions = {
                                             "pixels</1> in size for better results. If not set, {{ productName }} " +
                                             "defaults are used.",
                                         label: "Favicon URL",
-                                        placeholder: "https://asgardeo.io/favicon.ico"
+                                        placeholder: "https://myapp.com/favicon.ico"
                                     }
                                 },
                                 heading: "Favicon",
@@ -1648,7 +1686,7 @@ export const extensions: Extensions = {
                                             "<3>1mb</3> in size for better performance. If not set, " +
                                             "{{ productName }} defaults are used.",
                                         label: "Logo URL",
-                                        placeholder: "https://asgardeo.io/logo.png"
+                                        placeholder: "https://myapp.com/logo.png"
                                     }
                                 },
                                 heading: "Logo",
@@ -1669,7 +1707,7 @@ export const extensions: Extensions = {
                                     url: {
                                         hint: "Use an image that’s at least <1>250x50 pixels</1> and less than <3>1mb</3> in size for better performance. If not set, {{ productName }} defaults are used.",
                                         label: "My Account Logo URL",
-                                        placeholder: "https://myaccount.asgardeo.io/logo.png"
+                                        placeholder: "https://myaccount.myapp.com/logo.png"
                                     }
                                 },
                                 heading: "My Account Logo",
@@ -1809,6 +1847,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Successfully reverted Branding preferences for {{ tenant }}.",
                         message: "Revert successful"
+                    },
+                    successWaiting: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Reverting branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Reverting branding preferences"
                     }
                 },
                 fetch: {
@@ -1842,6 +1890,16 @@ export const extensions: Extensions = {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "Update Successful"
                     },
+                    successWaiting: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Updating branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Updating branding preferences"
+                    },
                     tenantMismatch: {
                         description: "Something went wrong while updating branding preferences for {{ tenant }}.",
                         message: "Update Error"
@@ -1852,8 +1910,12 @@ export const extensions: Extensions = {
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
                 title: "Branding"
             },
+            pageResolution: {
+                hint: "Pages in the Preview section may look different than the actual page. " +
+                    "To solve this issue please set your screen to a higher resolution."
+            },
             publishToggle: {
-                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your prefrences again.",
+                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your preferences again.",
                 label: "Publish",
                 enabled: "Enabled",
                 disabled: "Disabled"
@@ -1931,13 +1993,15 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configure Email Provider",
+            configureEmailTemplates: "Configure Email Templates",
             heading: "Email Provider",
-            subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
-            description: "Configure the following settings according to your SMTP server.",
+            subHeading: "Configure a SMTP server to send emails to your users with your own email address.",
+            description: "Configure the email provider settings according to your SMTP server.",
+            note: "Email provider for the super organization can only be configured through <1>deployment.toml</1>",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2026,6 +2090,161 @@ export const extensions: Extensions = {
                     success: {
                         message: "Update Successful",
                         description: "Successfully updated the email provider configurations."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization."
+        },
+        smsProviders: {
+            heading: "SMS Provider",
+            subHeading: "Configure a SMS provider to send SMS to your users.",
+            description: "Configure the SMS provider settings according to your SMS provider.",
+            info: "You can customize the SMS content using <1>SMS Templates</1>.",
+            updateButton: "Update",
+            sendTestSMSButton: "Send Test SMS",
+            goBack: "Go back to Email & SMS",
+            confirmationModal: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this configuration, you will not receive SMS." +
+                    "Please proceed with caution.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently delete the SMS provider configurations."
+            },
+            dangerZoneGroup: {
+                header: "Danger Zone",
+                revertConfig: {
+                    heading: "Delete Configurations",
+                    subHeading: "This action will delete sms provider configurations. " +
+                        "Once deleted, you will not receive SMS.",
+                    actionTitle: "Delete"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Twilio Settings",
+                    accountSID: {
+                        label: "Twilio Account SID",
+                        placeholder: "Enter the Twilio account SID",
+                        hint: "Twilio account string identifier which act as username for the account"
+                    },
+                    authToken: {
+                        label: "Twilio Auth Token",
+                        placeholder: "Enter the Twilio auth token",
+                        hint: "The access token generated by the Twilio auth server "
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender phone number",
+                        hint: "Phone number of the sender."
+                    },
+                    validations: {
+                        required: "This field cannot be empty"
+                    }
+                },
+                vonage: {
+                    subHeading: "Vonage Settings",
+                    accountSID: {
+                        label: "Vonage API Key",
+                        placeholder: "Enter the Vonage API key",
+                        hint: "Vonage API Key which act as username for the account."
+                    },
+                    authToken: {
+                        label: "Vonage API Secret",
+                        placeholder: "Enter the Vonage API Secret",
+                        hint: "The API Secret generated by the Vonage auth server."
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender phone number",
+                        hint: "Phone number of the sender."
+                    },
+                    validations: {
+                        required: "This field cannot be empty"
+                    }
+                },
+                custom: {
+                    subHeading: "Custom Settings",
+                    providerName: {
+                        label: "SMS Provider Name",
+                        placeholder: "Enter the SMS provider name",
+                        hint: "The name of the SMS provider."
+                    },
+                    providerUrl: {
+                        label: "SMS Provider URL",
+                        placeholder: "Enter the sms provider URL",
+                        hint: "The URL of the SMS provider."
+                    },
+                    httpMethod: {
+                        label: "HTTP Method",
+                        placeholder: "POST",
+                        hint: "The HTTP method of the API request used for sending the SMS."
+                    },
+                    contentType: {
+                        label: "Content Type",
+                        placeholder: "JSON",
+                        hint: "The content type of the API request used for sending the SMS."
+                    },
+                    headers: {
+                        label: "Headers",
+                        placeholder: "Enter headers",
+                        hint: "Headers to be included in the send SMS API request."
+                    },
+                    payload: {
+                        label: "Payload",
+                        placeholder: "Enter the payload",
+                        hint: "Payload of the SMS API request."
+                    },
+                    key: {
+                        label: "SMS Provider Auth Key",
+                        placeholder: "Enter the SMS provider auth key",
+                        hint: "The auth key of the SMS provider."
+                    },
+                    secret: {
+                        label: "SMS Provider Auth Secret",
+                        placeholder: "Enter the SMS provider auth secret",
+                        hint: "The auth secret of the SMS provider."
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender",
+                        hint: "The sender of the SMS."
+                    },
+                    validations: {
+                        required: "This field cannot be empty",
+                        methodInvalid: "The HTTP method is invalid",
+                        contentTypeInvalid: "The content type is invalid"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2454,17 +2673,17 @@ export const extensions: Extensions = {
             fido: {
                 quickStart: {
                     addLoginModal: {
-                        heading: "Add FIDO2 Login",
-                        subHeading: "Select an application to set up FIDO2 login."
+                        heading: "Add Passkey Login",
+                        subHeading: "Select an application to set up passkey login."
                     },
-                    heading: "FIDO2 Set Up Guide",
+                    heading: "Passkey Set Up Guide",
                     passkeys: {
-                        docLinkText: "FIDO2 Security key/biometrics",
+                        docLinkText: "FIDO passkey",
                         content:
-                            "Passkeys provide simple and secure passwordless login for your applications that " +
+                            "Passkey provide simple and secure passwordless login for your applications that " +
                             "survives device loss and works across platforms. You can try out passkey " +
-                            "authentication on Asgardeo with \"FIDO2\".",
-                        heading: "FIDO2 authentication with passkeys"
+                            "authentication on Asgardeo with \"Passkey\".",
+                        heading: "FIDO authentication with passkey"
                     },
                     steps: {
                         customizeFlow: {
@@ -2472,17 +2691,46 @@ export const extensions: Extensions = {
                             heading: "Customize the flow"
                         },
                         selectApplication: {
-                            content: "Choose the <1>application</1> for which you want to set up FIDO2 login.",
+                            content: "Choose the <1>application</1> for which you want to set up passkey login.",
                             heading: "Select Application"
                         },
                         selectFIDO: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add FIDO2 login</3> to configure " +
-                                " a basic FIDO flow.",
-                            heading: "Select <1>Add FIDO2 login</1>"
+                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
+                                " a basic passkey flow.",
+                            heading: "Select <1>Add Passkey Login</1>"
+                        },
+                        configureParameters: {
+                            heading: "Configure passkey options",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activate this option to allow users to enroll for a " +
+                                        "passkey during login.",
+                                        label: "Progressive Passkey Enrollment:",
+                                        note: "When the Passkey is set as a <1>first factor</1> option, " +
+                                        "users need to add an <3>adaptive script</3> to verify the user's " +
+                                        "identity prior to passkey enrollment. To include the script, users " +
+                                        "can use the <5>Passkeys Progressive Enrollment</5> template available " +
+                                        "in the <7>Sign-In-Method</7> tab of the application."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "Enabling this feature allows users to log in with a passkey " +
+                                        "without entering a username, creating a more streamlined " +
+                                        "sign-in experience.",
+                                        label: "Usernameless Authentication:"
+                                    }
+                                },
+                                steps: {
+                                    info: "To configure, please follow the steps below:",
+                                    1: "Navigate to the <1>Connections</1> area.",
+                                    2: "Locate and select the <1>Passkey</1> connection.",
+                                    3: "Navigate to the <1>Settings</1> tab."
+                                }
+                            }
                         }
                     },
-                    subHeading: "Follow the instructions given below to set up FIDO2 login in your login flow."
+                    subHeading: "Follow the instructions given below to set up passkey login in your login flow."
                 }
             },
             magicLink: {
@@ -2567,7 +2815,8 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status"
+                    placeholderDiagnostic: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status",
+                    placeholderAudit: "Search Logs by Action, Target ID, Initiator ID, Request ID"
                 },
                 refreshMessage: {
                     text: "Last fetched logs at ",
@@ -2578,6 +2827,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "Run Query"
+                },
+                downloadButton : {
+                    label : "Download log data"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2591,7 +2843,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "Couldn't fetch diagnostic logs.",
+                        0: "Couldn't fetch logs.",
                         1: "Please try again."
                     },
                     title: "Something went wrong"
@@ -2621,8 +2873,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "Query your logs to troubleshoot production application issues.",
-                title: "Diagnostic Logs"
+                description: "Query your logs to troubleshoot issues and monitor resource activities.",
+                title: "Logs"
             },
             tooltips: {
                 copy: "Copy to clipboard"
@@ -2637,19 +2889,21 @@ export const extensions: Extensions = {
                 apiResources: "API Resources",
                 branding: "Branding",
                 emailProvider: "Email Provider",
+                smsProvider: "SMS Provider",
                 monitor: "Logs"
             },
             emailProvider: "Email Provider",
-            eventPublishing : "Events",
-            emailTemplates : "Email Templates",
+            smsProvider: "SMS Provider",
+            eventPublishing: "Events",
+            emailTemplates: "Email Templates",
             organizationInfo: "Organization Info"
         },
         eventPublishing: {
             eventsConfiguration: {
                 heading: "Configure Events",
-                subHeading:  "Asgardeo can publish events to Choreo based on various user interactions. You can use the published events to trigger custom use cases.",
+                subHeading: "Asgardeo can publish events to Choreo based on various user interactions. You can use the published events to trigger custom use cases.",
                 formHeading: "Select the events that you want to publish to Choreo.",
-                form : {
+                form: {
                     updateButton: "Update"
                 },
                 navigateToChoreo: {
@@ -2657,9 +2911,9 @@ export const extensions: Extensions = {
                     navigateButton: "Go to Choreo"
                 }
             },
-            notifications : {
-                updateConfiguration : {
-                    error : {
+            notifications: {
+                updateConfiguration: {
+                    error: {
                         generic: {
                             description: "An error occurred while updating the event configurations.",
                             message: "Something went wrong"
@@ -2670,19 +2924,19 @@ export const extensions: Extensions = {
                             message: "Something went wrong"
                         }
                     },
-                    success : {
-                        description : "Event configurations updated successfully.",
-                        message : "Update Successful"
+                    success: {
+                        description: "Event configurations updated successfully.",
+                        message: "Update Successful"
                     }
                 },
-                getConfiguration : {
-                    error : {
-                        description : "An error occurred while retrieving the event configurations.",
-                        message :  "Retrieval Error"
+                getConfiguration: {
+                    error: {
+                        description: "An error occurred while retrieving the event configurations.",
+                        message: "Retrieval Error"
                     },
-                    success : {
-                        description : "",
-                        message : ""
+                    success: {
+                        description: "",
+                        message: ""
                     }
                 }
             }
@@ -2779,7 +3033,7 @@ export const extensions: Extensions = {
         accountLogin: {
             notifications: {
                 success: {
-                    description:  "Successfully updated username validation configuration.",
+                    description: "Successfully updated username validation configuration.",
                     message: "Update successful"
                 },
                 error: {
@@ -2801,12 +3055,16 @@ export const extensions: Extensions = {
                 pageTitle: "Username Validation",
                 description: "Update the username type and customize username validation rules for your users.",
                 usernameType: "Select username type",
-                usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
+                usernameTypeHint: "Allow users to set an email or a combination of characters for the username.",
                 emailType: "Email",
-                alphanumericType: "Alphanumeric (a-z, A-Z, 0-9)",
-                usernameLength: "Set username length",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                customType: "Custom",
+                usernameLength: {
+                    0: "Must be between",
+                    1: "and",
+                    2: "characters."
+                },
+                usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^_.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3048,8 +3306,12 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Must be an alphanumeric (a-z, A-Z, 0-9) string between {{minLength}} to " +
                             "{{maxLength}} characters including at least one letter.",
+                        usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long, " +
+                            "including at least one letter, and may contain a combination of the following " +
+                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
-                        usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter."
+                        usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
+                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."
                     }
                 }
             },
@@ -3089,8 +3351,8 @@ export const extensions: Extensions = {
                                                 "that you connect.",
                                             label: "Name",
                                             placeholder: "Enter the name of the user store",
-                                            requiredErrorMessage: "This field cannot be empty as this is the unique "+
-                                            "identifier of the user store."
+                                            requiredErrorMessage: "This field cannot be empty as this is the unique " +
+                                                "identifier of the user store."
                                         },
                                         description: {
                                             label: "Description",
@@ -3113,15 +3375,15 @@ export const extensions: Extensions = {
                                             types: {
                                                 readOnly: {
                                                     label: "Read Only",
-                                                    hint: "You will be granted READ-ONLY access to the user store. You will"+
-                                                    "not be able to add new users or update any attributes of the user" +
-                                                    "accounts you onboard."
+                                                    hint: "You will be granted READ-ONLY access to the user store. You will" +
+                                                        "not be able to add new users or update any attributes of the user" +
+                                                        "accounts you onboard."
                                                 },
                                                 readWrite: {
                                                     label: "Read/Write",
-                                                    hint: "You will be granted READ/WRITE access to the user store. You will "+
-                                                    "be able to add new users and update the attributes of the user accounts " +
-                                                    "you onboard."
+                                                    hint: "You will be granted READ/WRITE access to the user store. You will " +
+                                                        "be able to add new users and update the attributes of the user accounts " +
+                                                        "you onboard."
                                                 }
                                             }
                                         }
@@ -3566,6 +3828,63 @@ export const extensions: Extensions = {
                 subHeading: "Configure security settings to protect user accounts."
             },
             additionalSettings: "Additional Settings",
+            analytics: {
+                heading: "Analytics Engine",
+                subHeading: "Configure the analytics engine for your organization.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "Host URL",
+                            placeholder: "Enter the host URL",
+                            hint: "The URL of the analytics engine."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Enable Basic Authentication",
+                            hint: "Enable basic authentication for the analytics engine."
+                        },
+                        hostUsername: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            hint: "The username to authenticate into the analytics engine."
+                        },
+                        hostPassword: {
+                            label: "Password",
+                            placeholder: "Enter the password",
+                            hint: "The password to authenticate into the analytics engine."
+                        },
+                        hostConnectionTimeout: {
+                            label: "HTTP Connection Timeout",
+                            placeholder: "Enter the connection timeout",
+                            hint: "Enter the connection timeout value in milliseconds."
+                        },
+                        hostReadTimeout: {
+                            label: "HTTP Read Timeout",
+                            placeholder: "Enter the read timeout",
+                            hint: "Enter the read timeout value in milliseconds."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "HTTP Connection Request Timeout",
+                            placeholder: "Enter the connection request timeout",
+                            hint: "Enter the connection request timeout value in milliseconds."
+                        },
+                        hostNameVerification: {
+                            label: "Hostname Verification",
+                            placeholder: "Enter the hostname verification",
+                            hint: "Enable hostname verification for the analytics engine. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Error occurred while updating the analytics engine configurations.",
+                            message: "Error Occurred"
+                        },
+                        success: {
+                            description: "Successfully updated the analytics engine configurations.",
+                            message: "Update Successful"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Go back",
             generalDisabledLabel: "Disabled",
             generalEnabledLabel: "Enabled",
@@ -3655,6 +3974,18 @@ export const extensions: Extensions = {
                         "<1>Create an account</1> link on the application’s login page. This creates a new " +
                         "<3>user</3> account in the organization."
                 },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Failed to update the configuration for the Invite User to Set Password connector.",
+                            message: "Error updating configuration"
+                        },
+                        success: {
+                            description: "Successfully updated the configuration for the Invite User to Set Password connector.",
+                            message: "Update successful"
+                        }
+                    }
+                },
                 subHeading: "Self Registration related settings."
             }
         },
@@ -3700,7 +4031,10 @@ export const extensions: Extensions = {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
                         emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
-                            "email address for the user to set their own password."
+                            "email address for the user to set their own password.",
+                        passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
+                            "sure to enable it from <1> " +
+                            " Login and Registration </1> configurations."
                     }
                 }
             },
@@ -3734,11 +4068,11 @@ export const extensions: Extensions = {
                 consumerUser:
                     "Users who can access applications within the organization are listed here." +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
                     " self-registration is enabled.",
                 guestUser:

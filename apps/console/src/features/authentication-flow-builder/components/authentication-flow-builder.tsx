@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,14 +24,16 @@ import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, SVGAttributes, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ReactFlowProvider } from "reactflow";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
-import ScriptEditorSidePanel from "./script-editor-side-panel/script-editor-side-panel";
+import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
+import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -48,22 +50,11 @@ export interface AuthenticationFlowBuilderPropsInterface extends IdentifiableCom
      * Callback to trigger IDP create wizard.
      */
     onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
+    /**
+     * Make the component read only.
+     */
+    readOnly?: boolean;
 }
-
-// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
-const CodeWindowIcon = ({ width = 16, height = 16, ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={ width }
-        height={ height }
-        viewBox="0 0 640 512"
-        { ...rest }
-    >
-        { /* eslint-disable max-len */ }
-        <path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/>
-        { /* eslint-enable max-len */ }
-    </svg>
-);
 
 /**
  * Authentication flow builder component.
@@ -74,7 +65,12 @@ const CodeWindowIcon = ({ width = 16, height = 16, ...rest }: SVGAttributes<SVGS
 const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderPropsInterface> = (
     props: AuthenticationFlowBuilderPropsInterface
 ): ReactElement => {
-    const { legacyBuilder: LegacyBuilder, onIDPCreateWizardTrigger, "data-componentid": componentId } = props;
+    const {
+        legacyBuilder: LegacyBuilder,
+        onIDPCreateWizardTrigger,
+        readOnly,
+        "data-componentid": componentId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -86,7 +82,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         refetchApplication
     } = useAuthenticationFlow();
 
-    const FlowModes: AuthenticationFlowBuilderModesInterface[] = [
+    const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
+        {
+            id: 0,
+            label: t("console:loginFlow.modes.legacy.label")
+        }
+    ] : [
         {
             id: 0,
             label: t("console:loginFlow.modes.legacy.label")
@@ -98,9 +99,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         }
     ];
 
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
     const [ flowModeToSwitch, setFlowModeToSwitch ] = useState<AuthenticationFlowBuilderModesInterface>(null);
-    const [ isScriptEditorSidePanelDrawerOpen, setIsScriptEditorSidePanelDrawerOpen ] = useState<boolean>(false);
     const [ isPredefinedFlowsSidePanelDrawerOpen ] = useState<boolean>(isAuthenticationSequenceDefault);
     const [
         showAuthenticationFlowModeSwitchDisclaimerModal,
@@ -115,7 +117,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             return;
         }
 
-        if (isVisualEditorEnabled) {
+        if (isVisualEditorEnabled && !readOnly) {
             setActiveFlowMode(FlowModes[1]);
         } else {
             setActiveFlowMode(FlowModes[0]);
@@ -157,8 +159,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                             key={ mode.id }
                                             label={ (
                                                 <div className="beta-feature-tab-item">
-                                                    <Typography sx={ { fontWeight: 500 } }>{ mode.label }</Typography>
-                                                    { mode.extra }
+                                                    <Typography sx={ { fontWeight: 500 } }>
+                                                        { mode.label }
+                                                    </Typography>
+                                                    { isSAASDeployment && mode.extra }
                                                 </div>
                                             ) }
                                             data-componentid={ `${componentId}-${ mode.id }-tab` }
@@ -182,25 +186,13 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                             className="visual-editor-tab-panel"
                             data-componentid={ `${componentId}-visual-builder` }
                         >
-                            <SidePanelDrawer
-                                open={ isScriptEditorSidePanelDrawerOpen }
-                                onClose={ () => {
-                                    setIsScriptEditorSidePanelDrawerOpen(false);
-                                } }
-                                className="script-editor-drawer"
-                                drawerIcon={ <CodeWindowIcon height={ 16 } width={ 16 } /> }
-                                panel={ isAdaptiveAuthAvailable && <ScriptEditorSidePanel /> }
-                                panelControlsLabel={ t("console:loginFlow.scriptEditor.panelHeader") }
-                            >
-                                <ReactFlowProvider>
-                                    <AuthenticationFlowVisualEditor
-                                        onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                                        className={
-                                            classNames("visual-editor", { "with-panel": isAdaptiveAuthAvailable })
-                                        }
-                                    />
-                                </ReactFlowProvider>
-                            </SidePanelDrawer>
+                            <ReactFlowProvider>
+                                <AuthenticationFlowVisualEditor
+                                    onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                                    className="visual-editor"
+                                />
+                            </ReactFlowProvider>
+                            { isAdaptiveAuthAvailable && <ScriptBasedFlowSwitch /> }
                         </TabPanel>
                     </Box>
                 </div>
@@ -211,15 +203,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         mode={ flowModeToSwitch }
                         open={ showAuthenticationFlowModeSwitchDisclaimerModal }
                         onPrimaryActionClick={ () => {
-                            const previousFlowMode: AuthenticationFlowBuilderModesInterface = activeFlowMode;
-        
                             setActiveFlowMode(flowModeToSwitch);
                             setFlowModeToSwitch(null);
                             setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
-        
-                            if (previousFlowMode.id === FlowModes[1].id) {
-                                refetchApplication();
-                            }
+                            refetchApplication();
                         } }
                         onClose={ () => {
                             setFlowModeToSwitch(null);
@@ -236,7 +223,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
  * Default props for the component.
  */
 AuthenticationFlowBuilder.defaultProps = {
-    "data-componentid": "authentication-flow-builder"
+    "data-componentid": "authentication-flow-builder",
+    readOnly: false
 };
 
 export default AuthenticationFlowBuilder;

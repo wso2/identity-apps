@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +19,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Form, Ref } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
-import { isCheckBoxField, isDropdownField, isInputField,
-    isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
+import { isCheckBoxField, isDropdownField, isFilePickerField,
+    isInputField, isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
 import { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
@@ -248,8 +248,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             };
 
             if (
-                (isTextField(inputField) || isDropdownField(inputField) || isScopesField(inputField))
-                && inputField.validation
+                (
+                    isTextField(inputField)
+                    || isDropdownField(inputField)
+                    || isScopesField(inputField)
+                    || isFilePickerField(inputField)
+                ) && inputField.validation
                 && !(form.get(name) === null || form.get(name) === "")
             ) {
                 await inputField.validation(form.get(name) as string, validation, new Map(form));

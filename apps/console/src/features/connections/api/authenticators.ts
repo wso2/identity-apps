@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -27,20 +27,20 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { 
-    ConnectionManagementConstants 
-} from "../constants/connection-constants";
-import { 
-    AuthenticatorInterface, 
-    MultiFactorAuthenticatorInterface 
-} from "../models/authenticators";
-import { 
-    ConnectionInterface, 
-    FederatedAuthenticatorListItemInterface, 
-    FederatedAuthenticatorListResponseInterface, 
-    FederatedAuthenticatorMetaInterface 
-} from "../models/connection";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import {
+    ConnectionManagementConstants
+} from "../constants/connection-constants";
+import {
+    AuthenticatorInterface,
+    MultiFactorAuthenticatorInterface
+} from "../models/authenticators";
+import {
+    ConnectionInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface,
+    FederatedAuthenticatorMetaInterface
+} from "../models/connection";
 
 /**
  * Get an axios instance.
@@ -50,11 +50,11 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Hook to get all authenticators in the server. 
+ * Hook to get all authenticators in the server.
  *
  * @param filter - Search filter.
  * @param type - Authenticator Type.
- * 
+ *
  * @returns Response as a promise.
  */
 export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = RequestErrorInterface>(
@@ -93,7 +93,7 @@ export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = Re
  */
 export const useGetAuthenticatorTags = <Data = string[], Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: AxiosRequestConfig = {
@@ -405,7 +405,7 @@ export const updateFederatedAuthenticator = (
  *
  * @returns A promise containing the response.
  */
-export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticatorMetaInterface> => {
+export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticatorMetaInterface[]> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -423,7 +423,7 @@ export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticator
                 return Promise.reject(new Error("Failed to get federated authenticators list"));
             }
 
-            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface[]);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });

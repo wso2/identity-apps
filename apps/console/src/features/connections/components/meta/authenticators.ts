@@ -67,7 +67,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
         {
             authenticatorId: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
             description: "Login users with WS Federation.",
-            displayName: "Passive STS",
+            displayName: "WS-Federation",
             icon: getConnectionIcons().wsFed,
             name: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
         },
@@ -101,9 +101,9 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID,
+            authenticatorId: AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID,
             description: AuthenticatorMeta
-                .getAuthenticatorDescription(AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID),
+                .getAuthenticatorDescription(AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID),
             displayName: "SMS OTP",
             icon: getConnectionIcons().smsOTP,
             name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
@@ -136,7 +136,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
             authenticatorId: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
             description: "Login users with existing GitHub accounts",
             displayName: "GitHub",
-            icon: "github",
+            icon: getConnectionIcons()?.githubAuthenticator,
             name: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_NAME
         }
     ];

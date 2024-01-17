@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,6 +45,15 @@ export interface GrantTypeMetaDataInterface {
 }
 
 /**
+ * FAPI related metadata.
+ */
+export interface FapiMetaDataInterface {
+    allowedSignatureAlgorithms: MetadataPropertyInterface;
+    allowedEncryptionAlgorithms: MetadataPropertyInterface;
+    tokenEndpointAuthMethod: MetadataPropertyInterface;
+}
+
+/**
  * OIDC related metadata.
  */
 export interface OIDCMetadataInterface {
@@ -55,11 +64,20 @@ export interface OIDCMetadataInterface {
     defaultIdTokenExpiryTime?: string;
     idTokenEncryptionAlgorithm?: MetadataPropertyInterface;
     idTokenEncryptionMethod?: MetadataPropertyInterface;
+    idTokenSignatureAlgorithm?: MetadataPropertyInterface;
     scopeValidators?: MetadataPropertyInterface;
     accessTokenType?: MetadataPropertyInterface;
     accessTokenBindingType?: MetadataPropertyInterface;
     accessTokenBindingValidation?: boolean;
     revokeTokensWhenIDPSessionTerminated?: boolean;
+    tokenEndpointAuthMethod?: MetadataPropertyInterface;
+    tokenEndpointSignatureAlgorithm?: MetadataPropertyInterface;
+    requestObjectSignatureAlgorithm?: MetadataPropertyInterface;
+    requestObjectEncryptionMethod?: MetadataPropertyInterface;
+    requestObjectEncryptionAlgorithm?: MetadataPropertyInterface;
+    subjectType?: MetadataPropertyInterface;
+    tlsClientAuthSubjectDn?: string;
+    fapiMetadata?: FapiMetaDataInterface;
 }
 
 export enum State {
@@ -70,6 +88,29 @@ export enum State {
 export interface OAuth2PKCEConfigurationInterface {
     mandatory?: boolean;
     supportPlainTransformAlgorithm?: boolean;
+}
+
+/**
+ * OIDC client authentication related properties.
+ */
+export interface ClientAuthenticationConfigurationInterface {
+    tokenEndpointAuthMethod?: string;
+    tokenEndpointAuthSigningAlg?: string;
+    tlsClientAuthSubjectDn?: string;
+}
+
+export interface PushedAuthRequestConfigurationInterface {
+    requirePushAuthorizationRequest?: boolean;
+}
+
+interface RequestObjectEncryptionConfigurationInterface {
+    algorithm?: string;
+    method?: string;
+}
+
+export interface RequestObjectConfigurationInterface {
+    requestObjectSigningAlg?: string;
+    encryption?: RequestObjectEncryptionConfigurationInterface;
 }
 
 interface AccessTokenConfigurationInterface {
@@ -96,6 +137,15 @@ interface IdTokenConfigurationInterface {
     expiryInSeconds?: number;
     audience?: string[];
     encryption?: IdTokenEncryptionConfigurationInterface;
+    idTokenSignedResponseAlg?: string;
+}
+
+/**
+ * OIDC subject type related properties.
+ */
+interface SubjectConfigInterface {
+    subjectType?: string;
+    sectorIdentifierUri?: string;
 }
 
 interface OIDCLogoutConfigurationInterface {
@@ -115,12 +165,17 @@ export interface OIDCDataInterface {
     allowedOrigins?: string[];
     publicClient?: boolean;
     pkce?: OAuth2PKCEConfigurationInterface;
+    clientAuthentication?: ClientAuthenticationConfigurationInterface;
+    pushAuthorizationRequest?: PushedAuthRequestConfigurationInterface;
+    requestObject?: RequestObjectConfigurationInterface;
     accessToken?: AccessTokenConfigurationInterface;
     refreshToken?: RefreshTokenConfigurationInterface;
     idToken?: IdTokenConfigurationInterface;
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
+    subject?: SubjectConfigInterface;
+    isFAPIApplication?: boolean;
 }
 
 /**
@@ -134,7 +189,8 @@ export enum SupportedAuthProtocolTypes {
     OAUTH2_OIDC = "oauth2-oidc",
     WS_FEDERATION = "passive-sts",
     WS_TRUST = "ws-trust",
-    CUSTOM= "custom"
+    CUSTOM= "custom",
+    OAUTH2= "oauth2"
 }
 
 /**
@@ -322,6 +378,7 @@ export interface WSTrustMetaDataInterface {
 export interface PassiveStsConfigurationInterface {
     realm: string;
     replyTo: string;
+    replyToLogout: string;
 }
 
 export enum CustomTypeEnum {
@@ -415,6 +472,10 @@ export interface OIDCEndpointsInterface {
      * WellKnown endpoint.
      */
     wellKnown?: string;
+    /**
+     * OpenID server endpoint.
+     */
+    openIdServer?: string;
 }
 
 /**
@@ -423,7 +484,8 @@ export interface OIDCEndpointsInterface {
  * @readonly
  */
 export enum SupportedAccessTokenBindingTypes {
-    NONE = "None"
+    NONE = "None",
+    CERTIFICATE = "certificate"
 }
 
 /**
@@ -435,4 +497,20 @@ export enum SAMLConfigModes {
     MANUAL = "manualConfiguration",
     META_FILE = "metadataFile",
     META_URL = "metadataURL"
+}
+
+export interface SupportedAuthProtocolTypesInterface {
+    [ SupportedAuthProtocolTypes.SAML ]?: string;
+    [ SupportedAuthProtocolTypes.OIDC ]?: string;
+    [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]?: string;
+    [ SupportedAuthProtocolTypes.WS_FEDERATION ]?: string;
+    [ SupportedAuthProtocolTypes.WS_TRUST ]?: string;
+    [ SupportedAuthProtocolTypes.CUSTOM ]?: string;
+    [ SupportedAuthProtocolTypes.OAUTH2 ]?: string;
+}
+
+export interface SAMLConfigurationInterface {
+    [ SAMLConfigModes.MANUAL ]: string;
+    [ SAMLConfigModes.META_FILE ]: string;
+    [ SAMLConfigModes.META_URL ]: string;
 }

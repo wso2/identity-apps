@@ -66,6 +66,7 @@
     String SELF_REGISTRATION_WITH_VERIFICATION_PAGE = "self-registration-with-verification.jsp";
     String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
     String passwordPatternErrorCode = "20035";
+    String usernamePatternErrorCode = "20045";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
@@ -82,6 +83,7 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = request.getParameter("sp");
     String spId = "";
+    String applicationAccessUrl = "";
     JSONObject usernameValidityResponse;
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     String callback = request.getParameter("callback");
@@ -97,9 +99,25 @@
         return;
     }
 
+    try {
+        if (sp.equals("My Account")) {
+            spId = "My_Account";
+        } else {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+        }
+    } catch (Exception e) {
+        spId = "";
+    }
+
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(applicationAccessUrl)) {
+            // Honour accessUrl over callback url.
+            callback = applicationAccessUrl;
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
         }
     } catch (PreferenceRetrievalClientException e) {
@@ -207,7 +225,7 @@
             } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
                 errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
             }
-            request.setAttribute("errorMsg", errorMsg + " Please contact the administrator to fix this issue.");
+            request.setAttribute("errorMsg", errorMsg + " To fix this issue, please contact the administrator.");
             request.setAttribute("errorCode", errorCode);
             if (!StringUtils.isBlank(username)) {
                 request.setAttribute("username", username);
@@ -244,17 +262,6 @@
             && !StringUtils.isBlank(application.getInitParameter("DefaultBusinessUserStore"))) {
         user.setRealm(application.getInitParameter("DefaultBusinessUserStore"));
         user.setTenantDomain(tenantDomain);
-    }
-
-    try {
-        if (sp.equals("My Account")) {
-            spId = "My_Account";
-        } else {
-            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-            spId = applicationDataRetrievalClient.getApplicationID(tenantDomain,sp);
-        }
-    } catch (Exception e) {
-        spId = "";
     }
 
     Claim[] claims = new Claim[0];
@@ -314,13 +321,23 @@
         consentProperty.setValue(consent);
 
         Property spProperty = new Property();
-        spProperty.setKey("spId");
-        spProperty.setValue(spId);
+        spProperty.setKey("sp");
+        spProperty.setValue(sp);
+
+        Property spIdProperty = new Property();
+        spIdProperty.setKey("spId");
+        spIdProperty.setValue(spId);
+
+        Property appIsAccessUrlAvailableProperty = new Property();
+        appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
+        appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(applicationAccessUrl)));
+        properties.add(appIsAccessUrlAvailableProperty);
 
         properties.add(sessionKey);
         properties.add(consentProperty);
         properties.add(spProperty);
-
+        properties.add(spIdProperty);
+        properties.add(appIsAccessUrlAvailableProperty);
 
         SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
         selfUserRegistrationRequest.setUser(selfRegistrationUser);
@@ -378,7 +395,13 @@
                 request.getRequestDispatcher(SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE).forward(request,
                         response);
             }
-
+            return;
+        } else if (usernamePatternErrorCode.equals(errorCode)) {
+            String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode);
+            if (!i18Resource.equals(errorCode)) {
+                request.setAttribute(ERROR_MESSAGE, i18Resource);
+            }
+            request.getRequestDispatcher("register.do").forward(request, response);
             return;
         } else {
             if (!StringUtils.isBlank(username)) {

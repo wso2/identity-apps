@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (http://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.common.listner;
 
+import org.wso2.carbon.identity.organization.management.service.util.OrganizationManagementUtil;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.stratos.common.exception.StratosException;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
@@ -32,9 +33,13 @@ public class AppPortalTenantMgtListener implements TenantMgtListener {
     public void onTenantCreate(TenantInfoBean tenantInfoBean) throws StratosException {
 
         try {
-            AppPortalUtils.initiatePortals(tenantInfoBean.getTenantDomain(), tenantInfoBean.getTenantId());
+            if (OrganizationManagementUtil.isOrganization(tenantInfoBean.getTenantId())) {
+                return;
+            }
+            AppPortalUtils.initiatePortals(tenantInfoBean);
         } catch (Exception e) {
-            throw new StratosException("Failed to initialize UI portals", e);
+            throw new StratosException("Failed to initialize UI portals for the tenant:"
+                + tenantInfoBean.getTenantDomain(), e);
         }
     }
 

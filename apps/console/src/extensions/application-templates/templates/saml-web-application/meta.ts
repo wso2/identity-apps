@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,7 @@
  * under the License.
  */
 
-export const SDKMeta = {
-    tomcatSAMLAgent: {
-        catalog: "https://github.com/asgardeo/asgardeo-tomcat-saml-agent/blob/master/" +
-            "io.asgardeo.tomcat.saml.agent.sample/src/main/resources/configuration-catalog.md",
-        readme: "https://github.com/asgardeo/asgardeo-tomcat-saml-agent/blob/master/README.md",
-        sample: {
-            acsURLSuffix: "/sample-app/home.jsp",
-            artifact: "https://github.com/asgardeo/asgardeo-tomcat-saml-agent/releases/download/v0.1.43/sample-app.war",
-            home: "/sample-app/index.html",
-            repository: "https://github.com/asgardeo/asgardeo-tomcat-saml-agent/tree/master/io.asgardeo.tomcat." +
-                "saml.agent.sample"
-        }
-    }
-};
+import { SAMLSDKMeta } from "./models";
+import { applicationConfig } from "../../../configs";
+
+export const SDKMeta: SAMLSDKMeta = applicationConfig?.quickstart?.samlWeb;

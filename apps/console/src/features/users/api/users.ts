@@ -35,19 +35,20 @@ import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, Use
  * Initialize an axios Http client.
  *
  */
-const httpClient: HttpClientInstance 
+const httpClient: HttpClientInstance
     = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve the list of users that are currently in the system.
  *
+ * @deprecated Use `useUsersList` hook instead.
  * @returns `Promise<UserListInterface>` a promise containing the user list.
  */
 export const getUsersList = (
-    count: number, 
-    startIndex: number, 
-    filter: string, 
-    attributes: string, 
+    count: number,
+    startIndex: number,
+    filter: string,
+    attributes: string,
     domain: string,
     excludedAttributes?: string
 ):
@@ -81,24 +82,23 @@ export const getUsersList = (
 /**
  * Hook to get the users list with limit and offset.
  *
- * @param count - The number of users to be returned. 
+ * @param count - The number of users to be returned.
  * @param startIndex - The index of the first user to be returned.
  * @param filter - The filter to be applied to the users.
- * @param attributes - The attributes to be returned. 
- * @param domain - The domain of the users.
- * @param excludedAttributes - The attributes to be excluded. 
+ * @param attributes - The attributes to be returned.
+ * @param domain - The user store domain name.
+ * @param excludedAttributes - The attributes to be excluded.
  * @returns `RequestResultInterface<Data, Error>`
  */
 export const useUsersList = (
-    count: number, 
-    startIndex: number, 
-    filter: string, 
-    attributes: string, 
+    count: number,
+    startIndex: number,
+    filter: string,
+    attributes: string,
     domain: string,
     excludedAttributes?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -162,7 +162,7 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
 
 /**
  * Bulk add users.
- * 
+ *
  * @param data - SCIM2.0 compliant request body
  * @returns a promise containing the response.
  */
@@ -245,7 +245,7 @@ export const addUserRole = (data: PatchGroupDataInterface, groupId: string): Pro
  *
  * @param id - User ID.
  * @param attributes - Attributes to be returned.
- * 
+ *
  * @returns `Promise<ProfileInfoInterface>` a promise containing the user details.
  */
 export const useUserDetails = <Data = ProfileInfoInterface, Error = AxiosError>(
@@ -308,7 +308,7 @@ export const getUserDetails = (id: string, attributes: string): Promise<ProfileI
  *
  * @param userId - User ID.
  * @param data - Data to be updated.
- * 
+ *
  * @returns `Promise<ProfileInfoInterface>` a promise containing the response.
  * @throws `IdentityAppsApiException`
  */

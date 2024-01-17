@@ -72,7 +72,7 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\b(2019|202[0-3])(?:-(202[0-3]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
+            pattern: " Copyright \\(c\\) \\b(2019|202[0-4])(?:-(202[0-4]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
             template: " * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com)."
         },
         " *",
@@ -279,11 +279,16 @@ module.exports = {
                         importNames: [ "Popup" ],
                         message: "Avoid using Popup from Semantic. Instead import it from @wso2is/react-components.",
                         name: "semantic-ui-react"
+                    },
+                    {
+                        message: "Please use import foo from '@oxygen-ui/react/foo' instead.",
+                        name: "@oxygen-ui/react"
                     }
                 ],
                 patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
             }
         ],
+        "no-trailing-spaces": "warn",
         "no-unreachable": "error",
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],

@@ -29,6 +29,10 @@ h6.ui.header .sub.header {
   font-size: @h6SubHeaderFontSize;
 }
 
+h3.ui.header .multi-line-header {
+  white-space: normal;
+}
+
 .ui.header {
     &.page-header {
         .sub-header {
@@ -83,21 +87,28 @@ h6.ui.header .sub.header {
 
 .is-header {
     &.oxygen-header .oxygen-brand {
-        width: calc(var(--oxygen-customComponents-Navbar-properties-width) - 45px);
+        width: auto;
+        min-width: calc(var(--oxygen-customComponents-Navbar-properties-width) - 90px);
     }
 
     &.oxygen-header .oxygen-brand-logo {
-        max-width: 300px;
+        height: 18px;
+        max-width: none;
     }
 
     &.oxygen-header .oxygen-brand-logo img {
-        width: 100%;
+        height: 100%;
+        width: auto;
     }
 
     &.oxygen-header .oxygen-brand-portal-name {
-        font-size: 13px;
-        margin-bottom: 3px;
+        font-size: 14px;
         margin-top: 0px;
         width: 100%;
+    }
+
+    &.oxygen-header.with-hamburger .oxygen-header-toolbar .oxygen-brand {
+        margin-left: 0 !important;
+        margin-right: 18px;
     }
 }

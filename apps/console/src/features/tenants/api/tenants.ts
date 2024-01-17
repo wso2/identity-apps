@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
@@ -19,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core/store";
+import { OrganizationType } from "../../organizations/constants";
 import { TenantRequestResponse } from "../models";
 
 const getDomainQueryParam = (): string => {
@@ -119,8 +121,11 @@ export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse
  * @returns - A promise that resolves with the tenant request response object.
  */
 export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
-    // If the user is a privileged user, return an empty response.
-    if (isPrivilegedUser()) {
+    const orgType: OrganizationType = store.getState().organization.organizationType;
+
+    // If the user is a privileged user or the function is being called inside a suborganization,
+    // return an empty response.
+    if (isPrivilegedUser() || orgType === OrganizationType.SUBORGANIZATION) {
         return Promise.resolve({
             associatedTenants: [],
             count: 0,

@@ -46,7 +46,7 @@ export class ConnectionManagementConstants {
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 
     public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
-    
+
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
@@ -101,6 +101,12 @@ export class ConnectionManagementConstants {
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: ConnectionTemplateLoadingStrategies =
     ConnectionTemplateLoadingStrategies.LOCAL;
 
+    public static readonly CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while fetching identity providers.";
+
+    public static readonly CONNECTIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+    "the identity providers.";
+
     public static readonly CONNECTION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";
 
@@ -124,7 +130,7 @@ export class ConnectionManagementConstants {
 
     public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
         "multi-factor authenticator.";
-    
+
     public static readonly CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
 
@@ -133,6 +139,9 @@ export class ConnectionManagementConstants {
 
     public static readonly CONNECTION_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
         "configurations of the identity provider.";
+
+    public static readonly CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR: string = "An error occurred while " +
+        "updating implicit association configurations of the identity provider.";
 
     /**
      * Identity provider create limit reached error.
@@ -192,6 +201,7 @@ export class ConnectionManagementConstants {
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
+        LINKEDIN: string;
         MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
@@ -204,6 +214,7 @@ export class ConnectionManagementConstants {
         GITHUB: "github-idp",
         GOOGLE: "google-idp",
         HYPR: "hypr-idp",
+        LINKEDIN: "linkedin-idp",
         MICROSOFT: "microsoft-idp",
         OIDC: "enterprise-oidc-idp",
         ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
@@ -227,4 +238,31 @@ export class ConnectionManagementConstants {
         [ "swe-idp", "develop.connections.newConnection.siwe.learnMore" ],
         [ "trusted-token-issuer", "develop.connections.newConnection.trustedTokenIssuer.learnMore" ]
     ]);
+}
+
+export class SIWEConstants {
+
+    public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
+    public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+]     */
+    private constructor() { }
+
+    public static readonly SIWE_CLIENT_REGISTRATION_DOCS_URL: string = "https://docs.login.xyz/servers/" +
+        "oidc-provider/hosted-oidc-provider#openid-connect-client-registration";
+
+    // eslint-disable-next-line max-len
+    public static readonly SIWE_CLIENT_REGISTRATION_CURL_COMMAND: string = "curl -X POST https://oidc.signinwithethereum.org/register -H 'Content-Type: application/json' -d '{\"redirect_uris\": [ \"${commonauth}\" ]}'";
+
+    /**
+     * SIWE Scope mappings.
+]     */
+    public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
 }

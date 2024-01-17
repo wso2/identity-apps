@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -23,6 +24,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { AssociatedRolesInterface } from "../../roles/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -36,9 +38,11 @@ export interface ApplicationBasicInterface {
     accessUrl?: string;
     clientId?: string;
     issuer?: string;
+    realm?: string;
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    associatedRoles?: AssociatedRolesInterface;
 }
 
 export enum ApplicationAccessTypes {
@@ -66,6 +70,7 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    associatedRoles?: AssociatedRolesInterface;
     inboundProtocols?: InboundProtocolListItemInterface[];
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
@@ -156,6 +161,7 @@ export interface SubjectInterface {
     includeUserDomain: boolean;
     includeTenantDomain: boolean;
     useMappedLocalSubject: boolean;
+    mappedLocalSubjectMandatory: boolean;
 }
 
 export interface RoleInterface {
@@ -185,6 +191,7 @@ export interface SubjectConfigInterface {
     includeUserDomain?: boolean;
     includeTenantDomain?: boolean;
     useMappedLocalSubject?: boolean;
+    mappedLocalSubjectMandatory?: boolean;
 }
 
 /**
@@ -213,6 +220,32 @@ export interface CertificateInterface {
 }
 
 /**
+ *  Captures Attestation data related configuration.
+ */
+export interface AttestationMetaDataInterface {
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    appleAppId?: string;
+    androidAttestationServiceCredentials?: JSON;
+}
+
+/**
+ *  Captures application advanced configuration related configuration.
+ */
+export interface ApplicationAdvancedConfigurationsViewInterface {
+    saas?: boolean;
+    skipConsentLogin?: boolean;
+    skipConsentLogout?: boolean;
+    returnAuthenticatedIdpList?: boolean;
+    enableAuthorization?: boolean;
+    enableAPIBasedAuthentication?: boolean;
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    appleAppId?: string;
+    androidAttestationServiceCredentials?: string;
+}
+
+/**
  *  Captures application related configuration.
  */
 export interface AdvancedConfigurationsInterface {
@@ -223,8 +256,16 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
+    enableAPIBasedAuthentication?: boolean;
+    attestationMetaData?: AttestationMetaDataInterface;
     fragment?: boolean;
-    additionalSpProperties?: additionalSpProperty[]
+    additionalSpProperties?: additionalSpProperty[];
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    androidAttestationServiceCredentials?: string;
+    appleAppId?: string;
+    skipConsentLogin?: boolean;
+    skipConsentLogout?: boolean;
 }
 /**
  * Interface for the additional sp properties.
@@ -595,11 +636,17 @@ export interface ProvisioningConfigurationInterface {
 }
 
 /**
- * Captures name and id of the user store.
+ * Provisioning form data interface.
  */
-export interface SimpleUserStoreListItemInterface {
-    id?: string;
-    name: string;
+export interface ProvisioningFormDataInterface {
+    provisioningConfigurations: {
+        inboundProvisioning: InboundProvisioningFormValuesInterface;
+    };
+}
+
+export interface InboundProvisioningFormValuesInterface {
+    provisioningUserstoreDomain: string;
+    proxyMode: boolean;
 }
 
 /**
@@ -622,12 +669,19 @@ export interface OIDCApplicationConfigurationInterface {
     userEndpoint: string;
     jwksEndpoint: string;
     wellKnownEndpoint: string;
+    openIdServerEndpoint?: string;
+    pushedAuthorizationRequestEndpoint?: string;
+    sessionIframeEndpoint?: string;
+    webFingerEndpoint?: string;
+    dynamicClientRegistrationEndpoint?: string;
 }
 
 /**
  * SAML configurations for the application.
  */
 export interface SAMLApplicationConfigurationInterface {
+    destinationURLs?: string[];
+    artifactResolutionUrl?: string;
     issuer: string;
     ssoUrl: string;
     sloUrl: string;
@@ -636,11 +690,29 @@ export interface SAMLApplicationConfigurationInterface {
 }
 
 /**
+ * WS Federation configurations for the application.
+ */
+export interface WSFederationApplicationConfigurationInterface {
+    passiveStsUrl?: string;
+}
+
+/**
  * Status of the My Account portal.
  */
 export interface MyAccountPortalStatusInterface {
     attribute?: string;
     value?: string;
+}
+
+/**
+ * Advanced attribute settings page errors interface.
+ */
+export interface AdvanceAttributeSettingsErrorValidationInterface {
+
+    /**
+     * Sector identifier URI validation error message.
+     */
+    sectorIdentifierURI?: string;
 }
 
 /**
@@ -665,7 +737,7 @@ export interface FederatedConflictWithSMSOTPArgsInterface {
  */
 export interface FederatedConflictWithSMSOTPReturnValueInterface {
     /**
-     * Specifies whether there is any conflict between the 
+     * Specifies whether there is any conflict between the
      * federated authenticators and the SMS OTP.
      */
     conflicting: boolean;
@@ -715,7 +787,18 @@ export enum ApplicationTemplateIdTypes {
     SPA = "single-page-application",
     OIDC_WEB_APPLICATION = "oidc-web-application",
     SAML_WEB_APPLICATION = "saml-web-application",
-    MOBILE_APPLICATION = "mobile-application"
+    MOBILE_APPLICATION = "mobile-application",
+    M2M_APPLICATION = "m2m-application",
+    CUSTOM_APPLICATION = "custom-application"
+}
+
+/**
+ * Enum for application template names.
+ *
+ * @readonly
+ */
+export enum ApplicationTemplateNames {
+    STANDARD_BASED_APPLICATION = "Standard-Based Application"
 }
 
 /**
@@ -767,6 +850,7 @@ export enum ApplicationTabTypes {
     PROTOCOL ="protocol",
     USER_ATTRIBUTES = "user-attributes",
     SIGN_IN_METHOD = "sign-in-method",
+    ROLES = "roles",
     PROVISIONING = "provisioning",
     ADVANCED = "advanced",
     INFO = "info"
@@ -778,4 +862,13 @@ export enum ApplicationTabTypes {
 export interface idpInfoTypeInterface {
     id: string;
     name: string;
+    redirectTo?: string;
+}
+
+/**
+ * Enum for OIDC supported subject types.
+ */
+export enum SubjectTypes {
+    PUBLIC = "public",
+    PAIRWISE = "pairwise"
 }

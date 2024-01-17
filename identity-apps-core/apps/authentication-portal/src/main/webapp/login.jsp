@@ -77,6 +77,7 @@
     private static final String USER_TYPE_ASGARDEO = "asg";
     private static final String BACKUP_CODE_AUTHENTICATOR = "backup-code-authenticator";
     private static final String SMS_OTP_AUTHENTICATOR = "sms-otp-authenticator";
+    private static final String EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
@@ -94,6 +95,8 @@
     String appName = Encode.forUriComponent(request.getParameter("sp"));
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
+
+    String isHostedExternally = application.getInitParameter("IsHostedExternally");
 
     if ((StringUtils.equals("WSO2_LOGIN_FOR_CONSOLE",appName)
             && !StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
@@ -172,13 +175,23 @@
     String multiOptionURIParam = "";
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
-        try {
-            baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
-        } catch (URLBuilderException e) {
-            request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
-            request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
-            request.getRequestDispatcher("error.do").forward(request, response);
-            return;
+        // Check whether authentication endpoint is hosted externally.
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            String requestURI = request.getRequestURI();
+            if (StringUtils.isNotBlank(requestURI)) {
+                requestURI = requestURI.startsWith("/") ? requestURI : "/" + requestURI;
+                requestURI = requestURI.endsWith("/") ? requestURI.substring(0, requestURI.length() - 1) : requestURI;
+            }
+            baseURL = requestURI;
+        } else {
+            try {
+                baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
+            } catch (URLBuilderException e) {
+                request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
+                request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
+                request.getRequestDispatcher("error.do").forward(request, response);
+                return;
+            }
         }
 
         // Build the query string using the parameter map since the query string can contain fewer parameters
@@ -192,6 +205,12 @@
         && localAuthenticatorNames.contains(BACKUP_CODE_AUTHENTICATOR)) {
             if (localAuthenticatorNames.contains(TOTP_AUTHENTICATOR)) {
                 String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + TOTP_AUTHENTICATOR + "&sessionDataKey="
+                    + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
+                response.sendRedirect(directTo);
+
+                return;
+            } else if (localAuthenticatorNames.contains(EMAIL_OTP_AUTHENTICATOR)) {
+                String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + EMAIL_OTP_AUTHENTICATOR + "&sessionDataKey="
                     + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
                 response.sendRedirect(directTo);
 
@@ -304,22 +323,32 @@
     String identityMgtEndpointContextURL = application.getInitParameter("IdentityManagementEndpointContextURL");
     String accountRegistrationEndpointContextURL = application.getInitParameter("AccountRegisterEndpointURL");
     String srURLEncodedURL = "";
-    Boolean isSelfSignUpEnabledInTenant = false;
-    Boolean isUsernameRecoveryEnabledInTenant = false;
-    Boolean isPasswordRecoveryEnabledInTenant = false;
+    Boolean isSelfSignUpEnabledInTenant;
+    Boolean isUsernameRecoveryEnabledInTenant;
+    Boolean isPasswordRecoveryEnabledInTenant;
 
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
-        isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
-        isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                        .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    // Check whether authentication endpoint is hosted externally.
+    if (Boolean.parseBoolean(isHostedExternally)) {
+        isSelfSignUpEnabledInTenant = false;
+        isUsernameRecoveryEnabledInTenant = false;
+        isPasswordRecoveryEnabledInTenant = false;
+    } else {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
+            if (isSelfSignUpEnabledInTenant && StringUtils.equals("Console", appName)) {
+                isSelfSignUpEnabledInTenant = false;
+            }
+            isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
+            isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                            .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     }
 
     if (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
@@ -340,7 +369,13 @@
             accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
         }
         // For self sign-up build the normal callback URL.
-        String srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+        String srURI;
+
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            srURI = application.getInitParameter("IdentityManagementEndpointLoginURL");
+        } else {
+            srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+        }
         String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
         String srURLWithoutEncoding = srURI + "?" + srprmstr;
         srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
@@ -790,7 +825,21 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <% } else { %>
+                                    <% } else {
+
+                                        String logoPath = imageURL;
+
+                                        if (imageURL == null || imageURL.isEmpty()) {
+                                            logoPath = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                                        }
+
+                                        if (!imageURL.isEmpty() && imageURL.contains("assets/images/logos/")) {
+                                            String[] imageURLSegements = imageURL.split("/");
+                                            String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+
+                                            logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                                        }
+                                    %>
                                     <div class="social-login blurring social-dimmer">
                                         <div class="field">
                                             <button
@@ -806,7 +855,7 @@
                                                         role="presentation"
                                                         alt="sign-in-with-<%=Encode.forHtmlContent(idpName)%> icon"
                                                         class="ui image"
-                                                        src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                        src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
                                             </button>
                                         </div>
@@ -856,7 +905,7 @@
                                     >
                                         <img
                                             class="ui image"
-                                            src="libs/themes/default/assets/images/icons/fingerprint.svg"
+                                            src="libs/themes/default/assets/images/authenticators/fido-passkey-black.svg"
                                             alt="Fido Logo"
                                             role="presentation" />
                                         <span>
@@ -914,7 +963,10 @@
                                             src="libs/themes/default/assets/images/icons/outline-icons/clock-outline.svg"
                                             alt="TOTP Logo"
                                             role="presentation">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -935,7 +987,10 @@
                                                 'sms-otp-authenticator')"
                                         >
                                         <img class="ui image" src="libs/themes/default/assets/images/icons/sms-icon.svg">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sms-otp-authenticator.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sms.otp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -960,7 +1015,10 @@
                                             src="libs/themes/default/assets/images/icons/solid-icons/email-solid.svg"
                                             alt="Email OTP Logo"
                                             role="presentation">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -983,7 +1041,10 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
                                                         <img class="ui image" src="libs/themes/default/assets/images/branding/asgardeo-trifacta.svg">
-                                                        <span><%=Encode.forHtmlContent("Continue With Asgardeo")%></span>
+                                                        <span>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
+                                                            <%=Encode.forHtmlContent("Asgardeo")%>
+                                                        </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1001,7 +1062,10 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
                                                         <img class="ui image" src="libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg">
-                                                        <span><%=Encode.forHtmlContent("Continue With Organization")%></span>
+                                                        <span>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization")%>
+                                                        </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1009,13 +1073,22 @@
                             } %>
                             </div>
                         </div>
-                    <% }
+                    <% } %>
+
+                    <%
                     String clientId = request.getParameter("client_id");
                     String urlParameters = "";
-                    if ((StringUtils.equals("CONSOLE",clientId)
-                            || (StringUtils.equals("MY_ACCOUNT",clientId)
-                            && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
-                            && !StringUtils.equals("true", promptAccountLinking)) {
+                    if (
+                        !isSelfSignUpEnabledInTenant
+                        && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
+                        && (
+                            StringUtils.equals("CONSOLE",clientId)
+                            || (
+                                StringUtils.equals("MY_ACCOUNT",clientId)
+                                && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)
+                            )
+                        )
+                        && !StringUtils.equals("true", promptAccountLinking)) {
                             String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
                             String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
                             Boolean isRecoveryEPAvailable = false;
@@ -1049,7 +1122,7 @@
                                 }
                             }
                         %>
-                            <div class="mt-4">
+                            <div class="mt-4 mb-4">
                                 <div class="mt-3 external-link-container text-small">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
                                     <a
@@ -1065,36 +1138,36 @@
                                     </a>
                                 </div>
                             </div>
-                            <% }
-                            if (!StringUtils.equals("CONSOLE",clientId)
-                                    && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
-                                    isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
-                                    urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
-                            %>
-                                    <div class="ui horizontal divider">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
-                                    </div>
-                                    <div class="mt-0">
-                                    <div class="buttons">
-                                        <button
-                                            type="button"
-                                            <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                                            onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(selfSignUpOverrideURL)%>';"
-                                            <% } else { %>
-                                            onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
-                                            <% } %>
-                                            class="ui large fluid button secondary"
-                                            id="registerLink"
-                                            role="button"
-                                            data-testid="login-page-create-account-button"
-                                        >
-                                            Create an account
-                                        </button>
-                                    </div>
+                        <% }
+                        if (
+                            !StringUtils.equals("CONSOLE",clientId)
+                            && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
+                            isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences
+                        ) {
+                                urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
+                        %>
+                                <div class="ui horizontal divider">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
                                 </div>
-                            <%
-                            }
-                            %>
+                                <div class="mt-0">
+                                <div class="buttons">
+                                    <button
+                                        type="button"
+                                        <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
+                                        onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
+                                        <% } else { %>
+                                        onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
+                                        <% } %>
+                                        class="ui large fluid button secondary"
+                                        id="registerLink"
+                                        role="button"
+                                        data-testid="login-page-create-account-button"
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.an.account")%>
+                                    </button>
+                                </div>
+                            </div>
+                        <% } %>
                 </div>
             </div>
         </layout:component>
@@ -1314,9 +1387,15 @@
                 });
 
                 $(elem).addClass(linkClicked);
-                document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
-                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
-                    "<%=multiOptionURIParam%>";
+
+                var baseLocation = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
+                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
+
+                if ("<%=username%>" !== "null" && "<%=username%>".length > 0) {
+                    document.location = baseLocation + "&username=" + "<%=Encode.forUriComponent(username)%>" + "<%=multiOptionURIParam%>";
+                } else {
+                    document.location = baseLocation + "<%=multiOptionURIParam%>";
+                }
             }
         }
 

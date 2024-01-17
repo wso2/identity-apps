@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProductVersionConfigInterface } from "./core";
+import { LegacyModeInterface, ProductVersionConfigInterface } from "./core";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
@@ -49,7 +49,7 @@ export interface CommonConfigInterface<T, S, U, V, W> {
 /**
  * Common config interface for deployment settings.
  */
-export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
+export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S = Record<string, unknown>> {
     /**
      * Base name of the application (tenant qualified).
      * ex: `/t/wos2.com/sample-portal`
@@ -102,13 +102,19 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
      */
     loginCallbackUrl: string;
     /**
+     * Organization prefix.
+     * ex: `o`.
+     * usage: `/${organizationPrefix}/<org_id>` - `/o/<org_id>`
+     */
+    organizationPrefix: string;
+    /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
      */
     serverHost: string;
     /**
      * Custom branded host of the Identity Sever.
-     * ex: https://localhost:9443/t/test -> https://api.test.com
+     * ex: https://localhost:9443/t/test -\> https://api.test.com
      */
     customServerHost: string;
     /**
@@ -139,7 +145,7 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
 /**
  * Common config interface for UI settings.
  */
-export interface CommonUIConfigInterface<T = {}> {
+export interface CommonUIConfigInterface<T = Record<string, unknown>> {
     /**
      * Portal Announcement banner.
      */
@@ -175,6 +181,10 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     isCookieConsentBannerEnabled: boolean;
     /**
+     * Cookie policy url.
+     */
+    cookiePolicyUrl: string;
+    /**
      * Should show/hide the avatar label in app header.
      */
     isHeaderAvatarLabelAllowed: boolean;
@@ -182,6 +192,10 @@ export interface CommonUIConfigInterface<T = {}> {
      * Should the left navigation be categorized.
      */
     isLeftNavigationCategorized?: boolean;
+    /**
+    * Flag to check whether the password validation is performed using input validation listener.
+    */
+    isPasswordInputValidationEnabled: boolean;
     /**
      * Privacy Policy configs.
      */
@@ -196,6 +210,10 @@ export interface CommonUIConfigInterface<T = {}> {
      * ex: allowSnapshot, override etc.
      */
     productVersionConfig?: ProductVersionConfigInterface;
+    /**
+     * Legacy mode
+     */
+    legacyMode?: LegacyModeInterface;
     /**
      * Theme configs.
      */
@@ -322,6 +340,10 @@ export interface FeatureAccessConfigInterface {
      */
     scopes: CRUDScopesInterface;
     /**
+     * Set of deprecated features.
+     */
+    deprecatedFeaturesToShow?: DeprecatedFeatureInterface[];
+    /**
      * Set of disabled features.
      */
     disabledFeatures?: string[];
@@ -332,7 +354,18 @@ export interface FeatureAccessConfigInterface {
     /**
      * Enable the tour option
      */
-     tryittourenabled?: boolean;
+    tryittourenabled?: boolean;
+}
+
+export interface DeprecatedFeatureInterface {
+    /**
+     * Name of the deprecated feature.
+     */
+    name?: string;
+    /**
+     * An array of deprecated properties.
+     */
+    deprecatedProperties?: string[];
 }
 
 /**
@@ -374,7 +407,7 @@ export interface SBACInterface<T> {
 /**
  * Interface for IDP configs.
  */
-export interface IdpConfigInterface<T = {}, S = {}> {
+export interface IdpConfigInterface<T = Record<string, unknown>, S = Record<string, unknown>> {
     /**
      * If PKCE enabled or not.
      */

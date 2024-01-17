@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,6 +77,10 @@ export const StickyBar: FunctionComponent<PropsWithChildren<
     }, [ updateButtonRef.current ]);
 
     useEffect(() => {
+        if (!containerRef) {
+            return;
+        }
+
         setStickyBarWidth(containerRef?.current?.offsetWidth);
 
         const containerPadding: string = window.getComputedStyle(containerRef?.current, null)
@@ -85,7 +89,7 @@ export const StickyBar: FunctionComponent<PropsWithChildren<
         const containerPaddingValue: number = parseInt(containerPadding?.replace("px", ""), 10);
 
         setPadding(containerPaddingValue - 14);
-    }, [ containerRef.current ]);
+    }, [ containerRef?.current ]);
 
     return (
         showStickyBar &&

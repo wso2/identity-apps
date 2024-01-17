@@ -20,7 +20,7 @@ import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
 import { BrandingPreferencesConstants } from "../constants";
-import { BrandingPreferenceMeta, LAYOUTS } from "../meta";
+import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
@@ -350,4 +350,24 @@ export class BrandingPreferenceUtils {
                 return Promise.reject(error);
             });
     };
+
+    /**
+     * Checks if the preview container size is too small to display the preview properly.
+     *
+     * @param layout - Current selected layout.
+     * @param width - Current preview container width.
+     * @returns a boolean value.
+     */
+    public static isLayoutPreviewTrimmed(layout: PredefinedLayouts, width: number): boolean {
+        switch(layout) {
+            case PredefinedLayouts.LEFT_ALIGNED:
+            case PredefinedLayouts.RIGHT_ALIGNED:
+                return width < BrandingPreferencesConstants.BRANDING_PREVIEW_MIN_WIDTH_SIDE_ALIGNED;
+            case PredefinedLayouts.LEFT_IMAGE:
+            case PredefinedLayouts.RIGHT_IMAGE:
+                return width < BrandingPreferencesConstants.BRANDING_PREVIEW_MIN_WIDTH_SIDE_IMAGE;
+            default:
+                return false;
+        }
+    }
 }

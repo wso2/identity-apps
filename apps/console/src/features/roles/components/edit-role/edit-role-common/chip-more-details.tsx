@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CardContent, Paper, Popover } from "@oxygen-ui/react";
+import { Card, CardContent, Paper, Popover } from "@oxygen-ui/react";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
@@ -45,7 +45,7 @@ interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
     /**
      * The user store of the option. This will display in the chip.
      */
-    userStore: string;
+    userStore?: string;
 }
 
 export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
@@ -62,10 +62,10 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
 
     return (
         <Popover
+            className="role-chip-popover"
             open={ !!popoverAnchorEl }
             anchorEl={ popoverAnchorEl }
-            onClose={ () => onPopoverClose() }
-            onMouseDown={ () => onPopoverClose() }
+            onClose={ onPopoverClose }
             anchorOrigin={ {
                 horizontal: "left",
                 vertical: "bottom"
@@ -75,45 +75,52 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
                 vertical: "top"
             } }
             elevation={ 0 }
+            disableRestoreFocus
         >
             <Paper>
-                <CardContent>
-                    <Grid container alignItems="center" columnSpacing={ 2 }>
-                        <Grid container alignItems="center" justifyContent="flex-start">
-                            <Grid>
-                                <AppAvatar
-                                    image={ (
-                                        <AnimatedAvatar
-                                            name={ primaryText }
-                                            size="mini"
-                                        />
-                                    ) }
-                                    size="mini"
-                                />
-                            </Grid>
-                            <Grid>
-                                <ListItemText
-                                    primary={ primaryText }
-                                    secondary={ secondaryText ? secondaryText : null }
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid justifyContent="flex-end">
-                            <Chip
-                                icon={ (
-                                    <GenericIcon
-                                        inline
-                                        size="default"
-                                        transparent
-                                        icon={ getSidePanelIcons().userStore }
-                                        verticalAlign="middle"
+                <Card className="role-chip-more-details">
+                    <CardContent>
+                        <Grid container alignItems="center" columnSpacing={ 2 }>
+                            <Grid container alignItems="center" justifyContent="flex-start">
+                                <Grid>
+                                    <AppAvatar
+                                        image={ (
+                                            <AnimatedAvatar
+                                                name={ primaryText }
+                                                size="mini"
+                                            />
+                                        ) }
+                                        size="mini"
                                     />
-                                ) }
-                                label={ userStore }
-                            />
+                                </Grid>
+                                <Grid>
+                                    <ListItemText
+                                        primary={ primaryText }
+                                        secondary={ secondaryText }
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid justifyContent="flex-end">
+                                {
+                                    userStore ? (
+                                        <Chip
+                                            icon={ (
+                                                <GenericIcon
+                                                    inline
+                                                    size="default"
+                                                    transparent
+                                                    icon={ getSidePanelIcons().userStore }
+                                                    verticalAlign="middle"
+                                                />
+                                            ) }
+                                            label={ userStore }
+                                        />
+                                    ) : null
+                                }
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </CardContent>
+                    </CardContent>
+                </Card>
             </Paper>
         </Popover>
     );

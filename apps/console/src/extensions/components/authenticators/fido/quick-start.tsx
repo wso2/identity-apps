@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,22 +16,29 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import Typography from "@oxygen-ui/react/Typography";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { 
-    DocumentationLink,
+import {
     GenericIcon,
     Heading,
     Link,
-    Message,
     PageHeader,
-    Text,
-    useDocumentation
+    Text
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
+import BuildLoginFlowIllustration from
+    "../../../../features/connections/components/authenticators/fido/assets/build-login-flow.png";
+import ConfigureParametersIllustration from
+    "../../../../features/connections/components/authenticators/fido/assets/configure-parameters.png";
+import CustomizeStepsIllustration from
+    "../../../../features/connections/components/authenticators/fido/assets/customize-steps.png";
+import { FeatureConfigInterface } from "../../../../features/core/models";
+import { AppState } from "../../../../features/core/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 
@@ -56,13 +63,20 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     /**
      * Vertical Stepper steps.
-     * 
+     *
      * @returns VerticalStepperStepInterface List.
      */
     const steps: VerticalStepperStepInterface[] = [
@@ -75,9 +89,10 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.fido.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
-                                application </Link>
-                            for which you want to set up FIDO2 login.
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
+                            for which you want to set up passkey login.
                         </Trans>
                     </Text>
                 </>
@@ -91,8 +106,8 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add FIDO2
-                            login</strong> to configure a basic FIDO flow.
+                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
+                            Login</strong> to configure a basic passkey flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -100,7 +115,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add FIDO2 login</strong>
+                    Select <strong>Add Passkey Login</strong>
                 </Trans>
             )
         },
@@ -118,6 +133,98 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                 </>
             ),
             stepTitle: t("extensions:develop.identityProviders.fido.quickStart.steps.customizeFlow.heading")
+        },
+        {
+            stepContent: (
+                <>
+                    <Text>
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column width={ 16 }>
+                                    { t("extensions:develop.identityProviders.fido.quickStart.steps." +
+                                        "configureParameters.content.steps.info") }
+                                    <ol>
+                                        <li>
+                                            <Trans
+                                                i18nKey={ "extensions:develop.identityProviders.fido." +
+                                                    "quickStart.steps.configureParameters.content.steps.1" }
+                                            >
+                                                Navigate to the <strong>Connections</strong> area.
+                                            </Trans>
+                                        </li>
+                                        <li>
+                                            <Trans
+                                                i18nKey={ "extensions:develop.identityProviders.fido." +
+                                                "quickStart.steps.configureParameters.content.steps.2" }
+                                            >
+                                                Locate and select the <strong>Passkey</strong> connection.
+                                            </Trans>
+                                        </li>
+                                        <li>
+                                            <Trans
+                                                i18nKey={ "extensions:develop.identityProviders.fido." +
+                                                "quickStart.steps.configureParameters.content.steps.3" }
+                                            >
+                                                Navigate to the <strong>Settings</strong> tab.
+                                            </Trans>
+                                        </li>
+                                    </ol>
+                                </Grid.Column>
+                                <Grid.Row>
+                                    <Grid.Column>
+                                        <GenericIcon
+                                            inline
+                                            transparent
+                                            icon={ ConfigureParametersIllustration }
+                                            size="huge"/>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Typography variant="h6">
+                                        { t("extensions:develop.identityProviders.fido.quickStart.steps." +
+                                        "configureParameters.content.parameters.progressiveEnrollment.label") }
+                                    </Typography>
+                                    { t("extensions:develop.identityProviders.fido.quickStart." +
+                                        "steps.configureParameters.content.parameters." +
+                                        "progressiveEnrollment.description") }
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Alert severity="info">
+                                        <Trans
+                                            i18nKey={ "extensions:develop.identityProviders.fido." +
+                                            "quickStart.steps.configureParameters.content.parameters." +
+                                            "progressiveEnrollment.note" }
+                                        >
+                                            When the Passkey is set as a <strong>first factor</strong> option,
+                                            users need to add an <strong>adaptive script</strong> to verify the
+                                            user&apos;s identity prior to passkey enrollment. To include the script,
+                                            users can use the <strong>Passkeys Progressive Enrollment</strong> template
+                                            available in the <strong>Sign-In-Method</strong> tab of the application.
+                                        </Trans>
+                                    </Alert>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Typography variant="h6">
+                                        { t("extensions:develop.identityProviders.fido.quickStart." +
+                                        "steps.configureParameters.content.parameters." +
+                                        "usernamelessAuthentication.label") }
+                                    </Typography>
+                                    { t("extensions:develop.identityProviders.fido.quickStart.steps." +
+                                        "configureParameters.content.parameters.usernamelessAuthentication." +
+                                        "description") }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Text>
+                </>
+            ),
+            stepTitle: t("extensions:develop.identityProviders.fido.quickStart.steps.configureParameters.heading")
         }
     ];
 
@@ -147,24 +254,6 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         />
                     </Grid.Column>
                 </Grid.Row>
-            </Grid>
-            <Grid data-componentid={ `${ testId }-passkeys` }>
-                <div className="mt-3 mb-6">
-                    <Message
-                        type={ "info" }
-                        header={ t("extensions:develop.identityProviders.fido.quickStart.passkeys.heading") }
-                        content={ 
-                            (<>
-                                { t("extensions:develop.identityProviders.fido.quickStart.passkeys.content") }
-                                <DocumentationLink 
-                                    link={ getLink("develop.connections.edit.quickStart.fido.learnMore") }
-                                >
-                                    { t("extensions:develop.identityProviders.fido.quickStart.passkeys.docLinkText") }
-                                </DocumentationLink>
-                            </>)
-                        }
-                    />
-                </div>
             </Grid>
             {
                 showApplicationModal && (

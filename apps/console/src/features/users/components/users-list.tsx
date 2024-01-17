@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,32 +17,34 @@
  */
 
 import { UserstoreConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
-    MultiValueAttributeInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    Popup,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { UserManagementUtils } from "../../../extensions/components/users/utils";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { userConfig } from "../../../extensions/configs/user";
 import {
     AppConstants,
     AppState,
@@ -81,6 +83,10 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      * @param columns - New columns.
      */
     onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
+    /**
+     * Callback to be fired when the empty list placeholder action is clicked.
+     */
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * On list item select callback.
      */
@@ -204,9 +210,67 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     /**
+     * Checks whether the username is a UUID.
+     *
+     * @returns If the username is a UUID.
+     */
+    const checkUUID = ( username : string ): boolean => {
+
+        const regexExp: RegExp = new RegExp(
+            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+        );
+
+        return regexExp.test(username);
+    };
+
+    /* Resolves username.
+    *
+    * @returns Username for the user avatar.
+    */
+    const resolveAvatarUsername = ( user: UserBasicInterface ): string => {
+        const usernameUUID: string = getUserNameWithoutDomain(user?.userName);
+
+        if (user.name?.givenName){
+            return user.name.givenName[0];
+        } else if (user.name?.familyName) {
+            return user.name.familyName[0];
+        } else if (user.emails[0]){
+            return user.emails[0][0];
+        } else if (!checkUUID(usernameUUID)){
+            return usernameUUID[0];
+        }
+
+        return "";
+    };
+
+    const renderUserIdp = (user: UserBasicInterface): string => {
+        const userStore: string = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]?.toUpperCase()
+            : "PRIMARY";
+
+        const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+
+        if (!userIdp) {
+            return "N/A";
+        }
+
+        if (userIdp.split("/").length > 1) {
+            if (readOnlyUserStores?.includes(userStore.toString())) {
+                // For remote userstores.
+                return userIdp.split("/")[1] + "-remote";
+            } else {
+                // For default userstore.
+                return userIdp.split("/")[1];
+            }
+        } else {
+            return userIdp;
+        }
+    };
+
+    /**
      * Resolves data table columns.
      *
-     * @returns Table columns.
+     * @returns the data table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         const defaultColumns: TableColumnInterface[] = [
@@ -216,70 +280,95 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 id: "name",
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
-                    let header: string | MultiValueAttributeInterface;
-                    let subHeader: string | MultiValueAttributeInterface;
-                    const isNameAvailable: boolean = 
-                    user.name?.familyName === undefined && user.name?.givenName === undefined;
-
-                    if (user[SCIMConfigs.scim.enterpriseSchema]?.userSourceId) {
-                        subHeader = user.emails[0]
-                            ? user.emails[0]
-                            : user.id;
-
-                        header = (user.name && user.name.givenName !== undefined)
-                            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
-                            : subHeader;
-
-                    } else {
-                        subHeader = user.userName.split("/")?.length > 1
-                            ? user.userName.split("/")[ 1 ]
-                            : user.userName.split("/")[ 0 ];
-
-                        header = (user.name && user.name.givenName !== undefined)
-                            ? user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "")
-                            : subHeader;
-                    }
+                    const header: string = getUserNameWithoutDomain(user?.userName);
+                    const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
+                    const isNameAvailable: boolean = user.name?.familyName === undefined &&
+                        user.name?.givenName === undefined;
 
                     return (
                         <Header
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${testId}-item-heading` }
+                            data-componentid={ `${ testId }-item-heading` }
                         >
                             <UserAvatar
-                                data-testid="users-list-item-image"
-                                name={ user.userName }
+                                data-componentid="users-list-item-image"
+                                name={ resolveAvatarUsername(user) }
                                 size="mini"
                                 image={ user.profileUrl }
                                 spaced="right"
+                                data-suppress=""
                             />
                             <Header.Content>
-                                <div className={ isNameAvailable ? "mt-2" : "" }>{ header as ReactNode }</div>
+                                <div>
+                                    { header as ReactNode }
+                                    {
+                                        user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg && (
+                                            <Label size="mini" className="client-id-label">
+                                                { t("console:manage.features.parentOrgInvitations." +
+                                                "invitedUserLabel") }
+                                            </Label>
+                                        )
+                                    }
+                                </div>
                                 {
                                     (!isNameAvailable) &&
-                                    (
-                                        <Header.Subheader
-                                            data-testid={ `${testId}-item-sub-heading` }>
-                                            { subHeader as ReactNode }
-                                        </Header.Subheader>
-                                    )
+                                        (<Header.Subheader
+                                            data-componentid={ `${ testId }-item-sub-heading` }
+                                        >
+                                            { subHeader }
+                                        </Header.Subheader>)
                                 }
                             </Header.Content>
                         </Header>
                     );
                 },
-                title: t("console:manage.features.users.list.columns.name")
-            },
+                title: "User"
+            }
+        ];
+
+        !userConfig.disableManagedByColumn && defaultColumns.push(
+            {
+                allowToggleVisibility: false,
+                dataIndex: "idpType",
+                id: "idpType",
+                key: "idpType",
+                render: (user: UserBasicInterface): ReactNode => renderUserIdp(user),
+                title: (
+                    <>
+                        <div className={ "header-with-popup" }>
+                            <span>
+                                { t("extensions:manage.users.list.columns.idpType") }
+                            </span>
+                            <Popup
+                                trigger={ (
+                                    <div className="inline" >
+                                        <Icon disabled name="info circle" className="link pointing pl-1" />
+                                    </div>
+                                ) }
+                                content={ t("extensions:manage.users.list.popups.content.idpTypeContent") }
+                                position="top center"
+                                size="mini"
+                                hideOnScroll
+                                inverted
+                            />
+                        </div>
+                    </>
+                )
+            }
+        );
+
+        defaultColumns.push(
             {
                 allowToggleVisibility: false,
                 dataIndex: "action",
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.users.list.columns.actions")
+                title: ""
             }
-        ];
+        );
 
         if (!showMetaContent || !userMetaListContent) {
             return defaultColumns;
@@ -303,14 +392,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             if (key === "meta.lastModified") {
                 dynamicColumn = {
                     ...dynamicColumn,
-                    render: (user: UserBasicInterface): ReactNode => {
-                        const now: moment.Moment = moment(new Date());
-                        const receivedDate: moment.Moment = moment(user?.meta?.lastModified);
+                    render: (user: UserBasicInterface): ReactNode =>
+                        CommonUtils.humanizeDateDifference(user?.meta?.lastModified)
+                };
+            }
 
-                        return t("console:common.dateTime.humanizedDateString", {
-                            date: moment.duration(now.diff(receivedDate)).humanize()
-                        });
-                    }
+            if(key === "userName") {
+                dynamicColumn = {
+                    ...dynamicColumn,
+                    render: (user: UserBasicInterface): ReactNode =>
+                        getUserNameWithoutDomain(user?.userName)
                 };
             }
 
@@ -347,6 +438,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
+                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -361,6 +453,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
+                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -459,7 +552,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ false }
+                showHeader={ true }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
             />

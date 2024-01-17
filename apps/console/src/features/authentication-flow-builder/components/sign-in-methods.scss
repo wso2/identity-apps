@@ -16,11 +16,6 @@
  * under the License.
  */
 
-:root {
-    --asg-auth-flow-builder-script-editor-drawer-offset: 48px;
-    --asg-auth-flow-builder-script-side-panel-drawer-width: 50%;
-}
-
 .sign-in-method-split-view {
     border: 1px solid var(--oxygen-palette-divider);
     border-radius: 8px;
@@ -52,22 +47,8 @@
         }
     }
 
-    .script-editor-drawer {
-        top: var(--asg-auth-flow-builder-script-editor-drawer-offset);
-        right: -2px;
-        height: calc(100% - (var(--asg-auth-flow-builder-script-editor-drawer-offset) - 1px));
-
-        &.side-panel-drawer.open .MuiDrawer-paper {
-            width: var(--asg-auth-flow-builder-script-side-panel-drawer-width);
-        }
-
-        .side-panel-drawer-panel-content, .react-monaco-editor-container {
-            width: calc(100% - var(--asg-auth-flow-builder-side-panel-drawer-mini-width));
-        }
-    }
-
     .revert-to-default-button {
-        right: var(--asg-auth-flow-builder-side-panel-drawer-mini-width);
+        right: 0;
         box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
         position: absolute;
         z-index: 5;
@@ -83,6 +64,7 @@
         padding: 8px 15px;
         gap: 10px;
         border-radius: var(--oxygen-shape-borderRadius);
+        transition: margin-top 0.2s ease-in-out;
     }
 }
 

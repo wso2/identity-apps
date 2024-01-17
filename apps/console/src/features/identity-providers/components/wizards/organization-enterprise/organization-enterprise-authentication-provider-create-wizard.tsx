@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,7 +34,6 @@ import {
 } from "./organization-enterprise-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
-    AppConstants,
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal
@@ -267,18 +267,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizard: FunctionC
         identityProvider.description = values.description?.toString();
         identityProvider.templateId = template.templateId;
 
-        // // TODO: Refactor the usage of absolute image paths once Media Service is available.
-        // // Tracked here - https://github.com/wso2/product-is/issues/12396
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                "/" + AppConstants.getAppBasename() +
-                "/libs/themes/default/assets/images/identity-providers/organization-sso.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                "/libs/themes/default/assets/images/identity-providers/organization-sso.svg";
-            }
-        }
+        identityProvider.image = "assets/images/logos/organization-sso.svg";
 
         handleWizardFormFinish(identityProvider);
     };

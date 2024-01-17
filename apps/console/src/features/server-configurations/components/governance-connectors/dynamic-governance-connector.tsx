@@ -129,7 +129,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
             properties: []
-        };        
+        };
         
         for (const key in values) {
             data.properties.push({
@@ -149,14 +149,14 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
         setIsSubmitting(true);
 
-        updateGovernanceConnector(data, connector.categoryId, connector.id)
+        updateGovernanceConnector(data, connector?.categoryId, connector?.id)
             .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
                             "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.description",
-                            { name: connector.friendlyName }
+                            { name: resolveConnectorTitle(connector) }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -197,15 +197,15 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             onSubmit={ handleSubmit }
             connector={ connector }
             props={ {
-                properties: connector.properties.filter(
+                properties: connector?.properties.filter(
                     ((property: ConnectorPropertyInterface) => 
                         serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
                         || serverConfigurationConfig.connectorPropertiesToShow
                             .includes(ServerConfigurationsConstants.ALL)))
             } }
-            form={ kebabCase(connector.friendlyName) + "-form" }
+            form={ kebabCase(connector?.friendlyName) + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
-            data-testid={ `${ testId }-${ connector.name }-form` }
+            data-testid={ `${ testId }-${ connector?.name }-form` }
             isSubmitting={ isSubmitting }
         />
     );
@@ -222,6 +222,21 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
+        if (connector?.id === ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID) {
+            return t("console:manage.features.governanceConnectors.connectorCategories.passwordPolicies." +
+            "connectors.passwordExpiry.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
+            return t("console:manage.features.governanceConnectors.connectorCategories.userOnboarding." +
+            "connectors.askPassword.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+            return t("console:manage.features.governanceConnectors.connectorCategories.otherSettings." +
+            "connectors.userClaimUpdate.friendlyName");
+        }
+
         const connectorTitleKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
             camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName";
         let connectorTitle: string = connector?.friendlyName;
@@ -229,7 +244,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         if (i18n.exists(connectorTitleKey)) {
             connectorTitle = t(connectorTitleKey);
         }
-        
+
         return connectorTitle;
     };
 
@@ -245,8 +260,23 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        let connectorName: string = connector.friendlyName;
-    
+        let connectorName: string = connector?.friendlyName;
+
+        if (connector?.id === ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID) {
+            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.passwordPolicies." +
+            "connectors.passwordExpiry.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
+            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.userOnboarding." +
+            "connectors.askPassword.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.otherSettings." +
+            "connectors.userClaimUpdate.friendlyName");
+        }
+
         if (connectorName.includes(ServerConfigurationsConstants.DEPRECATION_MATCHER)) {
             connectorName = connectorName.replace(ServerConfigurationsConstants.DEPRECATION_MATCHER, "");
         }
@@ -268,12 +298,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        if (connector.id === ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID) {
+        if (connector?.id === ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID) {
             return (
                 <Message
                     warning
                     className="mb-5 connector-info"
-                    data-componentid={ `${ componentId }-${ connector.id }-deprecation-warning` }
+                    data-componentid={ `${ componentId }-${ connector?.id }-deprecation-warning` }
                 >
                     <Icon name="warning sign" />
                     {

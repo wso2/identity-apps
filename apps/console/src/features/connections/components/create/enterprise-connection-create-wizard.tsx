@@ -22,7 +22,6 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/common/src/configs/ui";
-import { AppConstants } from "@wso2is/common/src/constants/app-constants";
 import { ConfigReducerStateInterface } from "@wso2is/common/src/models/reducer-state";
 import { AppState } from "@wso2is/common/src/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -50,6 +49,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, {
@@ -68,8 +68,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
+import { commonConfig } from "../../../../extensions";
 import { EventPublisher } from "../../../core";
-import { createConnection, useGetConnectionTemplate, useGetConnections } from "../../api/connections";
+import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
@@ -78,9 +79,9 @@ import {
     ConnectionInterface,
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
-    StrictConnectionInterface
+    IdpNameValidationCache
 } from "../../models/connection";
-import { handleGetConnectionsError } from "../../utils/connection-utils";
+import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -150,7 +151,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
-    const [ idpList, setIdPList ] = useState<StrictConnectionInterface[]>(undefined);
+
+    const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+    const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -159,42 +162,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
-    const {
-        data: connections,
-        isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError
-    } = useGetConnections(null, null, null, null);
 
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading
     } = useGetConnectionTemplate(selectedTemplateId, selectedTemplateId !== null);
-
-    useEffect(() => {
-        if (isConnectionsFetchRequestLoading) {
-
-            return;
-        }
-
-        if (!connections) {
-
-            return;
-        }
-
-        if (idpList) {
-
-            return;
-        }
-
-        setIdPList(connections.identityProviders);
-    }, [ connections ]);
-
-    useEffect(() => {
-        if (connectionsFetchRequestError) {
-            handleGetConnectionsError(connectionsFetchRequestError);
-        }
-    }, [ connectionsFetchRequestError ]);
 
     useEffect(() => {
         if (!initWizard) {
@@ -239,14 +211,43 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         ] as WizardStepInterface[];
     };
 
-    const isIdpNameAlreadyTaken = (userInput: string): boolean => {
-        if (idpList?.length > 0) {
-            return idpList?.reduce((set: Set<string>, { name }: { name: string }) => set.add(name), new Set<string>())
-                .has(userInput);
-        }
+    /**
+     * Check if the typed IDP name is already taken.
+     *
+     * @param value - User input for the IDP name.
+     */
+    const idpNameValidation: DebouncedFunc<(value: string) => void> = debounce(
+        async (value: string) => {
+            let idpExist: boolean;
 
-        return false;
-    };
+            if (idpNameValidationCache?.current?.value === value) {
+                idpExist = idpNameValidationCache?.current?.state;
+            }
+
+            if (idpExist === undefined) {
+                try {
+                    idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                } catch (e) {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    idpExist = false;
+                }
+
+                idpNameValidationCache.current = {
+                    state: idpExist,
+                    value
+                };
+            }
+
+            setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+        },
+        500
+    );
 
     const renderDimmerOverlay = (): ReactNode => {
         return (
@@ -260,10 +261,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
      * Check whether loop back call is allowed or not.
      * @param value - URL to check.
      */
-    const isLoopBackCall = (value: string) => {
-        return (!(URLUtils.isLoopBackCall(value))) ?
-            undefined : t("console:develop.features.idp.forms.common." +
-                "internetResolvableErrorMessage");
+    const checkValueIsLoopBackCall = (value: string) => {
+        if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+            return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+        }
+
+        return undefined;
     };
 
     /**
@@ -298,8 +301,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
             identityProvider.templateId = template.subTemplates
                 .find((template: ConnectionTemplateInterface) => {
-                    return template.templateId === "enterprise-saml-idp";
-                })?.templateId;
+                    return template.id === "enterprise-saml-idp";
+                })?.id;
 
             // Populate user entered values
             identityProvider.name = values?.name?.toString();
@@ -330,16 +333,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         }
 
         // Identity provider placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            }
-        }
+        identityProvider.image = "assets/images/logos/enterprise.svg";
 
         // Add the default description from the metadata instead from template.
         identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(
@@ -444,7 +438,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
-                if (isIdpNameAlreadyTaken(values.name)) {
+                if (values?.name && isUserInputIdpNameAlreadyTaken) {
                     errors.name = t("console:develop.features.authenticationProvider." +
                         "forms.generalDetails.name.validations.duplicate");
                 }
@@ -453,7 +447,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         "templates.enterprise.validation.name");
                 }
                 setNextShouldBeDisabled(ifFieldsHave(errors));
-            } }>
+            } }
+        >
             <Field.Input
                 data-testid={ `${ componentId }-form-wizard-idp-name` }
                 ariaLabel="name"
@@ -469,11 +464,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 format = { (values: any) => {
                     return values.toString().trimStart();
                 } }
+                listen={ idpNameValidation }
                 validation={ (values: any) => {
                     let errors: "";
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
-                    if (isIdpNameAlreadyTaken(values)) {
+                    if (values && isUserInputIdpNameAlreadyTaken) {
                         errors = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
@@ -493,9 +489,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
             />
             <div className="sub-template-selection">
                 <label className="sub-templates-label">Select protocol</label>
-                <Grid 
-                    container 
-                    spacing={ { md: 3, xs: 2 } } 
+                <Grid
+                    container
+                    spacing={ { md: 3, xs: 2 } }
                     columns={ { md: 12, sm: 8, xs: 4 } }
                 >
                     <Grid xs={ 2 } sm={ 4 } md={ 8 }>
@@ -546,7 +542,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         </WizardPage>
     );
 
-    const samlConfigurationPage = () => ( 
+    const samlConfigurationPage = () => (
         <WizardPage
             validate={ (values: any) => {
                 const errors: FormErrors = {};
@@ -566,7 +562,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
             } }>
             <Field.Input
                 ariaLabel="Service provider entity id"
-                inputType="url"
+                inputType="text"
                 name="SPEntityId"
                 label="Service provider entity ID"
                 required={ true }
@@ -611,7 +607,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         data-componentid={ `${ componentId }-form-wizard-saml-sso-url` }
                     />
                     <Field.Input
-                        inputType="url"
+                        inputType="text"
                         ariaLabel="Identity provider entity ID"
                         name="IdPEntityId"
                         label="Identity provider entity ID"
@@ -664,13 +660,13 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     errors.authorizationEndpointUrl = composeValidators(
                         required,
                         isUrl,
-                        isLoopBackCall,
+                        checkValueIsLoopBackCall,
                         length(OIDC_URL_MAX_LENGTH)
                     )(values.authorizationEndpointUrl);
                     errors.tokenEndpointUrl = composeValidators(
                         required,
                         isUrl,
-                        isLoopBackCall,
+                        checkValueIsLoopBackCall,
                         length(OIDC_URL_MAX_LENGTH)
                     )(values.tokenEndpointUrl);
                     setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -742,7 +738,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     if (values.jwks_endpoint?.length > 0) {
                         errors.jwks_endpoint = composeValidators(
                             length(JWKS_URL_LENGTH),
-                            isLoopBackCall,
+                            checkValueIsLoopBackCall,
                             isUrl
                         )(values.jwks_endpoint);
                     }
@@ -977,19 +973,16 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         className="content-container"
                         data-componentid={ `${ componentId }-modal-content-2` }>
                         { alert && alertComponent }
-                        { !isConnectionsFetchRequestLoading
-                            ? (
-                                <Wizard2
-                                    ref={ wizardRef }
-                                    initialValues={ initialValues }
-                                    onSubmit={ handleFormSubmit }
-                                    uncontrolledForm={ true }
-                                    pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                                    data-componentid={ componentId }>
-                                    { resolveWizardPages() }
-                                </Wizard2>
-                            ) : <ContentLoader />
-                        }
+                        <Wizard2
+                            ref={ wizardRef }
+                            initialValues={ initialValues }
+                            onSubmit={ handleFormSubmit }
+                            uncontrolledForm={ true }
+                            pageChanged={ (index: number) => setCurrentWizardStep(index) }
+                            data-componentid={ componentId }
+                        >
+                            { resolveWizardPages() }
+                        </Wizard2>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
                 { /*Modal actions*/ }

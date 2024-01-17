@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -28,6 +29,7 @@ import React, {
     ReactElement,
     lazy,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useSelector } from "react-redux";
@@ -50,7 +52,8 @@ import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
     ConnectionTabTypes,
-    ConnectionTemplateInterface
+    ConnectionTemplateInterface,
+    ImplicitAssociaionConfigInterface
 } from "../../models/connection";
 
 /**
@@ -72,7 +75,7 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
     /**
      * Callback to update the idp details.
      */
-    onUpdate: (id: string) => void;
+    onUpdate: (id: string, tabName?: string) => void;
     /**
      * Check if IDP is Google
      */
@@ -108,6 +111,10 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      */
     isAutomaticTabRedirectionEnabled?: boolean;
     /**
+     * Function to enable/disable automatic tab redirection.
+     */
+    setIsAutomaticTabRedirectionEnabled?: (state: boolean) => void;
+    /**
      * Specifies, to which tab(tabid) it need to redirect.
      */
     tabIdentifier?: string;
@@ -134,31 +141,38 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isSaml,
         isOidc,
         onDelete,
-        onUpdate,
+        onUpdate: onConnectionUpdate,
         template,
         type,
         isReadOnly,
         isAutomaticTabRedirectionEnabled,
+        setIsAutomaticTabRedirectionEnabled,
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
-    
+
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
-    
+
     /**
-     * This is placed as a temporary fix until the dynamic tab loading is implemented. 
+     * This is placed as a temporary fix until the dynamic tab loading is implemented.
      * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
      */
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
 
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
-        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID || 
+        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID ||
         identityProvider?.federatedAuthenticators
             .defaultAuthenticatorId === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID;
 
@@ -169,6 +183,26 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         certificate: identityProvider.certificate,
         homeRealmIdentifier: identityProvider.homeRealmIdentifier,
         isFederationHub: identityProvider.isFederationHub
+    };
+
+    const idpImplicitAssociationConfig: ImplicitAssociaionConfigInterface = {
+        isEnabled: identityProvider.implicitAssociation.isEnabled,
+        lookupAttribute: identityProvider.implicitAssociation.lookupAttribute
+    };
+
+    /**
+     * This wrapper function ensures that the user stays on the tab that
+     * triggered the update after completion. Additionally, it invokes
+     * the onUpdate callback on the parent component.
+     *
+     * @param id - Updated connection id.
+     */
+    const onUpdate = (id: string): void => {
+        if (isAutomaticTabRedirectionEnabled && tabIdentifier) {
+            onConnectionUpdate(id, tabIdentifier);
+        } else {
+            onConnectionUpdate(id, getPanes()[defaultActiveIndex]["data-tabid"]);
+        }
     };
 
     const Loader = (): ReactElement => (
@@ -187,7 +221,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                             identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
                         )
                 }
-                isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                templateType={ type }
                 isSaml={ isSaml }
                 isOidc={ isOidc }
                 editingIDP={ identityProvider }
@@ -280,11 +314,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             <AdvanceSettings
                 editingIDP={ identityProvider }
                 advancedConfigurations={ idpAdvanceConfig }
+                implicitAssociationConfig={ idpImplicitAssociationConfig }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-advance-settings` }
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
+                templateType = { type }
             />
         </ResourceTab.Pane>
     );
@@ -303,8 +339,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const IdentityProviderGroupsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <IdentityProviderGroupsTab 
-                editingIDP={ identityProvider } 
+            <IdentityProviderGroupsTab
+                editingIDP={ identityProvider }
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
@@ -312,7 +348,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             />
         </ResourceTab.Pane>
     );
-    
+
     useEffect(() => {
         setIsTrustedTokenIssuer(type === "trusted-token-issuer");
         setIsExpertMode(type === "expert-mode-idp");
@@ -329,15 +365,15 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
             return;
         }
-       
+
         let extensions: ResourceTabPaneInterface[] = [];
 
         if (typeof connectionSettingsMetaData?.edit?.tabs?.quickStart === "string") {
             extensions = identityProviderConfig
                 .editIdentityProvider.getTabExtensions({
                     content: lazy(
-                        () => import(`../../resources/guides/${ 
-                            connectionSettingsMetaData?.edit?.tabs?.quickStart 
+                        () => import(`../../resources/guides/${
+                            connectionSettingsMetaData?.edit?.tabs?.quickStart
                         }/quick-start`)
                     ),
                     identityProvider: identityProvider,
@@ -374,117 +410,114 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             panes.push(...tabPaneExtensions);
         }
 
-        /**
-         * This check is used as a temporary fix to hide the un-necessary tabs for trusted token issuers.
-         * This will be removed once the dynamic tab loading is implemented.
-         * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
-         */
-        if (isTrustedTokenIssuer) {
+        if (shouldShowTab(type, ConnectionTabTypes.GENERAL)) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,
                 menuItem: "General",
                 render: GeneralIdentityProviderSettingsTabPane
             });
-        } else {
-            panes.push({
-                "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,
-                menuItem: "General",
-                render: GeneralIdentityProviderSettingsTabPane
-            });
+        }
 
-            !isOrganizationEnterpriseAuthenticator && panes.push({
+        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
                 "data-tabid": ConnectionManagementConstants.SETTINGS_TAB_ID,
                 menuItem: "Settings",
                 render: AuthenticatorSettingsTabPane
             });
+        }
 
-            /**
-             * If the protocol is SAML and if the feature is enabled in
-             * configuration level we can show the attributes section.
-             * {@link identityProviderConfig} contains the configuration
-             * to enable or disable this via extensions. Please refer
-             * {@link apps/console/src/extensions#} configs folder and
-             * models folder for types. identity-provider.ts
-             */
-            const attributesForSamlEnabled: boolean = isSaml &&
-            identityProviderConfig.editIdentityProvider.attributesSettings;
+        /**
+         * If the protocol is SAML and if the feature is enabled in
+         * configuration level we can show the attributes section.
+         * {@link identityProviderConfig} contains the configuration
+         * to enable or disable this via extensions. Please refer
+         * {@link apps/console/src/extensions#} configs folder and
+         * models folder for types. identity-provider.ts
+         */
+        const attributesForSamlEnabled: boolean = isSaml &&
+        identityProviderConfig.editIdentityProvider.attributesSettings;
 
-            // Evaluate whether to Show/Hide `Attributes`.
-            if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
-                    menuItem: "Attributes",
-                    render: AttributeSettingsTabPane
-                });
-            }
+        // Evaluate whether to Show/Hide `Attributes`.
+        if ((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
+        && !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
+                menuItem: "Attributes",
+                render: AttributeSettingsTabPane
+            });
+        }
 
+        if (shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS) && isApplicationReadAccessAllowed) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.CONNECTED_APPS_TAB_ID,
                 menuItem: "Connected Apps",
                 render: ConnectedAppsTabPane
             });
+        }
 
-            if (featureConfig?.identityProviderGroups?.enabled
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
-                    menuItem: "Groups",
-                    render: IdentityProviderGroupsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) &&
+        featureConfig?.identityProviderGroups?.enabled &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
+                menuItem: "Groups",
+                render: IdentityProviderGroupsTabPane
+            });
+        }
 
-            if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.OUTBOUND_PROVISIONING_TAB_ID,
-                    menuItem: "Outbound Provisioning",
-                    render: OutboundProvisioningSettingsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
+        identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.OUTBOUND_PROVISIONING_TAB_ID,
+                menuItem: "Outbound Provisioning",
+                render: OutboundProvisioningSettingsTabPane
+            });
+        }
 
-            if (identityProviderConfig.editIdentityProvider.showJitProvisioning
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.JIT_PROVISIONING_TAB_ID,
-                    menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
-                    render: JITProvisioningSettingsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
+        identityProviderConfig.editIdentityProvider.showJitProvisioning &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.JIT_PROVISIONING_TAB_ID,
+                menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
+                render: JITProvisioningSettingsTabPane
+            });
+        }
 
-            if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
-                    menuItem: "Advanced",
-                    render: AdvancedSettingsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
+        identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
+                menuItem: "Advanced",
+                render: AdvancedSettingsTabPane
+            });
         }
 
         return panes;
     };
 
     /**
-     * Evaluate internally whether to show/hide `Attributes` tab.
+     * Evaluate internally whether to show/hide a tab.
      *
-     * @param type - IDP Type.
+     * @param templateType - IDP Type.
      *
-     * @returns Should show attribute settings or not.
+     * @returns Should show tab or not.
      */
-    const shouldShowAttributeSettings = (type: string): boolean => {
+    const shouldShowTab = (templateType: string, tabType: ConnectionTabTypes): boolean => {
 
         const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
             .editIdentityProvider
-            .isTabEnabledForIdP(type, ConnectionTabTypes.USER_ATTRIBUTES);
+            .isTabEnabledForIdP(templateType, tabType);
 
         return isTabEnabledInExtensions !== undefined
             ? isTabEnabledInExtensions
             : true;
     };
 
-    if (!identityProvider || isLoading || 
-        ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer 
+    if (!identityProvider || isLoading ||
+        ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer
         && !isEnterpriseConnection && !isExpertMode) && !tabPaneExtensions)) {
 
         return <Loader />;
@@ -498,6 +531,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             defaultActiveIndex={ defaultActiveIndex }
             onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps ) => {
                 setDefaultActiveIndex(data.activeIndex);
+                isAutomaticTabRedirectionEnabled && setIsAutomaticTabRedirectionEnabled(false);
             } }
             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
             tabIdentifier={ tabIdentifier }

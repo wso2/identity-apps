@@ -23,7 +23,7 @@ import { Message } from "semantic-ui-react";
 /**
  * The model of the `alert` state.
  */
-interface WizardAlert {
+export interface WizardAlert {
     message: string;
     description: string;
     code?: string | number;

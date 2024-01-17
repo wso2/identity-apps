@@ -68,7 +68,7 @@ export const AppUtils: any = (function() {
     const fallbackServerOrigin: string = "https://localhost:9443";
     const appBaseForHistoryAPIFallback: string = "/";
     const urlPathForSuperTenantOriginsFallback: string = "";
-    const isSaasFallback: boolean = true;
+    const isSaasFallback: boolean = false;
     const tenantResolutionStrategyFallback: string = "id_token";
 
     const SERVER_ORIGIN_IDP_URL_PLACEHOLDER: string = "${serverOrigin}";
@@ -84,13 +84,17 @@ export const AppUtils: any = (function() {
          * @returns App base name for the History API.
          */
         constructAppBaseNameForHistoryAPI: function() {
-            if (_config.appBaseNameForHistoryAPI !== undefined) {
-                return _config.appBaseNameForHistoryAPI;
+            if (_config.legacyAuthzRuntime) {
+                if (_config.appBaseNameForHistoryAPI !== undefined) {
+                    return _config.appBaseNameForHistoryAPI;
+                }
+
+                return this.isSaas()
+                    ? appBaseForHistoryAPIFallback
+                    : this.getAppBaseWithTenantAndOrganization();
             }
 
-            return this.isSaas()
-                ? appBaseForHistoryAPIFallback
-                : this.getAppBaseWithTenantAndOrganization();
+            return "/";
         },
 
         /**
@@ -101,11 +105,15 @@ export const AppUtils: any = (function() {
          * @returns App paths.
          */
         constructAppPaths: function(path: string) {
-            if (!this.isSaas()) {
-                return this.getAppBaseWithOrganization() + path;
+            if (_config.legacyAuthzRuntime) {
+                if (!this.isSaas()) {
+                    return this.getAppBaseWithOrganization() + path;
+                }
+
+                return this.getAppBaseWithTenantAndOrganization() + path;
             }
 
-            return this.getAppBaseWithTenantAndOrganization() + path;
+            return `${this.getAppBaseWithTenantAndOrganization()}${path}`;
         },
 
         /**
@@ -116,12 +124,24 @@ export const AppUtils: any = (function() {
          * @returns Redirect URLs.
          */
         constructRedirectURLs: function(url: string) {
-            if (!this.isSaas()) {
-                return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
+            if (_config.legacyAuthzRuntime) {
+                if (!this.isSaas()) {
+                    return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
+                }
+
+                return _config.clientOrigin + this.getOrganizationPath()
+                    + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
 
-            return _config.clientOrigin + this.getOrganizationPath()
-                + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
+            let basePath: string = `${_config.clientOrigin}${this.getTenantPath(true)}`;
+
+            if (basePath.includes(this.getSuperTenant())) {
+                basePath = _config.clientOrigin;
+            }
+
+            return `${basePath}${(_config.appBaseName
+                ? "/" + _config.appBaseName
+                : "")}${url}`;
         },
 
         /**
@@ -151,9 +171,13 @@ export const AppUtils: any = (function() {
         * @returns App base with organization.
         */
         getAppBaseWithOrganization: function () {
-            return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                ? ("/" + _config.appBaseName)
-                : "" }`;
+            if (_config.legacyAuthzRuntime) {
+                return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
+                    ? ("/" + _config.appBaseName)
+                    : "" }`;
+            }
+
+            return `${this.getOrganizationPath()}`;
         },
 
         /**
@@ -173,9 +197,37 @@ export const AppUtils: any = (function() {
          * @returns App base with tenant and organization.
          */
         getAppBaseWithTenantAndOrganization: function() {
-            return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                ? ("/" + _config.appBaseName)
-                : "" }`;
+            if (_config.legacyAuthzRuntime) {
+                return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
+                    ? ("/" + _config.appBaseName)
+                    : "" }`;
+            }
+
+            const tenantPath: string = this.getTenantPath(true)
+                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            const appBaseName: string = _config.appBaseName
+                ? `/${_config.appBaseName}`
+                : "";
+
+            return `${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
+        },
+
+        getClientId: function() {
+            if (_config.legacyAuthzRuntime) {
+                return (this.isSaas() || this.isSuperTenant())
+                    ? _config.clientID
+                    : _config.clientID + "_" + this.getTenantName();
+            }
+
+            return _config.clientID;
+        },
+
+        getClientOriginWithTenant: function() {
+            if (_config.legacyAuthzRuntime) {
+                return _config.clientOrigin + this.getAppBaseWithTenant();
+            }
+
+            return `${_config.clientOrigin}${this.getAppBaseWithTenantAndOrganization()}`;
         },
 
         /**
@@ -229,11 +281,9 @@ export const AppUtils: any = (function() {
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
                 appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
-                clientID: (this.isSaas() || this.isSuperTenant())
-                    ? _config.clientID
-                    : _config.clientID + "_" + this.getTenantName(),
+                clientID: this.getClientId(),
                 clientOrigin: _config.clientOrigin,
-                clientOriginWithTenant: _config.clientOrigin + this.getAppBaseWithTenant(),
+                clientOriginWithTenant: this.getClientOriginWithTenant(),
                 customServerHost: _config.customServerHost,
                 debug: _config.debug,
                 developerApp: {
@@ -247,18 +297,21 @@ export const AppUtils: any = (function() {
                 getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
+                legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationName: this.getOrganizationName(),
                 organizationPrefix: this.getOrganizationPrefix(),
+                organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
+                requireSuperTenantInUrls: _config.requireSuperTenantInUrls,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),
                     logout: this.constructAppPaths(_config.routePaths.logout)
                 },
                 serverOrigin: _config.serverOrigin,
-                serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(true),
+                serverOriginWithTenant: this.getServerOriginWithTenant(),
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
@@ -296,13 +349,21 @@ export const AppUtils: any = (function() {
          * @returns Organization name.
          */
         getOrganizationName: function () {
-            const path: string = window.location.pathname;
-            const pathChunks: string[] = path.split("/");
+            if (_config.legacyAuthzRuntime) {
+                const path: string = window.location.pathname;
+                const pathChunks: string[] = path.split("/");
 
-            const orgPrefixIndex: number = pathChunks.indexOf(this.getOrganizationPrefix());
+                const orgPrefixIndex: number = pathChunks.indexOf(this.getOrganizationPrefix());
 
-            if (orgPrefixIndex !== -1) {
-                return pathChunks[ orgPrefixIndex + 1 ];
+                if (orgPrefixIndex !== -1) {
+                    return pathChunks[ orgPrefixIndex + 1 ];
+                }
+
+                return "";
+            }
+
+            if (_config.organizationName) {
+                return _config.organizationName;
             }
 
             return "";
@@ -326,6 +387,33 @@ export const AppUtils: any = (function() {
          */
         getOrganizationPrefix: function () {
             return _args.organizationPrefix || orgPrefixFallback;
+        },
+
+        /**
+         * Get the organization type.
+         *
+         * @returns Organization type.
+         * @deprecated This is deprecated.
+         */
+        getOrganizationType: function () {
+            return _config.organizationType;
+        },
+
+        getServerOriginWithTenant: function() {
+            if (_config.legacyAuthzRuntime) {
+                return _config.serverOrigin + this.getTenantPath(true);
+            }
+
+            let tenantPath: string = this.getTenantPath(true);
+
+            /**
+             * If the tenant path is empty, and the organization name is present, then append the `carbon.super` path.
+             */
+            if (this.getOrganizationName() && !tenantPath) {
+                tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            }
+
+            return `${ _config.serverOrigin }${ tenantPath }${ this.getOrganizationName() ? "/o" : "" }`;
         },
 
         /**
@@ -364,9 +452,11 @@ export const AppUtils: any = (function() {
                 const tenantName: string = paths[tenantIndex + 1];
 
                 return (tenantName) ? tenantName : "";
-            } else {
-                return "";
             }
+
+            return (_config.requireSuperTenantInUrls)
+                ? this.getSuperTenant()
+                : "";
         },
 
         /**
@@ -377,21 +467,28 @@ export const AppUtils: any = (function() {
          * @returns Tenant path.
          */
         getTenantPath: function (skipSuperTenant: boolean = false) {
-            if (this.getOrganizationName()) {
-                return "";
+            if (_config.legacyAuthzRuntime) {
+                if (this.getOrganizationName()) {
+                    return "";
+                }
+
+                if (skipSuperTenant
+                    && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
+                    return urlPathForSuperTenantOriginsFallback;
+                }
+
+                // For non-SaaS apps, no need to have tenanted paths.
+                if (!this.isSaas()) {
+                    return "/";
+                }
+
+                return (this.getTenantName() !== "") ?
+                    "/" + this.getTenantPrefix() + "/" + this.getTenantName() : "";
             }
 
-            if (skipSuperTenant && (this.getTenantName() === this.getSuperTenant() || this.getTenantName() === "")) {
-                return urlPathForSuperTenantOriginsFallback;
-            }
-
-            // For non-SaaS apps, no need to have tenanted paths.
-            if (!this.isSaas()) {
-                return "/";
-            }
-
-            return (this.getTenantName() !== "") ?
-                "/" + this.getTenantPrefix() + "/" + this.getTenantName() : "";
+            return (this.getTenantName() !== "")
+                ? `/${this.getTenantPrefix()}/${this.getTenantName()}`
+                : "";
         },
 
         /**
@@ -414,10 +511,28 @@ export const AppUtils: any = (function() {
          * @returns Tenant qualified account app path.
          */
         getTenantQualifiedAccountAppPath: function(pathname: string) {
-            return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
-                _config.accountAppOrigin +
-                "/" + this.getTenantPrefix() +
-                "/" + this.getTenantName() : "") + pathname;
+            let url: string = "";
+
+            if (_config.legacyAuthzRuntime) {
+                if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
+                    url = `${_config.accountAppOrigin}/${this.getTenantPrefix()}/${this.getTenantName()}`;
+                }
+
+                url += pathname;
+
+                return url;
+            }
+
+            if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
+                const tenantPath: string = this.getTenantPath(true)
+                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+
+                url = `${_config.accountAppOrigin}${tenantPath}${ this.getOrganizationPath() }`;
+            }
+
+            url += pathname;
+
+            return url;
         },
 
         /**
@@ -443,6 +558,8 @@ export const AppUtils: any = (function() {
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
                 "contextPath": _args.contextPath,
+                "legacyAuthzRuntime": _args.legacyAuthzRuntime || false,
+                "requireSuperTenantInUrls" : _args.requireSuperTenantInUrls || false,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
@@ -478,7 +595,8 @@ export const AppUtils: any = (function() {
          * @returns Is saas or not.
          */
         isSaas: function() {
-            return (_config.isSaas !== undefined) ? _config.isSaas : isSaasFallback;
+            // TODO: `isSaas` is coming as a string. This is a temporary fix.
+            return (_config.isSaas !== undefined) ? JSON.parse(_config.isSaas) : isSaasFallback;
         },
 
         /**
@@ -517,11 +635,19 @@ export const AppUtils: any = (function() {
          * @returns Resolved URLs.
          */
         resolveURLs: function() {
+            const getReplaceServerOrigin = () => {
+                if (_config.legacyAuthzRuntime) {
+                    return _config.serverOrigin;
+                }
+
+                return _config.serverOrigin + this.getTenantPath(true);
+            };
+
             return {
                 authorizeEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.authorizeEndpointURL
                         && _config.idpConfigs.authorizeEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -533,7 +659,7 @@ export const AppUtils: any = (function() {
                 jwksEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.jwksEndpointURL
                         && _config.idpConfigs.jwksEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -542,7 +668,7 @@ export const AppUtils: any = (function() {
                 logoutEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.logoutEndpointURL
                         && _config.idpConfigs.logoutEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -551,7 +677,7 @@ export const AppUtils: any = (function() {
                 oidcSessionIFrameEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.oidcSessionIFrameEndpointURL
                         && _config.idpConfigs.oidcSessionIFrameEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -560,7 +686,7 @@ export const AppUtils: any = (function() {
                 tokenEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.tokenEndpointURL
                         && _config.idpConfigs.tokenEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -569,7 +695,7 @@ export const AppUtils: any = (function() {
                 tokenRevocationEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.tokenRevocationEndpointURL
                         && _config.idpConfigs.tokenRevocationEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -578,7 +704,7 @@ export const AppUtils: any = (function() {
                 wellKnownEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.wellKnownEndpointURL
                         && _config.idpConfigs.wellKnownEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, _config.serverOrigin)
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -594,6 +720,25 @@ export const AppUtils: any = (function() {
          */
         updateCustomServerHost: function(customServerHost: string) {
             _config.customServerHost = customServerHost;
+        },
+
+        /**
+         * Updates the organization name.
+         *
+         * @param organizationName - new Organization.
+         */
+        updateOrganizationName: function (organizationName: string) {
+            _config.organizationName = organizationName;
+        },
+
+        /**
+         * Updates the organization type.
+         *
+         * @param organizationType - new Organization type.
+         * @deprecated This is deprecated.
+         */
+        updateOrganizationType: function (organizationType: string) {
+            _config.organizationType = organizationType;
         },
 
         /**

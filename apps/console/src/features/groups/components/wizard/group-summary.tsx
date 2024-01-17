@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -182,6 +182,78 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                                     />
                                                     { user.userName }
                                                 </div>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
+            {
+                summary?.UserList && summary.UserList instanceof Array &&
+                summary.UserList.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div
+                                    data-testid={ `${ testId }-users-label` }
+                                    className="label"
+                                >
+                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.users") }
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary.UserList
+                                            .map((user: any, index: number) => (
+                                                <Label
+                                                    data-testid={
+                                                        `${ testId }-users-${ index }-label`
+                                                    }
+                                                    key={ index }
+                                                    basic
+                                                    circular
+                                                >
+                                                    { user.userName }
+                                                </Label>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
+            {
+                summary?.RoleList?.roles && summary.RoleList?.roles instanceof Array &&
+                summary.RoleList?.roles.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div
+                                    data-testid={ `${ testId }-users-label` }
+                                    className="label"
+                                >
+                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.roles") }
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary.RoleList?.roles
+                                            .map((role: any, index: number) => (
+                                                <Label
+                                                    data-testid={
+                                                        `${ testId }-roles-${ index }-label`
+                                                    }
+                                                    key={ index }
+                                                    basic
+                                                    circular
+                                                >
+                                                    { role.displayName }
+                                                </Label>
                                             ))
                                     }
                                 </Label.Group>

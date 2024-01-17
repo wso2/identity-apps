@@ -16,22 +16,28 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
     ChangeEvent,
     FunctionComponent,
     HTMLAttributes,
+    MutableRefObject,
     ReactElement,
     SVGAttributes,
     SyntheticEvent,
+    useEffect,
     useMemo,
+    useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import ReactFlow, {
     Background,
@@ -53,13 +59,19 @@ import {
     updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
 } from "../../applications/api/application";
 import {
+    ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
-    AuthenticationStepInterface
+    AuthenticationStepInterface,
+    AuthenticatorInterface
 } from "../../applications/models/application";
 import {
     AdaptiveScriptUtils
 } from "../../applications/utils/adaptive-script-utils";
+import { AuthenticatorManagementConstants } from "../../connections";
+import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
+import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
+import { ConnectorPropertyInterface } from "../../server-configurations";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import "reactflow/dist/style.css";
 import "./authentication-flow-visual-editor.scss";
@@ -120,16 +132,34 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         defaultAuthenticationSequence,
         isAdaptiveAuthAvailable,
         isValidAuthenticationFlow,
+        isConditionalAuthenticationEnabled,
+        refetchApplication,
         removeSignInOption,
         removeSignInStep,
         revertAuthenticationSequenceToDefault,
         updateAuthenticationSequence,
-        visualEditorFlowNodeMeta
+        visualEditorFlowNodeMeta,
+        isSystemApplication
     } = useAuthenticationFlow();
+
+    const {
+        data: FIDOAuthenticatorDetails,
+        error: FIDOAuthenticatorDetailsFetchError,
+        isLoading: FIDOAuthenticatorDetailsFetchRequestLoading
+    } = useMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID);
+
+    const { getLink } = useDocumentation();
+
+    const infoAlertRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(0);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
     const [ showRevertDisclaimerModal, setShowRevertDisclaimerModal ] = useState<boolean>(false);
+    const [ showInfoAlert, setShowInfoAlert ] = useState<boolean>(false);
+    const [ InfoAlertContent, setAlertInfoContent ] = useState<ReactElement>(undefined);
+    const [ infoAlertBoxHeight, setInfoAlertBoxHeight ] = useState<number>(0);
+    const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
+        useState<boolean>(undefined);
 
     const nodeTypes: NodeTypes = useMemo(() => ({ done: DoneNode, loginBox: SignInBoxNode }), []);
     const edgeTypes: EdgeTypes = useMemo(() => ({ stepAdditionEdge: StepAdditionEdge }), []);
@@ -297,6 +327,177 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     }, [ authenticationSequence, nodes ]);
 
     /**
+     * Check whether the passkeys progressive enrollment is enabled or not.
+     */
+    useEffect(() => {
+        if (FIDOAuthenticatorDetailsFetchRequestLoading) {
+            return;
+        }
+
+        if (FIDOAuthenticatorDetailsFetchError) {
+            if (FIDOAuthenticatorDetailsFetchError?.response?.data?.description) {
+                dispatch(addAlert({
+                    description: t("console:develop.features.authenticationProvider." +
+                        "notifications.getConnectionDetails.error.description",
+                    { description: FIDOAuthenticatorDetailsFetchError?.response?.data?.description }),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.authenticationProvider." +
+                        "notifications.getConnectionDetails.error.message")
+                }));
+
+                return;
+            }
+
+            dispatch(addAlert({
+                description: t("console:develop.features.authenticationProvider." +
+                    "notifications.getConnectionDetails.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.authenticationProvider." +
+                    "notifications.getConnectionDetails.genericError.message")
+            }));
+
+            return;
+        }
+
+        if (FIDOAuthenticatorDetails) {
+            const properties: ConnectorPropertyInterface[] = FIDOAuthenticatorDetails?.properties;
+            const passkeyProgressiveEnrollmentProperty: ConnectorPropertyInterface | undefined =
+                properties?.find((property: ConnectorPropertyInterface) =>
+                    property.name === "FIDO.EnablePasskeyProgressiveEnrollment");
+            const isPasskeyProgressiveEnrollmentEnabled: boolean =
+                passkeyProgressiveEnrollmentProperty?.value === "true";
+
+            setIsPasskeyProgressiveEnrollmentEnabled(isPasskeyProgressiveEnrollmentEnabled);
+        }
+    }, [ FIDOAuthenticatorDetails, FIDOAuthenticatorDetailsFetchError, FIDOAuthenticatorDetailsFetchRequestLoading ]);
+
+    /**
+     * Resolve the passkeys info alert messages.
+     */
+    useEffect(() => {
+        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps.some(
+            (step: AuthenticationStepInterface) =>
+                !!step?.options.find(
+                    (authenticator: AuthenticatorInterface) =>
+                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                )
+        );
+
+        if (isPasskeyIncludedInAnyStep) {
+            if (isPasskeyProgressiveEnrollmentEnabled) {
+                const isPasskeyIncludedAsAFirstFatorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
+                    (authenticator: AuthenticatorInterface) =>
+                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                );
+
+                if (isPasskeyIncludedAsAFirstFatorOption) {
+                    setAlertInfoContent(
+                        <>
+                            <AlertTitle>
+                                {
+                                    t("console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                    "types.passkey.info.progressiveEnrollmentEnabled")
+                                }
+                            </AlertTitle>
+                            <Trans
+                                i18nKey={
+                                    t("console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
+                                    "info.passkeyAsFirstStepWhenprogressiveEnrollmentEnabled")
+                                }
+                            >
+                                <strong>Note : </strong> For on-the-fly user enrollment with passkeys,
+                                use the <strong>Passkeys Progressive Enrollment</strong> template in
+                                <strong> Conditional Authentication</strong> section.
+                            </Trans>
+                            <DocumentationLink
+                                link={
+                                    getLink("develop.applications.editApplication.signInMethod.fido")
+                                }
+                                showEmptyLink={ false }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    );
+
+                } else {
+                    setAlertInfoContent(
+                        <>
+                            <AlertTitle>
+                                {
+                                    t("console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.landing.flowBuilder." +
+                                    "types.passkey.info.progressiveEnrollmentEnabled")
+                                }
+                            </AlertTitle>
+                            <Trans
+                                i18nKey={
+                                    t("console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
+                                    "info.passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled")
+                                }
+                            >
+                                Users can enroll passkeys on-the-fly. If users wish to enroll multiple
+                                passkeys they should do so via <strong>My Account</strong>.
+                            </Trans>
+                            <DocumentationLink
+                                link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                showEmptyLink={ false }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    );
+                }
+            } else {
+                setAlertInfoContent(
+                    <>
+                        <Trans
+                            i18nKey={
+                                t("console:develop.features.applications.edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.passkey.info.progressiveEnrollmentDisabled")
+                            }
+                        >
+                        Passkey progressive enrollment is disabled. Users must enroll
+                        their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                        </Trans>
+                        <DocumentationLink
+                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                            showEmptyLink={ false }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>
+                );
+            }
+
+            setShowInfoAlert(true);
+        } else {
+            setShowInfoAlert(false);
+        }
+    }, [ isPasskeyProgressiveEnrollmentEnabled, authenticationSequence?.steps ]);
+
+    /**
+     * This use effect will handle the location of the revert default
+     * button accoriding to the height of the info alert.
+     */
+    useEffect(() => {
+        if (showInfoAlert) {
+            if (infoAlertRef?.current) {
+                const rect: DOMRect = infoAlertRef?.current?.getBoundingClientRect();
+                const elementHeight: number = rect?.height;
+
+                setInfoAlertBoxHeight(elementHeight);
+            }
+        } else {
+            setInfoAlertBoxHeight(0);
+        }
+    }, [ showInfoAlert ]);
+
+    /**
      * Handles the `onUpdate` callback of the `VisualEditor`.
      *
      * @param newSequence - Updated sequence.
@@ -306,6 +507,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         newSequence: AuthenticationSequenceInterface = authenticationSequence,
         isRevertFlow?: boolean
     ): void => {
+        let payload: Partial<ApplicationInterface> = {};
         const sequence: AuthenticationSequenceInterface = {
             ...cloneDeep(newSequence),
             type: isRevertFlow
@@ -313,12 +515,10 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 : AuthenticationSequenceType.USER_DEFINED
         };
 
-        if (!isAdaptiveAuthAvailable) {
-            sequence.script = "";
-        } else if (AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)) {
-            sequence.script = AdaptiveScriptUtils.generateScript(authenticationSequence.steps.length + 1).join(
-                "\n"
-            );
+        if (!isAdaptiveAuthAvailable
+                || !isConditionalAuthenticationEnabled
+                || AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)) {
+            sequence.script = AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n");
         }
 
         // Update the modified script state in the context.
@@ -327,7 +527,20 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             script: sequence.script
         });
 
-        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, { authenticationSequence: sequence })
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            payload = {
+                authenticationSequence: sequence,
+                name: applicationMetaData?.name
+            };
+        } else {
+            payload = {
+                authenticationSequence: sequence
+            };
+        }
+
+        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -342,7 +555,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         )
                     })
                 );
-            });
+            })
+            .finally(() => refetchApplication());
     };
 
     return (
@@ -352,11 +566,24 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 data-componentid={ componentId }
                 { ...rest }
             >
+                {
+                    showInfoAlert ? (
+                        <Alert
+                            className="visual-editor-info-message"
+                            severity="info"
+                            onClose={ () => setShowInfoAlert(false) }
+                            ref={ infoAlertRef }
+                        >
+                            { InfoAlertContent }
+                        </Alert>
+                    ): null
+                }
                 <Button
                     className="revert-to-default-button"
                     color="secondary"
                     onClick={ () => setShowRevertDisclaimerModal(true) }
                     data-componentid={ `${componentId}-revert-button` }
+                    style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
                 >
                     <ArrowRotateLeft />
                     { t("console:loginFlow.visualEditor.actions.revert.label") }

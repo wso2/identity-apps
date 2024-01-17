@@ -8,6 +8,8 @@
     "services": [],
     "disabled": false,
     "idp": {
+        "alias": "",
+        "idpIssuerName": "",
         "certificate": {},
         "claims": {
             "provisioningClaims": [],

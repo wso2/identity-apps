@@ -89,6 +89,9 @@
     {% if myaccount.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ myaccount.super_tenant_proxy_name }}",
     {% endif %}
+    {% if tenant_context.enable_tenant_qualified_urls is defined && tenant_context.require_super_tenant_in_urls is defined %}
+    "requireSuperTenantInUrls" : {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }},
+    {% endif %}
     {% if myaccount.idp_configs is defined %}
     "idpConfigs": {
         {% if myaccount.idp_configs.items() is defined %}
@@ -108,8 +111,12 @@
         {% endif %}
     },
     {% endif %}
-    {% if myaccount.is_sass is defined %}
-        "isSaas": "{{ myaccount.is_sass }}",
+    {% if myaccount.is_saas is defined %}
+    "isSaas": {{ myaccount.is_saas }},
+    {% elif legacy_mode.enabled is defined %}
+    "isSaas": {{ legacy_mode.enabled }},
+    {% elif legacy_authz_runtime.enable is defined %}
+    "isSaas": {{ legacy_authz_runtime.enable }},
     {% endif %}
     "session": {
         {% if myaccount.session.params is defined %}
@@ -118,6 +125,9 @@
             {% endfor %}
         {% endif %}
     },
+    {% if legacy_authz_runtime.enable is defined %}
+        "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
+    {% endif %}
     "ui": {
         "announcements": [
             {% if myaccount.ui.announcements is defined %}
@@ -332,8 +342,16 @@
         {% if myaccount.ui.is_cookie_consent_banner_enabled is defined %}
         "isCookieConsentBannerEnabled": {{ myaccount.ui.is_cookie_consent_banner_enabled }},
         {% endif %}
+        {% if myaccount.ui.cookie_policy_url is defined %}
+        "cookiePolicyUrl": "{{ myaccount.ui.cookie_policy_url }}",
+        {% endif %}
         {% if myaccount.ui.is_header_avatar_label_allowed is defined %}
         "isHeaderAvatarLabelAllowed": {{ myaccount.ui.is_header_avatar_label_allowed }},
+        {% endif %}
+        {% if event.default_listener.validation.enable is defined %}
+        "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
+        {% else %}
+        "isPasswordInputValidationEnabled": true,
         {% endif %}
         "i18nConfigs": {
             {% if myaccount.i18n_configs.items() is defined %}
