@@ -237,7 +237,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         return {
             ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
-            AuthRedirectUrl: findPropVal<string>({ defaultValue: "", key: "AuthRedirectUrl" }),
+            AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
@@ -418,7 +418,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             <Field.Input
                 name="AuthRedirectUrl"
                 value={ formValues?.AuthRedirectUrl }
-                inputType="default"
+                inputType="copy_input"
                 placeholder={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.placeholder`) }
                 ariaLabel={ t(`${ I18N_TARGET_KEY }.AuthRedirectUrl.ariaLabel`) }
                 data-testid={ `${ testId }-authorized-redirect-url` }
