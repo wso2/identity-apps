@@ -151,21 +151,19 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     </ResourceTab.Pane>
                 )
             },
-            !isUserReadOnly
-                ? {
-                    menuItem: t("console:manage.features.roles.edit.menuItems.users"),
-                    render: () => (
-                        <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <RoleUsersList
-                                isReadOnly={ isReadOnly }
-                                role={ roleObject }
-                                onRoleUpdate={ onRoleUpdate }
-                                tabIndex={ 3 }
-                            />
-                        </ResourceTab.Pane>
-                    )
-                }
-                : null,
+            {
+                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <RoleUsersList
+                            isReadOnly={ isReadOnly || isUserReadOnly }
+                            role={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                            tabIndex={ 3 }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },
             // Hide connected apps tab if the audience is application.
             roleObject?.audience?.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
                 ? {

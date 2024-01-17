@@ -1159,7 +1159,7 @@
             "certificates": false,
             "loginAndRegistrationEmailDomainDiscovery": true,
             "organizations": true,
-            "rolesV1": true,
+            "rolesV1": false,
             "roleMapping": false,
             "secretsManagement": false,
             "saasApplications": false
