@@ -33,9 +33,4 @@ export class ConsoleRolesOnboardingConstants {
     public static readonly ROLE_API_RESOURCES_COLLECTION_NAME: string = "roles";
     public static readonly ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME: string = "org_rolesV1";
     public static readonly ORG_ROLE_API_RESOURCES_COLLECTION_NAME: string = "org_roles";
-
-    public static readonly EMPTY_API_RESOURCES_COLLECTION_RESPONSE: APIResourceCollectionResponseInterface = {
-        apiResourceCollections: [],
-        totalResults: 0
-    };
 }
