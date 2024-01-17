@@ -127,7 +127,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         clonedTenantAPIResourceCollections.apiResourceCollections =
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item.name)
+                        !filteringAPIResourceCollectionNames.includes(item?.name)
                 );
 
         return clonedTenantAPIResourceCollections;
@@ -154,7 +154,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item.name)
+                        !filteringAPIResourceCollectionNames.includes(item?.name)
                 );
 
         return clonedOrganizationAPIResourceCollections;
