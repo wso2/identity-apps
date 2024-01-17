@@ -968,7 +968,9 @@
                         "internal_user_mgt_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view",
-                        "internal_group_mgt_view"
+                        "internal_group_mgt_view",
+                        "internal_permission_mgt_view",
+                        "internal_user_mgt_list"
                     ],
                     "feature": [
                         "console:roles"
