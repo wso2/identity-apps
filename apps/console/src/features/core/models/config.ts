@@ -98,6 +98,10 @@ export interface FeatureConfigInterface {
      */
     emailProviders?: FeatureAccessConfigInterface;
     /**
+     * Getting started feature.
+     */
+    gettingStarted?: FeatureAccessConfigInterface;
+    /**
      * SMS providers feature.
      */
     smsProviders?: FeatureAccessConfigInterface;

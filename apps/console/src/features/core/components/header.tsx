@@ -408,7 +408,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     desktop: (<LOGO_IMAGE />),
                     mobile: (<LOGO_IMAGE />)
                 },
-                onClick: () => history.push(config.deployment.appHomePath),
+                onClick: () => hasRequiredScopes(feature?.gettingStarted,
+                    feature?.gettingStarted?.scopes?.feature, scopes)
+                    && history.push(config.deployment.appHomePath),
                 title: config.ui.appName
             } }
             user={ {
