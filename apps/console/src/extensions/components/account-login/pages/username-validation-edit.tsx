@@ -75,8 +75,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
-    const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(initialFormValues);
-    const [ pageLoaded, setPageLoaded ] = useState<boolean>(false);
+    const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(undefined);
 
     const {
         data: validationData,
@@ -96,22 +95,10 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
             return;
         }
 
-        initializeForm();
-    }, [ validationData, isValidationLoading ]);
-
-    useEffect(() => {
-        if (initialFormValues) {
-            setCurrentValues({ ...initialFormValues });
+        if (validationData) {
+            initializeForm();
         }
-
-    }, [ initialFormValues ]);
-
-    useEffect(() => {
-        if (currentValues) {
-            setTimeout(setPageLoaded, 200, true);
-        }
-
-    }, [ currentValues ]);
+    }, [ isValidationLoading ]);
 
     useEffect(() => {
         const locationState: unknown = history.location.state;
@@ -241,10 +228,9 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         }
 
         const config: ValidationDataInterface = usernameConf[0];
-
         const rules: ValidationConfInterface[] = config.rules;
 
-        setInitialFormValues({
+        const values: ValidationFormInterface = {
             enableValidator:
                 (getValidationConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
                 || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))
@@ -262,7 +248,10 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                     ? getValidationConfig(rules, "LengthValidator", "min.length")
                     : UsernameValidationConstants.VALIDATION_DEFAULT_CONSTANTS.USERNAME_MIN,
             type: "rules"
-        });
+        };
+
+        setInitialFormValues(values);
+        setCurrentValues(values);
     };
 
     /**
@@ -361,7 +350,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                                { pageLoaded
+                                { initialFormValues && currentValues
                                     ? (
                                         <div className="validation-configurations password-validation-configurations">
                                             <Form
