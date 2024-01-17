@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.98
+
+### Patch Changes
+
+- [#5232](https://github.com/wso2/identity-apps/pull/5232) [`8f02c6b07f`](https://github.com/wso2/identity-apps/commit/8f02c6b07fb930751f6da730180862293f05a927) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve ask password hint in user creation flow
+
+* [#5223](https://github.com/wso2/identity-apps/pull/5223) [`34d6d31b3f`](https://github.com/wso2/identity-apps/commit/34d6d31b3f5784584940b32f7380a5bbf8581d27) Thanks [@Avarjana](https://github.com/Avarjana)! - Remove unsupported special chars from username.
+
 ## 2.0.97
 
 ### Patch Changes
