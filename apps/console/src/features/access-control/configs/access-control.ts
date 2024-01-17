@@ -82,6 +82,27 @@ export class AccessControlUtils {
                 featureConfig?.branding?.scopes?.delete,
                 allowedScopes),
 
+            [ AccessControlConstants.EMAIL_TEMPLATES ] : hasRequiredScopes(
+                featureConfig?.emailTemplates,
+                featureConfig?.emailTemplates?.scopes?.feature,
+                allowedScopes),
+            [ AccessControlConstants.EMAIL_TEMPLATES_READ ] : hasRequiredScopes(
+                featureConfig?.emailTemplates,
+                featureConfig?.emailTemplates?.scopes?.read,
+                allowedScopes),
+            [ AccessControlConstants.EMAIL_TEMPLATES_WRITE ] : hasRequiredScopes(
+                featureConfig?.emailTemplates,
+                featureConfig?.emailTemplates?.scopes?.create,
+                allowedScopes),
+            [ AccessControlConstants.EMAIL_TEMPLATES_EDIT ] : hasRequiredScopes(
+                featureConfig?.emailTemplates,
+                featureConfig?.emailTemplates?.scopes?.update,
+                allowedScopes),
+            [ AccessControlConstants.EMAIL_TEMPLATES_DELETE ] : hasRequiredScopes(
+                featureConfig?.emailTemplates,
+                featureConfig?.emailTemplates?.scopes?.delete,
+                allowedScopes),
+
             [ AccessControlConstants.CERTIFICATES ] : hasRequiredScopes(featureConfig?.certificates,
                 featureConfig?.certificates?.scopes?.feature, allowedScopes),
             [ AccessControlConstants.CERTIFICATES_READ ] : hasRequiredScopes(featureConfig?.certificates,

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -33,6 +34,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { I18nConstants } from "../../core";
 import { EmailTemplate } from "../models";
 
@@ -236,19 +238,17 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                     </Grid>
                 </Form>
 
-                {
-                    !readOnly && (
-                        <DangerZone
-                            data-componentid={ `${ componentId }-revert-email-provider-config` }
-                            actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
-                            header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
-                            subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
-                            isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
-                            buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
-                            onActionClick={ onDeleteRequested }
-                        />
-                    )
-                }
+                <Show when={ AccessControlConstants.EMAIL_TEMPLATES_DELETE }>
+                    <DangerZone
+                        data-componentid={ `${ componentId }-revert-email-provider-config` }
+                        actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
+                        header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
+                        subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
+                        isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
+                        buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
+                        onActionClick={ onDeleteRequested }
+                    />
+                </Show>
             </>
         )
     );

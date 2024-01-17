@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -38,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import BrandingPreferenceProvider from "../../branding/providers/branding-preference-provider";
 import { AppState, I18nConstants } from "../../core";
 import {
@@ -404,14 +406,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     data-componentid={ `${ componentId }-forms` }
                 />
 
-                {
-                    !isReadOnly && (
-                        <EmailCustomizationFooter
-                            isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
-                            onSaveButtonClick={ handleSubmit }
-                        />
-                    )
-                }
+                <Show when={ AccessControlConstants.EMAIL_TEMPLATES_EDIT }>
+                    <EmailCustomizationFooter
+                        isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
+                        onSaveButtonClick={ handleSubmit }
+                    />
+                </Show>
 
                 <ConfirmationModal
                     type="info"

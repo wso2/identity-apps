@@ -281,6 +281,31 @@ export class AccessControlConstants {
     public static readonly BRANDING_DELETE: string = "branding:delete";
 
     /**
+     * Email Templates feature permission
+     */
+    public static readonly EMAIL_TEMPLATES: string = "emailTemplates";
+
+    /**
+     * Email Templates read permission
+     */
+    public static readonly EMAIL_TEMPLATES_READ: string = "emailTemplates:read";
+
+    /**
+     * Email Templates write permission
+     */
+    public static readonly EMAIL_TEMPLATES_WRITE: string = "emailTemplates:write";
+
+    /**
+     * Email Templates edit permission
+     */
+    public static readonly EMAIL_TEMPLATES_EDIT: string = "emailTemplates:edit";
+
+    /**
+     * Email Templates delete permission
+     */
+    public static readonly EMAIL_TEMPLATES_DELETE: string = "emailTemplates:delete";
+
+    /**
      * Scope feature permission
      */
     public static readonly SCOPE: string = "scope";
