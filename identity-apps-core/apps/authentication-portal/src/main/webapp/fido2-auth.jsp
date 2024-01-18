@@ -48,8 +48,7 @@
                 List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
                 if (authList.size() < 2) {
                     isMultiAuthAvailable = false;
-                }
-                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                } else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
                     isMultiAuthAvailable = false;
                 }
             }
@@ -179,7 +178,7 @@
                             <%
                                 String multiOptionURI = request.getParameter("multiOptionURI");
                                 if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
-                                isMultiAuthAvailable(multiOptionURI)) {
+                                    isMultiAuthAvailable(multiOptionURI)) {
                             %>
                                 <div class="text-center mt-1">
                                     <a 
