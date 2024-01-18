@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.80
+
+### Patch Changes
+
+- [#5244](https://github.com/wso2/identity-apps/pull/5244) [`99b944b46f`](https://github.com/wso2/identity-apps/commit/99b944b46f66f72d02b2fd9e3de2d22e84e89477) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Changed the AUDIT and CARBON uri endpoints to audit and carbon
+
 ## 2.10.79
 
 ### Patch Changes
