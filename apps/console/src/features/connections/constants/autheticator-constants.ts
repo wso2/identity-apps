@@ -366,4 +366,6 @@ export class AuthenticatorManagementConstants {
             "There are applications using this connection."
         )
     }
+
+    public static readonly scimId: string = "c2NpbQ";
 }

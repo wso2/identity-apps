@@ -43,6 +43,7 @@ import {
     updateOutboundProvisioningConnector,
     updateOutboundProvisioningConnectors
 } from "../../../api/connections";
+import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { AuthenticatorSettingsFormModes } from "../../../models/authenticators";
 import {
     ConnectionInterface,
@@ -405,25 +406,29 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                     <Grid.Row>
                                         <Grid.Column>
                                             {
-                                                availableConnectors.map((
-                                                    connector: OutboundProvisioningConnectorWithMetaInterface,
-                                                    index: number
-                                                ) => {
-                                                    return (
-                                                        <AuthenticatorAccordion
-                                                            key={ index }
-                                                            globalActions = {
-                                                                [
-                                                                    {
-                                                                        disabled: connector.data?.isEnabled,
-                                                                        icon: "trash alternate",
-                                                                        onClick: handleAuthenticatorDeleteOnClick,
-                                                                        type: "icon"
-                                                                    }
-                                                                ]
-                                                            }
-                                                            authenticators={
-                                                                [
+                                                availableConnectors
+                                                    // Filter the scim1 connector since it is deprecated.
+                                                    .filter((
+                                                        connector: OutboundProvisioningConnectorWithMetaInterface
+                                                    ) => connector.id !== AuthenticatorManagementConstants.scimId)
+                                                    .map((
+                                                        connector: OutboundProvisioningConnectorWithMetaInterface,
+                                                        index: number
+                                                    ) => {
+                                                        return (
+                                                            <AuthenticatorAccordion
+                                                                key={ index }
+                                                                globalActions = {
+                                                                    [
+                                                                        {
+                                                                            disabled: connector.data?.isEnabled,
+                                                                            icon: "trash alternate",
+                                                                            onClick: handleAuthenticatorDeleteOnClick,
+                                                                            type: "icon"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                                authenticators={ [
                                                                     {
                                                                         actions: createAccordionActions(connector),
                                                                         content: (
@@ -452,15 +457,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                             flex: true
                                                                         }
                                                                     }
-                                                                ]
-                                                            }
-                                                            data-testid={ `${ testId }-accordion` }
-                                                            accordionActiveIndexes = { accordionActiveIndexes }
-                                                            accordionIndex = { index }
-                                                            handleAccordionOnClick = { handleAccordionOnClick }
-                                                        />
-                                                    );
-                                                })
+                                                                ] }
+                                                                data-testid={ `${ testId }-accordion` }
+                                                                accordionActiveIndexes = { accordionActiveIndexes }
+                                                                accordionIndex = { index }
+                                                                handleAccordionOnClick = { handleAccordionOnClick }
+                                                            />
+                                                        );
+                                                    })
                                             }
                                         </Grid.Column>
                                     </Grid.Row>
