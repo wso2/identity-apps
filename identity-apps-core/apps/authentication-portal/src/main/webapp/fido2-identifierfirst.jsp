@@ -189,6 +189,7 @@
                                 }
                             %>
                         </div>
+                        <input type="hidden" name="multiOptionURI" value='<%=Encode.forHtmlAttribute(multiOptionURI)%>'/>
                     </div>
                 </form>
             </div>
