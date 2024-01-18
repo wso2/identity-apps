@@ -161,7 +161,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         }
 
         let response: BasicUserInfo = null;
-        const isFirstLevelOrganization: boolean = breadcrumbList[0].id === organization.id;
 
         try {
             response = await switchOrganization(organization.id);
@@ -170,7 +169,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 () => null,
                 () => {
                     // If first level org, remove the `/o/` path from the location.
-                    if (isFirstLevelOrganization) {
+                    if (!response?.userOrg) {
                         window["AppUtils"].updateOrganizationName("");
                     }
                 },
