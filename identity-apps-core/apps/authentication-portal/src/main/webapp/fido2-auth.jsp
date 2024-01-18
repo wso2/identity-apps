@@ -32,6 +32,31 @@
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
 
+<%!
+    private boolean isMultiAuthAvailable(String multiOptionURI) {
+        boolean isMultiAuthAvailable = true;
+        if (multiOptionURI == null || multiOptionURI.equals("null")) {
+            isMultiAuthAvailable = false;
+        } else {
+            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+            if (authenticatorIndex == -1) {
+                isMultiAuthAvailable = false;
+            } else {
+                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                authenticators = authenticators.substring(0, authLastIndex);
+                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                if (authList.size() < 2) {
+                    isMultiAuthAvailable = false;
+                } else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                    isMultiAuthAvailable = false;
+                }
+            }
+        }
+        return isMultiAuthAvailable;
+    }
+%>
+
 <%
     String authRequest = request.getParameter("data");
 
@@ -150,14 +175,34 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="mt-3">
-                                <div class="buttons">
-                                    <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
-                                    data-testid="login-page-fido-cancel-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
-                                    </button>
+                            <%
+                                String multiOptionURI = request.getParameter("multiOptionURI");
+                                if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                    isMultiAuthAvailable(multiOptionURI)) {
+                            %>
+                                <div class="text-center mt-1">
+                                    <a 
+                                        class="ui primary basic button link-button" 
+                                        id="goBackLink"
+                                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                    </a>
                                 </div>
-                            </div>
+                            <%
+                                } else {
+                            %>
+                                <div class="mt-3">
+                                    <div class="buttons">
+                                        <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
+                                        data-testid="login-page-fido-cancel-button">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                        </button>
+                                    </div>
+                                </div>
+                            <%
+                                }
+                            %>
                         </div>
                     </div>
                 </div>
