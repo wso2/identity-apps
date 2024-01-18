@@ -273,7 +273,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         const properties: SMSProviderPropertiesInterface[] = buildProperties(values);
         const provider: string = selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
             SMSProviderConstants.TWILIO : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
-                SMSProviderConstants.VONAGE : values.provider;
+                SMSProviderConstants.VONAGE : selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER ?
+                    SMSProviderConstants.CUSTOM : values.provider;
         const contentType: ContentType = values.contentType ?? ContentType.JSON;
         const submittingValues: SMSProviderAPIInterface = {
             contentType: contentType,
@@ -399,43 +400,13 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 );
             }
         } else {
-            if (!values?.key) {
-                error.key = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!values?.secret) {
-                error.secret = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!values?.sender) {
-                error.sender = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
             if (!values?.providerURL) {
                 error.providerURL = t(
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
-            if (!values?.contentType) {
-                error.contentType = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!(values?.contentType == ContentType.JSON || values?.contentType == ContentType.FORM)) {
-                error.contentType = t(
-                    "extensions:develop.smsProviders.form.custom.validations.contentTypeInvalid"
-                );
-            }
-            if (!values?.payload) {
-                error.payload = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
             if (!values?.provider) {
-                error.key = t(
+                error.provider = t(
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
