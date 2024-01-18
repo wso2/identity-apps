@@ -202,7 +202,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      */
     const getFilterValue = (value: string): string => {
         if (value.includes(" ")) {
-            return "\"" + value + "\"";
+            return `"${value}"`;
         }
 
         return value;

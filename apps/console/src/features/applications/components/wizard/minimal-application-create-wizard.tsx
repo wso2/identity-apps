@@ -825,7 +825,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             let filter: string = "name eq ";
 
             if (value.toString().includes(" ")) {
-                filter += "\"" + value.toString() + "\"";
+                filter += `"${value.toString()}"`;
             } else {
                 filter += value.toString();
             }
