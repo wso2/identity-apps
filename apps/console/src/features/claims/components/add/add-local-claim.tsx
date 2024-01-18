@@ -162,6 +162,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * Submit handler that sends the API request to add the local claim
      */
     const handleSubmit = async (data: Claim, customMappings?: Map<string, string>, skipSCIM?: boolean) => {
+
         if ( attributeConfig.localAttributes.createCustomDialect ) {
 
             await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((available: string) => {
