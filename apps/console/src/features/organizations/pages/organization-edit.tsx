@@ -86,7 +86,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         data: authorizedOrganizationList,
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError
-    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null, false);
+    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null, "Console", false);
 
     /**
      * Handles the authorized list fetch request error.

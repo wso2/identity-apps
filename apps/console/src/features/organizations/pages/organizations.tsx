@@ -281,6 +281,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         listItemLimit,
         authorizedListNextCursor,
         authorizedListPrevCursor,
+        "Console",
         false
     );
 
@@ -368,7 +369,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             data: PaginationProps
         ): void => {
             const newPage: number = parseInt(data?.activePage as string);
-            
+
             if (newPage > activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, after, null);
                 setAuthorizedListNextCursor(after);

@@ -116,6 +116,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
     limit: number,
     after: string,
     before: string,
+    authorizedAppName: string,
     recursive: boolean,
     isRoot: boolean = false
 ): RequestResultInterface<Data, Error> {
@@ -130,7 +131,8 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             before,
             filter,
             limit,
-            recursive
+            recursive,
+            authorizedAppName
         },
         url: `${ isRoot
             ? store.getState().config.endpoints.rootUsersOrganization
