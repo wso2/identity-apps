@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.81
+
+### Patch Changes
+
+- [#5248](https://github.com/wso2/identity-apps/pull/5248) [`3d3b1b7b0c`](https://github.com/wso2/identity-apps/commit/3d3b1b7b0cf8c64d03e2baec1ff8191fd0c98173) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix submission bug in add roles wizard
+
+* [#5251](https://github.com/wso2/identity-apps/pull/5251) [`21dbf15902`](https://github.com/wso2/identity-apps/commit/21dbf15902d956b18e8f0f3507f4f043697b50ff) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix email template update issue
+
 ## 2.10.80
 
 ### Patch Changes
