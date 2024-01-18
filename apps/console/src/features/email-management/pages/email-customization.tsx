@@ -237,8 +237,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             (template: EmailTemplateType) => template.id === templateId)?.description);
     };
 
-    const handleTemplateChange = (template: EmailTemplate) => {
-        setSelectedEmailTemplate({ ...template });
+    const handleTemplateChange = (updatedTemplateAttributes: Partial<EmailTemplate>) => {
+        setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
     };
 
     const handleLocaleChange = (locale: string) => {
@@ -360,7 +360,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         isEmailTemplatesListLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
                         selectedEmailTemplate={ currentEmailTemplate }
                         selectedLocale={ selectedLocale }
-                        onTemplateChanged={ (template: EmailTemplate) => handleTemplateChange(template) }
+                        onTemplateChanged={
+                            (updatedTemplateAttributes: Partial<EmailTemplate>) =>
+                                handleTemplateChange(updatedTemplateAttributes) }
                         onSubmit={ handleSubmit }
                         onDeleteRequested={ handleDeleteRequest }
                         readOnly={ isReadOnly }

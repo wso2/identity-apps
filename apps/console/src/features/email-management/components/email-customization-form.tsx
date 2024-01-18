@@ -58,7 +58,7 @@ interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInte
      * Callback to be called when the template is changed.
      * @param template - Email template
      */
-    onTemplateChanged: (template: EmailTemplate) => void;
+    onTemplateChanged: (updatedTemplateAttributes: Partial<EmailTemplate>) => void;
 
     /**
      * Callback to be called when the form is submitted.
@@ -135,7 +135,6 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     data-componentid={ `${ componentId }-email-subject` }
                                     listen={ (value: string) => {
                                         onTemplateChanged({
-                                            ...selectedEmailTemplate,
                                             subject: value
                                         });
                                     } }
@@ -189,7 +188,6 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                         onChange={ (editor: codemirror.Editor, _data: codemirror.EditorChange,
                                             _value: string) => {
                                             onTemplateChanged({
-                                                ...selectedEmailTemplate,
                                                 body: editor.getValue()
                                             });
                                         } }
@@ -227,7 +225,6 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     data-componentid={ `${ componentId }-email-footer` }
                                     listen={ (value: string) => {
                                         onTemplateChanged({
-                                            ...selectedEmailTemplate,
                                             footer: value
                                         });
                                     } }
