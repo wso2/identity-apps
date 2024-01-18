@@ -257,6 +257,10 @@
             cursor: pointer !important;
         }
 
+        div#password-validation-block {
+            margin-bottom: 1em;
+        }
+
         .portal-tagline-description {
             color: @loginPortalLogoTaglineDescriptionColor;
             margin-top: @loginPortalLogoTaglineDescriptionMarginTop;
@@ -603,7 +607,7 @@
         }
 
         .validation-error-message {
-            color: #FF0000;
+            color: @redTextColor;
             font-size: 14px;
         }
 
