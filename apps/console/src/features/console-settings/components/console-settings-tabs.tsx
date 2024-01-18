@@ -101,6 +101,15 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleRolesList />,
                     value: ConsoleSettingsTabIDs.ROLES
                 },
+                {
+                    className: "console-security",
+                    "data-componentid": `${componentId}-tab-login-flow`,
+                    "data-tabid": ConsoleSettingsModes.LOGIN_FLOW,
+                    id: ConsoleSettingsModes.LOGIN_FLOW,
+                    label: t("console:consoleSettings.loginFlow.tabLabel"),
+                    pane: <ConsoleLoginFlow />,
+                    value: ConsoleSettingsTabIDs.LOGIN_FLOW
+                },
                 !isSubOrganization() && {
                     className: "console-protocol",
                     "data-componentid": `${componentId}-tab-protocol`,
@@ -110,15 +119,6 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     label: t("console:consoleSettings.protocol.tabLabel"),
                     pane: <ConsoleProtocol />,
                     value: ConsoleSettingsTabIDs.PROTOCOL
-                },
-                !isSubOrganization() && {
-                    className: "console-security",
-                    "data-componentid": `${componentId}-tab-login-flow`,
-                    "data-tabid": ConsoleSettingsModes.LOGIN_FLOW,
-                    id: ConsoleSettingsModes.LOGIN_FLOW,
-                    label: t("console:consoleSettings.loginFlow.tabLabel"),
-                    pane: <ConsoleLoginFlow />,
-                    value: ConsoleSettingsTabIDs.LOGIN_FLOW
                 }
             ]
                 .filter((tab: ConsoleSettingsTabInterface) => !tab || !tab.hidden)

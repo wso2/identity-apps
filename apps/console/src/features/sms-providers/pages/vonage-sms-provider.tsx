@@ -55,16 +55,16 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                 <Grid.Row columns={ 2 }>
                     <Grid.Column>
                         <FinalFormField
-                            key="vonageKey" 
+                            key="vonageKey"
                             width={ 16 }
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            ariaLabel="vonageKey" 
+                            ariaLabel="vonageKey"
                             readOnly={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-vonage-key` }
-                            name="vonageKey" 
+                            name="vonageKey"
                             type="text"
                             label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
@@ -97,7 +97,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
+                                    { t("extensions:develop.smsProviders.form.vonage.authToken.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -125,7 +125,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
+                                    { t("extensions:develop.smsProviders.form.vonage.sender.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -135,21 +135,25 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Divider hidden />
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <PrimaryButton
-                            size="small"
-                            onClick={ onSubmit }
-                            disabled={ isReadOnly }
-                            ariaLabel="SMS provider form update button"
-                            data-componentid={ `${componentId}-update-button` }
-                            readOnly={ isReadOnly }
-                        >
-                            { "Submit" }
-                        </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !isReadOnly && (
+                        <>
+                            <Divider hidden />
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <PrimaryButton
+                                        size="small"
+                                        onClick={ onSubmit }
+                                        ariaLabel="SMS provider form update button"
+                                        data-componentid={ `${componentId}-update-button` }
+                                    >
+                                        { "Submit" }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    )
+                }
             </Grid>
         </EmphasizedSegment>
     );

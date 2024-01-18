@@ -23,7 +23,7 @@ import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -36,7 +36,9 @@ import { CreateRoleInterface, CreateRolePermissionInterface } from "../../../../
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
 
-export type CreateConsoleRoleWizardPropsInterface = IdentifiableComponentInterface & ModalProps;
+export interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
+    onClose: (e: MouseEvent<HTMLElement>, data: ModalProps) => void;
+}
 
 export type CreateConsoleRoleWizardFormValuesInterface = Partial<CreateRoleInterface>;
 
@@ -46,7 +48,11 @@ export type CreateConsoleRoleWizardFormValuesInterface = Partial<CreateRoleInter
 const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInterface> = (
     props: CreateConsoleRoleWizardPropsInterface
 ): ReactElement => {
-    const { onClose, ["data-componentid"]: componentId, ...rest } = props;
+    const {
+        onClose,
+        ["data-componentid"]: componentId,
+        ...rest
+    } = props;
 
     const { t } = useTranslation();
 
@@ -62,6 +68,11 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
      * Handles the API resource creation.
      */
     const handleConsoleRoleCreation = (values: CreateConsoleRoleWizardFormValuesInterface): void => {
+        // Prevent submission if the form is incomplete.
+        if (isEmpty(permissions) || !values?.displayName) {
+            return;
+        }
+
         createRole({
             audience: {
                 display: consoleDisplayName,
@@ -114,7 +125,10 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
                         <>
                             <Modal.Content className="content-container" scrolling>
                                 { alert && alertComponent }
-                                <form id={ ConsoleRolesOnboardingConstants.ADD_NEW_ROLE_FORM_ID } onSubmit={ handleSubmit }>
+                                <form
+                                    id={ ConsoleRolesOnboardingConstants.ADD_NEW_ROLE_FORM_ID }
+                                    onSubmit={ handleSubmit }
+                                >
                                     <CreateConsoleRoleWizardBasicInfoForm />
                                     <CreateConsoleRoleWizardPermissionsForm onPermissionsChange={ setPermissions } />
                                 </form>
@@ -127,11 +141,13 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
                                                 tabIndex={ 6 }
                                                 data-componentid={ `${componentId}-cancel-button` }
                                                 floated="left"
-                                                onClick={ e => onClose(e, null) }
+                                                onClick={ (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) =>
+                                                    onClose(e, null) }
                                             >
                                                 <Typography variant="inherit">
                                                     { t(
-                                                        "extensions:develop.apiResource.wizard.addApiResource.cancelButton"
+                                                        "extensions:develop.apiResource.wizard.addApiResource" +
+                                                        ".cancelButton"
                                                     ) }
                                                 </Typography>
                                             </LinkButton>

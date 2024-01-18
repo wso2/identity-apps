@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1869,6 +1869,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "මෙම සහතිකය සත්‍යාපනයෙන් පසු ලැබුණු <1>id_token</1> සංකේතනය " +
                                         "කිරීමට භාවිතා කරයි.",
+                                    customPassiveSTS: "මෙම සහතිකය request තහවුරු කිරීම සඳහා භාවිතා කරයි.",
                                     customSaml: "මෙම සහතිකය භාවිතා කරනුයේ අත්සන් කරන ලද ඉල්ලීම් වල අත්සන් තහවුරු " +
                                         "කිරීම සඳහා සහ සත්‍යාපනයෙන් පසු ලබා දුන් SAML ප්‍රකාශයන් සංකේතනය කිරීමට ය."
                                 },
@@ -2115,7 +2116,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "පරිශීලක ලොග්අවුට් හරහා සීමිත අවතැන්වූවන්ගේ සැසිය අවසන් වූ විට " +
-                                            "මෙම යෙදුමේ ටෝකන අවලංගු කිරීමට ඉඩ දෙන්න.",
+                                            "මෙම යෙදුමේ ටෝකන අවලංගු කිරීමට ඉඩ දෙන්න. ලොග්අවුට් ඉල්ලීමෙහි <1>client_id</1> "+
+                                            "හෝ <3>id_token_hint</3> ඇතුළත් කිරීමට අමතක නොකරන්න.",
                                         label: "පරිශීලක ලොග්අවුට් මත ටෝකන අවලංගු කරන්න"
                                     },
                                     type: {
@@ -8282,7 +8284,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "සංවිධාන"
+                title: "සංවිධාන",
+                view: {
+                    description: "සංවිධානය බලන්න"
+                }
             },
             overview: {
                 widgets: {
@@ -9093,7 +9098,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "දුරස්ථ ලොග් ප්‍රකාශනය",
                     pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
-                    description: "සංවිධානය සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
+                    description: "සංවිධානයේ විගණන ලොග සඳහා දුරස්ථ ලොග් සැකසුම් වින්‍යාස කරන්න.",
                     fields: {
                         logTypes: {
                             label: "පළ කළ යුතු ලොග් වර්ග",
@@ -9141,6 +9146,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "යථා තත්ත්වයට පත් කරන්න",
                         title: "{{logType}} ලොග සඳහා පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
                         header: "{{logType}} ලොග සඳහා පෙරනිමි වින්‍යාසය ප්‍රතිසාධනය කරන්න",
                         subheader: "මෙම ක්‍රියාව {{logType}} ලොග සඳහා පවතින වින්‍යාසය මකා දමයි. ඔබ ඉදිරියට යාමට පෙර කරුණාකර සහතික වන්න.",
@@ -9496,8 +9502,7 @@ export const console: ConsoleNS = {
                                 "අක්ෂර සංඛ්යා පරිශීලක නාම ලක්ෂණය.",
                             emailInvalid: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, කරුණාකර වලංගු විද්යුත් තැපැල් ලිපිනයක් භාවිතා කරන්න " +
                                 "පරිශීලක නාමය.",
-                            emailVerificationDisabled: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, විද්යුත් තැපෑල සත්යාපනය සක්රීය කරන්න විසින් " +
-                                "විද්යුත් තැපැල් සැපයුම්කරුවෙකු වින්යාස කිරීම.",
+                            emailVerificationDisabled: "මුරපදය සැකසීමට පරිශීලකයින්ට ආරාධනා කිරීම, <1>පිවිසුම් සහ ලියාපදිංචි සැකසුම්</1> වලින් විද්යුත් තැපැල් සත්යාපනය සක්රීය කරන්න.",
                             inviteOffline: "නොබැඳි ලෙස ආරාධනා කරන්න",
                             inviteViaEmail: "විද්යුත් තැපෑලෙන් ආරාධනා කරන්න"
                         },

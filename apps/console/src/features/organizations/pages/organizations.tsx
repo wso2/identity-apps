@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -281,7 +282,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         listItemLimit,
         authorizedListNextCursor,
         authorizedListPrevCursor,
-        "Console",
+        CommonAppConstants.CONSOLE_APP,
         false
     );
 

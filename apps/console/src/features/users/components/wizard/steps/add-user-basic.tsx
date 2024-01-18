@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,17 @@
  */
 
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Button, PasswordValidation, Popup } from "@wso2is/react-components";
+import { Button, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { SharedUserStoreConstants } from "../../../../core/constants";
+import { AppConstants, SharedUserStoreConstants } from "../../../../core/constants";
+import { history } from "../../../../core/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
+import {
+    ServerConfigurationsConstants
+} from "../../../../server-configurations/constants/server-configurations-constants";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
@@ -320,10 +324,19 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         scrollToInValidField("formBottom");
     };
 
-    const resolveAskPasswordOptionPopupContent = (): string => {
+    const resolveAskPasswordOptionPopupContent = (): ReactElement => {
         if (!emailVerificationEnabled) {
-            return t(
-                "console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
+            return (
+                <Trans
+                    i18nKey="console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
+                >
+                    To invite users to set the password, enable email verification from <Link
+                        onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                            .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                            .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                        external={ false }
+                    >Login & Registration settings</Link>.
+                </Trans>
             );
         }
 
@@ -351,6 +364,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 inverted
                                 position="top center"
                                 content={ resolveAskPasswordOptionPopupContent() }
+                                hoverable
                                 trigger={
                                     (
                                         <Menu.Item

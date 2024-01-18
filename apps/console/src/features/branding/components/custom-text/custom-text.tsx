@@ -49,7 +49,12 @@ const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
 /**
  * Prop types for the text customization component.
  */
-export type CustomTextProps = IdentifiableComponentInterface;
+export interface CustomTextProps extends IdentifiableComponentInterface {
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
+}
 
 /**
  * Interface for tabs.
@@ -84,7 +89,10 @@ interface DisplayTabInterface extends IdentifiableComponentInterface {
  * @returns Text customization component.
  */
 const CustomText: FunctionComponent<CustomTextProps> = (props: CustomTextProps): ReactElement => {
-    const { "data-componentid": componentId } = props;
+    const {
+        readOnly,
+        "data-componentid": componentId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -119,7 +127,7 @@ const CustomText: FunctionComponent<CustomTextProps> = (props: CustomTextProps):
                 label: t("console:brandingCustomText.modes.text.label"),
                 pane: (
                     <div className="form-container with-max-width">
-                        <CustomTextFields onSubmit={ handleSubmit } fields={ customText } />
+                        <CustomTextFields readOnly={ readOnly } onSubmit={ handleSubmit } fields={ customText } />
                     </div>
                 ),
                 value: 0
@@ -140,7 +148,8 @@ const CustomText: FunctionComponent<CustomTextProps> = (props: CustomTextProps):
                         value={ JSON.stringify(customText, null, 4) }
                         options={ {
                             automaticLayout: true,
-                            lineNumbers: "off"
+                            lineNumbers: "off",
+                            readOnly
                         } }
                         lineNumbers="off"
                         onChange={ (values: string) => {

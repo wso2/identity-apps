@@ -96,10 +96,10 @@ import {
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
-import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/secret-grey.svg";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as DarkModeIcon
 } from "../../../themes/default/assets/images/icons/solid-icons/crescent-icon.svg";
@@ -147,6 +147,7 @@ import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.p
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import SCIMLogo from "../../../themes/default/assets/images/protocols/scim.png";
+import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
 import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
 import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
 import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
@@ -193,7 +194,8 @@ interface GetTechnologyLogosInterface {
     saml: string,
     scim: string,
     vue: FunctionComponent | ReactNode,
-    windows: FunctionComponent | ReactNode
+    windows: FunctionComponent | ReactNode,
+    wsFed: FunctionComponent | ReactNode,
 }
 
 /**
@@ -226,7 +228,8 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         saml: SamlLogo,
         scim: SCIMLogo,
         vue: VueLogo,
-        windows: WindowsLogo
+        windows: WindowsLogo,
+        wsFed: WSFedLogo
     };
 };
 

@@ -20,6 +20,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     RolesInterface,
     SBACInterface
@@ -144,7 +145,6 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         isLoading,
         onIsLoading,
         readOnlyUserStores,
-        featureConfig,
         onColumnSelectionChange,
         onListItemClick,
         onSearchQueryClear,
@@ -165,6 +165,9 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.users;
+    });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
@@ -328,7 +331,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         const actions: TableActionsInterface[] = [
             {
                 "data-componentid": "administrators-list-item-edit-button",
-                hidden: (): boolean => !isFeatureEnabled(featureConfig?.users,
+                hidden: (): boolean => !isFeatureEnabled(featureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_READ")),
                 icon: (user: UserBasicInterface): SemanticICONS => {
                     const userStore: string = user?.userName?.split("/").length > 1
@@ -336,8 +339,8 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         : "PRIMARY";
 
                     return (
-                        !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
-                    || !isFeatureEnabled(featureConfig?.users,
+                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                    || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
                         ? "eye"
@@ -353,8 +356,8 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         : "PRIMARY";
 
                     return (
-                        !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
-                    || !isFeatureEnabled(featureConfig?.users,
+                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                    || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
                         ? t("common:view")
@@ -371,10 +374,10 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                     ? user?.userName?.split("/")[0]
                     : UserstoreConstants.PRIMARY_USER_STORE;
 
-                return !isFeatureEnabled(featureConfig?.users,
+                return !isFeatureEnabled(featureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
                     || ((getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser
                     || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))));

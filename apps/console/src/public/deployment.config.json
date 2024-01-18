@@ -243,6 +243,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "update": [
                         "internal_governance_update"
@@ -299,19 +302,19 @@
                 "enabled": true,
                 "scopes": {
                     "feature": [
-                        "console:applications"
+                        "console:branding"
                     ],
                     "update": [
-                        "internal_application_mgt_update"
+                        "internal_branding_preference_update"
                     ],
                     "delete": [
-                        "internal_application_mgt_update"
+                        "internal_branding_preference_update"
                     ],
                     "read": [
                         "internal_application_mgt_view"
                     ],
                     "create": [
-                        "internal_application_mgt_update"
+                        "internal_branding_preference_update"
                     ]
                 }
             },
@@ -493,9 +496,14 @@
                     "read": [
                         "internal_application_mgt_view",
                         "internal_user_mgt_list",
+                        "internal_user_mgt_view",
+                        "internal_userstore_view",
                         "internal_role_mgt_view",
+                        "internal_group_mgt_view",
                         "internal_guest_mgt_invite_list",
-                        "internal_idp_view"
+                        "internal_idp_view",
+                        "internal_session_view",
+                        "internal_governance_view"
                     ],
                     "delete": [
                         "internal_guest_mgt_invite_delete"
@@ -510,16 +518,16 @@
                         "console:notificationChannels"
                     ],
                     "update": [
-                        "internal_config_mgt_update"
+                        "internal_notification_senders_update"
                     ],
                     "delete": [
-                        "internal_config_mgt_delete"
+                        "internal_notification_senders_delete"
                     ],
                     "create": [
-                        "internal_config_mgt_add"
+                        "internal_notification_senders_create"
                     ],
                     "read": [
-                        "internal_config_mgt_view"
+                        "internal_notification_senders_view"
                     ]
                 }
             },
@@ -528,16 +536,16 @@
                 "enabled": true,
                 "scopes": {
                     "update": [
-                        "internal_config_mgt_update"
+                        "internal_notification_senders_update"
                     ],
                     "delete": [
-                        "internal_config_mgt_delete"
+                        "internal_notification_senders_delete"
                     ],
                     "create": [
-                        "internal_config_mgt_add"
+                        "internal_notification_senders_create"
                     ],
                     "read": [
-                        "internal_config_mgt_view"
+                        "internal_notification_senders_view"
                     ]
                 }
             },
@@ -546,16 +554,16 @@
                 "enabled": true,
                 "scopes": {
                     "update": [
-                        "internal_config_mgt_update"
+                        "internal_notification_senders_update"
                     ],
                     "delete": [
-                        "internal_config_mgt_delete"
+                        "internal_notification_senders_delete"
                     ],
                     "create": [
-                        "internal_config_mgt_add"
+                        "internal_notification_senders_create"
                     ],
                     "read": [
-                        "internal_config_mgt_view"
+                        "internal_notification_senders_view"
                     ]
                 }
             },
@@ -585,9 +593,14 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "update": [
-                        "internal_governance_update"
+                        "internal_governance_update",
+                        "internal_validation_rule_mgt_update",
+                        "internal_config_update"
                     ],
                     "read": [
                         "internal_governance_view"
@@ -610,6 +623,7 @@
                     ],
                     "read": [
                         "internal_user_mgt_view",
+                        "internal_user_mgt_list",
                         "internal_role_mgt_view",
                         "internal_group_mgt_view",
                         "internal_userstore_view"
@@ -795,19 +809,20 @@
                         "console:organizationDiscovery"
                     ],
                     "create": [
-                        "internal_organization_create",
-                        "internal_config_mgt_add"
+                        "internal_organization_discovery_update",
+                        "internal_organization_config_add"
                     ],
                     "delete": [
-                        "internal_organization_delete",
-                        "internal_config_mgt_delete"
+                        "internal_organization_discovery_delete",
+                        "internal_organization_config_delete"
                     ],
                     "read": [
-                        "internal_organization_view",
-                        "internal_config_mgt_view"
+                        "internal_organization_discovery_view",
+                        "internal_organization_config_view",
+                        "internal_organization_view"
                     ],
                     "update": [
-                        "internal_organization_update"
+                        "internal_organization_discovery_update"
                     ]
                 },
                 "disabledFeatures": []
@@ -848,6 +863,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "create": [],
                     "read": [
@@ -862,6 +880,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "create": [],
                     "read": [
@@ -876,6 +897,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "read": [
                         "internal_governance_view"
                     ],
@@ -929,7 +953,9 @@
                         "internal_governance_view"
                     ],
                     "update": [
-                        "internal_governance_update"
+                        "internal_governance_update",
+                        "internal_validation_rule_mgt_update",
+                        "internal_config_update"
                     ]
                 }
             },
@@ -942,7 +968,9 @@
                         "internal_user_mgt_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view",
-                        "internal_group_mgt_view"
+                        "internal_group_mgt_view",
+                        "internal_permission_mgt_view",
+                        "internal_user_mgt_list"
                     ],
                     "feature": [
                         "console:roles"
@@ -963,8 +991,7 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_role_mgt_create",
-                        "internal_application_mgt_view"
+                        "internal_role_mgt_create"
                     ],
                     "feature": [
                         "console:roles"
@@ -973,16 +1000,17 @@
                         "internal_user_mgt_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view",
-                        "internal_group_mgt_view"
+                        "internal_group_mgt_view",
+                        "internal_application_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_idp_view",
+                        "internal_api_resource_view"
                     ],
                     "update": [
                         "internal_role_mgt_update"
                     ],
                     "delete": [
-                        "internal_role_mgt_delete",
-                        "internal_application_mgt_view",
-                        "internal_user_mgt_view",
-                        "internal_group_mgt_view"
+                        "internal_role_mgt_delete"
                     ]
                 }
             },

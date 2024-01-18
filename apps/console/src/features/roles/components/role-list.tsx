@@ -17,8 +17,9 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     RoleListInterface,
@@ -35,7 +36,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
@@ -43,9 +44,8 @@ import { RoleDeleteErrorConfirmation } from "./wizard/role-delete-error-confirma
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
 import { AppConstants } from "../../core/constants/app-constants";
 import { history } from "../../core/helpers/history";
-import { FeatureConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store/index";
-import { RoleAudienceTypes } from "../constants/role-constants";
+import { RoleAudienceTypes, RoleConstants } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
@@ -94,7 +94,15 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles);
+
+    const isReadOnly: boolean = useMemo(() => {
+        return !isFeatureEnabled(featureConfig,
+            RoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
+            !hasRequiredScopes(featureConfig,
+                featureConfig?.scopes?.update, allowedScopes);
+    }, [ featureConfig, allowedScopes ]);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -267,21 +275,23 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         return [
             {
                 icon: (): SemanticICONS =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    !isReadOnly
                         ? "pencil alternate"
                         : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
-                        && handleRoleEdit(role?.id),
+                    !isReadOnly && handleRoleEdit(role?.id),
                 popupText: (): string =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    !isReadOnly
                         ? t("common:edit")
                         : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 hidden: () => isSubOrg
-                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
+                    || !isFeatureEnabled(featureConfig,
+                        RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
+                    || !hasRequiredScopes(featureConfig,
+                        featureConfig?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     onRoleDeleteClicked(role);

@@ -115,6 +115,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
+    const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
@@ -142,6 +143,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             dispatch(getProfileInformation());
         }
     }, []);
+
+    /**
+     * Check if email address is displayed as a separated attribute.
+     */
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            if ((commonConfig.userProfilePage.showEmail && usernameConfig?.enableValidator === "true")
+                    || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
+                setShowEmail(true);
+            } else {
+                setShowEmail(false);
+            }
+        }
+    }, [ profileInfo, usernameConfig ]);
 
     /**
      * Get the configurations.
@@ -937,11 +952,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 {
-                                    (
-                                        !commonConfig.userProfilePage.showEmail
-                                        ||  usernameConfig?.enableValidator === "false"
-                                    )
-                                    &&  fieldName.toLowerCase() === "username"
+                                    !showEmail && fieldName.toLowerCase() === "username"
                                         ? fieldName + " (Email)"
                                         : fieldName
                                 }
@@ -1195,13 +1206,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         content: (
                                             <Trans
                                                 i18nKey={
-                                                    "myAccount:modals.editAvatarModal.content.gravatar.errors." + 
+                                                    "myAccount:modals.editAvatarModal.content.gravatar.errors." +
                                                     "noAssociation.content"
                                                 }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting 
-                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                Sign up for a Gravatar account by visiting
+                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a>
                                                 or use one of the following.
                                             </Trans>
                                         ),
@@ -1319,11 +1330,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                            || ((
-                                !commonConfig.userProfilePage.showEmail
-                                || usernameConfig?.enableValidator === "false"
-                            )
-                                && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
+                            || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
                         )) {
                             return (
                                 <>

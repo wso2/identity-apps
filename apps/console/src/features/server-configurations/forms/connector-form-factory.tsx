@@ -87,8 +87,8 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
     const isReadOnly: boolean = useMemo(
         () =>
             !hasRequiredScopes(
-                featureConfig?.attributeDialects,
-                featureConfig?.attributeDialects?.scopes?.update,
+                featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.update,
                 allowedScopes
             ),
         [ featureConfig, allowedScopes ]

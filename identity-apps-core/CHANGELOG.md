@@ -1,5 +1,51 @@
 # @wso2is/identity-apps-core
 
+## 2.0.120
+
+### Patch Changes
+
+- [#5236](https://github.com/wso2/identity-apps/pull/5236) [`19ce780ed2`](https://github.com/wso2/identity-apps/commit/19ce780ed2198798f517ea69b95ffa923426493d) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add error page for Duo
+
+* [#5146](https://github.com/wso2/identity-apps/pull/5146) [`95d84e333f`](https://github.com/wso2/identity-apps/commit/95d84e333fb11ed8ff8fb00a6dbd5e9203234040) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] Unmask OTP in Email OTP UI by default
+
+## 2.0.119
+
+### Patch Changes
+
+- [#5223](https://github.com/wso2/identity-apps/pull/5223) [`34d6d31b3f`](https://github.com/wso2/identity-apps/commit/34d6d31b3f5784584940b32f7380a5bbf8581d27) Thanks [@Avarjana](https://github.com/Avarjana)! - Remove unsupported special chars from username.
+
+## 2.0.118
+
+### Patch Changes
+
+- [#5174](https://github.com/wso2/identity-apps/pull/5174) [`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca) Thanks [@brionmario](https://github.com/brionmario)! - Fix outbound provisioning list
+
+- Updated dependencies [[`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca)]:
+  - @wso2is/theme@2.0.56
+
+## 2.0.117
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+- Updated dependencies [[`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf)]:
+  - @wso2is/theme@2.0.55
+
+## 2.0.116
+
+### Patch Changes
+
+- [#5190](https://github.com/wso2/identity-apps/pull/5190) [`a556419787`](https://github.com/wso2/identity-apps/commit/a5564197873cf051eaf4182218b28c10cef088f9) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix enterprise login buttons localization
+
+## 2.0.115
+
+### Patch Changes
+
+- [#5177](https://github.com/wso2/identity-apps/pull/5177) [`c6b5bf1a82`](https://github.com/wso2/identity-apps/commit/c6b5bf1a82897424d2c43efd2a1300514bd30b40) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI disparities between cloud offering UI and onprem UI
+
+* [#5180](https://github.com/wso2/identity-apps/pull/5180) [`d18b92b09c`](https://github.com/wso2/identity-apps/commit/d18b92b09c4044a7a94791e94b6a74396d16e345) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] locale not setting properly when the language cookie is not set
+
 ## 2.0.114
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1905,6 +1905,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>" +
                                         " renvoyé après l'authentification.",
+                                    customPassiveSTS: "Ce certificat est utilisé pour valider les signatures des demandes signées.",
                                     customSaml: "Ce certificat permet de valider les signatures des " +
                                         "requêtes signées et de chiffrer les assertions SAML renvoyées " +
                                         "après authentification."
@@ -2165,7 +2166,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Autoriser la révocation des jetons de cette application lorsqu'une " +
-                                            "session IDP liée se termine par une déconnexion utilisateur.",
+                                            "session IDP liée se termine par une déconnexion utilisateur. N'oubliez pas d'inclure " +
+                                            "<1>client_id</> ou <3>id_token_hint</3> dans la demande de déconnexion.",
                                         label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                     },
                                     type: {
@@ -8458,7 +8460,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "Organisations"
+                title: "Organisations",
+                view: {
+                    description: "Voir l'organisation"
+                }
             },
             overview: {
                 widgets: {
@@ -9299,7 +9304,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
                     pageTitle: "Publication de journaux à distance",
-                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    description: "Configurez les paramètres de journalisation à distance pour les journaux d'audit de l'organisation.",
                     fields: {
                         logTypes: {
                             label: "Types de journaux à publier",
@@ -9347,6 +9352,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restaurer",
                         title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
@@ -9709,8 +9715,7 @@ export const console: ConsoleNS = {
                                 "Fonction de nom d'utilisateur alphanumérique.",
                             emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
                                 "l'identifiant.",
-                            emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
-                                "Configuration d'un fournisseur de messagerie.",
+                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez la vérification par e-mail à partir des <1>paramètres de connexion et d'enregistrement</1>.",
                             inviteOffline: "Inviter hors ligne",
                             inviteViaEmail: "Inviter par e-mail"
                         },

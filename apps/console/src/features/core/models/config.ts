@@ -98,9 +98,17 @@ export interface FeatureConfigInterface {
      */
     emailProviders?: FeatureAccessConfigInterface;
     /**
+     * Getting started feature.
+     */
+    gettingStarted?: FeatureAccessConfigInterface;
+    /**
      * SMS providers feature.
      */
     smsProviders?: FeatureAccessConfigInterface;
+    /**
+     * Notification channels feature.
+     */
+    notificationChannels?: FeatureAccessConfigInterface;
     /**
      * Email templates feature.
      */
@@ -129,6 +137,10 @@ export interface FeatureConfigInterface {
      * Identity verification provider management feature.
      */
     identityVerificationProviders?: FeatureAccessConfigInterface;
+    /**
+     * Login and Registration feature.
+     */
+    loginAndRegistration?: FeatureAccessConfigInterface;
     /**
      * OIDC Scope management feature.
      */

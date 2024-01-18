@@ -34,14 +34,14 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { 
+import React, {
     FunctionComponent,
     MutableRefObject,
-    ReactElement, 
-    useEffect, 
-    useMemo, 
-    useRef , 
-    useState 
+    ReactElement,
+    useEffect,
+    useMemo,
+    useRef ,
+    useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,19 +83,19 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const { getLink } = useDocumentation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    
-    const pageContextRef : MutableRefObject<HTMLElement> = useRef(null); 
+
+    const pageContextRef : MutableRefObject<HTMLElement> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
-    
+
     const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
         featureConfig?.emailProviders,
         featureConfig?.emailProviders?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
-    
+
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
-    const [ emailProviderConfig , setEmailProviderConfig ] = 
+    const [ emailProviderConfig , setEmailProviderConfig ] =
         useState<EmailProviderConfigFormValuesInterface>(undefined);
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
 
@@ -118,16 +118,16 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         }
 
         // Validate if the email provider config exists.
-        if (originalEmailProviderConfig[0] && 
+        if (originalEmailProviderConfig[0] &&
                 originalEmailProviderConfig[0].name === EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NAME) {
 
-            const displayNameProperty: EmailProviderConfigPropertiesInterface = 
-                originalEmailProviderConfig[0].properties.find((property: EmailProviderConfigPropertiesInterface) => 
+            const displayNameProperty: EmailProviderConfigPropertiesInterface =
+                originalEmailProviderConfig[0].properties.find((property: EmailProviderConfigPropertiesInterface) =>
                     property.key === EmailProviderConstants.SIGNATURE_KEY
                 );
-            
-            const replyToProperty: EmailProviderConfigPropertiesInterface = 
-                originalEmailProviderConfig[0].properties.find((property: EmailProviderConfigPropertiesInterface) => 
+
+            const replyToProperty: EmailProviderConfigPropertiesInterface =
+                originalEmailProviderConfig[0].properties.find((property: EmailProviderConfigPropertiesInterface) =>
                     property.key === EmailProviderConstants.REPLY_TO_ADDRESS_KEY
                 );
 
@@ -142,7 +142,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             });
         }
     }, [ originalEmailProviderConfig ]);
-    
+
     /**
      * Displays the error banner when unable to fetch email provider configuration.
      */
@@ -217,7 +217,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             })
         );
     };
-    
+
     /**
      * Handles updating the email provider configurations.
      */
@@ -252,7 +252,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 value: values.displayName
             });
         }
-        
+
         handleConfigurationDelete(true)
             .then((isDeleted: boolean) => {
                 if (isDeleted) {
@@ -379,7 +379,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             error.replyToAddress = t(
                 "extensions:develop.emailProviders.form.validations.emailInvalid"
             );
-        }        
+        }
 
         return error;
     };
@@ -400,7 +400,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                         { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </div>
-            </div> 
+            </div>
         );
     };
 
@@ -449,6 +449,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             } }
             action={
                 featureConfig.emailProviders?.enabled &&
+                hasRequiredScopes(featureConfig?.emailTemplates, featureConfig?.emailTemplates?.scopes?.read,
+                    allowedScopes) &&
                 (
                     <SecondaryButton
                         onClick={ goToEmailTemplates }
@@ -466,7 +468,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { isEmailProviderConfigFetchRequestLoading || isDeleting
-                                    ? renderLoadingPlaceholder() 
+                                    ? renderLoadingPlaceholder()
                                     : (
                                         <>
                                             <Form
@@ -481,7 +483,6 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 autoComplete="new-password"
                                             >
                                                 <Grid>
-                                                    
                                                     { /* To be added with email template feature
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column>
@@ -498,7 +499,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                             "extensions:develop.emailProviders.info"
                                                                         }
                                                                     >
-                                                                        You can customize the email content using 
+                                                                        You can customize the email content using
                                                                         <a
                                                                             className="link pointing"
                                                                             onClick={ navigateToEmailTemplate }
@@ -517,7 +518,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ariaLabel="SMTP Server Host Field"
                                                                 inputType="default"
                                                                 name="smtpServerHost"
-                                                                label={ t("extensions:develop.emailProviders.form" + 
+                                                                label={ t("extensions:develop.emailProviders.form" +
                                                                     ".smtpServerHost.label") }
                                                                 placeholder={
                                                                     t("extensions:develop.emailProviders.form" +
@@ -530,8 +531,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                             ".smtpServerHost.hint"
                                                                         }
                                                                     >
-                                                                        The Server Host usually begins with 
-                                                                        <Code>smtp</Code>, followed by the domain 
+                                                                        The Server Host usually begins with
+                                                                        <Code>smtp</Code>, followed by the domain
                                                                         name of the email service provider.
                                                                     </Trans>
                                                                 ) }
@@ -565,16 +566,15 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                             ".smtpPort.hint"
                                                                         }
                                                                     >
-                                                                        The default SMTP port is <Code>25</Code>, 
-                                                                        but some email service providers may use 
-                                                                        alternative ports such as <Code>587</Code>.
+                                                                        For security reasons, we currently support port
+                                                                        <Code>587</Code> only.
                                                                     </Trans>
                                                                 ) }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.smtpPort }
                                                                 readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
-                                                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                                                    .EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                 width={ 16 }
@@ -630,7 +630,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 minLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                                                                 width={ 16 }
-                                                                data-componentid={ 
+                                                                data-componentid={
                                                                     `${componentId}-smtp-reply-to-address`
                                                                 }
                                                                 autoComplete="new-password"
@@ -719,26 +719,33 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                     </Grid.Row>
                                                 </Grid>
                                             </Form>
-                                            <Divider hidden />
-                                            <Grid.Row columns={ 1 } className="mt-6">
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <PrimaryButton
-                                                        size="small"
-                                                        loading={ isSubmitting }
-                                                        disabled={ isReadOnly }
-                                                        onClick={ () => {
-                                                            formRef?.current?.triggerSubmit();
-                                                        } }
-                                                        ariaLabel="Email provider form update button"
-                                                        data-componentid={ `${ componentId }-update-button` }
-                                                    >
-                                                        { t("extensions:develop.emailProviders" +
-                                                                ".updateButton") }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
+                                            {
+                                                !isReadOnly && (
+                                                    <>
+                                                        <Divider hidden />
+                                                        <Grid.Row columns={ 1 } className="mt-6">
+                                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                                <PrimaryButton
+                                                                    size="small"
+                                                                    loading={ isSubmitting }
+                                                                    onClick={ () => {
+                                                                        formRef?.current?.triggerSubmit();
+                                                                    } }
+                                                                    ariaLabel="Email provider form update button"
+                                                                    data-componentid={
+                                                                        `${ componentId }-update-button`
+                                                                    }
+                                                                >
+                                                                    { t("extensions:develop.emailProviders" +
+                                                                            ".updateButton") }
+                                                                </PrimaryButton>
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </>
+                                                )
+                                            }
                                         </>
-                                    ) 
+                                    )
                                 }
                             </EmphasizedSegment>
                             {
@@ -789,7 +796,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 { t("extensions:develop.emailProviders.confirmationModal.header") }
                                             </ConfirmationModal.Header>
                                             <ConfirmationModal.Message
-                                                data-componentid={ 
+                                                data-componentid={
                                                     `${ componentId }-revert-confirmation-modal-message`
                                                 }
                                                 attached
@@ -807,7 +814,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Ref> 
+            </Ref>
         </PageLayout>
     );
 };

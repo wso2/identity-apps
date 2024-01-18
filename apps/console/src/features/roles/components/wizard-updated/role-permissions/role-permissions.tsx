@@ -38,6 +38,7 @@ import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-i
 import { useAPIResources } from "../../../../api-resources/api";
 import { APIResourceCategories, APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceUtils } from "../../../../api-resources/utils/api-resource-utils";
+import { Policy } from "../../../../applications/constants/api-authorization";
 import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api";
 import { RoleAudienceTypes } from "../../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
@@ -159,7 +160,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 // API resources list options when role audience is "application".
                 authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
-                        selectedAPIResource?.id === api?.id)) {
+                        selectedAPIResource?.id === api?.id) && api.policyId == Policy.ROLE) {
                         options.push({
                             key: api.id,
                             text: api.displayName,

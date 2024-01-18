@@ -25,8 +25,8 @@ export interface AdminAdvisoryBannerConfigurationInterface {
 }
 
 export enum LogType {
-    AUDIT = "AUDIT",
-    CARBON = "CARBON"
+    AUDIT = "audit",
+    CARBON = "carbon"
 }
 
 export interface RemoteLogPublishingConfigurationInterface {

@@ -742,11 +742,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         <EmphasizedSegment>
                                             <EmptyPlaceholder
                                                 data-testid="role-mgt-empty-groups-list"
-                                                title={ t("console:manage.features.roles.edit.groups." +
+                                                title={ t("console:manage.features.roles.edit.groups.placeholders." +
                                                         "emptyPlaceholder.title") }
                                                 subtitle={ [
-                                                    t("console:manage.features.roles.edit.groups." +
-                                                            "emptyPlaceholder.subtitles")
+                                                    t("console:manage.features.roles.edit.groups.placeholders." +
+                                                            "emptyPlaceholder.subtitles.0")
                                                 ] }
                                                 action={
                                                     !isReadOnly && (
@@ -756,7 +756,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                             onClick={ handleOpenAddNewGroupModal }
                                                         >
                                                             { t("console:manage.features.roles.edit.groups." +
-                                                                    "emptyPlaceholder.action") }
+                                                                    "placeholders.emptyPlaceholder.action") }
                                                         </PrimaryButton>
                                                     )
                                                 }

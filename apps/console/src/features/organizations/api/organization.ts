@@ -131,8 +131,8 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             before,
             filter,
             limit,
-            recursive,
-            authorizedAppName
+            authorizedAppName,
+            recursive
         },
         url: `${ isRoot
             ? store.getState().config.endpoints.rootUsersOrganization

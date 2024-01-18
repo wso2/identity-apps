@@ -1147,6 +1147,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint?: {
                                     customOidc: string;
+                                    customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {
@@ -1732,7 +1733,7 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
-                            useNumericChars: {
+                            useAlphanumericChars: {
                                 hint: string;
                                 label: string;
                                 validations: {
@@ -3774,6 +3775,9 @@ export interface ConsoleNS {
                     notifications: {
                         switchOrganization: Notification;
                     }
+                }
+                view: {
+                    description: string;
                 }
             };
             users: {
@@ -5855,6 +5859,7 @@ export interface ConsoleNS {
                         }
                     };
                     dangerZone: {
+                        button: string,
                         title: string;
                         header: string;
                         subheader: string;

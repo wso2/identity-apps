@@ -34,6 +34,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
+import { Policy } from "../../../../extensions/components/application/constants";
 import { AppConstants, history } from "../../../../features/core";
 import { APIResourceInterface } from "../../../api-resources/models";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
@@ -84,7 +85,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
-    const [ invalidAPIResourceFields, setInvalidAPIResourceFields ] = useState<string[]>([]);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -121,7 +121,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
-            if (isNotSelected) {
+            if (isNotSelected && apiResource.policyId == Policy.ROLE) {
                 options.push({
                     key: apiResource?.id,
                     text: apiResource?.displayName,
@@ -152,8 +152,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
      */
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         event.preventDefault();
-
-        setInvalidAPIResourceFields([ ...invalidAPIResourceFields, data?.value?.toString() ]);
 
         // Add the selected resource to selectedAPIResources
         const subscribedApiResourcesList: APIResourceInterface[] = [ ...selectedAPIResources ];
@@ -189,12 +187,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         );
 
         setSelectedPermissions(selectedScopes);
-
-        if (scopes?.length > 0) {
-            setInvalidAPIResourceFields(invalidAPIResourceFields.filter((id: string) => id !== apiResource.id));
-        } else {
-            setInvalidAPIResourceFields([ ...invalidAPIResourceFields, apiResource.id ]);
-        }
     };
 
     /**
@@ -210,8 +202,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         setSelectedPermissions(selectedPermissions.filter((selectedPermission: SelectedPermissionsInterface) => {
             return selectedPermission.apiResourceId !== apiResourceId;
         }));
-
-        setInvalidAPIResourceFields(invalidAPIResourceFields.filter((id: string) => id !== apiResourceId));
     };
 
     /**
@@ -468,7 +458,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                                             selectedPermission.apiResourceId === apiResource?.id
                                                     )?.scopes
                                                 }
-                                                hasError={ invalidAPIResourceFields?.includes(apiResource?.id) }
                                                 errorMessage={ t("console:manage.features.roles.addRoleWizard." +
                                                     "forms.rolePermission.permissions.validation.empty") }
                                             />
@@ -497,7 +486,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                 data-testid={ `${componentId}-finish-button` }
                                 floated="right"
                                 loading={ isSubmitting }
-                                disabled={ isFormError || isSubmitting || invalidAPIResourceFields?.length > 0 }
+                                disabled={ isFormError || isSubmitting }
                                 form={ FORM_ID }
                                 type="button"
                                 onClick={ () => {

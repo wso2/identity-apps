@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -95,9 +95,9 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
      */
     EmailOTP_OTPLength: string;
     /**
-     * Allow OTP token to have 0-9 characters only.
+     * Allow OTP token to have mix of 0-9 and A-Z characters.
      */
-    EmailOTP_OtpRegex_UseNumericChars: boolean;
+    EmailOTP_UseAlphanumericChars: boolean;
 }
 
 /**
@@ -115,7 +115,7 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
     /**
      * Allow OTP token to have 0-9 characters only field.
      */
-    EmailOTP_OtpRegex_UseNumericChars: CommonAuthenticatorFormFieldInterface;
+    EmailOTP_UseAlphanumericChars: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -133,7 +133,7 @@ export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * Allow OTP token to have 0-9 characters only field.
      */
-    EmailOTP_OtpRegex_UseNumericChars: string;
+    EmailOTP_UseAlphanumericChars: string;
 }
 
 const FORM_ID: string = "email-otp-authenticator-form";
@@ -164,7 +164,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
 
     // SMS OTP length unit is set to digits or characters according to the state of this variable
-    const [ isOTPNumeric, setIsOTPNumeric ] = useState<boolean>();
+    const [ isOTPAlphanumeric, setIsOTPAlphanumeric ] = useState<boolean>();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -220,7 +220,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             }
         });
 
-        setIsOTPNumeric(resolvedInitialValues.EmailOTP_OtpRegex_UseNumericChars);
+        setIsOTPAlphanumeric(resolvedInitialValues.EmailOTP_UseAlphanumericChars);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -277,7 +277,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         const errors: EmailOTPAuthenticatorFormErrorValidationsInterface = {
             EmailOTP_ExpiryTime: undefined,
             EmailOTP_OTPLength: undefined,
-            EmailOTP_OtpRegex_UseNumericChars: undefined
+            EmailOTP_UseAlphanumericChars: undefined
         };
 
         if (!values.EmailOTP_ExpiryTime) {
@@ -313,7 +313,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             errors.EmailOTP_OTPLength = t(
                 "console:develop.features.authenticationProvider.forms" +
                 `.authenticatorSettings.emailOTP.tokenLength.validations.range.${
-                    isOTPNumeric ? "digits" : "characters"
+                    isOTPAlphanumeric ? "characters" : "digits"
                 }`);
         }
 
@@ -379,26 +379,27 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 </Label>
             </Field.Input>
             <Field.Checkbox
-                ariaLabel="Use numeric characters for OTP"
-                name="EmailOTP_OtpRegex_UseNumericChars"
+                ariaLabel="Use alphanumeric characters for OTP"
+                name="EmailOTP_UseAlphanumericChars"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".emailOTP.useNumericChars.label")
+                        ".emailOTP.useAlphanumericChars.label")
                 }
                 hint={
                     (<Trans
                         i18nKey={
                             "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            ".emailOTP.useNumericChars.hint"
+                            ".emailOTP.useAlphanumericChars.hint"
                         }
                     >
-                        Please clear this checkbox to enable alphanumeric characters.
+                        Please check this checkbox to enable alphanumeric characters. Otherwise numeric{ " " }
+                        characters will be used.
                     </Trans>)
                 }
                 readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-otp-regex-use-numeric` }
-                listen={ (e:boolean) => {setIsOTPNumeric(e);} }
+                listen={ (e:boolean) => {setIsOTPAlphanumeric(e);} }
             />
             <Field.Input
                 ariaLabel="Email OTP length"
@@ -441,7 +442,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 <Label>
                     {
                         t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                            `.emailOTP.tokenLength.unit.${isOTPNumeric? "digits" : "characters"}`)
+                            `.emailOTP.tokenLength.unit.${isOTPAlphanumeric? "characters" : "digits"}`)
                     }
                 </Label>
             </Field.Input>

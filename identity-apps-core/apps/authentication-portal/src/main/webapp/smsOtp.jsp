@@ -160,7 +160,7 @@
                                             class="form-control"
                                             placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
                                         >
-                                        <% for (int index = 1; index <= otpLength;) { 
+                                        <% for (int index = 1; index <= otpLength;) {
                                             String previousStringIndex = null;
                                             if (index != 1) {
                                                 previousStringIndex = "pincode-" + (index - 1);
@@ -170,17 +170,17 @@
                                             String nextStringIndex = null;
                                             if (index != (otpLength + 1)) {
                                                 nextStringIndex = "pincode-" + index;
-                                            } 
+                                            }
                                         %>
                                             <div class="field mt-5">
                                                 <input
-                                                    class="text-center p-3" 
-                                                    id=<%= currentStringIndex %> 
+                                                    class="text-center p-3"
+                                                    id=<%= currentStringIndex %>
                                                     name=<%= currentStringIndex %>
                                                     onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
-                                                    tabindex="1" 
-                                                    placeholder="·" 
-                                                    autofocus 
+                                                    tabindex="1"
+                                                    placeholder="·"
+                                                    autofocus
                                                     maxlength="1"
                                                 >
                                             </div>
@@ -188,8 +188,8 @@
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper">
-                                        <input type="password" id='OTPCode' name="OTPcode" size='30'/>
-                                        <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                        <input type="text" id='OTPCode' name="OTPcode" size='30'/>
+                                        <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>
                             </div>
@@ -225,22 +225,22 @@
                                 <div class="buttons">
                                     <% if (otpLength <= 6) { %>
                                         <div>
-                                            <input type="button" 
-                                                id="subButton" 
+                                            <input type="button"
+                                                id="subButton"
                                                 onclick="sub(); return false;"
                                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                                 class="ui primary fluid large button" />
                                         </div>
                                     <% } else { %>
-                                        <input type="submit" 
-                                            name="authenticate" 
+                                        <input type="submit"
+                                            name="authenticate"
                                             id="authenticate"
                                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                             class="ui primary fluid large button"/>
                                     <% } %>
 
-                                    <button type="button" 
-                                            class="ui fluid large button secondary mt-2" 
+                                    <button type="button"
+                                            class="ui fluid large button secondary mt-2"
                                             id="resend">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
                                     </button>
@@ -251,7 +251,7 @@
                                     %>
                                         <div class="ui divider hidden"></div>
                                         <a
-                                            class="ui fluid primary basic button link-button" 
+                                            class="ui fluid primary basic button link-button"
                                             id="goBackLink"
                                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
                                         >

@@ -16,21 +16,32 @@
  * under the License.
  */
 
-import { RolesInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface, RolesInterface } from "@wso2is/core/models";
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, history } from "../../core";
 import { getRoleById } from "../api/roles";
 import { EditRole } from "../components/edit-role/edit-role";
+import { RoleConstants } from "../constants/role-constants";
 
 const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const { t } = useTranslation();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userV1Roles);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isReadOnly: boolean = useMemo(() => {
+        return !isFeatureEnabled(featureConfig,
+            RoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
+            !hasRequiredScopes(featureConfig,
+                featureConfig?.scopes?.update, allowedScopes);
+    }, [ featureConfig, allowedScopes ]);
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
@@ -92,7 +103,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
                 roleObject={ roleObject }
                 roleId={ roleId }
                 onRoleUpdate={ onRoleUpdate }
-                featureConfig={ featureConfig }
+                readOnly={ isReadOnly }
             />
         </TabPageLayout>
     );

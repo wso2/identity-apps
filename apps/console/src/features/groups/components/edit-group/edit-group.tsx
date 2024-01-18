@@ -18,7 +18,7 @@
 
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -37,6 +37,7 @@ import { AppState } from "../../../core/store";
 import { GenericOrganization } from "../../../organizations/models/organizations";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
+import { UserManagementConstants } from "../../../users/constants";
 import { UserBasicInterface, UserListInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
 import useGroupManagement from "../../hooks/use-group-management";
@@ -90,6 +91,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     const { activeTab, updateActiveTab } = useGroupManagement();
 
+    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.users);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
@@ -101,6 +104,13 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
     const isSuperOrganization: boolean = useMemo(() =>
         OrganizationUtils.isSuperOrganization(currentOrganization), [ currentOrganization ]);
+
+    const isUserReadOnly: boolean = useMemo(() => {
+        return !isFeatureEnabled(usersFeatureConfig,
+            UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE")) ||
+            !hasRequiredScopes(usersFeatureConfig,
+                usersFeatureConfig?.scopes?.update, allowedScopes);
+    }, [ usersFeatureConfig, allowedScopes ]);
 
     useEffect(() => {
 
@@ -238,7 +248,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                             data-testid="group-mgt-edit-group-roles-v1"
                             group={ group }
                             onGroupUpdate={ onGroupUpdate }
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ isReadOnly || isUserReadOnly }
                         />
                     </ResourceTab.Pane>
                 )

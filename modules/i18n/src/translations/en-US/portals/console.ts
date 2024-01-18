@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1877,6 +1877,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "This certificate is used to encrypt the <1>id_token</1>" +
                                         " returned after the authentication.",
+                                    customPassiveSTS: "This certificate is used to validate the signatures of the signed requests.",
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
@@ -2131,7 +2132,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Allow revoking tokens of this application when a bound IDP session " +
-                                            "gets terminated through a user logout.",
+                                            "gets terminated through a user logout. Remember to include either <1>client_id</1> " +
+                                            "or <3>id_token_hint</3> in the logout request.",
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
@@ -3872,11 +3874,11 @@ export const console: ConsoleNS = {
                                     required: "Email OTP length is a required field."
                                 }
                             },
-                            useNumericChars: {
-                                hint: "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP",
+                            useAlphanumericChars: {
+                                hint: "Please check this checkbox to enable alphanumeric characters. Otherwise numeric characters will be used.",
+                                label: "Use alphanumeric characters for OTP",
                                 validations: {
-                                    required: "Use only numeric characters for OTP is a required field."
+                                    required: "Use alphanumeric characters for OTP is a required field."
                                 }
                             }
                         },
@@ -10228,7 +10230,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "Organizations"
+                title: "Organizations",
+                view: {
+                    description: "View Organization"
+                }
             },
             overview: {
                 widgets: {
@@ -11042,7 +11047,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
-                    description: "Configure remote logging settings for the organization.",
+                    description: "Configure remote logging settings for audit logs in the organization.",
                     fields: {
                         logTypes: {
                             label: "Log types to be published",
@@ -11056,9 +11061,9 @@ export const console: ConsoleNS = {
                             label: "Destination URL"
                         },
                         advanced: {
-                            title: "Advanced settings",
+                            title: "Advanced Settings",
                             connectionTimeout: {
-                                label: "Connection Timeout (ms)"
+                                label: "Connection timeout (ms)"
                             },
                             verifyHostname: {
                                 label: "Verify the hostname"
@@ -11090,6 +11095,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restore",
                         title: "Restore Default Configuration",
                         header: "Restore Default Configuration",
                         subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
@@ -11443,8 +11449,7 @@ export const console: ConsoleNS = {
                             alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                            emailVerificationDisabled: "To invite users to set the password, enable email verification from " +
-                                "Login & Registration settings.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
                             inviteOffline: "Invite offline",
                             inviteViaEmail: "Invite via email"
                         },
