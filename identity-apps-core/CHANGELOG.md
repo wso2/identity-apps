@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.121
+
+### Patch Changes
+
+- [#5261](https://github.com/wso2/identity-apps/pull/5261) [`01b7b590b5`](https://github.com/wso2/identity-apps/commit/01b7b590b5d431ebb918d24909547b66619aa731) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add Choose a different option link in passkey and totp flows
+
 ## 2.0.120
 
 ### Patch Changes
