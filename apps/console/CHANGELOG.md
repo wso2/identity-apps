@@ -1,5 +1,27 @@
 # @wso2is/console
 
+## 2.10.82
+
+### Patch Changes
+
+- [#5257](https://github.com/wso2/identity-apps/pull/5257) [`33fe4a20c9`](https://github.com/wso2/identity-apps/commit/33fe4a20c9feca13b6376dc1ad7cb04247179cd0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix sub org console breadcrumb issue
+
+* [#5260](https://github.com/wso2/identity-apps/pull/5260) [`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43) Thanks [@brionmario](https://github.com/brionmario)! - Fix OIDC Session Management issues in Console & My Account
+
+- [#5255](https://github.com/wso2/identity-apps/pull/5255) [`1b39cd403c`](https://github.com/wso2/identity-apps/commit/1b39cd403c56b57b671a9efcf01ea39f062da017) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix account lock option being hidden based on the status of account immediately enable option
+
+* [#5249](https://github.com/wso2/identity-apps/pull/5249) [`febdd2bb8d`](https://github.com/wso2/identity-apps/commit/febdd2bb8d2a2ae866b9127ce9f531a3f2ae2b17) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX for assigning users to roles based on userstore
+
+* Updated dependencies [[`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43)]:
+  - @wso2is/common@2.0.24
+  - @wso2is/core@2.0.30
+  - @wso2is/access-control@2.0.17
+  - @wso2is/dynamic-forms@2.0.27
+  - @wso2is/form@2.0.29
+  - @wso2is/forms@2.0.15
+  - @wso2is/i18n@2.0.100
+  - @wso2is/react-components@2.0.39
+
 ## 2.10.81
 
 ### Patch Changes

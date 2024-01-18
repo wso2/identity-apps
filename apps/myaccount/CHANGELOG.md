@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.2.93
+
+### Patch Changes
+
+- [#5260](https://github.com/wso2/identity-apps/pull/5260) [`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43) Thanks [@brionmario](https://github.com/brionmario)! - Fix OIDC Session Management issues in Console & My Account
+
+- Updated dependencies [[`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43)]:
+  - @wso2is/core@2.0.30
+  - @wso2is/access-control@2.0.17
+  - @wso2is/forms@2.0.15
+  - @wso2is/i18n@2.0.100
+  - @wso2is/react-components@2.0.39
+
 ## 2.2.92
 
 ### Patch Changes
