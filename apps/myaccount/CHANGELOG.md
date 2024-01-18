@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.2.92
+
+### Patch Changes
+
+- [#4261](https://github.com/wso2/identity-apps/pull/4261) [`2ff01804ed`](https://github.com/wso2/identity-apps/commit/2ff01804ed2e623529810bd53ed6fefe5909a24d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Change email OTP isNumeric checkbox to isAlphanumeric.
+
+* [#5220](https://github.com/wso2/identity-apps/pull/5220) [`68b347c845`](https://github.com/wso2/identity-apps/commit/68b347c84552c9d4dc4b7fa5ca05c6f7fe4113e9) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Show email in profile for users with custom username.
+
+* Updated dependencies [[`2ff01804ed`](https://github.com/wso2/identity-apps/commit/2ff01804ed2e623529810bd53ed6fefe5909a24d)]:
+  - @wso2is/i18n@2.0.99
+
 ## 2.2.91
 
 ### Patch Changes

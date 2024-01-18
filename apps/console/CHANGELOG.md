@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.10.79
+
+### Patch Changes
+
+- [#5234](https://github.com/wso2/identity-apps/pull/5234) [`23e4cee3d6`](https://github.com/wso2/identity-apps/commit/23e4cee3d6ea24ad1f5dc43a284961ca6ab093ac) Thanks [@brionmario](https://github.com/brionmario)! - Show login flow tab for sub-orgs
+
+* [#4261](https://github.com/wso2/identity-apps/pull/4261) [`2ff01804ed`](https://github.com/wso2/identity-apps/commit/2ff01804ed2e623529810bd53ed6fefe5909a24d) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Change email OTP isNumeric checkbox to isAlphanumeric.
+
+- [#5240](https://github.com/wso2/identity-apps/pull/5240) [`32aef92fa7`](https://github.com/wso2/identity-apps/commit/32aef92fa729dc4133aa824790df6408d2802d7a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add copy input for the ACS Url field of SAML authenticator
+
+* [#5245](https://github.com/wso2/identity-apps/pull/5245) [`afcbc9c859`](https://github.com/wso2/identity-apps/commit/afcbc9c8591d1545eaca62539bca9320ecbc4a03) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix RBAC issues for admin roles
+
+* Updated dependencies [[`2ff01804ed`](https://github.com/wso2/identity-apps/commit/2ff01804ed2e623529810bd53ed6fefe5909a24d)]:
+  - @wso2is/i18n@2.0.99
+
 ## 2.10.78
 
 ### Patch Changes
