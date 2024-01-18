@@ -476,8 +476,8 @@ importers:
   apps/console:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.0
-        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
+        specifier: ^4.0.1
+        version: 4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.11.0(@types/react@18.0.18)(react@18.2.0)
@@ -825,8 +825,8 @@ importers:
   apps/myaccount:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.0
-        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
+        specifier: ^4.0.1
+        version: 4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
       '@babel/polyfill':
         specifier: ^7.0.0
         version: 7.12.1
@@ -1130,8 +1130,8 @@ importers:
   modules/common:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.0
-        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@6.3.0)(react@18.2.0)
+        specifier: ^4.0.1
+        version: 4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@6.3.0)(react@18.2.0)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.11.0(@types/react@18.0.18)(react@18.2.0)
@@ -1278,8 +1278,8 @@ importers:
   modules/core:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^4.0.0
-        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@6.3.0)(react@16.14.0)
+        specifier: ^4.0.1
+        version: 4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@6.3.0)(react@16.14.0)
       '@braintree/sanitize-url':
         specifier: ^5.0.0
         version: 5.0.2
@@ -2137,15 +2137,15 @@ packages:
     resolution: {integrity: sha512-BMQsTzpFwtgbSeJvmSDgRrOjXfA6+yQ2NUq7CXP4q1TtqZJt8s/zadOazPM00/jIY8B2ENS0CLRHp07M0mFdOw==}
     dev: false
 
-  /@asgardeo/auth-react@4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@6.3.0)(react@16.14.0):
-    resolution: {integrity: sha512-bML03MYxSUIkGXTiSScUK4KKCHv3SeeDt4nJpdSy1QfmWXlXBTTUeohDrA4OtkqEEM6qoJeARNOvrtVD4fD/zA==}
+  /@asgardeo/auth-react@4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@6.3.0)(react@16.14.0):
+    resolution: {integrity: sha512-HUi4IWA8tr3nQjH7L+eV7158v1/nc7acBW2vDyTN/ee/88HU1DBpCbK2IJzSc8BioLDUMrRWvG3erajcaj4GLw==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
       react-router-dom: ^6.3.0
     dependencies:
-      '@asgardeo/auth-spa': 3.0.0
+      '@asgardeo/auth-spa': 3.0.1
       '@babel/runtime-corejs3': 7.18.9
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
@@ -2154,15 +2154,15 @@ packages:
       - debug
     dev: false
 
-  /@asgardeo/auth-react@4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0):
-    resolution: {integrity: sha512-bML03MYxSUIkGXTiSScUK4KKCHv3SeeDt4nJpdSy1QfmWXlXBTTUeohDrA4OtkqEEM6qoJeARNOvrtVD4fD/zA==}
+  /@asgardeo/auth-react@4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0):
+    resolution: {integrity: sha512-HUi4IWA8tr3nQjH7L+eV7158v1/nc7acBW2vDyTN/ee/88HU1DBpCbK2IJzSc8BioLDUMrRWvG3erajcaj4GLw==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
       react-router-dom: ^6.3.0
     dependencies:
-      '@asgardeo/auth-spa': 3.0.0
+      '@asgardeo/auth-spa': 3.0.1
       '@babel/runtime-corejs3': 7.18.9
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2171,15 +2171,15 @@ packages:
       - debug
     dev: false
 
-  /@asgardeo/auth-react@4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@6.3.0)(react@18.2.0):
-    resolution: {integrity: sha512-bML03MYxSUIkGXTiSScUK4KKCHv3SeeDt4nJpdSy1QfmWXlXBTTUeohDrA4OtkqEEM6qoJeARNOvrtVD4fD/zA==}
+  /@asgardeo/auth-react@4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@6.3.0)(react@18.2.0):
+    resolution: {integrity: sha512-HUi4IWA8tr3nQjH7L+eV7158v1/nc7acBW2vDyTN/ee/88HU1DBpCbK2IJzSc8BioLDUMrRWvG3erajcaj4GLw==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
       react-router-dom: ^6.3.0
     dependencies:
-      '@asgardeo/auth-spa': 3.0.0
+      '@asgardeo/auth-spa': 3.0.1
       '@babel/runtime-corejs3': 7.18.9
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2188,8 +2188,8 @@ packages:
       - debug
     dev: false
 
-  /@asgardeo/auth-spa@3.0.0:
-    resolution: {integrity: sha512-97WU9e9rt2FtmZwWyDYriEb9u3ZbUGZ/jkdKnXwIwwZod5+8yJsZq+dxFrvl2Bu473RfvdWr/kvXx6/DfZWBKg==}
+  /@asgardeo/auth-spa@3.0.1:
+    resolution: {integrity: sha512-GJWDpNaU2GE6hkelc+B4fuKMJ6PwHEq0WsktZ8cjW/EKtqL6z7WU+ywDzQFMZRTBAdTofkY2qVms53I8hI8LOg==}
     dependencies:
       '@asgardeo/auth-js': 5.0.0
       await-semaphore: 0.1.3

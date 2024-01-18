@@ -203,10 +203,10 @@
         ]
     },
     "session": {
-        "sessionRefreshTimeOut": 28800,
-        "userIdleWarningTimeOut": 1740,
-        "checkSessionInterval": 5,
-        "userIdleTimeOut": 1800
+        "sessionRefreshTimeOut": 300.0,
+        "userIdleWarningTimeOut": 580.0,
+        "checkSessionInterval": 3.0,
+        "userIdleTimeOut": 600.0
     },
     "getProfileInfoFromIDToken": false,
     "superTenantProxy": "",

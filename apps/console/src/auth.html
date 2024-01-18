@@ -53,7 +53,7 @@
             .pre-loader-logo {
                 margin-top: -0.1rem;
             }
-    
+
             .content-loader {
                 display: flex;
                 flex-direction: column;
@@ -61,24 +61,24 @@
                 align-items: center;
                 user-select: none;
             }
-    
+
             .content-loader .ui.loader {
                 display: block;
                 position: relative;
                 margin-top: 10px;
                 margin-bottom: 25px;
             }
-    
+
             @keyframes loader {
                 0% {
                     transform: rotate(0)
                 }
-    
+
                 to {
                     transform: rotate(1turn)
                 }
             }
-    
+
             .content-loader .ui.loader:before {
                 content: "";
                 display: block;
@@ -87,7 +87,7 @@
                 border: .2em solid rgba(0,0,0,.1);
                 border-radius: 500rem;
             }
-    
+
             .content-loader .ui.loader:after {
                 content: "";
                 position: absolute;
@@ -101,7 +101,7 @@
                 box-shadow: 0 0 0 1px transparent;
                 top: 0;
                 left: 0;
-            } 
+            }
 
             .trifacta-pre-loader  {
                 margin-top: -0.1rem;
@@ -137,7 +137,7 @@
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
-        
+
                 if (startupConfig.enableDefaultPreLoader) {
                     defaultPreLoader.style.display = 'block';
                     trifactaPreLoader.style.display = 'none';
@@ -282,7 +282,7 @@
         <script
             async
             onload="onAuthScriptLoad();"
-            src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>auth-spa-0.3.3.min.js"
+            src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>auth-spa-3.0.1.min.js"
         ></script>
     </head>
     <body onload="preLoaderResolver()">
