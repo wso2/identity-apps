@@ -410,7 +410,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     // Filter the scim1 connector since it is deprecated.
                                                     .filter((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface
-                                                    ) => connector.id !== AuthenticatorManagementConstants.scimId)
+                                                    ) => connector.id !==
+                                                        AuthenticatorManagementConstants
+                                                            .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
                                                     .map((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface,
                                                         index: number

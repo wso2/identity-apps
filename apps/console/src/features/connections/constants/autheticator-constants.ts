@@ -367,5 +367,5 @@ export class AuthenticatorManagementConstants {
         )
     }
 
-    public static readonly scimId: string = "c2NpbQ";
+    public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 }
