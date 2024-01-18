@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -49,6 +48,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../applications/constants";
 import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
@@ -282,7 +282,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         listItemLimit,
         authorizedListNextCursor,
         authorizedListPrevCursor,
-        CommonAppConstants.CONSOLE_APP,
+        ApplicationManagementConstants.CONSOLE_APP_NAME,
         false
     );
 

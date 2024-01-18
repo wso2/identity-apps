@@ -17,7 +17,6 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../applications/constants";
 import useSignIn from "../../authentication/hooks/use-sign-in";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
@@ -87,7 +87,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         data: authorizedOrganizationList,
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError
-    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null, CommonAppConstants.CONSOLE_APP, false);
+    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null,
+        ApplicationManagementConstants.CONSOLE_APP_NAME, false);
 
     /**
      * Handles the authorized list fetch request error.

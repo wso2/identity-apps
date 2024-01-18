@@ -128,10 +128,10 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
         method: HttpMethods.GET,
         params: {
             after,
+            authorizedAppName,
             before,
             filter,
             limit,
-            authorizedAppName,
             recursive
         },
         url: `${ isRoot
