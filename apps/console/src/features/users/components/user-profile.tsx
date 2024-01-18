@@ -1153,7 +1153,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     )
                                 }
                                 {
-                                    !allowDeleteOnly && configSettings?.accountLock === "true" && (
+                                    !allowDeleteOnly && (
                                         <DangerZone
                                             data-testid={ `${ testId }-danger-zone` }
                                             actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
