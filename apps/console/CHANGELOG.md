@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.84
+
+### Patch Changes
+
+- [#5273](https://github.com/wso2/identity-apps/pull/5273) [`f9b8191604`](https://github.com/wso2/identity-apps/commit/f9b81916047c2c2ea162acb8c9ba77c070f32e97) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix app breaking when navigating to assigned users tab in a newly created role
+
 ## 2.10.83
 
 ### Patch Changes
