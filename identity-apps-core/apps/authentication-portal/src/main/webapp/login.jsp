@@ -383,7 +383,7 @@
 %>
 
 <%
-    String insightsAppIdentifier = request.getParameter("client_id");
+    String insightsAppIdentifier = Encode.forHtmlAttribute(request.getParameter("client_id"));
     String insightsTenantIdentifier = userTenant;
 
     if (!Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {
@@ -1076,7 +1076,7 @@
                     <% } %>
 
                     <%
-                    String clientId = request.getParameter("client_id");
+                    String clientId = Encode.forHtmlAttribute(request.getParameter("client_id"));
                     String urlParameters = "";
                     if (
                         !isSelfSignUpEnabledInTenant
