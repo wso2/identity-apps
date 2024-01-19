@@ -116,6 +116,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
     limit: number,
     after: string,
     before: string,
+    authorizedAppName: string,
     recursive: boolean,
     isRoot: boolean = false
 ): RequestResultInterface<Data, Error> {
@@ -127,6 +128,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
         method: HttpMethods.GET,
         params: {
             after,
+            authorizedAppName,
             before,
             filter,
             limit,
