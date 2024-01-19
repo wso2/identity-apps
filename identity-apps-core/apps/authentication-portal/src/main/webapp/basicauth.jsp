@@ -779,7 +779,7 @@
 </form>
 
 <%
-    String clientId = request.getParameter("client_id");
+    String clientId = Encode.forHtmlAttribute(request.getParameter("client_id"));
 %>
 
 <script type="text/javascript">
