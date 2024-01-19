@@ -350,7 +350,7 @@ export class AuthenticatorManagementConstants {
     public static readonly ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER: string = "An error occurred while deleting " +
         "SMS Notification Sender";
 
-    public static readonly ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA: string = "Failed to get " + 
+    public static readonly ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA: string = "Failed to get " +
         "federated authenticator meta details";
 
     public static ErrorMessages: {
@@ -366,4 +366,6 @@ export class AuthenticatorManagementConstants {
             "There are applications using this connection."
         )
     }
+
+    public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 }
