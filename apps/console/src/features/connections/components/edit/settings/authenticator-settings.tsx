@@ -111,6 +111,20 @@ const URL_MAX_LENGTH: number = 2048;
 const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
 
 /**
+ * The set of authenticator templates in the Create New Connection Wizard.
+ */
+const commonAuthenticators: string[] = [
+    ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID,
+    ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID
+];
+
+/**
  *  Identity Provider and advance settings component.
  *
  * @param props - Props injected to the component.
@@ -621,6 +635,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         let moderatedManualModeOptions: FederatedAuthenticatorMetaDataInterface[] = cloneDeep(
             availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
         );
+
+        moderatedManualModeOptions = moderatedManualModeOptions?.filter(
+            (moderatedManualModeOption: FederatedAuthenticatorMetaDataInterface) =>
+                !commonAuthenticators.includes(moderatedManualModeOption.authenticatorId));
 
         moderatedManualModeOptions = moderatedManualModeOptions?.map(
             (option: FederatedAuthenticatorMetaDataInterface) => {
