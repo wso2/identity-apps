@@ -133,7 +133,7 @@
                         "&code_challenge_method=<%=Encode.forUriComponent(request.getParameter("code_challenge_method"))%>" +
                         "&code_challenge=<%=Encode.forUriComponent(request.getParameter("code_challenge"))%>" +
                         "&response_type=<%=Encode.forUriComponent(request.getParameter("response_type"))%>" +
-                        "&client_id=<%=Encode.forUriComponent(request.getParameter("client_id"))%>" +
+                        "&client_id=<%=Encode.forHtmlAttribute(request.getParameter("client_id"))%>" +
                         "&scope=<%=Encode.forUriComponent(request.getParameter("scope"))%>" +
                         "&redirect_uri=<%=Encode.forUriComponent(request.getParameter("redirect_uri"))%>" +
                         "&response_mode=<%=Encode.forUriComponent(request.getParameter("response_mode"))%>";
@@ -383,7 +383,7 @@
 %>
 
 <%
-    String insightsAppIdentifier = request.getParameter("client_id");
+    String insightsAppIdentifier = Encode.forHtmlAttribute(request.getParameter("client_id"));
     String insightsTenantIdentifier = userTenant;
 
     if (!Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {
@@ -1076,7 +1076,7 @@
                     <% } %>
 
                     <%
-                    String clientId = request.getParameter("client_id");
+                    String clientId = Encode.forHtmlAttribute(request.getParameter("client_id"));
                     String urlParameters = "";
                     if (
                         !isSelfSignUpEnabledInTenant
@@ -1416,7 +1416,7 @@
                     "&code_challenge_method=<%=Encode.forUriComponent(request.getParameter("code_challenge_method"))%>" +
                     "&code_challenge=<%=Encode.forUriComponent(request.getParameter("code_challenge"))%>" +
                     "&response_type=<%=Encode.forUriComponent(request.getParameter("response_type"))%>" +
-                    "&client_id=<%=Encode.forUriComponent(request.getParameter("client_id"))%>" +
+                    "&client_id=<%=Encode.forHtmlAttribute(request.getParameter("client_id"))%>" +
                     "&scope=<%=Encode.forUriComponent(request.getParameter("scope"))%>" +
                     "&redirect_uri=<%=Encode.forUriComponent(request.getParameter("redirect_uri"))%>" +
                     "&response_mode=<%=Encode.forUriComponent(request.getParameter("response_mode"))%>";
