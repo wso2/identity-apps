@@ -58,7 +58,7 @@
 %>
 
 <%
-    String authRequest = request.getParameter("data");
+    String authRequest = Encode.forUriComponent(request.getParameter("data"));
 
     Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
@@ -169,20 +169,20 @@
                             </p>
                             <div class="mt-4">
                                 <div class="buttons">
-                                    <button class="ui primary fluid large button" type="button" onclick="retry()" 
+                                    <button class="ui primary fluid large button" type="button" onclick="retry()"
                                     data-testid="login-page-fido-retry-button">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                     </button>
                                 </div>
                             </div>
                             <%
-                                String multiOptionURI = request.getParameter("multiOptionURI");
+                                String multiOptionURI = Encode.forUriComponent(request.getParameter("multiOptionURI"));
                                 if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
                                     isMultiAuthAvailable(multiOptionURI)) {
                             %>
                                 <div class="text-center mt-1">
-                                    <a 
-                                        class="ui primary basic button link-button" 
+                                    <a
+                                        class="ui primary basic button link-button"
                                         id="goBackLink"
                                         href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
                                     >
@@ -244,7 +244,7 @@
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
-    <% String clientId=request.getParameter("client_id"); %>
+    <% String clientId=Encode.forUriComponent(request.getParameter("client_id")); %>
 
     <script type="text/javascript">
         var insightsAppIdentifier = "<%=clientId%>";
