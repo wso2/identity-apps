@@ -132,9 +132,11 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             };
         });
 
-        setSelectedUsers([
-            ...alreadyAssignedUsers
-        ]);
+        if (alreadyAssignedUsers?.length > 0) {
+            setSelectedUsers([
+                ...alreadyAssignedUsers
+            ]);
+        }
     },[ role, selectedUserStoreDomainName ]);
 
     useEffect(() => {
