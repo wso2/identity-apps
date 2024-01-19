@@ -2181,37 +2181,37 @@ export const extensions: Extensions = {
                     httpMethod: {
                         label: "HTTP Method",
                         placeholder: "POST",
-                        hint: "The HTTP method of the API request used for sending the SMS."
+                        hint: "The HTTP method of the API request. (Default is POST)"
                     },
                     contentType: {
                         label: "Content Type",
                         placeholder: "JSON",
-                        hint: "The content type of the API request used for sending the SMS."
+                        hint: "The content type of the API request. Accepted value is JSON. (Default is JSON)"
                     },
                     headers: {
                         label: "Headers",
-                        placeholder: "Enter headers",
-                        hint: "Headers to be included in the send SMS API request."
+                        placeholder: "authorisation: Bearer {{token}}",
+                        hint: "Comma seperated list of HTTP headers to be included in the SMS API request."
                     },
                     payload: {
                         label: "Payload",
                         placeholder: "Enter the payload",
-                        hint: "Payload of the SMS API request."
+                        hint: "Static payload that will be appended after the generated payload of the SMS."
                     },
                     key: {
                         label: "SMS Provider Auth Key",
                         placeholder: "Enter the SMS provider auth key",
-                        hint: "The auth key of the SMS provider."
+                        hint: "Any authentication key that needs to be send as HTTP header."
                     },
                     secret: {
                         label: "SMS Provider Auth Secret",
                         placeholder: "Enter the SMS provider auth secret",
-                        hint: "The auth secret of the SMS provider."
+                        hint: "Any authentication secret that needs to be send as HTTP header."
                     },
                     sender: {
                         label: "Sender",
                         placeholder: "Enter the sender",
-                        hint: "The sender of the SMS."
+                        hint: "The SMS senders identification (phone number or name)."
                     },
                     validations: {
                         required: "This field cannot be empty",

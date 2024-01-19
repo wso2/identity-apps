@@ -124,7 +124,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="key"
-                            required={ true }
+                            required={ false }
                             readOnly={ isReadOnly }
                             data-componentid={ `${componentId}-key` }
                             name="key"
@@ -155,7 +155,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="secret"
                             readOnly={ isReadOnly }
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-secret` }
                             name="secret"
                             type="password"
@@ -187,7 +187,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="sender"
                             readOnly={ isReadOnly }
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-sender` }
                             name="sender"
                             type="text"
@@ -217,7 +217,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="contentType"
                             readOnly={ isReadOnly }
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-contentType` }
                             name="contentType"
                             type="text"
@@ -249,7 +249,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="headers"
                             readOnly={ isReadOnly }
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-headers` }
                             name="headers"
                             type="text"
@@ -279,7 +279,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="httpMethod"
                             readOnly={ isReadOnly }
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-httpMethod` }
                             name="httpMethod"
                             type="text"
@@ -311,7 +311,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="payload"
                             readOnly={ isReadOnly }
-                            required={ true }
+                            required={ false }
                             data-componentid={ `${componentId}-payload` }
                             name="payload"
                             type="text"
