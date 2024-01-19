@@ -37,13 +37,26 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%!
+    private static final String LOCAL_SMS_OTP_AUTHENTICATOR_ID = "sms-otp-authenticator";
+%>
+
 <%
     request.getSession().invalidate();
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
-    int otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
+
+    String authenticators = Encode.forUriComponent(request.getParameter("authenticators"));
+    int otpLength = 6;
+    if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID)) {
+        try {
+            otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
+        } catch (Exception e) {
+            // Exception is caught and ignored. otpLength will be kept as 6.
+        }
+    }
 
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
@@ -156,7 +169,7 @@
                                     </label>
                                 <% } %>
 
-                                <% if (otpLength <= 6) { %>
+                                <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
                                     <div class="equal width fields">
                                         <input
                                             hidden
@@ -229,7 +242,7 @@
                                   <% }%>
 
                                 <div class="buttons">
-                                    <% if (otpLength <= 6) { %>
+                                    <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
                                         <div>
                                             <input type="button"
                                                 id="subButton"
