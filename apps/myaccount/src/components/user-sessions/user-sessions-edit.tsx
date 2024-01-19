@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,11 @@
  */
 
 import { IBrowser, IDevice, IOS, TestableComponentInterface } from "@wso2is/core/models";
-import { Media } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
-import { UserSession } from "../../models";
+import { ApplicationSession, UserSession } from "../../models";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**
@@ -44,6 +43,11 @@ interface UserSessionsEditProps extends TestableComponentInterface {
      * sub has tenant attached (zzz\@yyy.com)
      */
     showUsernameInApplicationUsingSub?: boolean;
+}
+
+type PlatformIcon = {
+    icon: string;
+    values: string[];
 }
 
 /**
@@ -74,7 +78,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
      * @returns OS icon.
      */
     const resolveOSIcon = (type: string): SemanticICONS => {
-        const osType = {
+        const osType: Record<string, PlatformIcon> = {
             android: {
                 icon: "android",
                 values: [ "Android" ]
@@ -112,7 +116,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
      * @returns Browser Icon.
      */
     const resolveBrowserIcon = (type: string): SemanticICONS => {
-        const browserType = {
+        const browserType: Record<string, PlatformIcon> = {
             chrome: {
                 icon: "chrome",
                 values: [ "Chrome", "Chrome Headless", "Chrome WebView", "Chromium" ]
@@ -212,14 +216,11 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                             </Grid.Column>
                                             <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 <List.Description>
-                                                    <Media lessThan="tablet">
-                                                        <Divider hidden />
-                                                    </Media>
                                                     <Table celled compact className="session-table opaque">
                                                         <Table.Body>
                                                             {
                                                                 userSession.applications.map(
-                                                                    (app, i) => (
+                                                                    (app: ApplicationSession, i: number) => (
                                                                         <Table.Row key={ i }>
                                                                             <Table.Cell className="app-name">
                                                                                 { app.appName }
