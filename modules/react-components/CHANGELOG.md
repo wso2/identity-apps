@@ -1,5 +1,14 @@
 # @wso2is/react-components
 
+## 2.0.40
+
+### Patch Changes
+
+- [#5262](https://github.com/wso2/identity-apps/pull/5262) [`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75) Thanks [@savindi7](https://github.com/savindi7)! - Add password validation in sign up page for JIT provisioned users.
+
+- Updated dependencies [[`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75)]:
+  - @wso2is/theme@2.0.58
+
 ## 2.0.39
 
 ### Patch Changes

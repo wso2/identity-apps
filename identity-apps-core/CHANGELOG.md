@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.0.123
+
+### Patch Changes
+
+- [#5262](https://github.com/wso2/identity-apps/pull/5262) [`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75) Thanks [@savindi7](https://github.com/savindi7)! - Add password validation in sign up page for JIT provisioned users.
+
+* [#5271](https://github.com/wso2/identity-apps/pull/5271) [`0b1ad2d72e`](https://github.com/wso2/identity-apps/commit/0b1ad2d72e0bab42b3bc7881099992e2afdbec73) Thanks [@Kanapriya](https://github.com/Kanapriya)! - Update login.jsp and basicauth.jsp file by encoding the client-id property
+
+* Updated dependencies [[`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75)]:
+  - @wso2is/theme@2.0.58
+
 ## 2.0.122
 
 ### Patch Changes

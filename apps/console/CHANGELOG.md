@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.10.83
+
+### Patch Changes
+
+- [#5253](https://github.com/wso2/identity-apps/pull/5253) [`01227ff973`](https://github.com/wso2/identity-apps/commit/01227ff97347c088932f5ca1519feb5828a9e46f) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Improve useAuthorizedOrganizationsList API call
+
+* [#5258](https://github.com/wso2/identity-apps/pull/5258) [`f62cc2e92f`](https://github.com/wso2/identity-apps/commit/f62cc2e92fc7c602864ede2fd22b08b14ef0f90c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove the repetitive authenticators from the custom connector authenticator templates
+
+- [#5262](https://github.com/wso2/identity-apps/pull/5262) [`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75) Thanks [@savindi7](https://github.com/savindi7)! - Add password validation in sign up page for JIT provisioned users.
+
+* [#5243](https://github.com/wso2/identity-apps/pull/5243) [`382a2ffae5`](https://github.com/wso2/identity-apps/commit/382a2ffae59e1832d8ebb0c0d3b3ec8ecd285d0f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change scim template to scim2
+
+- [#5254](https://github.com/wso2/identity-apps/pull/5254) [`613436c5a8`](https://github.com/wso2/identity-apps/commit/613436c5a8c7ad7e947c27d6e797b730c68dec77) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue of creating custom scim claim mapping even when claim mapping is removed when creating the local attribute
+
+* [#5256](https://github.com/wso2/identity-apps/pull/5256) [`c6e5ef9df8`](https://github.com/wso2/identity-apps/commit/c6e5ef9df8d2278e55a544d158b9df1419a7695c) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Change the hint text for better ux.
+
+* Updated dependencies [[`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75)]:
+  - @wso2is/theme@2.0.58
+  - @wso2is/react-components@2.0.40
+
 ## 2.10.82
 
 ### Patch Changes
