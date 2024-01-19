@@ -398,7 +398,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                     <InlineEditInput
                                                                         maxLength={ 30 }
                                                                         textPrefix="urn:scim:wso2:schema:"
-                                                                        validation="^[a-zA-Z0-9_-]*$"
+                                                                        validation="^[a-zA-Z0-9_.-]*$"
                                                                         errorHandler={ (status: boolean) => {
                                                                             setShowScimMappingError(status);
                                                                         } }
