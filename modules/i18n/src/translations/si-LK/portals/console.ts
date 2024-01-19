@@ -7542,8 +7542,8 @@ export const console: ConsoleNS = {
             parentOrgInvitations: {
                 addUserWizard: {
                     heading: "මාපිය පරිශීලකයාට ආරාධනා කරන්න",
-                    description: "මව් සංවිධානයෙන් පරිශීලකයෙකුට ආරාධනා කරන්න.",
-                    hint: "ආරාධිත පරිශීලකයින් මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ.",
+                    description: "මව් සංවිධානයෙන් පරිශීලකයින්ට ආරාධනා කරන්න.",
+                    hint: "මාපිය පරිශීලකයෙකුගේ පරිශීලක නාමය එකතු කර enter ඔබන්න. බහු පරිශීලකයන් ඇතුළත් කිරීමට නැවත නැවත කරන්න.",
                     username: {
                         label: "පරිශීලක නාමය",
                         placeholder: "පරිශීලක නාමය ඇතුලත් කරන්න",
@@ -9551,6 +9551,7 @@ export const console: ConsoleNS = {
                             tableMessages: {
                                 userCreatedMessage: "පරිශීලකයා සාර්ථකව ආනයනය කරන ලදී",
                                 invalidDataMessage: "වලංගු නොවන දත්ත සපයා ඇත",
+                                invalidUserNameFormatMessage: "පරිශීලක නාමය නිශ්චිත ආකෘතියට නොගැලපේ",
                                 userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
                                 userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
                                 internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය",

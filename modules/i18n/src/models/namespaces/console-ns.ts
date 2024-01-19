@@ -6160,6 +6160,7 @@ export interface ConsoleNS {
                             tableMessages: {
                                 userCreatedMessage: string;
                                 invalidDataMessage: string;
+                                invalidUserNameFormatMessage: string;
                                 userAlreadyExistsMessage: string;
                                 userCreationAcceptedMessage: string;
                                 internalErrorMessage: string;

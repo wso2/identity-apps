@@ -9461,12 +9461,12 @@ export const console: ConsoleNS = {
             parentOrgInvitations: {
                 addUserWizard: {
                     heading: "Invite Parent User",
-                    description: "Invite a user from the parent organization.",
+                    description: "Invite users from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
                     username: {
                         label: "Username",
                         placeholder: "Enter the username",
-                        hint: "Username should belong to a user from the parent organization.",
+                        hint: "Add the username of a parent user and press enter. Repeat to include multiple users.",
                         validations: {
                             required: "Username is a required field."
                         }
@@ -11498,6 +11498,7 @@ export const console: ConsoleNS = {
                             tableMessages: {
                                 userCreatedMessage: "User imported successfully",
                                 invalidDataMessage: "Invalid data provided",
+                                invalidUserNameFormatMessage: "Username does not match the specified format",
                                 userAlreadyExistsMessage: "User already exists",
                                 userCreationAcceptedMessage: "User creation accepted",
                                 internalErrorMessage: "Error occured while importing users",

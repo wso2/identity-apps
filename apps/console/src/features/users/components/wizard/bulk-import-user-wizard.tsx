@@ -159,6 +159,7 @@ const ADDRESS_ATTRIBUTE: string = "addresses";
 const HOME_ATTRIBUTE: string = "home";
 const BULK_ID: string = "bulkId";
 const FILE_IMPORT_TIMEOUT: number = 60000; // 1 minutes.
+const usernameRegexErrorCode: string = "31301";
 
 /**
  *  BulkImportUserWizard component.
@@ -1214,7 +1215,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "userCreatedMessage"),
                 202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
-                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                400: operation?.response?.includes(usernameRegexErrorCode)
+                    ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidUserNameFormatMessage")
+                    : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidDataMessage"),
                 409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userAlreadyExistsMessage"),
@@ -1296,7 +1300,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "userCreatedMessage"),
                 202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
-                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                400: operation?.response?.includes(usernameRegexErrorCode)
+                    ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidUserNameFormatMessage")
+                    : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidDataMessage"),
                 409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userAlreadyExistsMessage"),
@@ -1809,10 +1816,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <p>
                             { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
                                 ".manualCreation.hint" ) }
-                        </p>
-                        <p>
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                ".manualCreation.warningMessage" ) }
                         </p>
                         <Divider />
                         <Heading as="h5">
