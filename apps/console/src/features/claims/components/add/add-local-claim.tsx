@@ -24,7 +24,7 @@ import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { ClaimDialect } from "modules/core/src/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -94,7 +94,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ scimMapping, setScimMapping ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<boolean>(false);
     const [ createdClaim, setCreatedClaim ] = useState<string>(null);
-    const [ skipSCIM, setSkipScim ] = useState<boolean>(false);
+    const skipSCIM: MutableRefObject<boolean> = useRef(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
@@ -300,7 +300,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         if (values.has("scim") ) {
             customMappings.set("scim", values.get("scim").toString());
         } else {
-            setSkipScim(true);
+            skipSCIM.current = true;
         }
 
         if (values.has("oidc") ) {
@@ -331,7 +331,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     userstore: "PRIMARY"
                 }
             ];
-            handleSubmit(tempData, customMappings, skipSCIM);
+            handleSubmit(tempData, customMappings, !!skipSCIM?.current);
         } else {
             setCurrentWizardStep(1);
         }
@@ -356,7 +356,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         }
 
         if (!attributeConfig.localAttributes.createWizard.showSummary) {
-            handleSubmit(tempData, mappedCustomAttribues, skipSCIM);
+            handleSubmit(tempData, mappedCustomAttribues, !!skipSCIM?.current);
         } else {
             setCurrentWizardStep(2);
         }
@@ -445,7 +445,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 break;
             case 2:
-                handleSubmit(data, mappedCustomAttribues, skipSCIM);
+                handleSubmit(data, mappedCustomAttribues, !!skipSCIM?.current);
 
                 break;
         }
