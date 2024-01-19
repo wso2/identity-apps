@@ -27,4 +27,5 @@ export interface User {
     enableBulkImportSecondaryUserStore: boolean;
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
     disableManagedByColumn: boolean;
+    enableAdminPrivilegeRevokeOption: boolean;
 }

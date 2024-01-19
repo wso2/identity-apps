@@ -30,5 +30,6 @@ export const userConfig: User = {
         return deleteUser(user.id);
     },
     disableManagedByColumn: true,
+    enableAdminPrivilegeRevokeOption: false,
     enableBulkImportSecondaryUserStore: true
 };
