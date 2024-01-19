@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.122
+
+### Patch Changes
+
+- [#5264](https://github.com/wso2/identity-apps/pull/5264) [`28d0b44823`](https://github.com/wso2/identity-apps/commit/28d0b448234753284429afc31051d5f88e98f9ea) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Use given SP's access URL for redirection in user invitation flow
+
 ## 2.0.121
 
 ### Patch Changes
