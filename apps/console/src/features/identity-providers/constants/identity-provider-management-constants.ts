@@ -499,7 +499,7 @@ export class IdentityProviderManagementConstants {
     public static readonly MICROSOFT_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
     public static readonly APPLE_AUTHENTICATOR_ID: string = "QXBwbGVPSURDQXV0aGVudGljYXRvcg";
     public static readonly HYPR_AUTHENTICATOR_ID: string = "SFlQUkF1dGhlbnRpY2F0b3I";
-    public static readonly IPROOV_AUTHENTICATOR_ID: string = "SFlQUkF1dGhlbnRpY2F0b3I";
+    public static readonly IPROOV_AUTHENTICATOR_ID: string = "SXByb292QXV0aGVudGljYXRvcg";
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";

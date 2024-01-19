@@ -139,6 +139,6 @@ export enum AuthenticatorFilterValue {
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator",
     HYPR = "HYPRAuthenticator",
-    IPROOV = "IProovAuthenticator",
+    IPROOV = "IproovAuthenticator",
     ORGANIZATION_AUTHENTICATOR = "OrganizationAuthenticator"
 }
