@@ -1176,7 +1176,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     )
                                 }
                                 {
-                                    !isPrivilegedUser &&
+                                    userConfig?.enableAdminPrivilegeRevokeOption && !isPrivilegedUser &&
                                     adminUserType === AdminAccountTypes.INTERNAL &&
                                     associationType !== GUEST_ADMIN_ASSOCIATION_TYPE &&
                                     (

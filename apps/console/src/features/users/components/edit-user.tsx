@@ -40,7 +40,7 @@ import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
-import { UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -227,6 +227,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                        adminUserType={ AdminAccountTypes.INTERNAL }
                     />
                 </ResourceTab.Pane>
             )
