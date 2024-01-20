@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.124
+
+### Patch Changes
+
+- [#5259](https://github.com/wso2/identity-apps/pull/5259) [`fd3dc296cb`](https://github.com/wso2/identity-apps/commit/fd3dc296cbda689aaba4534bbcf7de2c71583451) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with SMS OTP input field
+
 ## 2.0.123
 
 ### Patch Changes
