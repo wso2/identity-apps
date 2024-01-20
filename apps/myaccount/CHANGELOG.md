@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.95
+
+### Patch Changes
+
+- [#5283](https://github.com/wso2/identity-apps/pull/5283) [`5990acc002`](https://github.com/wso2/identity-apps/commit/5990acc002340fa8d12dffebea30794365554f51) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change the outbound provisioning connectors title
+
+- Updated dependencies [[`5990acc002`](https://github.com/wso2/identity-apps/commit/5990acc002340fa8d12dffebea30794365554f51)]:
+  - @wso2is/i18n@2.0.101
+
 ## 2.2.94
 
 ### Patch Changes
