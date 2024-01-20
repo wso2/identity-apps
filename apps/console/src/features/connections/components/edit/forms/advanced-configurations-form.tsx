@@ -77,7 +77,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
      */
     const updateConfiguration = (values: any): any => {
         return {
-            alias: values.get("alias"),
             homeRealmIdentifier: values.get("homeRealmIdentifier"),
             idpIssuerName: values.get("issuer"),
             isFederationHub: !!values.get("federationHub")?.includes("federationHub")
@@ -134,28 +133,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                         <Hint>
                             { t("console:develop.features.authenticationProvider" +
                                 ".forms.advancedConfigs.homeRealmIdentifier.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="alias"
-                            label={ t("console:develop.features.authenticationProvider" +
-                                ".forms.advancedConfigs.alias.label") }
-                            required={ false }
-                            requiredErrorMessage=""
-                            placeholder={
-                                t("console:develop.features.authenticationProvider.forms" +
-                                    ".advancedConfigs.alias.placeholder")
-                            }
-                            type="text"
-                            value={ config.alias }
-                            data-testid={ `${ testId }-alias` }
-                            readOnly={ isReadOnly }
-                        />
-                        <Hint>
-                            { t("console:develop.features.authenticationProvider.forms.advancedConfigs.alias.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
