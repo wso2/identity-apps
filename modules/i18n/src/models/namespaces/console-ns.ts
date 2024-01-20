@@ -2740,6 +2740,7 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
+                    outboundProvisioningTitle: string;
                 };
                 helpPanel: HelpPanelInterface;
                 templates: {

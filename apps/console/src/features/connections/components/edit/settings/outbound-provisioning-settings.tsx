@@ -378,7 +378,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         <EmphasizedSegment padded="very">
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Heading as="h4">OutBound Provisioning Connectors</Heading>
+                    <Heading as="h4">
+                        { t("console:develop.features.idp.forms.outboundProvisioningTitle") }
+                    </Heading>
                 </Grid.Column>
             </Grid.Row>
 

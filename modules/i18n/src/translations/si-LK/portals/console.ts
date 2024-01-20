@@ -4084,6 +4084,7 @@ export const console: ConsoleNS = {
                             content: "භූමිකාව එක් කරන්න"
                         }
                     },
+                    outboundProvisioningTitle: "පිටතට යන ප්‍රතිපාදන සම්බන්ධක",
                     roleMapping: {
                         heading: "භූමිකාව සිතියම්ගත කිරීම",
                         hint: "අනන්‍යතා සැපයුම්කරුගේ භූමිකාවන් සමඟ දේශීය භූමිකාවන් සිතියම් ගත කරන්න",
