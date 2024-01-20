@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.10.85
+
+### Patch Changes
+
+- [#5269](https://github.com/wso2/identity-apps/pull/5269) [`0946525b10`](https://github.com/wso2/identity-apps/commit/0946525b10bd6240a4926c3b88268d52de54a38b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the scim complex attribute adding issue
+
+* [#5278](https://github.com/wso2/identity-apps/pull/5278) [`e06ec6cac4`](https://github.com/wso2/identity-apps/commit/e06ec6cac420cbfdc7008ed0c545c8f96162f403) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix update issue in invite user to set password section
+
+- [#5281](https://github.com/wso2/identity-apps/pull/5281) [`4faf33f32a`](https://github.com/wso2/identity-apps/commit/4faf33f32a0247086a8d03ce9990e922022abf81) Thanks [@brionmario](https://github.com/brionmario)! - Remove `alias` from IdP advance tab
+
 ## 2.10.84
 
 ### Patch Changes
