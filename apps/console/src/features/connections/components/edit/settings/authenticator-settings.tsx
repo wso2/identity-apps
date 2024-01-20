@@ -115,7 +115,7 @@ const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
  */
 const commonAuthenticators: string[] = [
     ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
     ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
     ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
     ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,

@@ -4184,6 +4184,7 @@ export const console: ConsoleNS = {
                             1: "Désactivé"
                         }
                     },
+                    outboundProvisioningTitle: "Connecteurs de provisionnement sortant",
                     outboundProvisioningRoles: {
                         heading: "Approvisionnement externe des rôles",
                         hint: "Sélectionner et ajouter des rôles à approvisionner vers le connexion",

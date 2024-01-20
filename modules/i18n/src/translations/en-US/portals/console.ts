@@ -5849,6 +5849,7 @@ export const console: ConsoleNS = {
                             content: "Add Role"
                         }
                     },
+                    outboundProvisioningTitle: "Outbound Provisioning Connectors",
                     roleMapping: {
                         heading: "Role Mapping",
                         hint: "Map local roles with the Identity Provider roles",
