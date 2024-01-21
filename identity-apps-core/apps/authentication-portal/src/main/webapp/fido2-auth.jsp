@@ -176,7 +176,7 @@
                                 </div>
                             </div>
                             <%
-                                String multiOptionURI = Encode.forUriComponent(request.getParameter("multiOptionURI"));
+                                String multiOptionURI = Encode.forJava(request.getParameter("multiOptionURI"));
                                 if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
                                     isMultiAuthAvailable(multiOptionURI)) {
                             %>
