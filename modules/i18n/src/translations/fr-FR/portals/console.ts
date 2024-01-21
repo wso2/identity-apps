@@ -720,6 +720,14 @@ export const console: ConsoleNS = {
             tabLabel: "Protocole"
         },
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: "Autorisation d'organisation"
+                },
+                tenantPermissions: {
+                    label: "Autorisation d'organisation racinaire"
+                }
+            },
             tabLabel: "Les rôles",
             permissionLevels: {
                 edit: "Modifier",

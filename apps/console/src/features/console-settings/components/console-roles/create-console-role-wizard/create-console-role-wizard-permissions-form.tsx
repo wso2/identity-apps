@@ -333,7 +333,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                 "aria-label": "Select all tenant permissions"
                             } }
                         />
-                        <Typography className="permissions-accordion-label">Tenant Permissions</Typography>
+                        <Typography className="permissions-accordion-label">
+                            { t("console:consoleSettings.roles.add.tenantPermissions.label") }
+                        </Typography>
                         <Typography variant="body2">
                             { filteredTenantAPIResourceCollections?.apiResourceCollections?.length } Permissions
                         </Typography>
@@ -435,7 +437,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                 "aria-label": "Select all organization permissions"
                             } }
                         />
-                        <Typography className="permissions-accordion-label">Organization Permissions</Typography>
+                        <Typography className="permissions-accordion-label">
+                            { t("console:consoleSettings.roles.add.organizationPermissions.label") }
+                        </Typography>
                         <Typography variant="body2">
                             { filteredOrganizationAPIResourceCollections?.apiResourceCollections?.length } Permissions
                         </Typography>

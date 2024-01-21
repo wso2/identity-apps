@@ -538,6 +538,14 @@ export interface ConsoleNS {
             tabLabel: string;
         };
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: string;
+                };
+                tenantPermissions: {
+                    label: string;
+                };
+            };
             tabLabel: string;
             permissionLevels: {
                 edit: string;

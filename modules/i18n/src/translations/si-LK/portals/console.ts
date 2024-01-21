@@ -728,6 +728,14 @@ export const console: ConsoleNS = {
             tabLabel: "ප්රොටෝකෝලය"
         },
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: "සංවිධාන අවසරයි"
+                },
+                tenantPermissions: {
+                    label: "මූල සංවිධාන අවසර"
+                }
+            },
             tabLabel: "භූමිකාවන්",
             permissionLevels: {
                 edit: "සංස්කරණය කරන්න",
