@@ -1155,7 +1155,6 @@
             "applicationOIDCSubjectIdentifier": false,
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
-            "approvals": false,
             "certificates": false,
             "loginAndRegistrationEmailDomainDiscovery": true,
             "organizations": true,

@@ -264,7 +264,8 @@ export class RouteUtils {
         const userAttributesAndStores: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: DatabaseDocumentIcon,
             id: "userAttributesAndStores",
-            name: "User Attributes & Stores"
+            name: "User Attributes & Stores",
+            order: 2
         };
 
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
@@ -356,6 +357,7 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "users",
+                order: 0,
                 parent: userManagement
             },
             {
@@ -386,20 +388,26 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userStores",
-                order: 2,
-                parent: userAttributesAndStores
-            },
-            {
-                category: manage,
-                id: "attributeDialects",
                 order: 1,
                 parent: userAttributesAndStores
             },
             {
                 category: manage,
-                id: "oidcScopes",
-                order: 3,
+                id: "attributeDialects",
+                order: 2,
                 parent: userAttributesAndStores
+            },
+            {
+                category: manage,
+                id: "oidcScopes",
+                order: 4,
+                parent: userAttributesAndStores
+            },
+            {
+                category: manage,
+                id: "approvals",
+                order: 3,
+                selected: history.location.pathname.includes("approvals")
             },
             {
                 category: build,
