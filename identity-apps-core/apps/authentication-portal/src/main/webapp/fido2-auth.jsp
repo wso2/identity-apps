@@ -244,7 +244,7 @@
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
-    <% String clientId=Encode.forUriComponent(request.getParameter("client_id")); %>
+    <% String clientId=Encode.forJavaScriptBlock(request.getParameter("client_id")); %>
 
     <script type="text/javascript">
         var insightsAppIdentifier = "<%=clientId%>";

@@ -104,7 +104,7 @@
 %>
 
 <%
-    String clientId = Encode.forUriComponent(request.getParameter("client_id"));
+    String clientId = Encode.forJavaScriptBlock(request.getParameter("client_id"));
     String sp = Encode.forUriComponent(request.getParameter("sp"));
     String spId = "";
     boolean isFederatedOptionsAvailable = false;
@@ -251,7 +251,7 @@
     <div class="ui visible negative message" id="error-msg">
         <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
     </div>
-    <% } else if ((Boolean.TRUE.toString()).equals(Encode.forUriComponent(request.getParameter("authz_failure")))) { %>
+    <% } else if ((Boolean.TRUE.toString()).equals(Encode.forJava(request.getParameter("authz_failure")))) { %>
     <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
@@ -323,7 +323,7 @@
     <div class="ui divider hidden"></div>
     <div class="align-center">
         <%
-            String multiOptionURI = Encode.forUriComponent(request.getParameter("multiOptionURI"));
+            String multiOptionURI = Encode.forJava(request.getParameter("multiOptionURI"));
             if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
             isMultiAuthAvailable(multiOptionURI)) {
         %>
