@@ -164,9 +164,9 @@
                     pollAuthStatus();
 
                 } else if (status == 'CANCELED' || status == 'FAILED' || status == 'INVALID_REQUEST' || status == 'INVALID_TOKEN') {
-                    handleError(urlParams.get("message"));
+                    handleError('<%= Encode.forHtmlContent(request.getParameter("message")) %>');
                 } else if (status == 'INVALID_USER') {
-                    handleUserError(urlParams.get("message"));
+                    handleUserError('<%= Encode.forHtmlContent(request.getParameter("message")) %>');
                 }
             }
         });
