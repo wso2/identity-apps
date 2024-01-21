@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.59
+
+### Patch Changes
+
+- [#5286](https://github.com/wso2/identity-apps/pull/5286) [`486a47329a`](https://github.com/wso2/identity-apps/commit/486a47329a0e025d4841ee8dc87b96519f1879cb) Thanks [@brionmario](https://github.com/brionmario)! - Fix Backup code icon branding issues
+
 ## 2.0.58
 
 ### Patch Changes

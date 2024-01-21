@@ -1,5 +1,14 @@
 # @wso2is/forms
 
+## 2.0.16
+
+### Patch Changes
+
+- [#5272](https://github.com/wso2/identity-apps/pull/5272) [`99a993a902`](https://github.com/wso2/identity-apps/commit/99a993a9021727c62a00d75a805f37cccea882d1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix form autofill preventing form submission
+
+- Updated dependencies [[`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111)]:
+  - @wso2is/core@2.0.31
+
 ## 2.0.15
 
 ### Patch Changes
