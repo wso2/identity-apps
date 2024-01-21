@@ -20,6 +20,7 @@ import {
     ArrowRightToBracketPencilIcon,
     BoltIcon,
     BuildingIcon,
+    DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
     EnvelopeMagnifyingGlassIcon,
@@ -1062,18 +1063,18 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.legacy",
+                        category: "extensions:manage.sidePanel.categories.userManagement",
                         component: lazy(() => import("../../workflow-approvals/pages/approvals")),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().approvals
+                            icon: <DocumentCheckIcon fill="black" className="icon" />
                         },
                         id: "approvals",
                         name: "console:manage.features.sidePanel.approvals",
                         order: 26,
                         path: AppConstants.getPaths().get("APPROVALS"),
                         protected: true,
-                        showOnSidePanel: legacyMode?.approvals
+                        showOnSidePanel: true
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",
