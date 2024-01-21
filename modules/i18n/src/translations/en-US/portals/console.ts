@@ -722,6 +722,14 @@ export const console: ConsoleNS = {
             tabLabel: "Protocol"
         },
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: "Organization Permissions"
+                },
+                tenantPermissions: {
+                    label: "Root Organization Permissions"
+                }
+            },
             tabLabel: "Roles",
             permissionLevels: {
                 edit: "Edit",
