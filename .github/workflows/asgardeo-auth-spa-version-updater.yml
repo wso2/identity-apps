@@ -1,0 +1,76 @@
+name: 🌝 Nightly Version Bump
+
+on:
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+  BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
+  BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
+  BASE_BRANCH: 'main'
+
+jobs:
+  bump-version:
+    name: 🌝 Nightly Version Bump
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+          node-version: [lts/*]
+          maven-version: [3.8.6]
+          java-version: [1.8]
+          pnpm-version: [8.7.4]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+        with:
+            fetch-depth: 0
+
+      - name: 🌟 Set up Git
+        run: |
+          git config user.name ${{ env.BOT_USERNAME }}}
+          git config user.email ${{ env.BOT_EMAIL }}}
+
+      - name: 🏷️ Set branch name
+        id: set-branch-name
+        run: |
+          base_branch=${{ env.BASE_BRANCH }}
+          version_bump_branch="asgardeo-auth-spa-version-bump/$base_branch"
+          echo "Setting branch name to: $version_bump_branch"
+          echo "VERSION_BUMP_BRANCH=${version_bump_branch}" >> $GITHUB_ENV
+
+      - name: 🚀 Create version bump branch
+        id: create-branch
+        run: |
+          echo "Checking out a new branch: $VERSION_BUMP_BRANCH"
+          git checkout -b "$VERSION_BUMP_BRANCH"
+
+      - name: Validate existing `@asgardeo/auth-spa` version
+        id: validate-existing-auth-spa-version
+        run: |
+          existing_version=$(grep -oP 'auth-spa-\K[0-9]+\.[0-9]+\.[0-9]+' apps/console/src/public/auth-spa-3.0.1.min.js)
+          echo "EXISTING_ASGARDEO_AUTH_VERSION=${existing_version}" >> $GITHUB_ENV
+          - name: Check if existing and latest versions match
+          id: check-version-match
+          run: |
+            existing_version=$(grep -oP 'auth-spa-\K[0-9]+\.[0-9]+\.[0-9]+' apps/console/src/public/auth-spa-3.0.1.min.js)
+            latest_release=$(curl -s https://api.github.com/repos/asgardeo/asgardeo-auth-spa-sdk/releases/latest | jq -r '.tag_name')
+
+            # if [ "$existing_version" == "$latest_release" ]; then
+            #   echo "Versions match. Aborting further steps."
+            #   exit 0
+            # fi
+
+            echo "EXISTING_ASGARDEO_AUTH_VERSION=${existing_version}" >> $GITHUB_ENV
+            echo "LATEST_ASGARDEO_AUTH_VERSION=${latest_release}" >> $GITHUB_ENV
+
+            echo "Existing version: $existing_version"
+            echo "Latest release: $latest_release"
+    #   - name: 🎉 Create pull request
+    #     id: create-pr
+    #     run: |
+    #       echo "VERSION_BUMP_BRANCH: $VERSION_BUMP_BRANCH"
+    #       echo "Creating pull request from $base_branch to $VERSION_BUMP_BRANCH"
+    #       gh pr create --base $base_branch --head $VERSION_BUMP_BRANCH --title "[Nightly Version Bump] [GitHub Action] Update package versions" --body "Bump versions"
