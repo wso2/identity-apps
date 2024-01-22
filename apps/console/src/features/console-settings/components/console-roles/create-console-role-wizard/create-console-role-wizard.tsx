@@ -31,7 +31,7 @@ import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import CreateConsoleRoleWizardBasicInfoForm from "./create-console-role-wizard-basic-info-form";
 import CreateConsoleRoleWizardPermissionsForm from "./create-console-role-wizard-permissions-form";
 import { createRole } from "../../../../roles/api/roles";
-import { RoleAudienceTypes } from "../../../../roles/constants/role-constants";
+import { RoleAudienceTypes, RoleConstants } from "../../../../roles/constants/role-constants";
 import { CreateRoleInterface, CreateRolePermissionInterface } from "../../../../roles/models/roles";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
@@ -70,6 +70,26 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
     const handleConsoleRoleCreation = (values: CreateConsoleRoleWizardFormValuesInterface): void => {
         // Prevent submission if the form is incomplete.
         if (isEmpty(permissions) || !values?.displayName) {
+            return;
+        }
+
+        if (values?.displayName.length > RoleConstants.ROLE_NAME_MAX_LENGTH) {
+            setAlert({
+                description: "Role name should be less than 255 characters long.",
+                level: AlertLevels.ERROR,
+                message: "Invalid role name"
+            });
+
+            return;
+        }
+
+        if (values?.displayName.includes("/")) {
+            setAlert({
+                description: "Role name should not contain / character.",
+                level: AlertLevels.ERROR,
+                message: "Invalid role name"
+            });
+
             return;
         }
 

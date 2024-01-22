@@ -63,11 +63,13 @@ const CreateConsoleRoleWizardBasicInfoForm: FunctionComponent<CreateConsoleRoleW
             helperText={ (
                 <Hint>
                     Provide a distinctive and meaningful display name for the role. This name should clearly represent
-                    the purpose or responsibilities associated with this role within the Console application. E.g.{ " " }
-                    <Code>application:read</Code>
+                    the purpose or responsibilities associated with this role within the Console application. 
+                    E.g.{ " " }<Code>application:read</Code>
                 </Hint>
             ) }
             placeholder="Enter Role name"
+            maxLength={ 10 }
+            minLength={ 1 }
             component={ TextFieldAdapter }
         />
     );
