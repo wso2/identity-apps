@@ -105,7 +105,7 @@
 
 <%
     String clientId = Encode.forJavaScriptBlock(request.getParameter("client_id"));
-    String sp = Encode.forUriComponent(request.getParameter("sp"));
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
     boolean isFederatedOptionsAvailable = false;
     boolean isMagicLink = false;
