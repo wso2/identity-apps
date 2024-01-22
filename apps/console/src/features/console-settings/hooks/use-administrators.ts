@@ -17,6 +17,7 @@
  */
 
 import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
@@ -35,6 +36,10 @@ import { UserManagementUtils } from "../../users/utils/user-management-utils";
  * Props interface of {@link UseAdministrators}
  */
 export interface UseAdministratorsInterface {
+    /**
+     * Error occurred while fetching admin users list.
+     */
+    adminUserListFetchError: AxiosError;
     /**
      * Administrators list.
      */
@@ -96,6 +101,7 @@ const useAdministrators = (
 
     const {
         data: originalAdminUserList,
+        error: adminUserListFetchError,
         isLoading: isAdministratorsListFetchRequestLoading,
         mutate: mutateAdministratorsListFetchRequest
     } = useUsersList(
@@ -232,6 +238,7 @@ const useAdministrators = (
     }, [ originalAdminUserList, consoleRoles ]);
 
     return {
+        adminUserListFetchError,
         administrators,
         invitedAdministrators,
         isAdministratorsListFetchRequestLoading,

@@ -24,12 +24,17 @@ import React, {
     ChangeEvent,
     FunctionComponent,
     ReactElement,
+    useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
+import { UserStoreProperty, getAUserStore } from "../../../core";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useUserStores } from "../../../userstores/api";
+import { CONSUMER_USERSTORE } from "../../../userstores/constants";
+import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "../../../userstores/models";
 
 /**
  * Props interface of {@link ConsoleAdministrators}
@@ -50,15 +55,67 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ activeAdministratorGroup, setActiveAdministratorGroup ] = useState("activeUsers");
+    const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
 
     const { t } = useTranslation();
+
+    const {
+        data: userStoreList,
+        isLoading: isUserStoreListFetchRequestLoading
+    } = useUserStores(null);
+
+    useEffect(() => {
+        if (userStoreList && !isUserStoreListFetchRequestLoading) {
+            const storeOptions: UserStoreDropdownItem[] = [
+                {
+                    key: -1,
+                    text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                    value: "primary"
+                }
+            ];
+
+            let storeOption: UserStoreDropdownItem = {
+                key: null,
+                text: "",
+                value: ""
+            };
+
+            userStoreList?.forEach((store: UserStoreListItem, index: number) => {
+                if (store.name !== CONSUMER_USERSTORE) {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled: boolean = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+                        if (!isDisabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
+                    });
+                }
+            });
+
+            setAvailableUserStores(storeOptions);
+        }
+    }, [ userStoreList, isUserStoreListFetchRequestLoading ]);
 
     const renderSelectedAdministratorGroup = (): ReactElement => {
         switch (activeAdministratorGroup) {
             case "activeUsers":
-                return <AdministratorsList />;
+                return (
+                    <AdministratorsList
+                        availableUserStores={ availableUserStores }
+                    />
+                );
             case "pendingInvitations":
-                return <InvitedAdministratorsList />;
+                return (
+                    <InvitedAdministratorsList
+                        availableUserStores={ availableUserStores }
+                    />
+                );
             default:
                 return null;
         }
@@ -86,7 +143,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     };
 
     return (
-        <div className="console-administrators">
+        <div className="console-administrators" data-componentid={ componentId }>
             { renderActiveAdministratorGroups() }
             { renderSelectedAdministratorGroup() }
         </div>
