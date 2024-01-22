@@ -355,7 +355,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             { adminUserListFetchError
                 ? (<EmptyPlaceholder
                     subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                        t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
+                        t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
                     title={ t("console:manage.features.users.placeholders.userstoreError.title") }
                     image={ getEmptyPlaceholderIllustrations().genericError }
                     imageSize="tiny"
