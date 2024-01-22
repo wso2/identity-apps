@@ -58,8 +58,6 @@ const CreateConsoleRoleWizardBasicInfoForm: FunctionComponent<CreateConsoleRoleW
                 </Hint>
             ) }
             placeholder="Enter Role name"
-            maxLength={ 10 }
-            minLength={ 1 }
             component={ TextFieldAdapter }
         />
     );
