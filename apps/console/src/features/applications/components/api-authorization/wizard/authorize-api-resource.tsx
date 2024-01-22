@@ -20,6 +20,7 @@ import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -106,6 +107,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ isSelectAllHidden, setIsSelectAllHidden ] = useState<boolean>(false);
     const [ isSelectNoneHidden, setIsSelectNoneHidden ] = useState<boolean>(true);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
+    const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(false);
 
     const {
         data: currentAPIResourcesListData,
@@ -120,6 +122,14 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         error: currentAPIResourceScopeListFetchError,
         mutate: mutatecurrentAPIResourceScopeList
     } = useScopesOfAPIResources(selectedAPIResource?.id);
+
+    useEffect(() => {
+        setIsScopeSelectDropdownReady(selectedAPIResource && (
+            !currentAPIResourceScopeListData
+            || isCurrentAPIResourceScopeListDataLoading
+            || currentAPIResourceScopeListData?.length === 0
+        ));
+    },[ selectedAPIResource,currentAPIResourceScopeListData, iscurrentAPIResourcesListLoading ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -321,13 +331,16 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         if (remove) {
             setAuthorizedScopes([]);
         } else {
-            setAuthorizedScopes(currentAPIResourceScopeListData?.map((scope: APIResourcePermissionInterface) => {
-                return {
-                    key: scope.name,
-                    text: scope.displayName,
-                    value: scope.name
-                };
-            }));
+            const selectingAuthorizedScopes: DropdownItemProps[] = currentAPIResourceScopeListData?.map(
+                (scope: APIResourcePermissionInterface) => {
+                    return {
+                        key: scope.name,
+                        text: scope.displayName,
+                        value: scope.name
+                    };
+                }) ?? [];
+
+            setAuthorizedScopes(selectingAuthorizedScopes);
         }
     };
 
@@ -447,33 +460,44 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         </Grid.Row>
                                         <Grid.Row className="mb-3">
                                             <Grid.Column floated="right" textAlign="right">
-                                                <Text className="mb-0" muted subHeading size={ 12 }>
-                                                    <Button
-                                                        variant="text"
-                                                        size="small"
-                                                        disabled={ !selectedAPIResource || isSelectAllHidden }
-                                                        onClick={ () => handleBulkDropdownChange(false) }
-                                                    >
-                                                        {
-                                                            t("extensions:develop.applications.edit." +
-                                                                "sections.apiAuthorization.sections." +
-                                                                "apiSubscriptions.scopesSection.selectAll")
-                                                        }
-                                                    </Button>
-                                                    |
-                                                    <Button
-                                                        variant="text"
-                                                        size="small"
-                                                        disabled={ !selectedAPIResource || isSelectNoneHidden }
-                                                        onClick={ () => handleBulkDropdownChange(true) }
-                                                    >
-                                                        {
-                                                            t("extensions:develop.applications.edit.sections" +
-                                                                ".apiAuthorization.sections.apiSubscriptions." +
-                                                                "scopesSection.selectNone")
-                                                        }
-                                                    </Button>
-                                                </Text>
+                                                {
+                                                    isScopeSelectDropdownReady
+                                                        ? <Typography variant="body2">Loading...</Typography>
+                                                        : (
+                                                            <Text className="mb-0" muted subHeading size={ 12 }>
+                                                                <Button
+                                                                    variant="text"
+                                                                    size="small"
+                                                                    disabled={
+                                                                        !selectedAPIResource || isSelectAllHidden
+                                                                    }
+                                                                    onClick={ () => handleBulkDropdownChange(false) }
+                                                                >
+                                                                    {
+                                                                        t("extensions:develop.applications.edit." +
+                                                                          "sections.apiAuthorization.sections." +
+                                                                          "apiSubscriptions.scopesSection.selectAll")
+                                                                    }
+                                                                </Button>
+                                                                |
+                                                                <Button
+                                                                    variant="text"
+                                                                    size="small"
+                                                                    disabled={
+                                                                        !selectedAPIResource || isSelectNoneHidden
+                                                                    }
+                                                                    onClick={ () => handleBulkDropdownChange(true) }
+                                                                >
+                                                                    {
+                                                                        t("extensions:develop.applications.edit" +
+                                                                          ".sections.apiAuthorization.sections" +
+                                                                          ".apiSubscriptions." +
+                                                                          "scopesSection.selectNone"
+                                                                        )
+                                                                    }
+                                                                </Button>
+                                                            </Text>)
+                                                }
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
@@ -501,7 +525,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     }
                                                 } }
                                                 data-componentid={ `${componentId}-scopes` }
-                                                disabled={ !selectedAPIResource }
+                                                disabled={
+                                                    !selectedAPIResource || isScopeSelectDropdownReady
+                                                }
                                                 getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
                                                     scopesDropdownOption?.text?.toString() }
                                                 isOptionEqualToValue={
