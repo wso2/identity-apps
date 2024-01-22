@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.126
+
+### Patch Changes
+
+- [#5294](https://github.com/wso2/identity-apps/pull/5294) [`518d2dbc8e`](https://github.com/wso2/identity-apps/commit/518d2dbc8e0082a96792e482c9def7e5b86e2abd) Thanks [@ayeshajay](https://github.com/ayeshajay)! - "Fix auto browser language detection when locale in <language> format instead of <language_Country>"
+
 ## 2.0.125
 
 ### Patch Changes
