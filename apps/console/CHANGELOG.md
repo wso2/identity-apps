@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.4
+
+### Patch Changes
+
+- [#5302](https://github.com/wso2/identity-apps/pull/5302) [`15dc6a0876`](https://github.com/wso2/identity-apps/commit/15dc6a08766e17991e7198ab48612e2255e1b358) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add password validation for the admin password reset flow
+
 ## 2.11.3
 
 ### Patch Changes
