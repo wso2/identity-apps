@@ -24,15 +24,12 @@ import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React,
 {
     FunctionComponent,
-    LazyExoticComponent,
     ReactElement,
     ReactNode,
-    Suspense,
     useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import PasswordStrengthBar from "react-password-strength-bar";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
@@ -49,12 +46,6 @@ import { useValidationConfigData } from "../../validation/api";
 import { ValidationFormInterface } from "../../validation/models";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
-
-/**
- * import pass strength bat dynamically.
- */
-const PasswordMeter: LazyExoticComponent<typeof PasswordStrengthBar> = React.lazy(
-    () => import("react-password-strength-bar"));
 
 /**
  * Prop types for the change user password component.
@@ -366,7 +357,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      * @param values - values of form field
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
-        const password: string = values.get("newPassword").toString();
+        const password: string = values?.get("newPassword")?.toString();
 
         setPassword(password);
     };
@@ -378,7 +369,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      */
     const isNewPasswordValid = (password: string) => {
         if (passwordConfig) {
-            return isNewPasswordValid;
+            return isPasswordPatternValid;
         }
 
         return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegex);
@@ -393,7 +384,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const validateNewPassword = (value: string, validation: Validation) => {
         if (!isNewPasswordValid(value)) {
             validation.isValid = false;
-            validation.errorMessages.push(passwordConfig ?
+            validation?.errorMessages?.push(passwordConfig ?
                 t(
                     "extensions:manage.features.user.addUser.validation.error.passwordValidation"
                 ) : t(
@@ -403,161 +394,168 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     };
 
     /**
+     * The following method returns the password reset form fields.
+     */
+    const passwordFormFields = () => {
+        return (
+            <>
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                        <Field
+                            data-testid="user-mgt-edit-user-form-newPassword-input"
+                            className="addon-field-wrapper"
+                            hidePassword={ t("common:hidePassword") }
+                            label={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
+                            ) }
+                            name="newPassword"
+                            placeholder={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "newPassword.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "console:manage.features.user.forms.addUserForm." +
+                                "inputs.newPassword.validations.empty"
+                            ) }
+                            showPassword={ t("common:showPassword") }
+                            type="password"
+                            value=""
+                            listen={ handlePasswordChange }
+                            loading={ isPasswordRegExLoading }
+                            validation={ validateNewPassword }
+                        />
+                        { passwordConfig && (
+                            <PasswordValidation
+                                password={ password }
+                                minLength={ Number(passwordConfig?.minLength) }
+                                maxLength={ Number(passwordConfig?.maxLength) }
+                                minNumbers={ Number(passwordConfig?.minNumbers) }
+                                minUpperCase={ Number(passwordConfig?.minUpperCaseCharacters) }
+                                minLowerCase={ Number(passwordConfig?.minLowerCaseCharacters) }
+                                minSpecialChr={ Number(passwordConfig?.minSpecialCharacters) }
+                                minUniqueChr={ Number(passwordConfig?.minUniqueCharacters) }
+                                maxConsecutiveChr={ Number(passwordConfig?.maxConsecutiveCharacters) }
+                                onPasswordValidate={ onPasswordValidate }
+                                translations={ {
+                                    case: (Number(passwordConfig?.minUpperCaseCharacters) > 0 &&
+                                        Number(passwordConfig?.minLowerCaseCharacters) > 0) ?
+                                        t("extensions:manage.features.user.addUser.validation.passwordCase", {
+                                            minLowerCase: passwordConfig?.minLowerCaseCharacters,
+                                            minUpperCase: passwordConfig?.minUpperCaseCharacters
+                                        }) : (
+                                            Number(passwordConfig?.minUpperCaseCharacters) > 0 ?
+                                                t("extensions:manage.features.user.addUser.validation.upperCase", {
+                                                    minUpperCase: passwordConfig?.minUpperCaseCharacters
+                                                }) : t("extensions:manage.features.user.addUser.validation" +
+                                                    ".lowerCase", {
+                                                    minLowerCase: passwordConfig?.minLowerCaseCharacters
+                                                })
+                                        ),
+                                    consecutiveChr:
+                                        t("extensions:manage.features.user.addUser.validation." +
+                                            "consecutiveCharacters", {
+                                            repeatedChr: passwordConfig?.maxConsecutiveCharacters
+                                        }),
+                                    length: t("extensions:manage.features.user.addUser.validation.passwordLength", {
+                                        max: passwordConfig?.maxLength, min: passwordConfig?.minLength
+                                    }),
+                                    numbers:
+                                        t("extensions:manage.features.user.addUser.validation.passwordNumeric", {
+                                            min: passwordConfig?.minNumbers
+                                        }),
+                                    specialChr:
+                                        t("extensions:manage.features.user.addUser.validation.specialCharacter", {
+                                            specialChr: passwordConfig?.minSpecialCharacters
+                                        }),
+                                    uniqueChr:
+                                        t("extensions:manage.features.user.addUser.validation.uniqueCharacters", {
+                                            uniqueChr: passwordConfig?.minUniqueCharacters
+                                        })
+                                } }
+                            />
+                        ) }
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                        <Field
+                            data-testid="user-mgt-edit-user-form-confirmPassword-input"
+                            className="addon-field-wrapper"
+                            hidePassword={ t("common:hidePassword") }
+                            label={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
+                            ) }
+                            name="confirmPassword"
+                            placeholder={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "confirmPassword.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "console:manage.features.user.forms.addUserForm." +
+                                "inputs.confirmPassword.validations.empty"
+                            ) }
+                            showPassword={ t("common:showPassword") }
+                            type="password"
+                            value=""
+                            listen={ (values: Map<string, FormValue>): void => {
+                                if (values?.get("newPassword") === values?.get("confirmPassword")
+                                    && values?.get("confirmPassword") !== "") {
+                                    setIsConfirmPasswordMatch(true);
+
+                                    return;
+                                }
+
+                                if (isConfirmPasswordMatch !== undefined) {
+                                    setIsConfirmPasswordMatch(undefined);
+                                }
+                            } }
+                            validation={
+                                (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
+                                    if (formValues.get("newPassword") !== value) {
+                                        validation.isValid = false;
+                                        setIsConfirmPasswordMatch(false);
+                                        validation.errorMessages.push(
+                                            t("console:manage.features.user.forms.addUserForm.inputs" +
+                                            ".confirmPassword.validations.mismatch"));
+                                    }
+                                }
+                            }
+                        />
+                        <div className="password-policy-description">
+                            <Icon
+                                className={
+                                    isConfirmPasswordMatch === undefined
+                                        ? "circle thin"
+                                        : isConfirmPasswordMatch
+                                            ? "check circle"
+                                            : "remove circle"
+                                }
+                                color={
+                                    isConfirmPasswordMatch === undefined
+                                        ? "grey" as SemanticCOLORS
+                                        : isConfirmPasswordMatch
+                                            ? "green" as SemanticCOLORS
+                                            : "red" as SemanticCOLORS
+                                }
+                                inverted
+                            />
+                            <p>{ t("extensions:manage.features.user.addUser.validation.confirmPassword") }</p>
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </>
+        );
+    };
+
+    /**
      * The following method handles the change of password reset option
      * and renders the relevant component accordingly.
      */
     const handlePasswordResetOptionChange = () => {
         if (passwordResetOption && passwordResetOption === "setPassword") {
-            return (
-                <>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                data-testid="user-mgt-edit-user-form-newPassword-input"
-                                className="addon-field-wrapper"
-                                hidePassword={ t("common:hidePassword") }
-                                label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
-                                ) }
-                                name="newPassword"
-                                placeholder={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs." +
-                                    "newPassword.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm." +
-                                    "inputs.newPassword.validations.empty"
-                                ) }
-                                showPassword={ t("common:showPassword") }
-                                type="password"
-                                value=""
-                                listen={ handlePasswordChange }
-                                loading={ isPasswordRegExLoading }
-                                validation={ validateNewPassword }
-                            />
-                            { passwordConfig && (
-                                <PasswordValidation
-                                    password={ password }
-                                    minLength={ Number(passwordConfig.minLength) }
-                                    maxLength={ Number(passwordConfig.maxLength) }
-                                    minNumbers={ Number(passwordConfig.minNumbers) }
-                                    minUpperCase={ Number(passwordConfig.minUpperCaseCharacters) }
-                                    minLowerCase={ Number(passwordConfig.minLowerCaseCharacters) }
-                                    minSpecialChr={ Number(passwordConfig.minSpecialCharacters) }
-                                    minUniqueChr={ Number(passwordConfig.minUniqueCharacters) }
-                                    maxConsecutiveChr={ Number(passwordConfig.maxConsecutiveCharacters) }
-                                    onPasswordValidate={ onPasswordValidate }
-                                    translations={ {
-                                        case: (Number(passwordConfig?.minUpperCaseCharacters) > 0 &&
-                                            Number(passwordConfig?.minLowerCaseCharacters) > 0) ?
-                                            t("extensions:manage.features.user.addUser.validation.passwordCase", {
-                                                minLowerCase: passwordConfig.minLowerCaseCharacters,
-                                                minUpperCase: passwordConfig.minUpperCaseCharacters
-                                            }) : (
-                                                Number(passwordConfig?.minUpperCaseCharacters) > 0 ?
-                                                    t("extensions:manage.features.user.addUser.validation.upperCase", {
-                                                        minUpperCase: passwordConfig.minUpperCaseCharacters
-                                                    }) : t("extensions:manage.features.user.addUser.validation" +
-                                                        ".lowerCase", {
-                                                        minLowerCase: passwordConfig.minLowerCaseCharacters
-                                                    })
-                                            ),
-                                        consecutiveChr:
-                                            t("extensions:manage.features.user.addUser.validation." +
-                                                "consecutiveCharacters", {
-                                                repeatedChr: passwordConfig.maxConsecutiveCharacters
-                                            }),
-                                        length: t("extensions:manage.features.user.addUser.validation.passwordLength", {
-                                            max: passwordConfig.maxLength, min: passwordConfig.minLength
-                                        }),
-                                        numbers:
-                                            t("extensions:manage.features.user.addUser.validation.passwordNumeric", {
-                                                min: passwordConfig.minNumbers
-                                            }),
-                                        specialChr:
-                                            t("extensions:manage.features.user.addUser.validation.specialCharacter", {
-                                                specialChr: passwordConfig.minSpecialCharacters
-                                            }),
-                                        uniqueChr:
-                                            t("extensions:manage.features.user.addUser.validation.uniqueCharacters", {
-                                                uniqueChr: passwordConfig.minUniqueCharacters
-                                            })
-                                    } }
-                                />
-                            ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                data-testid="user-mgt-edit-user-form-confirmPassword-input"
-                                className="addon-field-wrapper"
-                                hidePassword={ t("common:hidePassword") }
-                                label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
-                                ) }
-                                name="confirmPassword"
-                                placeholder={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs." +
-                                    "confirmPassword.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm." +
-                                    "inputs.confirmPassword.validations.empty"
-                                ) }
-                                showPassword={ t("common:showPassword") }
-                                type="password"
-                                value=""
-                                listen={ (values: Map<string, FormValue>): void => {
-                                    if (values.get("newPassword") === values.get("confirmPassword")
-                                        && values.get("confirmPassword") !== "") {
-                                        setIsConfirmPasswordMatch(true);
-
-                                        return;
-                                    }
-
-                                    if (isConfirmPasswordMatch !== undefined) {
-                                        setIsConfirmPasswordMatch(undefined);
-                                    }
-                                } }
-                                validation={
-                                    (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
-                                        if (formValues.get("newPassword") !== value) {
-                                            validation.isValid = false;
-                                            setIsConfirmPasswordMatch(false);
-                                            validation.errorMessages.push(
-                                                t("console:manage.features.user.forms.addUserForm.inputs" +
-                                                ".confirmPassword.validations.mismatch"));
-                                        }
-                                    }
-                                }
-                            />
-                            <div className="password-policy-description">
-                                <Icon
-                                    className={
-                                        isConfirmPasswordMatch === undefined
-                                            ? "circle thin"
-                                            : isConfirmPasswordMatch
-                                                ? "check circle"
-                                                : "remove circle"
-                                    }
-                                    color={
-                                        isConfirmPasswordMatch === undefined
-                                            ? "grey" as SemanticCOLORS
-                                            : isConfirmPasswordMatch
-                                                ? "green" as SemanticCOLORS
-                                                : "red" as SemanticCOLORS
-                                    }
-                                    inverted
-                                />
-                                <p>{ t("extensions:manage.features.user.addUser.validation.confirmPassword") }</p>
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                </>
-            );
+            return passwordFormFields();
         } else {
             return resolveConfigurationList(governanceConnectorProperties);
         }
@@ -662,77 +660,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         } else {
             return (
                 <>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                data-testid="user-mgt-edit-user-form-newPassword-input"
-                                className="addon-field-wrapper"
-                                hidePassword={ t("common:hidePassword") }
-                                label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
-                                ) }
-                                name="newPassword"
-                                placeholder={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs." +
-                                   "newPassword.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm." +
-                                   "inputs.newPassword.validations.empty"
-                                ) }
-                                showPassword={ t("common:showPassword") }
-                                type="password"
-                                value=""
-                                listen={ handlePasswordChange }
-                                loading={ isPasswordRegExLoading }
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!isPasswordPatternValid) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push( t("console:manage.features.user.forms." +
-                                           "addUserForm.inputs.newPassword.validations.regExViolation") );
-                                    }
-                                } }
-                            />
-                            <Suspense fallback={ null } >
-                                <PasswordMeter password={ password } />
-                            </Suspense>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Field
-                                data-testid="user-mgt-edit-user-form-confirmPassword-input"
-                                className="addon-field-wrapper"
-                                hidePassword={ t("common:hidePassword") }
-                                label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
-                                ) }
-                                name="confirmPassword"
-                                placeholder={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs." +
-                                   "confirmPassword.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm." +
-                                   "inputs.confirmPassword.validations.empty"
-                                ) }
-                                showPassword={ t("common:showPassword") }
-                                type="password"
-                                value=""
-                                validation={
-                                    (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
-                                        if (formValues.get("newPassword") !== value) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(
-                                                t("console:manage.features.user.forms.addUserForm.inputs" +
-                                               ".confirmPassword.validations.mismatch"));
-                                        }
-                                    } }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
+                    { passwordFormFields() }
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Message
