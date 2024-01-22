@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.104
+
+### Patch Changes
+
+- [#5299](https://github.com/wso2/identity-apps/pull/5299) [`00a40bca0a`](https://github.com/wso2/identity-apps/commit/00a40bca0af01a295073f7d7fa144494eda70cdb) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix UX issue with the user wizard
+
 ## 2.0.103
 
 ### Patch Changes
