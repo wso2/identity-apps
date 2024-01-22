@@ -275,9 +275,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                     </Hint>
                                 ) }
                                 component={ TextFieldAdapter }
-                                InputProps={ {
-                                    readOnly: true
-                                } }
+                                readOnly
                             />
                             <Autocomplete
                                 fullWidth

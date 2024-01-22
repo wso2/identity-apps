@@ -7723,8 +7723,9 @@ export const console: ConsoleNS = {
             parentOrgInvitations: {
                 addUserWizard: {
                     heading: "Inviter un utilisateur parent",
-                    description: "Invitez un utilisateur de l’organisation parente.",
-                    hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
+                    description: "Inviter des utilisateurs de l'organisation parente.",
+                    hint: "Ajoutez le nom d'utilisateur d'un utilisateur parent et appuyez sur Entrée. Répétez " +
+                        "l’opération pour inclure plusieurs utilisateurs.",
                     username: {
                         label: "nom d'utilisateur",
                         placeholder: "Entrez le nom d'utilisateur",
@@ -9774,6 +9775,8 @@ export const console: ConsoleNS = {
                             tableMessages: {
                                 userCreatedMessage: "Utilisateur importé avec succès",
                                 invalidDataMessage: "Données non valides fournies",
+                                invalidUserNameFormatMessage: "Le nom d'utilisateur ne correspond pas " +
+                                    "au format spécifié",
                                 userAlreadyExistsMessage: "L'utilisateur existe déjà",
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
                                 internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +

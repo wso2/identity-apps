@@ -128,7 +128,8 @@ export class UserManagementConstants {
     public static readonly RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
 
     // ID of the form used in the invite parent organization user component.
-    public static readonly  INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
+    public static readonly INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
+    public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301"
 }
 
 /**

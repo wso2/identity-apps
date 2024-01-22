@@ -1214,7 +1214,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "userCreatedMessage"),
                 202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
-                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                400: operation?.response?.includes(UserManagementConstants.USERNAME_REGEX_ERROR_CODE)
+                    ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidUserNameFormatMessage")
+                    : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidDataMessage"),
                 409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userAlreadyExistsMessage"),
@@ -1296,7 +1299,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "userCreatedMessage"),
                 202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
-                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                400: operation?.response?.includes(UserManagementConstants.USERNAME_REGEX_ERROR_CODE)
+                    ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidUserNameFormatMessage")
+                    : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidDataMessage"),
                 409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userAlreadyExistsMessage"),
@@ -1809,10 +1815,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <p>
                             { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
                                 ".manualCreation.hint" ) }
-                        </p>
-                        <p>
-                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                ".manualCreation.warningMessage" ) }
                         </p>
                         <Divider />
                         <Heading as="h5">
