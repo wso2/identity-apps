@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.11.2
+
+### Patch Changes
+
+- [#5270](https://github.com/wso2/identity-apps/pull/5270) [`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix multiple user import error message
+
+- Updated dependencies [[`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2)]:
+  - @wso2is/i18n@2.0.103
+
 ## 2.11.1
 
 ### Patch Changes
