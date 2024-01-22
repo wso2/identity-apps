@@ -432,7 +432,7 @@ export const extensions: Extensions = {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "APIs"
+                title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
