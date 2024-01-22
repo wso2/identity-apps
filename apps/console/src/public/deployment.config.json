@@ -417,7 +417,7 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "feature": [
                         "console:workflowApprovals"
