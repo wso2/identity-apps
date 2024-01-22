@@ -513,10 +513,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             } }
                             validation={
                                 (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
-                                    if (formValues.get("newPassword") !== value) {
+                                    if (formValues?.get("newPassword") !== value) {
                                         validation.isValid = false;
                                         setIsConfirmPasswordMatch(false);
-                                        validation.errorMessages.push(
+                                        validation?.errorMessages?.push(
                                             t("console:manage.features.user.forms.addUserForm.inputs" +
                                             ".confirmPassword.validations.mismatch"));
                                     }
