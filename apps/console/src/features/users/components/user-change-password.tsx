@@ -188,6 +188,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const handleModalClose = () => {
         setPassword("");
         setPasswordResetOption("setPassword");
+        setIsConfirmPasswordMatch(undefined);
     };
 
     const passwordResetOptions: RadioChild[] = [
@@ -510,7 +511,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 type="password"
                                 value=""
                                 listen={ (values: Map<string, FormValue>): void => {
-                                    if (values.get("newPassword") === values.get("confirmPassword")) {
+                                    if (values.get("newPassword") === values.get("confirmPassword")
+                                        && values.get("confirmPassword") !== "") {
                                         setIsConfirmPasswordMatch(true);
 
                                         return;
