@@ -492,7 +492,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 if (template.id === ConnectionManagementConstants
                                                     .IDP_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === "localhost") {
+                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
                                                     isTemplateDisabled = true;
                                                     disabledHint = t("console:develop.pages." +
                                                         "authenticationProviderTemplate.disabledHint.apple");
