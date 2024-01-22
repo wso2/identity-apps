@@ -177,3 +177,8 @@ export const CONSUMER_USERSTORE: string = "DEFAULT";
  * Name of the primary userstore.
  */
 export const PRIMARY_USERSTORE: string = "PRIMARY";
+
+/**
+ * Character limit for userstore name.
+ */
+export const USERSTORE_NAME_CHARACTER_LIMIT: number = 50;
