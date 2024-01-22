@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.11.3
+
+### Patch Changes
+
+- [#5301](https://github.com/wso2/identity-apps/pull/5301) [`12ab8df582`](https://github.com/wso2/identity-apps/commit/12ab8df582fa442e86f15380530dadb2bd11efc8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Disable Apple connection configuring in localhost
+
+* [#5303](https://github.com/wso2/identity-apps/pull/5303) [`4e5ffef61d`](https://github.com/wso2/identity-apps/commit/4e5ffef61dddd737003a56f0ea34c930ebfea327) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Avoid sending empty or undefined value as subject attribute on application user attribute update
+
+- [#5304](https://github.com/wso2/identity-apps/pull/5304) [`d70f743352`](https://github.com/wso2/identity-apps/commit/d70f743352658a94cd47d66ebb26cd4892684b40) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add input validation for role name field in console role create wizard
+
+* [#5292](https://github.com/wso2/identity-apps/pull/5292) [`36f69f8c3e`](https://github.com/wso2/identity-apps/commit/36f69f8c3ead07209ac8eacfee5b267afabb61d7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable filtering administrators based on the userstore in console settings page
+
 ## 2.11.2
 
 ### Patch Changes
