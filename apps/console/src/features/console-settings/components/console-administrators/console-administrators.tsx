@@ -105,7 +105,8 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     const renderSelectedAdministratorGroup = (): ReactElement => {
         switch (activeAdministratorGroup) {
             case "activeUsers":
-                return (<AdministratorsList
+                return (
+                  <AdministratorsList
                     availableUserStores={ availableUserStores }
                 />);
             case "pendingInvitations":
