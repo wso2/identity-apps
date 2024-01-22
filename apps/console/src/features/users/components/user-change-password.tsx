@@ -19,7 +19,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
-import { LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React,
 {
@@ -34,20 +34,21 @@ import React,
 import { Trans, useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { useSelector } from "react-redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants,
-    getConnectorDetails
+    ServerConfigurationsConstants
 } from "../../server-configurations";
 import {
-    PRIMARY_USERSTORE_PROPERTY_VALUES,
+    PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
 } from "../../userstores/constants/user-store-constants";
+import { useValidationConfigData } from "../../validation/api";
+import { ValidationFormInterface } from "../../validation/models";
 import { updateUserInfo } from "../api";
+import { getConfiguration } from "../utils";
 
 /**
  * import pass strength bat dynamically.
@@ -112,8 +113,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
     const { t } = useTranslation();
 
+    const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
+    const [ userStorePasswordRegex, setUserStorePasswordRegex ] = useState<string>("");
     const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
+    const [ isConfirmPasswordMatch, setIsConfirmPasswordMatch ] = useState<boolean>(undefined);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordResetOption, setPasswordResetOption ] = useState("setPassword");
     const [ triggerSubmit, setTriggerSubmit ] = useTrigger();
@@ -126,6 +130,33 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const {
+        data: validationConfig
+    } = useValidationConfigData();
+
+    useEffect(() => {
+        if (validationConfig) {
+            setPasswordConfig(getConfiguration(validationConfig));
+        }
+    }, [ validationConfig ]);
+
+    /**
+     * This gets regex for the current user's userstore.
+     */
+    useEffect(() => {
+        setPasswordRegExLoading(true);
+        const userNameComponents: string[] = user?.userName?.split("/");
+        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : PRIMARY_USERSTORE;
+
+        SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
+            .then((response: string) => {
+                setUserStorePasswordRegex(response);
+            })
+            .finally(() => {
+                setPasswordRegExLoading(false);
+            });
+    }, [ user ]);
 
     useEffect(() => {
         if (!connectorProperties) {
@@ -318,6 +349,57 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         });
     };
 
+    /**
+     * Callback function to validate password.
+     *
+     * @param valid - validation status.
+     * @param validationStatus - detailed validation status.
+     */
+    const onPasswordValidate = (valid: boolean): void => {
+        setIsPasswordPatternValid(valid);
+    };
+
+    /**
+     * The following function handles the change of the password.
+     *
+     * @param values - values of form field
+     */
+    const handlePasswordChange = (values: Map<string, FormValue>): void => {
+        const password: string = values.get("newPassword").toString();
+
+        setPassword(password);
+    };
+
+    /**
+     * Verify whether the provided password is valid.
+     *
+     * @param password - The password to validate.
+     */
+    const isNewPasswordValid = (password: string) => {
+        if (passwordConfig) {
+            return isNewPasswordValid;
+        }
+
+        return SharedUserStoreUtils.validateInputAgainstRegEx(password, userStorePasswordRegex);
+    };
+
+    /**
+     * Validate password and display an error message when the password is invalid.
+     *
+     * @param value - The value of the password field.
+     * @param validation - The validation object.
+     */
+    const validateNewPassword = (value: string, validation: Validation) => {
+        if (!isNewPasswordValid(value)) {
+            validation.isValid = false;
+            validation.errorMessages.push(passwordConfig ?
+                t(
+                    "extensions:manage.features.user.addUser.validation.error.passwordValidation"
+                ) : t(
+                    "extensions:manage.features.user.addUser.validation.password"
+                ));
+        }
+    };
 
     /**
      * The following method handles the change of password reset option
@@ -351,17 +433,58 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 value=""
                                 listen={ handlePasswordChange }
                                 loading={ isPasswordRegExLoading }
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!isPasswordPatternValid) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push( t("console:manage.features.user.forms." +
-                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
-                                    }
-                                } }
+                                validation={ validateNewPassword }
                             />
-                            <Suspense fallback={ null } >
-                                <PasswordMeter password={ password } />
-                            </Suspense>
+                            { passwordConfig && (
+                                <PasswordValidation
+                                    password={ password }
+                                    minLength={ Number(passwordConfig.minLength) }
+                                    maxLength={ Number(passwordConfig.maxLength) }
+                                    minNumbers={ Number(passwordConfig.minNumbers) }
+                                    minUpperCase={ Number(passwordConfig.minUpperCaseCharacters) }
+                                    minLowerCase={ Number(passwordConfig.minLowerCaseCharacters) }
+                                    minSpecialChr={ Number(passwordConfig.minSpecialCharacters) }
+                                    minUniqueChr={ Number(passwordConfig.minUniqueCharacters) }
+                                    maxConsecutiveChr={ Number(passwordConfig.maxConsecutiveCharacters) }
+                                    onPasswordValidate={ onPasswordValidate }
+                                    translations={ {
+                                        case: (Number(passwordConfig?.minUpperCaseCharacters) > 0 &&
+                                            Number(passwordConfig?.minLowerCaseCharacters) > 0) ?
+                                            t("extensions:manage.features.user.addUser.validation.passwordCase", {
+                                                minLowerCase: passwordConfig.minLowerCaseCharacters,
+                                                minUpperCase: passwordConfig.minUpperCaseCharacters
+                                            }) : (
+                                                Number(passwordConfig?.minUpperCaseCharacters) > 0 ?
+                                                    t("extensions:manage.features.user.addUser.validation.upperCase", {
+                                                        minUpperCase: passwordConfig.minUpperCaseCharacters
+                                                    }) : t("extensions:manage.features.user.addUser.validation" +
+                                                        ".lowerCase", {
+                                                        minLowerCase: passwordConfig.minLowerCaseCharacters
+                                                    })
+                                            ),
+                                        consecutiveChr:
+                                            t("extensions:manage.features.user.addUser.validation." +
+                                                "consecutiveCharacters", {
+                                                repeatedChr: passwordConfig.maxConsecutiveCharacters
+                                            }),
+                                        length: t("extensions:manage.features.user.addUser.validation.passwordLength", {
+                                            max: passwordConfig.maxLength, min: passwordConfig.minLength
+                                        }),
+                                        numbers:
+                                            t("extensions:manage.features.user.addUser.validation.passwordNumeric", {
+                                                min: passwordConfig.minNumbers
+                                            }),
+                                        specialChr:
+                                            t("extensions:manage.features.user.addUser.validation.specialCharacter", {
+                                                specialChr: passwordConfig.minSpecialCharacters
+                                            }),
+                                        uniqueChr:
+                                            t("extensions:manage.features.user.addUser.validation.uniqueCharacters", {
+                                                uniqueChr: passwordConfig.minUniqueCharacters
+                                            })
+                                    } }
+                                />
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -386,10 +509,22 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value=""
+                                listen={ (values: Map<string, FormValue>): void => {
+                                    if (values.get("newPassword") === values.get("confirmPassword")) {
+                                        setIsConfirmPasswordMatch(true);
+
+                                        return;
+                                    }
+
+                                    if (isConfirmPasswordMatch !== undefined) {
+                                        setIsConfirmPasswordMatch(undefined);
+                                    }
+                                } }
                                 validation={
                                     (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
                                         if (formValues.get("newPassword") !== value) {
                                             validation.isValid = false;
+                                            setIsConfirmPasswordMatch(false);
                                             validation.errorMessages.push(
                                                 t("console:manage.features.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
@@ -397,6 +532,26 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     }
                                 }
                             />
+                            <div className="password-policy-description">
+                                <Icon
+                                    className={
+                                        isConfirmPasswordMatch === undefined
+                                            ? "circle thin"
+                                            : isConfirmPasswordMatch
+                                                ? "check circle"
+                                                : "remove circle"
+                                    }
+                                    color={
+                                        isConfirmPasswordMatch === undefined
+                                            ? "grey" as SemanticCOLORS
+                                            : isConfirmPasswordMatch
+                                                ? "green" as SemanticCOLORS
+                                                : "red" as SemanticCOLORS
+                                    }
+                                    inverted
+                                />
+                                <p>{ t("extensions:manage.features.user.addUser.validation.confirmPassword") }</p>
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
                 </>
@@ -460,60 +615,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             })
             .finally(() => {
                 setIsSubmitting(false);
-            });
-    };
-
-    /**
-     * The following function checks if the password pattern is valid against the user store regEx.
-     *
-     * @param password - new password entered
-     */
-    const setPasswordRegEx = async (password: string): Promise<void> => {
-        let passwordRegex: string = "";
-        const userStore: string = user?.userName?.split("/")?.length > 1 ? user?.userName?.split("/")[0] : "primary";
-
-        if (userStore !== "primary") {
-            // Set the username regEx of the secondary user store.
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
-                .then((response: string) => {
-                    setPasswordRegExLoading(true);
-                    passwordRegex = response;
-                });
-        } else {
-            let passwordPolicyEnabled: boolean = false;
-
-            await getConnectorDetails(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
-                ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID)
-                .then((response: GovernanceConnectorInterface) => {
-                    passwordRegex = response?.properties?.filter((property: ConnectorPropertyInterface) => {
-                        return property.name === "passwordPolicy.pattern";
-                    })[0].value;
-
-                    passwordPolicyEnabled = response?.properties?.filter((property: ConnectorPropertyInterface) => {
-                        return property.name === "passwordPolicy.enable";
-                    })[0].value === "true";
-                });
-            if (!passwordPolicyEnabled){
-                // Set the username regEx of the primary user store.
-                passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
-            }
-        }
-        setIsPasswordPatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex));
-    };
-
-    /**
-     * The following function handles the change of the password.
-     *
-     * @param values - values of form field
-     */
-    const handlePasswordChange = (values: Map<string, FormValue>): void => {
-        const password: string = values.get("newPassword").toString();
-
-        setPassword(password);
-
-        setPasswordRegEx(password)
-            .finally(() => {
-                setPasswordRegExLoading(false);
             });
     };
 
