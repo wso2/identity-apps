@@ -108,11 +108,14 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                 return (
                   <AdministratorsList
                     availableUserStores={ availableUserStores }
-                />);
+                  />
+                );
             case "pendingInvitations":
-                return (<InvitedAdministratorsList
-                    availableUserStores={ availableUserStores }
-                />);
+                return (
+                    <InvitedAdministratorsList
+                      availableUserStores={ availableUserStores }
+                    />
+                );
             default:
                 return null;
         }
