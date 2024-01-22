@@ -126,6 +126,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         data: validationConfig
     } = useValidationConfigData();
 
+    /**
+     * Retrieve the password validation configuration from the validation data.
+     */
     useEffect(() => {
         if (validationConfig) {
             setPasswordConfig(getConfiguration(validationConfig));
@@ -344,11 +347,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     /**
      * Callback function to validate password.
      *
-     * @param valid - validation status.
-     * @param validationStatus - detailed validation status.
+     * @param isValid - validation status.
      */
-    const onPasswordValidate = (valid: boolean): void => {
-        setIsPasswordPatternValid(valid);
+    const onPasswordValidate = (isValid: boolean): void => {
+        setIsPasswordPatternValid(isValid);
     };
 
     /**
