@@ -159,7 +159,6 @@ const ADDRESS_ATTRIBUTE: string = "addresses";
 const HOME_ATTRIBUTE: string = "home";
 const BULK_ID: string = "bulkId";
 const FILE_IMPORT_TIMEOUT: number = 60000; // 1 minutes.
-const usernameRegexErrorCode: string = "31301";
 
 /**
  *  BulkImportUserWizard component.
@@ -1215,7 +1214,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "userCreatedMessage"),
                 202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
-                400: operation?.response?.includes(usernameRegexErrorCode)
+                400: operation?.response?.includes(UserManagementConstants.USERNAME_REGEX_ERROR_CODE)
                     ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidUserNameFormatMessage")
                     : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
@@ -1300,7 +1299,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "userCreatedMessage"),
                 202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreationAcceptedMessage"),
-                400: operation?.response?.includes(usernameRegexErrorCode)
+                400: operation?.response?.includes(UserManagementConstants.USERNAME_REGEX_ERROR_CODE)
                     ? t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "invalidUserNameFormatMessage")
                     : t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
