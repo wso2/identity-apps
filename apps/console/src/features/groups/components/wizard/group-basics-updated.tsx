@@ -189,9 +189,12 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
 
                 setUserStoresList(storeOptions);
             } catch (error) {
-                // Handle errors, e.g., through an alert or console log
-                // console.error("Error fetching user stores:", error);
-                // Optionally, set an error state or dispatch an error action here
+                dispatch(addAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.fetchUserStores.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                }));
             }
         } else {
             setUserStoresList(storeOptions);
