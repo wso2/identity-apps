@@ -9517,13 +9517,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "ලබන",
-                            previous: "කලින්"
+                            previous: "කලින්",
+                            saveAndContinue: "සුරකින්න සහ ඉදිරියට යන්න"
                         },
                         steps: {
                             basicDetails: "මූලික විස්තර",
                             groups: "පරිශීලක කණ්ඩායම්",
                             roles: "පරිශීලක භූමිකාවන්",
-                            summary: "සාරාංශය",
+                            invitation: "ආරාධනය",
                             method: "ක්රමය"
                         },
                         subTitle: "නව පරිශීලකයා නිර්මාණය කිරීමට පියවර අනුගමනය කරන්න",

@@ -9731,13 +9731,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "Suivant",
-                            previous: "Précédent"
+                            previous: "Précédent",
+                            saveAndContinue: "Enregistrer continuer"
                         },
                         steps: {
                             basicDetails: "Informations générales",
                             groups: "Groupes",
                             roles: "Rôles",
-                            summary: "Résumé",
+                            invitation: "Invitation",
                             method: "Méthode"
                         },
                         subTitle: "Assistant de création d'un nouvel utilisateur",

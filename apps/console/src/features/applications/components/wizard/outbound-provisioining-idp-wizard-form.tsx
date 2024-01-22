@@ -97,7 +97,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             const idp: IdentityProviderInterface = idpList?.find(
                 (idp: IdentityProviderInterface) => idp.name === initialValues?.idp);
 
-            setSelectedIdp(idp.id);
+            setSelectedIdp(idp?.id);
         }
     }, [ idpList ]);
 

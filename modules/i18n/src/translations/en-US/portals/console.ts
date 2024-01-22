@@ -11464,13 +11464,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "Next",
-                            previous: "Previous"
+                            previous: "Previous",
+                            saveAndContinue: "Save & Continue"
                         },
                         steps: {
                             basicDetails: "Basic Details",
                             groups: "User Groups",
                             roles: "User Roles",
-                            summary: "Summary",
+                            invitation: "Invitation",
                             method: "Method"
                         },
                         subTitle: "Follow the steps to create the new user",

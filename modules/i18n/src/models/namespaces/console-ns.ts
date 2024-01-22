@@ -6130,12 +6130,13 @@ export interface ConsoleNS {
                             basicDetails: string;
                             roles: string;
                             groups: string;
-                            summary: string;
+                            invitation: string;
                             method: string;
                         };
                         buttons: {
                             next: string;
                             previous: string;
+                            saveAndContinue: string;
                         };
                         wizardSummary: {
                             name: string;
