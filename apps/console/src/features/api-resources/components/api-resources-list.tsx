@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { PlusIcon } from "@oxygen-ui/react-icons";
+import Button from "@oxygen-ui/react/Button";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -75,6 +77,10 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      * Callback for the search query clear action.
      */
     onSearchQueryClear?: () => void;
+    /**
+     * Callback to be fired when the empty list placeholder action is clicked.
+     */
+    onEmptyListPlaceholderActionClicked?: () => void;
 }
 
 /**
@@ -94,6 +100,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
         onSearchQueryClear,
         searchQuery,
         showListItemActions,
+        onEmptyListPlaceholderActionClicked,
         ["data-componentid"]: componentId
     } = props;
 
@@ -298,6 +305,17 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
                     data-testid={ `${ componentId }-empty-search-placeholder-icon` }
+                    action={ (
+                        <Button
+                            variant="contained"
+                            startIcon={ <PlusIcon /> }
+                            type="button"
+                            onClick={ () => onEmptyListPlaceholderActionClicked() }
+                            data-testid= { `${componentId}-add-api-resources-button` }
+                        >
+                            { t("extensions:develop.apiResource.addApiResourceButton") }
+                        </Button>
+                    ) }
                 />
             );
         }

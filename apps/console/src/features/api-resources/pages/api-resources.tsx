@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -237,17 +237,17 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     return (
         <PageLayout
             action={
-                APIResourceUtils.isAPIResourceCreateAllowed(
-                    featureConfig, allowedScopes) &&
-                (
-                    <PrimaryButton
-                        data-testid= { `${componentId}-add-api-resources-button` }
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon name="add" />
-                        { t("extensions:develop.apiResource.addApiResourceButton") }
-                    </PrimaryButton>
-                )
+                APIResourceUtils.isAPIResourceCreateAllowed(featureConfig, allowedScopes)
+                    && apiResourcesList?.length > 0
+                    && (
+                        <PrimaryButton
+                            data-testid= { `${componentId}-add-api-resources-button` }
+                            onClick={ () => setShowWizard(true) }
+                        >
+                            <Icon name="add" />
+                            { t("extensions:develop.apiResource.addApiResourceButton") }
+                        </PrimaryButton>
+                    )
             }
             pageTitle={ t("extensions:develop.apiResource.pageHeader.title") }
             title={ t("extensions:develop.apiResource.pageHeader.title") }
@@ -414,6 +414,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             onSearchQueryClear={ handleSearchQueryClear }
                             searchQuery={ searchQuery }
                             categoryId="custom"
+                            onEmptyListPlaceholderActionClicked={ () => setShowWizard(true) }
                         />)
 
                 }
