@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.1
+
+### Patch Changes
+
+- [#5285](https://github.com/wso2/identity-apps/pull/5285) [`23b05b40a0`](https://github.com/wso2/identity-apps/commit/23b05b40a0b1fa2e0d64ba5598eea165ecbfe872) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Filter out read only userstores from group creation wizard
+
 ## 2.11.0
 
 ### Minor Changes
