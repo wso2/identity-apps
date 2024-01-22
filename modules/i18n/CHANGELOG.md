@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.0.102
+
+### Patch Changes
+
+- [#5289](https://github.com/wso2/identity-apps/pull/5289) [`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Tenant Permissions` -> `Root Organization Permissions`
+
+- Updated dependencies [[`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111)]:
+  - @wso2is/core@2.0.31
+
 ## 2.0.101
 
 ### Patch Changes

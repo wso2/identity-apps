@@ -1,5 +1,19 @@
 # @wso2is/common
 
+## 2.0.25
+
+### Patch Changes
+
+- [#5289](https://github.com/wso2/identity-apps/pull/5289) [`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Tenant Permissions` -> `Root Organization Permissions`
+
+* [#5272](https://github.com/wso2/identity-apps/pull/5272) [`99a993a902`](https://github.com/wso2/identity-apps/commit/99a993a9021727c62a00d75a805f37cccea882d1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix form autofill preventing form submission
+
+* Updated dependencies [[`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111), [`99a993a902`](https://github.com/wso2/identity-apps/commit/99a993a9021727c62a00d75a805f37cccea882d1), [`6395f654df`](https://github.com/wso2/identity-apps/commit/6395f654df1e65dfb9219954abadcdf6c9754cf1), [`486a47329a`](https://github.com/wso2/identity-apps/commit/486a47329a0e025d4841ee8dc87b96519f1879cb)]:
+  - @wso2is/i18n@2.0.102
+  - @wso2is/core@2.0.31
+  - @wso2is/forms@2.0.16
+  - @wso2is/react-components@2.1.0
+
 ## 2.0.24
 
 ### Patch Changes

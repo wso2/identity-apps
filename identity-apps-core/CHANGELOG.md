@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.0.125
+
+### Patch Changes
+
+- [#5290](https://github.com/wso2/identity-apps/pull/5290) [`cf0041d8f4`](https://github.com/wso2/identity-apps/commit/cf0041d8f4db82eb5777f9e45d49cf3083e2bfd1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Encode url parameter for html content in hyprlogin
+
+* [#5274](https://github.com/wso2/identity-apps/pull/5274) [`533192f658`](https://github.com/wso2/identity-apps/commit/533192f658386198dbca0428d469f03cd9bb659b) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] sanitize `identifierauth.jsp` and `fido2-auth.jsp`
+
+- [#5286](https://github.com/wso2/identity-apps/pull/5286) [`486a47329a`](https://github.com/wso2/identity-apps/commit/486a47329a0e025d4841ee8dc87b96519f1879cb) Thanks [@brionmario](https://github.com/brionmario)! - Fix Backup code icon branding issues
+
+- Updated dependencies [[`486a47329a`](https://github.com/wso2/identity-apps/commit/486a47329a0e025d4841ee8dc87b96519f1879cb)]:
+  - @wso2is/theme@2.0.59
+
 ## 2.0.124
 
 ### Patch Changes
