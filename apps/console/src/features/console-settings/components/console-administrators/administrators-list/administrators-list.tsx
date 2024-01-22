@@ -340,11 +340,11 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                 isFirstLevelOrganization() || isSuperOrganization()
                     ? (
                         <Dropdown
-                          data-testid="user-mgt-user-list-userstore-dropdown"
-                          selection
-                          options={ availableUserStores }
-                          onChange={ handleSelectedUserStoreChange }
-                          defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                            data-testid="user-mgt-user-list-userstore-dropdown"
+                            selection
+                            options={ availableUserStores }
+                            onChange={ handleSelectedUserStoreChange }
+                            defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
                         />
                     ) : null
             }
@@ -357,29 +357,29 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             { adminUserListFetchError
                 ? (
                     <EmptyPlaceholder
-                      subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                        t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
-                      title={ t("console:manage.features.users.placeholders.userstoreError.title") }
-                      image={ getEmptyPlaceholderIllustrations().genericError }
-                      imageSize="tiny"
+                        subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
+                            t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
+                        title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
+                        imageSize="tiny"
                     />
                 ): (
                     <AdministratorsTable
-                      defaultListItemLimit={ defaultListItemLimit }
-                      administrators={ administrators }
-                      onUserEdit={ handleUserEdit }
-                      onUserDelete={ handleUserDelete }
-                      isLoading={ loading }
-                      readOnlyUserStores={ readOnlyUserStores }
-                      onSearchQueryClear={ handleSearchQueryClear }
-                      searchQuery={ searchQuery }
-                      triggerClearQuery={ triggerClearQuery }
-                      onEmptyListPlaceholderActionClick={ () => null }
-                      onIsLoading={ setLoading }
-                      selection={ selection }
-                      showListItemActions={ showListItemActions }
-                      showMetaContent={ showMetaContent }
-                      data-componentid={ `${componentId}-table` }
+                        defaultListItemLimit={ defaultListItemLimit }
+                        administrators={ administrators }
+                        onUserEdit={ handleUserEdit }
+                        onUserDelete={ handleUserDelete }
+                        isLoading={ loading }
+                        readOnlyUserStores={ readOnlyUserStores }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        triggerClearQuery={ triggerClearQuery }
+                        onEmptyListPlaceholderActionClick={ () => null }
+                        onIsLoading={ setLoading }
+                        selection={ selection }
+                        showListItemActions={ showListItemActions }
+                        showMetaContent={ showMetaContent }
+                        data-componentid={ `${componentId}-table` }
                     />
                 )
             }

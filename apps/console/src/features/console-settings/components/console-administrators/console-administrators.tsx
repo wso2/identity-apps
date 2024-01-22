@@ -106,14 +106,14 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
         switch (activeAdministratorGroup) {
             case "activeUsers":
                 return (
-                  <AdministratorsList
-                    availableUserStores={ availableUserStores }
-                  />
+                    <AdministratorsList
+                        availableUserStores={ availableUserStores }
+                    />
                 );
             case "pendingInvitations":
                 return (
                     <InvitedAdministratorsList
-                      availableUserStores={ availableUserStores }
+                        availableUserStores={ availableUserStores }
                     />
                 );
             default:
