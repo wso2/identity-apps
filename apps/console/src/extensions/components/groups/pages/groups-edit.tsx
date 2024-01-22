@@ -85,11 +85,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
         <GroupManagementProvider>
             <TabPageLayout
                 isLoading={ isGroupDetailsRequestLoading }
-                title={
-                    group && group?.displayName ?
-                        group?.displayName?.split("/")[1] :
-                        t("console:manage.pages.rolesEdit.title")
-                }
+                title={ group?.displayName?.split("/")[1] ?? t("console:manage.pages.rolesEdit.title") }
                 backButton={ {
                     onClick: handleBackButtonClick,
                     text: t("console:manage.pages.rolesEdit.backButton", { type: "Groups" })
