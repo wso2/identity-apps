@@ -223,8 +223,15 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         }
     };
 
+    /**
+     * This function will handle the organization switch when the user clicks on the back button.
+     *
+     * @param currentPath - Current path.
+     * @param previousPushedRouteKey - Key of the previous pushed route.
+     */
     const handleBackButtonOrganizationSwitch = async (
-        currentPath: string, previousPushedRouteKey: string
+        currentPath: string,
+        previousPushedRouteKey: string
     ): Promise<void> => {
         setTriggerBackButtonOrganizationSwitch(false);
 
