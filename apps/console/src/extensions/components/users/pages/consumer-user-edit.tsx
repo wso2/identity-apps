@@ -600,18 +600,19 @@ const ConsumerUserEditPage = (): ReactElement => {
                                                     >
                                                         It seems like the selected email is not registered on Gravatar.
                                                         Sign up for a Gravatar account by visiting
-                                                        <a href="https://www.gravatar.com"> Gravatar Official Website</a>
-                                                        or use one of the following.
+                                                        <a href="https://www.gravatar.com">Gravatar Official
+                                                        Website</a> or use one of the following.
                                                     </Trans>
                                                 ),
-                                                header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
-                                                    ".noAssociation.header")
+                                                header: t("console:common.modals.editAvatarModal.content.gravatar" +
+                                                    ".errors.noAssociation.header")
                                             }
                                         },
                                         heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
                                     },
                                     hostedAvatar: {
-                                        heading: t("console:common.modals.editAvatarModal.content.hostedAvatar.heading"),
+                                        heading: t("console:common.modals.editAvatarModal.content.hostedAvatar" +
+                                            ".heading"),
                                         input: {
                                             errors: {
                                                 http: {
@@ -645,8 +646,8 @@ const ConsumerUserEditPage = (): ReactElement => {
                                         heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
                                             "heading"),
                                         types: {
-                                            initials: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
-                                                "types.initials")
+                                            initials: t("console:common.modals.editAvatarModal.content" +
+                                                ".systemGenAvatars.types.initials")
                                         }
                                     }
                                 } }
