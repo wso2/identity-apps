@@ -16,19 +16,11 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
 import Code from "@oxygen-ui/react/Code";
-import IconButton from "@oxygen-ui/react/IconButton";
-import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import Skeleton from "@oxygen-ui/react/Skeleton";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, FormSpy, FormState, TextFieldAdapter } from "@wso2is/form";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
-import orderBy from "lodash-es/orderBy";
-import React, { FunctionComponent, ReactElement, SVGAttributes, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement } from "react";
 
 /**
  * Prop types for the text customization fields component.
@@ -46,8 +38,6 @@ const CreateConsoleRoleWizardBasicInfoForm: FunctionComponent<CreateConsoleRoleW
 ): ReactElement => {
     const { "data-componentid": componentId } = props;
 
-    const { t } = useTranslation();
-
     return (
         <FinalFormField
             fullWidth
@@ -63,7 +53,7 @@ const CreateConsoleRoleWizardBasicInfoForm: FunctionComponent<CreateConsoleRoleW
             helperText={ (
                 <Hint>
                     Provide a distinctive and meaningful display name for the role. This name should clearly represent
-                    the purpose or responsibilities associated with this role within the Console application. 
+                    the purpose or responsibilities associated with this role within the Console application.
                     E.g.{ " " }<Code>application:read</Code>
                 </Hint>
             ) }
