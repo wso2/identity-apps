@@ -65,7 +65,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     } = useUserStores(null);
 
     useEffect(() => {
-        if ( userStoreList && !isUserStoreListFetchRequestLoading) {
+        if (userStoreList && !isUserStoreListFetchRequestLoading) {
             const storeOptions: UserStoreDropdownItem[] = [
                 {
                     key: -1,
