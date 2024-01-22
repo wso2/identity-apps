@@ -11470,7 +11470,7 @@ export const console: ConsoleNS = {
                             basicDetails: "Basic Details",
                             groups: "User Groups",
                             roles: "User Roles",
-                            summary: "Summary",
+                            invitation: "Invitation",
                             method: "Method"
                         },
                         subTitle: "Follow the steps to create the new user",

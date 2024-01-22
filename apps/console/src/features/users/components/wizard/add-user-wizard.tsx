@@ -998,7 +998,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ),
             icon: getUserWizardStepIcons().summary,
             name: WizardStepsFormTypes.USER_SUMMARY,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
+            title: "Invitation"
         };
     };
 

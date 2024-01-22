@@ -9523,7 +9523,7 @@ export const console: ConsoleNS = {
                             basicDetails: "මූලික විස්තර",
                             groups: "පරිශීලක කණ්ඩායම්",
                             roles: "පරිශීලක භූමිකාවන්",
-                            summary: "සාරාංශය",
+                            invitation: "ආරාධනය",
                             method: "ක්රමය"
                         },
                         subTitle: "නව පරිශීලකයා නිර්මාණය කිරීමට පියවර අනුගමනය කරන්න",
