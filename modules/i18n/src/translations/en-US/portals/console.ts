@@ -11464,7 +11464,8 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "Next",
-                            previous: "Previous"
+                            previous: "Previous",
+                            saveAndContinue: "Save & Continue"
                         },
                         steps: {
                             basicDetails: "Basic Details",

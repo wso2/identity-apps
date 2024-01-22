@@ -9517,7 +9517,8 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "ලබන",
-                            previous: "කලින්"
+                            previous: "කලින්",
+                            saveAndContinue: "සුරකින්න සහ ඉදිරියට යන්න"
                         },
                         steps: {
                             basicDetails: "මූලික විස්තර",

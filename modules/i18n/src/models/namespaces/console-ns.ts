@@ -6136,6 +6136,7 @@ export interface ConsoleNS {
                         buttons: {
                             next: string;
                             previous: string;
+                            saveAndContinue: string;
                         };
                         wizardSummary: {
                             name: string;

@@ -9730,7 +9730,8 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "Suivant",
-                            previous: "Précédent"
+                            previous: "Précédent",
+                            saveAndContinue: "Enregistrer continuer"
                         },
                         steps: {
                             basicDetails: "Informations générales",
