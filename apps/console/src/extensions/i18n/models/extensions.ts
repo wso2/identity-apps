@@ -3061,6 +3061,7 @@ export interface Extensions {
                     };
                     validation: {
                         password: string;
+                        confirmPassword: string;
                         passwordCase: string;
                         upperCase: string;
                         lowerCase: string;
