@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import { ConnectionManagementConstants } from "../../../../connections/constants/connection-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
     IdentityProviderManagementConstants
@@ -453,7 +454,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             disabledHint={ t("console:develop.pages." +
                                                 "authenticationProviderTemplate.disabledHint.apple") }
                                             disabled={ new URL(deploymentConfig?.serverOrigin)?.
-                                                hostname === "localhost" }
+                                                hostname === ConnectionManagementConstants.LOCAL_SERVER_URL }
                                         />
                                     ) }
                                 </>
