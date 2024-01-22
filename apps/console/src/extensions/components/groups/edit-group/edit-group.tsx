@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,12 +25,14 @@ import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { AppState, FeatureConfigInterface } from "../../../../features/core";
 import { GroupsInterface } from "../../../../features/groups";
 import { GroupConstants } from "../../../../features/groups/constants";
+import useGroupManagement from "../../../../features/groups/hooks/use-group-management";
 import { ExtendedFeatureConfigInterface } from "../../../configs/models";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { CONSUMER_USERSTORE } from "../../users/constants";
@@ -79,7 +81,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const extendedFeatureConfig: ExtendedFeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features);
-    
+
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
@@ -89,6 +91,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ isRolesTabEnabled, setRolesTabEnabled ] = useState<boolean>(false);
     const [ isResourcePanesLoading, setIsResourcePanesLoading ] = useState<boolean>(true);
 
+    const { activeTab, updateActiveTab } = useGroupManagement();
     const dispatch: Dispatch = useDispatch();
 
     useEffect(() => {
@@ -100,7 +103,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.groups.notifications.fetchGroups.genericError" + 
+                    description: t("console:manage.features.groups.notifications.fetchGroups.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
@@ -136,11 +139,11 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const checkRolesTabEnabled = () => {
 
         const userHasRequiredScopes: boolean = hasRequiredScopes(
-            extendedFeatureConfig?.apiResources, 
-            [ ...extendedFeatureConfig?.apiResources?.scopes?.create, 
+            extendedFeatureConfig?.apiResources,
+            [ ...extendedFeatureConfig?.apiResources?.scopes?.create,
                 ...extendedFeatureConfig?.apiResources?.scopes?.delete,
-                ...extendedFeatureConfig?.apiResources?.scopes?.read, 
-                ...extendedFeatureConfig?.apiResources?.scopes?.update ], 
+                ...extendedFeatureConfig?.apiResources?.scopes?.read,
+                ...extendedFeatureConfig?.apiResources?.scopes?.update ],
             allowedScopes
         );
 
@@ -213,7 +216,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
         if (isRolesTabEnabled) {
             panes.push(
                 {
-                    menuItem: isSubOrg 
+                    menuItem: isSubOrg
                         ? t("extensions:console.applicationRoles.heading")
                         : t("extensions:manage.groups.edit.roles.title"),
                     render: () => (
@@ -237,7 +240,11 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     return (
         <ResourceTab
+            activeIndex={ activeTab }
             isLoading={ isResourcePanesLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
             panes={ resolveResourcePanes() }
         />
     );
