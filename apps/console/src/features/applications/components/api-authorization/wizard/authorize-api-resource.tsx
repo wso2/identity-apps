@@ -525,7 +525,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                                 size={ 12 }
                                                                                 className="mb-1"
                                                                             >
-                                                                                { t("common:loading") + "..." }
+                                                                                { t("common:loading") }
                                                                             </Text>
                                                                         )
                                                                         : (
