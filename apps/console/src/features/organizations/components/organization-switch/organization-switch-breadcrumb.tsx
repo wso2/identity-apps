@@ -217,7 +217,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             );
 
             mutateOrganizationBreadCrumbFetchRequest();
-            redirectToStart ? history.push(AppConstants.getPaths().get("GETTING_STARTED")) : null;
+            if (redirectToStart) {
+                history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+            }
         } catch(e) {
             // TODO: Handle error
         }
