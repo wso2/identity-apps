@@ -382,7 +382,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                         data-componentid={ `${ componentId }-list-advanced-search` }
                     />
                 ) }
-                showTopActionPanel={ !(!searchQuery && apiResourcesList?.length === 0) }
+                showTopActionPanel={ (!!searchQuery || apiResourcesList?.length > 0) }
                 data-componentid={ `${ componentId }-api-resources-list-layout` }
                 data-testid={ `${ componentId }-api-resources-list-layout` }
                 onPageChange={ handlePaginationChange }
