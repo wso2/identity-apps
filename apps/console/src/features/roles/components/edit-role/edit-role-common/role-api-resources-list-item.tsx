@@ -115,7 +115,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                             <Checkbox
                                                 edge="end"
                                                 checked={ isAllScopesSelected() }
-                                                disabled={ apiResource?.scopes?.length < 0 }
+                                                disabled={ apiResource?.scopes?.length === 0 }
                                                 data-componentid = { `${componentId}-select-all` }
                                                 onChange={ handleAllScopesSelection }
                                             />
@@ -147,21 +147,19 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         ) }
                         disablePadding
                     >
-                        <ListItemText primary={ apiResource?.name } />
+                        <ListItemText
+                            primary={ apiResource?.name }
+                            secondary={ apiResource?.identifier }
+                        />
                         { apiResource?.type
                             && (
-                                <ListItemText
-                                    secondary={ (
-                                        <Label
-                                            size="mini"
-                                            className= "info-label"
-                                        >
-                                            { apiResource?.type }
-                                        </Label>
-                                    ) } >
-                                </ListItemText>
+                                <Label
+                                    size="mini"
+                                    className= "info-label"
+                                >
+                                    { apiResource?.type }
+                                </Label>
                             ) }
-                        <ListItemText secondary={ apiResource?.identifier } />
                     </ListItem>
                 </AccordionSummary>
                 {
