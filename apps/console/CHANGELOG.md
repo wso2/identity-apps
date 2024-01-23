@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.11.6
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+* [#5308](https://github.com/wso2/identity-apps/pull/5308) [`4970e70acb`](https://github.com/wso2/identity-apps/commit/4970e70acbc3201752b2bd611d1ed25e7628fe20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the role tab hidding issue in Sub-Orgs
+
+* Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+  - @wso2is/access-control@2.0.18
+  - @wso2is/common@2.0.26
+  - @wso2is/dynamic-forms@2.0.28
+  - @wso2is/form@2.0.30
+  - @wso2is/forms@2.0.17
+  - @wso2is/i18n@2.0.105
+  - @wso2is/react-components@2.1.1
+
 ## 2.11.5
 
 ### Patch Changes
