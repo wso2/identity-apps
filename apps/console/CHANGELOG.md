@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.11.7
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+* [#5312](https://github.com/wso2/identity-apps/pull/5312) [`da0b34129d`](https://github.com/wso2/identity-apps/commit/da0b34129d8452e2e3511367c1d3aef07957a50b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable authorized scope selection dropdown after the available scopes are populated
+
+* Updated dependencies [[`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30)]:
+  - @wso2is/i18n@2.0.106
+  - @wso2is/common@2.0.27
+
 ## 2.11.6
 
 ### Patch Changes
