@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.8
+
+### Patch Changes
+
+- [#5313](https://github.com/wso2/identity-apps/pull/5313) [`8101a006b7`](https://github.com/wso2/identity-apps/commit/8101a006b7d54ed5bf033d746b0447eaea33d936) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update useAuthorizedOrganizationsList API call
+
 ## 2.11.7
 
 ### Patch Changes
