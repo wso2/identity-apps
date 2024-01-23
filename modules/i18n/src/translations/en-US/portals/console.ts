@@ -12535,7 +12535,8 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A user store with this name already exists."
+                                alreadyExistsErrorMessage: "A user store with this name already exists.",
+                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
                             }
                         },
                         type: {
