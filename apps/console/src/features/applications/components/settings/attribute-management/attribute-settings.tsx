@@ -149,7 +149,7 @@ export const getLocalDialectURI = (): string => {
     return localDialect;
 };
 
-export const DefaultSubjectAttribute: string = "http://wso2.org/claims/username";
+export const DefaultSubjectAttribute: string = "http://wso2.org/claims/userid";
 
 export const LocalDialectURI: string = "http://wso2.org/claims";
 

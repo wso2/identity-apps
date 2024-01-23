@@ -261,11 +261,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         !config.showIncludeUserstoreDomainRole && settingValues.role.includeUserDomain;
         !config.showRoleAttribute && delete settingValues.role.claim;
 
-        // Remove subject attribute property from the payload if it's undefined or empty,
-        // as sending an empty value for subject results in issues
+        // Assign default subject attribute, if the subject attribute property from the payload is undefined or empty,
+        // as sending an empty value for subject results in issues.
         // Ref: https://github.com/wso2/product-is/issues/19054
         if (!settingValues?.subject?.claim || settingValues?.subject?.claim === "") {
-            delete settingValues?.subject?.claim;
+            settingValues.subject.claim = defaultSubjectAttribute;
         }
 
         setSubmissionValues(settingValues);
