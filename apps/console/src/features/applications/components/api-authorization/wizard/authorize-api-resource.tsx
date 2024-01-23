@@ -504,12 +504,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         { ...params }
                                                         label={ (
                                                             <div
-                                                                style={ {
-                                                                    alignItems: "center",
-                                                                    display: "flex",
-                                                                    flexDirection: "row",
-                                                                    justifyContent: "space-between"
-                                                                } }
+                                                                className="authorized-scope-select-input"
                                                             >
                                                                 <Typography
                                                                     variant="subtitle1"
@@ -530,7 +525,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                                 size={ 12 }
                                                                                 className="mb-1"
                                                                             >
-                                                                                Loading...
+                                                                                { t("common:loading") + "..." }
                                                                             </Text>
                                                                         )
                                                                         : (
