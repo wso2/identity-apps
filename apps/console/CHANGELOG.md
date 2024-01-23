@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.10
+
+### Patch Changes
+
+- [#5323](https://github.com/wso2/identity-apps/pull/5323) [`909bb9907e`](https://github.com/wso2/identity-apps/commit/909bb9907e04b29aa04fe43110fd0b6b8927b97d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix bugs related to attribute update and role edit access
+
 ## 2.11.9
 
 ### Patch Changes
