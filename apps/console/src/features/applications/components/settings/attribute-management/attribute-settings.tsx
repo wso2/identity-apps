@@ -149,7 +149,7 @@ export const getLocalDialectURI = (): string => {
     return localDialect;
 };
 
-export const DefaultSubjectAttribute: string = "http://wso2.org/claims/userid";
+export const DefaultSubjectAttribute: string = "http://wso2.org/claims/username";
 
 export const LocalDialectURI: string = "http://wso2.org/claims";
 
@@ -1241,6 +1241,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         triggerSubmission={ (submitFunction: () => void) => {
                                             submitAdvanceForm = submitFunction;
                                         } }
+                                        claimConfigurations={ claimConfigurations }
                                         setSubmissionValues={ setAdvanceSettingValues }
                                         setSelectedValue={ setSelectedSubjectValue }
                                         defaultSubjectAttribute={ DefaultSubjectAttribute }
