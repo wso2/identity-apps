@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.9
+
+### Patch Changes
+
+- [#5316](https://github.com/wso2/identity-apps/pull/5316) [`8c75ba653b`](https://github.com/wso2/identity-apps/commit/8c75ba653bf38ceed4e8d8a8f869717a79429903) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide Apple connection configuration in localhost
+
 ## 2.11.8
 
 ### Patch Changes
