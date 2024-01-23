@@ -304,15 +304,16 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
                     data-testid={ `${ componentId }-empty-search-placeholder-icon` }
-                    action={ (
-                        <PrimaryButton
-                            onClick={ () => onEmptyListPlaceholderActionClicked() }
-                            data-testid={ `${componentId}-add-api-resources-button` }
-                        >
-                            <Icon name="add" />
-                            { t("extensions:develop.apiResource.addApiResourceButton") }
-                        </PrimaryButton>
-                    ) }
+                    action={ onEmptyListPlaceholderActionClicked
+                        ? (
+                            <PrimaryButton
+                                onClick={ () => onEmptyListPlaceholderActionClicked() }
+                                data-testid={ `${componentId}-add-api-resources-button` }
+                            >
+                                <Icon name="add" />
+                                { t("extensions:develop.apiResource.addApiResourceButton") }
+                            </PrimaryButton>
+                        ) : null }
                 />
             );
         }
