@@ -356,7 +356,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                     : (
                         <>
                             {
-                                users && availableUserStores && (
+                                users && availableUserStores && !isReadOnly && (
                                     <Grid container spacing={ 1 }>
                                         <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
                                             <FormControl fullWidth size="medium">
