@@ -107,7 +107,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ isSelectAllHidden, setIsSelectAllHidden ] = useState<boolean>(false);
     const [ isSelectNoneHidden, setIsSelectNoneHidden ] = useState<boolean>(true);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
-    const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(false);
+    const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
 
     const {
         data: currentAPIResourcesListData,
@@ -458,48 +458,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 key="apiResource"
                                             />
                                         </Grid.Row>
-                                        <Grid.Row className="mb-3">
-                                            <Grid.Column floated="right" textAlign="right">
-                                                {
-                                                    isScopeSelectDropdownReady
-                                                        ? <Typography variant="body2">Loading...</Typography>
-                                                        : (
-                                                            <Text className="mb-0" muted subHeading size={ 12 }>
-                                                                <Button
-                                                                    variant="text"
-                                                                    size="small"
-                                                                    disabled={
-                                                                        !selectedAPIResource || isSelectAllHidden
-                                                                    }
-                                                                    onClick={ () => handleBulkDropdownChange(false) }
-                                                                >
-                                                                    {
-                                                                        t("extensions:develop.applications.edit." +
-                                                                          "sections.apiAuthorization.sections." +
-                                                                          "apiSubscriptions.scopesSection.selectAll")
-                                                                    }
-                                                                </Button>
-                                                                |
-                                                                <Button
-                                                                    variant="text"
-                                                                    size="small"
-                                                                    disabled={
-                                                                        !selectedAPIResource || isSelectNoneHidden
-                                                                    }
-                                                                    onClick={ () => handleBulkDropdownChange(true) }
-                                                                >
-                                                                    {
-                                                                        t("extensions:develop.applications.edit" +
-                                                                          ".sections.apiAuthorization.sections" +
-                                                                          ".apiSubscriptions." +
-                                                                          "scopesSection.selectNone"
-                                                                        )
-                                                                    }
-                                                                </Button>
-                                                            </Text>)
-                                                }
-                                            </Grid.Column>
-                                        </Grid.Row>
                                         <Grid.Row>
                                             <Autocomplete
                                                 disablePortal
@@ -544,9 +502,95 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                                     <TextField
                                                         { ...params }
-                                                        label={ t("extensions:develop.applications.edit.sections." +
-                                                            "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                            "authorizeAPIResource.fields.scopes.label") }
+                                                        label={ (
+                                                            <div
+                                                                style={ {
+                                                                    alignItems: "center",
+                                                                    display: "flex",
+                                                                    flexDirection: "row",
+                                                                    justifyContent: "space-between"
+                                                                } }
+                                                            >
+                                                                <Typography
+                                                                    variant="subtitle1"
+                                                                >
+                                                                    { t("extensions:develop.applications" +
+                                                                        ".edit.sections." +
+                                                                        "apiAuthorization.sections.apiSubscriptions" +
+                                                                        ".wizards.authorizeAPIResource.fields" +
+                                                                        ".scopes.label")
+                                                                    }
+                                                                </Typography>
+
+
+                                                                {
+                                                                    isScopeSelectDropdownReady
+                                                                        ? (
+                                                                            <Text
+                                                                                size={ 12 }
+                                                                                className="mb-1"
+                                                                            >
+                                                                                Loading...
+                                                                            </Text>
+                                                                        )
+                                                                        : (
+                                                                            <Text
+                                                                                className="mb-0"
+                                                                                muted
+                                                                                subHeading
+                                                                                size={ 12 }
+                                                                            >
+                                                                                <Button
+                                                                                    variant="text"
+                                                                                    size="small"
+                                                                                    disabled={
+                                                                                        !selectedAPIResource
+                                                                                        || isSelectAllHidden
+                                                                                    }
+                                                                                    onClick={
+                                                                                        () =>
+                                                                                            handleBulkDropdownChange(
+                                                                                                false
+                                                                                            )
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        t("extensions:develop" +
+                                                                                          ".applications.edit" +
+                                                                                          ".sections.apiAuthorization" +
+                                                                                          ".sections." +
+                                                                                          "apiSubscriptions" +
+                                                                                          ".scopesSection.selectAll")
+                                                                                    }
+                                                                                </Button>
+                                                                |
+                                                                                <Button
+                                                                                    variant="text"
+                                                                                    size="small"
+                                                                                    disabled={
+                                                                                        !selectedAPIResource
+                                                                                        || isSelectNoneHidden
+                                                                                    }
+                                                                                    onClick={
+                                                                                        () =>
+                                                                                            handleBulkDropdownChange(
+                                                                                                true
+                                                                                            )
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        t("extensions:develop" +
+                                                                                          ".applications.edit" +
+                                                                                          ".sections" +
+                                                                                          ".apiAuthorization.sections" +
+                                                                                          ".apiSubscriptions." +
+                                                                                          "scopesSection.selectNone")
+                                                                                    }
+                                                                                </Button>
+                                                                            </Text>)
+                                                                }
+                                                            </div>)
+                                                        }
                                                         disabled={ !selectedAPIResource }
                                                         size="small"
                                                         variant="outlined"
