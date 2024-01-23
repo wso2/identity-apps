@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { PlusIcon } from "@oxygen-ui/react-icons";
-import Button from "@oxygen-ui/react/Button";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -27,6 +25,7 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -34,7 +33,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { deleteAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
@@ -306,15 +305,13 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
                     data-testid={ `${ componentId }-empty-search-placeholder-icon` }
                     action={ (
-                        <Button
-                            variant="contained"
-                            startIcon={ <PlusIcon /> }
-                            type="button"
+                        <PrimaryButton
                             onClick={ () => onEmptyListPlaceholderActionClicked() }
-                            data-testid= { `${componentId}-add-api-resources-button` }
+                            data-testid={ `${componentId}-add-api-resources-button` }
                         >
+                            <Icon name="add" />
                             { t("extensions:develop.apiResource.addApiResourceButton") }
-                        </Button>
+                        </PrimaryButton>
                     ) }
                 />
             );

@@ -241,7 +241,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                     && apiResourcesList?.length > 0
                     && (
                         <PrimaryButton
-                            data-testid= { `${componentId}-add-api-resources-button` }
+                            data-testid={ `${componentId}-add-api-resources-button` }
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add" />
@@ -382,7 +382,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                         data-componentid={ `${ componentId }-list-advanced-search` }
                     />
                 ) }
-                showTopActionPanel={ true }
+                showTopActionPanel={ !(!searchQuery && apiResourcesList?.length === 0) }
                 data-componentid={ `${ componentId }-api-resources-list-layout` }
                 data-testid={ `${ componentId }-api-resources-list-layout` }
                 onPageChange={ handlePaginationChange }
