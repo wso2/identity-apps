@@ -521,12 +521,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                 {
                                                                     isScopeSelectDropdownReady
                                                                         ? (
-                                                                            <Text
-                                                                                size={ 12 }
-                                                                                className="mb-1"
-                                                                            >
+                                                                            <Typography>
                                                                                 { t("common:loading") }
-                                                                            </Text>
+                                                                            </Typography>
                                                                         )
                                                                         : (
                                                                             <Text
