@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.106
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
 ## 2.0.105
 
 ### Patch Changes
