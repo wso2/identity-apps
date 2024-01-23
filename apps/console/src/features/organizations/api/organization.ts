@@ -128,7 +128,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
         method: HttpMethods.GET,
         params: {
             after,
-            authorizedAppName,
+            ...(isLegacyAuthzRuntime() ? {} : { authorizedAppName }),
             before,
             filter,
             limit,
