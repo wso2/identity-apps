@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.11.11
+
+### Patch Changes
+
+- [#5320](https://github.com/wso2/identity-apps/pull/5320) [`bf462193fa`](https://github.com/wso2/identity-apps/commit/bf462193fac75d5e06a108f9dbcfcce02d300e8d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update password validation min length field limit
+
+* [#5309](https://github.com/wso2/identity-apps/pull/5309) [`ea42733de4`](https://github.com/wso2/identity-apps/commit/ea42733de4f941874c3c2b1346bfa6ca2a756e14) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve API resources listing UX
+
+- [#5324](https://github.com/wso2/identity-apps/pull/5324) [`1097fb7f07`](https://github.com/wso2/identity-apps/commit/1097fb7f07c94b3cb180f8ee7335dbc0b94d1b50) Thanks [@savindi7](https://github.com/savindi7)! - Fix UI issues in application role creation
+
 ## 2.11.10
 
 ### Patch Changes

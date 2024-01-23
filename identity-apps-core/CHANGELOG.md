@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.127
+
+### Patch Changes
+
+- [#5329](https://github.com/wso2/identity-apps/pull/5329) [`4f05737bba`](https://github.com/wso2/identity-apps/commit/4f05737bba43e9fa27f48f8f0dfccce3fd78723a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix quotes not rendering properly in the privacy policy pagea
+
 ## 2.0.126
 
 ### Patch Changes
