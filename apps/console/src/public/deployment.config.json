@@ -844,9 +844,7 @@
                     "update": [
                         "internal_application_mgt_update"
                     ],
-                    "read": [
-                        "internal_application_mgt_view"
-                    ]
+                    "read": []
                 }
             },
             "wsFedConfiguration": {

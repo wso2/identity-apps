@@ -210,12 +210,15 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             hasRequiredScopes(
                 feature?.organizations,
                 feature?.organizations?.scopes?.read,
-                scopes
+                scopes,
+                organizationType
             )
         );
     }, [
         tenantDomain,
-        feature.organizations
+        feature.organizations,
+        organizationType,
+        scopes
     ]);
 
     const resolveUsername = (): string => {
