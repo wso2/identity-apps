@@ -1,5 +1,63 @@
 # @wso2is/console
 
+## 2.11.11
+
+### Patch Changes
+
+- [#5320](https://github.com/wso2/identity-apps/pull/5320) [`bf462193fa`](https://github.com/wso2/identity-apps/commit/bf462193fac75d5e06a108f9dbcfcce02d300e8d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update password validation min length field limit
+
+* [#5309](https://github.com/wso2/identity-apps/pull/5309) [`ea42733de4`](https://github.com/wso2/identity-apps/commit/ea42733de4f941874c3c2b1346bfa6ca2a756e14) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve API resources listing UX
+
+- [#5324](https://github.com/wso2/identity-apps/pull/5324) [`1097fb7f07`](https://github.com/wso2/identity-apps/commit/1097fb7f07c94b3cb180f8ee7335dbc0b94d1b50) Thanks [@savindi7](https://github.com/savindi7)! - Fix UI issues in application role creation
+
+## 2.11.10
+
+### Patch Changes
+
+- [#5323](https://github.com/wso2/identity-apps/pull/5323) [`909bb9907e`](https://github.com/wso2/identity-apps/commit/909bb9907e04b29aa04fe43110fd0b6b8927b97d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix bugs related to attribute update and role edit access
+
+## 2.11.9
+
+### Patch Changes
+
+- [#5316](https://github.com/wso2/identity-apps/pull/5316) [`8c75ba653b`](https://github.com/wso2/identity-apps/commit/8c75ba653bf38ceed4e8d8a8f869717a79429903) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide Apple connection configuration in localhost
+
+## 2.11.8
+
+### Patch Changes
+
+- [#5313](https://github.com/wso2/identity-apps/pull/5313) [`8101a006b7`](https://github.com/wso2/identity-apps/commit/8101a006b7d54ed5bf033d746b0447eaea33d936) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update useAuthorizedOrganizationsList API call
+
+## 2.11.7
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+* [#5312](https://github.com/wso2/identity-apps/pull/5312) [`da0b34129d`](https://github.com/wso2/identity-apps/commit/da0b34129d8452e2e3511367c1d3aef07957a50b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable authorized scope selection dropdown after the available scopes are populated
+
+* Updated dependencies [[`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30)]:
+  - @wso2is/i18n@2.0.106
+  - @wso2is/common@2.0.27
+
+## 2.11.6
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+* [#5308](https://github.com/wso2/identity-apps/pull/5308) [`4970e70acb`](https://github.com/wso2/identity-apps/commit/4970e70acbc3201752b2bd611d1ed25e7628fe20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the role tab hidding issue in Sub-Orgs
+
+* Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+  - @wso2is/access-control@2.0.18
+  - @wso2is/common@2.0.26
+  - @wso2is/dynamic-forms@2.0.28
+  - @wso2is/form@2.0.30
+  - @wso2is/forms@2.0.17
+  - @wso2is/i18n@2.0.105
+  - @wso2is/react-components@2.1.1
+
 ## 2.11.5
 
 ### Patch Changes

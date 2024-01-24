@@ -8065,7 +8065,7 @@ export const console: ConsoleNS = {
                     },
                     forms: {
                         attribute: {
-                            placeholder: "Select a user attribute to map to",
+                            placeholder: "Enter a user attribute to map to",
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
@@ -12535,7 +12535,8 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A user store with this name already exists."
+                                alreadyExistsErrorMessage: "A user store with this name already exists.",
+                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
                             }
                         },
                         type: {

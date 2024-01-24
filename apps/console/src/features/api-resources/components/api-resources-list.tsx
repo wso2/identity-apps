@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -32,7 +33,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { deleteAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
@@ -75,6 +76,10 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      * Callback for the search query clear action.
      */
     onSearchQueryClear?: () => void;
+    /**
+     * Callback to be fired when the empty list placeholder action is clicked.
+     */
+    onEmptyListPlaceholderActionClicked?: () => void;
 }
 
 /**
@@ -94,6 +99,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
         onSearchQueryClear,
         searchQuery,
         showListItemActions,
+        onEmptyListPlaceholderActionClicked,
         ["data-componentid"]: componentId
     } = props;
 
@@ -298,6 +304,16 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
                     data-testid={ `${ componentId }-empty-search-placeholder-icon` }
+                    action={ onEmptyListPlaceholderActionClicked
+                        ? (
+                            <PrimaryButton
+                                onClick={ () => onEmptyListPlaceholderActionClicked() }
+                                data-testid={ `${componentId}-add-api-resources-button` }
+                            >
+                                <Icon name="add" />
+                                { t("extensions:develop.apiResource.addApiResourceButton") }
+                            </PrimaryButton>
+                        ) : null }
                 />
             );
         }
