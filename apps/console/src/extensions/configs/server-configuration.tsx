@@ -54,10 +54,10 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     ],
     connectorCategoriesToIgnore: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
     ],
     connectorCategoriesToShow: [
+        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
@@ -78,7 +78,11 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
         ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
-        ServerConfigurationsConstants.USERNAME_VALIDATION
+        ServerConfigurationsConstants.USERNAME_VALIDATION,
+        "cGlpLWNvbnRyb2xsZXI",
+        "YW5hbHl0aWNzLWVuZ2luZQ",
+        "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l",
+        "dXNlci1jbGFpbS11cGRhdGU"
     ],
     connectorsToShow: [
         "account-recovery",
@@ -127,7 +131,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "UGFzc3dvcmQgUG9saWNpZXM",
         "VXNlciBPbmJvYXJkaW5n",
         "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
-        "T3RoZXIgU2V0dGluZ3M",
         "QWNjb3VudCBNYW5hZ2VtZW50",
         "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
     ],

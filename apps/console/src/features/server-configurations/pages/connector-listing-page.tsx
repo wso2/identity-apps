@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -98,7 +98,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
-    const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(false);
+    const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(true);
 
     useEffect(() => {
 
@@ -162,15 +162,20 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                response?.connectors.map((connector: GovernanceConnectorWithRef) => {
+                const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
+                    (connector: GovernanceConnectorInterface) => {
+                        return !serverConfigurationConfig.connectorsToHide.includes(connector.id);
+                    });
+
+                connectorList?.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
                 });
 
                 setConnectors((connectors: GovernanceConnectorWithRef[]) => [
-                    ...connectors, ...response?.connectors as GovernanceConnectorWithRef[]
+                    ...connectors, ...connectorList as GovernanceConnectorWithRef[]
                 ]);
-                !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
+                !selectedConnector && setSelectorConnector(connectorList[ 0 ] as GovernanceConnectorWithRef);
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.detail) {
@@ -216,9 +221,15 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const renderLoadingPlaceholder = (): ReactElement => {
         const placeholders: ReactElement[] = [];
 
-        for (let loadedPlaceholders: number = 0; loadedPlaceholders <= 1; loadedPlaceholders++) {
-            placeholders.push(
-                <Grid xs={ 12 } lg={ 6 } key={ loadedPlaceholders }>
+        const cardsPerRow: number[] = [ 1, 4, 2, 3 ];
+
+        for (let rowIndex: number = 0; rowIndex < cardsPerRow.length; rowIndex++) {
+            const cardsInRow: number = cardsPerRow[ rowIndex ];
+
+            const cards: ReactElement[] = [];
+
+            for (let columnIndex: number = 0; columnIndex < cardsInRow; columnIndex++) {
+                cards.push(
                     <div
                         className="ui card fluid settings-card"
                         data-testid={ `${testId}-loading-card` }
@@ -226,30 +237,42 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         <div className="content no-padding">
                             <div className="header-section placeholder">
                                 <Placeholder>
+                                    <Placeholder.Image style={ { height: "38px" } } />
                                     <Placeholder.Header>
                                         <Placeholder.Line length="medium" />
                                         <Placeholder.Line length="full" />
                                     </Placeholder.Header>
-                                </Placeholder>
-                            </div>
-                        </div>
-                        <div className="content extra extra-content">
-                            <div className="action-button">
-                                <Placeholder>
-                                    <Placeholder.Line length="very short" />
+                                    <Placeholder.Paragraph>
+                                        <Placeholder.Line />
+                                        <Placeholder.Line />
+                                    </Placeholder.Paragraph>
                                 </Placeholder>
                             </div>
                         </div>
                     </div>
-                </Grid>
+                );
+            }
+
+            placeholders.push(
+                <div key={ rowIndex } className="catergory-container">
+                    <Typography className="mb-3" variant="h4">
+                        <Placeholder style={ { width: "350px" } }>
+                            <Placeholder.Header>
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    </Typography>
+                    <div className="governance-connector-list-grid-wrapper">
+                        <div className="governance-connector-list-grid">
+                            { cards }
+                        </div>
+                    </div>
+                </div>
             );
         }
 
-        return (
-            <Grid container rowSpacing={ 2 } columnSpacing={ { md: 3, sm: 2, xs: 1 } }>
-                { placeholders }
-            </Grid>
-        );
+        return <>{ placeholders }</>;
     };
 
     return (
