@@ -60,6 +60,19 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     // Used for field elements which needs to listen for any onChange events in the form.
     const [ dynamicValues, setDynamicValues ] = useState<CommonPluggableComponentInterface>(undefined);
     const [ customProperties, setCustomProperties ] = useState<string>(undefined);
+    const [ privateKeyValue, setPrivateKeyValue ] = useState<string>(undefined);
+
+    useEffect(() => {
+        dynamicValues?.properties?.map(
+            (prop: CommonPluggableComponentPropertyInterface) =>
+                 {
+                    if (prop.key === "google_prov_private_key") {
+                        setPrivateKeyValue(prop.value);
+                    }
+        }
+        );
+        
+    },[ dynamicValues ]);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
@@ -97,6 +110,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     key: key,
                     value: interpretValueByType(value, key, propertyMetadata?.type)
                 });
+            }
+
+            if (!values.has("google_prov_private_key") && !properties.find(item => item?.key === "google_prov_private_key")){
+                    properties.push({
+                        key: "google_prov_private_key",
+                        value: privateKeyValue
+                    });
             }
 
         });
@@ -171,7 +191,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
         isSub?: boolean,
         testId?: string,
-        listen?: (key: string, values: Map<string, FormValue>) => void):
+        listen?: (key: string, values: Map<string, FormValue>) => void,
+        onCertificateChange?: ( newFile: string) => void):
         ReactElement => {
 
         if (isSub) {
@@ -195,6 +216,27 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     </Grid.Column>
                 </Grid.Row>
             );
+        } else if (eachPropertyMeta?.key === "google_prov_private_key") {
+            return (
+                (<Grid.Row key={ eachPropertyMeta?.displayOrder }>
+                    <Grid.Column computer={ 16 }>
+                        {
+                            getPropertyField(
+                                property,
+                                {
+                                    ...eachPropertyMeta,
+                                    readOnly: mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly
+                                },
+                                mode,
+                                listen,
+                                testId,
+                                onCertificateChange
+                            )
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+                )
+            )
         } else {
             return (
                 <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
@@ -244,7 +286,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         field = getField(updatedProperty, metaProperty, isSub,
                             `${ testId }-form`, handleParentPropertyChange);
                     } else {
-                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange, onCertificateChange);
                     }                  
                 } else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
@@ -363,6 +405,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         });
     };
 
+    const onCertificateChange = (certificateContent: string) => {
+        setPrivateKeyValue(certificateContent);
+    };
+
     const getSubmitButton = (content: string) => {
         return (
             <Grid.Row columns={ 1 }>
@@ -386,6 +432,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     };
 
     useEffect(() => {
+        console.log("jj");
 
         setDynamicValues(initialValues);
 

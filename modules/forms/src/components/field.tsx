@@ -444,13 +444,16 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     <label>
                         { inputField.label }
                         {
-                            inputField.label
+                            inputField.label && inputField.required
                                 ? <span className="ui text color red">*</span>
                                 : null
                         }
                     </label>
                     <MetaFilePicker
+                        fileStrategy={ inputField.fileStrategy }
                         value={ inputField.value }
+                        uploadButtonText={ inputField.uploadButtonText }
+                        dropzoneText={ inputField.dropzoneText }
                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.target.value, inputField.name);
                         } }
