@@ -1,5 +1,41 @@
 # @wso2is/console
 
+## 2.11.12
+
+### Patch Changes
+
+- [#5328](https://github.com/wso2/identity-apps/pull/5328) [`da70e33f02`](https://github.com/wso2/identity-apps/commit/da70e33f022afe765bc25210f7923aaeb00e727a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change api resources types
+
+* [#5334](https://github.com/wso2/identity-apps/pull/5334) [`7ab507f786`](https://github.com/wso2/identity-apps/commit/7ab507f786447afeb0fa70516f2b837d2f1b854d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Stop fetching the admin id if admin revoke option is disabled
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+- Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+  - @wso2is/common@2.0.28
+
+## 2.11.11
+
+### Patch Changes
+
+- [#5320](https://github.com/wso2/identity-apps/pull/5320) [`bf462193fa`](https://github.com/wso2/identity-apps/commit/bf462193fac75d5e06a108f9dbcfcce02d300e8d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update password validation min length field limit
+
+* [#5309](https://github.com/wso2/identity-apps/pull/5309) [`ea42733de4`](https://github.com/wso2/identity-apps/commit/ea42733de4f941874c3c2b1346bfa6ca2a756e14) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve API resources listing UX
+
+- [#5324](https://github.com/wso2/identity-apps/pull/5324) [`1097fb7f07`](https://github.com/wso2/identity-apps/commit/1097fb7f07c94b3cb180f8ee7335dbc0b94d1b50) Thanks [@savindi7](https://github.com/savindi7)! - Fix UI issues in application role creation
+
+## 2.11.10
+
+### Patch Changes
+
+- [#5323](https://github.com/wso2/identity-apps/pull/5323) [`909bb9907e`](https://github.com/wso2/identity-apps/commit/909bb9907e04b29aa04fe43110fd0b6b8927b97d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix bugs related to attribute update and role edit access
+
+## 2.11.9
+
+### Patch Changes
+
+- [#5316](https://github.com/wso2/identity-apps/pull/5316) [`8c75ba653b`](https://github.com/wso2/identity-apps/commit/8c75ba653bf38ceed4e8d8a8f869717a79429903) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide Apple connection configuration in localhost
+
 ## 2.11.8
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -432,7 +432,7 @@ export const extensions: Extensions = {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "APIs"
+                title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
@@ -443,7 +443,7 @@ export const extensions: Extensions = {
                 },
                 title: "Something went wrong"
             },
-            addApiResourceButton: "New API",
+            addApiResourceButton: "New API Resource",
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",

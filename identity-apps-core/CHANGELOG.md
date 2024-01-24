@@ -1,5 +1,21 @@
 # @wso2is/identity-apps-core
 
+## 2.1.0
+
+### Minor Changes
+
+- [#5332](https://github.com/wso2/identity-apps/pull/5332) [`ea38fad50b`](https://github.com/wso2/identity-apps/commit/ea38fad50bd716df96330e1019b2029b0fddfe55) Thanks [@asha15](https://github.com/asha15)! - add challenge questions related components
+
+### Patch Changes
+
+- [#5330](https://github.com/wso2/identity-apps/pull/5330) [`12cde0acb6`](https://github.com/wso2/identity-apps/commit/12cde0acb60004b92ee13c337be154b418a5d8e5) Thanks [@asha15](https://github.com/asha15)! - handle null pointer exception
+
+## 2.0.127
+
+### Patch Changes
+
+- [#5329](https://github.com/wso2/identity-apps/pull/5329) [`4f05737bba`](https://github.com/wso2/identity-apps/commit/4f05737bba43e9fa27f48f8f0dfccce3fd78723a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix quotes not rendering properly in the privacy policy pagea
+
 ## 2.0.126
 
 ### Patch Changes

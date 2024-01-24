@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.3.5
+
+### Patch Changes
+
+- [#5333](https://github.com/wso2/identity-apps/pull/5333) [`8412da0a99`](https://github.com/wso2/identity-apps/commit/8412da0a996f5b3cfe4d9075df8cc5ebb346e93f) Thanks [@savindi7](https://github.com/savindi7)! - Remove organization label in My Account.
+
+* [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+* Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+
 ## 2.3.4
 
 ### Patch Changes
