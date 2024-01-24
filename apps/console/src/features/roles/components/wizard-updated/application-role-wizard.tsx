@@ -21,7 +21,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,
@@ -392,77 +392,83 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         } }
                         disabled
                     />
-                    <Autocomplete
-                        disablePortal
-                        fullWidth
-                        aria-label="API resource selection"
-                        className="pt-2"
-                        componentsProps={ {
-                            paper: {
-                                elevation: 2
-                            },
-                            popper: {
-                                modifiers: [
-                                    {
-                                        enabled: false,
-                                        name: "flip"
-                                    },
-                                    {
-                                        enabled: false,
-                                        name: "preventOverflow"
+                    {
+                        isSubscribedAPIResourcesListLoading
+                            ? <ContentLoader inline="centered" active />
+                            : (
+                                <Autocomplete
+                                    disablePortal
+                                    fullWidth
+                                    aria-label="API resource selection"
+                                    className="pt-2"
+                                    componentsProps={ {
+                                        paper: {
+                                            elevation: 2
+                                        },
+                                        popper: {
+                                            modifiers: [
+                                                {
+                                                    enabled: false,
+                                                    name: "flip"
+                                                },
+                                                {
+                                                    enabled: false,
+                                                    name: "preventOverflow"
+                                                }
+                                            ]
+                                        }
+                                    } }
+                                    data-componentid={ `${componentId}-api` }
+                                    getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
+                                        apiResourcesListOption.text }
+                                    groupBy={ (apiResourcesListOption: DropdownItemProps) =>
+                                        APIResourceUtils
+                                            .resolveApiResourceGroup(apiResourcesListOption?.type) }
+                                    isOptionEqualToValue={
+                                        (option: DropdownItemProps, value: DropdownItemProps) =>
+                                            option.value === value.value
                                     }
-                                ]
-                            }
-                        } }
-                        data-componentid={ `${componentId}-api` }
-                        getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
-                            apiResourcesListOption.text }
-                        groupBy={ (apiResourcesListOption: DropdownItemProps) =>
-                            APIResourceUtils
-                                .resolveApiResourceGroup(apiResourcesListOption?.type) }
-                        isOptionEqualToValue={
-                            (option: DropdownItemProps, value: DropdownItemProps) =>
-                                option.value === value.value
-                        }
-                        options={
-                            apiResourcesListOptions?.filter((item: DropdownProps) =>
-                                item?.type === APIResourceCategories.TENANT ||
-                                item?.type === APIResourceCategories.ORGANIZATION ||
-                                item?.type === APIResourceCategories.BUSINESS
-                            ).sort((a: DropdownProps, b: DropdownProps) =>
-                                -b?.type?.localeCompare(a?.type)
+                                    options={
+                                        apiResourcesListOptions?.filter((item: DropdownProps) =>
+                                            item?.type === APIResourceCategories.TENANT ||
+                                            item?.type === APIResourceCategories.ORGANIZATION ||
+                                            item?.type === APIResourceCategories.BUSINESS
+                                        ).sort((a: DropdownProps, b: DropdownProps) =>
+                                            -b?.type?.localeCompare(a?.type)
+                                        )
+                                    }
+                                    onChange={ onAPIResourceSelected }
+                                    noOptionsText={ isSubscribedAPIResourcesListLoading
+                                        ? t("common:searching")
+                                        : t("common:noResultsFound")
+                                    }
+                                    key="apiResource"
+                                    placeholder={ t("console:manage.features.roles.addRoleWizard." +
+                                        "forms.rolePermission.apiResource.placeholder") }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            label={ t("extensions:develop.applications.edit." +
+                                                "sections.apiAuthorization.sections.apiSubscriptions." +
+                                                "wizards.authorizeAPIResource.fields.apiResource.label") }
+                                            placeholder={ t("extensions:develop.applications.edit." +
+                                                "sections.apiAuthorization.sections.apiSubscriptions." +
+                                                "wizards.authorizeAPIResource.fields.apiResource." +
+                                                "placeholder") }
+                                            size="small"
+                                            variant="outlined"
+                                        />
+                                    ) }
+                                />
                             )
-                        }
-                        onChange={ onAPIResourceSelected }
-                        noOptionsText={ isSubscribedAPIResourcesListLoading
-                            ? t("common:searching")
-                            :  t("common:noResultsFound")
-                        }
-                        renderInput={ (params: AutocompleteRenderInputParams) => (
-                            <TextField
-                                { ...params }
-                                label={ t("extensions:develop.applications.edit." +
-                                    "sections.apiAuthorization.sections.apiSubscriptions." +
-                                    "wizards.authorizeAPIResource.fields.apiResource.label") }
-                                placeholder={ t("extensions:develop.applications.edit." +
-                                    "sections.apiAuthorization.sections.apiSubscriptions." +
-                                    "wizards.authorizeAPIResource.fields.apiResource." +
-                                    "placeholder") }
-                                size="small"
-                                variant="outlined"
-                            />
-                        ) }
-                        key="apiResource"
-                        placeholder={ t("console:manage.features.roles.addRoleWizard." +
-                            "forms.rolePermission.apiResource.placeholder") }
-                    />
+                    }
                 </Form>
                 { selectedAPIResources?.length > 0
                     ? (
                         <div className="role-permission-list field">
                             <label className="form-label">
-                                { t("console:manage.features.roles.addRoleWizard." +
-                                        "forms.rolePermission.permissions.label") }
+                                { t("console:manage.features.roles.addRoleWizard.forms.rolePermission" +
+                                    ".permissions.label") }
                             </label>
                             <EmphasizedSegment
                                 className="mt-2"
