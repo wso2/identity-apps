@@ -102,8 +102,11 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
         ["data-componentid"]: componentId
     } = props;
 
+    const { t } = useTranslation();
+    const { getLink } = useDocumentation();
+
     /**
-     * Following the `key` state and the use of the useEffect are temporary
+     * Following `key` state and the use of the useEffect are temporary
      * fixes for the issue of the input not re-rendering when the props change.
      * The ideal solution is to use Final Form directly without employing
      * the Final Form wrapper component.
@@ -113,9 +116,6 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
     useEffect(() => {
         setKey((key + 1) % 100);
     }, [ selectedEmailTemplate ]);
-
-    const { t } = useTranslation();
-    const { getLink } = useDocumentation();
 
     return (
         (isEmailTemplatesListLoading) ? (
