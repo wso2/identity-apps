@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.1
+
+### Patch Changes
+
+- [#5335](https://github.com/wso2/identity-apps/pull/5335) [`159d389299`](https://github.com/wso2/identity-apps/commit/159d389299fb46cfa859a9d570ee266a8c6fdc2c) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove double encoding for the authRequest variable in fido2-auth.jsp
+
 ## 2.1.0
 
 ### Minor Changes
