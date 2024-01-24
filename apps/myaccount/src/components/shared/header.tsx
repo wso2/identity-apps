@@ -23,7 +23,6 @@ import {
     LanguageIcon,
     RectangleLineIcon
 } from "@oxygen-ui/react-icons";
-import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
 import OxygenHeader from "@oxygen-ui/react/Header";
@@ -109,9 +108,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const profileInfo: any = useSelector(
         (state: AppState) => state.authenticationInformation.profileInfo
     );
-    const tenantName: string = useSelector(
-        (state: AppState) => state.authenticationInformation.tenantDomain
-    );
     const linkedAccounts: LinkedAccountInterface[] = useSelector(
         (state: AppState) => state.profile.linkedAccounts
     );
@@ -131,7 +127,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) =>
             state.authenticationInformation.profileInfo.isReadOnly
     );
-    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
     const { theme } = useBrandingPreference();
@@ -269,23 +264,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     };
 
     /**
-     * Resolves the organization label in the header.
-     */
-    const resolveOrganizationLabel = (): ReactElement => {
-        const organization: string =
-            tenantName == "carbon.super"
-                ? commonConfig.header.organization.replace("{{productName}}", productName)
-                : tenantName;
-
-        return (
-            <Alert classes={ { root: "organization-label-alert" } } severity="info" icon={ false }>
-                { t("myAccount:components.header.organizationLabel") }{ " " }
-                <strong>{ organization }</strong>
-            </Alert>
-        );
-    };
-
-    /**
      * Resolves the Console App Switch menu item.
      */
     const resolveConsoleAppSwitchMenuItem = (): ReactElement => {
@@ -294,12 +272,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             showAppSwitchButton &&
                 !(CommonUtils?.isProfileReadOnly(isReadOnlyUser)) &&
                     consoleAppURL && consoleAppURL != "" ? (
-                    <MenuItem 
+                    <MenuItem
                         key={
-                            t("myAccount:components.header.appSwitch.console.name") 
-                        } 
+                            t("myAccount:components.header.appSwitch.console.name")
+                        }
                         onClick={ () => window.open(consoleAppURL, "_blank", "noopener") }>
-                        <ListItemIcon> 
+                        <ListItemIcon>
                             <RectangleLineIcon fill="black" />
                         </ListItemIcon>
                         <ListItemText primary={ t("myAccount:components.header.appSwitch.console.name") } />
@@ -347,7 +325,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 logo: {
                     desktop: (
                         <Image
-                            src={ theme?.images?.myAccountLogo?.imgURL 
+                            src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
                                         window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
@@ -369,7 +347,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     ),
                     mobile: (
                         <Image
-                            src={ theme?.images?.myAccountLogo?.imgURL 
+                            src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
                                         window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
@@ -455,7 +433,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 actionIcon: <ArrowRightFromBracketIcon fill={ mode === "dark" ? "white" : "black" } />,
                 actionText: t("common:logout"),
                 menuItems: [
-                    resolveOrganizationLabel(),
                     resolveConsoleAppSwitchMenuItem(),
                     linkedAccounts.map((linkedAccount: LinkedAccountInterface) => (
                         <MenuItem
