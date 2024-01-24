@@ -101,6 +101,17 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         );
     }, [ featureConfig, allowedScopes ]);
 
+    const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
+        return isFeatureEnabled(
+            featureConfig,
+            EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_CREATE")
+        ) && hasRequiredScopes(
+            featureConfig,
+            featureConfig?.scopes?.create,
+            allowedScopes
+        );
+    }, [ featureConfig, allowedScopes ]);
+
     const {
         data: emailTemplatesList,
         isLoading: isEmailTemplatesListLoading,
@@ -187,7 +198,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
         // current template is a new template or not
         if (emailTemplateError.response.status === 404) {
-            if (!isReadOnly) {
+            if (hasEmailTemplateCreatePermissions) {
                 setIsTemplateNotAvailable(true);
                 setShowReplicatePreviousTemplateModal(true);
 
