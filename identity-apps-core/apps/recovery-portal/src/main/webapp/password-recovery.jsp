@@ -128,7 +128,7 @@
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain) &&
-                                                     Boolean.parseBoolean(IdentityUtil.getProperty("ChallengeQuestionsConnectorEnabled"));
+                                                     Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
         isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
