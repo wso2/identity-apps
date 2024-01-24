@@ -8065,7 +8065,7 @@ export const console: ConsoleNS = {
                     },
                     forms: {
                         attribute: {
-                            placeholder: "Select a user attribute to map to",
+                            placeholder: "Enter a user attribute to map to",
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
