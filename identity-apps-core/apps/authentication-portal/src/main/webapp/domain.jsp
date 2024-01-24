@@ -28,7 +28,6 @@
 
 <%
     String domainUnknown = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.unknown");
-    String idpNotAssignedToSP = AuthenticationEndpointUtil.i18n(resourceBundle, "idp.not.assigned.to.sp");
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed");
     boolean loginFailed = false;
     if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
@@ -38,7 +37,7 @@
 
             if (domainUnknown.equalsIgnoreCase(errorMessage)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.cannot.be.identified");
-            } else if (idpNotAssignedToSP.equalsIgnoreCase(errorMessage)) {
+            } else if (errorMessage.equalsIgnoreCase("idp.not.assigned.to.sp")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.cannot.be.identified.for.sp");
             }
         }
