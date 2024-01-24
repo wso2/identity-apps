@@ -29,7 +29,7 @@ export const SCIMConfigs: SCIMConfigInterface = {
     scim: {
         core1Schema: "urn:scim:schemas:core:1.0",
         coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
-        customEnterpriseSchema:"urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+        customEnterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
