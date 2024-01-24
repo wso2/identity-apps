@@ -36,7 +36,7 @@ import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../h
  * Common pluggable connector configurations form.
  *
  * @param props - CommonPluggableComponentFormPropsInterface
- * @returns ReactElement 
+ * @returns ReactElement
  */
 export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props: CommonPluggableComponentFormPropsInterface
@@ -65,13 +65,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     useEffect(() => {
         dynamicValues?.properties?.map(
             (prop: CommonPluggableComponentPropertyInterface) =>
-                 {
-                    if (prop.key === "google_prov_private_key") {
-                        setPrivateKeyValue(prop.value);
-                    }
-        }
+            {
+                if (prop.key === "google_prov_private_key") {
+                    setPrivateKeyValue(prop.value);
+                }
+            }
         );
-        
+
     },[ dynamicValues ]);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
@@ -112,11 +112,15 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 });
             }
 
-            if (!values.has("google_prov_private_key") && !properties.find(item => item?.key === "google_prov_private_key")){
-                    properties.push({
-                        key: "google_prov_private_key",
-                        value: privateKeyValue
-                    });
+            if (
+                !values.has("google_prov_private_key")
+                && !properties.find(
+                    (item: CommonPluggableComponentMetaPropertyInterface) =>
+                        item?.key === "google_prov_private_key")){
+                properties.push({
+                    key: "google_prov_private_key",
+                    value: privateKeyValue
+                });
             }
 
         });
@@ -236,7 +240,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     </Grid.Column>
                 </Grid.Row>
                 )
-            )
+            );
         } else {
             return (
                 <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
@@ -276,7 +280,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES 
+                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES
                         && !isScopesDefined() && isScopesEmpty()) {
                         const updatedProperty: CommonPluggableComponentPropertyInterface = {
                             key: CommonConstants.FIELD_COMPONENT_SCOPES,
@@ -286,8 +290,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         field = getField(updatedProperty, metaProperty, isSub,
                             `${ testId }-form`, handleParentPropertyChange);
                     } else {
-                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange, onCertificateChange);
-                    }                  
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`,
+                            handleParentPropertyChange, onCertificateChange);
+                    }
                 } else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
                         (<React.Fragment key={ metaProperty?.key }>
@@ -432,7 +437,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     };
 
     useEffect(() => {
-        console.log("jj");
 
         setDynamicValues(initialValues);
 

@@ -26,7 +26,7 @@ import {
 import { I18n } from "@wso2is/i18n";
 import { CopyInputField, GenericIcon, Hint, P12FileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { Pkcs12FileField } from "./pkcs12-file-field";
 import { commonConfig } from "../../../../../../extensions";
@@ -504,13 +504,8 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
     testId?: string,
     onCertificateChange?: ( newFile: string) => void): ReactElement => {
 
-    const [data, setData] = useState<string>(eachProp?.value);
+    const [ data, setData ] = useState<string>(eachProp?.value);
 
-    useEffect(() => {
-        // setData(eachProp?.value);
-        console.log(propertyMetadata);
-        console.log(eachProp?.value?.length);
-    },[ data, eachProp ]);
 
     return (
         <>
@@ -551,11 +546,11 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
                     <Pkcs12FileField
                         eachProp={ eachProp }
                         propertyMetadata={ propertyMetadata }
-                        onCertificateChange={(newData) => 
-                            {
-                                setData(newData);
-                                onCertificateChange(data);
-                            }}
+                        onCertificateChange={ (newData: string) =>
+                        {
+                            setData(newData);
+                            onCertificateChange(data);
+                        } }
                     />
                     { propertyMetadata?.description
                     && (

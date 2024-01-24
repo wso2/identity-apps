@@ -19,13 +19,13 @@
 import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
-import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
+import { ResourceList, ResourceListActionInterface, ResourceListItem } from "@wso2is/react-components";
+import React, { FC, PropsWithChildren, ReactElement } from "react";
+import { Grid, Icon } from "semantic-ui-react";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
-import { Grid, Icon } from "semantic-ui-react";
-import { ResourceList, ResourceListActionInterface, ResourceListItem } from "@wso2is/react-components";
 
 
 /**
@@ -52,22 +52,8 @@ export const Pkcs12FileField: FC<Pkcs12FileFieldProps> = (
 
     const {
         [ "data-componentid" ]: testId,
-        eachProp,
         onCertificateChange
     } = props;
-
-    const [ deletingCertificateIndex, setDeletingCertificateIndex ] = useState<number>(null);
-    const [data, setData] = useState<string>(eachProp?.value);
-
-    /**
-     * Handles the deletion of a certificate.
-     *
-     * @param certificateIndex - Index of the certificate to be deleted.
-     */
-    const updateData = newData => {
-        setData(newData);
-        onCertificateChange(newData);
-    };
 
     /**
      * Creates the certificate actions.
@@ -109,7 +95,7 @@ export const Pkcs12FileField: FC<Pkcs12FileFieldProps> = (
 
     return (
         <>
-            <Grid columns={2}>
+            <Grid columns={ 2 }>
                 <Grid.Row>
                     <Grid.Column>
                         <ResourceList
