@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.11.12
+
+### Patch Changes
+
+- [#5328](https://github.com/wso2/identity-apps/pull/5328) [`da70e33f02`](https://github.com/wso2/identity-apps/commit/da70e33f022afe765bc25210f7923aaeb00e727a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change api resources types
+
+* [#5334](https://github.com/wso2/identity-apps/pull/5334) [`7ab507f786`](https://github.com/wso2/identity-apps/commit/7ab507f786447afeb0fa70516f2b837d2f1b854d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Stop fetching the admin id if admin revoke option is disabled
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+- Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+  - @wso2is/common@2.0.28
+
 ## 2.11.11
 
 ### Patch Changes

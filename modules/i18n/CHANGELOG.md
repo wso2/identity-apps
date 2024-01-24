@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.107
+
+### Patch Changes
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
 ## 2.0.106
 
 ### Patch Changes
