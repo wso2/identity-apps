@@ -263,7 +263,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     useEffect(() => {
         setCountryList(CommonUtils.getCountryList());
-        if (adminUserType === AdminAccountTypes.INTERNAL) {
+        if (adminUserType === AdminAccountTypes.INTERNAL && userConfig?.enableAdminPrivilegeRevokeOption) {
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
         }
