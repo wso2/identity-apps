@@ -220,7 +220,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
      */
     const renderLoadingPlaceholder = (): ReactElement => {
         const placeholders: ReactElement[] = [];
-
         const cardsPerRow: number[] = [ 1, 4, 2, 3 ];
 
         for (let rowIndex: number = 0; rowIndex < cardsPerRow.length; rowIndex++) {
