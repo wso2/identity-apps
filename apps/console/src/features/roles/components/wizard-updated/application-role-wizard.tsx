@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, Heading, Hint, Link, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,
@@ -30,13 +32,15 @@ import React, {
     useRef,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
 import { Policy } from "../../../../extensions/components/application/constants";
-import { AppConstants, history } from "../../../../features/core";
+import { history } from "../../../../features/core";
+import { APIResourceCategories } from "../../../api-resources/constants";
 import { APIResourceInterface } from "../../../api-resources/models";
+import { APIResourceUtils } from "../../../api-resources/utils/api-resource-utils";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "../../../applications/models/api-authorization";
 import { ApplicationInterface } from "../../../applications/models/application";
@@ -125,6 +129,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                 options.push({
                     key: apiResource?.id,
                     text: apiResource?.displayName,
+                    type: apiResource?.type,
                     value: apiResource?.id
                 });
             }
@@ -166,7 +171,8 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                 id: selectedAPIResource?.id,
                 identifier: selectedAPIResource?.identifier,
                 name: selectedAPIResource?.displayName,
-                scopes: selectedAPIResource?.authorizedScopes
+                scopes: selectedAPIResource?.authorizedScopes,
+                type: APIResourceUtils.resolveApiResourceGroup(selectedAPIResource?.type)
             });
         });
 
@@ -386,49 +392,69 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         } }
                         disabled
                     />
-                    <Field.Dropdown
-                        search
-                        selection
-                        selectOnNavigation={ false }
-                        ariaLabel="assignedApplication"
-                        name="assignedApplication"
-                        label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                            "apiResource.label") }
-                        options={ apiResourcesListOptions }
-                        data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                        placeholder={ t("console:manage.features.roles.addRoleWizard." +
-                            "forms.rolePermission.apiResource.placeholder") }
-                        noResultsMessage={
-                            isSubscribedAPIResourcesListLoading
-                                ? t("common:searching")
-                                :  t("common:noResultsFound")
+                    <Autocomplete
+                        disablePortal
+                        fullWidth
+                        aria-label="API resource selection"
+                        className="pt-2"
+                        componentsProps={ {
+                            paper: {
+                                elevation: 2
+                            },
+                            popper: {
+                                modifiers: [
+                                    {
+                                        enabled: false,
+                                        name: "flip"
+                                    },
+                                    {
+                                        enabled: false,
+                                        name: "preventOverflow"
+                                    }
+                                ]
+                            }
+                        } }
+                        data-componentid={ `${componentId}-api` }
+                        getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
+                            apiResourcesListOption.text }
+                        groupBy={ (apiResourcesListOption: DropdownItemProps) =>
+                            APIResourceUtils
+                                .resolveApiResourceGroup(apiResourcesListOption?.type) }
+                        isOptionEqualToValue={
+                            (option: DropdownItemProps, value: DropdownItemProps) =>
+                                option.value === value.value
                         }
-                        loading={ false }
-                        onChange={ onAPIResourceSelected }
-                        hint={
-                            !isSubscribedAPIResourcesListLoading
-                            && apiResourcesListOptions?.length === 0
-                            && selectedAPIResources?.length === 0
-                            && (
-                                <Hint>
-                                    <Trans
-                                        i18nKey={ "console:manage.features.roles.addRoleWizard.forms.rolePermission" +
-                                            ".apiResource.hint.empty" }
-                                    >
-                                        There are no API resources authorized for the selected application.
-                                        API Resources can be authorized through <Link
-                                            external={ false }
-                                            onClick={ () => {
-                                                history.push(
-                                                    `${ AppConstants.getPaths()
-                                                        .get("APPLICATION_EDIT").replace(":id", appId) }#tab=4`
-                                                );
-                                            } }
-                                        > here </Link>
-                                    </Trans>
-                                </Hint>
+                        options={
+                            apiResourcesListOptions?.filter((item: DropdownProps) =>
+                                item?.type === APIResourceCategories.TENANT ||
+                                item?.type === APIResourceCategories.ORGANIZATION ||
+                                item?.type === APIResourceCategories.BUSINESS
+                            ).sort((a: DropdownProps, b: DropdownProps) =>
+                                -b?.type?.localeCompare(a?.type)
                             )
                         }
+                        onChange={ onAPIResourceSelected }
+                        noOptionsText={ isSubscribedAPIResourcesListLoading
+                            ? t("common:searching")
+                            :  t("common:noResultsFound")
+                        }
+                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                            <TextField
+                                { ...params }
+                                label={ t("extensions:develop.applications.edit." +
+                                    "sections.apiAuthorization.sections.apiSubscriptions." +
+                                    "wizards.authorizeAPIResource.fields.apiResource.label") }
+                                placeholder={ t("extensions:develop.applications.edit." +
+                                    "sections.apiAuthorization.sections.apiSubscriptions." +
+                                    "wizards.authorizeAPIResource.fields.apiResource." +
+                                    "placeholder") }
+                                size="small"
+                                variant="outlined"
+                            />
+                        ) }
+                        key="apiResource"
+                        placeholder={ t("console:manage.features.roles.addRoleWizard." +
+                            "forms.rolePermission.apiResource.placeholder") }
                     />
                 </Form>
                 { selectedAPIResources?.length > 0
