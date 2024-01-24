@@ -79,10 +79,10 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
         ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
         ServerConfigurationsConstants.USERNAME_VALIDATION,
-        "cGlpLWNvbnRyb2xsZXI",
-        "YW5hbHl0aWNzLWVuZ2luZQ",
-        "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l",
-        "dXNlci1jbGFpbS11cGRhdGU"
+        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
+        ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
+        ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
     ],
     connectorsToShow: [
         "account-recovery",

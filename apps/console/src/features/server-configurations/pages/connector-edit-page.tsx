@@ -654,7 +654,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                             <Grid.Column width={ 16 }>
                                 <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                     <ConnectorFormFactory
-                                        onSubmit={ handleSubmit } 
+                                        onSubmit={ handleSubmit }
                                         initialValues={ connector }
                                         connectorId={ connectorId ? connectorId : connector?.categoryId }
                                         isConnectorEnabled={ enableForm }

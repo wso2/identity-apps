@@ -101,8 +101,6 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
     const { connector, isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
-    console.log("props", props);
-
     const formValues: Record<string, string | boolean>
         = useSelector((state: AppState) => state.form[ props.form ].values);
 
@@ -137,7 +135,6 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
                     if (i18n.exists(fieldHintKey)) {
                         fieldHint = t(fieldHintKey);
                     }
-
 
                     return (
                         <Grid.Row

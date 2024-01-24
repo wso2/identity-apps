@@ -163,9 +163,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             .then((response: GovernanceConnectorCategoryInterface) => {
 
                 const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
-                    (connector: GovernanceConnectorInterface) => {
-                        return !serverConfigurationConfig.connectorsToHide.includes(connector.id);
-                    });
+                    (connector: GovernanceConnectorInterface) =>
+                        !serverConfigurationConfig.connectorsToHide.includes(connector.id));
 
                 connectorList?.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
@@ -224,19 +223,17 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
         for (let rowIndex: number = 0; rowIndex < cardsPerRow.length; rowIndex++) {
             const cardsInRow: number = cardsPerRow[ rowIndex ];
-
             const cards: ReactElement[] = [];
 
             for (let columnIndex: number = 0; columnIndex < cardsInRow; columnIndex++) {
                 cards.push(
                     <div
                         className="ui card fluid settings-card"
-                        data-testid={ `${testId}-loading-card` }
+                        data-testid={ `${ testId }-loading-card` }
                     >
                         <div className="content no-padding">
                             <div className="header-section placeholder">
                                 <Placeholder>
-                                    <Placeholder.Image style={ { height: "38px" } } />
                                     <Placeholder.Header>
                                         <Placeholder.Line length="medium" />
                                         <Placeholder.Line length="full" />
@@ -255,7 +252,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             placeholders.push(
                 <div key={ rowIndex } className="catergory-container">
                     <Typography className="mb-3" variant="h4">
-                        <Placeholder style={ { width: "350px" } }>
+                        <Placeholder>
                             <Placeholder.Header>
                                 <Placeholder.Line />
                                 <Placeholder.Line />
