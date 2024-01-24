@@ -23,6 +23,7 @@ import {
     LanguageIcon,
     RectangleLineIcon
 } from "@oxygen-ui/react-icons";
+import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
 import OxygenHeader from "@oxygen-ui/react/Header";
@@ -108,6 +109,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const profileInfo: any = useSelector(
         (state: AppState) => state.authenticationInformation.profileInfo
     );
+    const tenantName: string = useSelector(
+        (state: AppState) => state.authenticationInformation.tenantDomain
+    );
     const linkedAccounts: LinkedAccountInterface[] = useSelector(
         (state: AppState) => state.profile.linkedAccounts
     );
@@ -127,6 +131,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         (state: AppState) =>
             state.authenticationInformation.profileInfo.isReadOnly
     );
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
     const { theme } = useBrandingPreference();
@@ -261,6 +266,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 })
             );
         }
+    };
+
+    /**
+     * Resolves the organization label in the header.
+     */
+    const resolveOrganizationLabel = (): ReactElement => {
+        const organization: string =
+            tenantName == "carbon.super"
+                ? commonConfig.header.organization.replace("{{productName}}", productName)
+                : tenantName;
+
+        return (
+            <Alert classes={ { root: "organization-label-alert" } } severity="info" icon={ false }>
+                { t("myAccount:components.header.organizationLabel") }{ " " }
+                <strong>{ organization }</strong>
+            </Alert>
+        );
     };
 
     /**
@@ -433,6 +455,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 actionIcon: <ArrowRightFromBracketIcon fill={ mode === "dark" ? "white" : "black" } />,
                 actionText: t("common:logout"),
                 menuItems: [
+                    commonConfig?.showOrganizationManagedBy && resolveOrganizationLabel(),
                     resolveConsoleAppSwitchMenuItem(),
                     linkedAccounts.map((linkedAccount: LinkedAccountInterface) => (
                         <MenuItem
