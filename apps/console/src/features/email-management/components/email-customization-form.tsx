@@ -110,7 +110,9 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
      */
     const [ key, setKey ] = useState<number>(0);
 
-    useEffect(() => { setKey((key + 1) % 100); }, [ selectedEmailTemplate ]);
+    useEffect(() => {
+        setKey((key + 1) % 100);
+    }, [ selectedEmailTemplate ]);
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
