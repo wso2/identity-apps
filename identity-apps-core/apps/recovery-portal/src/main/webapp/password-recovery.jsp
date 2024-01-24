@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
@@ -126,7 +127,8 @@
     String allowedAttributes = null;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
+        isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain) &&
+                                                     Boolean.parseBoolean(IdentityUtil.getProperty("ChallengeQuestionsConnectorEnabled"));
         isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
@@ -221,9 +223,15 @@
                             if (StringUtils.isNotEmpty(username) && !error) {
                         %>
                         <div class="field">
+                            <%
+                               if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                    && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
+
+                            %>
                             <label class="mb-5" for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
                             </label>
+                            <% }  %>
                             <div class="ui fluid left icon input">
                                 <input
                                     placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, "Username.email")%>"
@@ -251,9 +259,14 @@
                         %>
 
                         <div class="field">
-                            <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
-                            </label>
+                            <%
+                                if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                               && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
+                           %>
+                           <label class="mb-5" for="username">
+                               <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
+                           </label>
+                           <% } %>
                             <div class="ui fluid left icon input">
                                 <% if (isMultiAttributeLoginEnabledInTenant) { %>
                                     <input
@@ -360,11 +373,31 @@
                             }
                         %>
                         <div class="mt-4">
-                            <button id="recoverySubmit"
-                                    class="ui primary button large fluid"
-                                    type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "send.reset.link")%>
-                            </button>
+                            <%
+                               if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                    && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
+
+                            %>
+                                <button id="recoverySubmit"
+                                        class="ui primary button large fluid"
+                                        type="submit">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "send.reset.link")%>
+                                </button>
+                            <% } else if (!isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                   && isQuestionBasedPasswordRecoveryEnabledByTenant) { %>
+                               <button id="recoverySubmit"
+                                       class="ui primary button large fluid"
+                                       type="submit">
+                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.question")%>
+                               </button>
+                            <% } else  if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                                && isQuestionBasedPasswordRecoveryEnabledByTenant){ %>
+                               <button id="recoverySubmit"
+                                       class="ui primary button large fluid"
+                                       type="submit">
+                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                               </button>
+                            <% } %>
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
