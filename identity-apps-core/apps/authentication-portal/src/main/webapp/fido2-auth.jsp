@@ -58,7 +58,7 @@
 %>
 
 <%
-    String authRequest = Encode.forUriComponent(request.getParameter("data"));
+    String authRequest = Encode.forJavaScriptBlock(request.getParameter("data"));
 
     Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
@@ -361,8 +361,7 @@
         let fidoError;
 
         function talkToDevice(){
-            var authRequest = '<%=Encode.forJavaScriptBlock(authRequest)%>';
-            var jsonAuthRequest = JSON.parse(authRequest);
+            var jsonAuthRequest = JSON.parse('<%=authRequest%>');
 
             navigator.credentials.get({
                 publicKey: decodePublicKeyCredentialRequestOptions(jsonAuthRequest.publicKeyCredentialRequestOptions),
