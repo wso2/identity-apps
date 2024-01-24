@@ -198,8 +198,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
         // current template is a new template or not
         if (emailTemplateError.response.status === 404) {
+            setIsTemplateNotAvailable(true);
             if (hasEmailTemplateCreatePermissions) {
-                setIsTemplateNotAvailable(true);
                 setShowReplicatePreviousTemplateModal(true);
 
                 return;
@@ -263,6 +263,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             ...selectedEmailTemplate,
             id: selectedLocale.replace("-", "_")
         };
+
+        if (!template?.contentType) {
+            template.contentType = EmailManagementConstants.DEFAULT_CONTENT_TYPE;
+        }
 
         if (isTemplateNotAvailable) {
             createNewEmailTemplate(selectedEmailTemplateId, template)
@@ -376,7 +380,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                                 handleTemplateChange(updatedTemplateAttributes) }
                         onSubmit={ handleSubmit }
                         onDeleteRequested={ handleDeleteRequest }
-                        readOnly={ isReadOnly }
+                        readOnly={ isReadOnly || (isTemplateNotAvailable && !hasEmailTemplateCreatePermissions) }
                     />
                 </ResourceTab.Pane>
             )
@@ -424,10 +428,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 />
 
                 <Show when={ AccessControlConstants.EMAIL_TEMPLATES_EDIT }>
-                    <EmailCustomizationFooter
-                        isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
-                        onSaveButtonClick={ handleSubmit }
-                    />
+                    {
+                        (!isTemplateNotAvailable || hasEmailTemplateCreatePermissions) && (
+                            <EmailCustomizationFooter
+                                isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
+                                onSaveButtonClick={ handleSubmit }
+                            />
+                        )
+                    }
                 </Show>
 
                 <ConfirmationModal
