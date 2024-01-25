@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.2
+
+### Patch Changes
+
+- [#5343](https://github.com/wso2/identity-apps/pull/5343) [`346c000b2b`](https://github.com/wso2/identity-apps/commit/346c000b2b64bbcbeb0590a3e9baecb6d9f4fbee) Thanks [@hwupathum](https://github.com/hwupathum)! - Framework and oauth version range bump
+
 ## 2.1.1
 
 ### Patch Changes
