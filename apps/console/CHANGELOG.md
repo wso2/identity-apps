@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.11.14
+
+### Patch Changes
+
+- [#5342](https://github.com/wso2/identity-apps/pull/5342) [`a4265f861b`](https://github.com/wso2/identity-apps/commit/a4265f861b376a4bd6bece14c13c938fd378c45a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in showing applications with active sessions for a user
+
+* [#5341](https://github.com/wso2/identity-apps/pull/5341) [`c7fe168437`](https://github.com/wso2/identity-apps/commit/c7fe16843794e33d8aa772d61279003e65811000) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide identity server logo in email template preview if there's no custom logo configured
+
 ## 2.11.13
 
 ### Patch Changes
