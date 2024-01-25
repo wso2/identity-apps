@@ -454,25 +454,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 color="green"
                                                                 size="mini"
                                                             />
-                                                            <Trans
-                                                                i18nKey={
-                                                                    "console:manage.features.users.userSessions" +
-                                                                    ".components.sessionDetails.labels.loggedInAs"
-                                                                }
-                                                                tOptions={ {
-                                                                    app: application.appName,
-                                                                    user: getUsername(application.subject)
-                                                                } }
-                                                            >
-                                                                { "Logged in on " }
-                                                                <strong>
-                                                                    { application.appName }
-                                                                </strong>
-                                                                { " as " }
-                                                                <strong>
-                                                                    { application.subject.split("@")[ 0 ] }
-                                                                </strong>
-                                                            </Trans>
+                            { application.appName }
                                                         </List.Description>
                                                     ))
                                                 }
