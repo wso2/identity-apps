@@ -1,7 +1,7 @@
 ---
-"@wso2is/identity-apps-core": minor
-"@wso2is/myaccount": minor
-"@wso2is/console": minor
+"@wso2is/identity-apps-core": patch
+"@wso2is/myaccount": patch
+"@wso2is/console": patch
 ---
 
 Framework and oauth version range bump
