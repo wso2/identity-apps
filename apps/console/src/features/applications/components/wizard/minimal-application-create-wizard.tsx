@@ -1328,7 +1328,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("common:register") }
+                                        { t("common:create") }
                                     </PrimaryButton>
                                 </Grid.Column>
                             </Grid.Row>

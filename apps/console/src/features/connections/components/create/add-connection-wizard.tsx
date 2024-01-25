@@ -409,23 +409,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                         {
-                            (currentWizardStep !== totalStep)
+                            totalStep === 1
                                 ? (
-                                    <PrimaryButton
-                                        floated="right"
-                                        onClick={ () => {
-                                            submitAdvanceForm();
-                                        } }
-                                        data-testid="add-connection-modal-next-button"
-                                        data-componentid="add-connection-modal-next-button"
-                                        loading={ isSubmitting }
-                                        disabled={ isSubmitting }
-                                    >
-                                        { t("console:develop.features.authenticationProvider." +
-                                            "wizards.buttons.next") }
-                                    </PrimaryButton>
-                                )
-                                : (
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ () => {
@@ -436,10 +421,39 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("console:develop.features.authenticationProvider." +
-                                            "wizards.buttons.finish") }
+                                        { t("common:create") }
                                     </PrimaryButton>
-                                )
+                                ) : (currentWizardStep !== totalStep)
+                                    ? (
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ () => {
+                                                submitAdvanceForm();
+                                            } }
+                                            data-testid="add-connection-modal-next-button"
+                                            data-componentid="add-connection-modal-next-button"
+                                            loading={ isSubmitting }
+                                            disabled={ isSubmitting }
+                                        >
+                                            { t("console:develop.features.authenticationProvider." +
+                                                "wizards.buttons.next") }
+                                        </PrimaryButton>
+                                    )
+                                    : (
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ () => {
+                                                submitAdvanceForm();
+                                            } }
+                                            data-testid="add-connection-modal-finish-button"
+                                            data-componentid="add-connection-modal-finish-button"
+                                            loading={ isSubmitting }
+                                            disabled={ isSubmitting }
+                                        >
+                                            { t("console:develop.features.authenticationProvider." +
+                                                "wizards.buttons.finish") }
+                                        </PrimaryButton>
+                                    )
                         }
                         {
                             currentWizardStep > 1 && (

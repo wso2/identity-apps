@@ -64,7 +64,7 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
      */
     const createIdpGroup = (): void => {
         setIsSubmitting(true);
-        const newIdpGroupList: ConnectionGroupInterface[] = [ 
+        const newIdpGroupList: ConnectionGroupInterface[] = [
             ...groupsList,
             {
                 id: "",
@@ -180,7 +180,7 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
                                 loading={ isSubmitting }
                                 type="submit"
                             >
-                                { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                { t("common:create") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
