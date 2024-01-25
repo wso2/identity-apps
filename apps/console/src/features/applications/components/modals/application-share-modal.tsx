@@ -94,7 +94,7 @@ export interface ApplicationShareModalPropsInterface
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
     props: ApplicationShareModalPropsInterface
-) => { 
+) => {
     const {
         applicationId,
         clientId,
@@ -528,9 +528,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         checked={ shareType === ShareType.SHARE_SELECTED }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    <Transition 
-                        visible={ shareType === ShareType.SHARE_SELECTED } 
-                        animation="slide down" 
+                    <Transition
+                        visible={ shareType === ShareType.SHARE_SELECTED }
+                        animation="slide down"
                         duration={ 1000 }
                     >
                         <TransferComponent
@@ -587,7 +587,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                                     (org: OrganizationInterface) =>
                                                         org.id === organization.id
                                                 ) !== -1;
-    
+
                                         return (
                                             <TransferListItem
                                                 disabled={
@@ -612,21 +612,21 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                     }
                                 ) }
                             </TransferList>
-                        </TransferComponent> 
+                        </TransferComponent>
                     </Transition>
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton 
+                <LinkButton
                     data-testid={ `${ componentId }-cancel-button` }
                     onClick={ () => onApplicationSharingCompleted() }
                 >
                     { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
-                    disabled={ 
+                    disabled={
                         shareType === ShareType.SHARE_SELECTED &&
-                        (checkedUnassignedListItems?.length == 0 || !subOrganizationList) 
+                        (checkedUnassignedListItems?.length == 0 || !subOrganizationList)
                     }
                     onClick={ () => {
                         handleShareApplication();
