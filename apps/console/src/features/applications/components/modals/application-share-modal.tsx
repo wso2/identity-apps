@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -111,18 +111,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         (state: AppState) => state.organization.organization
     );
 
-    const [ tempOrganizationList, setTempOrganizationList ] = useState<
-        OrganizationInterface[]
-    >([]);
-    const [
-        checkedUnassignedListItems,
-        setCheckedUnassignedListItems
-    ] = useState<OrganizationInterface[]>([]);
-    const [ shareType, setShareType ] = useState<ShareType>( 
-        ShareType.SHARE_ALL
-    );
+    const [ tempOrganizationList, setTempOrganizationList ] = useState<OrganizationInterface[]>([]);
+    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<OrganizationInterface[]>([]);
+    const [ shareType, setShareType ] = useState<ShareType>(ShareType.SHARE_ALL);
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
+    const [ filter, setFilter ] = useState<string>();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -445,6 +439,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         const filteredOrganizationList: OrganizationInterface[] = [];
 
         if (!isEmpty(value)) {
+            setFilter(value);
             const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
             subOrganizationList &&
@@ -572,11 +567,11 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                     ),
                                     ""
                                 ] }
-                                emptyPlaceholderContent={ t(
-                                    "console:manage.features.transferList.list.emptyPlaceholders." +
-                                        "groups.unselected",
-                                    { type: "organizations" }
-                                ) }
+                                emptyPlaceholderContent={
+                                    t("console:develop.placeholders.emptySearchResult.subtitles.0",
+                                        { query: filter }) + ". " +
+                                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                                }
                                 data-testid="application-share-modal-organization-transfer-component-all-items"
                                 emptyPlaceholderDefaultContent={ t(
                                     "console:manage.features.transferList.list." +
