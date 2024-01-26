@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -108,6 +108,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const [ userStoreOption, setuserStoreOption ] = useState<string>(GroupConstants.ALL_GROUPS);
+    const [ enabledUserStores, setEnabledUserStores ] = useState<UserStoreListItem[]>([]);
 
     const {
         data: originalGroupList,
@@ -218,9 +219,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             return;
         }
 
+        const filteredUserStores: UserStoreListItem[] = userStoreList.filter(
+            (store: UserStoreListItem) => store.enabled);
+
+        setEnabledUserStores(filteredUserStores);
         setReadOnlyUserStoresListLoading(true);
 
-        UserStoreUtils.getReadOnlyUserStores(userStoreList)
+        UserStoreUtils.getReadOnlyUserStores(filteredUserStores)
             .then((response: string[]) => {
                 setReadOnlyUserStoresList(response);
             })
@@ -425,7 +430,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      */
     const addDefaultValueToDropDownOptions = (): DropdownItemProps[] => {
 
-        const userStoreOptions: DropdownItemProps[] = cloneDeep(userStoreList)?.map(
+        const userStoreOptions: DropdownItemProps[] = cloneDeep(enabledUserStores)?.map(
             (item: UserStoreListItem, index: number) => {
                 return {
                     key: index,
@@ -499,7 +504,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 isLoading={ isGroupListFetchRequestLoading }
                 leftActionPanel={
                     // Show the user store dropdown when there is more than one user store
-                    userStoreList?.length > 1 && (
+                    enabledUserStores?.length > 1 && (
                         <Dropdown
                             data-componentid="group-mgt-groups-list-userstore-dropdown"
                             selection

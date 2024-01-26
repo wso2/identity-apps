@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -578,7 +578,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
          * Checks whether administrator role is present in the user.
          */
         const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user?.roles?.some((role: UserRoleInterface) => 
+            return user?.roles?.some((role: UserRoleInterface) =>
                 role.display === administratorConfig.adminRoleName
             );
         };
@@ -669,19 +669,22 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         getUserStores()
             .then((response: UserStoreDetails[]) => {
                 const readOnlyUserStoreArray: string[] = [];
-                const userStoreArray: DropdownItemProps[] = response?.map((item: UserStoreDetails, index: number) => {
-                    // Set readOnly userstores based on the type.
-                    if (item.typeName === UsersConstants.READONLY_USERSTORE_TYPE_NAME) {
-                        readOnlyUserStoreArray.push(item.name.toUpperCase());
-                        setRemoteUserStoreId(item.id);
-                    }
+                const userStoreArray: DropdownItemProps[] = response?.filter(
+                    (item: UserStoreDetails) => item.enabled).map(
+                    (item: UserStoreDetails, index: number) => {
+                        // Set readOnly userstores based on the type.
+                        if (item.typeName === UsersConstants.READONLY_USERSTORE_TYPE_NAME) {
+                            readOnlyUserStoreArray.push(item.name.toUpperCase());
+                            setRemoteUserStoreId(item.id);
+                        }
 
-                    return {
-                        key: index,
-                        text: item.name.toUpperCase(),
-                        value: item.name.toUpperCase()
-                    };
-                });
+                        return {
+                            key: index,
+                            text: item.name.toUpperCase(),
+                            value: item.name.toUpperCase()
+                        };
+                    }
+                );
 
                 setUserStoreError(false);
                 setUserStoreList(userStoreArray);
