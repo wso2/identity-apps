@@ -47,7 +47,7 @@ export const OutboundProvisioningConnectorDeleteWizard: FunctionComponent<
         onClose,
         deletingIdp,
         onConfirm,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -76,23 +76,23 @@ export const OutboundProvisioningConnectorDeleteWizard: FunctionComponent<
             secondaryAction="Cancel"
             onSecondaryActionClick={ onClose }
             onPrimaryActionClick={ () => onConfirm(deletingIdp) }
-            data-testid={ `${ testId }-connector-delete-confirmation-modal` }
+            data-testid={ `${ componentId }-connector-delete-confirmation-modal` }
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
-                data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }
+                data-testid={ `${ componentId }-connector-delete-confirmation-modal-header` }
             >
                 { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
-                data-testid={ `${ testId }-connector-delete-confirmation-modal-message` }
+                data-testid={ `${ componentId }-connector-delete-confirmation-modal-message` }
             >
                 { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
-                data-testid={ `${ testId }-connector-delete-confirmation-modal-content` }
+                data-testid={ `${ componentId }-connector-delete-confirmation-modal-content` }
             >
                 { t("console:develop.features.applications.confirmations.deleteOutboundProvisioningIDP.content") }
             </ConfirmationModal.Content>

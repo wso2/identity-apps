@@ -72,7 +72,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
         isEdit,
         readOnly,
         isSubmitting,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -216,7 +216,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     required={ false }
                                     value={ initialValues?.idp }
                                     listen={ handleIdpChange }
-                                    data-testid={ `${ testId }-idp-dropdown` }
+                                    data-testid={ `${ componentId }-idp-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -248,7 +248,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     setConnector(values.get("connector").toString());
                                 }
                             }
-                            data-testid={ `${ testId }-provisioning-connector-dropdown` }
+                            data-testid={ `${ componentId }-provisioning-connector-dropdown` }
                         />
                         { connectorListOptions?.length <= 0 && (
                             <Hint icon="warning sign">
@@ -283,7 +283,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                         }
                                     }
                                     readOnly={ readOnly }
-                                    data-testid={ `${ testId }-rules-checkbox` }
+                                    data-testid={ `${ componentId }-rules-checkbox` }
                                 />
                                 <Hint>
                                     { t("console:develop.features.applications.forms.outboundProvisioning." +
@@ -314,7 +314,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     setIsBlockingChecked(values.get("blocking").includes("blocking"));
                                 }
                             }
-                            data-testid={ `${ testId }-blocking-checkbox` }
+                            data-testid={ `${ componentId }-blocking-checkbox` }
                         />
                         <Hint>
                             { t("console:develop.features.applications.forms.outboundProvisioning.fields.blocking" +
@@ -343,7 +343,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                 }
                             }
                             readOnly={ readOnly }
-                            data-testid={ `${ testId }-jit-checkbox` }
+                            data-testid={ `${ componentId }-jit-checkbox` }
                         />
                         <Hint>
                             { t("console:develop.features.applications.forms.outboundProvisioning.fields.jit.hint") }
@@ -359,7 +359,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     type="submit"
                                     size="small"
                                     className="form-button"
-                                    data-testid={ `${ testId }-submit-button` }
+                                    data-testid={ `${ componentId }-submit-button` }
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >

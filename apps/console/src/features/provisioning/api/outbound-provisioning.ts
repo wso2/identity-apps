@@ -26,8 +26,7 @@ import { store } from "../../core/store";
  * Get an axios instance.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 export const updateResidentApplicationOutboundProvisioningList = (
     outboundProvisioningList: OutboundProvisioningConfigurationInterface[]

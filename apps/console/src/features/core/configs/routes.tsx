@@ -1708,7 +1708,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 component: lazy(() => import("../../provisioning/pages/outbound-provisioning-settings")),
                 exact: true,
                 icon: {
-                    icon: <UserGroupIcon className="icon" fill="black" />
+                    icon: getSidePanelIcons().childIcon
                 },
                 id: "outboundProvisioningSettings",
                 name: "console:develop.features.applications.resident.provisioning.outbound.heading",

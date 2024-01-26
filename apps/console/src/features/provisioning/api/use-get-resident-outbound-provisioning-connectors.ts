@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
-import { HttpMethods } from "modules/core/src/models";
 import { ProvisioningConfigurationInterface } from "../../applications/models/application";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { store } from "../../core/store";

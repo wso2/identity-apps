@@ -92,10 +92,10 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("console:develop.features.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                { t("console:develop.features.applications.resident.provisioning.outbound.addIdpWizard" +
                     ".heading") }
                 <Heading as="h6">
-                    { t("console:develop.features.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                    { t("console:develop.features.applications.resident.provisioning.outbound.addIdpWizard" +
                         ".subHeading") }
                 </Heading>
             </Modal.Header>
@@ -105,8 +105,8 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                 >
                     <Steps.Step
                         icon={ getApplicationWizardStepIcons().general }
-                        title={ t("console:develop.features.applications.edit.sections." +
-                                "provisioning.outbound.addIdpWizard.steps.details") }
+                        title={ t("console:develop.features.applications.resident." +
+                                    "provisioning.outbound.addIdpWizard.steps.details") }
                         data-testid={ `${ testId }-step-${ 0 }` }
                     />
                 </Steps.Group>
