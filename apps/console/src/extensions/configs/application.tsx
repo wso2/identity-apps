@@ -580,6 +580,7 @@ export const applicationConfig: ApplicationConfig = {
             return true;
         }
     },
+    hiddenGrantTypes: [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ],
     inboundOIDCForm: {
         disabledGrantTypes: {
             "choreo-apim-application-oidc": [

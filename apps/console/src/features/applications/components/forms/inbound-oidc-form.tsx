@@ -865,7 +865,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Hides the grant types specified in the array.
                 // TODO: Remove this once the specified grant types such as `account-switch` are handled properly.
                 // See https://github.com/wso2/product-is/issues/8806.
-                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(name)) {
+                if (applicationConfig?.hiddenGrantTypes?.includes(name)) {
                     return;
                 }
 
