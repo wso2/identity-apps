@@ -16,12 +16,13 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Modal } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
 import { OutboundProvisioningConnectorSetupForm } from "./outbound-provisioning-connector-setup-form";
 import { getApplicationWizardStepIcons } from "../../applications/configs/ui";
 import { OutboundProvisioningConfigurationInterface } from "../../applications/models/application";
@@ -122,30 +123,33 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                 />
             </Modal.Content>
             <Modal.Actions>
-                <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 }>
-                            <LinkButton
-                                floated="left"
-                                onClick={ () => closeWizard() }
-                                disabled={ isSubmitting }
-                                data-testid={ `${ testId }-cancel-button` }
-                            >
-                                { t("common:cancel") }
-                            </LinkButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 }>
-                            <PrimaryButton
-                                floated="right"
-                                onClick={ () => setFinishSubmit() }
-                                data-testid={ `${ testId }-finish-button` }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                            >
-                                { t("common:finish") }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
+                <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Grid>
+                        <LinkButton
+                            floated="left"
+                            onClick={ () => closeWizard() }
+                            disabled={ isSubmitting }
+                            data-testid={ `${ testId }-cancel-button` }
+                        >
+                            { t("common:cancel") }
+                        </LinkButton>
+                    </Grid>
+                    <Grid>
+                        <PrimaryButton
+                            floated="right"
+                            onClick={ () => setFinishSubmit() }
+                            data-testid={ `${ testId }-finish-button` }
+                            loading={ isSubmitting }
+                            disabled={ isSubmitting }
+                        >
+                            { t("common:finish") }
+                        </PrimaryButton>
+                    </Grid>
                 </Grid>
             </Modal.Actions>
         </Modal>

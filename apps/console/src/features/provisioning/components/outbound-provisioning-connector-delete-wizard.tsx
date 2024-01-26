@@ -72,8 +72,8 @@ export const OutboundProvisioningConnectorDeleteWizard: FunctionComponent<
                 </p>
             ) }
             assertionType="input"
-            primaryAction="Confirm"
-            secondaryAction="Cancel"
+            primaryAction={ t("common:confirm") }
+            secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ onClose }
             onPrimaryActionClick={ () => onConfirm(deletingIdp) }
             data-testid={ `${ componentId }-connector-delete-confirmation-modal` }
