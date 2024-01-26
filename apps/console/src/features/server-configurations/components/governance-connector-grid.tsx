@@ -248,31 +248,38 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                             <div className="governance-connector-list-grid">
                                 {
                                     dynamicConnectors.map((connector: any) => {
-                                        return (
-                                            <Card
-                                                key={ connector.id }
-                                                className="governance-connector"
-                                                onClick={ (e: SyntheticEvent) => handleDynamicConnectorSelection(e,
-                                                    connector) }
-                                            >
-                                                <CardContent className="governance-connector-header">
-                                                    <div className="governance-connector-image-container">
-                                                        { resolveConnectorCategoryIcon(connector.id) }
-                                                    </div>
-                                                    <div>
-                                                        <Typography variant="h6">
-                                                            { connector.friendlyName }
+                                        if (!serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                                            return (
+                                                <Card
+                                                    key={ connector.id }
+                                                    className="governance-connector"
+                                                    onClick={ (e: SyntheticEvent) => handleDynamicConnectorSelection(e,
+                                                        connector) }
+                                                >
+                                                    <CardContent className="governance-connector-header">
+                                                        <Avatar
+                                                            variant="square"
+                                                            randomBackgroundColor
+                                                            backgroundColorRandomizer={ connector.id }
+                                                            className="governance-connector-icon-container"
+                                                        >
+                                                            { resolveConnectorCategoryIcon(connector.id) }
+                                                        </Avatar>
+                                                        <div>
+                                                            <Typography variant="h6">
+                                                                { connector.friendlyName }
+                                                            </Typography>
+                                                        </div>
+                                                    </CardContent>
+                                                    <CardContent>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            { `Configure settings related to 
+                                                                ${ connector.friendlyName.toLowerCase() } connector.` }
                                                         </Typography>
-                                                    </div>
-                                                </CardContent>
-                                                <CardContent>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        { `Configure settings related to 
-                                                            ${ connector.friendlyName.toLowerCase() } connector.` }
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                        );
+                                                    </CardContent>
+                                                </Card>
+                                            );
+                                        }
                                     })
                                 }
                             </div>
