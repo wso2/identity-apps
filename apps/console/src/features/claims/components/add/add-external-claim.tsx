@@ -23,12 +23,12 @@ import { Code, ContentLoader, Link, Message, PrimaryButton } from "@wso2is/react
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label } from "semantic-ui-react";
 import { SCIMConfigs, attributeConfig } from "../../../../extensions";
 import { getAllLocalClaims } from "../../../claims/api";
-import { AppConstants, history } from "../../../core";
+import { AppConstants, AppState, history } from "../../../core";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../../models";
@@ -120,6 +120,9 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     const [ reset, setReset ] = useTrigger();
 
     const dispatch: Dispatch = useDispatch();
+
+    const excludeIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
 
     const { t } = useTranslation();
 
@@ -217,7 +220,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": true,
+            "exclude-identity-claims": excludeIdentityClaims,
             filter: null,
             limit: null,
             offset: null,
@@ -476,12 +479,12 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             return {
                                                 key: index,
                                                 text: (
-                                                    <div 
+                                                    <div
                                                         className="multiline">
                                                         { claim?.displayName }
-                                                        <Code 
-                                                            className="description" 
-                                                            compact 
+                                                        <Code
+                                                            className="description"
+                                                            compact
                                                             withBackground={ false }>
                                                             { claim.claimURI }
                                                         </Code>
@@ -504,8 +507,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 claim
                                                     ? `${claimDialectUri}${
                                                         attributeType == ClaimManagementConstants.SCIM ? ":" : "/"
-                                                    }${ claim ? claim : "" }` 
-                                                    : "" 
+                                                    }${ claim ? claim : "" }`
+                                                    : ""
                                             }
                                         </Label>
                                     )
@@ -513,8 +516,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             </Grid.Column>
                         </Grid.Row>
                         {
-                            ((!isLocalClaimsLoading && !serverSideClaimsLoading) 
-                                && (isEmptyServerSupportedClaims || isEmptyClaims)) 
+                            ((!isLocalClaimsLoading && !serverSideClaimsLoading)
+                                && (isEmptyServerSupportedClaims || isEmptyClaims))
                             && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column width={ 16 } textAlign="left" verticalAlign="top">

@@ -119,7 +119,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
  * @param filter - Search Filter.
  */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string,
-        excludeIdentity?: boolean) => {
+        excludeIdentity: boolean = excludeIdentityClaims) => {
         setIsLoading(true);
         const params: ClaimsGetParams = {
             "exclude-identity-claims": excludeIdentity,
