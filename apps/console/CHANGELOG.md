@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.15
+
+### Patch Changes
+
+- [#5338](https://github.com/wso2/identity-apps/pull/5338) [`37120bae4c`](https://github.com/wso2/identity-apps/commit/37120bae4cd1c59a54aa033ec6534260ed16e31d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix for the issue with dynamically populating the custom governance connectors
+
 ## 2.11.14
 
 ### Patch Changes
