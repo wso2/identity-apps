@@ -409,8 +409,23 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                         {
-                            totalStep === 1
+                            (currentWizardStep !== totalStep)
                                 ? (
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ () => {
+                                            submitAdvanceForm();
+                                        } }
+                                        data-testid="add-connection-modal-next-button"
+                                        data-componentid="add-connection-modal-next-button"
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("console:develop.features.authenticationProvider." +
+                                            "wizards.buttons.next") }
+                                    </PrimaryButton>
+                                )
+                                : (
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ () => {
@@ -421,39 +436,14 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("common:create") }
+                                        {
+                                            totalStep === 1
+                                                ? t("common:create")
+                                                : t("console:develop.features.authenticationProvider." +
+                                                    "wizards.buttons.finish")
+                                        }
                                     </PrimaryButton>
-                                ) : (currentWizardStep !== totalStep)
-                                    ? (
-                                        <PrimaryButton
-                                            floated="right"
-                                            onClick={ () => {
-                                                submitAdvanceForm();
-                                            } }
-                                            data-testid="add-connection-modal-next-button"
-                                            data-componentid="add-connection-modal-next-button"
-                                            loading={ isSubmitting }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("console:develop.features.authenticationProvider." +
-                                                "wizards.buttons.next") }
-                                        </PrimaryButton>
-                                    )
-                                    : (
-                                        <PrimaryButton
-                                            floated="right"
-                                            onClick={ () => {
-                                                submitAdvanceForm();
-                                            } }
-                                            data-testid="add-connection-modal-finish-button"
-                                            data-componentid="add-connection-modal-finish-button"
-                                            loading={ isSubmitting }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("console:develop.features.authenticationProvider." +
-                                                "wizards.buttons.finish") }
-                                        </PrimaryButton>
-                                    )
+                                )
                         }
                         {
                             currentWizardStep > 1 && (

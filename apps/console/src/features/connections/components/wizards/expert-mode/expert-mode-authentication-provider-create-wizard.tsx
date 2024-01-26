@@ -254,49 +254,36 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            {
-                                totalStep === 1
-                                    ? (
-                                        <PrimaryButton
-                                            floated="right"
-                                            onClick={ () => {
-                                                submitForm();
-                                            } }
-                                            data-componentid={ `${ componentId }-modal-finish-button` }
-                                            loading={ isSubmitting }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:create") }
-                                        </PrimaryButton>
-                                    ) : currentWizardStep !== totalStep
-                                        ? (
-                                            <PrimaryButton
-                                                floated="right"
-                                                onClick={ () => {
-                                                    submitForm();
-                                                } }
-                                                data-componentid={ `${ componentId }-modal-finish-button` }
-                                                loading={ isSubmitting }
-                                                disabled={ isSubmitting }
-                                            >
-                                                { t("console:develop.features.authenticationProvider." +
-                                                "wizards.buttons.next") }
-                                            </PrimaryButton>
-                                        ) : (
-                                            <PrimaryButton
-                                                floated="right"
-                                                onClick={ () => {
-                                                    submitForm();
-                                                } }
-                                                data-componentid={ `${ componentId }-modal-finish-button` }
-                                                loading={ isSubmitting }
-                                                disabled={ isSubmitting }
-                                            >
-                                                { t("console:develop.features.authenticationProvider.wizards." +
-                                                "buttons.finish") }
-                                            </PrimaryButton>
-                                        )
-                            }
+                            { currentWizardStep !== totalStep ? (
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ () => {
+                                        submitForm();
+                                    } }
+                                    data-componentid={ `${ componentId }-modal-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                </PrimaryButton>
+                            ) : (
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ () => {
+                                        submitForm();
+                                    } }
+                                    data-componentid={ `${ componentId }-modal-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
+                                    {
+                                        totalStep === 1
+                                            ? t("common:create")
+                                            : t("console:develop.features.authenticationProvider." +
+                                                "wizards.buttons.finish")
+                                    }
+                                </PrimaryButton>
+                            ) }
                             {
                                 currentWizardStep > 1 && (
                                     <LinkButton

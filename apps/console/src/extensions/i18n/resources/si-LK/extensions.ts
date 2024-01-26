@@ -1008,7 +1008,7 @@ export const extensions: Extensions = {
                                     searchPlaceholer: "API නම සහ අවසර නාමය අනුව සොයන්න"
                                 }
                             },
-                            heading: "භූමිකාව සාදන්න",
+                            heading: "නව භූමිකාව",
                             subHeading: "ඔබගේ යෙදුමේ නව භූමිකාවක් සාදන්න.",
                             wizardSteps: {
                                 0: "මූලික විස්තර",
