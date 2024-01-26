@@ -1702,6 +1702,20 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                component: lazy(() => import("../../provisioning/pages/outbound-provisioning-settings")),
+                exact: true,
+                icon: {
+                    icon: <UserGroupIcon className="icon" fill="black" />
+                },
+                id: "outboundProvisioningSettings",
+                name: "console:develop.features.applications.resident.provisioning.outbound.heading",
+                order: 6,
+                path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+                protected: true,
+                showOnSidePanel: false
             }
         );
 

@@ -273,7 +273,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     </CardContent>
                                                     <CardContent>
                                                         <Typography variant="body2" color="text.secondary">
-                                                            { `Configure settings related to 
+                                                            { `Configure settings related to
                                                                 ${ connector.friendlyName.toLowerCase() } connector.` }
                                                         </Typography>
                                                     </CardContent>

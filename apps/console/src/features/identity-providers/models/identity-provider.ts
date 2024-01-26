@@ -41,7 +41,7 @@ export interface IdentityProviderListResponseInterface {
     startIndex?: number;
     count?: number;
     links?: LinkInterface[];
-    identityProviders?: StrictIdentityProviderInterface[];
+    identityProviders?: IdentityProviderInterface[];
 }
 
 /**

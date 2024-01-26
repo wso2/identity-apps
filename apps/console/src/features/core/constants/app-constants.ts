@@ -398,7 +398,9 @@ export class AppConstants {
             [ "SERVER",
                 `${AppConstants.getAdminViewBasePath()}/server` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
-                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ]
+                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
+            [ "OUTBOUND_PROVISIONING_SETTINGS",
+                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ]
         ]);
 
         return paths;
