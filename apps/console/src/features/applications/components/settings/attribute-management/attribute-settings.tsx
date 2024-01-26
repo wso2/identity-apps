@@ -155,6 +155,12 @@ export const LocalDialectURI: string = "http://wso2.org/claims";
 
 export function isIdentityClaim(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean {
 
+    const excludeIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims;
+
+    if (!excludeIdentityClaims) {
+        return false;
+    }
+
     const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
 
     if (isClaimInterface(claim)) {

@@ -1135,7 +1135,7 @@
         "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
         "listAllAttributeDialects": true,
-        "excludeIdentityClaims": true,
+        "excludeIdentityClaims": false,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

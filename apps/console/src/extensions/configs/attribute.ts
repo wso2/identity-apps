@@ -32,6 +32,12 @@ import { getClaimsForDialect, getDialects } from "../components/claims/api";
  * @param claim - claim
  */
 const isIdentityClaims = (claim: ExternalClaim): boolean => {
+    const excludeIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims;
+
+    if (!excludeIdentityClaims) {
+        return false;
+    }
+
     const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
 
     return identityRegex.test(claim.mappedLocalClaimURI);

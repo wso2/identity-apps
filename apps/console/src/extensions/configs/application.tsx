@@ -89,6 +89,12 @@ const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().u
  * @returns boolean
  */
 const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean => {
+    const excludeIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims;
+
+    if (!excludeIdentityClaims) {
+        return false;
+    }
+
     const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
 
     if (isClaimInterface(claim)) {
