@@ -387,10 +387,10 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
                 throw new IdentityAppsApiException(
                     ClaimManagementConstants.EXTERNAL_CLAIM_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
-                    response.status,
-                    response.request,
+                    response?.status,
+                    response?.request,
                     response,
-                    response.config);
+                    response?.config);
             }
 
             return Promise.resolve(response.data);
@@ -398,11 +398,11 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ClaimManagementConstants.EXTERNAL_CLAIM_FETCH_REQUEST_ERROR,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config);
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config);
         });
 };
 
@@ -476,21 +476,21 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
                 throw new IdentityAppsApiException(
                     ClaimManagementConstants.EXTERNAL_CLAIM_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
-                    response.status,
-                    response.request,
+                    response?.status,
+                    response?.request,
                     response,
-                    response.config);
+                    response?.config);
             }
 
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ClaimManagementConstants.EXTERNAL_CLAIM_UPDATE_REQUEST_ERROR,
-                error.stack,
-                error.response?.data?.code,
-                error.request,
-                error.response,
-                error.config);
+                error?.stack,
+                error?.response?.status,
+                error?.request,
+                error?.response,
+                error?.config);
         });
 };
 
