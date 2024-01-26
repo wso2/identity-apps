@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.3
+
+### Patch Changes
+
+- [#5170](https://github.com/wso2/identity-apps/pull/5170) [`ce8cf42ea6`](https://github.com/wso2/identity-apps/commit/ce8cf42ea68517f4048dee4db752e3eae742c761) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Update keystore and truststore extension to PKCS
+
 ## 2.1.2
 
 ### Patch Changes
