@@ -40,7 +40,7 @@ import {
     UserStoreProperty,
     UserstoreType
 } from "../../../../features/userstores/models/user-stores";
-import { attributeConfig, userstoresConfig } from "../../../configs";
+import { userstoresConfig } from "../../../configs";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import { AttributeMappingsComponent, GeneralUserStoreDetails } from "../components";
 import { RemoteUserStoreAccessTypes, RemoteUserStoreConstants, RemoteUserStoreTypes } from "../constants";
