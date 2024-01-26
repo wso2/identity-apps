@@ -78,7 +78,6 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      * The following useEffect is used to handle if the user has the required scopes to update the API resource
      */
     useEffect(() => {
-
         if (!apiResourceData) {
             return;
         }
@@ -127,8 +126,6 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
             history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
         }
     };
-
-    console.log("readonly", isReadOnly);
 
     return (
         (!isAPIResourceDatatLoading && !apiResourceData) || apiResourceDataFetchRequestError
