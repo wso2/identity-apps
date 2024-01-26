@@ -53,7 +53,7 @@ export const attributeConfig: AttributeConfig = {
 
             if (attributeType == ClaimManagementConstants.SCIM) {
                 response.forEach((claim: ExternalClaim) => {
-                    if (!claim.mappedLocalClaimURI.match(/\/identity\//)) {
+                    if (!isIdentityClaims(claim)) {
                         claims.push(claim);
                     }
                 });
