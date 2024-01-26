@@ -427,8 +427,10 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 }
                                                 options={ allAPIResourcesDropdownOptions
                                                     ?.filter((item: DropdownItemProps) =>
-                                                        item?.type === APIResourceCategories.TENANT ||
-                                                        item?.type === APIResourceCategories.ORGANIZATION ||
+                                                        item?.type === APIResourceCategories.TENANT_ADMIN ||
+                                                        item?.type === APIResourceCategories.TENANT_USER ||
+                                                        item?.type === APIResourceCategories.ORGANIZATION_ADMIN ||
+                                                        item?.type === APIResourceCategories.ORGANIZATION_USER ||
                                                         item?.type === APIResourceCategories.BUSINESS
                                                     ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
                                                         -b?.type?.localeCompare(a?.type)
