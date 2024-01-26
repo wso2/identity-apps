@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.4
+
+### Patch Changes
+
+- [#5354](https://github.com/wso2/identity-apps/pull/5354) [`bfb74f55f3`](https://github.com/wso2/identity-apps/commit/bfb74f55f3d37bc90480ea09c597087921552494) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Revert keytsore type change.
+
 ## 2.1.3
 
 ### Patch Changes
