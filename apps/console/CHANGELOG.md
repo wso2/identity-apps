@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.16
+
+### Patch Changes
+
+- [#5352](https://github.com/wso2/identity-apps/pull/5352) [`882e83a102`](https://github.com/wso2/identity-apps/commit/882e83a102cff370c0f783feb7183669fcd2c00b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show custom grant types in console in extensible manner
+
 ## 2.11.15
 
 ### Patch Changes
