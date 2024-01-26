@@ -1,5 +1,139 @@
 # @wso2is/console
 
+## 2.11.16
+
+### Patch Changes
+
+- [#5352](https://github.com/wso2/identity-apps/pull/5352) [`882e83a102`](https://github.com/wso2/identity-apps/commit/882e83a102cff370c0f783feb7183669fcd2c00b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show custom grant types in console in extensible manner
+
+## 2.11.15
+
+### Patch Changes
+
+- [#5338](https://github.com/wso2/identity-apps/pull/5338) [`37120bae4c`](https://github.com/wso2/identity-apps/commit/37120bae4cd1c59a54aa033ec6534260ed16e31d) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix for the issue with dynamically populating the custom governance connectors
+
+## 2.11.14
+
+### Patch Changes
+
+- [#5342](https://github.com/wso2/identity-apps/pull/5342) [`a4265f861b`](https://github.com/wso2/identity-apps/commit/a4265f861b376a4bd6bece14c13c938fd378c45a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in showing applications with active sessions for a user
+
+* [#5341](https://github.com/wso2/identity-apps/pull/5341) [`c7fe168437`](https://github.com/wso2/identity-apps/commit/c7fe16843794e33d8aa772d61279003e65811000) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide identity server logo in email template preview if there's no custom logo configured
+
+## 2.11.13
+
+### Patch Changes
+
+- [#5343](https://github.com/wso2/identity-apps/pull/5343) [`346c000b2b`](https://github.com/wso2/identity-apps/commit/346c000b2b64bbcbeb0590a3e9baecb6d9f4fbee) Thanks [@hwupathum](https://github.com/hwupathum)! - Framework and oauth version range bump
+
+## 2.11.12
+
+### Patch Changes
+
+- [#5328](https://github.com/wso2/identity-apps/pull/5328) [`da70e33f02`](https://github.com/wso2/identity-apps/commit/da70e33f022afe765bc25210f7923aaeb00e727a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change api resources types
+
+* [#5334](https://github.com/wso2/identity-apps/pull/5334) [`7ab507f786`](https://github.com/wso2/identity-apps/commit/7ab507f786447afeb0fa70516f2b837d2f1b854d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Stop fetching the admin id if admin revoke option is disabled
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+- Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+  - @wso2is/common@2.0.28
+
+## 2.11.11
+
+### Patch Changes
+
+- [#5320](https://github.com/wso2/identity-apps/pull/5320) [`bf462193fa`](https://github.com/wso2/identity-apps/commit/bf462193fac75d5e06a108f9dbcfcce02d300e8d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update password validation min length field limit
+
+* [#5309](https://github.com/wso2/identity-apps/pull/5309) [`ea42733de4`](https://github.com/wso2/identity-apps/commit/ea42733de4f941874c3c2b1346bfa6ca2a756e14) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve API resources listing UX
+
+- [#5324](https://github.com/wso2/identity-apps/pull/5324) [`1097fb7f07`](https://github.com/wso2/identity-apps/commit/1097fb7f07c94b3cb180f8ee7335dbc0b94d1b50) Thanks [@savindi7](https://github.com/savindi7)! - Fix UI issues in application role creation
+
+## 2.11.10
+
+### Patch Changes
+
+- [#5323](https://github.com/wso2/identity-apps/pull/5323) [`909bb9907e`](https://github.com/wso2/identity-apps/commit/909bb9907e04b29aa04fe43110fd0b6b8927b97d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix bugs related to attribute update and role edit access
+
+## 2.11.9
+
+### Patch Changes
+
+- [#5316](https://github.com/wso2/identity-apps/pull/5316) [`8c75ba653b`](https://github.com/wso2/identity-apps/commit/8c75ba653bf38ceed4e8d8a8f869717a79429903) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide Apple connection configuration in localhost
+
+## 2.11.8
+
+### Patch Changes
+
+- [#5313](https://github.com/wso2/identity-apps/pull/5313) [`8101a006b7`](https://github.com/wso2/identity-apps/commit/8101a006b7d54ed5bf033d746b0447eaea33d936) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update useAuthorizedOrganizationsList API call
+
+## 2.11.7
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+* [#5312](https://github.com/wso2/identity-apps/pull/5312) [`da0b34129d`](https://github.com/wso2/identity-apps/commit/da0b34129d8452e2e3511367c1d3aef07957a50b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable authorized scope selection dropdown after the available scopes are populated
+
+* Updated dependencies [[`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30)]:
+  - @wso2is/i18n@2.0.106
+  - @wso2is/common@2.0.27
+
+## 2.11.6
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+* [#5308](https://github.com/wso2/identity-apps/pull/5308) [`4970e70acb`](https://github.com/wso2/identity-apps/commit/4970e70acbc3201752b2bd611d1ed25e7628fe20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the role tab hidding issue in Sub-Orgs
+
+* Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+  - @wso2is/access-control@2.0.18
+  - @wso2is/common@2.0.26
+  - @wso2is/dynamic-forms@2.0.28
+  - @wso2is/form@2.0.30
+  - @wso2is/forms@2.0.17
+  - @wso2is/i18n@2.0.105
+  - @wso2is/react-components@2.1.1
+
+## 2.11.5
+
+### Patch Changes
+
+- [#5299](https://github.com/wso2/identity-apps/pull/5299) [`00a40bca0a`](https://github.com/wso2/identity-apps/commit/00a40bca0af01a295073f7d7fa144494eda70cdb) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix UX issue with the user wizard
+
+- Updated dependencies [[`00a40bca0a`](https://github.com/wso2/identity-apps/commit/00a40bca0af01a295073f7d7fa144494eda70cdb)]:
+  - @wso2is/i18n@2.0.104
+
+## 2.11.4
+
+### Patch Changes
+
+- [#5302](https://github.com/wso2/identity-apps/pull/5302) [`15dc6a0876`](https://github.com/wso2/identity-apps/commit/15dc6a08766e17991e7198ab48612e2255e1b358) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add password validation for the admin password reset flow
+
+## 2.11.3
+
+### Patch Changes
+
+- [#5301](https://github.com/wso2/identity-apps/pull/5301) [`12ab8df582`](https://github.com/wso2/identity-apps/commit/12ab8df582fa442e86f15380530dadb2bd11efc8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Disable Apple connection configuring in localhost
+
+* [#5303](https://github.com/wso2/identity-apps/pull/5303) [`4e5ffef61d`](https://github.com/wso2/identity-apps/commit/4e5ffef61dddd737003a56f0ea34c930ebfea327) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Avoid sending empty or undefined value as subject attribute on application user attribute update
+
+- [#5304](https://github.com/wso2/identity-apps/pull/5304) [`d70f743352`](https://github.com/wso2/identity-apps/commit/d70f743352658a94cd47d66ebb26cd4892684b40) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add input validation for role name field in console role create wizard
+
+* [#5292](https://github.com/wso2/identity-apps/pull/5292) [`36f69f8c3e`](https://github.com/wso2/identity-apps/commit/36f69f8c3ead07209ac8eacfee5b267afabb61d7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable filtering administrators based on the userstore in console settings page
+
+## 2.11.2
+
+### Patch Changes
+
+- [#5270](https://github.com/wso2/identity-apps/pull/5270) [`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix multiple user import error message
+
+- Updated dependencies [[`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2)]:
+  - @wso2is/i18n@2.0.103
+
 ## 2.11.1
 
 ### Patch Changes

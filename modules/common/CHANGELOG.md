@@ -1,5 +1,36 @@
 # @wso2is/common
 
+## 2.0.28
+
+### Patch Changes
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+- Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+
+## 2.0.27
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+- Updated dependencies [[`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30)]:
+  - @wso2is/i18n@2.0.106
+
+## 2.0.26
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+- Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+  - @wso2is/access-control@2.0.18
+  - @wso2is/forms@2.0.17
+  - @wso2is/i18n@2.0.105
+  - @wso2is/react-components@2.1.1
+
 ## 2.0.25
 
 ### Patch Changes

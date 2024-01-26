@@ -3258,6 +3258,7 @@ export const extensions: Extensions = {
                         password:
                             "ඔබගේ මුරපදයේ අවම වශයෙන් එක් ලොකු අකුරක්, කුඩා අකුරක් සහ එක් අංකයක් ඇතුළුව අවම වශයෙන් " +
                             "අක්ෂර 8ක් අඩංගු විය යුතුය.",
+                        confirmPassword: "මුරපද දෙකම ගැලපිය යුතුය",
                         passwordCase: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු සහ {{minLowerCase}} කුඩා අකුරු",
                         upperCase: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු(ය)",
                         lowerCase: "අවම වශයෙන් {{minLowerCase}} කුඩා අකුරු(ය)",

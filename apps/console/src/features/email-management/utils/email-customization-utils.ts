@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/common";
-import { store } from "../../../features/core/store";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
@@ -30,36 +28,18 @@ import processCustomTextTemplateLiterals from "../../branding/utils/process-cust
 
 export class EmailCustomizationUtils {
 
-    public static getDefaultLogoUrls(): {
-        fallbackDarkThemeUrl: string;
-        fallbackLightThemeUrl: string;
-        } {
-        const fallbackLightThemeUrl: string = AppConstants.getClientOrigin() +
-                "/" + AppConstants.getAppBasename() +
-                store.getState()?.config?.ui.emailTemplates?.defaultLogoUrl;
-
-        const fallbackDarkThemeUrl: string = AppConstants.getClientOrigin() +
-                "/" + AppConstants.getAppBasename() +
-                store.getState()?.config?.ui.emailTemplates?.defaultWhiteLogoUrl;
-
-        return {
-            fallbackDarkThemeUrl,
-            fallbackLightThemeUrl
-        };
-    }
-
     private static readonly brandingFallBackValues: Record<string, string> = {
         background_color: "#F8F9FA",
         button_font_color: "#FFFFFF",
         copyright_text: "&#169; YYYY WSO2 LLC.",
         dark_background_color: "#111111",
         dark_border_color: "#333333",
-        dark_logo_url: EmailCustomizationUtils.getDefaultLogoUrls().fallbackDarkThemeUrl,
+        dark_logo_url: "",
         font_color: "#231F20",
         font_style: "Montserrat",
         light_background_color: "#FFFFFF",
         light_border_color: "transparent",
-        light_logo_url: EmailCustomizationUtils.getDefaultLogoUrls().fallbackLightThemeUrl,
+        light_logo_url: "",
         primary_color: "#FF7300"
     }
 
@@ -86,7 +66,7 @@ export class EmailCustomizationUtils {
         predefinedThemes: BrandingPreferenceThemeInterface
     ): string {
         if (!brandingConfigs) {
-            return templateBody
+            let updatedTemplateBody: string = templateBody
                 .replace(/{{organization.color.background}}/g, this.brandingFallBackValues.background_color)
                 .replace(/{{organization.color.primary}}/g, this.brandingFallBackValues.primary_color)
                 .replace(/{{organization.theme.background.color}}/g, this.brandingFallBackValues.light_background_color)
@@ -96,6 +76,24 @@ export class EmailCustomizationUtils {
                 .replace(/{{organization.button.font.color}}/g, this.brandingFallBackValues.button_font_color)
                 .replace(/{{organization-name}}/g, organizationName)
                 .replace(/{{organization.logo.img}}/g, this.brandingFallBackValues.light_logo_url);
+
+            const isCustomLogoURLPresent: boolean = !!brandingConfigs?.
+                theme[brandingConfigs?.theme?.activeTheme]?.images?.logo?.imgURL;
+
+            /**
+             * If the branding preferences doesn't have a custom logo configured,
+             * modify the preview HTML to not show a broken image icon with alternative text.
+             *
+             * Ref: https://github.com/wso2/product-is/issues/18194#issuecomment-1862264745
+             * */
+            if (!isCustomLogoURLPresent) {
+                updatedTemplateBody = updatedTemplateBody.replace(
+                    /alt="{{organization.logo.altText}}"/g,
+                    "onerror=\"this.style.display='none'\""
+                );
+            }
+
+            return updatedTemplateBody;
         }
 
         const {

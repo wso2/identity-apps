@@ -1,5 +1,68 @@
 # @wso2is/myaccount
 
+## 2.3.7
+
+### Patch Changes
+
+- [#5340](https://github.com/wso2/identity-apps/pull/5340) [`4a28cfacc4`](https://github.com/wso2/identity-apps/commit/4a28cfacc4b08409fe12d968c82c22fc69baedc1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change customEnterpriseSchema URN in my account
+
+## 2.3.6
+
+### Patch Changes
+
+- [#5343](https://github.com/wso2/identity-apps/pull/5343) [`346c000b2b`](https://github.com/wso2/identity-apps/commit/346c000b2b64bbcbeb0590a3e9baecb6d9f4fbee) Thanks [@hwupathum](https://github.com/hwupathum)! - Framework and oauth version range bump
+
+## 2.3.5
+
+### Patch Changes
+
+- [#5333](https://github.com/wso2/identity-apps/pull/5333) [`8412da0a99`](https://github.com/wso2/identity-apps/commit/8412da0a996f5b3cfe4d9075df8cc5ebb346e93f) Thanks [@savindi7](https://github.com/savindi7)! - Remove organization label in My Account.
+
+* [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+* Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+
+## 2.3.4
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+- Updated dependencies [[`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30)]:
+  - @wso2is/i18n@2.0.106
+
+## 2.3.3
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+- Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+  - @wso2is/access-control@2.0.18
+  - @wso2is/forms@2.0.17
+  - @wso2is/i18n@2.0.105
+  - @wso2is/react-components@2.1.1
+
+## 2.3.2
+
+### Patch Changes
+
+- [#5299](https://github.com/wso2/identity-apps/pull/5299) [`00a40bca0a`](https://github.com/wso2/identity-apps/commit/00a40bca0af01a295073f7d7fa144494eda70cdb) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix UX issue with the user wizard
+
+- Updated dependencies [[`00a40bca0a`](https://github.com/wso2/identity-apps/commit/00a40bca0af01a295073f7d7fa144494eda70cdb)]:
+  - @wso2is/i18n@2.0.104
+
+## 2.3.1
+
+### Patch Changes
+
+- [#5270](https://github.com/wso2/identity-apps/pull/5270) [`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix multiple user import error message
+
+- Updated dependencies [[`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2)]:
+  - @wso2is/i18n@2.0.103
+
 ## 2.3.0
 
 ### Minor Changes

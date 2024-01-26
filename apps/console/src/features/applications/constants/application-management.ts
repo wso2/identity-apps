@@ -213,11 +213,6 @@ export class ApplicationManagementConstants {
     ];
 
     /**
-     * Set of grant types to hide from the UI.
-     */
-    public static readonly HIDDEN_GRANT_TYPES: string[] = [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ];
-
-    /**
      * Currently refresh grant type is recommended to use at least one of below.
      * We need to get information from backend rather than hard code.
      * This issue is tracked via https://github.com/wso2/product-is/issues/12397.

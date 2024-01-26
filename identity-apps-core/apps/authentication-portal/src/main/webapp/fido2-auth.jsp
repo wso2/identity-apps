@@ -361,8 +361,7 @@
         let fidoError;
 
         function talkToDevice(){
-            var authRequest = '<%=authRequest%>';
-            var jsonAuthRequest = JSON.parse(authRequest);
+            var jsonAuthRequest = JSON.parse('<%=authRequest%>');
 
             navigator.credentials.get({
                 publicKey: decodePublicKeyCredentialRequestOptions(jsonAuthRequest.publicKeyCredentialRequestOptions),

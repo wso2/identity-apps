@@ -294,12 +294,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             showAppSwitchButton &&
                 !(CommonUtils?.isProfileReadOnly(isReadOnlyUser)) &&
                     consoleAppURL && consoleAppURL != "" ? (
-                    <MenuItem 
+                    <MenuItem
                         key={
-                            t("myAccount:components.header.appSwitch.console.name") 
-                        } 
+                            t("myAccount:components.header.appSwitch.console.name")
+                        }
                         onClick={ () => window.open(consoleAppURL, "_blank", "noopener") }>
-                        <ListItemIcon> 
+                        <ListItemIcon>
                             <RectangleLineIcon fill="black" />
                         </ListItemIcon>
                         <ListItemText primary={ t("myAccount:components.header.appSwitch.console.name") } />
@@ -347,7 +347,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 logo: {
                     desktop: (
                         <Image
-                            src={ theme?.images?.myAccountLogo?.imgURL 
+                            src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
                                         window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
@@ -369,7 +369,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     ),
                     mobile: (
                         <Image
-                            src={ theme?.images?.myAccountLogo?.imgURL 
+                            src={ theme?.images?.myAccountLogo?.imgURL
                                     ?? resolveAppLogoFilePath(
                                         window[ "AppUtils" ].getConfig().ui.appLogoPath,
                                         `${ window[ "AppUtils" ].getConfig().clientOrigin
@@ -455,7 +455,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 actionIcon: <ArrowRightFromBracketIcon fill={ mode === "dark" ? "white" : "black" } />,
                 actionText: t("common:logout"),
                 menuItems: [
-                    resolveOrganizationLabel(),
+                    commonConfig?.showOrganizationManagedBy && resolveOrganizationLabel(),
                     resolveConsoleAppSwitchMenuItem(),
                     linkedAccounts.map((linkedAccount: LinkedAccountInterface) => (
                         <MenuItem

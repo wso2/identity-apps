@@ -43,6 +43,7 @@ export interface ApplicationConfig {
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };
+    hiddenGrantTypes: string[],
     attributeSettings: {
         advancedAttributeSettings: {
             showIncludeTenantDomain: boolean;

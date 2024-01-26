@@ -40,6 +40,11 @@ export class ConnectionManagementConstants {
      */
     public static readonly INTERNAL_DOMAIN: string  = "Internal/";
 
+    /**
+     * Local Server host.
+     */
+    public static readonly LOCAL_SERVER_URL: string = "localhost";
+
     public static readonly CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";

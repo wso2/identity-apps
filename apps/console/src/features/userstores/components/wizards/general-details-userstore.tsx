@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
-*
-* WSO2 LLC. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -22,10 +22,11 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { getUserStores, testConnection } from "../../api";
-import { DISABLED, JDBC } from "../../constants";
-import { TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
+import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT } from "../../constants";
+import { PropertyAttribute, TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
 
 /**
  * Prop types of the `GeneralDetails` component
@@ -60,9 +61,9 @@ interface GeneralDetailsUserstorePropsInterface extends TestableComponentInterfa
 /**
  * This component renders the General Details step of the wizard.
  *
- * @param {GeneralDetailsUserstorePropsInterface} props - Props injected to the component.
+ * @param GeneralDetailsUserstorePropsInterface - Props injected to the component.
  *
- * @returns {React.ReactElement}
+ * @returns General Details step component.
  */
 export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstorePropsInterface> = (
     props: GeneralDetailsUserstorePropsInterface
@@ -86,7 +87,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     /**
      * Enum containing the icons a test connection button can have
@@ -101,7 +102,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
     /**
      * This returns of the icon for the test button.
      *
-     * @returns {TestButtonIcon} The icon of the test button.
+     * @returns The icon of the test button.
      */
     const findTestButtonIcon = (): TestButtonIcon => {
         if (isTesting) {
@@ -126,9 +127,9 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
     }
 
     /**
-     * This finds the right color for the test button
+     * This finds the right color for the test button.
      *
-     * @return {TestButtonColor} The color of the test button.
+     * @returns The color of the test button.
      */
     const findTestButtonColor = (): TestButtonColor => {
         if (isTesting) {
@@ -155,7 +156,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             onSubmit(values);
                         } }
                         submitState={ submitState }
-                        onChange={ (isPure, values) => {
+                        onChange={ (_isPure: boolean, values: Map<string, FormValue>) => {
                             setFormValue(values);
                         } }
                     >
@@ -171,7 +172,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             data-testid={ `${ testId }-form-name-input` }
                             validation={ async (value: FormValue, validation: Validation) => {
                                 let userStores: UserStoreListItem[] = null;
-                                
+
                                 try {
                                     userStores = await getUserStores(null);
                                 } catch (error) {
@@ -196,6 +197,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                             "name.validationErrorMessages.alreadyExistsErrorMessage")
                                     );
                                 }
+
+                                if (value.length > USERSTORE_NAME_CHARACTER_LIMIT) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:manage.features.userstores.forms.general." +
+                                            "name.validationErrorMessages.maxCharLimitErrorMessage", {
+                                            maxLength: USERSTORE_NAME_CHARACTER_LIMIT
+                                        })
+                                    );
+                                }
                             }
                             }
                         />
@@ -213,8 +224,9 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                         {
                             basicProperties?.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
-                                    const isDisabledField = selectedTypeDetail.description.split("#")[ 0 ] === DISABLED;
-                                    const name = isDisabledField
+                                    const isDisabledField: boolean = selectedTypeDetail.description
+                                        .split("#")[ 0 ] === DISABLED;
+                                    const name: string = isDisabledField
                                         ? enabled !== undefined
                                             ? enabled ? "Enabled" : "Disabled"
                                             : values?.get(selectedTypeDetail?.name)
@@ -226,11 +238,13 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                     : "Disabled"
                                         : selectedTypeDetail.description.split("#")[ 0 ];
 
-                                    const isPassword = selectedTypeDetail.attributes
-                                        .find(attribute => attribute.name === "type").value === "password";
-                                    const toggle = selectedTypeDetail.attributes
-                                        .find(attribute => attribute.name === "type")?.value === "boolean";
-                                    
+                                    const isPassword: boolean = selectedTypeDetail.attributes
+                                        .find((attribute: PropertyAttribute) => attribute.name === "type")
+                                        .value === "password";
+                                    const toggle: boolean = selectedTypeDetail.attributes
+                                        .find((attribute: PropertyAttribute) => attribute.name === "type")
+                                        ?.value === "boolean";
+
                                     return (
                                         isPassword
                                             ? (
@@ -305,9 +319,9 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                         data-testid={ `${ testId }-form-basic-properties-toggle-${
                                                             selectedTypeDetail.name }` }
                                                         listen={ (values: Map<string, FormValue>) => {
-                                                            const value = values
+                                                            const value: string = values
                                                                 .get(selectedTypeDetail.name).toString();
-                                                            
+
                                                             if (selectedTypeDetail.name === "Disabled") {
                                                                 setEnabled(value !== "false");
                                                             }
@@ -350,12 +364,14 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                         {
                             connectionProperties?.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
-                                    const name = selectedTypeDetail.description.split("#")[ 0 ];
-                                    const isPassword = selectedTypeDetail.attributes
-                                        .find(attribute => attribute.name === "type").value === "password";
-                                    const toggle = selectedTypeDetail.attributes
-                                        .find(attribute => attribute.name === "type")?.value === "boolean";
-                                    
+                                    const name: string = selectedTypeDetail.description.split("#")[ 0 ];
+                                    const isPassword: boolean = selectedTypeDetail.attributes
+                                        .find((attribute: PropertyAttribute) => attribute.name === "type")
+                                        .value === "password";
+                                    const toggle: boolean = selectedTypeDetail.attributes
+                                        .find((attribute: PropertyAttribute) => attribute.name === "type")
+                                        ?.value === "boolean";
+
                                     return (
                                         isPassword
                                             ? (
@@ -476,8 +492,8 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                             driverName: formValue?.get("driverName").toString(),
                                             username: formValue?.get("userName").toString()
                                         };
-                                        
-                                        testConnection(testData).then((response) => {
+
+                                        testConnection(testData).then((response: { connection: boolean }) => {
                                             setIsTesting(false);
                                             if (response?.connection) {
                                                 setConnectionFailed(false);

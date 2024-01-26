@@ -1,5 +1,38 @@
 # @wso2is/i18n
 
+## 2.0.107
+
+### Patch Changes
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+## 2.0.106
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+## 2.0.105
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+- Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+
+## 2.0.104
+
+### Patch Changes
+
+- [#5299](https://github.com/wso2/identity-apps/pull/5299) [`00a40bca0a`](https://github.com/wso2/identity-apps/commit/00a40bca0af01a295073f7d7fa144494eda70cdb) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix UX issue with the user wizard
+
+## 2.0.103
+
+### Patch Changes
+
+- [#5270](https://github.com/wso2/identity-apps/pull/5270) [`0a89131aa6`](https://github.com/wso2/identity-apps/commit/0a89131aa66312abbd7d5e7074d94516952a39c2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix multiple user import error message
+
 ## 2.0.102
 
 ### Patch Changes

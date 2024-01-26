@@ -363,26 +363,31 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "groups",
+                order: 1,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "applicationRoles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userRoles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userV1Roles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "roles",
+                order: 2,
                 parent: userManagement
             },
             {
@@ -407,6 +412,7 @@ export class RouteUtils {
                 category: manage,
                 id: "approvals",
                 order: 3,
+                parent: userManagement,
                 selected: history.location.pathname.includes("approvals")
             },
             {

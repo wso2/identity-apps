@@ -8065,7 +8065,7 @@ export const console: ConsoleNS = {
                     },
                     forms: {
                         attribute: {
-                            placeholder: "Select a user attribute to map to",
+                            placeholder: "Enter a user attribute to map to",
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
@@ -11464,13 +11464,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             next: "Next",
-                            previous: "Previous"
+                            previous: "Previous",
+                            saveAndContinue: "Save & Continue"
                         },
                         steps: {
                             basicDetails: "Basic Details",
                             groups: "User Groups",
                             roles: "User Roles",
-                            summary: "Summary",
+                            invitation: "Invitation",
                             method: "Method"
                         },
                         subTitle: "Follow the steps to create the new user",
@@ -12534,7 +12535,8 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A user store with this name already exists."
+                                alreadyExistsErrorMessage: "A user store with this name already exists.",
+                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
                             }
                         },
                         type: {

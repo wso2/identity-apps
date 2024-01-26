@@ -1,5 +1,45 @@
 # @wso2is/identity-apps-core
 
+## 2.1.4
+
+### Patch Changes
+
+- [#5354](https://github.com/wso2/identity-apps/pull/5354) [`bfb74f55f3`](https://github.com/wso2/identity-apps/commit/bfb74f55f3d37bc90480ea09c597087921552494) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Revert keytsore type change.
+
+## 2.1.3
+
+### Patch Changes
+
+- [#5170](https://github.com/wso2/identity-apps/pull/5170) [`ce8cf42ea6`](https://github.com/wso2/identity-apps/commit/ce8cf42ea68517f4048dee4db752e3eae742c761) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Update keystore and truststore extension to PKCS
+
+## 2.1.2
+
+### Patch Changes
+
+- [#5343](https://github.com/wso2/identity-apps/pull/5343) [`346c000b2b`](https://github.com/wso2/identity-apps/commit/346c000b2b64bbcbeb0590a3e9baecb6d9f4fbee) Thanks [@hwupathum](https://github.com/hwupathum)! - Framework and oauth version range bump
+
+## 2.1.1
+
+### Patch Changes
+
+- [#5335](https://github.com/wso2/identity-apps/pull/5335) [`159d389299`](https://github.com/wso2/identity-apps/commit/159d389299fb46cfa859a9d570ee266a8c6fdc2c) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove double encoding for the authRequest variable in fido2-auth.jsp
+
+## 2.1.0
+
+### Minor Changes
+
+- [#5332](https://github.com/wso2/identity-apps/pull/5332) [`ea38fad50b`](https://github.com/wso2/identity-apps/commit/ea38fad50bd716df96330e1019b2029b0fddfe55) Thanks [@asha15](https://github.com/asha15)! - add challenge questions related components
+
+### Patch Changes
+
+- [#5330](https://github.com/wso2/identity-apps/pull/5330) [`12cde0acb6`](https://github.com/wso2/identity-apps/commit/12cde0acb60004b92ee13c337be154b418a5d8e5) Thanks [@asha15](https://github.com/asha15)! - handle null pointer exception
+
+## 2.0.127
+
+### Patch Changes
+
+- [#5329](https://github.com/wso2/identity-apps/pull/5329) [`4f05737bba`](https://github.com/wso2/identity-apps/commit/4f05737bba43e9fa27f48f8f0dfccce3fd78723a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix quotes not rendering properly in the privacy policy pagea
+
 ## 2.0.126
 
 ### Patch Changes

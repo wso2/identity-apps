@@ -3375,6 +3375,7 @@ export const extensions: Extensions = {
                         password:
                             "Votre mot de passe doit contenir un minimum de 8 caractères dont au moins une " +
                             "lettre majuscule, une lettre minuscule et un chiffre.",
+                        confirmPassword: "Les deux mots de passe doivent correspondre",
                         passwordCase: "Au moins {{minUpperCase}} lettres majuscules et {{minLowerCase}} " +
                             "lettres minuscules",
                         upperCase: "Au moins {{minUpperCase}} lettre(s) majuscule(s)",

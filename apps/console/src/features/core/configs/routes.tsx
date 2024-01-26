@@ -1001,6 +1001,28 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server-configurations/pages/connector-edit-page"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: <LinearNodesIcon fill="black" className="icon" />
+                        },
+                        id: "dynamicConnector",
+                        name: "Dynamic Connector",
+                        order: 24,
+                        path: AppConstants.getPaths()
+                            .get("GOVERNANCE_CONNECTOR_EDIT")
+                            .replace(
+                                ":categoryId",
+                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                            ),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
                         category: "extensions:manage.sidePanel.categories.settings",
                         children: [
                             {

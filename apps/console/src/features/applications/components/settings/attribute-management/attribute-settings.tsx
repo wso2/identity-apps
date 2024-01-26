@@ -1241,6 +1241,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         triggerSubmission={ (submitFunction: () => void) => {
                                             submitAdvanceForm = submitFunction;
                                         } }
+                                        claimConfigurations={ claimConfigurations }
                                         setSubmissionValues={ setAdvanceSettingValues }
                                         setSelectedValue={ setSelectedSubjectValue }
                                         defaultSubjectAttribute={ DefaultSubjectAttribute }
