@@ -33,7 +33,6 @@ export interface AttributeConfig {
         addAttribute: boolean;
         deleteAction: boolean;
         description: string;
-        excludeIdentityClaims: boolean;
         showEditTabs: boolean;
         showUserstoreMappingWarningIcon: boolean;
     };

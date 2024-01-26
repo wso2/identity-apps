@@ -1699,6 +1699,7 @@
         {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
+        "excludeIdentityClaims": {{ console.exclude_identity_claims }},
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}

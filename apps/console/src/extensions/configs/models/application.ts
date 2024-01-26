@@ -160,7 +160,6 @@ export interface ApplicationConfig {
         allowedProtocolTypes: string[];
         defaultTabIndex: number;
     };
-    excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;
     quickstart: {
         oidcWeb: OIDCSDKMeta;

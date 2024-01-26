@@ -64,7 +64,6 @@ export const attributeConfig: AttributeConfig = {
         addAttribute: true,
         deleteAction: false,
         description: "extensions:manage.attributes.attributes.description",
-        excludeIdentityClaims: true,
         showEditTabs: true,
         showUserstoreMappingWarningIcon: true
     },
