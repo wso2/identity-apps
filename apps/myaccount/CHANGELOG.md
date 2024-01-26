@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.7
+
+### Patch Changes
+
+- [#5340](https://github.com/wso2/identity-apps/pull/5340) [`4a28cfacc4`](https://github.com/wso2/identity-apps/commit/4a28cfacc4b08409fe12d968c82c22fc69baedc1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change customEnterpriseSchema URN in my account
+
 ## 2.3.6
 
 ### Patch Changes
