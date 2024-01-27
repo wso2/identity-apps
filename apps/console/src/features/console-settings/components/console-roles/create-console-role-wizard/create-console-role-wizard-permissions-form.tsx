@@ -33,12 +33,14 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LegacyModeInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     FunctionComponent,
     MouseEvent,
     ReactElement,
     SyntheticEvent,
+    useEffect,
     useMemo,
     useState
 } from "react";
@@ -50,38 +52,42 @@ import useGetAPIResourceCollections from "../../../api/use-get-api-resource-coll
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {
     APIResourceCollectionInterface,
-    APIResourceCollectionPermissionCategoryInterface,
-    APIResourceCollectionPermissionScopeInterface,
     APIResourceCollectionResponseInterface,
     APIResourceCollectionTypes
 } from "../../../models/console-roles";
+import {
+    PermissionScopeInterface,
+    SelectedPermissionCategoryInterface,
+    SelectedPermissionsInterface
+} from "../../../models/permissions-ui";
+import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
 import "./create-console-role-wizard-permissions-form.scss";
 
 /**
  * Prop types for the text customization fields component.
  */
 export interface CreateConsoleRoleWizardPermissionsFormProps extends IdentifiableComponentInterface {
+    /**
+     * Should the accordion be expanded 
+     */
+    defaultExpandedIfPermissionsAreSelected?: boolean;
+    /**
+     * Set of initial permissions.
+     * If there are already selected permissions, they can be passed in here.
+     */
+    initialValues?: SelectedPermissionsInterface;
+    /**
+     * Callback to notify the selected permissions.
+     */
     onPermissionsChange: (permissions: CreateRolePermissionInterface[]) => void;
+    /**
+     * Is the form read only.
+     */
+    isReadOnly?: boolean;
 }
 
-interface PermissionScopeInterface {
-    value: string;
-}
-
-interface SelectedPermissionCategoryInterface {
-    read: boolean;
-    write: boolean;
-    permissions: PermissionScopeInterface[];
-}
-
-interface SelectedPermissionsInterface {
-    tenant: {
-        [key: string]: SelectedPermissionCategoryInterface;
-    };
-    organization: {
-        [key: string]: SelectedPermissionCategoryInterface;
-    };
-}
+const TENANT_PERMISSIONS_ACCORDION_ID: string = "tenant-permissions";
+const ORGANIZATION_PERMISSIONS_ACCORDION_ID: string = "organization-permissions";
 
 /**
  * Text customization fields component.
@@ -92,7 +98,13 @@ interface SelectedPermissionsInterface {
 const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRoleWizardPermissionsFormProps> = (
     props: CreateConsoleRoleWizardPermissionsFormProps
 ): ReactElement => {
-    const { "data-componentid": componentId, onPermissionsChange } = props;
+    const {
+        isReadOnly,
+        defaultExpandedIfPermissionsAreSelected,
+        initialValues,
+        onPermissionsChange,
+        "data-componentid": componentId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -105,6 +117,37 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         "type eq organization",
         "apiResources"
     );
+
+    const [ expandedAccordions, setExpandedAccordions ] = useState<string[]>([]);
+    const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>(initialValues || {
+        organization: {},
+        tenant: {}
+    });
+
+    /**
+     * Initializes the permission tree with any initial values.
+     */
+    useEffect(() => {
+        if (!initialValues) {
+            return;
+        }
+
+        setSelectedPermissions(initialValues);
+
+        if (defaultExpandedIfPermissionsAreSelected) {
+            const expanded: string[] = [];
+
+            if (!isEmpty(initialValues.tenant)) {
+                expanded.push(TENANT_PERMISSIONS_ACCORDION_ID);
+            }
+
+            if (!isEmpty(initialValues.organization)) {
+                expanded.push(ORGANIZATION_PERMISSIONS_ACCORDION_ID);
+            }
+
+            setExpandedAccordions(expanded);
+        }
+    }, [ initialValues ]);
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -160,17 +203,26 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         return clonedOrganizationAPIResourceCollections;
     }, [ organizationAPIResourceCollections ]);
 
-    const [ expanded, setExpanded ] = useState<string | false>(false);
-    const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>({
-        organization: {},
-        tenant: {}
-    });
-
-    const handleChange = (panel: string) => (e: SyntheticEvent, isExpanded: boolean) => {
-        setExpanded(isExpanded ? panel : false);
+    /**
+     * Handles the accordion expand event.
+     *
+     * @param interactedAccordion - The accordion that was interacted with.
+     */
+    const handleAccordionExpand = (interactedAccordion: string) => (_: SyntheticEvent, isExpanded: boolean): void => {
+        if (isExpanded) {
+            setExpandedAccordions([ ...expandedAccordions, interactedAccordion ]);
+        } else {
+            setExpandedAccordions(expandedAccordions.filter((panel: string) => panel !== interactedAccordion));
+        }
     };
 
-    const handleSelectAll = (e: ChangeEvent<HTMLInputElement>, type: APIResourceCollectionTypes) => {
+    /**
+     * Handles the select all checkbox change event.
+     *
+     * @param e - Change event.
+     * @param type - Type of the resource collection.
+     */
+    const handleSelectAll = (e: ChangeEvent<HTMLInputElement>, type: APIResourceCollectionTypes): void => {
         const _selectedPermissions: SelectedPermissionsInterface = cloneDeep(selectedPermissions);
 
         if (type === APIResourceCollectionTypes.TENANT) {
@@ -227,20 +279,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         processPermissionsChange(_selectedPermissions);
     };
 
-    const transformResourceCollectionToPermissions = (
-        resource: APIResourceCollectionPermissionCategoryInterface[]
-    ): PermissionScopeInterface[] => {
-        return resource
-            .map((resource: APIResourceCollectionPermissionCategoryInterface) =>
-                resource.scopes.map((scope: APIResourceCollectionPermissionScopeInterface) => ({ value: scope.name }))
-            )
-            .reduce(
-                (result: PermissionScopeInterface[], permissions: PermissionScopeInterface[]) =>
-                    result.concat(permissions),
-                []
-            );
-    };
-
+    /**
+     * Processes the permissions change and notifies the parent component.
+     *
+     * @param permissions - Selected permissions.
+     */
     const processPermissionsChange = (permissions: SelectedPermissionsInterface): void => {
         const uniquePermissionsSet: Set<string> = new Set<string>();
 
@@ -265,11 +308,18 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         onPermissionsChange(flattenedPermissions);
     };
 
+    /**
+     * Handles the select checkbox change event.
+     *
+     * @param e - Change event.
+     * @param collection - Selected API resource collection.
+     * @param type - Selected API resource collection type.
+     */
     const handleSelect = (
         e: ChangeEvent<HTMLInputElement>,
         collection: APIResourceCollectionInterface,
         type: APIResourceCollectionTypes
-    ) => {
+    ): void => {
         const { id, apiResources } = collection;
         const _selectedPermissions: SelectedPermissionsInterface = cloneDeep(selectedPermissions);
 
@@ -287,6 +337,14 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         processPermissionsChange(_selectedPermissions);
     };
 
+    /**
+     * Handles the permission level change event.
+     *
+     * @param _ - Mouse event.
+     * @param collection - Selected API resource collection.
+     * @param value - Selected permission level.
+     * @param type - Selected API resource collection type.
+     */
     const handlePermissionLevelChange = (
         _: MouseEvent<HTMLElement>,
         collection: APIResourceCollectionInterface,
@@ -308,11 +366,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     return (
         <div className="create-console-role-wizard-permissions-form" data-componentid={ componentId }>
-            <div>
+            <div className="accordion-container">
                 <Accordion
                     elevation={ 0 }
-                    expanded={ expanded === "tenant-permissions" }
-                    onChange={ handleChange("tenant-permissions") }
+                    expanded={ expandedAccordions.includes(TENANT_PERMISSIONS_ACCORDION_ID) }
+                    onChange={ handleAccordionExpand(TENANT_PERMISSIONS_ACCORDION_ID) }
                     className="tenant-permissions-accordion"
                 >
                     <AccordionSummary
@@ -321,6 +379,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                         id="tenant-permissions-header"
                     >
                         <Checkbox
+                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             color="primary"
                             checked={
                                 Object.keys(selectedPermissions.tenant).length ===
@@ -349,6 +409,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                             <TableRow key={ collection.id } className="permissions-table-data-row">
                                                 <TableCell padding="checkbox">
                                                     <Checkbox
+                                                        readOnly={ isReadOnly }
+                                                        disabled={ isReadOnly }
                                                         color="primary"
                                                         checked={ Object.keys(selectedPermissions.tenant).includes(
                                                             collection.id
@@ -370,6 +432,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <ToggleButtonGroup
+                                                        disabled={ isReadOnly }
                                                         value={
                                                             Object.keys(selectedPermissions.tenant).includes(
                                                                 collection.id
@@ -415,11 +478,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                     </AccordionDetails>
                 </Accordion>
             </div>
-            <div>
+            <div className="accordion-container">
                 <Accordion
                     elevation={ 0 }
-                    expanded={ expanded === "organization-permissions" }
-                    onChange={ handleChange("organization-permissions") }
+                    expanded={ expandedAccordions.includes(ORGANIZATION_PERMISSIONS_ACCORDION_ID) }
+                    onChange={ handleAccordionExpand(ORGANIZATION_PERMISSIONS_ACCORDION_ID) }
                     className="organization-permissions-accordion"
                 >
                     <AccordionSummary
@@ -428,6 +491,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                         id="panel1bh-header"
                     >
                         <Checkbox
+                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             color="primary"
                             defaultChecked={ false }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => {
@@ -457,6 +522,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                             <TableRow key={ collection.id } className="permissions-table-data-row">
                                                 <TableCell padding="checkbox">
                                                     <Checkbox
+                                                        readOnly={ isReadOnly }
+                                                        disabled={ isReadOnly }
                                                         color="primary"
                                                         checked={
                                                             Object
@@ -480,6 +547,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                 </TableCell>
                                                 <TableCell align="right">
                                                     <ToggleButtonGroup
+                                                        disabled={ isReadOnly }
                                                         value={
                                                             Object.keys(selectedPermissions.organization).includes(
                                                                 collection.id

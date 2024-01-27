@@ -24,14 +24,15 @@ import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import ConsoleRolePermissions from "./console-role-permissions";
 import { AppState } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { BasicRoleDetails } from "../../../../roles/components/edit-role/edit-role-basic";
 import { RoleConnectedApps } from "../../../../roles/components/edit-role/edit-role-connected-apps";
 import { RoleGroupsList } from "../../../../roles/components/edit-role/edit-role-groups";
-import { UpdatedRolePermissionDetails } from "../../../../roles/components/edit-role/edit-role-permission";
 import { RoleUsersList } from "../../../../roles/components/edit-role/edit-role-users";
 import { RoleAudienceTypes } from "../../../../roles/constants/role-constants";
+import "./console-roles-edit.scss";
 
 /**
  * Captures props needed for edit role component
@@ -116,8 +117,10 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UpdatedRolePermissionDetails
-                            isReadOnly={ true }
+                        <ConsoleRolePermissions
+                            isReadOnly={
+                                !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                            }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }
@@ -179,7 +182,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
         <ResourceTab
             isLoading={ isLoading }
             defaultActiveIndex={ defaultActiveIndex }
-            panes={ resolveResourcePanes() } />
+            panes={ resolveResourcePanes() }
+        />
     );
 };
 
