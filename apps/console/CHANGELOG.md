@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.17
+
+### Patch Changes
+
+- [#5357](https://github.com/wso2/identity-apps/pull/5357) [`01fd9a45c2`](https://github.com/wso2/identity-apps/commit/01fd9a45c247218a14a6aff25d6d30707a2fe574) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with adding multiple scopes in the edit section
+
 ## 2.11.16
 
 ### Patch Changes
