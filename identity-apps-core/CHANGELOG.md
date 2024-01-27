@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.5
+
+### Patch Changes
+
+- [#5361](https://github.com/wso2/identity-apps/pull/5361) [`84fd8d8b49`](https://github.com/wso2/identity-apps/commit/84fd8d8b496e8ba86c882d00a680696300d4cc4c) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Template EndpointConfig.properties file.
+
 ## 2.1.4
 
 ### Patch Changes
