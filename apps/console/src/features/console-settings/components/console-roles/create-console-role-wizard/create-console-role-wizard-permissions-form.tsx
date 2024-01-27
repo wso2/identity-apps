@@ -68,7 +68,7 @@ import "./create-console-role-wizard-permissions-form.scss";
  */
 export interface CreateConsoleRoleWizardPermissionsFormProps extends IdentifiableComponentInterface {
     /**
-     * Should the accordion be expanded 
+     * Should the accordion be expanded
      */
     defaultExpandedIfPermissionsAreSelected?: boolean;
     /**
