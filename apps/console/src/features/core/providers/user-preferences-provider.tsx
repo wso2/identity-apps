@@ -31,7 +31,13 @@ export interface UserPreferenceProviderProps<T> {
      * Initial preferences.
      */
     initialPreferences?: T;
+    /**
+     * Storage strategy. Default is "localstorage".
+     */
+    storageStrategy?: "localstorage" | "sessionstorage";
 }
+
+const USER_PREFERENCES_STORAGE_KEY: string = "user-preferences";
 
 /**
  * Provider for the Application local settings.
@@ -45,7 +51,7 @@ export interface UserPreferenceProviderProps<T> {
  * @returns App settings provider.
  */
 const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProviderProps<T>>): ReactElement => {
-    const { children } = props;
+    const { children, storageStrategy } = props;
 
     const organizationId: string = useSelector((state: AppState) => {
         return state?.organization?.organization?.id;
@@ -72,10 +78,23 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
         });
 
         setPreferencesInContext(updatedPreferences);
+
+        switch (storageStrategy) {
+            case "localstorage":
+                localStorage.setItem(USER_PREFERENCES_STORAGE_KEY, JSON.stringify(updatedPreferences));
+
+                break;
+            case "sessionstorage":
+                sessionStorage.setItem(USER_PREFERENCES_STORAGE_KEY, JSON.stringify(updatedPreferences));
+
+                break;
+            default:
+                break;
+        }
     };
 
     /**
-     * Get the preferences from storage.
+     * Manually provide a key and get the preferences from storage.
      *
      * @example
      * `getPreferences("key.nested", "orgId")`
@@ -86,7 +105,20 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
     const getPreferences = (key: string, orgId?: string): unknown => {
         const _orgId: string = orgId ?? organizationId;
 
-        return get(preferencesInContext, `${_orgId}.${key}`, null);
+        const storedPreferences: string = (() => {
+            switch (storageStrategy) {
+                case "localstorage":
+                    return localStorage.getItem(USER_PREFERENCES_STORAGE_KEY);
+                case "sessionstorage":
+                    return sessionStorage.getItem(USER_PREFERENCES_STORAGE_KEY);
+                default:
+                    return null;
+            }
+        })();
+
+        const preferences: T = storedPreferences ? JSON.parse(storedPreferences) : preferencesInContext;
+
+        return get(preferences, `${_orgId}.${key}`, null);
     };
 
     return (
@@ -100,6 +132,10 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
             { children }
         </UserPreferencesContext.Provider>
     );
+};
+
+UserPreferenceProvider.defaultProps = {
+    storageStrategy: "localstorage"
 };
 
 export default UserPreferenceProvider;
