@@ -22,26 +22,16 @@ import {
 import { ResourceList, ResourceListActionInterface, ResourceListItem } from "@wso2is/react-components";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
 import { Grid, Icon } from "semantic-ui-react";
-import {
-    CommonPluggableComponentMetaPropertyInterface,
-    CommonPluggableComponentPropertyInterface
-} from "../../../../models/connection";
-
 
 /**
- * Props interface of {@link IdpCertificatesList}
+ * Props interface of {@link Pkcs12FileField}
  */
 export interface Pkcs12FileFieldProps extends IdentifiableComponentInterface {
-    /**
-     * Type of the template.
-     */
-    eachProp?: CommonPluggableComponentPropertyInterface;
-    propertyMetadata?: CommonPluggableComponentMetaPropertyInterface;
     onCertificateChange?: ( newFile: string) => void;
 }
 
 /**
- * List of added certificates.
+ * PKCS file field.
  *
  * @param props - Props injected to the component.
  * @returns Functional component.
@@ -57,14 +47,11 @@ export const Pkcs12FileField: FC<Pkcs12FileFieldProps> = (
 
     /**
      * Creates the certificate actions.
-     *
-     * @param certificate - Certificate.
-     * @param index - Cert index.
      */
-    const createCertificateActions = (index: number) => {
+    const createCertificateActions = () => {
         return [
             {
-                "data-componentid": `${ testId }-delete-cert-${ index }-button`,
+                "data-componentid": `${ testId }-delete-cert-button`,
                 icon: "trash alternate",
                 onClick: () => handleDelete(),
                 popupText: "Delete",
@@ -74,9 +61,7 @@ export const Pkcs12FileField: FC<Pkcs12FileFieldProps> = (
     };
 
     /**
-     * Creates what to show as the resource list item avatar.
-     *
-     * @param certificate - Certificate.
+     * Creates certificate item avatar.
      */
     const createCertificateResourceAvatar = (): ReactElement => {
         return (
@@ -86,47 +71,42 @@ export const Pkcs12FileField: FC<Pkcs12FileFieldProps> = (
 
     /**
      * Handles the deletion of a certificate.
-     *
-     * @param certificateIndex - Index of the certificate to be deleted.
      */
     const handleDelete = () => {
         onCertificateChange("");
     };
 
     return (
-        <>
-            <Grid columns={ 2 }>
-                <Grid.Row>
-                    <Grid.Column>
-                        <ResourceList
-                            fill
-                            relaxed={ false }
-                            className="application-list"
-                            loadingStateOptions={ {
-                                count: 2,
-                                imageType: "circular"
-                            } }
-                            readOnly={ true }>
-                            <ResourceListItem
-                                key={ 1 }
-                                actionsColumnWidth={ 3 }
-                                descriptionColumnWidth={ 9 }
-                                actions={ createCertificateActions(1) }
-                                actionsFloated="right"
-                                avatar={ createCertificateResourceAvatar() }
-                                itemHeader={
-                                    "Private Key"
-                                }
-                                itemDescription={
-                                    "PKCS12 private key file"
-                                }
-                            />
-
-                        </ResourceList>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </>
+        <Grid columns={ 2 }>
+            <Grid.Row>
+                <Grid.Column>
+                    <ResourceList
+                        fill
+                        relaxed={ false }
+                        className="certificate"
+                        loadingStateOptions={ {
+                            count: 2,
+                            imageType: "circular"
+                        } }
+                        readOnly={ true }>
+                        <ResourceListItem
+                            key={ 1 }
+                            actionsColumnWidth={ 3 }
+                            descriptionColumnWidth={ 9 }
+                            actions={ createCertificateActions() }
+                            actionsFloated="right"
+                            avatar={ createCertificateResourceAvatar() }
+                            itemHeader={
+                                "Private Key"
+                            }
+                            itemDescription={
+                                "PKCS12 private key file"
+                            }
+                        />
+                    </ResourceList>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 };
 
@@ -134,5 +114,5 @@ export const Pkcs12FileField: FC<Pkcs12FileFieldProps> = (
  * Default properties of Pkcs12FileField.
  */
 Pkcs12FileField.defaultProps = {
-    "data-componentid": "idp-certificates-list"
+    "data-componentid": "google-private-key-file"
 };

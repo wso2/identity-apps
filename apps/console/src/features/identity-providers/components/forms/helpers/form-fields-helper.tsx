@@ -587,14 +587,6 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                 "requiredErrorMessage") }
-                validation={ (value: string, validation: Validation) => {
-                    if (!FormValidation.url("https://www.sample.com?" + value)) {
-                        validation.isValid = false;
-                        validation.errorMessages.push(
-                            I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
-                            "invalidQueryParamErrorMessage"));
-                    }
-                } }
                 type="filePicker"
                 value={ eachProp?.value }
                 key={ propertyMetadata?.key }

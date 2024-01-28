@@ -182,6 +182,8 @@ export class ConnectionManagementConstants {
 
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
+    public static readonly GOOGLE_PRIVATE_KEY: string = "google_prov_private_key";
+
     /**
      * Google Scope mappings.
      */

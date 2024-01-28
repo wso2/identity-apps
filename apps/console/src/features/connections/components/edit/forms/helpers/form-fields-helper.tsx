@@ -498,6 +498,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
         </>
     );
 };
+
 /* eslint-disable react-hooks/rules-of-hooks */
 export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -505,7 +506,6 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
     onCertificateChange?: ( newFile: string) => void): ReactElement => {
 
     const [ data, setData ] = useState<string>(eachProp?.value);
-
 
     return (
         <>
@@ -517,14 +517,6 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
                         required={ propertyMetadata?.isMandatory }
                         requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
                         "forms.common.requiredErrorMessage") }
-                        validation={ (value: string, validation: Validation) => {
-                            if (!FormValidation.url("https://www.sample.com?" + value)) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
-                            "invalidQueryParamErrorMessage"));
-                            }
-                        } }
                         type="filePicker"
                         value={ data }
                         key={ propertyMetadata?.key }
@@ -544,8 +536,6 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
                 <>
                     <label>{ propertyMetadata?.displayName }</label>
                     <Pkcs12FileField
-                        eachProp={ eachProp }
-                        propertyMetadata={ propertyMetadata }
                         onCertificateChange={ (newData: string) =>
                         {
                             setData(newData);

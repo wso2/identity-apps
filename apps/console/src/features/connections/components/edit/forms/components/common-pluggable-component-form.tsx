@@ -22,6 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
     CommonPluggableComponentFormPropsInterface,
@@ -66,7 +67,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         dynamicValues?.properties?.map(
             (prop: CommonPluggableComponentPropertyInterface) =>
             {
-                if (prop.key === "google_prov_private_key") {
+                if (prop.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
                     setPrivateKeyValue(prop.value);
                 }
             }
@@ -113,12 +114,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             }
 
             if (
-                !values.has("google_prov_private_key")
+                !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
                 && !properties.find(
                     (item: CommonPluggableComponentMetaPropertyInterface) =>
-                        item?.key === "google_prov_private_key")){
+                        item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)){
                 properties.push({
-                    key: "google_prov_private_key",
+                    key: ConnectionManagementConstants.GOOGLE_PRIVATE_KEY,
                     value: privateKeyValue
                 });
             }
@@ -220,7 +221,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     </Grid.Column>
                 </Grid.Row>
             );
-        } else if (eachPropertyMeta?.key === "google_prov_private_key") {
+        } else if (eachPropertyMeta?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
             return (
                 (<Grid.Row key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column computer={ 16 }>
