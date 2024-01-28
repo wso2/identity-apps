@@ -17,10 +17,36 @@
  */
 
 /**
- * Supported script editor themes.
+ * Enum for supported script editor themes.
  */
 export enum SupportedEditorThemes {
+    /**
+     * Dark theme for the script editor.
+     */
     DARK = "vs-dark",
+
+    /**
+     * High contrast theme for the script editor.
+     */
     HIGH_CONTRAST = "hc-black",
+
+    /**
+     * Light theme for the script editor.
+     */
     LIGHT = "vc"
+}
+
+/**
+ * Enum for script editor panel size modes.
+ */
+export enum ScriptEditorPanelSizeModes {
+    /**
+     * Maximized mode for the script editor panel.
+     */
+    Maximized = "maximized",
+
+    /**
+     * Minimized mode for the script editor panel.
+     */
+    Minimized = "minimized",
 }
