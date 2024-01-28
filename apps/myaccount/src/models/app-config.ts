@@ -202,6 +202,7 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
 }
 
 export interface AppUtilsInterface {
+    getOrganizationName(): unknown;
     constructAppBaseNameForHistoryAPI: () => string;
     constructAppPaths: (path: string) => string;
     constructRedirectURLs: (url: string) => string;

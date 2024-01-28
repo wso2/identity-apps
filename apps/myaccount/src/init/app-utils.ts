@@ -252,6 +252,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                     logout: this.constructAppPaths(_config.routePaths.logout)
                 },
                 serverOrigin: _config.serverOrigin,
+                serverOriginWithOrganization: _config.serverOrigin + this.getOrganizationPath(),
                 serverOriginWithTenant: _config.serverOrigin + tenantPath,
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
