@@ -72,7 +72,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 }
             }
         );
-
     },[ dynamicValues ]);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {

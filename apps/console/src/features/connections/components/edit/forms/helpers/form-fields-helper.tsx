@@ -30,6 +30,7 @@ import React, { ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { Pkcs12FileField } from "./pkcs12-file-field";
 import { commonConfig } from "../../../../../../extensions";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../../models/authenticators";
@@ -639,7 +640,7 @@ export const getFieldType = (
         return FieldType.DROP_DOWN;
     } else if (propertyMetadata.type?.toUpperCase() === CommonConstants.RADIO) {
         return FieldType.RADIO;
-    } else if (propertyMetadata?.key === "google_prov_private_key") {
+    } else if (propertyMetadata?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
         return FieldType.FILE_PICKER;
     }
 

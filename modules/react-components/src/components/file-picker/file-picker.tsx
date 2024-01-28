@@ -675,7 +675,6 @@ export class DefaultFileStrategy implements PickerStrategy<string> {
 
 }
 
-
 export class P12FileStrategy implements PickerStrategy<string> {
 
     mimeTypes: string[];
@@ -696,9 +695,9 @@ export class P12FileStrategy implements PickerStrategy<string> {
                 const reader = new FileReader();
 
                 reader.readAsArrayBuffer(data);
-
                 reader.onload = (e) => {
                     const binaryData: string | ArrayBuffer | null = e.target.result;
+                    // Transform the binary data to base64 encoded string.
                     const base64String = btoa(
                         new Uint8Array(binaryData as ArrayBufferLike)
                             .reduce((acc, byte) => acc + String.fromCharCode(byte), ""));
