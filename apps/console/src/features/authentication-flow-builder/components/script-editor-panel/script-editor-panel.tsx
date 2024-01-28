@@ -17,12 +17,15 @@
  */
 
 import { DiffOnMount, Monaco, MonacoDiffEditor } from "@monaco-editor/react";
+import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormControl from "@oxygen-ui/react/FormControl";
+import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Toolbar from "@oxygen-ui/react/Toolbar";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -48,7 +51,7 @@ import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { SecretModel } from "../../../secrets/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
-import { SupportedEditorThemes } from "../../models/script-editor";
+import { ScriptEditorPanelSizeModes, SupportedEditorThemes } from "../../models/script-editor";
 import "./script-editor-panel.scss";
 
 /**
@@ -58,6 +61,47 @@ export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & H
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+);
+
+// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
+const MaximizeIcon = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
+    <svg
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        height={ height }
+        width={ width }
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <polyline points="9 21 3 21 3 15"></polyline>
+        <line x1="21" y1="3" x2="14" y2="10"></line>
+        <line x1="3" y1="21" x2="10" y2="14"></line>
+    </svg>
+);
+
+// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
+const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
+    <svg
+        stroke="currentColor"
+        fill="none"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        height={ height }
+        width={ width }
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M18 10h-4v-4"></path>
+        <path d="M20 4l-6 6"></path>
+        <path d="M6 14h4v4"></path>
+        <path d="M10 14l-6 6"></path>
+    </svg>
 );
 
 /**
@@ -77,6 +121,9 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
 
     const [ editorTheme, setEditorTheme ] = useState<SupportedEditorThemes>(SupportedEditorThemes.DARK);
     const [ isSecretSelectionDropdownOpen, setIsSecretSelectionDropdownOpen ] = useState<boolean>(false);
+    const [ scriptEditorPanelSizeMode, setScriptEditorPanelSizeMode ] = useState<ScriptEditorPanelSizeModes>(
+        ScriptEditorPanelSizeModes.Minimized
+    );
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -147,15 +194,46 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
         return authenticationSequence?.script;
     };
 
-    return (
-        <Suspense fallback={ <CircularProgress /> }>
-            <div className={ classNames("script-editor-panel", className) } data-componentid={ componentId }>
-                <Box className="toolbar-container">
-                    <Toolbar variant="dense">
-                        <Box>
-                            <Typography>{ t("console:loginFlow.scriptEditor.panelHeader") }</Typography>
-                        </Box>
-                        <div className="actions">
+    /**
+     * Function to handle the script editor panel size change.
+     */
+    const handleScriptEditorPanelSizeChange = (): void => {
+        if (scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized) {
+            setScriptEditorPanelSizeMode(ScriptEditorPanelSizeModes.Maximized);
+
+            return;
+        }
+
+        setScriptEditorPanelSizeMode(ScriptEditorPanelSizeModes.Minimized);
+    };
+
+    const ScriptEditor: ReactElement = (
+        <MonacoEditor
+            loading={ null }
+            className="script-editor"
+            width="100%"
+            height="100%"
+            language="javascript"
+            theme={ editorTheme }
+            value={ getAdaptiveScript() }
+            options={ {
+                automaticLayout: true
+            } }
+            onChange={ handleScriptChange }
+            onMount={ handleEditorOnMount }
+            data-componentid={ `${componentId}-code-editor` }
+        />
+    );
+
+    const ScriptEditorToolbar: ReactElement = (
+        <Box className="script-editor-toolbar-container">
+            <Toolbar variant="dense">
+                <Box>
+                    <Typography>{ t("console:loginFlow.scriptEditor.panelHeader") }</Typography>
+                </Box>
+                <div className="actions">
+                    { scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized && (
+                        <>
                             <div className="editor-theme-select">
                                 <FormControl size="small">
                                     <Select
@@ -192,24 +270,50 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                                     )
                                 }
                             </div>
-                        </div>
-                    </Toolbar>
-                </Box>
-                <MonacoEditor
-                    loading={ null }
-                    className="script-editor"
-                    width="100%"
-                    height="100%"
-                    language="javascript"
-                    theme={ editorTheme }
-                    value={ getAdaptiveScript() }
-                    options={ {
-                        automaticLayout: true
-                    } }
-                    onChange={ handleScriptChange }
-                    onMount={ handleEditorOnMount }
-                    data-componentid={ `${componentId}-code-editor` }
-                />
+                        </>
+                    ) }
+                    <div className="editor-fullscreen">
+                        <Tooltip
+                            title={
+                                scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
+                                    ? t("common:goFullScreen")
+                                    : t("common:exitFullScreen")
+                            }
+                            data-componentid="editor-fullscreen-toggle-tooltip"
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ handleScriptEditorPanelSizeChange }
+                            >
+                                {
+                                    scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
+                                        ? <MaximizeIcon height={ 16 } width={ 16 } />
+                                        : <MinimizeIcon height={ 16 } width={ 16 } />
+                                }
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                </div>
+            </Toolbar>
+        </Box>
+    );
+
+    return (
+        <Suspense fallback={ <CircularProgress /> }>
+            <div className={ classNames("script-editor-panel", className) } data-componentid={ componentId }>
+                { ScriptEditorToolbar }
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    open={ scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Maximized }
+                    onClose={ handleScriptEditorPanelSizeChange }
+                >
+                    <Box className="full-screen-script-editor-container">
+                        { ScriptEditorToolbar }
+                        { ScriptEditor }
+                    </Box>
+                </Modal>
+                { ScriptEditor }
             </div>
         </Suspense>
     );

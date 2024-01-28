@@ -20,38 +20,55 @@
     height: 100%;
     width: calc(100% - 16px);
 
-    .toolbar-container {
+    .script-editor {
+        border: 1px solid var(--oxygen-palette-divider);
+        height: 500px;
+    }
+}
 
-        .oxygen-toolbar {
+.script-editor-toolbar-container {
+    .oxygen-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        padding-left: 0;
+        padding-right: 0;
+
+        .actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            align-content: center;
-            flex-wrap: nowrap;
             flex-direction: row;
-            padding-left: 0;
-            padding-right: 0;
+            flex-wrap: nowrap;
+            align-content: center;
+            align-items: center;
+            gap: 10px;
 
-            .actions {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                align-content: center;
-                align-items: center;
-                gap: 10px;
-
-                .editor-theme-select {
-                    .MuiSelect-select {
-                        padding: 6px 15px;
-                        min-width: 150px;
-                    }
+            .editor-theme-select {
+                .MuiSelect-select {
+                    padding: 6px 15px;
+                    min-width: 150px;
                 }
             }
         }
     }
+}
 
-    .script-editor {
-        border: 1px solid var(--oxygen-palette-divider);
-        height: 500px;
+.full-screen-script-editor-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    height: 90%;
+    padding: 32px;
+    
+    .script-editor-toolbar-container {
+        background-color: var(--oxygen-palette-common-white);
+        padding-left: 15px;
+        padding-right: 15px;
+        border-top-right-radius: var(--oxygen-shape-borderRadius);
+        border-top-left-radius: var(--oxygen-shape-borderRadius);
     }
 }
