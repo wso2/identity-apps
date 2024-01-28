@@ -20,6 +20,7 @@ import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBa
 import { I18nConstants } from "../constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
+import { AppUtils } from "../init/app-utils";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
 
@@ -74,7 +75,9 @@ export class Config {
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,
-            brandingPreference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
+            brandingPreference: `${AppUtils.getOrganizationName()
+                ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
+                : this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
             challengeAnswers: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenges`,
             consentManagement: {

@@ -52,7 +52,7 @@ export const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInt
             name,
             type
         },
-        url: store.getState()?.config?.endpoints?.brandingPreference
+        url: store.getState()?.config?.endpoints?.brandingPreference + "/resolve"
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);

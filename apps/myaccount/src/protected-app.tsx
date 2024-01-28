@@ -90,6 +90,23 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         history.push(location);
     };
 
+    /**
+     * Get the organization name from the URL.
+     * @returns Organization name.
+     */
+    const getOrganizationName = (): string => {
+        const path: string = window.location.pathname;
+        const pathChunks: string[] = path.split("/");
+
+        const orgPrefixIndex: number = pathChunks.indexOf("o");
+
+        if (orgPrefixIndex !== -1) {
+            return pathChunks[ orgPrefixIndex + 1 ];
+        }
+
+        return "";
+    };
+
     useEffect(() => {
         const error: string = new URLSearchParams(location.search).get("error_description");
 
@@ -170,7 +187,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ isAuthenticated ]);
 
     return (
-        <BrandingPreferenceProvider tenantDomain={ tenantDomain }>
+        <BrandingPreferenceProvider
+            tenantDomain={ getOrganizationName() !== "" ? getOrganizationName() : tenantDomain }
+        >
             <SecureApp
                 fallback={ <PreLoader /> }
                 onSignIn={ loginSuccessRedirect }
@@ -180,23 +199,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     if (new URL(location.href).searchParams.get("prompt")) {
                         await signIn({ prompt: "login" });
                     } else {
-                        /**
-                         * Get the organization name from the URL.
-                         * @returns Organization name.
-                         */
-                        const getOrganizationName = (): string => {
-                            const path: string = window.location.pathname;
-                            const pathChunks: string[] = path.split("/");
-
-                            const orgPrefixIndex: number = pathChunks.indexOf("o");
-
-                            if (orgPrefixIndex !== -1) {
-                                return pathChunks[ orgPrefixIndex + 1 ];
-                            }
-
-                            return "";
-                        };
-
                         const authParams: {
                             fidp?: string;
                             orgId?: string;
