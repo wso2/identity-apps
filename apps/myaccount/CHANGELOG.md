@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.8
+
+### Patch Changes
+
+- [#5366](https://github.com/wso2/identity-apps/pull/5366) [`dff169ea0f`](https://github.com/wso2/identity-apps/commit/dff169ea0f295bcba3cd028f3a5a23db1bc8e716) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix sub org branding not being applied in myaccount
+
 ## 2.3.7
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.11.18
+
+### Patch Changes
+
+- [#5364](https://github.com/wso2/identity-apps/pull/5364) [`901e055557`](https://github.com/wso2/identity-apps/commit/901e055557f5d202234c2fdcd582d218cd490c64) Thanks [@brionmario](https://github.com/brionmario)! - Add support for Visual editor script window to go fullscreen
+
+* [#5363](https://github.com/wso2/identity-apps/pull/5363) [`15885e1ace`](https://github.com/wso2/identity-apps/commit/15885e1ace397cae03f471786af57346ef2ff20a) Thanks [@brionmario](https://github.com/brionmario)! - Add support to store preferences in storage
+
 ## 2.11.17
 
 ### Patch Changes
