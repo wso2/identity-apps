@@ -17,8 +17,6 @@
  */
 
 import { DiffOnMount, Monaco, MonacoDiffEditor } from "@monaco-editor/react";
-import Backdrop from "@mui/material/Backdrop";
-import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -27,6 +25,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Toolbar from "@oxygen-ui/react/Toolbar";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -274,16 +273,25 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                         </>
                     ) }
                     <div className="editor-fullscreen">
-                        <IconButton
-                            size="small"
-                            onClick={ handleScriptEditorPanelSizeChange }
-                        >
-                            {
+                        <Tooltip
+                            title={
                                 scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
-                                    ? <MaximizeIcon height={ 16 } width={ 16 } />
-                                    : <MinimizeIcon height={ 16 } width={ 16 } />
+                                    ? t("common:goFullScreen")
+                                    : t("common:exitFullScreen")
                             }
-                        </IconButton>
+                            data-componentid="editor-fullscreen-toggle-tooltip"
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ handleScriptEditorPanelSizeChange }
+                            >
+                                {
+                                    scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
+                                        ? <MaximizeIcon height={ 16 } width={ 16 } />
+                                        : <MinimizeIcon height={ 16 } width={ 16 } />
+                                }
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 </div>
             </Toolbar>
@@ -299,20 +307,11 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                     aria-describedby="transition-modal-description"
                     open={ scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Maximized }
                     onClose={ handleScriptEditorPanelSizeChange }
-                    closeAfterTransition
-                    slots={ { backdrop: Backdrop } }
-                    slotProps={ {
-                        backdrop: {
-                            timeout: 500
-                        }
-                    } }
                 >
-                    <Fade in={ scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Maximized }>
-                        <Box className="full-screen-script-editor-container">
-                            { ScriptEditorToolbar }
-                            { ScriptEditor }
-                        </Box>
-                    </Fade>
+                    <Box className="full-screen-script-editor-container">
+                        { ScriptEditorToolbar }
+                        { ScriptEditor }
+                    </Box>
                 </Modal>
                 { ScriptEditor }
             </div>
