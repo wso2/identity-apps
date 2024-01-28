@@ -79,7 +79,9 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         isAuthenticationSequenceDefault,
         isVisualEditorEnabled,
         isLegacyEditorEnabled,
-        refetchApplication
+        refetchApplication,
+        preferredAuthenticationFlowBuilderMode,
+        setPreferredAuthenticationFlowBuilderMode
     } = useAuthenticationFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
@@ -126,6 +128,21 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             setActiveFlowMode(FlowModes[0]);
         }
     }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
+
+    /**
+     * Set the active flow mode to the preferred flow mode when the user preference is updated.
+     */
+    useEffect(() => {
+        if (!preferredAuthenticationFlowBuilderMode) {
+            return;
+        }
+
+        const activeMode: AuthenticationFlowBuilderModesInterface = FlowModes.find(
+            (mode: AuthenticationFlowBuilderModesInterface) => mode.mode === preferredAuthenticationFlowBuilderMode
+        );
+
+        setActiveFlowMode(activeMode);
+    }, [ preferredAuthenticationFlowBuilderMode ]);
 
     /**
      * Handles the flow mode switch.
@@ -210,6 +227,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                             setFlowModeToSwitch(null);
                             setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
                             refetchApplication();
+                            setPreferredAuthenticationFlowBuilderMode(flowModeToSwitch?.mode);
                         } }
                         onClose={ () => {
                             setFlowModeToSwitch(null);

@@ -19,4 +19,9 @@
 /**
  * Interface for user preferences.
  */
-export interface UserPreferencesInterface {}
+export interface UserPreferencesInterface {
+    /**
+     * The preferred strategy for login flow configuration
+     */
+    preferredAuthenticationFlowBuilderMode: string;
+}

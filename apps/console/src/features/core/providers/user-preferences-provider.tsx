@@ -18,7 +18,7 @@
 
 import get from "lodash-es/get";
 import merge from "lodash-es/merge";
-import React, { PropsWithChildren, ReactElement, useState } from "react";
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import UserPreferencesContext from "../context/user-preferences-context";
 import { AppState } from "../store";
@@ -53,11 +53,34 @@ const USER_PREFERENCES_STORAGE_KEY: string = "user-preferences";
 const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProviderProps<T>>): ReactElement => {
     const { children, storageStrategy } = props;
 
-    const organizationId: string = useSelector((state: AppState) => {
-        return state?.organization?.organization?.id;
+    const userIdentifier: string = useSelector((state: AppState) => {
+        return state?.auth?.username;
     });
 
     const [ preferencesInContext, setPreferencesInContext ] = useState<T>(null);
+
+    /**
+     * Set the initial preferences.
+     * If the preferences are already set in storage, they will be overridden.
+     */
+    useEffect(() => {
+        const storedPreferences: string = (() => {
+            switch (storageStrategy) {
+                case "localstorage":
+                    return localStorage.getItem(USER_PREFERENCES_STORAGE_KEY);
+                case "sessionstorage":
+                    return sessionStorage.getItem(USER_PREFERENCES_STORAGE_KEY);
+                default:
+                    return null;
+            }
+        })();
+
+        if (storedPreferences) {
+            const preferences: T = JSON.parse(storedPreferences);
+
+            setPreferencesInContext(preferences);
+        }
+    }, [ storageStrategy ]);
 
     /**
      * Set the preferences in storage.
@@ -66,13 +89,13 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
      * `setPreferences({ "key": "value" }, "orgId")`
      *
      * @param preferencesToUpdate - The new preferences to update.
-     * @param orgId - Optional organization ID. If provided, the preferences for this organization will be updated.
+     * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    const setPreferences = (preferencesToUpdate: T, orgId?: string) => {
-        const _orgId: string = orgId ?? organizationId;
+    const setPreferences = (preferencesToUpdate: T, userId?: string) => {
+        const _userId: string = userId ?? userIdentifier;
 
         const updatedPreferences: T = merge({}, preferencesInContext, {
-            [_orgId]: {
+            [_userId]: {
                 ...preferencesToUpdate
             }
         });
@@ -94,39 +117,40 @@ const UserPreferenceProvider = <T, >(props: PropsWithChildren<UserPreferenceProv
     };
 
     /**
-     * Manually provide a key and get the preferences from storage.
+     * Get the preferences from storage.
      *
      * @example
      * `getPreferences("key.nested", "orgId")`
      *
      * @param key - The key of the preference to retrieve.
-     * @param orgId - Optional organization ID. If provided, the preference for this organization will be retrieved.
+     * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    const getPreferences = (key: string, orgId?: string): unknown => {
-        const _orgId: string = orgId ?? organizationId;
+    const getPreferences = (key: string, userId?: string) => {
+        const _userId: string = userId ?? userIdentifier;
 
-        const storedPreferences: string = (() => {
-            switch (storageStrategy) {
-                case "localstorage":
-                    return localStorage.getItem(USER_PREFERENCES_STORAGE_KEY);
-                case "sessionstorage":
-                    return sessionStorage.getItem(USER_PREFERENCES_STORAGE_KEY);
-                default:
-                    return null;
-            }
-        })();
+        return get(preferencesInContext, `${_userId}.${key}`, null);
+    };
 
-        const preferences: T = storedPreferences ? JSON.parse(storedPreferences) : preferencesInContext;
+    /**
+     * Get all flat-level preferences for the specified organization.
+     *
+     * @example
+     * `getFlatPreferences("orgId")`
+     *
+     * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
+     */
+    const getFlatPreferences = (userId?: string) => {
+        const _userId: string = userId ?? userIdentifier;
 
-        return get(preferences, `${_orgId}.${key}`, null);
+        return get(preferencesInContext, _userId, {});
     };
 
     return (
         <UserPreferencesContext.Provider
             value={ {
                 getPreferences,
-                preferences: preferencesInContext,
-                setPreferences
+                setPreferences,
+                ...getFlatPreferences()
             } }
         >
             { children }

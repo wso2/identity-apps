@@ -21,25 +21,21 @@ import { Context, createContext } from "react";
 /**
  * Props interface of {@link UserPreferenceContext}
  */
-export interface UserPreferencesContextProps<T> {
-    /**
-     * User preferences.
-     */
-    preferences: T;
+export type UserPreferencesContextProps<T> = {
     /**
      * Function to retrieve a user preference.
      * @param key - The key of the preference to retrieve.
-     * @param orgId - Optional organization ID. If provided, the preference for this organization will be retrieved.
+     * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      * @returns The preference value.
      */
-    getPreferences: (key: string, orgId?: string) => unknown;
+    getPreferences: (key: string, userId?: string) => unknown;
     /**
      * Function to update user preferences.
      * @param preferencesToUpdate - The new preferences to update.
-     * @param orgId - Optional organization ID. If provided, the preferences for this organization will be updated.
+     * @param userId - Optional user Id. If provided, the preferences for the passed in user-id will be updated.
      */
-    setPreferences: (preferencesToUpdate: T, orgId?: string) => void;
-}
+    setPreferences: (preferencesToUpdate: T, userId?: string) => void;
+} & T;
 
 /**
  * Context object for managing the User's preferences.
