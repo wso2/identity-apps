@@ -35,7 +35,7 @@ import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switc
 import SidePanelDrawer from "./side-panel-drawer";
 import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
-import { AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
+import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
 
 /**
@@ -85,17 +85,20 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label")
+            label: t("console:loginFlow.modes.legacy.label"),
+            mode: AuthenticationFlowBuilderModes.Classic
         }
     ] : [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label")
+            label: t("console:loginFlow.modes.legacy.label"),
+            mode: AuthenticationFlowBuilderModes.Classic
         },
         {
             extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
-            label: t("console:loginFlow.modes.visual.label")
+            label: t("console:loginFlow.modes.visual.label"),
+            mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
 
