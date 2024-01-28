@@ -35,7 +35,7 @@ import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switc
 import SidePanelDrawer from "./side-panel-drawer";
 import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
-import { AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
+import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
 
 /**
@@ -79,23 +79,28 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         isAuthenticationSequenceDefault,
         isVisualEditorEnabled,
         isLegacyEditorEnabled,
-        refetchApplication
+        refetchApplication,
+        preferredAuthenticationFlowBuilderMode,
+        setPreferredAuthenticationFlowBuilderMode
     } = useAuthenticationFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label")
+            label: t("console:loginFlow.modes.legacy.label"),
+            mode: AuthenticationFlowBuilderModes.Classic
         }
     ] : [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label")
+            label: t("console:loginFlow.modes.legacy.label"),
+            mode: AuthenticationFlowBuilderModes.Classic
         },
         {
             extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
-            label: t("console:loginFlow.modes.visual.label")
+            label: t("console:loginFlow.modes.visual.label"),
+            mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
 
@@ -123,6 +128,21 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             setActiveFlowMode(FlowModes[0]);
         }
     }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
+
+    /**
+     * Set the active flow mode to the preferred flow mode when the user preference is updated.
+     */
+    useEffect(() => {
+        if (!preferredAuthenticationFlowBuilderMode) {
+            return;
+        }
+
+        const activeMode: AuthenticationFlowBuilderModesInterface = FlowModes.find(
+            (mode: AuthenticationFlowBuilderModesInterface) => mode.mode === preferredAuthenticationFlowBuilderMode
+        );
+
+        setActiveFlowMode(activeMode);
+    }, [ preferredAuthenticationFlowBuilderMode ]);
 
     /**
      * Handles the flow mode switch.
@@ -207,6 +227,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                             setFlowModeToSwitch(null);
                             setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
                             refetchApplication();
+                            setPreferredAuthenticationFlowBuilderMode(flowModeToSwitch?.mode);
                         } }
                         onClose={ () => {
                             setFlowModeToSwitch(null);

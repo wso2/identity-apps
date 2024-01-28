@@ -18,11 +18,24 @@
 
 import { useContext } from "react";
 import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../context/authentication-flow-context";
+import useUserPreferences from "../../core/hooks/use-user-preferences";
+import { UserPreferencesInterface } from "../../core/models/user-preferences";
+import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 
 /**
  * Interface for the return type of the UseAuthenticationFlow hook.
  */
-export type UseAuthenticationFlowInterface = AuthenticationFlowContextProps;
+export interface UseAuthenticationFlowInterface extends AuthenticationFlowContextProps {
+    /**
+     * The preferred authentication flow builder mode.
+     */
+    preferredAuthenticationFlowBuilderMode: AuthenticationFlowBuilderModes;
+    /**
+     * Sets the preferred authentication flow builder mode.
+     * @param mode - The preferred mode.
+     */
+    setPreferredAuthenticationFlowBuilderMode: (mode: AuthenticationFlowBuilderModes) => void;
+}
 
 /**
  * Hook that provides access to the branding preference context.
@@ -31,11 +44,35 @@ export type UseAuthenticationFlowInterface = AuthenticationFlowContextProps;
 const useAuthenticationFlow = (): UseAuthenticationFlowInterface => {
     const context: AuthenticationFlowContextProps = useContext(AuthenticationFlowContext);
 
+    const { setPreferences, preferredAuthenticationFlowBuilderMode } = useUserPreferences<UserPreferencesInterface>();
+
     if (context === undefined) {
         throw new Error("UseAuthenticationFlow must be used within a AuthenticationFlowProvider");
     }
 
-    return context;
+    /**
+     * Get the preferred authentication flow builder mode.
+     */
+    const getPreferredAuthenticationFlowBuilderMode = (): AuthenticationFlowBuilderModes => {
+        return preferredAuthenticationFlowBuilderMode as AuthenticationFlowBuilderModes;
+    };
+
+    /**
+     * Sets the preferred authentication flow builder mode.
+     *
+     * @param mode - The preferred mode.
+     */
+    const setPreferredAuthenticationFlowBuilderMode = (mode: AuthenticationFlowBuilderModes): void => {
+        setPreferences({
+            preferredAuthenticationFlowBuilderMode: mode
+        });
+    };
+
+    return {
+        preferredAuthenticationFlowBuilderMode: getPreferredAuthenticationFlowBuilderMode(),
+        setPreferredAuthenticationFlowBuilderMode,
+        ...context
+    };
 };
 
 export default useAuthenticationFlow;
