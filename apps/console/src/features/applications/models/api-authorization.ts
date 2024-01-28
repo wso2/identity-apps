@@ -26,7 +26,6 @@ export interface AuthorizedAPIListItemInterface {
     policyId?: string;
     allPermissions?: AuthorizedPermissionListItemInterface[];
     authorizedScopes: AuthorizedPermissionListItemInterface[];
-    type?: string;
 }
 
 /**
