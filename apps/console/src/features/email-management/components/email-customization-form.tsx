@@ -30,7 +30,9 @@ import {
 import * as codemirror from "codemirror";
 import React, {
     FunctionComponent,
-    ReactElement
+    ReactElement,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
@@ -103,6 +105,18 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    /**
+     * Following `key` state and the use of the useEffect are temporary
+     * fixes for the issue of the input not re-rendering when the props change.
+     * The ideal solution is to use Final Form directly without employing
+     * the Final Form wrapper component.
+     */
+    const [ key, setKey ] = useState<number>(0);
+
+    useEffect(() => {
+        setKey((key + 1) % 100);
+    }, [ selectedEmailTemplate ]);
+
     return (
         (isEmailTemplatesListLoading) ? (
             <ContentLoader/>
@@ -139,6 +153,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                         });
                                     } }
                                     readOnly={ readOnly }
+                                    key={ key }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -229,6 +244,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                         });
                                     } }
                                     readOnly={ readOnly }
+                                    key={ key }
                                 />
                             </Grid.Column>
                         </Grid.Row>

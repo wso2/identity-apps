@@ -25,6 +25,8 @@ export class EmailManagementConstants {
      */
     private constructor() {}
 
+    public static readonly DEFAULT_CONTENT_TYPE: string = "text/html; charset=UTF-8";
+
     /**
      * Set of keys used to enable/disable features.
      */
