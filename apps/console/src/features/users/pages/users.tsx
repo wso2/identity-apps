@@ -506,6 +506,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         if (!attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"))) {
             attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"));
         }
+        if (isSubOrganization() &&
+            !attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("ENTERPRISE_USER"))) {
+            attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("ENTERPRISE_USER"));
+        }
 
         return attArray.toString();
     };
