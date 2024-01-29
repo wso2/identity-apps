@@ -114,7 +114,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
             if (
                 !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
-                && !properties.find(
+                && !properties?.find(
                     (item: CommonPluggableComponentMetaPropertyInterface) =>
                         item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)){
                 properties.push({
