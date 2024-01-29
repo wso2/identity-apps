@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.20
+
+### Patch Changes
+
+- [#5339](https://github.com/wso2/identity-apps/pull/5339) [`2dcf68c3c8`](https://github.com/wso2/identity-apps/commit/2dcf68c3c8bfea1f5945ea6fc87150a72d13cd0c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix scope related issues after removing sub org APIs
+
 ## 2.11.19
 
 ### Patch Changes
