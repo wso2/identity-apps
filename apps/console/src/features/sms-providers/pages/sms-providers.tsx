@@ -410,6 +410,16 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
+            if (!values?.contentType) {
+                error.contentType = t(
+                    "extensions:develop.smsProviders.form.custom.validations.required"
+                );
+            }
+            if (!values?.payload) {
+                error.payload = t(
+                    "extensions:develop.smsProviders.form.custom.validations.required"
+                );
+            }
         }
 
         return error;
