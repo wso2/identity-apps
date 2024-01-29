@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import { FilePicker, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
+import { FilePicker, PickerResult, PickerStrategy } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Form, InputOnChangeData } from "semantic-ui-react";
 
 interface MetaFilePickerPropsInterface {
     value: string;
+    fileStrategy: PickerStrategy<any>;
+    uploadButtonText: string;
+    dropzoneText: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -35,6 +38,9 @@ export const MetaFilePicker: FunctionComponent<MetaFilePickerPropsInterface> = (
 
     const {
         value,
+        fileStrategy,
+        uploadButtonText,
+        dropzoneText,
         onChange
     } = props;
 
@@ -42,8 +48,6 @@ export const MetaFilePicker: FunctionComponent<MetaFilePickerPropsInterface> = (
 
     const [ metaFilePickerValue, setMetaFilePickerValue ] = useState<string>(null);
     const [ filePicker, setFilePicker ] = useState<FilePickerInterface[]>();
-
-    const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 
     /**
      * Build query parameter object from the given string form.
@@ -166,14 +170,14 @@ export const MetaFilePicker: FunctionComponent<MetaFilePickerPropsInterface> = (
                 {
                     (<div style={ { display: "block" } }>
                         <FilePicker
-                            fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                            fileStrategy={ fileStrategy }
                             normalizeStateOnRemoveOperations={ true }
                             onChange={ (result: PickerResult<File>) => {
                                 setMetaFilePickerValue(result.serialized as string);
                                 handleQueryParameterAdd();
                             } }
-                            uploadButtonText="Upload Metadata File"
-                            dropzoneText="Drag and drop a XML file here."
+                            uploadButtonText={ uploadButtonText }
+                            dropzoneText={ dropzoneText }
                             hidePasteOption
                             pasteAreaPlaceholderText="Paste metadata file in xml format."
                             icon={ null }

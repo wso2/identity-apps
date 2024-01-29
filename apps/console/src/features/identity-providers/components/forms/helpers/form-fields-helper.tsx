@@ -24,7 +24,7 @@ import {
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
-import { CopyInputField, GenericIcon, Hint } from "@wso2is/react-components";
+import { CopyInputField, GenericIcon, Hint, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
@@ -36,6 +36,7 @@ import {
 } from "../../../models";
 
 const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
+const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -586,20 +587,15 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                 "requiredErrorMessage") }
-                validation={ (value: string, validation: Validation) => {
-                    if (!FormValidation.url("https://www.sample.com?" + value)) {
-                        validation.isValid = false;
-                        validation.errorMessages.push(
-                            I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
-                            "invalidQueryParamErrorMessage"));
-                    }
-                } }
                 type="filePicker"
                 value={ eachProp?.value }
                 key={ propertyMetadata?.key }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                uploadButtonText="Upload Metadata File"
+                dropzoneText="Drag and drop a XML file here."
             />) }
             { showField
             && propertyMetadata?.description

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { PickerStrategy } from "@wso2is/react-components";
 import * as React from "react";
 import { FlagProps, SemanticSIZES, SemanticShorthandItem, SemanticWIDTHS } from "semantic-ui-react";
 
@@ -195,6 +196,9 @@ export interface QueryParamsField extends FormRequiredFieldModel {
 export interface FilePickerField extends FormRequiredFieldModel {
     type: "filePicker";
     value?: string;
+    uploadButtonText?: string;
+    dropzoneText?: string;
+    fileStrategy?: PickerStrategy<any>;
     validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
 }
 
