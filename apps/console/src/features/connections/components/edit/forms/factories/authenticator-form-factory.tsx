@@ -151,7 +151,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         return OverriddenForm;
     }
 
-    if (templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID){
+    if (templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID) {
         return (
             <CommonAuthenticatorForm
                 mode={ mode }
