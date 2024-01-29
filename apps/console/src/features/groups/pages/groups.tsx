@@ -338,13 +338,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     </RootOnlyComponent>
                 ) }
                 showPagination={ paginatedGroups?.length > 0  }
-                showTopActionPanel={
-                    !isGroupsListRequestLoading
-                    && !(!searchQuery
-                        && !groupsError
-                        && userStoreOptions?.length < 3
-                        && (!paginatedGroups || paginatedGroups?.length <= 0))
-                }
+                showTopActionPanel={ !isGroupsListRequestLoading }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
                 isLoading={ isGroupsListRequestLoading }
