@@ -36,6 +36,7 @@ export class BrandingPreferencesConstants {
     public static readonly DEFAULT_LAYOUT: PredefinedLayouts = PredefinedLayouts.CENTERED;
     public static readonly DEFAULT_FONT_FROM_THEME: string = "Gilmer";
     public static readonly BRANDING_NOT_CONFIGURED_ERROR_CODE: string = "BPM-60002";
+    public static readonly CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE: string = "BPM-60006";
     public static readonly BRANDING_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-BPM-60001";
     public static readonly BRANDING_PREFERENCE_FETCH_ERROR_CODE: string = "ASG-CON-BPM-60002";
     public static readonly BRANDING_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-BPM-60005";
