@@ -52,7 +52,7 @@
     if (isSaaSApp) {
     	modifiedAccessUrl = IdentityManagementEndpointUtil.getUserPortalUrl(accessUrl, tenantDomain);
     }
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(StringEscapeUtils.unescapeJava(username), tenantDomain, isSaaSApp);
 
     String sp = request.getParameter("sp");
     String spId = "";
