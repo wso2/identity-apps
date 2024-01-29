@@ -24,6 +24,9 @@ import React, {
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import CommonFragment from "./fragments/common-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
+import PasswordRecoveryFragment from "./fragments/password-recovery-fragment";
+import PasswordResetFragment from "./fragments/password-reset-fragment";
+import PasswordResetSuccessFragment from "./fragments/password-reset-success-fragment";
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
@@ -69,6 +72,12 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             return <SMSOTPFragment />;
         } else if (selectedScreen === PreviewScreenType.TOTP) {
             return <TOTPFragment />;
+        } else if (selectedScreen === PreviewScreenType.PASSWORD_RECOVERY) {
+            return <PasswordRecoveryFragment />;
+        } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET) {
+            return <PasswordResetFragment />;
+        } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET_SUCCESS) {
+            return <PasswordResetSuccessFragment />;
         }
     };
 
