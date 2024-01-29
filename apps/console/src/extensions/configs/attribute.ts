@@ -32,9 +32,9 @@ import { getClaimsForDialect, getDialects } from "../components/claims/api";
  * @param claim - claim
  */
 const isIdentityClaims = (claim: ExternalClaim): boolean => {
-    const excludeIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims;
+    const enableIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims;
 
-    if (!excludeIdentityClaims) {
+    if (enableIdentityClaims) {
         return false;
     }
 

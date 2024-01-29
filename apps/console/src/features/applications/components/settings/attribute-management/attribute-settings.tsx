@@ -177,8 +177,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
 
-    const excludeIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
@@ -438,7 +438,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const getClaims = () => {
         setIsClaimLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,

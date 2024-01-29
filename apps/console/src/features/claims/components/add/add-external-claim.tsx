@@ -121,8 +121,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
 
-    const excludeIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const { t } = useTranslation();
 
@@ -220,7 +220,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,

@@ -92,8 +92,8 @@ export const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterfac
     const { getLink } = useDocumentation();
     const { isMobileViewport } = useMediaContext();
 
-    const excludeIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ attributes, setAttributes ] = useState<Claim[]>(null);
     const [ localAttributes, setLocalAttributes ] = useState<Claim[]>(null);
@@ -101,7 +101,7 @@ export const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterfac
     const [ isAttributesListRequestLoading, setAttributesListRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, !enableIdentityClaims);
     }, []);
 
     useEffect(() => {

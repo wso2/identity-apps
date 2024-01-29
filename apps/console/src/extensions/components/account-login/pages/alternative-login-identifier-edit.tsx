@@ -106,8 +106,8 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const excludeIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const categoryId: string = ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID;
     const connectorId: string = ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID;
@@ -190,7 +190,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const getClaims = () => {
 
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,

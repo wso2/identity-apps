@@ -70,8 +70,8 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const excludeIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ triggerBasicDetailsSubmit, setTriggerBasicDetailsSubmit ] = useTrigger();
     const [ triggerAttributeMappingsSubmit, setTriggerAttributeMappingsSubmit ] = useTrigger();
@@ -85,7 +85,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const [ mandatoryAttributes, setMandatoryAttributes ] = useState<Claim[]>(null);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, !enableIdentityClaims);
     }, []);
 
     useEffect(() => {

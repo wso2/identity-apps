@@ -88,8 +88,8 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const excludeIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.excludeIdentityClaims);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -119,7 +119,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
  * @param filter - Search Filter.
  */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string,
-        excludeIdentity: boolean = excludeIdentityClaims) => {
+        excludeIdentity: boolean = !enableIdentityClaims) => {
         setIsLoading(true);
         const params: ClaimsGetParams = {
             "exclude-identity-claims": excludeIdentity,
@@ -156,7 +156,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, !enableIdentityClaims);
         getADialect("local").then((response: any) => {
             setClaimURIBase(response.dialectURI);
         }).catch((error: IdentityAppsError) => {

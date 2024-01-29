@@ -278,7 +278,7 @@ export class Config {
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
             },
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
-            excludeIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims,
+            enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,

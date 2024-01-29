@@ -89,9 +89,9 @@ const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().u
  * @returns boolean
  */
 const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean => {
-    const excludeIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims;
+    const enableIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims;
 
-    if (!excludeIdentityClaims) {
+    if (enableIdentityClaims) {
         return false;
     }
 
