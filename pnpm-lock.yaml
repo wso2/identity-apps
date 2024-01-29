@@ -521,7 +521,7 @@ importers:
         specifier: ^2.0.18
         version: link:../../modules/access-control
       '@wso2is/common':
-        specifier: ^2.0.28
+        specifier: ^2.0.29
         version: link:../../modules/common
       '@wso2is/core':
         specifier: ^2.0.32
@@ -533,13 +533,13 @@ importers:
         specifier: ^2.0.30
         version: link:../../modules/form
       '@wso2is/forms':
-        specifier: ^2.0.17
+        specifier: ^2.0.18
         version: link:../../modules/forms
       '@wso2is/i18n':
         specifier: ^2.0.107
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.1
+        specifier: ^2.1.2
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.59
@@ -858,13 +858,13 @@ importers:
         specifier: ^2.0.32
         version: link:../../modules/core
       '@wso2is/forms':
-        specifier: ^2.0.17
+        specifier: ^2.0.18
         version: link:../../modules/forms
       '@wso2is/i18n':
         specifier: ^2.0.107
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.1.1
+        specifier: ^2.1.2
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.0.59
@@ -1154,13 +1154,13 @@ importers:
         specifier: ^2.0.32
         version: link:../core
       '@wso2is/forms':
-        specifier: ^2.0.17
+        specifier: ^2.0.18
         version: link:../forms
       '@wso2is/i18n':
         specifier: ^2.0.107
         version: link:../i18n
       '@wso2is/react-components':
-        specifier: ^2.1.1
+        specifier: ^2.1.2
         version: link:../react-components
       axios:
         specifier: ^0.19.2
