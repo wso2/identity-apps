@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.6
+
+### Patch Changes
+
+- [#5321](https://github.com/wso2/identity-apps/pull/5321) [`eaf8dda6c0`](https://github.com/wso2/identity-apps/commit/eaf8dda6c09d00102fb34a6f21b042379bfaecff) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Unescape username before invoking the recovery api
+
 ## 2.1.5
 
 ### Patch Changes

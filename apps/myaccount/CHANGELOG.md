@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.3.9
+
+### Patch Changes
+
+- [#5337](https://github.com/wso2/identity-apps/pull/5337) [`f34a5e6a7e`](https://github.com/wso2/identity-apps/commit/f34a5e6a7e11103584df5c8ae26274f5ef5e5c8a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add support to upload a pkcs12 file
+
+- Updated dependencies [[`f34a5e6a7e`](https://github.com/wso2/identity-apps/commit/f34a5e6a7e11103584df5c8ae26274f5ef5e5c8a)]:
+  - @wso2is/react-components@2.1.2
+  - @wso2is/forms@2.0.18
+
 ## 2.3.8
 
 ### Patch Changes
