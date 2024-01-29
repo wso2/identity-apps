@@ -151,6 +151,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         return OverriddenForm;
     }
 
+    // Render the form dynamically for federated authenticators in custom connector.
     if (templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID) {
         return (
             <CommonAuthenticatorForm
