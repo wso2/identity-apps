@@ -2258,7 +2258,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Apple</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Apple</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Apple Login",
@@ -2274,7 +2274,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Apple login</3>" +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Apple login</3>" +
                                 " to configure a Apple login flow.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2289,7 +2289,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Email OTP</1> to <3>Step 2</3> on the <5>Sign-in Method" +
+                            "Add <1>Email OTP</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Email OTP Set Up Guide",
@@ -2306,7 +2306,7 @@ export const extensions: Extensions = {
                         },
                         selectEmailOTP: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Email OTP as a second " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Email OTP as a second " +
                                 "factor</3> to configure a basic Email OTP flow.",
                             heading: "Select <1>Add Email OTP as a second factor</1>"
                         }
@@ -2359,7 +2359,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>SMS OTP</1> to <3>Step 2</3> on the <5>Sign-in Method" +
+                            "Add <1>SMS OTP</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "SMS OTP Set Up Guide",
@@ -2372,7 +2372,7 @@ export const extensions: Extensions = {
                         },
                         selectSMSOTP: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add SMS OTP as a second " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add SMS OTP as a second " +
                                 "factor</3> to configure a basic SMS OTP flow.",
                             heading: "Select <1>Add SMS OTP as a second factor</1>"
                         }
@@ -2387,7 +2387,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Facebook</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Facebook</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Facebook Login",
@@ -2403,7 +2403,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2418,7 +2418,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>GitHub</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>GitHub</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add GitHub Login",
@@ -2434,7 +2434,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2449,7 +2449,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Google</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Google</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Google Login",
@@ -2465,7 +2465,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Google login</3> to " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Google login</3> to " +
                                 "configure a Google login flow.",
                             heading: "Select <1>Add Google login</1>"
                         }
@@ -2480,7 +2480,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Microsoft</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Microsoft</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Microsoft Login",
@@ -2496,7 +2496,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2511,7 +2511,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>HYPR</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>HYPR</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add HYPR Login",
@@ -2535,7 +2535,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to the <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to the <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2593,7 +2593,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Sign In With Ethereum</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Sign In With Ethereum</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Sign In With Ethereum",
@@ -2609,7 +2609,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2662,7 +2662,7 @@ export const extensions: Extensions = {
                         },
                         selectTOTP: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add OTP as a second " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add OTP as a second " +
                                 "factor</3> to configure a basic TOTP flow.",
                             heading: "Select <1>Add TOTP as a second factor</1>"
                         }
@@ -2696,7 +2696,7 @@ export const extensions: Extensions = {
                         },
                         selectFIDO: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Passkey Login</3> to configure " +
                                 " a basic passkey flow.",
                             heading: "Select <1>Add Passkey Login</1>"
                         },
@@ -2751,7 +2751,7 @@ export const extensions: Extensions = {
                         },
                         selectMagicLink: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Magic Link login" +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Magic Link login" +
                                 "</3> to configure a basic magic-link flow.",
                             heading: "Select <1>Add Magic Link login</1>"
                         }

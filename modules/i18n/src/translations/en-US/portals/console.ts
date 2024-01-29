@@ -1451,7 +1451,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 customization: {
-                                    heading: "Customize Sign-in Method",
+                                    heading: "Customize Login Flow",
                                     revertToDefaultButton: {
                                         hint: "Revert back to the default configuration (Username & Password)",
                                         label: "Revert to default"
@@ -1623,7 +1623,7 @@ export const console: ConsoleNS = {
                                     popupContent: "More details"
                                 }
                             },
-                            tabName: "Sign-in Method"
+                            tabName: "Login Flow"
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
@@ -5629,7 +5629,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 connectedApps: {
-                    action: "Go to Sign-in Method",
+                    action: "Go to Login Flow",
                     header: "Connected Application(s) of {{idpName}}.",
                     subHeader: "Applications connected to {{idpName}} are listed here.",
                     placeholders: {

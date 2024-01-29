@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
@@ -32,9 +33,9 @@ import { ApplicationListInterface } from "../../../../features/applications/mode
 import { AdvancedSearchWithBasicFilters } from "../../../../features/core/components";
 import { AppConstants } from "../../../../features/core/constants";
 import { history } from "../../../../features/core/helpers";
-import { 
-    IdentityProviderInterface, 
-    IdentityProviderTemplateInterface 
+import {
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
 } from "../../../../features/identity-providers/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 
@@ -181,7 +182,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.google.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }> 
+                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                             application </Link>
                             for which you want to set up Google login.
                         </Trans>
@@ -195,10 +196,10 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ "extensions:develop.identityProviders.google.quickStart.steps." + 
+                            i18nKey={ "extensions:develop.identityProviders.google.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Google login
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Google login
                             </strong> to configure a Google login flow.
                         </Trans>
                     </Text>
@@ -206,7 +207,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                 </>
             ),
             stepTitle: (
-                <Trans 
+                <Trans
                     i18nKey="extensions:develop.identityProviders.google.quickStart.steps.selectDefaultConfig.heading"
                 >
                     Select <strong>Add Google login</strong>

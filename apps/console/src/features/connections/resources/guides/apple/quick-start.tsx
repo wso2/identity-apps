@@ -109,7 +109,7 @@ const AppleAuthenticatorQuickStart: FunctionComponent<AppleAuthenticatorQuickSta
                             i18nKey={ "extensions:develop.identityProviders.apple.quickStart.steps" +
                             ".selectDefaultConfig.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Apple login
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Apple login
                             </strong> to configure a Apple login flow.
                         </Trans>
                     </Text>

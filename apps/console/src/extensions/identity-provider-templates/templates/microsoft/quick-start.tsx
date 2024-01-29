@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,9 +23,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import { 
-    IdentityProviderInterface, 
-    IdentityProviderTemplateInterface 
+import {
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
 } from "../../../../features/identity-providers/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
@@ -78,7 +78,7 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
                                 ".steps.selectApplication.content"
                             }
                         >
-                            Choose the 
+                            Choose the
                             <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application</Link>
                             for which you want to set up Microsoft login.
                         </Trans>
@@ -92,12 +92,12 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ 
-                                "extensions:develop.identityProviders.microsoft.quickStart.steps."+ 
-                                "selectDefaultConfig.content" 
+                            i18nKey={
+                                "extensions:develop.identityProviders.microsoft.quickStart.steps."+
+                                "selectDefaultConfig.content"
                             }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>
@@ -105,7 +105,7 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
                 </>
             ),
             stepTitle: (
-                <Trans 
+                <Trans
                     i18nKey={
                         "extensions:develop.identityProviders.microsoft.quickStart.steps.selectDefaultConfig.heading"
                     }

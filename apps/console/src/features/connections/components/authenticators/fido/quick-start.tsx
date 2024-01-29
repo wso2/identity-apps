@@ -17,12 +17,12 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src/components/vertical-stepper/vertical-stepper";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { 
+import {
     DocumentationLink,
     GenericIcon,
     Heading,
@@ -65,7 +65,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
 
     /**
      * Vertical Stepper steps.
-     * 
+     *
      * @returns VerticalStepperStepInterface List.
      */
     const steps: VerticalStepperStepInterface[] = [
@@ -94,7 +94,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Passkey
                             login</strong> to configure a basic FIDO flow.
                         </Trans>
                     </Text>
@@ -152,10 +152,10 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                     <Message
                         type={ "info" }
                         header={ t("extensions:develop.identityProviders.fido.quickStart.passkeys.heading") }
-                        content={ 
+                        content={
                             (<>
                                 { t("extensions:develop.identityProviders.fido.quickStart.passkeys.content") }
-                                <DocumentationLink 
+                                <DocumentationLink
                                     link={ getLink("develop.connections.edit.quickStart.fido.learnMore") }
                                 >
                                     { t("extensions:develop.identityProviders.fido.quickStart.passkeys.docLinkText") }

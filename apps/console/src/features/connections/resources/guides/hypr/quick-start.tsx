@@ -129,7 +129,7 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
                                 "selectDefaultConfig.content"
                             }
                         >
-                            Go to the <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to the <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>

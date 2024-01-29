@@ -111,7 +111,7 @@ const GitHubAuthenticatorQuickStart: FunctionComponent<GitHubAuthenticatorQuickS
                             i18nKey={ "extensions:develop.identityProviders.github.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>

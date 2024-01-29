@@ -93,7 +93,7 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
                             i18nKey={ "extensions:develop.identityProviders.smsOTP.quickStart.steps.selectSMSOTP" +
                                 ".content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add SMS OTP as a second
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add SMS OTP as a second
                             factor</strong> to configure a basic SMS OTP flow.
                         </Trans>
                     </Text>

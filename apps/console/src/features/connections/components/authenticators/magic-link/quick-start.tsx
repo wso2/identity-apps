@@ -17,9 +17,9 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src/components/vertical-stepper/vertical-stepper";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
@@ -55,7 +55,7 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
 
     /**
      * Vertical Stepper steps.
-     * 
+     *
      * @returns An array of steps for the vertical stepper.
      */
     const steps: VerticalStepperStepInterface[] = [
@@ -70,7 +70,7 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
                             }
                         >
                             Choose the <Link
-                                external={ false } 
+                                external={ false }
                                 onClick={ () => setShowApplicationModal(true) }>
                                 application </Link>
                             for which you want to set up Magic Link login.
@@ -89,7 +89,7 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
                             i18nKey={ "extensions:develop.identityProviders.magicLink" +
                             ".quickStart.steps.selectMagicLink.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Magic Link login
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Magic Link login
                             </strong> to configure a basic Magic Link flow.
                         </Trans>
                     </Text>

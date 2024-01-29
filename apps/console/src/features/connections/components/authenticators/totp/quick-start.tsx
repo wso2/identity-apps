@@ -17,9 +17,9 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src/components/vertical-stepper/vertical-stepper";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
@@ -82,7 +82,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.totp.quickStart.steps.selectTOTP.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add OTP as a second
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add OTP as a second
                             factor</strong> configure a basic TOTP flow.
                         </Trans>
                     </Text>

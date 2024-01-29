@@ -93,7 +93,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.totp.quickStart.steps.selectTOTP.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add OTP as a second
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add OTP as a second
                             factor</strong> configure a basic TOTP flow.
                         </Trans>
                     </Text>

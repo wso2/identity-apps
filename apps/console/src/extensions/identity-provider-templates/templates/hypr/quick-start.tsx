@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,9 +24,9 @@ import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import ConditionalAuthIllustration from "./assets/conditional-auth.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import { 
-    IdentityProviderInterface, 
-    IdentityProviderTemplateInterface 
+import {
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
 } from "../../../../features/identity-providers/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
@@ -45,7 +45,7 @@ interface HyprAuthenticatorQuickStartPropsInterface extends IdentifiableComponen
 const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStartPropsInterface> = (
     props: HyprAuthenticatorQuickStartPropsInterface
 ): ReactElement => {
-    
+
     const {
         [ "data-componentid" ]: componentId
     } = props;
@@ -61,17 +61,17 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
             {
                 onSuccess: function (context) {
                     var idpName = context.steps[1].idp;
-    
+
                     if (idpName === "HYPR") {
                         fedUser = context.currentKnownSubject;
-    
+
                         var associatedUser = getAssociatedLocalUser(fedUser);
                         if (associatedUser == null) {
                             var claimMap = {};
                             claimMap["http://wso2.org/claims/username"] = fedUser.username;
                             var storedLocalUser = getUniqueUserWithClaimValues(claimMap, context);
                             if (storedLocalUser !== null) {
-                                doAssociationWithLocalUser(fedUser, storedLocalUser.username, 
+                                doAssociationWithLocalUser(fedUser, storedLocalUser.username,
                                     storedLocalUser.tenantDomain, storedLocalUser.userStoreDomain);
                             }
                         }
@@ -94,7 +94,7 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
                             ".steps.selectApplication.content"
                         }
                     >
-                        Choose the 
+                        Choose the
                         <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application</Link>
                         for which you want to set up HYPR login.
                     </Trans>
@@ -107,12 +107,12 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ 
-                                "extensions:develop.identityProviders.hypr.quickStart.steps." + 
-                                "selectDefaultConfig.content" 
+                            i18nKey={
+                                "extensions:develop.identityProviders.hypr.quickStart.steps." +
+                                "selectDefaultConfig.content"
                             }
                         >
-                            Go to the <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to the <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>
@@ -120,7 +120,7 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
                 </>
             ),
             stepTitle: (
-                <Trans 
+                <Trans
                     i18nKey={
                         "extensions:develop.identityProviders.hypr.quickStart.steps.selectDefaultConfig.heading"
                     }
@@ -138,7 +138,7 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
                                 "extensions:develop.identityProviders.hypr.quickStart.steps.configureLogin.addHypr"
                             }
                         >
-                            Add HYPR authenticator to step 1 by clicking on 
+                            Add HYPR authenticator to step 1 by clicking on
                             the <strong>Add Authentication</strong> button.
                         </Trans>
                     </Text>
@@ -152,7 +152,7 @@ const HyprAuthenticatorQuickStart: FunctionComponent<HyprAuthenticatorQuickStart
                                     "configureLogin.conditionalAuth"
                             }
                         >
-                            Turn on <strong>Conditional Authentication</strong> by switching the toggle and 
+                            Turn on <strong>Conditional Authentication</strong> by switching the toggle and
                             add the following conditional authentication script.
                         </Trans>
                     </Text>

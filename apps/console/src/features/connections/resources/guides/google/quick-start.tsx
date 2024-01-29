@@ -218,7 +218,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                             i18nKey={ "extensions:develop.identityProviders.google.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Google login
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Google login
                             </strong> to configure a Google login flow.
                         </Trans>
                     </Text>
