@@ -532,7 +532,7 @@ export const console: ConsoleNS = {
                 copiedPopupText: "හඳුනාගැනීම පිටපත් කරන ලදි",
                 removeScopePopupText: "විෂය පථය ඉවත් කරන්න",
                 form: {
-                    button: "විෂය පථය එක් කරන්න",
+                    button: "නව විෂය පථය",
                     cancelButton: "අවලංගු කරන්න",
                     submitButton: "අවසන්",
                     title: "විෂය පථය එක් කරන්න",
@@ -3836,7 +3836,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "නව සත්‍යාපකය",
                     addCertificate: "නව සහතිකය",
                     addConnector: "නව සම්බන්ධකය",
-                    addIDP: "නව හැඳුනුම්පත් සපයන්නා"
+                    addIDP: "නව සම්බන්ධතාවය"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -5240,7 +5240,7 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "යෙදුම් වෙත ආපසු යන්න",
-                subTitle: "පහත දක්වා ඇති එක් අච්චුවක් භාවිතා කර අයදුම්පතක් ලියාපදිංචි කරන්න. ඔබේ " +
+                subTitle: "පහත දක්වා ඇති සැකිලි වලින් එකක් භාවිතා කර යෙදුමක් සාදන්න. ඔබේ " +
                     "යෙදුම් වර්ගයට කිසිවක් ගැලපෙන්නේ නැත්නම්, සම්මත පදනම් කරගත් යෙදුම් අච්චුව සමඟ ආරම්භ කරන්න.",
                 title: "නව අයදුම්පතක් ලියාපදිංචි කරන්න"
             },

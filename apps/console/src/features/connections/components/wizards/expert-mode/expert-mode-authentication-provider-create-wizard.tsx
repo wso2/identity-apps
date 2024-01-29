@@ -267,19 +267,22 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                                     { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                 </PrimaryButton>
                             ) : (
-                                <>
-                                    <PrimaryButton
-                                        floated="right"
-                                        onClick={ () => {
-                                            submitForm();
-                                        } }
-                                        data-componentid={ `${ componentId }-modal-finish-button` }
-                                        loading={ isSubmitting }
-                                        disabled={ isSubmitting }
-                                    >
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
-                                    </PrimaryButton>
-                                </>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ () => {
+                                        submitForm();
+                                    } }
+                                    data-componentid={ `${ componentId }-modal-finish-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
+                                    {
+                                        totalStep === 1
+                                            ? t("common:create")
+                                            : t("console:develop.features.authenticationProvider." +
+                                                "wizards.buttons.finish")
+                                    }
+                                </PrimaryButton>
                             ) }
                             {
                                 currentWizardStep > 1 && (

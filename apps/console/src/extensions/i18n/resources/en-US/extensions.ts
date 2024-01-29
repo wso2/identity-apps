@@ -700,8 +700,8 @@ export const extensions: Extensions = {
                     cancelButton: "Cancel",
                     nextButton: "Next",
                     previousButton: "Previous",
-                    submitButton: "Finish",
-                    title: "Add API",
+                    submitButton: "Create",
+                    title: "Create an API",
                     subtitle: "Create a new API",
                     steps: {
                         basic: {
@@ -4126,8 +4126,8 @@ export const extensions: Extensions = {
                     }
                 },
                 addUser: {
-                    subtitle: "Follow the steps to add a new user.",
-                    title: "Add User"
+                    subtitle: "Follow the steps to create a new user.",
+                    title: "Create User"
                 }
             }
         },

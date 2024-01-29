@@ -1022,7 +1022,7 @@ export const extensions: Extensions = {
                                     searchPlaceholer: "Rechercher par nom d'API et nom d'autorisation"
                                 }
                             },
-                            heading: "Créer un rôle",
+                            heading: "Nouveau rôle",
                             subHeading: "Créez un nouveau rôle dans votre application.",
                             wizardSteps: {
                                 0: "Détails de base",

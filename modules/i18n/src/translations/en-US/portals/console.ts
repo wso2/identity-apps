@@ -526,10 +526,10 @@ export const console: ConsoleNS = {
                 copiedPopupText: "Copied the Identifier",
                 removeScopePopupText: "Remove the scope",
                 form: {
-                    button: "Add Scope",
+                    button: "New Scope",
                     cancelButton: "Cancel",
-                    submitButton: "Finish",
-                    title: "Add Scope",
+                    submitButton: "Create",
+                    title: "Create a Scope",
                     subTitle: "Create a new Scope",
                     fields: {
                         displayName: {
@@ -1632,7 +1632,7 @@ export const console: ConsoleNS = {
                             createApplicationRoleWizard: {
                                 title: "Create Application Role",
                                 subTitle: "Create a new application role in the system.",
-                                button: "Create Role"
+                                button: "New Role"
                             }
                         }
                     }
@@ -3624,7 +3624,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "Create Connection"
+                    addIDP: "New Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -7018,13 +7018,13 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to Applications",
-                subTitle: "Register an application using one of the templates given below. If nothing matches your " +
+                subTitle: "Create an application using one of the templates given below. If nothing matches your " +
                     "application type, start with the Standard-Based Application template.",
-                title: "Register New Application"
+                title: "Create a New Application"
             },
             applications: {
                 alternateSubTitle: "Manage your applications and customize login flows.",
-                subTitle: "Register and manage your applications and configure sign-in.",
+                subTitle: "Create and manage your applications and configure sign-in.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -10072,7 +10072,7 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "Add Organization"
+                        add: "New Organization"
                     },
                     columns: {
                         actions: "Actions",
@@ -10081,7 +10081,7 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Add Organization",
+                        header: "Create an Organization",
                         subtitle1: "Create a new organization in {{parent}}.",
                         subtitle2: "Create a new organization."
                     }
@@ -10202,7 +10202,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Add Organization",
+                        action: "New Organization",
                         subtitles: {
                             0: "There are no organizations at the moment.",
                             1: "You can add a new organization easily by",

@@ -524,7 +524,7 @@ export const console: ConsoleNS = {
                 copiedPopupText: "Copié l'identifiant",
                 removeScopePopupText: "Retirez la portée",
                 form: {
-                    button: "Ajouter la portée",
+                    button: "Nouvelle portée",
                     cancelButton: "Annuler",
                     submitButton: "Finition",
                     title: "Ajouter une portée",
@@ -3943,7 +3943,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "Ajouter un authentificateur",
                     addCertificate: "Ajouter un certificat",
                     addConnector: "Ajouter un connecteur",
-                    addIDP: "Nouveau connexion"
+                    addIDP: "Nouvelle connexion"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -5387,9 +5387,9 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Enregistrez une demande en utilisant l'un des modèles ci-dessous. Si rien ne correspond " +
+                subTitle: "Créez une application en utilisant l'un des modèles ci-dessous. Si rien ne correspond " +
                     "à votre type d'application, commencez par le modèle d'application standard.",
-                title: "Enregistrer une nouvelle candidature"
+                title: "Créer une nouvelle application"
             },
             applications: {
                 alternateSubTitle: "Gérez vos applications et personnalisez les flux de connexion.",
@@ -8300,7 +8300,7 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "Ajouter une organisation"
+                        add: "Nouvelle organisation"
                     },
                     columns: {
                         actions: "Actions",
@@ -8309,7 +8309,7 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Ajouter une Organisation",
+                        header: "Créer une organisation",
                         subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
                         subtitle2: "Créer une nouvelle organisation."
                     }
@@ -8431,7 +8431,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Ajouter une Organisation",
+                        action: "Nouvelle organisation",
                         subtitles: {
                             0: "Il n'y a pas d'organisations pour le moment.",
                             1: "Vous pouvez facilement ajouter une nouvelle organisation en",

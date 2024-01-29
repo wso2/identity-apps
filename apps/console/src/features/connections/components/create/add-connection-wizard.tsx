@@ -436,8 +436,12 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("console:develop.features.authenticationProvider." +
-                                            "wizards.buttons.finish") }
+                                        {
+                                            totalStep === 1
+                                                ? t("common:create")
+                                                : t("console:develop.features.authenticationProvider." +
+                                                    "wizards.buttons.finish")
+                                        }
                                     </PrimaryButton>
                                 )
                         }
