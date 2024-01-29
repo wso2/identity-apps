@@ -494,7 +494,7 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_SIGNIN_TAB: number = 3;
 
     /**
-     * Login Flow tab index of My Account application in non-organization view.
+     * Login Flow tab index of My Account application in root organization view.
      */
     public static readonly MY_ACCOUNT_LOGIN_FLOW_TAB: number = 2;
 
