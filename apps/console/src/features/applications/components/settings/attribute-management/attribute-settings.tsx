@@ -153,33 +153,6 @@ export const DefaultSubjectAttribute: string = "http://wso2.org/claims/username"
 
 export const LocalDialectURI: string = "http://wso2.org/claims";
 
-export function isIdentityClaim(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean {
-
-    const excludeIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.excludeIdentityClaims;
-
-    if (!excludeIdentityClaims) {
-        return false;
-    }
-
-    const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
-
-    if (isClaimInterface(claim)) {
-        return identityRegex.test(claim.claimURI);
-    }
-
-    return identityRegex.test(claim.mappedLocalClaimURI);
-}
-
-function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface):
-    claim is ExtendedClaimInterface {
-
-    if ((claim as ExtendedExternalClaimInterface).mappedLocalClaimURI == undefined) {
-        return true;
-    }
-
-    return false;
-}
-
 /**
  * Attribute settings component.
  */
