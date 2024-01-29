@@ -1040,7 +1040,7 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(ENTERPRISE_USER_LOGIN_AUTHENTICATOR))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
-                                                        <img class="ui image" src="libs/themes/default/assets/images/branding/asgardeo-trifacta.svg">
+                                                        <img class="ui image" src="libs/themes/wso2is/assets/images/branding/asgardeo-trifacta.svg">
                                                         <span>
                                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
                                                             <%=Encode.forHtmlContent("Asgardeo")%>
