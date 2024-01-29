@@ -189,7 +189,19 @@
     Approval Task Claims List
 *******************************/
 .ui.table {
-    .values-list {
-        overflow-wrap: anywhere;
+    &.approval-tasks-table {
+        .values-cell {
+            max-width: 450px;
+
+            .ui.list {
+                &.values-list {
+                    overflow-x: scroll;     
+
+                    .item {
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
     }
 }

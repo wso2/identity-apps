@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -111,7 +111,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      */
     const cleanupPropertyValues = (key: string, value: string): string | JSX.Element => {
         if (key === "Claims") {
-            const claims = value.split(",");
+            const claims: string[] = value.split(",");
 
             return (
                 <List className="values-list" items={ claims } />
@@ -131,7 +131,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             }
         }
 
-        const lastChar = value.substr(value.length - 1);
+        const lastChar: string = value.substr(value.length - 1);
 
         if (lastChar !== ",") {
             return value;
@@ -182,7 +182,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A table containing the list of properties.
      */
     const propertiesTable = (properties): JSX.Element => (
-        <Table celled compact className="edit-segment-table" verticalAlign="top">
+        <Table celled compact className="approval-tasks-table" verticalAlign="top">
             <Table.Body>
                 {
                     properties.map((property, i) => (

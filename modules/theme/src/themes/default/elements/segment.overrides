@@ -30,23 +30,6 @@
         &.top-margin {
             margin-top: @editSegmentMarginTop;
         }
-        .edit-segment-table {
-            .values-cell {
-                max-width: @editSegmentTableValueMaxWidth;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-
-                .values-list {
-                    .item {
-                         max-width: @editSegmentTableValueMaxWidth;
-                         overflow: hidden;
-                         text-overflow: ellipsis;
-                         white-space: nowrap
-                     }
-                }
-            }
-        }
     }
 }
 
