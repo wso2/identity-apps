@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.11.21
+
+### Patch Changes
+
+- [#5379](https://github.com/wso2/identity-apps/pull/5379) [`d6f8df5e3b`](https://github.com/wso2/identity-apps/commit/d6f8df5e3b90e52ac711cc3f51e868615f3a4827) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix groups search bar not showing when the no. of connected user stores are less than 3
+
+* [#5373](https://github.com/wso2/identity-apps/pull/5373) [`42bc966c2f`](https://github.com/wso2/identity-apps/commit/42bc966c2f0b4984744cc4286bf49205bbe263ee) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix logo issue in email template preview section
+
+- [#5374](https://github.com/wso2/identity-apps/pull/5374) [`3520e4d1dd`](https://github.com/wso2/identity-apps/commit/3520e4d1dd3b9eae3aba31efde208e70431b9e48) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Improve sub organization user filtering
+
+* [#5347](https://github.com/wso2/identity-apps/pull/5347) [`cc28be662d`](https://github.com/wso2/identity-apps/commit/cc28be662d01e758f6b7df468b04186759cf2b9e) Thanks [@savindi7](https://github.com/savindi7)! - Improve button text consistency.
+
+- [#5375](https://github.com/wso2/identity-apps/pull/5375) [`a9b51c670e`](https://github.com/wso2/identity-apps/commit/a9b51c670edff9a54f07ed1af49c5b0479fb764e) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix required field issue in custom sms provider
+
+* [#5378](https://github.com/wso2/identity-apps/pull/5378) [`8b754338cf`](https://github.com/wso2/identity-apps/commit/8b754338cfe012c0c0103c787c18427e423cc555) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix redirection issue in My Account edit view in sub organization
+
+* Updated dependencies [[`cc28be662d`](https://github.com/wso2/identity-apps/commit/cc28be662d01e758f6b7df468b04186759cf2b9e)]:
+  - @wso2is/i18n@2.0.108
+  - @wso2is/common@2.0.30
+
 ## 2.11.20
 
 ### Patch Changes
