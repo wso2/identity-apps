@@ -136,7 +136,7 @@ export class CustomTextPreferenceConstants {
         TERMS_AND_CONDITIONS: string;
         TOTP: {
             HEADING: string;
-        },
+        }
     } = {
         COPYRIGHT: "copyright",
         EMAIL_OTP: {
