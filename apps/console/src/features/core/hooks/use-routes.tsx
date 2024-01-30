@@ -162,7 +162,7 @@ const useRoutes = (): useRoutesInterface => {
             getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
-            true,
+            !legacyAuthzRuntime,
             resolveHiddenRoutes(),
             allowedRoutes
         );
