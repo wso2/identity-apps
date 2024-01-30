@@ -126,7 +126,7 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
 
     return (
         <>
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
                 <Grid md={ 12 } sm={ 8 } xs={ 4 }>
                     <PageHeader
                         className="mb-2"

@@ -37,9 +37,8 @@ type TOTPQuickStartPropsInterface = TestableComponentInterface;
 /**
  * Quick start content for the TOTP authenticator.
  *
- * @param {TOTPQuickStartPropsInterface} props - Props injected into the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns TOTP authenticator quick start component.
  */
 const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
     props: TOTPQuickStartPropsInterface
@@ -55,7 +54,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
 
     /**
      * Vertical Stepper steps.
-     * @return {VerticalStepperStepInterface[]}
+     * @returns Stepper steps.
      */
     const steps: VerticalStepperStepInterface[] = [
         {
@@ -67,7 +66,10 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.totp.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application </Link>
+                            Choose the <Link
+                                external={ false }
+                                onClick={ () => setShowApplicationModal(true) }
+                            > application </Link>
                             for which you want to set up TOTP login.
                         </Trans>
                     </Text>
@@ -114,7 +116,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
 
     return (
         <>
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
                 <Grid xs={ 4 } sm={ 8 } md={ 12 }>
                     <PageHeader
                         className="mb-2"
