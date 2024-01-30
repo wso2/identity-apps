@@ -32,7 +32,7 @@ import { history } from "../../core/helpers/history";
 import { useGetRoleById } from "../../roles/api/roles";
 import { RoleAudienceTypes } from "../../roles/constants/role-constants";
 import ConsoleRolesEdit from "../components/console-roles/console-roles-edit/console-roles-edit";
-import { ConsoleSettingsTabIDs } from "../models/ui";
+import { ConsoleSettingsModes } from "../models/ui";
 
 /**
  * Props interface of {@link ConsoleRolesEditPage}
@@ -126,7 +126,7 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
      */
     const handleBackButtonClick = () => {
         history.push(AppConstants.getPaths().get("CONSOLE_SETTINGS")
-            + `#tab=${ ConsoleSettingsTabIDs.ROLES }`);
+            + `#tab=${ ConsoleSettingsModes.ROLES }`);
     };
 
     if (roleDetailsRequestError) {
