@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -64,6 +64,18 @@ export class ClaimManagementConstants {
 
     public static readonly ADD_LOCAL_CLAIM_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while adding a new dialect.";
+
+    public static readonly EXTERNAL_CLAIM_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching the external claim.";
+
+    public static readonly EXTERNAL_CLAIM_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
+        "external claim.";
+
+    public static readonly EXTERNAL_CLAIM_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
+        "status code while updating the external claim.";
+
+    public static readonly EXTERNAL_CLAIM_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
+        "external claim.";
 
     /**
      * Map to access the attribute dialect ids.

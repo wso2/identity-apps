@@ -348,6 +348,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     listAllAttributeDialects?: boolean;
     /**
+     * Flag to check whether to enable the identity claims.
+     */
+    enableIdentityClaims?: boolean;
+    /**
      * Should show/hide marketing consent banner.
      */
     isMarketingConsentBannerEnabled: boolean;

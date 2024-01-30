@@ -1,32 +1,33 @@
 /**
-* Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
-*
-* WSO2 LLC. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../extensions";
 import { getAllLocalClaims } from "../../../../claims/api";
-import { sortList } from "../../../../core";
+import { AppState, sortList } from "../../../../core";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
@@ -81,9 +82,9 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the edit external claim modal.
  *
- * @param {EditExternalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns EditExternalClaim react element.
  */
 export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterface> = (
     props: EditExternalClaimsPropsInterface
@@ -106,26 +107,29 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     const [ localClaims, setLocalClaims ] = useState<Claim[]>();
     const [ claim, setClaim ] = useState<ExternalClaim>(null);
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
-    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(false); 
+    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
+
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const { t } = useTranslation();
 
     useEffect(() => {
         setIsClaimsLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,
             sort: null
         };
 
-        getAllLocalClaims(params).then(response => {
+        getAllLocalClaims(params).then((response: Claim[]) => {
             setIsClaimsLoading(false);
             setLocalClaims(sortList(response, "displayName", true));
-        }).catch(error => {
+        }).catch((error: IdentityAppsApiException) => {
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
@@ -138,16 +142,16 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
         });
 
         if (!wizard) {
-            getAnExternalClaim(dialectID, claimID).then(response => {
+            getAnExternalClaim(dialectID, claimID).then((response: ExternalClaim) => {
                 setClaim(response);
-            }).catch(error => {
+            }).catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert(
                     {
-                        description: error?.description
+                        description: error?.response?.data?.description
                             || t("console:manage.features.claims.external.notifications." +
                                 "getExternalAttribute.genericError.description", { type: resolveType(attributeType) }),
                         level: AlertLevels.ERROR,
-                        message: error?.message
+                        message: error?.response?.data?.message
                             || t("console:manage.features.claims.external.notifications." +
                                 "getExternalAttribute.genericError.message")
                     }
@@ -187,13 +191,13 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     /**
      * Set the modified claimURI to the form values.
      *
-     * @param {Map<string, FormValue>} values - Claim object
+     * @param values - Claim object
      */
     const resolveClaimURI = (values: Map<string, FormValue>): Map<string, FormValue> => {
         const parts: string[] = addedClaim.claimURI.split(":");
 
         if (parts.length > 1) {
-            const claimURI: string = parts.filter((part,idx) => idx < parts.length - 1).join(":") +
+            const claimURI: string = parts.filter((part: string, idx: number) => idx < parts.length - 1).join(":") +
                 ":" + values.get("claimURI");
 
             values.set("claimURI", claimURI);
@@ -205,13 +209,13 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     /**
      * This removes the mapped local claims from the local claims list.
      *
-     * @param {string} claimURI The claim URI of the mapped local claim.
-     * @param {Claim[]} filteredLocalClaims - Filtered claims.
+     * @param claimURI - The claim URI of the mapped local claim.
+     * @param filteredLocalClaims - Filtered claims.
      *
-     * @returns {Claim[]} The array of filtered Claims.
+     * @returns The array of filtered Claims.
      */
     const removeMappedLocalClaim = (claimURI: string, filteredLocalClaims?: Claim[]): Claim[] => {
-        const claimsToFilter = filteredLocalClaims ? filteredLocalClaims : localClaims;
+        const claimsToFilter: Claim[] = filteredLocalClaims ? filteredLocalClaims : localClaims;
 
         return claimsToFilter?.filter((claim: Claim) => {
             return claim.claimURI !== claimURI;
@@ -221,7 +225,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     /**
      * Returns the local claim that is mapped to the external claim.
      *
-     * @returns {Claim} The Local Claim mapped to the selected external claim.
+     * @returns The Local Claim mapped to the selected external claim.
      */
     const getLocalClaimMappedToSelectedExternalClaim = (): Claim => {
         return localClaims.find((localClaim: Claim) => {
@@ -250,15 +254,15 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             }
                         ));
                         update();
-                    }).catch(error => {
+                    }).catch((error: IdentityAppsApiException) => {
                         dispatch(addAlert(
                             {
-                                description: error?.description
+                                description: error?.response?.data?.description
                                     || t("console:manage.features.claims.external.notifications." +
                                         "updateExternalAttribute.genericError.description",
                                     { type: resolveType(attributeType) }),
                                 level: AlertLevels.ERROR,
-                                message: error?.message
+                                message: error?.response?.data?.message
                                     || t("console:manage.features.claims.external.notifications." +
                                         "updateExternalAttribute.genericError.message")
                             }
@@ -320,15 +324,15 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             loading={ isClaimsLoading }
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={
-                                filteredLocalClaims?.map((claim: Claim, index) => {
+                                filteredLocalClaims?.map((claim: Claim, index: number) => {
                                     return {
                                         key: index,
                                         text: (
                                             <div className="multiline">
                                                 { claim?.displayName }
-                                                <Code 
-                                                    className="description" 
-                                                    compact 
+                                                <Code
+                                                    className="description"
+                                                    compact
                                                     withBackground={ false }>
                                                     { claim?.claimURI }
                                                 </Code>

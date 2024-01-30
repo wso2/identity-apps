@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -370,7 +370,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
  *
  * @returns response.
  */
-export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<any> => {
+export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<ExternalClaim> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
@@ -384,13 +384,25 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+                throw new IdentityAppsApiException(
+                    ClaimManagementConstants.EXTERNAL_CLAIM_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response?.status,
+                    response?.request,
+                    response,
+                    response?.config);
             }
 
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
+            throw new IdentityAppsApiException(
+                ClaimManagementConstants.EXTERNAL_CLAIM_FETCH_REQUEST_ERROR,
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config);
         });
 };
 
@@ -398,7 +410,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
  * Gets the external claims with the given ID of the dialect.
  *
  * @param dialectID - Claim Dialect ID.
- * 
+ *
  * @returns response.
  * @throws IdentityAppsApiException.
  */
@@ -461,13 +473,24 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+                throw new IdentityAppsApiException(
+                    ClaimManagementConstants.EXTERNAL_CLAIM_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                    null,
+                    response?.status,
+                    response?.request,
+                    response,
+                    response?.config);
             }
 
             return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ClaimManagementConstants.EXTERNAL_CLAIM_UPDATE_REQUEST_ERROR,
+                error?.stack,
+                error?.response?.status,
+                error?.request,
+                error?.response,
+                error?.config);
         });
 };
 
@@ -506,9 +529,9 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
 /**
  * Retrieves a list of all the server supported claims
  * per the given schema id.
- * 
+ *
  * @param id - Selected schema id
- * 
+ *
  * @returns response.
  */
 export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSupportedClaimsInterface> => {
@@ -538,7 +561,7 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
  * Fetch all local claims.
  *
  * @param params - limit, offset, sort, attributes, filter.
- 
+
  * @returns response.
  * @throws IdentityAppsApiException
  */
@@ -675,11 +698,11 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
 
 /**
  * Get all SCIM resource types.
- * 
+ *
  * @returns response.
  */
 export const getSCIMResourceTypes = (): Promise<any> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,26 +22,26 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
-import { 
-    AlertLevels, 
-    Claim, 
-    ClaimsGetParams, 
-    IdentifiableComponentInterface, 
-    Property 
+import {
+    AlertLevels,
+    Claim,
+    ClaimsGetParams,
+    IdentifiableComponentInterface,
+    Property
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    Field, 
-    Form 
+import {
+    Field,
+    Form
 } from "@wso2is/form";
-import { 
+import {
     ContentLoader,
-    EmphasizedSegment, 
-    Message, 
+    EmphasizedSegment,
+    Message,
     PageLayout
 } from "@wso2is/react-components";
-import { 
-    ServerConfigurationsConstants 
+import {
+    ServerConfigurationsConstants
 } from "apps/console/src/features/server-configurations/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -53,37 +53,35 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { 
-    ExtendedClaimInterface 
+import {
+    ExtendedClaimInterface
 } from "../../../../features/applications/components/settings/attribute-management";
 import { ApplicationManagementConstants } from "../../../../features/applications/constants";
-import { 
-    getAllLocalClaims, 
-    updateAClaim 
+import {
+    getAllLocalClaims,
+    updateAClaim
 } from "../../../../features/claims/api/claims";
 import { ClaimManagementConstants } from "../../../../features/claims/constants";
-import { 
-    AppConstants, 
-    history 
+import {
+    AppConstants,
+    AppState,
+    history
 } from "../../../../features/core";
-import { 
-    getConnectorDetails, 
-    updateGovernanceConnector 
+import {
+    getConnectorDetails,
+    updateGovernanceConnector
 } from "../../../../features/server-configurations/api";
-import { 
-    ConnectorPropertyInterface, 
-    GovernanceConnectorInterface, 
-    UpdateGovernanceConnectorConfigInterface 
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
 } from "../../../../features/server-configurations/models";
 import { getUsernameConfiguration } from "../../../../features/users/utils/user-management-utils";
 import { useValidationConfigData } from "../../../../features/validation/api";
-import { 
-    applicationConfig 
-} from "../../../configs";
-import { 
+import {
     AlternativeLoginIdentifierFormInterface
 } from "../models";
 
@@ -107,6 +105,10 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const { ["data-componentid"]: componentId } = props;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
+
     const categoryId: string = ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID;
     const connectorId: string = ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID;
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
@@ -115,9 +117,9 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const [ isLoading, setIsLoading ] = useState(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(undefined);
-    const availiableLoginIdentifierAttributes: string[] = 
+    const availiableLoginIdentifierAttributes: string[] =
         [
-            ClaimManagementConstants.EMAIL_CLAIM_URI, 
+            ClaimManagementConstants.EMAIL_CLAIM_URI,
             ClaimManagementConstants.MOBILE_CLAIM_URI
         ];
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
@@ -188,7 +190,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const getClaims = () => {
 
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,
@@ -197,7 +199,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 
         getAllLocalClaims(params)
             .then((response: Claim[]) => {
-                const filteredArray: Claim[] = response?.filter((item: Claim) => 
+                const filteredArray: Claim[] = response?.filter((item: Claim) =>
                     availiableLoginIdentifierAttributes.includes(item.claimURI));
 
                 setAvailableClaims(filteredArray);
@@ -224,21 +226,21 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 
         let resolvedInitialValues: AlternativeLoginIdentifierFormInterface = initialFormValues;
 
-        const isEnabled: boolean = 
-            (connector?.properties?.find((property: ConnectorPropertyInterface) => 
+        const isEnabled: boolean =
+            (connector?.properties?.find((property: ConnectorPropertyInterface) =>
                 property.name === "account.multiattributelogin.handler.enable").value === "true");
 
-        const property: ConnectorPropertyInterface = 
-            connector?.properties?.find((property: ConnectorPropertyInterface) => 
+        const property: ConnectorPropertyInterface =
+            connector?.properties?.find((property: ConnectorPropertyInterface) =>
                 property.name === "account.multiattributelogin.handler.allowedattributes");
         const allowedAttributes: string[] =  property?.value.split(",").map((item: string) => item.trim());
 
         resolvedInitialValues = {
             ...resolvedInitialValues,
-            email: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.EMAIL_CLAIM_URI) && 
+            email: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.EMAIL_CLAIM_URI) &&
                 isAlphanumericUsername,
             mobile: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.MOBILE_CLAIM_URI)
-        }; 
+        };
 
         setInitialFormValues(resolvedInitialValues);
 
@@ -271,7 +273,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     };
 
     const getUpdatedConfigurations = (values: any) => {
-        const defaultAllowedAttributes: string = 
+        const defaultAllowedAttributes: string =
             ClaimManagementConstants.USER_NAME_CLAIM_URI;
         const updatedAllowedAttributes: string = [ defaultAllowedAttributes, ...values ].join(",");
         const enabled: boolean = updatedAllowedAttributes !== defaultAllowedAttributes;
@@ -381,7 +383,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
             }
         } else if (isUniqueIndex !== -1) {
             isClaimUpdate = true;
-            updatedClaimProperties = updatedClaimProperties.filter((property: Property) => 
+            updatedClaimProperties = updatedClaimProperties.filter((property: Property) =>
                 property.key !== "isUnique");
         }
 
@@ -402,11 +404,11 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
             })
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
-                    description: error?.description || 
+                    description: error?.description ||
                         t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.claimUpdateNotification." +
                             "error.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || 
+                    message: error?.message ||
                         t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.claimUpdateNotification." +
                             "error.description")
                 }));
@@ -431,13 +433,13 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 
         const processedFormValues: AlternativeLoginIdentifierFormInterface = { ...values };
         const checkedClaims: string[] = availableClaims
-            .filter((claim: Claim) => 
-                processedFormValues[claim?.displayName?.toLowerCase()] !== undefined 
+            .filter((claim: Claim) =>
+                processedFormValues[claim?.displayName?.toLowerCase()] !== undefined
                     ? processedFormValues[claim?.displayName?.toLowerCase()] : false)
             .map((claim: Claim) => claim?.claimURI);
         const updatedConnectorData: any = getUpdatedConfigurations(checkedClaims);
 
-        updateConnector(updatedConnectorData, checkedClaims);    
+        updateConnector(updatedConnectorData, checkedClaims);
 
     };
 
@@ -461,7 +463,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
         isLoading
     ]);
 
-    /** 
+    /**
      * Get username type
      */
     useEffect(() => {
@@ -483,7 +485,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     return (
         <>
             {
-                !isLoading && initialFormValues 
+                !isLoading && initialFormValues
                     ? (
                         <PageLayout
                             pageTitle={ t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.pageTitle") }
@@ -517,7 +519,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                                         uncontrolledForm={ false }
                                         validate={ null }
                                         onSubmit={
-                                            (values: AlternativeLoginIdentifierFormInterface) => handleSubmit(values) 
+                                            (values: AlternativeLoginIdentifierFormInterface) => handleSubmit(values)
                                         }
                                     >
                                         <Typography>
@@ -539,13 +541,13 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                                                             <ListItem
                                                                 key = { index }
                                                                 disablePadding
-                                                                disabled = { 
-                                                                    !(isAlphanumericUsername) && name === "email" 
-                                                                } 
+                                                                disabled = {
+                                                                    !(isAlphanumericUsername) && name === "email"
+                                                                }
                                                             >
-                                                                <Field.OxygenCheckbox 
-                                                                    disabled = { 
-                                                                        !(isAlphanumericUsername) && name === "email" 
+                                                                <Field.OxygenCheckbox
+                                                                    disabled = {
+                                                                        !(isAlphanumericUsername) && name === "email"
                                                                     }
                                                                     ariaLabel= { name }
                                                                     key= { index }
@@ -555,19 +557,19 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                                                                         { `${componentId}-${name}-checkbox` }
                                                                     className= "alternative-login-identifier-checkbox"
                                                                 />
-                                                                <ListItemText 
+                                                                <ListItemText
                                                                     className="alternative-login-identifier-item-text "
-                                                                    primary={ claim?.displayName } 
-                                                                    secondary={ 
+                                                                    primary={ claim?.displayName }
+                                                                    secondary={
                                                                         (
                                                                             <Code
-                                                                                className= 
+                                                                                className=
                                                                                     "alternative-login-identifier-code"
                                                                             >
                                                                                 { claim?.claimURI }
                                                                             </Code>
-                                                                        ) 
-                                                                    } 
+                                                                        )
+                                                                    }
                                                                 />
                                                             </ListItem>
 
@@ -575,7 +577,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                                                                 !isAlphanumericUsername && name === "email" ?
                                                                     (
                                                                         sampleInfoSection()
-                                                                    ) 
+                                                                    )
                                                                     : <></>
                                                             }
                                                         </>
