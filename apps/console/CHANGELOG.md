@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.11.22
+
+### Patch Changes
+
+- [#5372](https://github.com/wso2/identity-apps/pull/5372) [`384a7a81ba`](https://github.com/wso2/identity-apps/commit/384a7a81ba7a64c5223f69d5d54c6d3c6a295838) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the custom connector details view to change dynamically
+
+* [#5350](https://github.com/wso2/identity-apps/pull/5350) [`6d74ba3aa2`](https://github.com/wso2/identity-apps/commit/6d74ba3aa2866e3ee99d6bde1a09741366f16996) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Display Identity Claims in Attribute and Application Attribute Sections
+
+- [#5382](https://github.com/wso2/identity-apps/pull/5382) [`bbfb6cb534`](https://github.com/wso2/identity-apps/commit/bbfb6cb53455c1278ab9b13beb9c0d8e48652d42) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with tab switching in Console Settings
+
+* [#5383](https://github.com/wso2/identity-apps/pull/5383) [`cccc754d63`](https://github.com/wso2/identity-apps/commit/cccc754d634ebff8f47b9c53ea9cfacc262fda2d) Thanks [@savindi7](https://github.com/savindi7)! - Get Adaptive auth feature status from framework.
+
 ## 2.11.21
 
 ### Patch Changes
