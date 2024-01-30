@@ -217,7 +217,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="contentType"
                             readOnly={ isReadOnly }
-                            required={ false }
+                            required={ true }
                             data-componentid={ `${componentId}-contentType` }
                             name="contentType"
                             type="text"
@@ -311,7 +311,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="payload"
                             readOnly={ isReadOnly }
-                            required={ false }
+                            required={ true }
                             data-componentid={ `${componentId}-payload` }
                             name="payload"
                             type="text"
