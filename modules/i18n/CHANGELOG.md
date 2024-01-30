@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.108
+
+### Patch Changes
+
+- [#5347](https://github.com/wso2/identity-apps/pull/5347) [`cc28be662d`](https://github.com/wso2/identity-apps/commit/cc28be662d01e758f6b7df468b04186759cf2b9e) Thanks [@savindi7](https://github.com/savindi7)! - Improve button text consistency.
+
 ## 2.0.107
 
 ### Patch Changes

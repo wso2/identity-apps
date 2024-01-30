@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.7
+
+### Patch Changes
+
+- [#5371](https://github.com/wso2/identity-apps/pull/5371) [`8d0c3858b2`](https://github.com/wso2/identity-apps/commit/8d0c3858b2afa438b228a0df22e0c67a71a024b0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken logo in privileged user login UI
+
 ## 2.1.6
 
 ### Patch Changes
