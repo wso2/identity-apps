@@ -133,7 +133,7 @@ export class CustomTextPreferenceConstants {
         SMS_OTP: {
             HEADING: string;
         },
-        TERMS_AND_CONDITIONS: string;
+        TERMS_OF_SERVICE: string;
         TOTP: {
             HEADING: string;
         }
@@ -171,7 +171,7 @@ export class CustomTextPreferenceConstants {
         SMS_OTP: {
             HEADING: "sms.otp.heading"
         },
-        TERMS_AND_CONDITIONS: "terms.and.conditions",
+        TERMS_OF_SERVICE: "terms.of.service",
         TOTP: {
             HEADING: "totp.heading"
         }

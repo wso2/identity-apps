@@ -645,8 +645,8 @@ export const console: ConsoleNS = {
                 "site.title": {
                     hint: "The site title may appear in browser tabs, search engine results, social shares, etc. If not set, {{productName}} defaults are used."
                 },
-                "terms.and.conditions": {
-                    hint: "The terms and conditions text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
+                "terms.of.service": {
+                    hint: "The terms of service text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
                 },
                 "login.button": {
                     hint: "The text that appears on the main action button of the login box. If not set, {{productName}} defaults are used."

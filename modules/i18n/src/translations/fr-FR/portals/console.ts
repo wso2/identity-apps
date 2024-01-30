@@ -643,8 +643,8 @@ export const console: ConsoleNS = {
                 "site.title": {
                     hint: "Le titre du site peut apparaître dans les onglets du navigateur, les résultats des moteurs de recherche, les partages sur les réseaux sociaux, etc. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
                 },
-                "terms.and.conditions": {
-                    hint: "Le texte des termes et conditions qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                "terms.of.service": {
+                    hint: "Le texte des conditions d'utilisation qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 },
                 "login.button": {
                     hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."

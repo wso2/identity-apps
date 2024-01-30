@@ -461,7 +461,7 @@ export interface ConsoleNS {
                 "site.title": {
                     hint: string;
                 };
-                "terms.and.conditions": {
+                "terms.of.service": {
                     hint: string;
                 };
                 "login.button": {
