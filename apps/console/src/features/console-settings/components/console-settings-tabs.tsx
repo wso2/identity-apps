@@ -132,13 +132,13 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
      */
     const getActiveTabFromUrl = (): number => {
         const activeTabFromUrl: ConsoleSettingsTabInterface = consoleTabs.find((tab: ConsoleSettingsTabInterface) => {
-            return location.hash === `#tab=${tab.value}`;
+            return location.hash === `#tab=${tab.id}`;
         });
 
         return activeTabFromUrl ? activeTabFromUrl.value : consoleTabs[0].value;
     };
 
-    const [ activeTab, setActiveTab ] = useState<number>(getActiveTabFromUrl);
+    const [ activeTab, setActiveTab ] = useState<number>(getActiveTabFromUrl());
 
     /**
      * Register a hash change listener to update the active tab.
@@ -157,14 +157,21 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         };
     }, []);
 
+    /**
+     * Callback to handle tab change.
+     *
+     * @param _ - Tab change event.
+     * @param newTabIndex - New tab index.
+     */
+    const onTabChange = (_: SyntheticEvent, newTabIndex: number): void => {
+        location.hash = `#tab=${consoleTabs[newTabIndex].id}`;
+    };
+
     return (
         <div className="console-settings-tabs">
             <Tabs
                 value={ activeTab }
-                onChange={ (_: SyntheticEvent, newValue: number) => {
-                    location.hash = `#tab=${newValue}`;
-                    setActiveTab(newValue);
-                } }
+                onChange={ onTabChange }
             >
                 { consoleTabs.map((tab: ConsoleSettingsTabInterface) => {
                     if (tab.hidden) {
