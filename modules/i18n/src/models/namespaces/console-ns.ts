@@ -500,10 +500,10 @@ export interface ConsoleNS {
                 "password.reset.heading": {
                     hint: string;
                 };
-                "password.reset.success.heading": {
+                "password.reset.success.action": {
                     hint: string;
                 };
-                "password.reset.success.action": {
+                "password.reset.success.heading": {
                     hint: string;
                 };
             }

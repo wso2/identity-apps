@@ -569,7 +569,10 @@ export enum PreviewScreenType {
     SIGN_UP = "sign-up",
     EMAIL_OTP = "email-otp",
     SMS_OTP = "sms-otp",
-    TOTP = "totp"
+    TOTP = "totp",
+    PASSWORD_RECOVERY = "password-recovery",
+    PASSWORD_RESET = "password-reset",
+    PASSWORD_RESET_SUCCESS = "password-reset-success"
 }
 
 /**
