@@ -104,6 +104,8 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const administratorRoleDisplayName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -277,7 +279,8 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
             },
             {
                 hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP)
+                    role?.displayName === RoleConstants.ADMIN_GROUP ||
+                    role?.displayName === administratorRoleDisplayName)
                     || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
