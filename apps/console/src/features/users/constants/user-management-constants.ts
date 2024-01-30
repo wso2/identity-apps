@@ -102,7 +102,8 @@ export class UserManagementConstants {
         .set("EMAILS", "emails")
         .set("USERNAME", "userName")
         .set("NAME", "name")
-        .set("DISPLAY_NAME", "displayName");
+        .set("DISPLAY_NAME", "displayName")
+        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User");
 
     /**
      * Set of SCIM2 enterprise attributes.
