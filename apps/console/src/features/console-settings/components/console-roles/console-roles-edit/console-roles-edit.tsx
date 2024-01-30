@@ -76,6 +76,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const administratorRoleDisplayName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
 
@@ -87,7 +89,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     useEffect(() => {
         if(roleObject) {
             setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
-                roleObject.displayName === RoleConstants.ADMIN_GROUP);
+                roleObject.displayName === RoleConstants.ADMIN_GROUP ||
+                roleObject?.displayName === administratorRoleDisplayName);
         }
     }, [ roleObject ]);
 

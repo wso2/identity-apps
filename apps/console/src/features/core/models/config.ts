@@ -394,6 +394,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * is XACML connector enabled.
      */
     isXacmlConnectorEnabled?: boolean;
+    /**
+     * Display name of the console administrator role.
+     */
+    administratorRoleDisplayName?: string;
 }
 
 /**

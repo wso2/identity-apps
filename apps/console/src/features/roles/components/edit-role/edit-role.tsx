@@ -78,6 +78,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.users);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const administratorRoleDisplayName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(featureConfig,
@@ -104,7 +106,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     useEffect(() => {
         if(roleObject) {
             setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
-                roleObject.displayName === RoleConstants.ADMIN_GROUP);
+                roleObject.displayName === RoleConstants.ADMIN_GROUP ||
+                roleObject?.displayName === administratorRoleDisplayName);
             setIsEveryoneRole(roleObject.displayName === RoleConstants.EVERYONE_ROLE ||
                 roleObject.displayName === RoleConstants.EVERYONE_GROUP);
         }
