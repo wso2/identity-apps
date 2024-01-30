@@ -215,7 +215,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     history.push({
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
                         search: `#tab=${
-                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                            organizationType === OrganizationType.SUBORGANIZATION
+                                ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
+                                : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
+                        }`
                     });
 
                     return;
