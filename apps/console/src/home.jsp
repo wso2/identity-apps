@@ -12,6 +12,7 @@
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 <%= htmlWebpackPlugin.options.importStringUtils %>
 <%= htmlWebpackPlugin.options.getOrganizationManagementAvailability %>
+<%= htmlWebpackPlugin.options.getAdaptiveAuthenticationAvailability %>
 
 <%= htmlWebpackPlugin.options.cookieproEnabledFlag %>
 <%= htmlWebpackPlugin.options.cookieproInitialScriptTypeCheck %>
@@ -146,7 +147,7 @@
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            var isAdaptiveAuthenticationAvailable = true;
+            var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
             var isOrganizationManagementEnabled = "<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>" === "true";
         </script>
 
