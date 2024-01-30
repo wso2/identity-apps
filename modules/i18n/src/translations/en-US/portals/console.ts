@@ -684,6 +684,9 @@ export const console: ConsoleNS = {
                 "password.reset.heading": {
                     hint: "The heading of the password reset box. If not set, {{productName}} defaults are used."
                 },
+                "password.reset.success.action": {
+                    hint: "The text that appears on the main action link of the password reset success box. If not set, {{productName}} defaults are used."
+                },
                 "password.reset.success.heading": {
                     hint: "The heading of the password reset success box. If not set, {{productName}} defaults are used."
                 }

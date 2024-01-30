@@ -503,6 +503,9 @@ export interface ConsoleNS {
                 "password.reset.success.heading": {
                     hint: string;
                 };
+                "password.reset.success.action": {
+                    hint: string;
+                };
             }
         };
         localeSelectDropdown: {

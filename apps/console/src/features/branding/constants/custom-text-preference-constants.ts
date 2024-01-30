@@ -119,6 +119,7 @@ export class CustomTextPreferenceConstants {
         },
         PASSWORD_RESET_SUCCESS: {
             HEADING: string;
+            ACTION: string;
         },
         PRIVACY_POLICY: string;
         REGISTER_TEXT: {
@@ -155,6 +156,7 @@ export class CustomTextPreferenceConstants {
             HEADING: "password.reset.heading"
         },
         PASSWORD_RESET_SUCCESS: {
+            ACTION: "password.reset.success.action",
             HEADING: "password.reset.success.heading"
         },
         PRIVACY_POLICY: "privacy.policy",
