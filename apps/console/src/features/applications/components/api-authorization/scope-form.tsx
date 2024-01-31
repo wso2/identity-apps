@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,8 @@ import {
     ContentLoader,
     EmphasizedSegment,
     Hint,
+    LinkButton,
+    PrimaryButton,
     Text
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -481,28 +483,28 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                 isScopesAvailableForUpdate && (
                                     <Grid.Row>
                                         <Grid.Column floated="left">
-                                            <Button
+                                            <LinkButton
                                                 size="small"
-                                                variant="outlined"
+                                                floated="left"
                                                 tabIndex={ 8 }
+                                                onClick={ resetDropdown }
+                                                data-componentid={ `${componentId}-cancel-btn` }
+                                                disabled={ isUpdateButtonDisabled }
+                                            >
+                                                { t("common:cancel") }
+                                            </LinkButton>
+
+                                            <PrimaryButton
+                                                size="small"
+                                                floated="right"
+                                                tabIndex={ 9 }
                                                 onClick={ updateScopesOfAPIResource }
                                                 data-componentid={ `${componentId}-update-btn` }
                                                 disabled={ isUpdateButtonDisabled }
                                             >
                                                 { t("extensions:develop.applications.edit.sections.apiAuthorization." +
                                                     "sections.policySection.buttons.update") }
-                                            </Button>
-
-                                            <Button
-                                                size="small"
-                                                variant="text"
-                                                tabIndex={ 9 }
-                                                onClick={ resetDropdown }
-                                                data-componentid={ `${componentId}-cancel-btn` }
-                                                disabled={ isUpdateButtonDisabled }
-                                            >
-                                                { t("common:cancel") }
-                                            </Button>
+                                            </PrimaryButton>
                                         </Grid.Column>
                                     </Grid.Row>
                                 )
