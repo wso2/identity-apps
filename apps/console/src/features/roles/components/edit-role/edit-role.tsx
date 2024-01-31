@@ -106,7 +106,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     useEffect(() => {
         if(roleObject) {
             setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
-                roleObject.displayName === RoleConstants.ADMIN_GROUP ||
+                roleObject?.displayName === RoleConstants.ADMIN_GROUP ||
                 roleObject?.displayName === administratorRoleDisplayName);
             setIsEveryoneRole(roleObject.displayName === RoleConstants.EVERYONE_ROLE ||
                 roleObject.displayName === RoleConstants.EVERYONE_GROUP);
