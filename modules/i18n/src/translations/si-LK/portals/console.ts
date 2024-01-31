@@ -3486,7 +3486,7 @@ export const console: ConsoleNS = {
                     provisioning: {
                         outbound: {
                             actions: {
-                                addIdp: "නව කොමිෂන් සභා"
+                                addIdp: "නව සැපයුම්කරු"
                             },
                             addIdpWizard: {
                                 heading: "පිටතට යන කොමිෂන් සභා එක් කරන්න",
