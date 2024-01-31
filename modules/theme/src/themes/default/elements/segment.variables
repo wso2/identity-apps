@@ -16,13 +16,13 @@
  * under the License.
  *
  */
-
+ 
  /*******************************
           Edit Segment
  *******************************/
 
 @editSegmentBackgroundColor: @athensGray;
-@editSegmentTableValueMaxWidth: 220px;
+@editSegmentTableValueMaxWidth: 450px;
 @editSegmentMarginTop: 15px;
 
 /*******************************
