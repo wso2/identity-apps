@@ -43,7 +43,8 @@ import { getProfileInfo, getProfileSchemas } from "../../../users/api";
  */
 export const getProfileInformation = (
     meEndpoint: string = Config.getServiceResourceEndpoints().me,
-    clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant
+    clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant,
+    fetchProfileSchema: boolean = false
 ) => (dispatch: Dispatch): void => {
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
@@ -54,6 +55,9 @@ export const getProfileInformation = (
                                     (window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false);
 
     const getProfileSchema = (): void => {
+        if (!fetchProfileSchema && !isEmpty(store.getState().profile.profileSchemas)) {
+            return;
+        }
         dispatch(setProfileSchemaRequestLoadingStatus(true));
         getProfileSchemas()
             .then((response: ProfileSchemaInterface[]) => {
