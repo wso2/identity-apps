@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.11.24
+
+### Patch Changes
+
+- [#5391](https://github.com/wso2/identity-apps/pull/5391) [`b575517d64`](https://github.com/wso2/identity-apps/commit/b575517d64c9fcc9efda941bf471b99271593c37) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove custom layout learn more link
+
+* [#5387](https://github.com/wso2/identity-apps/pull/5387) [`c11de36e07`](https://github.com/wso2/identity-apps/commit/c11de36e071b09e50765f7f957a3bf47b723b30a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Issues with Editing and Deleting Administrator Roles
+
+- [#5389](https://github.com/wso2/identity-apps/pull/5389) [`8e531d7d0a`](https://github.com/wso2/identity-apps/commit/8e531d7d0aa0f033510e7b15e89b0e5015265994) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix loading issue in login and registration section
+
 ## 2.11.23
 
 ### Patch Changes
