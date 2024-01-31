@@ -147,7 +147,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         "getConfigurations.genericError.message")
                     }));
                 }
-            }).finally(() => {
+            })
+            .finally(() => {
                 setConnectorCategoryLoading(false);
             });
     }, []);
