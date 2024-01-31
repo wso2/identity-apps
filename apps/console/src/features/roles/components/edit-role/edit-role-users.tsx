@@ -176,7 +176,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             const usersAvailableToSelect: UserBasicInterface[] = userResponse?.Resources?.filter(
                 (user: UserBasicInterface) => {
                     const isUserInSelectedUserStore: boolean = isUserBelongToSelectedUserStore(
-                        user,selectedUserStoreDomainName
+                        user, selectedUserStoreDomainName
                     );
 
                     const isUserAlreadySelected: boolean = selectedUsersFromUserStore?.find(
