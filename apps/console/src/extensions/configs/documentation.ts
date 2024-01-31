@@ -188,8 +188,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             branding: {
                 layout: {
                     custom: {
-                        learnMore: "https://is.docs.wso2.com/en/latest/references/"
-                            + "extend/rebranding/customizable-login-portal"
+                        learnMore: undefined
                     }
                 },
                 learnMore: undefined
