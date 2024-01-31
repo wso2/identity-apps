@@ -107,6 +107,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
+                            enableDeleteErrorConnetedAppsModal={ false }
                         />
                     </ResourceTab.Pane>
                 )

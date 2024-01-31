@@ -33,7 +33,13 @@ import { RoleDeleteErrorConfirmation } from "../wizard/role-delete-error-confirm
 /**
  * Interface to contain props needed for component
  */
-type BasicRoleProps = IdentifiableComponentInterface & RoleEditSectionsInterface;
+interface BasicRoleProps extends IdentifiableComponentInterface, RoleEditSectionsInterface {
+    /**
+     * Flag to determine whether the connected apps should be displayed
+     * as a modal when deleting an application role.
+     */
+    enableDeleteErrorConnetedAppsModal?: boolean;
+}
 
 const FORM_ID: string = "edit-role-basic";
 
@@ -51,6 +57,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         onRoleUpdate,
         isReadOnly,
         tabIndex,
+        enableDeleteErrorConnetedAppsModal,
         [ "data-componentid" ]: componentid
     } = props;
 
@@ -82,7 +89,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * to inform the user that the role is connected to applications.
      */
     const onRoleDeleteClicked = () => {
-        if (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION) {
+        if (enableDeleteErrorConnetedAppsModal &&
+            role?.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION) {
             setShowDeleteErrorConnectedAppsModal(true);
         } else {
             setShowDeleteConfirmationModal(true);
@@ -279,5 +287,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
  * Default props for application roles tab component.
  */
 BasicRoleDetails.defaultProps = {
-    "data-componentid": "edit-role-basic"
+    "data-componentid": "edit-role-basic",
+    enableDeleteErrorConnetedAppsModal: true
 };
