@@ -1155,7 +1155,8 @@
             "rolesV1": false,
             "roleMapping": false,
             "secretsManagement": false,
-            "saasApplications": false
+            "saasApplications": false,
+            "consoleFeatureScopeCheck": true
         },
         "theme": {
             "name": "wso2is"

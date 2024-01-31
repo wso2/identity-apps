@@ -224,4 +224,5 @@ export interface LegacyModeInterface {
     roleMapping: boolean;
     secretsManagement: boolean;
     saasApplications: boolean;
+    consoleFeatureScopeCheck: boolean;
 }
