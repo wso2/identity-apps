@@ -131,28 +131,19 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setIsPlaceholderVisible(false);
 
-        const alreadyAssignedUsersToSelectedUserStore: UserBasicInterface[] = role?.users?.map(
-            (user: RolesMemberInterface) => {
-                return {
-                    id: user.value,
-                    userName: user.display
-                };
-            }).filter((user: UserBasicInterface) => {
+        const alreadyAssignedUsersFromSelectedUserStore: UserBasicInterface[] = role?.users?.map(
+            (user: RolesMemberInterface) => ({
+                id: user.value,
+                userName: user.display
+            })
+        ).filter((user: UserBasicInterface) =>
+            isUserBelongToSelectedUserStore(user, selectedUserStoreDomainName)
+        ) ?? [];
 
-            const belongToUserStore: boolean = isUserBelongToSelectedUserStore(user, selectedUserStoreDomainName);
+        const usersFromSelectedStore: UserBasicInterface[] =
+            selectedAllUsers[selectedUserStoreDomainName] || alreadyAssignedUsersFromSelectedUserStore;
 
-            if (belongToUserStore) {
-                return user;
-            }
-        }).filter(Boolean) ?? [];
-
-        const tempSelectedAllUsers: Record<string, UserBasicInterface[]> = selectedAllUsers;
-
-        if (tempSelectedAllUsers[selectedUserStoreDomainName] === undefined) {
-            setSelectedUsersFromUserStore(alreadyAssignedUsersToSelectedUserStore);
-        } else {
-            setSelectedUsersFromUserStore(tempSelectedAllUsers[selectedUserStoreDomainName]);
-        }
+        setSelectedUsersFromUserStore(usersFromSelectedStore);
     },[ role, selectedUserStoreDomainName ]);
 
     useEffect(() => {
