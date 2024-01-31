@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.11.23
+
+### Patch Changes
+
+- [#5388](https://github.com/wso2/identity-apps/pull/5388) [`9faaa3cb6d`](https://github.com/wso2/identity-apps/commit/9faaa3cb6da12c5e263fbe8951137c1e3b1f25eb) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix navigation issues to My Account sign-in method tab
+
+* [#5380](https://github.com/wso2/identity-apps/pull/5380) [`d81ca2a8f6`](https://github.com/wso2/identity-apps/commit/d81ca2a8f65d4240e5af455874c5dd05b054cb80) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Remove console scope check in legazy runtime
+
 ## 2.11.22
 
 ### Patch Changes
