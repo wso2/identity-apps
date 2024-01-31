@@ -24,6 +24,7 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { OrganizationType } from "@wso2is/common";
 import { AppConstants as AppConstantsCore, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
 import {
     setDeploymentConfigs,
@@ -43,6 +44,7 @@ import { AppConstants } from "../constants/app-constants";
 import { CommonConstants } from "../constants/common-constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
+import { setOrganizationType, setUserOrganizationId } from "../store/actions/organization";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";
@@ -118,6 +120,7 @@ const useSignIn = (): UseSignInInterface => {
         const isFirstLevelOrg: boolean = !idToken.user_org
                 || idToken.org_name === tenantDomain
                 || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
+        const userOrganizationId: string = idToken.user_org;
 
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
@@ -126,6 +129,19 @@ const useSignIn = (): UseSignInInterface => {
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
         }
+
+        let orgType: OrganizationType;
+
+        if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
+            orgType = OrganizationType.SUPER_ORGANIZATION;
+        } else if (isFirstLevelOrg) {
+            orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
+        } else {
+            orgType = OrganizationType.SUBORGANIZATION;
+        }
+        dispatch(setOrganizationType(orgType));
+        window["AppUtils"].updateOrganizationType(orgType);
+        dispatch(setUserOrganizationId(userOrganizationId));
 
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(tenantDomain);
@@ -241,6 +257,7 @@ const useSignIn = (): UseSignInInterface => {
         let logoutRedirectUrl: string;
 
         const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+        const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
 
         dispatchEvent(event);
 
@@ -250,6 +267,23 @@ const useSignIn = (): UseSignInInterface => {
 
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(tenantDomain);
+
+        const isFirstLevelOrg: boolean = !idToken.user_org
+            || idToken.org_name === tenantDomain
+            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
+        const userOrganizationId: string = idToken.user_org;
+        let orgType: OrganizationType;
+
+        if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
+            orgType = OrganizationType.SUPER_ORGANIZATION;
+        } else if (isFirstLevelOrg) {
+            orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
+        } else {
+            orgType = OrganizationType.SUBORGANIZATION;
+        }
+        dispatch(setOrganizationType(orgType));
+        window["AppUtils"].updateOrganizationType(orgType);
+        dispatch(setUserOrganizationId(userOrganizationId));
 
         dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
