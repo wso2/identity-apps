@@ -110,6 +110,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             return;
         }
 
+        setConnectorCategoryLoading(true);
         getConnectorCategories()
             .then((response: GovernanceConnectorInterface[]) => {
 
@@ -146,6 +147,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         "getConfigurations.genericError.message")
                     }));
                 }
+            }).finally(() => {
+                setConnectorCategoryLoading(false);
             });
     }, []);
 
@@ -157,7 +160,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     }, [ dynamicConnectorCategories ]);
 
     const loadCategoryConnectors = (categoryId: string): void => {
-        setConnectorCategoryLoading(true);
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
@@ -208,9 +210,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         })
                     );
                 }
-            })
-            .finally(() => {
-                setConnectorCategoryLoading(false);
             });
     };
 
