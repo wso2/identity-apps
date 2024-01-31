@@ -10,7 +10,8 @@
     "subTemplatesSectionTitle": "Technology",
     "types": [
         "android",
-        "ios"
+        "ios",
+        "flutter"
     ],
     "authenticationProtocol": "oidc",
     "application": {

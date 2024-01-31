@@ -22,7 +22,8 @@ import {
     SAMLConfigModes,
     SAMLConfigurationInterface,
     SupportedAuthProtocolTypes,
-    SupportedAuthProtocolTypesInterface
+    SupportedAuthProtocolTypesInterface,
+    SupportedCustomAuthProtocolTypes
 } from "../../models";
 
 export const InboundProtocolDefaultFallbackTemplates: Map<string, string> = new Map<string, string>([
@@ -85,7 +86,9 @@ export const SupportedAuthProtocolTypeDisplayNames: SupportedAuthProtocolTypesIn
     [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "WS-Federation",
     [ SupportedAuthProtocolTypes.WS_TRUST ]: "WS-Trust",
     [ SupportedAuthProtocolTypes.CUSTOM ]: "Custom",
-    [ SupportedAuthProtocolTypes.OAUTH2 ]: "OAuth 2.0"
+    [ SupportedAuthProtocolTypes.OAUTH2 ]: "OAuth 2.0",
+    [ SupportedCustomAuthProtocolTypes.CAS ]: "CAS Authenticator",
+    [ SupportedCustomAuthProtocolTypes.JWT_SSO ]: "JWT SSO Authenticator"
 };
 
 /**

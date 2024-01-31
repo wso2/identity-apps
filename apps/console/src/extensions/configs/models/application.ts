@@ -156,6 +156,7 @@ export interface ApplicationConfig {
         custom: boolean;
         mobile: boolean;
         m2m: boolean;
+        customProtocol: boolean;
     };
     customApplication: {
         allowedProtocolTypes: string[];

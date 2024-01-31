@@ -1976,6 +1976,7 @@ export const console: ConsoleNS = {
                             },
                             generic: {
                                 label: "{{label}}",
+                                placeholder: "Enter {{name}}",
                                 validations: {
                                     empty: "Select the {{name}}"
                                 }

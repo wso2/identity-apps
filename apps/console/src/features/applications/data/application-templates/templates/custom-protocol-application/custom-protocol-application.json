@@ -1,0 +1,15 @@
+{
+    "id": "custom-protocol-application",
+    "templateId": "custom-protocol-application",
+    "name": "Custom Application",
+    "description": "Manually configure inbound authentication protocols.",
+    "image": "customProtocolApp",
+    "authenticationProtocol": "",
+    "category": "DEFAULT",
+    "displayOrder": -1,
+    "self": "",
+    "subTemplates": [],
+    "subTemplatesSectionTitle": "Protocol",
+    "templateGroup": "",
+    "types": []
+}

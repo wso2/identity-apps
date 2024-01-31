@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -42,16 +43,21 @@ import {
     getTechnologyLogos,
     history
 } from "../../core";
+import { InboundProtocolsMeta } from "../components/meta";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { getApplicationTemplateIllustrations } from "../configs/ui";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
+import CustomProtocolApplicationTemplate
+    from "../data/application-templates/templates/custom-protocol-application/custom-protocol-application.json";
 import {
     ApplicationTemplateCategories, ApplicationTemplateCategoryInterface,
     ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface
 } from "../models";
+import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
 /**
@@ -95,6 +101,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const customInboundProtocols: AuthProtocolMetaListItemInterface[] = useSelector((state: AppState) =>
+        state.application.meta.customInboundProtocols);
 
     const [ categorizedTemplates, setCategorizedTemplates ] = useState<ApplicationTemplateCategoryInterface[]>([]);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -108,9 +116,26 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         setFilteredTemplateList
     ] = useState<ApplicationTemplateListItemInterface[]>(undefined);
     const [ searchTriggered, setSearchTriggered ] = useState<boolean>(false);
+    const [ showCustomProtocolApplicationTemplate, setShowCustomProtocolApplicationTemplate ] =
+        useState<boolean>(false);
+
     const [ templateFilterTypes, setTemplateFilterTypes ] = useState<DropdownItemProps[]>(TEMPLATE_FILTER_TYPES);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    /**
+     * Fetch the custom inbound protocols.
+     */
+    useEffect(() => {
+        ApplicationManagementUtils.getCustomInboundProtocols(InboundProtocolsMeta, true);
+    }, []);
+
+    /**
+     * Show/hide custom application templated based on the availability of custom inbound authenticators.
+     */
+    useEffect(() => {
+        setShowCustomProtocolApplicationTemplate(customInboundProtocols.length > 0);
+    }, [ customInboundProtocols ]);
 
     /**
      *  Get Application templates.
@@ -157,7 +182,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 template.types.forEach((type: string) => {
                     const isAvailable: boolean = filterTypes.some(
                         (filterType: DropdownItemProps) => filterType.value === type);
-                    
+
                     if (isAvailable) {
                         return;
                     }
@@ -170,7 +195,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 });
             }
         });
-        
+
         setTemplateFilterTypes(filterTypes);
     }, [ applicationTemplates ]);
 
@@ -288,6 +313,11 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             ? templatesOverrides
             : templates;
 
+        if (!showCustomProtocolApplicationTemplate) {
+            templateToShow = templateToShow.filter((template: ApplicationTemplateInterface) =>
+                template.id !== CustomProtocolApplicationTemplate.id);
+        }
+
         // Order the templates by pushing coming soon items to the end.
         templateToShow = orderBy(templateToShow, [ "comingSoon" ], [ "desc" ]);
 
@@ -304,7 +334,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 templateIconSize="tiny"
                 onTemplateSelect={ handleTemplateSelection }
                 paginate={ true }
-                paginationLimit={ 5 }
+                paginationLimit={ 6 }
                 paginationOptions={ {
                     showLessButtonLabel: t("common:showLess"),
                     showMoreButtonLabel: t("common:showMore")
