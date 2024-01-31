@@ -615,7 +615,10 @@ export const console: ConsoleNS = {
             "email-template": "Email Templates",
             "sign-up": "Sign Up",
             "totp": "TOTP",
-            myaccount: "My Account"
+            myaccount: "My Account",
+            "password-recovery": "Password Recovery",
+            "password-reset": "Password Reset",
+            "password-reset-success": "Password Reset Success"
         }
     },
     brandingCustomText: {
@@ -636,8 +639,14 @@ export const console: ConsoleNS = {
                 copyright: {
                     hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
                 },
+                "privacy.policy": {
+                    hint: "The privacy policy text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
+                },
                 "site.title": {
                     hint: "The site title may appear in browser tabs, search engine results, social shares, etc. If not set, {{productName}} defaults are used."
+                },
+                "terms.of.service": {
+                    hint: "The terms of service text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
                 },
                 "login.button": {
                     hint: "The text that appears on the main action button of the login box. If not set, {{productName}} defaults are used."
@@ -659,6 +668,27 @@ export const console: ConsoleNS = {
                 },
                 "sign.up.heading": {
                     hint: "The heading of the sign up box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.body": {
+                    hint: "The body text of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.button": {
+                    hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.heading": {
+                    hint: "The heading of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.button": {
+                    hint: "The text that appears on the main action button of the password reset box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.heading": {
+                    hint: "The heading of the password reset box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.action": {
+                    hint: "The text that appears on the main action link of the password reset success box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.heading": {
+                    hint: "The heading of the password reset success box. If not set, {{productName}} defaults are used."
                 }
             }
         },

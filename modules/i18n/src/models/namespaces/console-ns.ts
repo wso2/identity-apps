@@ -432,6 +432,9 @@ export interface ConsoleNS {
             "sign-up": string;
             "totp": string;
             myaccount: string;
+            "password-recovery": string;
+            "password-reset": string;
+            "password-reset-success": string;
         }
     };
     brandingCustomText: {
@@ -452,7 +455,13 @@ export interface ConsoleNS {
                 copyright: {
                     hint: string;
                 };
+                "privacy.policy": {
+                    hint: string;
+                };
                 "site.title": {
+                    hint: string;
+                };
+                "terms.of.service": {
                     hint: string;
                 };
                 "login.button": {
@@ -474,6 +483,27 @@ export interface ConsoleNS {
                     hint: string;
                 };
                 "sign.up.heading": {
+                    hint: string;
+                };
+                "password.recovery.body": {
+                    hint: string;
+                };
+                "password.recovery.button": {
+                    hint: string;
+                };
+                "password.recovery.heading": {
+                    hint: string;
+                };
+                "password.reset.button": {
+                    hint: string;
+                };
+                "password.reset.heading": {
+                    hint: string;
+                };
+                "password.reset.success.action": {
+                    hint: string;
+                };
+                "password.reset.success.heading": {
                     hint: string;
                 };
             }

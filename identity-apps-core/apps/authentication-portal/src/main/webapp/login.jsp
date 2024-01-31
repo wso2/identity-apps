@@ -383,7 +383,7 @@
 %>
 
 <%
-    String insightsAppIdentifier = Encode.forHtmlAttribute(request.getParameter("client_id"));
+    String insightsAppIdentifier = Encode.forJavaScriptBlock(request.getParameter("client_id"));
     String insightsTenantIdentifier = userTenant;
 
     if (!Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {

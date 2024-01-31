@@ -119,7 +119,8 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                                     rel="noopener noreferrer"
                                     data-testid="login-page-privacy-policy-link"
                                 >
-                                    Privacy Policy
+                                    { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PRIVACY_POLICY,
+                                        "Privacy Policy") }
                                 </a>
                             )
                         }
@@ -133,7 +134,8 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
                                     rel="noopener noreferrer"
                                     data-testid="login-page-privacy-policy-link"
                                 >
-                                    Terms of Service
+                                    { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.TERMS_OF_SERVICE,
+                                        "Terms of Service") }
                                 </a>
                             )
                         }

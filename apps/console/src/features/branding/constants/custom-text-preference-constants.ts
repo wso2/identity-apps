@@ -108,6 +108,20 @@ export class CustomTextPreferenceConstants {
             BUTTON: string;
             HEADING: string;
         };
+        PASSWORD_RECOVERY: {
+            HEADING: string;
+            BODY: string;
+            BUTTON: string;
+        },
+        PASSWORD_RESET: {
+            HEADING: string;
+            BUTTON: string;
+        },
+        PASSWORD_RESET_SUCCESS: {
+            HEADING: string;
+            ACTION: string;
+        },
+        PRIVACY_POLICY: string;
         REGISTER_TEXT: {
             MESSAGE: string;
             REGISTER: string;
@@ -119,6 +133,7 @@ export class CustomTextPreferenceConstants {
         SMS_OTP: {
             HEADING: string;
         },
+        TERMS_OF_SERVICE: string;
         TOTP: {
             HEADING: string;
         }
@@ -131,6 +146,20 @@ export class CustomTextPreferenceConstants {
             BUTTON: "login.button",
             HEADING: "login.heading"
         },
+        PASSWORD_RECOVERY: {
+            BODY: "password.recovery.body",
+            BUTTON: "password.recovery.button",
+            HEADING: "password.recovery.heading"
+        },
+        PASSWORD_RESET: {
+            BUTTON: "password.reset.button",
+            HEADING: "password.reset.heading"
+        },
+        PASSWORD_RESET_SUCCESS: {
+            ACTION: "password.reset.success.action",
+            HEADING: "password.reset.success.heading"
+        },
+        PRIVACY_POLICY: "privacy.policy",
         REGISTER_TEXT: {
             MESSAGE: "dont.have.an.account",
             REGISTER: "register"
@@ -142,6 +171,7 @@ export class CustomTextPreferenceConstants {
         SMS_OTP: {
             HEADING: "sms.otp.heading"
         },
+        TERMS_OF_SERVICE: "terms.of.service",
         TOTP: {
             HEADING: "totp.heading"
         }

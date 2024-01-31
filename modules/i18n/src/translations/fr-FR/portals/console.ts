@@ -613,7 +613,10 @@ export const console: ConsoleNS = {
             "email-template": "Modèles de messagerie",
             "sign-up": "S'inscrire",
             "totp": "totp",
-            myaccount: "Mon compte"
+            myaccount: "Mon compte",
+            "password-recovery": "Récupération de mot de passe",
+            "password-reset": "Réinitialisation du mot de passe",
+            "password-reset-success": "Réinitialisation du mot de passe Succès"
         }
     },
     brandingCustomText: {
@@ -634,8 +637,14 @@ export const console: ConsoleNS = {
                 copyright: {
                     hint: "Texte qui apparaît au bas de l'écran de connexion. Vous pouvez utiliser le paramètre `{{currentYear}}` pour afficher automatiquement l'année en cours."
                 },
+                "privacy.policy": {
+                    hint: "Le texte de la politique de confidentialité qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
                 "site.title": {
                     hint: "Le titre du site peut apparaître dans les onglets du navigateur, les résultats des moteurs de recherche, les partages sur les réseaux sociaux, etc. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "terms.of.service": {
+                    hint: "Le texte des conditions d'utilisation qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 },
                 "login.button": {
                     hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
@@ -657,6 +666,27 @@ export const console: ConsoleNS = {
                 },
                 "sign.up.heading": {
                     hint: "Le titre de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "password.recovery.body": {
+                    hint: "Le texte du corps de la boîte de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.recovery.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principale de la zone de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.recovery.heading": {
+                    hint: "L'en-tête de la boîte de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principale de la zone de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.heading": {
+                    hint: "L'en-tête de la boîte de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.action": {
+                    hint: "Le texte qui apparaît sur le lien d'action principal de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.heading": {
+                    hint: "L'en-tête de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 }
             }
         },
