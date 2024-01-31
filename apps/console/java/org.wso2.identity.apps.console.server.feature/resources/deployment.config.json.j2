@@ -1736,6 +1736,9 @@
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
         {% endif %}
+        {% if console.ui.administrator_role_display_name is defined %}
+        "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
+        {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
             "apiResources": false,

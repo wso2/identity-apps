@@ -1143,6 +1143,7 @@
             "My Account"
         ],
         "isXacmlConnectorEnabled": false,
+        "administratorRoleDisplayName": "Administrator",
         "legacyMode": {
             "apiResources": true,
             "applicationListSystemApps": false,

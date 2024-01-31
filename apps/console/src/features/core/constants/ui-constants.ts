@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,12 +30,12 @@ export class UIConstants {
     /**
      * Default header height to be used in state initializations.
      */
-    public static readonly DEFAULT_HEADER_HEIGHT = 121;
+    public static readonly DEFAULT_HEADER_HEIGHT: number = 121;
 
     /**
      * Default footer height to be used in state initializations.
      */
-    public static readonly DEFAULT_FOOTER_HEIGHT = 50;
+    public static readonly DEFAULT_FOOTER_HEIGHT: number = 50;
 
     /**
      * Constant to handle dashboard layout's desktop content top spacing.
@@ -82,5 +82,10 @@ export class UIConstants {
      * Additional top offset padding for page scrolling placement.
      * This will use along with the header height (appHeaderHeight + thisValues).
      */
-    public static readonly PAGE_SCROLL_TOP_PADDING = 20;
+    public static readonly PAGE_SCROLL_TOP_PADDING: number = 20;
+
+    /**
+     * Display name of the console administrator role.
+     */
+    public static readonly ADMINISTRATOR_ROLE_DISPLAY_NAME: string = "Administrator";
 }
