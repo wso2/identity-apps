@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.11.25
+
+### Patch Changes
+
+- [#5386](https://github.com/wso2/identity-apps/pull/5386) [`e526fff0a2`](https://github.com/wso2/identity-apps/commit/e526fff0a2a5aed4b19408d94f575d75909ee61a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX of assigning users to roles
+
+* [#5394](https://github.com/wso2/identity-apps/pull/5394) [`9135fd0241`](https://github.com/wso2/identity-apps/commit/9135fd024135d72a27bee084371e4e773d50d990) Thanks [@Achintha444](https://github.com/Achintha444)! - Add Recovery UI Text customization to Console
+
+* Updated dependencies [[`9135fd0241`](https://github.com/wso2/identity-apps/commit/9135fd024135d72a27bee084371e4e773d50d990)]:
+  - @wso2is/i18n@2.0.109
+
 ## 2.11.24
 
 ### Patch Changes
