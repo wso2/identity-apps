@@ -156,6 +156,7 @@ const useRoutes = (): useRoutesInterface => {
                 && AppConstants.ORGANIZATION_ENABLED_ROUTES;
         }
 
+        // Console feature scope check is disabled when the consoleFeatureScopeCheck flag is explicitly set to false.
         const checkConsoleScopes: boolean = !(legacyModeConfigs?.consoleFeatureScopeCheck === false);
 
         const [
