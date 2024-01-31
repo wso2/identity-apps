@@ -140,6 +140,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             isUserBelongToSelectedUserStore(user, selectedUserStoreDomainName)
         ) ?? [];
 
+        // if `selectedAllUsers[selectedUserStoreDomainName]` is undefined, that means the assigned users
+        // for the selected user store have not yet been edited since page load. In such cases, the autocomplete
+        // input is populated with already assigned users to role.
         const usersFromSelectedStore: UserBasicInterface[] =
             selectedAllUsers[selectedUserStoreDomainName] || alreadyAssignedUsersFromSelectedUserStore;
 
