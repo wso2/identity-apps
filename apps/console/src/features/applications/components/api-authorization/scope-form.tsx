@@ -36,7 +36,7 @@ import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Header } from "
 import { FeatureConfigInterface } from "../../../core";
 import { patchScopesOfAuthorizedAPI } from "../../api/api-authorization";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
-import { 
+import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
 } from "../../models/api-authorization";
@@ -89,7 +89,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ dropdownOptions, setDropdownOptions ] = useState<DropdownItemProps[]>(null);
     const [ defaultDropdownValues, setDefaultDropdownValues ] = useState<string[]>(null);
-    const [ previousSelectedScopes, setPreviousSelectedScopes ] 
+    const [ previousSelectedScopes, setPreviousSelectedScopes ]
         = useState<AuthorizedPermissionListItemInterface[]>(subscribedAPIResource.authorizedScopes);
     const [ selectedScopes, setSelectedScopes ] = useState<string[]>(null);
     const [ addedScopesIdentifiers, setAddedScopesIdentifiers ] = useState<string[]>([]);
@@ -122,7 +122,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
      * Check if the place holders should be shown.
      */
     const showPlaceHolders: boolean = isLoading ||
-        dropdownOptions === null || 
+        dropdownOptions === null ||
         defaultDropdownValues === null ||
         selectedScopes === null ;
 
@@ -184,7 +184,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     useEffect(() => {
         setIsSelectNoneDisabled(selectedScopes?.length === 0);
     }, [ selectedScopes ]);
-    
+
 
     /**
      * Handles patch request to update the scopes of the API resource.
@@ -204,13 +204,13 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                         ".sections.apiSubscriptions.notifications.patchScopes.success.message")
                 }));
 
-                const addedScopes: AuthorizedPermissionListItemInterface[] 
+                const addedScopes: AuthorizedPermissionListItemInterface[]
                     = currentAPIResourceScopeListData?.map((scope: AuthorizedPermissionListItemInterface) => {
                         if (addedScopesIdentifiers.includes(scope.name)) {
                             return scope;
                         }
                     }).filter((scope: AuthorizedPermissionListItemInterface) => scope !== undefined);
-    
+
                 const removedScopes: AuthorizedPermissionListItemInterface[]
                     = currentAPIResourceScopeListData?.map((scope: AuthorizedPermissionListItemInterface) => {
                         if (removedScopesIdentifiers.includes(scope.name)) {
@@ -221,7 +221,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                 if (addedScopes?.length !== 0) {
                     bulkChangeAllAuthorizedScopes(addedScopes, false);
                 }
-                    
+
                 if (removedScopes?.length !== 0) {
                     bulkChangeAllAuthorizedScopes(removedScopes, true);
                 }
@@ -254,13 +254,13 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     const getPlaceholders = (): ReactElement => {
         if (
             selectedScopes === null ||
-            dropdownOptions === null || 
-            defaultDropdownValues === null || 
+            dropdownOptions === null ||
+            defaultDropdownValues === null ||
             isLoading
         ) {
             return <ContentLoader inline="centered" active />;
         }
-        
+
         return null;
     };
 
@@ -282,9 +282,9 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
         // Handles if a scope is added.
         if (scopes.length >= previousSelectedScopes.length) {
             const scopeObject: AuthorizedPermissionListItemInterface = currentAPIResourceScopeListData?.find(
-                (scopeObject: AuthorizedPermissionListItemInterface) => 
+                (scopeObject: AuthorizedPermissionListItemInterface) =>
                     scopeObject.name === scopes[scopes.length - 1]);
-            
+
             // Update the all authorized scopes.
             if (scopeObject) {
                 setPreviousSelectedScopes([ ...previousSelectedScopes, scopeObject ]);
@@ -305,7 +305,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
             const scopeObject: AuthorizedPermissionListItemInterface = previousSelectedScopes?.filter(
                 (scope: AuthorizedPermissionListItemInterface) =>
                     !scopes.includes(scope.name))[0];
-            
+
             // Update the all authorized scopes.
             if (scopeObject) {
                 setPreviousSelectedScopes(previousSelectedScopes.filter(
@@ -328,9 +328,9 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     /**
      * Handle bulk dropdown change.
      */
-    const handleBulkDropdownChange = (scopeObjectList: AuthorizedPermissionListItemInterface[], 
+    const handleBulkDropdownChange = (scopeObjectList: AuthorizedPermissionListItemInterface[],
         remove: boolean): void => {
-        const scopeNameList: string[] = 
+        const scopeNameList: string[] =
             scopeObjectList.map((scope: AuthorizedPermissionListItemInterface) => scope.name);
 
         // Handles `Select None` option.
@@ -368,12 +368,12 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
 
             // Remove the scope from the removed scopes identifiers if it is already added.
             setRemovedScopesIdentifiers([]);
-        }     
+        }
     };
 
     const resetDropdown = (): void => {
         setSelectedScopes(defaultDropdownValues);
-        setPreviousSelectedScopes(subscribedAPIResource.authorizedScopes);        
+        setPreviousSelectedScopes(subscribedAPIResource.authorizedScopes);
         setAddedScopesIdentifiers([]);
         setRemovedScopesIdentifiers([]);
         setIsUpdateButtonDisabled(true);
@@ -392,10 +392,10 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                         <Form.Field>
                                             <Grid>
                                                 <Grid.Row columns={ 2 }>
-                                                    <Grid.Column 
+                                                    <Grid.Column
                                                         className="pb-1"
-                                                        floated="left" 
-                                                        stretched 
+                                                        floated="left"
+                                                        stretched
                                                         verticalAlign="bottom"
                                                     >
                                                         <label>
@@ -413,14 +413,14 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                                                         size="small"
                                                                         tabIndex={ 6 }
                                                                         disabled={ isSelectAllDisabled }
-                                                                        onClick={ () => 
-                                                                            handleBulkDropdownChange( 
-                                                                                currentAPIResourceScopeListData 
+                                                                        onClick={ () =>
+                                                                            handleBulkDropdownChange(
+                                                                                currentAPIResourceScopeListData
                                                                                     ? currentAPIResourceScopeListData
-                                                                                    : [], 
+                                                                                    : [],
                                                                                 false ) }
                                                                     >
-                                                                        { 
+                                                                        {
                                                                             t("extensions:develop.applications.edit." +
                                                                             "sections.apiAuthorization.sections." +
                                                                             "apiSubscriptions.scopesSection.selectAll" )
@@ -434,12 +434,12 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                                                         disabled={ isSelectNoneDisabled }
                                                                         onClick={ () =>
                                                                             handleBulkDropdownChange(
-                                                                                currentAPIResourceScopeListData 
+                                                                                currentAPIResourceScopeListData
                                                                                     ? currentAPIResourceScopeListData
                                                                                     : [],
                                                                                 true ) }
                                                                     >
-                                                                        { 
+                                                                        {
                                                                             t("extensions:develop.applications.edit." +
                                                                             "sections.apiAuthorization.sections." +
                                                                             "apiSubscriptions.scopesSection." +
@@ -454,7 +454,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                             </Grid>
                                             <Dropdown
                                                 placeholder={ t("extensions:develop.applications.edit.sections." +
-                                                    "apiAuthorization.sections.apiSubscriptions.scopesSection." + 
+                                                    "apiAuthorization.sections.apiSubscriptions.scopesSection." +
                                                     "placeholder") }
                                                 fluid
                                                 multiple
@@ -472,7 +472,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                                             />
                                             <Hint>
                                                 { t("extensions:develop.applications.edit.sections." +
-                                                    "apiAuthorization.sections.apiSubscriptions.scopesSection." + 
+                                                    "apiAuthorization.sections.apiSubscriptions.scopesSection." +
                                                     "hint") }
                                             </Hint>
                                         </Form.Field>
