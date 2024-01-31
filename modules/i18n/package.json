@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/i18n",
-    "version": "2.0.108",
+    "version": "2.0.109",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",

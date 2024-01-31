@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.8
+
+### Patch Changes
+
+- [#5394](https://github.com/wso2/identity-apps/pull/5394) [`9135fd0241`](https://github.com/wso2/identity-apps/commit/9135fd024135d72a27bee084371e4e773d50d990) Thanks [@Achintha444](https://github.com/Achintha444)! - Add Recovery UI Text customization to Console
+
 ## 2.1.7
 
 ### Patch Changes
