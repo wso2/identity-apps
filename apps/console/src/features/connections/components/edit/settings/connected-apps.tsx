@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/common/src/constants/organization-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -72,6 +73,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../core";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getConnectedApps } from "../../../api/connections";
 import {
     ConnectedAppInterface,
@@ -150,6 +152,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
@@ -413,7 +416,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     history.push({
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
                         search: `#tab=${
-                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                            organizationType === OrganizationType.SUBORGANIZATION
+                                ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
+                                : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
+                        }`
                     });
 
                     return;
