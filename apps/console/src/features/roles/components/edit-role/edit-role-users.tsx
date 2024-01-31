@@ -17,7 +17,6 @@
  */
 
 import { SelectChangeEvent } from "@mui/material/Select";
-import { UserIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -25,15 +24,9 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
 import Grid from "@oxygen-ui/react/Grid";
-import List from "@oxygen-ui/react/List";
-import ListItem from "@oxygen-ui/react/ListItem";
-import ListItemButton from "@oxygen-ui/react/ListItemButton";
-import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
-import ListItemText from "@oxygen-ui/react/ListItemText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
