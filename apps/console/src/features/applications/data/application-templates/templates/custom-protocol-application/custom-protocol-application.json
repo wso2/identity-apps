@@ -2,7 +2,7 @@
     "id": "custom-protocol-application",
     "templateId": "custom-protocol-application",
     "name": "Custom Application",
-    "description": "Manually configure inbound authentication protocols.",
+    "description": "Applications built using niche, legacy or custom protocols.",
     "image": "customProtocolApp",
     "authenticationProtocol": "",
     "category": "DEFAULT",

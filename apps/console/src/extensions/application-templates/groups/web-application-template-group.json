@@ -10,8 +10,8 @@
     "subTemplatesSectionTitle": "Protocol",
     "types": [
         "java",
-        "php",
         "dotNet",
-        "nodejs"
+        "nodejs",
+        "php"
     ]
 }
