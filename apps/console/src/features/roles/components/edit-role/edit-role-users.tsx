@@ -183,7 +183,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                     );
 
                     const isUserAlreadySelected: boolean = selectedUsersFromUserStore?.find(
-                        (selectedUser: UserBasicInterface) => selectedUser.id === user.id ) !== undefined;
+                        (selectedUser: UserBasicInterface) => selectedUser.id === user.id) !== undefined;
 
                     return !isUserAlreadySelected && isUserInSelectedUserStore;
                 }) ?? [];
