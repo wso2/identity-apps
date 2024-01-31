@@ -748,11 +748,13 @@
                                     <div id="termsCheckboxField" class="field">
                                         <div class="ui checkbox">
                                             <input id="termsCheckbox" type="checkbox"/>
-                                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            <label>
+                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "I.confirm.that.read.and.understood")%>
                                                 <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="policy-pane">
-                                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
-                                                </a></label>
+                                                    <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
+                                                </a>
+                                            </label>
                                         </div>
                                     </div>
                                     <%--End Terms/Privacy Policy--%>

@@ -667,12 +667,13 @@
                             <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                             data-testid="registration-form-tos-link"
                             rel="noopener noreferrer">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%></a>
+                                <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
+                            </a>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>
                             <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                             data-testid="registration-form-privacy-link"
                             rel="noopener noreferrer">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%></a>
+                                <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                         </p>
                         <%
                             } else if (StringUtils.isNotBlank(termsOfUseURL)) {
@@ -681,7 +682,7 @@
                             <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                 data-testid="registration-form-tos-link" rel="noopener noreferrer"
                             >
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                                <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                             </a>
                         </p>
                         <%
@@ -691,7 +692,7 @@
                             <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                 data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                             >
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                             </a>
                         </p>
                         <%
@@ -1181,13 +1182,13 @@
                                         <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                             data-testid="registration-form-tos-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                                         </a>
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>
                                         <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                             data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                                         </a>
                                     </p>
                                     <%
@@ -1198,7 +1199,7 @@
                                         <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                             data-testid="registration-form-tos-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                                         </a>
                                     </p>
                                     <%
@@ -1209,7 +1210,7 @@
                                         <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                             data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                                         </a>
                                     </p>
                                     <%

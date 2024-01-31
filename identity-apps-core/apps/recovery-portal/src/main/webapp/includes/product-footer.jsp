@@ -82,7 +82,7 @@
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
                 >
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                    <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                 </a>
             <% } %>
             <%
@@ -96,7 +96,7 @@
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
                 >
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                    <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                 </a>
             <% } %>
 
