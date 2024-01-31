@@ -17,7 +17,6 @@
  */
 
 import { SelectChangeEvent } from "@mui/material/Select";
-import { UserIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -25,15 +24,9 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
 import Grid from "@oxygen-ui/react/Grid";
-import List from "@oxygen-ui/react/List";
-import ListItem from "@oxygen-ui/react/ListItem";
-import ListItemButton from "@oxygen-ui/react/ListItemButton";
-import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
-import ListItemText from "@oxygen-ui/react/ListItemText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
@@ -95,7 +88,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ userSearchValue, setUserSearchValue ] = useState<string>(undefined);
     const [ isUserSearchLoading, setUserSearchLoading ] = useState<boolean>(false);
     const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
-    const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
@@ -104,6 +96,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     );
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
+    const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
 
     const {
         data: userStores,
@@ -124,36 +117,51 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         !!selectedUserStoreDomainName || !!userSearchValue
     );
 
+    const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
+        const userNameChunks: string[] = user.userName.split("/");
+
+        return (userNameChunks.length === 1 && userStoreName === "Primary")
+        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName.toUpperCase());
+    };
+
     useEffect(() => {
-        const alreadyAssignedUsers: UserBasicInterface[] = role?.users?.map( (user: RolesMemberInterface) => {
-            return {
+        if (!role?.users?.length) {
+            return;
+        }
+
+        setIsPlaceholderVisible(false);
+
+        const alreadyAssignedUsersFromSelectedUserStore: UserBasicInterface[] = role?.users?.map(
+            (user: RolesMemberInterface) => ({
                 id: user.value,
                 userName: user.display
-            };
-        });
+            })
+        ).filter((user: UserBasicInterface) =>
+            isUserBelongToSelectedUserStore(user, selectedUserStoreDomainName)
+        ) ?? [];
 
-        if (alreadyAssignedUsers?.length > 0) {
-            setSelectedUsers([
-                ...alreadyAssignedUsers
-            ]);
-        }
+        // if `selectedAllUsers[selectedUserStoreDomainName]` is undefined, that means the assigned users
+        // for the selected user store have not yet been edited since page load. In such cases, the autocomplete
+        // input is populated with already assigned users to role.
+        const usersFromSelectedStore: UserBasicInterface[] =
+            selectedAllUsers[selectedUserStoreDomainName] || alreadyAssignedUsersFromSelectedUserStore;
+
+        setSelectedUsersFromUserStore(usersFromSelectedStore);
     },[ role, selectedUserStoreDomainName ]);
 
     useEffect(() => {
-        if (selectedUsers?.length > 0) {
-            setIsPlaceholderVisible(false);
-        }
-    }, [ selectedUsers ]);
-
-    useEffect(() => {
         if (userStores) {
+            const availableUserStoreList: UserstoreDisplayItem[] = [
+                {
+                    id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
+                    name: t("console:manage.features.users.userstores." +
+                    "userstoreOptions.primary")
+                }
+            ];
+
             setAvailableUserStores(
                 [
-                    {
-                        id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-                        name: t("console:manage.features.users.userstores." +
-                        "userstoreOptions.primary")
-                    },
+                    ...availableUserStoreList,
                     ...userStores.map((userStore: UserStoreListItem) => ({
                         id: userStore.id,
                         name: userStore.name
@@ -170,15 +178,21 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (!isReadOnly && userResponse?.totalResults > 0 && Array.isArray(userResponse?.Resources)) {
             const usersAvailableToSelect: UserBasicInterface[] = userResponse?.Resources?.filter(
                 (user: UserBasicInterface) => {
-                    return selectedUsers?.find(
-                        (selectedUser: UserBasicInterface) => selectedUser.id === user.id ) === undefined;
+                    const isUserInSelectedUserStore: boolean = isUserBelongToSelectedUserStore(
+                        user, selectedUserStoreDomainName
+                    );
+
+                    const isUserAlreadySelected: boolean = selectedUsersFromUserStore?.find(
+                        (selectedUser: UserBasicInterface) => selectedUser.id === user.id) !== undefined;
+
+                    return !isUserAlreadySelected && isUserInSelectedUserStore;
                 }) ?? [];
 
             setUsers(usersAvailableToSelect);
         } else {
             setUsers([]);
         }
-    }, [ userResponse, selectedUsers ]);
+    }, [ userResponse, selectedUsersFromUserStore ]);
 
     /**
      * Show error if user list fetch request failed
@@ -229,12 +243,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     /**
      * Handles temporarily storing the users selected from the specified user store.
      */
-    const handleUpdateSelectedUsersFromUserStore = () => {
-        if (selectedUsersFromUserStore?.length > 0) {
-            setSelectedUsers([
-                ...selectedUsers,
-                ...selectedUsersFromUserStore
-            ]);
+    const updateSelectedAllUsers = () => {
+        if (Array.isArray(selectedUsersFromUserStore)) {
+            const tempSelectedAllUsers: Record<string, UserBasicInterface[]> = selectedAllUsers;
+
+            tempSelectedAllUsers[selectedUserStoreDomainName] = selectedUsersFromUserStore;
+
+            setSelectedAllUsers(tempSelectedAllUsers);
         }
     };
 
@@ -253,6 +268,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const handleUsersUpdate: () => void = () => {
         setIsSubmitting(true);
 
+        updateSelectedAllUsers();
+
         const bulkData: PatchBulkUserDataInterface = {
             Operations: [],
             failOnErrors: 1,
@@ -266,6 +283,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             method: "PATCH",
             path: "/v2/Roles/" + role.id
         };
+
+        const selectedUsers: UserBasicInterface[] = Object.keys(selectedAllUsers).map((userStoreName: string) => {
+            return selectedAllUsers[userStoreName];
+        }).flat();
 
         // Formatting unassigned users list.
         const removedUsers: RolesMemberInterface[] = role?.users?.filter((user: RolesMemberInterface) => {
@@ -364,8 +385,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     value={ selectedUserStoreDomainName }
                                                     onChange={
                                                         (e: SelectChangeEvent<unknown>) => {
-                                                            setSelectedUserStoreDomainName(e.target.value as string);
+                                                            updateSelectedAllUsers();
                                                             setSelectedUsersFromUserStore([]);
+                                                            setSelectedUserStoreDomainName(e.target.value as string);
                                                         }
                                                     }
                                                 >
@@ -432,13 +454,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                         option={ option }
                                                         activeOption={ activeOption }
                                                         setActiveOption={ setActiveOption }
-                                                        variant={
-                                                            selectedUsers?.find(
-                                                                (user: UserBasicInterface) => user.id === option.id
-                                                            )
-                                                                ? "solid"
-                                                                : "outlined"
-                                                        }
+                                                        variant={ "solid" }
                                                     />
                                                 )) }
                                                 renderOption={ (
@@ -461,58 +477,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                             />
 
                                         </Grid>
-                                        <Grid xs={ 12 } sm={ 4 } md={ 2 }>
-                                            <Button
-                                                type="button"
-                                                variant="outlined"
-                                                onClick={ handleUpdateSelectedUsersFromUserStore }
-                                            >Select</Button>
-                                        </Grid>
                                     </Grid>
                                 )
                             }
-
-                            <EmphasizedSegment>
-                                { selectedUsers?.length > 0 ? (
-                                    <List>
-                                        { selectedUsers?.map((selectedUser: UserBasicInterface) => (
-                                            <div key={ selectedUser.userName }>
-                                                <ListItem disablePadding>
-                                                    <ListItemButton>
-                                                        <ListItemIcon>
-                                                            <UserIcon />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={ selectedUser?.userName } />
-                                                        {
-                                                            !isReadOnly && (
-                                                                <ListItemIcon
-                                                                    onClick={ () => {
-                                                                        const updatedUserList: UserBasicInterface[] =
-                                                                    selectedUsers?.filter(
-                                                                        (user: UserBasicInterface) =>
-                                                                            user?.userName !== selectedUser?.userName
-                                                                    ) ?? [];
-
-                                                                        setSelectedUsers(updatedUserList);
-                                                                    } }>
-                                                                    <XMarkIcon />
-                                                                </ListItemIcon>
-                                                            )
-                                                        }
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            </div>
-                                        )) }
-                                    </List>
-                                ) :
-                                    (<Typography variant="subtitle1">
-                                        {
-                                            t("console:manage.features.roles.edit.users." +
-                                            "placeholders.emptyPlaceholder.title")
-                                        }
-                                    </Typography>)
-                                }
-                            </EmphasizedSegment>
 
                             {
                                 !isReadOnly
