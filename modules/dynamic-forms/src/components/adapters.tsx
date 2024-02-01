@@ -149,6 +149,7 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
                     ? meta?.initial
                     : resolveFieldInitailValue(meta, name, parentFormProps?.values) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
+            inputProps={ { required, ...restInput } }
             error={
                 ((meta.error || meta.submitError) && meta.touched)
                     ? meta.error || meta.submitError

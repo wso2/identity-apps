@@ -107,9 +107,13 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
             return (
                 <FinalFormField
                     type="password"
-                    render={ ( { input, meta } ) => (
-                        <PasswordFieldAdapter input={ input } meta={ meta } name={ name } { ...rest } />
-                    ) }
+                    render={ ( { input, meta } ) => {
+                        delete input.type;
+                        
+                        return (
+                            <PasswordFieldAdapter input={ input } meta={ meta } name={ name } { ...rest } />
+                        )
+                    } }
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, props.required, validation)
                     }
