@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.11.27
+
+### Patch Changes
+
+- [#5401](https://github.com/wso2/identity-apps/pull/5401) [`d2fa23c476`](https://github.com/wso2/identity-apps/commit/d2fa23c4760c05ad76851b69a0f9f61f24433147) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix password visibility toggle issue
+
+* [#5217](https://github.com/wso2/identity-apps/pull/5217) [`a07d7f6944`](https://github.com/wso2/identity-apps/commit/a07d7f6944463af9f829c8c047c41f1048edd756) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix Custom username type validation visibility issue.
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
+* [#5398](https://github.com/wso2/identity-apps/pull/5398) [`9011ccfef6`](https://github.com/wso2/identity-apps/commit/9011ccfef65630ee7178604bbe09b2f35031861b) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Enable SCIM2 schema retrieval on sub-organization switch
+
+* Updated dependencies [[`d2fa23c476`](https://github.com/wso2/identity-apps/commit/d2fa23c4760c05ad76851b69a0f9f61f24433147), [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af)]:
+  - @wso2is/dynamic-forms@2.0.29
+  - @wso2is/theme@2.0.60
+  - @wso2is/i18n@2.0.111
+  - @wso2is/common@2.0.31
+  - @wso2is/core@2.0.33
+  - @wso2is/react-components@2.1.3
+
 ## 2.11.26
 
 ### Patch Changes
