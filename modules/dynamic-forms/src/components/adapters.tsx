@@ -125,6 +125,7 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
     return (
         <TextField
             variant="outlined"
+            type="password"
             placeholder={ placeholder }
             fullWidth={ fullWidth }
             key={ childFieldProps?.testId }
@@ -148,7 +149,6 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
                     ? meta?.initial
                     : resolveFieldInitailValue(meta, name, parentFormProps?.values) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
-            inputProps={ { required, ...restInput } }
             error={
                 ((meta.error || meta.submitError) && meta.touched)
                     ? meta.error || meta.submitError
