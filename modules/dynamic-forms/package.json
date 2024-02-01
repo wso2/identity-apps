@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "@oxygen-ui/react": "^1.8.5",
+        "@oxygen-ui/react-icons": "^1.8.5",
         "@mui/material": "^5.13.0",
         "@wso2is/core": "^2.0.32",
         "@wso2is/validation": "^2.0.3",

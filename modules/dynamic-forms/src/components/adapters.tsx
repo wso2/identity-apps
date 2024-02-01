@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import { EyeIcon, EyeSlashIcon } from "@oxygen-ui/react-icons";
 import Button from "@oxygen-ui/react/Button";
 import TextField, { TextFieldProps as OuiTextFieldProps } from "@oxygen-ui/react/TextField";
 import { CopyInputField, DangerButton, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { FieldProps, FieldRenderProps } from "react-final-form";
 import {
     Checkbox,
@@ -31,7 +34,7 @@ import { QueryParameters, Scopes } from "../addons";
 import { DynamicFieldInputTypes, FieldButtonTypes } from "../models";
 
 export type TextFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange">> & {
-    
+
     /**
      * The name of the text field.
      */
@@ -52,17 +55,17 @@ export type TextFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange"
 
 export const TextFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): ReactElement => {
 
-    const { 
-        childFieldProps, 
+    const {
+        childFieldProps,
         placeholder,
         fullWidth = true,
-        input: { name, value, onChange, onBlur, ...restInput }, 
+        input: { name, value, onChange, onBlur, ...restInput },
         meta,
-        required, 
+        required,
         parentFormProps,
         showError = showErrorOnBlur,
         helperText,
-        label 
+        label
     } = props;
 
     const { error, submitError } = meta;
@@ -106,18 +109,24 @@ export const TextFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): Re
 
 export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): ReactElement => {
 
-    const { 
-        childFieldProps, 
+    const {
+        childFieldProps,
         placeholder,
         fullWidth = true,
-        input: { name, value, onChange, onBlur, ...restInput }, 
+        input: { name, value, onChange, onBlur, type, ...restInput },
         meta,
-        required, 
+        required,
         parentFormProps,
         showError = showErrorOnBlur,
         helperText,
-        label 
+        label
     } = props;
+
+    const [ isPasswordVisible, setIsPasswordVisible ] = useState<boolean>();
+
+    const handleClickShowPassword = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    };
 
     const { error, submitError } = meta;
     const isError = showError({ meta });
@@ -148,12 +157,27 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
                     ? meta?.initial
                     : resolveFieldInitailValue(meta, name, parentFormProps?.values) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
-            inputProps={ { required, ...restInput } }
+            inputProps={ {
+                required,
+                type: isPasswordVisible ? "text" : type,
+                ...restInput } }
             error={
                 ((meta.error || meta.submitError) && meta.touched)
                     ? meta.error || meta.submitError
                     : null
             }
+            InputProps={ {
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton
+                            aria-label="Toggle password visibility"
+                            onClick={ handleClickShowPassword }
+                        >
+                            { isPasswordVisible ? <EyeSlashIcon /> : <EyeIcon /> }
+                        </IconButton>
+                    </InputAdornment>
+                )
+            } }
         />
     );
 };
