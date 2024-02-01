@@ -38,7 +38,7 @@ export class ValidationConfigConstants {
         PASSWORD_MAX_LENGTH: 2,
         PASSWORD_MAX_VALUE: 30,
         PASSWORD_MIN_LENGTH: 1,
-        PASSWORD_MIN_VALUE: 5
+        PASSWORD_MIN_VALUE: 8
     };
 
 }
