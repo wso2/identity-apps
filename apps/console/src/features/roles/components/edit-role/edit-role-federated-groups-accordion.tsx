@@ -27,6 +27,7 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, GenericIcon } from "@wso2is/react-components";
@@ -72,10 +73,11 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                 id: group.value,
                 name: group.display
             };
-        });    
+        });
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { UIConfig } = useUIConfig();
 
     const [ selectedGroupsOptions, setSelectedGroupsOptions ]
         = useState<IdentityProviderGroupInterface[]>(initialSelectedGroupsOptions);
@@ -86,6 +88,9 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
 
     // Groups should be fetched only when the accordion is expanded.
     const shouldFetchGroups: boolean = isExpanded;
+
+    // External connection resources URL from the UI config.
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const {
         data: originalGroupList,
@@ -108,7 +113,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
 
     /**
      * Show error if group list fetch request failed.
-     */ 
+     */
     useEffect(() => {
         if (groupListFetchRequestError) {
             dispatch(
@@ -151,7 +156,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
 
     /**
      * Listener for the accordion change.
-     * 
+     *
      * @param event - Click event.
      * @param isExpanded - Is accordion expanded.
      */
@@ -164,7 +169,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
     /**
      * Handles the search query for the groups list.
      */
-    const searchGroups: DebouncedFunc<(query: string) => void> = 
+    const searchGroups: DebouncedFunc<(query: string) => void> =
         useCallback(debounce((query: string) => {
             if (isEmpty(query)) {
                 setGroupsOptions(originalGroupList);
@@ -172,20 +177,20 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
 
                 return;
             }
-            
+
             const trimmedQuery: string = query.trim();
             const filteredGroups: IdentityProviderGroupInterface[] = originalGroupList?.filter(
                 (group: IdentityProviderGroupInterface) => {
                     return group.name.toLowerCase().includes(trimmedQuery.toLowerCase());
                 });
-                
+
             setGroupsOptions(filteredGroups);
             setGroupSearchLoading(false);
         }, RoleConstants.DEBOUNCE_TIMEOUT), [ originalGroupList ]);
 
     /**
      * Handle the restore groups.
-     * 
+     *
      * @param remainingGroups - remaining groups.
      */
     const handleRestoreGroups = (remainingGroups: IdentityProviderGroupInterface[]) => {
@@ -205,15 +210,15 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
 
     /**
      * Resolves the IDP image.
-     * 
+     *
      * @returns Resolved IDP image.
      */
     const resolveIDPImage = (): string => {
         if (identityProvider.image) {
             return ConnectionsManagementUtils.resolveConnectionResourcePath(
-                "", identityProvider.image);
+                connectionResourcesUrl, identityProvider.image);
         }
-        
+
         return getConnectionIcons().default;
     };
 
@@ -285,7 +290,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                             />
                                         )) }
                                         renderOption={ (
-                                            props: HTMLAttributes<HTMLLIElement>, 
+                                            props: HTMLAttributes<HTMLLIElement>,
                                             option: IdentityProviderGroupInterface
                                         ) => (
                                             <AutoCompleteRenderOption
@@ -305,7 +310,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
                                             <TextField
                                                 { ...params }
-                                                placeholder= { t("console:manage.features.roles.edit.groups" + 
+                                                placeholder= { t("console:manage.features.roles.edit.groups" +
                                                     ".actions.assign.placeholder") }
                                             />
                                         ) }
@@ -314,21 +319,21 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                             groups: IdentityProviderGroupInterface[]
                                         ) => { setSelectedGroupsOptions(groups); } }
                                         filterOptions={ (groups: IdentityProviderGroupInterface[]) => groups }
-                                        onInputChange={ 
+                                        onInputChange={
                                             (event: SyntheticEvent, newValue: string) => {
                                                 setGroupSearchLoading(true);
                                                 searchGroups(newValue);
-                                            } 
+                                            }
                                         }
                                         isOptionEqualToValue={ (
                                             option: IdentityProviderGroupInterface,
                                             value: IdentityProviderGroupInterface
                                         ) => option.id === value.id }
                                         renderTags={ (
-                                            value: IdentityProviderGroupInterface[], 
+                                            value: IdentityProviderGroupInterface[],
                                             getTagProps: AutocompleteRenderGetTagProps
                                         ) => value.map((option: IdentityProviderGroupInterface, index: number) => (
-                                            <RenderChip 
+                                            <RenderChip
                                                 { ...getTagProps({ index }) }
                                                 key={ index }
                                                 primaryText={ option.name }
@@ -337,7 +342,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                                 setActiveOption={ setActiveOption }
                                                 variant={
                                                     initialSelectedGroupsOptions?.find(
-                                                        (group: IdentityProviderGroupInterface) => 
+                                                        (group: IdentityProviderGroupInterface) =>
                                                             group.id === option.id
                                                     )
                                                         ? "solid"
@@ -347,7 +352,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         )) }
                                         renderOption={ (
                                             props: HTMLAttributes<HTMLLIElement>,
-                                            option: IdentityProviderGroupInterface, 
+                                            option: IdentityProviderGroupInterface,
                                             { selected }: { selected: boolean }
                                         ) => (
                                             <AutoCompleteRenderOption
@@ -360,7 +365,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                 )
                         }
 
-                        {   
+                        {
                             removedGroupsOptions?.length > 0
                                 ? (
                                     <Autocomplete
@@ -369,8 +374,8 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
                                         options={ removedGroupsOptions }
                                         value={ removedGroupsOptions }
-                                        getOptionLabel={ 
-                                            (group: IdentityProviderGroupInterface) => 
+                                        getOptionLabel={
+                                            (group: IdentityProviderGroupInterface) =>
                                                 group.name
                                         }
                                         onChange={ (
@@ -380,15 +385,15 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
                                             <TextField
                                                 { ...params }
-                                                placeholder={ t("console:manage.features.roles.edit.groups" + 
+                                                placeholder={ t("console:manage.features.roles.edit.groups" +
                                                     ".actions.remove.placeholder") }
-                                                label={ t("console:manage.features.roles.edit.groups" + 
+                                                label={ t("console:manage.features.roles.edit.groups" +
                                                     ".actions.remove.label") }
                                                 margin="dense"
                                             />
                                         ) }
                                         renderTags={ (
-                                            value: IdentityProviderGroupInterface[], 
+                                            value: IdentityProviderGroupInterface[],
                                             getTagProps: AutocompleteRenderGetTagProps
                                         ) => value.map((option: IdentityProviderGroupInterface, index: number) => (
                                             <RenderChip
@@ -408,7 +413,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                             />
                                         )) }
                                         renderOption={ (
-                                            props: HTMLAttributes<HTMLLIElement>, 
+                                            props: HTMLAttributes<HTMLLIElement>,
                                             option: IdentityProviderGroupInterface
                                         ) => (
                                             <AutoCompleteRenderOption
@@ -418,14 +423,14 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         ) }
                                     />
                                 ) : null
-                        } 
+                        }
                         {
-                            !isReadOnly 
+                            !isReadOnly
                                 ? (
                                     <Button
                                         className="role-assigned-button"
-                                        variant="contained" 
-                                        loading={ isUpdating } 
+                                        variant="contained"
+                                        loading={ isUpdating }
                                         onClick={ onUpdate }
                                         disabled={ initialSelectedGroupsOptions === selectedGroupsOptions }
                                     >
