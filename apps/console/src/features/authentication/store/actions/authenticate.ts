@@ -58,6 +58,7 @@ export const getProfileInformation = (
         if (!fetchProfileSchema && !isEmpty(store.getState().profile.profileSchemas)) {
             return;
         }
+
         dispatch(setProfileSchemaRequestLoadingStatus(true));
         getProfileSchemas()
             .then((response: ProfileSchemaInterface[]) => {
