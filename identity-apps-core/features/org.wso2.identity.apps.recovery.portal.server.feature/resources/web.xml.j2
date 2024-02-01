@@ -232,7 +232,7 @@
         <jsp-file>/accept-invitation.jsp</jsp-file>
     </servlet>
 
-    {% for custom_servlet in account_recovery.endpoint.servlet %}
+    {% for custom_servlet in accountrecoveryendpoint.servlet %}
     <servlet>
         <servlet-name>{{custom_servlet.name}}</servlet-name>
         <jsp-file>{{custom_servlet.jsp}}</jsp-file>
