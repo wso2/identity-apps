@@ -43,7 +43,8 @@ import { getProfileInfo, getProfileSchemas } from "../../../users/api";
  */
 export const getProfileInformation = (
     meEndpoint: string = Config.getServiceResourceEndpoints().me,
-    clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant
+    clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant,
+    fetchProfileSchema: boolean = false
 ) => (dispatch: Dispatch): void => {
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
@@ -54,42 +55,42 @@ export const getProfileInformation = (
                                     (window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false);
 
     const getProfileSchema = (): void => {
-        // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
-        if (isEmpty(store.getState().profile.profileSchemas)) {
-            dispatch(setProfileSchemaRequestLoadingStatus(true));
+        if (!fetchProfileSchema && !isEmpty(store.getState().profile.profileSchemas)) {
+            return;
+        }
 
-            getProfileSchemas()
-                .then((response: ProfileSchemaInterface[]) => {
-                    dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error?.response?.data?.description) {
-                        dispatch(
-                            addAlert<AlertInterface>({
-                                description: error.response.data.description,
-                                level: AlertLevels.ERROR,
-                                message: I18n.instance.t("console:manage.notifications.getProfileSchema." +
-                                    "error.message")
-                            })
-                        );
-                    }
-
+        dispatch(setProfileSchemaRequestLoadingStatus(true));
+        getProfileSchemas()
+            .then((response: ProfileSchemaInterface[]) => {
+                dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: I18n.instance.t(
-                                "console:manage.notifications.getProfileSchema.genericError.description"
-                            ),
+                            description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: I18n.instance.t(
-                                "console:manage.notifications.getProfileSchema.genericError.message"
-                            )
+                            message: I18n.instance.t("console:manage.notifications.getProfileSchema." +
+                                "error.message")
                         })
                     );
-                })
-                .finally(() => {
-                    dispatch(setProfileSchemaRequestLoadingStatus(false));
-                });
-        }
+                }
+
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: I18n.instance.t(
+                            "console:manage.notifications.getProfileSchema.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: I18n.instance.t(
+                            "console:manage.notifications.getProfileSchema.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                dispatch(setProfileSchemaRequestLoadingStatus(false));
+            });
     };
 
     if (getProfileInfoFromToken || isSubOrg && meEndpoint.includes("scim2/Me")) {
