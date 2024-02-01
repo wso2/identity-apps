@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.11.28
+
+### Patch Changes
+
+- [#5311](https://github.com/wso2/identity-apps/pull/5311) [`6074ce9f36`](https://github.com/wso2/identity-apps/commit/6074ce9f36e8ca0ab875db84990c5e66144b1b83) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Keep last selected tab active upon refresh when editing users.
+
+* [#5310](https://github.com/wso2/identity-apps/pull/5310) [`012fd7d910`](https://github.com/wso2/identity-apps/commit/012fd7d910dd833ab13e60b91a71431b23b286c8) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Keep last selected tab active upon refresh when editing groups.
+
+- [#5407](https://github.com/wso2/identity-apps/pull/5407) [`971358fd70`](https://github.com/wso2/identity-apps/commit/971358fd70efcab7db8f533e2360a6b2f22b0fcc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide reset password option for invited admins registered in super tenant
+
+* [#5408](https://github.com/wso2/identity-apps/pull/5408) [`fab04002a3`](https://github.com/wso2/identity-apps/commit/fab04002a36b0d7af3ea6754478e4f2c55196be7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the permissions tab in the role edit page
+
 ## 2.11.27
 
 ### Patch Changes
