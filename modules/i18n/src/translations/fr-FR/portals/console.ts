@@ -1463,7 +1463,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 customization: {
-                                    heading: "Personnaliser la méthode de connexion",
+                                    heading: "Personnaliser la Flux de connexion",
                                     revertToDefaultButton: {
                                         hint: "Revenir à la configuration par défaut (nom d'utilisateur et " +
                                             "mot de passe)",
@@ -1593,7 +1593,7 @@ export const console: ConsoleNS = {
                                                     progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> Lors de la définition de " +
                                                     "la clé d'accès lors de la <2>première étape</2>, les utilisateurs doivent ajouter " +
                                                     "un script adaptatif. Utilisez le modèle <4>Inscription progressive des clés d'accès</4> " +
-                                                    "dans l'onglet <6>Méthode de connexion</6> de l'application.",
+                                                    "dans l'onglet <6>Flux de connexion</6> de l'application.",
                                                     progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
                                                     "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
                                                     "via <1>My Account</1> pour utiliser la connexion sans mot de passe."
@@ -1649,7 +1649,7 @@ export const console: ConsoleNS = {
                                     popupContent: "Plus de détails"
                                 }
                             },
-                            tabName: "Méthode de connexion"
+                            tabName: "Flux de connexion"
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "Toutes les étendues autorisées d'une ressource API sont disponibles pour une application M2M malgré la politique d'autorisation spécifiée pour la ressource."
@@ -3976,7 +3976,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 connectedApps: {
-                    action: "Aller à la méthode de connexion",
+                    action: "Aller à la Flux de connexion",
                     header: "Applications connectées de {{idpName}}",
                     subHeader: "Les applications connectées à {{idpName}} sont listées ici.",
                     placeholders: {
