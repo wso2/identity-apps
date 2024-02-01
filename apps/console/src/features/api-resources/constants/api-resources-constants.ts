@@ -43,10 +43,6 @@ export class APIResourcesConstants {
     public static readonly SYSTEM_FEATURE: string = "SYSTEM_FEATURE";
     public static readonly BUSINESS: string = "BUSINESS";
 
-    public static readonly ORGANIZATION_ADMIN: string = "ORGANIZATION_ADMIN";
-    public static readonly TENANT_ADMIN: string = "TENANT_ADMIN";
-    public static readonly CONSOLE_FEATURE: string = "CONSOLE_FEATURE";
-
     /**
      * Get the API resource paths as a map.
      *

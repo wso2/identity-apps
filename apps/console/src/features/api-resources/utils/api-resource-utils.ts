@@ -110,11 +110,11 @@ export class APIResourceUtils {
 
     public static resolveApiResourceGroupDisplayName = (groupName: string): string => {
         switch (groupName) {
-            case APIResourcesConstants.ORGANIZATION_ADMIN:
+            case APIResourceCategories.ORGANIZATION:
                 return "Organization API";
-            case APIResourcesConstants.TENANT_ADMIN:
+            case APIResourceCategories.TENANT:
                 return "Management API";
-            case APIResourcesConstants.CONSOLE_FEATURE:
+            case APIResourceCategories.CONSOLE_FEATURE:
                 return "Console Feature";
             case APIResourceCategories.BUSINESS:
                 return "Business API";
@@ -125,11 +125,11 @@ export class APIResourceUtils {
 
     public static resolveApiResourceGroupDescription = (groupName: string): string => {
         switch (groupName) {
-            case APIResourcesConstants.ORGANIZATION_ADMIN:
+            case APIResourceCategories.ORGANIZATION:
                 return "extensions:develop.apiResource.organizationAPI.description";
-            case APIResourcesConstants.TENANT_ADMIN:
+            case APIResourceCategories.TENANT:
                 return "extensions:develop.apiResource.managementAPI.description";
-            case APIResourcesConstants.CONSOLE_FEATURE:
+            case APIResourceCategories.CONSOLE_FEATURE:
                 return "extensions:develop.apiResource.consoleFeature.description";
             case APIResourceCategories.BUSINESS:
                 return "extensions:develop.apiResource.businessAPI.description";
