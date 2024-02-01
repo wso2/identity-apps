@@ -1,5 +1,15 @@
 # @wso2is/dynamic-forms
 
+## 2.0.29
+
+### Patch Changes
+
+- [#5401](https://github.com/wso2/identity-apps/pull/5401) [`d2fa23c476`](https://github.com/wso2/identity-apps/commit/d2fa23c4760c05ad76851b69a0f9f61f24433147) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix password visibility toggle issue
+
+- Updated dependencies [[`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af)]:
+  - @wso2is/core@2.0.33
+  - @wso2is/react-components@2.1.3
+
 ## 2.0.28
 
 ### Patch Changes
