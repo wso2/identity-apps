@@ -72,7 +72,7 @@
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "hypr.heading")%></h2>
                 <div class="ui divider hidden"></div>
                 <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
-                
+
                 <div class="segment-form">
                     <form class="ui large form" id="loginForm" action="<%=commonauthURL%>" method="POST">
                         <div class="ui fluid left icon input">
@@ -179,19 +179,13 @@
             if(username == '') {
                 handleError(generic_error_message);
                 return;
-            } 
+            }
 
-            if (username.length > 254 || !isValidEmail(username)) {
+            if (username.length > 254) {
                 handleError(invalid_email_error_message);
                 return;
             }
             initiateAuthentication();
-        }
-        
-        function isValidEmail(email) {
-            var email_regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-            return email_regex.test(String(email).toLowerCase());
         }
 
         function pollAuthStatus() {
