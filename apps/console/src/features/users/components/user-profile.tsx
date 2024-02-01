@@ -1123,7 +1123,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                                 >
                                     {
-                                        !isUserManagedByParentOrg && (
+                                        (
+                                            !isReadOnly &&
+                                            !isReadOnlyUserStore &&
+                                            user.userName !== adminUsername
+                                            && !isUserManagedByParentOrg && !isUserManagedByParentOrg
+                                        ) ? (
                                             <Show when={ AccessControlConstants.USER_EDIT }>
                                                 <DangerZone
                                                     data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
@@ -1136,7 +1141,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                     onActionClick={ () => setOpenChangePasswordModal(true) }
                                                 />
                                             </Show>
-                                        )
+                                        ) : null
                                     }
                                     {
                                         !allowDeleteOnly && configSettings?.accountDisable === "true" && (
