@@ -1123,20 +1123,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                                 >
                                     {
-                                        !isUserManagedByParentOrg && (
-                                            <Show when={ AccessControlConstants.USER_EDIT }>
-                                                <DangerZone
-                                                    data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
-                                                    actionTitle={ t("console:manage.features.user.editUser." +
+                                        (
+                                            !isReadOnly &&
+                                            !isReadOnlyUserStore &&
+                                            user.userName !== adminUsername &&
+                                            !isUserManagedByParentOrg
+                                        ) ? (
+                                                <Show when={ AccessControlConstants.USER_EDIT }>
+                                                    <DangerZone
+                                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                                        actionTitle={ t("console:manage.features.user.editUser." +
                                                     "dangerZoneGroup.passwordResetZone.actionTitle") }
-                                                    header={ t("console:manage.features.user.editUser.dangerZoneGroup."
-                                                    + "passwordResetZone.header") }
-                                                    subheader={ t("console:manage.features.user.editUser" +
+                                                        header={ t("console:manage.features.user.editUser." +
+                                                        "dangerZoneGroup.passwordResetZone.header") }
+                                                        subheader={ t("console:manage.features.user.editUser" +
                                                     ".dangerZoneGroup.passwordResetZone.subheader") }
-                                                    onActionClick={ () => setOpenChangePasswordModal(true) }
-                                                />
-                                            </Show>
-                                        )
+                                                        onActionClick={ () => setOpenChangePasswordModal(true) }
+                                                    />
+                                                </Show>
+                                            ) : null
                                     }
                                     {
                                         !allowDeleteOnly && configSettings?.accountDisable === "true" && (
