@@ -16,14 +16,11 @@
  * under the License.
  */
 
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
-import { EyeIcon, EyeSlashIcon } from "@oxygen-ui/react-icons";
 import Button from "@oxygen-ui/react/Button";
 import TextField, { TextFieldProps as OuiTextFieldProps } from "@oxygen-ui/react/TextField";
 import { CopyInputField, DangerButton, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import omit from "lodash-es/omit";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { FieldProps, FieldRenderProps } from "react-final-form";
 import {
     Checkbox,
@@ -113,7 +110,7 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
         childFieldProps,
         placeholder,
         fullWidth = true,
-        input: { name, value, onChange, onBlur, type, ...restInput },
+        input: { name, value, onChange, onBlur, ...restInput },
         meta,
         required,
         parentFormProps,
@@ -122,18 +119,13 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
         label
     } = props;
 
-    const [ isPasswordVisible, setIsPasswordVisible ] = useState<boolean>();
-
-    const handleClickShowPassword = () => {
-        setIsPasswordVisible(!isPasswordVisible);
-    };
-
     const { error, submitError } = meta;
     const isError = showError({ meta });
 
     return (
         <TextField
             variant="outlined"
+            type="password"
             placeholder={ placeholder }
             fullWidth={ fullWidth }
             key={ childFieldProps?.testId }
@@ -157,27 +149,12 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
                     ? meta?.initial
                     : resolveFieldInitailValue(meta, name, parentFormProps?.values) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
-            inputProps={ {
-                required,
-                type: isPasswordVisible ? "text" : type,
-                ...restInput } }
+            inputProps={ { required, ...restInput } }
             error={
                 ((meta.error || meta.submitError) && meta.touched)
                     ? meta.error || meta.submitError
                     : null
             }
-            InputProps={ {
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <IconButton
-                            aria-label="Toggle password visibility"
-                            onClick={ handleClickShowPassword }
-                        >
-                            { isPasswordVisible ? <EyeSlashIcon /> : <EyeIcon /> }
-                        </IconButton>
-                    </InputAdornment>
-                )
-            } }
         />
     );
 };

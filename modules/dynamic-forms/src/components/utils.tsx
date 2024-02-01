@@ -73,7 +73,6 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
             key={ index }
             name={ fieldProps.name }
             label={ fieldProps.label }
-            type={ fieldProps.type }
             inputType={ fieldProps.type }
             { ...fieldProps }
         />
