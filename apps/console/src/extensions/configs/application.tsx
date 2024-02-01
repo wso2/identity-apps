@@ -720,6 +720,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        customProtocol: true,
         m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,

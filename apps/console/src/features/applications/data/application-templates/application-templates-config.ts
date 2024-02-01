@@ -24,6 +24,8 @@ import GeneralApplicationTemplateCategory from "./categories/general-application
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
 import CustomApplicationTemplate from "./templates/custom-application/custom-application.json";
+import CustomProtocolApplicationTemplate from
+    "./templates/custom-protocol-application/custom-protocol-application.json";
 import M2MApplicationTemplate from "./templates/m2m-application/m2m-application.json";
 import MobileApplicationTemplate from "./templates/mobile-application/mobile-application.json";
 import OIDCWebApplicationTemplate from "./templates/oidc-web-application/oidc-web-application.json";
@@ -157,6 +159,14 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         enabled: applicationConfig.templates.m2m,
                         id: M2MApplicationTemplate.id,
                         resource: M2MApplicationTemplate
+                    },
+                    {
+                        content: {
+                            wizardHelp: null
+                        },
+                        enabled: applicationConfig.templates.customProtocol,
+                        id: CustomProtocolApplicationTemplate.id,
+                        resource: CustomProtocolApplicationTemplate
                     }
                 ], "id"),
                 keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")

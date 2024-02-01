@@ -102,6 +102,9 @@ import {
     ReactComponent as CustomApplicationTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
 import {
+    ReactComponent as CustomProtocolApplicationTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/custom-protocol-app-illustration.svg";
+import {
     ReactComponent as globalIllustration
 } from "../../../themes/default/assets/images/illustrations/global.svg";
 import {
@@ -181,6 +184,7 @@ export const getInboundProtocolLogos = (): {
 export const getApplicationTemplateIllustrations = (): {
     box: FunctionComponent<SVGProps<SVGSVGElement>>;
     customApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    customProtocolApp: FunctionComponent<SVGProps<SVGSVGElement>>;
     m2m: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcMobile: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -197,6 +201,7 @@ export const getApplicationTemplateIllustrations = (): {
     return {
         box: BoxTemplateIllustration,
         customApp: CustomApplicationTemplateIllustration,
+        customProtocolApp: CustomProtocolApplicationTemplateIllustration,
         m2m: M2MTemplateIllustration,
         oidcMobile: OIDCMobileTemplateIllustration,
         oidcWebApp: OIDCWebAppTemplateIllustration,

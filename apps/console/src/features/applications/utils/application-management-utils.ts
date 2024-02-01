@@ -42,6 +42,7 @@ import {
     SAMLApplicationConfigurationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
+    SupportedCustomAuthProtocolTypes,
     additionalSpProperty,
     emptySAMLAppConfiguration
 } from "../models";
@@ -390,7 +391,8 @@ export class ApplicationManagementUtils {
      * @param protocol - Auth Protocol.
      * @returns Display name of auth protocol.
      */
-    public static resolveProtocolDisplayName(protocol: SupportedAuthProtocolTypes): string {
+    public static resolveProtocolDisplayName(
+        protocol: SupportedAuthProtocolTypes | SupportedCustomAuthProtocolTypes): string {
 
         return SupportedAuthProtocolTypeDisplayNames[protocol];
     }
@@ -441,12 +443,12 @@ export class ApplicationManagementUtils {
      */
     public static isChoreoApplication(application: ApplicationListItemInterface): boolean {
         // Check whether `isChoreoApp` SP property is available.
-        const additionalSpProperties: additionalSpProperty[] = 
+        const additionalSpProperties: additionalSpProperty[] =
             application?.advancedConfigurations?.additionalSpProperties;
 
         const choreoSpProperty: additionalSpProperty = additionalSpProperties?.find(
-            (spProperty: additionalSpProperty) => 
-                spProperty.name === ApplicationManagementConstants.IS_CHOREO_APP_SP_PROPERTY 
+            (spProperty: additionalSpProperty) =>
+                spProperty.name === ApplicationManagementConstants.IS_CHOREO_APP_SP_PROPERTY
                 && spProperty.value === "true"
         );
 

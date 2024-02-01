@@ -154,6 +154,7 @@ import { ReactComponent as AppleLogo } from "../../../themes/default/assets/imag
 import { ReactComponent as CSharpLogo } from "../../../themes/default/assets/images/technologies/c-sharp-logo.svg";
 import { ReactComponent as CordovaLogo } from "../../../themes/default/assets/images/technologies/cordova-logo.svg";
 import { ReactComponent as DotNetLogo } from "../../../themes/default/assets/images/technologies/dotnet-logo.svg";
+import { ReactComponent as FlutterLogo } from "../../../themes/default/assets/images/technologies/flutter-logo.svg";
 import { ReactComponent as HTMLLogo } from "../../../themes/default/assets/images/technologies/html-logo.svg";
 import { ReactComponent as IOSLogo } from "../../../themes/default/assets/images/technologies/ios-logo.svg";
 import { ReactComponent as JavaLogo } from "../../../themes/default/assets/images/technologies/java-logo.svg";
@@ -162,6 +163,7 @@ import {
 } from "../../../themes/default/assets/images/technologies/javascript-logo.svg";
 import MacOSLogo from "../../../themes/default/assets/images/technologies/macos-logo.png";
 import { ReactComponent as NodeJSLogo } from "../../../themes/default/assets/images/technologies/nodejs-logo.svg";
+import { ReactComponent as PHPLogo } from "../../../themes/default/assets/images/technologies/php-logo.svg";
 import { ReactComponent as PythonLogo } from "../../../themes/default/assets/images/technologies/python-logo.svg";
 import { ReactComponent as ReactLogo } from "../../../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../../../themes/default/assets/images/technologies/vue-logo.svg";
@@ -180,6 +182,7 @@ interface GetTechnologyLogosInterface {
     cordova: FunctionComponent | ReactNode,
     dotNet: FunctionComponent | ReactNode,
     eidas: string,
+    flutter: FunctionComponent | ReactNode,
     html: FunctionComponent | ReactNode,
     ios: FunctionComponent | ReactNode,
     java: FunctionComponent | ReactNode,
@@ -189,6 +192,7 @@ interface GetTechnologyLogosInterface {
     oauth2: string,
     oidc: string,
     openidconnect: string,
+    php: FunctionComponent | ReactNode,
     python: FunctionComponent | ReactNode,
     react: FunctionComponent | ReactNode,
     saml: string,
@@ -214,6 +218,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         cordova: CordovaLogo,
         dotNet: DotNetLogo,
         eidas: EidasLogo,
+        flutter: FlutterLogo,
         html: HTMLLogo,
         ios: IOSLogo,
         java: JavaLogo,
@@ -223,6 +228,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         oauth2: OAuth2Logo,
         oidc: OIDCLogo,
         openidconnect: OIDCFullLogo,
+        php: PHPLogo,
         python: PythonLogo,
         react: ReactLogo,
         saml: SamlLogo,
