@@ -454,6 +454,14 @@ export const extensions: Extensions = {
                 header: "කළමනාකරණ API",
                 description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API (root)"
             },
+            consoleFeature: {
+                header: "කොන්සෝල ලක්ෂණ",
+                description: "කොන්සෝලය තුළ සම්පත් කළමනාකරණය කිරීමට අවසර"
+            },
+            businessAPI: {
+                header: "ව්යාපාර API",
+                description: "පරිශීලකයා විසින් නිර්මාණය කරන ලද අභිරුචි API"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
