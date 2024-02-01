@@ -1383,9 +1383,6 @@ importers:
       '@oxygen-ui/react':
         specifier: ^1.8.5
         version: 1.8.5(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
-      '@oxygen-ui/react-icons':
-        specifier: ^1.8.5
-        version: 1.9.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/core':
         specifier: ^2.0.33
         version: link:../core
