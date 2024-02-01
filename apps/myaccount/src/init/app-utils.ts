@@ -574,6 +574,16 @@ export const AppUtils: AppUtilsInterface = (function() {
         },
 
         /**
+         * Updates the organization type.
+         *
+         * @param organizationType - new Organization type.
+         * @deprecated This is deprecated.
+         */
+        updateOrganizationType: function (organizationType: string) {
+            _config.organizationType = organizationType;
+        },
+
+        /**
          * Updates the tenant qualified basename.
          *
          * @param tenant - new Tenant.

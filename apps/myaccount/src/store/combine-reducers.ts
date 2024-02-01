@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,10 @@
 
 import { commonConfigReducer } from "@wso2is/core/store";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { combineReducers } from "redux";
+import { Reducer, combineReducers } from "redux";
 import { authenticateReducer, commonConfigReducerInitialState, globalReducer, profileReducer } from "./reducers";
 import { LoadersReducer } from "./reducers/loaders";
+import { organizationReducer } from "./reducers/organization";
 import {
     DeploymentConfigInterface,
     FeatureConfigInterface,
@@ -31,9 +32,9 @@ import {
 /**
  * Combines all the reducers.
  *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
+ * Root reducer to be used when creating the store.
  */
-export const reducers = combineReducers({
+export const reducers: Reducer<any> = combineReducers({
     authenticationInformation: authenticateReducer,
     config: commonConfigReducer<
         DeploymentConfigInterface,
@@ -44,5 +45,6 @@ export const reducers = combineReducers({
         >(commonConfigReducerInitialState),
     global: globalReducer,
     loaders: LoadersReducer,
+    organization: organizationReducer,
     profile: profileReducer
 });
