@@ -187,10 +187,6 @@ export class IdentityProviderManagementUtils {
                         return;
                     }
 
-                    if (identityProviderConfig.utils.isAuthenticatorAllowed(authenticator.name)) {
-                        return;
-                    }
-
                     localAuthenticators.push({
                         authenticators: [
                             {
