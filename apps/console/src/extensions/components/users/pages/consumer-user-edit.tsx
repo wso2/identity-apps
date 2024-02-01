@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,13 +36,13 @@ import {
 import { addAlert, setSCIMSchemas } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { 
-    EditAvatarModal, 
-    EmptyPlaceholder, 
+import {
+    EditAvatarModal,
+    EmptyPlaceholder,
     GenericIcon,
-    Popup, 
-    TabPageLayout, 
-    UserAvatar 
+    Popup,
+    TabPageLayout,
+    UserAvatar
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
@@ -72,6 +72,7 @@ import {
 } from "../../../../features/server-configurations/models";
 import { getProfileSchemas, getUserDetails, updateUserInfo } from "../../../../features/users/api";
 import { UserManagementConstants } from "../../../../features/users/constants";
+import UserManagementProvider from "../../../../features/users/providers/user-management-provider";
 import { UserManagementUtils } from "../../../../features/users/utils";
 import { SCIMConfigs } from "../../../configs/scim";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
@@ -395,7 +396,7 @@ const ConsumerUserEditPage = (): ReactElement => {
 
     /**
      * Placeholder for the user profile page.
-     * 
+     *
      * @returns placeholder for the user profile page
      */
     const getPlaceholder = (): ReactElement => {
@@ -434,47 +435,58 @@ const ConsumerUserEditPage = (): ReactElement => {
     };
 
     return isUserNotFound || isUserDetailsFetchError
-        ? getPlaceholder() 
+        ? getPlaceholder()
         : (
-            <TabPageLayout
-                isLoading={ isUserDetailsRequestLoading }
-                loadingStateOptions={ {
-                    count: 5,
-                    imageType: "circular"
-                } }
-                title={
-                    user?.active !== undefined
-                        ? (
-                            <>
-                                {
-                                    user?.active
-                                        ? (
-                                            <Popup
-                                                trigger={ (
-                                                    <Icon
-                                                        className="mr-2 ml-0 vertical-aligned-baseline"
-                                                        size="small"
-                                                        name="circle"
-                                                        color="green"
-                                                    />
-                                                ) }
-                                                content={ t("common:enabled") }
-                                                inverted
-                                            />
-                                        ) : (
-                                            <Popup
-                                                trigger={ (
-                                                    <Icon
-                                                        className="mr-2 ml-0 vertical-aligned-baseline"
-                                                        size="small"
-                                                        name="circle"
-                                                        color="orange"
-                                                    />
-                                                ) }
-                                                content={ t("common:disabled") }
-                                                inverted
-                                            />
-                                        ) }
+            <UserManagementProvider>
+                <TabPageLayout
+                    isLoading={ isUserDetailsRequestLoading }
+                    loadingStateOptions={ {
+                        count: 5,
+                        imageType: "circular"
+                    } }
+                    title={
+                        user?.active !== undefined
+                            ? (
+                                <>
+                                    {
+                                        user?.active
+                                            ? (
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                                            size="small"
+                                                            name="circle"
+                                                            color="green"
+                                                        />
+                                                    ) }
+                                                    content={ t("common:enabled") }
+                                                    inverted
+                                                />
+                                            ) : (
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                                            size="small"
+                                                            name="circle"
+                                                            color="orange"
+                                                        />
+                                                    ) }
+                                                    content={ t("common:disabled") }
+                                                    inverted
+                                                />
+                                            ) }
+                                    <>
+                                        {
+                                            isDisplayNameEnabled
+                                                ? user.displayName
+                                                : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
+                                        }
+                                    </>
+                                </>
+                            )
+                            : (
                                 <>
                                     {
                                         isDisplayNameEnabled
@@ -482,177 +494,169 @@ const ConsumerUserEditPage = (): ReactElement => {
                                             : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
                                     }
                                 </>
-                            </>
-                        )
-                        : (
-                            <>
-                                {
-                                    isDisplayNameEnabled
-                                        ? user.displayName
-                                        : resolveUserDisplayName(user, null, UserAccountTypes.ADMINISTRATOR)
-                                }
-                            </>
-                        )
+                            )
 
-                }
-                description={ (
-                    <div>
-                        { resolveDescription() }
-                        {
-                            user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId && (
-                                <Label className="profile-user-source-label">
-                                    <GenericIcon
-                                        className="mt-1 mb-0"
-                                        square
-                                        inline
-                                        size="default"
-                                        transparent
-                                        icon={ resolveIdpIcon(user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType) }
-                                        verticalAlign="middle"
-                                    />
-                                    <Label.Detail className="mt-1 ml-0 mb-1">
-                                        { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId }
-                                    </Label.Detail>
-                                </Label>
-                            )
-                        }
-                        {
-                            user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource && (
-                                <Label
-                                    className={ !resolveDescription()
-                                        ? "profile-user-source-label ml-0"
-                                        : "profile-user-source-label" }
-                                >
-                                    <GenericIcon
-                                        className="mt-1 mb-0"
-                                        square
-                                        inline
-                                        size="default"
-                                        transparent
-                                        icon={ getSidePanelIcons().userStore }
-                                        verticalAlign="middle"
-                                    />
-                                    <Label.Detail className="mt-1 ml-0 mb-1">
-                                        { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource }
-                                    </Label.Detail>
-                                </Label>
-                            )
-                        }
-                    </div>
-                ) }
-                image={ (
-                    <UserAvatar
-                        editable={ !isReadOnly && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId }
-                        name={ isDisplayNameEnabled ? user.displayName : resolveUserDisplayName(user) }
-                        size="tiny"
-                        image={ user?.profileUrl }
-                        onClick={ () => { !isReadOnly && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-                            ? setShowEditAvatarModal(true)
-                            : null;
-                        } }
-                        data-suppress=""
-                    />
-                ) }
-                backButton={ {
-                    "data-testid": "user-mgt-edit-user-back-button",
-                    onClick: handleBackButtonClick,
-                    text: t("console:manage.pages.usersEdit.backButton", { type: "Users" })
-                } }
-                titleTextAlign="left"
-                bottomMargin={ false }
-            >
-                <EditConsumerUser
-                    isUserProfileLoading={ isUserDetailsRequestLoading }
-                    featureConfig={ featureConfig }
-                    user={ user }
-                    handleUserUpdate={ handleUserUpdate }
-                    isReadOnly={ isReadOnly }
-                    isReadOnlyUserStore={ isReadOnlyUserStore }
-                    connectorProperties={ connectorProperties }
-                />
-                {
-                    showEditAvatarModal && (
-                        <EditAvatarModal
-                            open={ showEditAvatarModal }
+                    }
+                    description={ (
+                        <div>
+                            { resolveDescription() }
+                            {
+                                user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId && (
+                                    <Label className="profile-user-source-label">
+                                        <GenericIcon
+                                            className="mt-1 mb-0"
+                                            square
+                                            inline
+                                            size="default"
+                                            transparent
+                                            icon={ resolveIdpIcon(user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType) }
+                                            verticalAlign="middle"
+                                        />
+                                        <Label.Detail className="mt-1 ml-0 mb-1">
+                                            { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId }
+                                        </Label.Detail>
+                                    </Label>
+                                )
+                            }
+                            {
+                                user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource && (
+                                    <Label
+                                        className={ !resolveDescription()
+                                            ? "profile-user-source-label ml-0"
+                                            : "profile-user-source-label" }
+                                    >
+                                        <GenericIcon
+                                            className="mt-1 mb-0"
+                                            square
+                                            inline
+                                            size="default"
+                                            transparent
+                                            icon={ getSidePanelIcons().userStore }
+                                            verticalAlign="middle"
+                                        />
+                                        <Label.Detail className="mt-1 ml-0 mb-1">
+                                            { user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource }
+                                        </Label.Detail>
+                                    </Label>
+                                )
+                            }
+                        </div>
+                    ) }
+                    image={ (
+                        <UserAvatar
+                            editable={ !isReadOnly && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId }
                             name={ isDisplayNameEnabled ? user.displayName : resolveUserDisplayName(user) }
-                            emails={ resolveUserEmails(user?.emails) }
-                            onClose={ () => setShowEditAvatarModal(false) }
-                            closeOnDimmerClick={ false }
-                            onCancel={ () => setShowEditAvatarModal(false) }
-                            onSubmit={ handleAvatarEditModalSubmit }
-                            imageUrl={ user?.profileUrl }
-                            isSubmitting={ isSubmitting }
-                            heading={ t("console:common.modals.editAvatarModal.heading") }
-                            submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
-                            cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }
-                            translations={ {
-                                gravatar: {
-                                    errors: {
-                                        noAssociation: {
-                                            content: (
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:common.modals.editAvatarModal.content.gravatar" +
-                                                        "errors.noAssociation.content"
-                                                    }
-                                                >
-                                                    It seems like the selected email is not registered on Gravatar.
-                                                    Sign up for a Gravatar account by visiting 
-                                                    <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
-                                                    or use one of the following.
-                                                </Trans>
-                                            ),
-                                            header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
-                                                ".noAssociation.header")
-                                        }
-                                    },
-                                    heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
-                                },
-                                hostedAvatar: {
-                                    heading: t("console:common.modals.editAvatarModal.content.hostedAvatar.heading"),
-                                    input: {
-                                        errors: {
-                                            http: {
-                                                content: t("console:common.modals.editAvatarModal.content." +
-                                                    "hostedAvatar.input.errors.http.content"),
-                                                header: t("console:common.modals.editAvatarModal.content." +
-                                                    "hostedAvatar.input.errors.http.header")
-                                            },
-                                            invalid: {
-                                                content: t("console:common.modals.editAvatarModal.content." +
-                                                    "hostedAvatar.input.errors.invalid.content"),
-                                                pointing: t("console:common.modals.editAvatarModal.content." +
-                                                    "hostedAvatar.input.errors.invalid.pointing")
-                                            }
-                                        },
-                                        hint: t("console:common.modals.editAvatarModal.content.hostedAvatar." +
-                                            "input.hint"),
-                                        placeholder: t("console:common.modals.editAvatarModal.content." +
-                                            "hostedAvatar.input.placeholder"),
-                                        warnings: {
-                                            dataURL: {
-                                                content: t("console:common.modals.editAvatarModal.content." +
-                                                    "hostedAvatar.input.warnings.dataURL.content"),
-                                                header: t("console:common.modals.editAvatarModal.content." +
-                                                    "hostedAvatar.input.warnings.dataURL.header")
-                                            }
-                                        }
-                                    }
-                                },
-                                systemGenAvatars: {
-                                    heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars." + 
-                                        "heading"),
-                                    types: {
-                                        initials: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
-                                            "types.initials")
-                                    }
-                                }
+                            size="tiny"
+                            image={ user?.profileUrl }
+                            onClick={ () => { !isReadOnly && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                                ? setShowEditAvatarModal(true)
+                                : null;
                             } }
                             data-suppress=""
                         />
-                    )
-                }
-            </TabPageLayout>
+                    ) }
+                    backButton={ {
+                        "data-testid": "user-mgt-edit-user-back-button",
+                        onClick: handleBackButtonClick,
+                        text: t("console:manage.pages.usersEdit.backButton", { type: "Users" })
+                    } }
+                    titleTextAlign="left"
+                    bottomMargin={ false }
+                >
+                    <EditConsumerUser
+                        isUserProfileLoading={ isUserDetailsRequestLoading }
+                        featureConfig={ featureConfig }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
+                        connectorProperties={ connectorProperties }
+                    />
+                    {
+                        showEditAvatarModal && (
+                            <EditAvatarModal
+                                open={ showEditAvatarModal }
+                                name={ isDisplayNameEnabled ? user.displayName : resolveUserDisplayName(user) }
+                                emails={ resolveUserEmails(user?.emails) }
+                                onClose={ () => setShowEditAvatarModal(false) }
+                                closeOnDimmerClick={ false }
+                                onCancel={ () => setShowEditAvatarModal(false) }
+                                onSubmit={ handleAvatarEditModalSubmit }
+                                imageUrl={ user?.profileUrl }
+                                isSubmitting={ isSubmitting }
+                                heading={ t("console:common.modals.editAvatarModal.heading") }
+                                submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
+                                cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }
+                                translations={ {
+                                    gravatar: {
+                                        errors: {
+                                            noAssociation: {
+                                                content: (
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:common.modals.editAvatarModal.content.gravatar" +
+                                                            "errors.noAssociation.content"
+                                                        }
+                                                    >
+                                                        It seems like the selected email is not registered on Gravatar.
+                                                        Sign up for a Gravatar account by visiting
+                                                        <a href="https://www.gravatar.com">Gravatar Official
+                                                        Website</a> or use one of the following.
+                                                    </Trans>
+                                                ),
+                                                header: t("console:common.modals.editAvatarModal.content.gravatar" +
+                                                    ".errors.noAssociation.header")
+                                            }
+                                        },
+                                        heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
+                                    },
+                                    hostedAvatar: {
+                                        heading: t("console:common.modals.editAvatarModal.content.hostedAvatar" +
+                                            ".heading"),
+                                        input: {
+                                            errors: {
+                                                http: {
+                                                    content: t("console:common.modals.editAvatarModal.content." +
+                                                        "hostedAvatar.input.errors.http.content"),
+                                                    header: t("console:common.modals.editAvatarModal.content." +
+                                                        "hostedAvatar.input.errors.http.header")
+                                                },
+                                                invalid: {
+                                                    content: t("console:common.modals.editAvatarModal.content." +
+                                                        "hostedAvatar.input.errors.invalid.content"),
+                                                    pointing: t("console:common.modals.editAvatarModal.content." +
+                                                        "hostedAvatar.input.errors.invalid.pointing")
+                                                }
+                                            },
+                                            hint: t("console:common.modals.editAvatarModal.content.hostedAvatar." +
+                                                "input.hint"),
+                                            placeholder: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.placeholder"),
+                                            warnings: {
+                                                dataURL: {
+                                                    content: t("console:common.modals.editAvatarModal.content." +
+                                                        "hostedAvatar.input.warnings.dataURL.content"),
+                                                    header: t("console:common.modals.editAvatarModal.content." +
+                                                        "hostedAvatar.input.warnings.dataURL.header")
+                                                }
+                                            }
+                                        }
+                                    },
+                                    systemGenAvatars: {
+                                        heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
+                                            "heading"),
+                                        types: {
+                                            initials: t("console:common.modals.editAvatarModal.content" +
+                                                ".systemGenAvatars.types.initials")
+                                        }
+                                    }
+                                } }
+                                data-suppress=""
+                            />
+                        )
+                    }
+                </TabPageLayout>
+            </UserManagementProvider>
         );
 };
 
