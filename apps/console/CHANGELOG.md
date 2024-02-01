@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.11.26
+
+### Patch Changes
+
+- [#5346](https://github.com/wso2/identity-apps/pull/5346) [`07a1c4893d`](https://github.com/wso2/identity-apps/commit/07a1c4893da679dc5a140cc21d05350bc8b8adfe) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Change message text for no-results-found on application shared access page.
+
+* [#5360](https://github.com/wso2/identity-apps/pull/5360) [`90f40fce01`](https://github.com/wso2/identity-apps/commit/90f40fce01c1b7fa4116eb1321b3e5df3be469ff) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Remove disabled user stores from dropdown options.
+
+- [#5390](https://github.com/wso2/identity-apps/pull/5390) [`87f13d8cf4`](https://github.com/wso2/identity-apps/commit/87f13d8cf44fa6f2560c98493e592a9264afd5c1) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fetch api resource based on role audience
+
+* [#5400](https://github.com/wso2/identity-apps/pull/5400) [`ec77ad4920`](https://github.com/wso2/identity-apps/commit/ec77ad4920b0242ac645b19a9c7d6848973d14f3) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix UI inconsistencies on App > API Resource > Scopes page.
+
+- [#5385](https://github.com/wso2/identity-apps/pull/5385) [`aa22fe4966`](https://github.com/wso2/identity-apps/commit/aa22fe4966af1eab8b7b3b60b686115807df989a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix fields displaying issue when a new connector jar is added
+
+- Updated dependencies [[`dd9f034dca`](https://github.com/wso2/identity-apps/commit/dd9f034dca970f20d9851d7e791de1de81ff3e14)]:
+  - @wso2is/i18n@2.0.110
+
 ## 2.11.25
 
 ### Patch Changes

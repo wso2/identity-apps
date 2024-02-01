@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.110
+
+### Patch Changes
+
+- [#5402](https://github.com/wso2/identity-apps/pull/5402) [`dd9f034dca`](https://github.com/wso2/identity-apps/commit/dd9f034dca970f20d9851d7e791de1de81ff3e14) Thanks [@Achintha444](https://github.com/Achintha444)! - Add changeset for recovery text customization
+
 ## 2.0.109
 
 ### Patch Changes
