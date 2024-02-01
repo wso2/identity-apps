@@ -24,7 +24,6 @@ import { I18n } from "@wso2is/i18n";
 import axios, { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
-import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
 import { DocPanelUICardInterface, store } from "../../core";
 import { Config } from "../../core/configs";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
