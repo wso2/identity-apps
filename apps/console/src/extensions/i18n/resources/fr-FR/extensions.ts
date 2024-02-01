@@ -464,6 +464,14 @@ export const extensions: Extensions = {
                 header: "API de gestion",
                 description: "API pour gérer les ressources de votre organisation (racine)"
             },
+            consoleFeature: {
+                header: "Caractéristiques de la console",
+                description: "Les autorisations gèrent les ressources dans la console"
+            },
+            businessAPI: {
+                header: "API d'affaires",
+                description: "API personnalisés à créer par l'utilisateur"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {

@@ -107,4 +107,34 @@ export class APIResourceUtils {
                 return groupName;
         }
     };
+
+    public static resolveApiResourceGroupDisplayName = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourcesConstants.ORGANIZATION_ADMIN:
+                return "Organization API";
+            case APIResourcesConstants.TENANT_ADMIN:
+                return "Management API";
+            case APIResourcesConstants.CONSOLE_FEATURE:
+                return "Console Feature";
+            case APIResourceCategories.BUSINESS:
+                return "Business API";
+            default:
+                return groupName;
+        }
+    };
+
+    public static resolveApiResourceGroupDescription = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourcesConstants.ORGANIZATION_ADMIN:
+                return "extensions:develop.apiResource.organizationAPI.description";
+            case APIResourcesConstants.TENANT_ADMIN:
+                return "extensions:develop.apiResource.managementAPI.description";
+            case APIResourcesConstants.CONSOLE_FEATURE:
+                return "extensions:develop.apiResource.consoleFeature.description";
+            case APIResourceCategories.BUSINESS:
+                return "extensions:develop.apiResource.businessAPI.description";
+            default:
+                return groupName;
+        }
+    };
 }
