@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -187,11 +187,25 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + values.get(FILTER_VALUES_FIELD_IDENTIFIER);
+            + getFilterValue(values.get(FILTER_VALUES_FIELD_IDENTIFIER)[0]);
 
         setExternalSearchQuery(query);
         onFilter(query);
         setIsFormSubmitted(true);
+    };
+
+    /**
+     * Handle filter values with multiple words (enclose in double quotes).
+     *
+     * @param value - Input filter value.
+     * @returns Formatted filter value.
+     */
+    const getFilterValue = (value: string): string => {
+        if (value.includes(" ")) {
+            return `"${value}"`;
+        }
+
+        return value;
     };
 
     /**
