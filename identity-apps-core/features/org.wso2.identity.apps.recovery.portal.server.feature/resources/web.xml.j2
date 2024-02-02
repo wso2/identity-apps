@@ -232,6 +232,17 @@
         <jsp-file>/accept-invitation.jsp</jsp-file>
     </servlet>
 
+    {% for custom_servlet in accountrecoveryendpoint.servlet %}
+    <servlet>
+        <servlet-name>{{custom_servlet.name}}</servlet-name>
+        <jsp-file>{{custom_servlet.jsp}}</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>{{custom_servlet.name}}</servlet-name>
+        <url-pattern>{{custom_servlet.url}}</url-pattern>
+    </servlet-mapping>
+    {% endfor %}
+
     <servlet-mapping>
         <servlet-name>recoveraccountrouter.do</servlet-name>
         <url-pattern>/recoveraccountrouter.do</url-pattern>
