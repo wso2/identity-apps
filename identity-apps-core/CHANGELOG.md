@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.11
+
+### Patch Changes
+
+- [#5413](https://github.com/wso2/identity-apps/pull/5413) [`7d4956d2b1`](https://github.com/wso2/identity-apps/commit/7d4956d2b13e7cd9473bbb1247bc3ae54ac25bfb) Thanks [@Shalindri](https://github.com/Shalindri)! - Remove email validation from HYPR login page
+
 ## 2.1.10
 
 ### Patch Changes
