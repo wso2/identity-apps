@@ -85,6 +85,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const { deploymentConfig } = useDeploymentConfig();
     const { UIConfig } = useUIConfig();
 
+    // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
@@ -384,7 +385,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
             }
 
             connection.image = ConnectionsManagementUtils.resolveConnectionResourcePath(
-                "", connectionMetaData?.create?.image
+                connectionResourcesUrl, connectionMetaData?.create?.image
             );
         }
 

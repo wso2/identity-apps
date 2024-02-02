@@ -23,6 +23,7 @@ import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/common/src/configs/ui";
 import { AppConstants } from "@wso2is/common/src/constants/app-constants";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -152,6 +153,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const { UIConfig } = useUIConfig();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictConnectionInterface>(undefined);
@@ -165,6 +167,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
@@ -435,7 +439,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         (authenticator?.type === "FEDERATED" || isIdP) && !isOrganizationSSOIDP
                                             ? authenticator?.image
                                                 ? ConnectionsManagementUtils.resolveConnectionResourcePath(
-                                                    "", authenticator?.image)
+                                                    connectionResourcesUrl, authenticator?.image)
                                                 : getConnectionIcons().default
                                             : isOrganizationSSOIDP
                                                 ? AuthenticatorMeta.getAuthenticatorIcon(

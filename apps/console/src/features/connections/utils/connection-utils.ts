@@ -215,6 +215,18 @@ export class ConnectionsManagementUtils {
      * @returns
      */
     public static resolveConnectionResourcePath(externalURL: string, path: string): string {
+        if (typeof path !== "string") {
+            return path;
+        }
+
+        if ((URLUtils.isHttpsOrHttpUrl(path)) && ImageUtils.isValidImageExtension(path)) {
+            return path;
+        }
+
+        if (URLUtils.isDataUrl(path)) {
+            return path;
+        }
+
         if (!isEmpty(externalURL)) {
 
             // If the connection resource url is set, append the given path to it.
