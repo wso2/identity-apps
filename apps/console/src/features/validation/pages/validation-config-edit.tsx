@@ -371,12 +371,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         let description: string = "";
 
         if (isRuleType) {
-            if (Number(values.minLength) < 8) {
+            if (Number(values.minLength) <
+                ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MIN_VALUE) {
                 error = true;
                 description = t(
                     "console:manage.features.validation.validationError.minLimitError"
                 );
-            } else if (Number(values.maxLength) > 30) {
+            } else if (Number(values.maxLength) >
+                ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MAX_VALUE) {
                 error = true;
                 description = t(
                     "console:manage.features.validation.validationError.maxLimitError"
