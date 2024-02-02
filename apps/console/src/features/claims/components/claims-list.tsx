@@ -259,7 +259,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 ".description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            ?? t("console:manage.features.userstores.notifications." + 
+                            ?? t("console:manage.features.userstores.notifications." +
                             "fetchUserstores.genericError.message")
                     }));
                 });
@@ -364,7 +364,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 dispatch(setAlert(
                     {
                         description: error?.description
-                            || t("console:manage.features.claims.local." + 
+                            || t("console:manage.features.claims.local." +
                             "notifications.deleteClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
@@ -474,7 +474,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             .catch((error: any) => {
                 dispatch(addAlert(
                     {
-                        //TODO: [Type Fix] Description attribute does not exist on 
+                        //TODO: [Type Fix] Description attribute does not exist on
                         //AxiosError or IdentityAppsApiException.
                         description: error?.description
                             || t("console:manage.features.claims.dialects.notifications." +
@@ -860,15 +860,24 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     spaced="right"
                                     data-testid={ `${ testId }-item-image` }
                                 />
-                                <Header.Content>
-                                    { claim.claimURI }
-                                </Header.Content>
+                                <Popup
+                                    inverted
+                                    position="top center"
+                                    key={ `${ claim.claimURI }-popup` }
+                                    content={ claim.claimURI }
+                                    trigger={ (
+                                        <Header.Content className="ellipsis">
+                                            { claim.claimURI }
+                                        </Header.Content>
+                                    ) }
+                                />
                             </Header>
                         );
                     },
                     title: attributeType && attributeType === ClaimManagementConstants.SCIM
                         ? t("console:manage.features.claims.list.columns.claimURI")
-                        : t("console:manage.features.claims.list.columns.name")
+                        : t("console:manage.features.claims.list.columns.name"),
+                    width: 8
                 },
                 {
                     allowToggleVisibility: false,
@@ -892,9 +901,20 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                     attributeType={ attributeType }
                                 />
                             )
-                            : <code>{ claim.mappedLocalClaimURI }</code>
+                            : (
+                                <Popup
+                                    inverted
+                                    position="top center"
+                                    key={ `${ claim.mappedLocalClaimURI }-popup` }
+                                    content={ claim.mappedLocalClaimURI }
+                                    trigger={ (
+                                        <code>{ claim.mappedLocalClaimURI }</code>
+                                    ) }
+                                />
+                            )
                     ),
-                    title: t("console:manage.features.claims.list.columns.dialectURI")
+                    title: t("console:manage.features.claims.list.columns.dialectURI"),
+                    width: 6
                 },
                 shouldRenderActionsColumn() ? {
                     allowToggleVisibility: false,
@@ -1183,6 +1203,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 data-testid={ testId }
                 isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>
                     attributeConfig.isRowSelectable(claim) }
+                fixed
             />
         </>
     );
