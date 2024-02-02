@@ -17,7 +17,6 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Chip from "@oxygen-ui/react/Chip";
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
@@ -26,14 +25,12 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { ReactFlowProvider } from "reactflow";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
-import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -97,14 +94,11 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             mode: AuthenticationFlowBuilderModes.Classic
         },
         {
-            extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
             label: t("console:loginFlow.modes.visual.label"),
             mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
-
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
     const [ flowModeToSwitch, setFlowModeToSwitch ] = useState<AuthenticationFlowBuilderModesInterface>(null);
@@ -182,7 +176,6 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                                     <Typography sx={ { fontWeight: 500 } }>
                                                         { mode.label }
                                                     </Typography>
-                                                    { isSAASDeployment && mode.extra }
                                                 </div>
                                             ) }
                                             data-componentid={ `${componentId}-${ mode.id }-tab` }
