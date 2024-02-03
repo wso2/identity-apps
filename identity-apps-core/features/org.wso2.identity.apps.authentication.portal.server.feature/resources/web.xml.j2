@@ -164,15 +164,27 @@
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+        {% set ns = namespace(hstsEnabledFound=false) %}
+        {% for header_security_filter in authenticationendpoint.tomcat.header_security_filters %}
+        <init-param>
+            <param-name>{{ header_security_filter.name }}</param-name>
+            <param-value>{{ header_security_filter.value }}</param-value>
+        </init-param>
+        {% if header_security_filter.name == 'hstsEnabled' %}
+            {% set ns.hstsEnabledFound = true %}
+        {% endif %}
+        {% endfor %}
+        {% if not ns.hstsEnabledFound %}
         <init-param>
             <param-name>hstsEnabled</param-name>
             <param-value>false</param-value>
         </init-param>
+        {% endif %}
     </filter>
 
     <filter-mapping>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>{{ authenticationendpoint.tomcat.header_security_filter.url_pattern | default('*') }}</url-pattern>
     </filter-mapping>
 
     <filter>
