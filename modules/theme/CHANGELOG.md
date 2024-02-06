@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.61
+
+### Patch Changes
+
+- [#5423](https://github.com/wso2/identity-apps/pull/5423) [`8549c61efd`](https://github.com/wso2/identity-apps/commit/8549c61efd7c90b808c7927f30fbdfa02e7be23a) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] add text customization to the password-reset-success interface
+
 ## 2.0.60
 
 ### Patch Changes
