@@ -184,11 +184,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                 resource.scopes.map((scope: APIResourceCollectionPermissionScopeInterface) => scope.name)
         );
 
-        const hasReadPermissions: boolean = readPermissions.every((scope: string) =>
-            selectedFeatures.includes(scope)
+        const hasReadPermissions: boolean = readPermissions.every((permission: string) =>
+            selectedFeatures.includes(permission)
         );
-        const hasWritePermissions: boolean = writePermissions.every((scope: string) =>
-            selectedFeatures.includes(scope)
+        const hasWritePermissions: boolean = writePermissions.every((permission: string) =>
+            selectedFeatures.includes(permission)
         );
 
         if (hasReadPermissions || hasWritePermissions) {
