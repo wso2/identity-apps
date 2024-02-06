@@ -322,7 +322,33 @@ export class AccessControlUtils {
             [ AccessControlConstants.USER_STORE_EDIT ] : hasRequiredScopes(featureConfig?.userStores,
                 featureConfig?.userStores?.scopes?.update, allowedScopes),
             [ AccessControlConstants.USER_STORE_DELETE ] : hasRequiredScopes(featureConfig?.userStores,
-                featureConfig?.userStores?.scopes?.delete, allowedScopes)
+                featureConfig?.userStores?.scopes?.delete, allowedScopes),
+
+            [ AccessControlConstants.RESIDENT_OUTBOUND_PROVISIONING ]: hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.feature,
+                allowedScopes
+            ),
+            [ AccessControlConstants.RESIDENT_OUTBOUND_PROVISIONING_READ ]: hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.read,
+                allowedScopes
+            ),
+            [ AccessControlConstants.RESIDENT_OUTBOUND_PROVISIONING_EDIT ]: hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.update,
+                allowedScopes
+            ),
+            [ AccessControlConstants.RESIDENT_OUTBOUND_PROVISIONING_DELETE ]: hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.delete,
+                allowedScopes
+            ),
+            [ AccessControlConstants.RESIDENT_OUTBOUND_PROVISIONING_WRITE ]: hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.create,
+                allowedScopes
+            )
         });
     }
 }

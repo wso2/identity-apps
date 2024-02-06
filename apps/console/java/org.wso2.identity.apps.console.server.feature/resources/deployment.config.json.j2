@@ -1238,6 +1238,36 @@
                 ]
             },
             {% endif %}
+            {% if console.resident_outbound_provisioning is defined %}
+            "residentOutboundProvisioning": {
+                "enabled": {% if console.resident_outbound_provisioning.enabled is defined %} {{ console.resident_outbound_provisioning.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.resident_outbound_provisioning.scopes is defined %}
+                    {% for operation, scopes in console.resident_outbound_provisioning.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.resident_outbound_provisioning.disabled_features is defined %}
+                    {% for feature in console.resident_outbound_provisioning.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
+            {% endif %}
             {% if console.server is defined %}
             "server": {
                 "disabledFeatures": [

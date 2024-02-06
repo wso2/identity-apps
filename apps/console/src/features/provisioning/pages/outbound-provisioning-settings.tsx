@@ -17,6 +17,7 @@
  */
 
 import { getEmptyPlaceholderIllustrations } from "@wso2is/common/src/configs/ui";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -25,17 +26,20 @@ import React, {
     MouseEvent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningConfigurationInterface } from "../../applications/models/application";
 import { OutboundProvisioningConnectorInterface } from "../../connections/models/connection";
 import {
     AppConstants,
+    AppState,
     AuthenticatorAccordion,
+    FeatureConfigInterface,
     history
 } from "../../core";
 import { useIdentityProviderList } from "../../identity-providers/api/identity-provider";
@@ -67,7 +71,23 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ isShowWizard, setIsShowWizard ] = useState(false);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    /**
+     * Check if the user has the required scopes to update the resident outbound provisioning configurations.
+     */
+    const isReadOnly: boolean = useMemo(
+        () =>
+            !hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
+
+    const [ isShowCreateWizard, setIsShowCreateWizard ] = useState(false);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
     const [ filteredIdpList, setFilteredIdpList ] = useState<IdentityProviderInterface[]>([]);
     const [ deletingIdp, setDeletingIdp ] = useState<OutboundProvisioningConfigurationInterface>(null);
@@ -143,7 +163,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
         // Block the user from adding the same connector twice.
         if (!isUpdating && isConnectorExists) {
             setIsSubmitting(false);
-            setIsShowWizard(false);
+            setIsShowCreateWizard(false);
 
             dispatch(addAlert({
                 description: t("console:develop.features.applications.resident.provisioning.outbound." +
@@ -175,7 +195,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
 
         try {
             await updateResidentApplicationOutboundProvisioningList(updatedOutboundProvisioningIdps);
-            setIsShowWizard(false);
+            setIsShowCreateWizard(false);
             if (isUpdating) {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.resident.provisioning.outbound." +
@@ -296,12 +316,14 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             } }
             action={ residentProvisioningConfiguration?.
                 provisioningConfigurations?.outboundProvisioningIdps?.length > 0
-                && (
-                    <PrimaryButton onClick={ () => setIsShowWizard(true) }>
-                        <Icon name="add"/>
-                        { t("console:develop.features.applications.resident." +
-                            "provisioning.outbound.emptyPlaceholder.action") }
-                    </PrimaryButton>
+                && ( !isReadOnly
+                    && (
+                        <PrimaryButton onClick={ () => setIsShowCreateWizard(true) }>
+                            <Icon name="add"/>
+                            { t("console:develop.features.applications.resident." +
+                                "provisioning.outbound.emptyPlaceholder.action") }
+                        </PrimaryButton>
+                    )
                 ) }
         >
             <Divider hidden />
@@ -318,7 +340,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                 <AuthenticatorAccordion
                                                     key={ provisioningIdp.idp }
                                                     globalActions={ [
-                                                        {
+                                                        !isReadOnly && {
                                                             icon: "trash alternate",
                                                             onClick: (): void => {
                                                                 setIsShowDeleteConfirmationModal(true);
@@ -339,9 +361,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                                             values: OutboundProvisioningConfigurationInterface
                                                                         ) => onConnectorAdded(values , true) }
                                                                         idpList={ filteredIdpList }
-                                                                        isEdit={ true }
                                                                         data-testid={ `${ testId }-form` }
                                                                         isSubmitting={ isSubmitting }
+                                                                        isReadOnly={ isReadOnly }
+                                                                        isEdit
                                                                     />
                                                                 ),
                                                                 id: provisioningIdp?.idp,
@@ -372,7 +395,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                 ] }
                                 imageSize="tiny"
                                 action={ (
-                                    <PrimaryButton onClick={ () => setIsShowWizard(true) }>
+                                    <PrimaryButton onClick={ () => setIsShowCreateWizard(true) }>
                                         <Icon name="add"/>
                                         { t("console:develop.features.applications.resident." +
                                             "provisioning.outbound.emptyPlaceholder.action") }
@@ -384,9 +407,9 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                 }
             </>
 
-            { isShowWizard && (
+            { isShowCreateWizard && (
                 <OutboundProvisioningConnectorSetupWizard
-                    closeWizard={ () => setIsShowWizard(false) }
+                    closeWizard={ () => setIsShowCreateWizard(false) }
                     onUpdate={ (
                         values: OutboundProvisioningConfigurationInterface
                     ) => onConnectorAdded(values , false) }

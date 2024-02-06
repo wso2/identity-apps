@@ -225,6 +225,10 @@ export interface FeatureConfigInterface {
      * WS Federation Configurations feature
      */
     wsFedConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Resident Outbound Provisioning feature
+     */
+    residentOutboundProvisioning?: FeatureAccessConfigInterface;
 }
 
 /**

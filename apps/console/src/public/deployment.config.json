@@ -957,6 +957,24 @@
                     ]
                 }
             },
+            "residentOutboundProvisioning": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "feature": [
+                        "console:residentOutboundProvisioning"
+                    ],
+                    "delete": [],
+                    "create": [],
+                    "read": [
+                        "internal_idp_view",
+                        "internal_application_mgt_view"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update"
+                    ]
+                }
+            },
             "userV1Roles": {
                 "disabledFeatures": [
                 ],

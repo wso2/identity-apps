@@ -39,7 +39,7 @@ interface OutboundProvisioningConnectorSetupFormPropsInterface extends Identifia
     /**
      * Make the form read only.
      */
-    readOnly?: boolean;
+    isReadOnly?: boolean;
     /**
      * Specifies if the form is being submitted.
      */
@@ -70,7 +70,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
         triggerSubmit,
         onSubmit,
         isEdit,
-        readOnly,
+        isReadOnly,
         isSubmitting,
         [ "data-componentid" ]: componentId
     } = props;
@@ -81,9 +81,8 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
     const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>(undefined);
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
-    const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking);
-    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
-    const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules);
+    const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking ?? false);
+    const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules ?? false);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
 
     useEffect(() => {
@@ -170,19 +169,18 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
     /**
      * Sanitizes and prepares the form values for submission.
      *
-     * @param values - Form values.
+     * @param _ - Form values.
      * @returns Prepared values.
      */
-    const getFormValues = (values: any): Record<string, unknown> => {
+    const getFormValues = (_: any): Record<string, unknown> => {
         const idpName: string = (idpListOptions.find(
             (idp: DropdownOptionsInterface) => idp.value === selectedIdp)).text;
 
         return {
-            blocking: isBlockingChecked ? isBlockingChecked : !!values.get("blocking").includes("blocking"),
+            blocking: isBlockingChecked,
             connector: connector,
             idp: idpName,
-            jit: isJITChecked ? isJITChecked : !!values.get("jit").includes("jit"),
-            rules: isRulesChecked ? isRulesChecked : !!values.get("blocking").includes("blocking")
+            rules: isRulesChecked
         };
     };
 
@@ -199,20 +197,20 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                 <Field
                                     type="dropdown"
                                     label={
-                                        t("console:develop.features.applications.forms.outboundProvisioning.fields" +
-                                            ".idp.label")
+                                        t("console:develop.features.applications.resident.provisioning." +
+                                            "outbound.form.fields.connection.label")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.outboundProvisioning.fields" +
-                                            ".idp.placeholder")
+                                        t("console:develop.features.applications.resident.provisioning." +
+                                            "outbound.form.fields.connection.placeholder")
                                     }
                                     name="idp"
                                     children={ idpListOptions }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.outboundProvisioning.fields" +
-                                            ".idp.validations.empty")
+                                        t("console:develop.features.applications.resident.provisioning." +
+                                            "outbound.form.fields.connection.empty")
                                     }
-                                    readOnly={ readOnly }
+                                    readOnly={ isReadOnly }
                                     required={ false }
                                     value={ initialValues?.idp }
                                     listen={ handleIdpChange }
@@ -240,7 +238,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                 t("console:develop.features.applications.forms.outboundProvisioning.fields" +
                                     ".connector.validations.empty")
                             }
-                            readOnly={ readOnly }
+                            readOnly={ isReadOnly }
                             required={ true }
                             value={ initialValues?.connector }
                             listen={
@@ -282,7 +280,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                             setIsRulesChecked(values.get("rules").includes("rules"));
                                         }
                                     }
-                                    readOnly={ readOnly }
+                                    readOnly={ isReadOnly }
                                     data-testid={ `${ componentId }-rules-checkbox` }
                                 />
                                 <Hint>
@@ -307,7 +305,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     value: "blocking"
                                 }
                             ] }
-                            readOnly={ readOnly }
+                            readOnly={ isReadOnly }
                             value={ initialValues?.blocking ? [ "blocking" ] : [] }
                             listen={
                                 (values: Map<string, FormValue>) => {
@@ -322,36 +320,8 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } computer={ 10 }>
-                        <Field
-                            name="jit"
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.outboundProvisioning" +
-                                        ".fields.jit.label"),
-                                    value: "jit"
-                                }
-                            ] }
-                            value={ initialValues?.jit ? [ "jit" ] : [] }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setIsJITChecked(values.get("jit").includes("jit"));
-                                }
-                            }
-                            readOnly={ readOnly }
-                            data-testid={ `${ componentId }-jit-checkbox` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.outboundProvisioning.fields.jit.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
                 { isEdit
-                    && !readOnly
+                    && !isReadOnly
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } computer={ 10 }>

@@ -3595,6 +3595,17 @@ export const console: ConsoleNS = {
                                 subtitles: "Aucun provisionnement sortant configuré.Ajoutez un provisoire pour le voir ici.",
                                 title: "Pas de provisionneurs sortants"
                             },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connection",
+                                        placeholder: "Select connection",
+                                        validations: {
+                                            empty: "It is mandatory to select connection."
+                                        }
+                                    }
+                                }
+                            },
                             heading: "Provisioning sortant",
                             notifications: {
                                 create: {

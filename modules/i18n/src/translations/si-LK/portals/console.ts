@@ -3500,6 +3500,17 @@ export const console: ConsoleNS = {
                                 subtitles: "පිටතට යන විධිවිධානයක් නොමැත.එය මෙහි බැලීමට ඇති විධිවිධානයක් එක් කරන්න.",
                                 title: "පිටතට යන විධිවිධාන නොමැත"
                             },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connection",
+                                        placeholder: "Select connection",
+                                        validations: {
+                                            empty: "It is mandatory to select connection."
+                                        }
+                                    }
+                                }
+                            },
                             heading: "පිටතට යන ප්රතිපාදනය",
                             notifications: {
                                 create: {

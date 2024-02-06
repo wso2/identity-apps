@@ -3619,6 +3619,17 @@ export const console: ConsoleNS = {
                                 subtitles: "No outbound provisioners configured. Add a provisioner to view it here.",
                                 title: "No outbound provisioners"
                             },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connection",
+                                        placeholder: "Select connection",
+                                        validations: {
+                                            empty: "It is mandatory to select connection."
+                                        }
+                                    }
+                                }
+                            },
                             heading: "Outbound Provisioning Configuration",
                             notifications: {
                                 create: {

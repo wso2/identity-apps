@@ -1564,6 +1564,17 @@ export interface ConsoleNS {
                                 };
                             };
                             emptyPlaceholder: Placeholder;
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                };
+                            };
                             heading: string;
                             subHeading: string;
                             notifications: {

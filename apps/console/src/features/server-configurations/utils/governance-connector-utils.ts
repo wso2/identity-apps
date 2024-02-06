@@ -387,13 +387,13 @@ export class GovernanceConnectorUtils {
                             "console:develop.features.applications.resident.provisioning.outbound.subHeading"),
                         header: I18n.instance.t(
                             "console:develop.features.applications.resident.provisioning.outbound.heading"),
-                        id: ServerConfigurationsConstants.OUTBOUND_PROVISIONING_SETTINGS_CATEGORY_ID,
+                        id: ServerConfigurationsConstants.OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
                         testId: "outbound-provisioning-settings-card"
                     }
                 ],
                 displayOrder: 0,
-                id: "provisioning-settings",
+                id: ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID,
                 title: "Provisioning Settings"
             }
         ];

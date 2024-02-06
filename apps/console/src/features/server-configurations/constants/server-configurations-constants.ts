@@ -362,7 +362,8 @@ export class ServerConfigurationsConstants {
      */
     public static readonly SSO_SETTINGS_CATEGORY_ID: string = "sso-settings";
     public static readonly LOGIN_SECURITY_SETTINGS_CATEGORY_ID: string = "login-security";
-    public static readonly OUTBOUND_PROVISIONING_SETTINGS_CATEGORY_ID: string = "outbound-provisioning-settings";
+    public static readonly PROVISIONING_SETTINGS_CATEGORY_ID: string = "provider-settings";
+    public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
 
 	/**
 	 * Multi Attribute Login Constants.
