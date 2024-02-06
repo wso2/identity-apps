@@ -3598,10 +3598,10 @@ export const console: ConsoleNS = {
                             form: {
                                 fields: {
                                     connection: {
-                                        label: "Connection",
-                                        placeholder: "Select connection",
+                                        label: "Connexion",
+                                        placeholder: "Sélectionner la connexion",
                                         validations: {
-                                            empty: "It is mandatory to select connection."
+                                            empty: "Il est obligatoire de sélectionner la connexion."
                                         }
                                     }
                                 }

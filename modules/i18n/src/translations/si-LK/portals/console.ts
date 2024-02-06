@@ -3503,10 +3503,10 @@ export const console: ConsoleNS = {
                             form: {
                                 fields: {
                                     connection: {
-                                        label: "Connection",
-                                        placeholder: "Select connection",
+                                        label: "සම්බන්ධතාවය",
+                                        placeholder: "සම්බන්ධතාවය තෝරන්න",
                                         validations: {
-                                            empty: "It is mandatory to select connection."
+                                            empty: "සම්බන්ධතාවය තේරීම අනිවාර්ය වේ."
                                         }
                                     }
                                 }
