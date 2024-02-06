@@ -40,6 +40,7 @@ import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
@@ -52,7 +53,6 @@ import {
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
 import processCustomTextTemplateLiterals from "../utils/process-custom-text-template-literals";
-import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 
 /**
  * Props interface for the Branding preference provider.

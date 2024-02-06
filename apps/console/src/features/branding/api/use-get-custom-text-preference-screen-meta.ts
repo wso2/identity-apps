@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,7 @@ import useRequest, {
 import { CustomTextPreferenceScreenMetaInterface } from "../models/custom-text-preference";
 
 /**
- * Hook to get the platform default branding preference text customizations from the distribution.
+ * Hook to get the custom text preference screen meta.
  *
  * @param shouldFetch - Should fetch the data.
  * @param screen - Resource Screen.

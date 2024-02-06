@@ -24,7 +24,11 @@ import {
     BrandingSubFeatures,
     PreviewScreenType
 } from "../models/branding-preferences";
-import { CustomTextConfigurationModes, CustomTextInterface, CustomTextPreferenceScreenMetaInterface } from "../models/custom-text-preference";
+import {
+    CustomTextConfigurationModes,
+    CustomTextInterface,
+    CustomTextPreferenceScreenMetaInterface
+} from "../models/custom-text-preference";
 
 /**
  * Props interface for BrandingPreferenceContext.
