@@ -2194,7 +2194,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "Content Type",
                         placeholder: "JSON",
-                        hint: "The content type of the API request. Accepted value is JSON. (Default is JSON)"
+                        hint: "The content type of the API request. Accepted values are 'FORM' or 'JSON'"
                     },
                     headers: {
                         label: "Headers",
@@ -2202,9 +2202,9 @@ export const extensions: Extensions = {
                         hint: "Comma seperated list of HTTP headers to be included in the SMS API request."
                     },
                     payload: {
-                        label: "Payload",
-                        placeholder: "Enter the payload",
-                        hint: "Static payload that will be appended after the generated payload of the SMS."
+                        label: "Payload Template",
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "The payload template of the API request. Use {{body}} to represent the generated SMS body. Use {{mobile}} to represent the mobile number."
                     },
                     key: {
                         label: "SMS Provider Auth Key",
