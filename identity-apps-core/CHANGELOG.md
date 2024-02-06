@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.1.13
+
+### Patch Changes
+
+- [#5420](https://github.com/wso2/identity-apps/pull/5420) [`cfde9313e8`](https://github.com/wso2/identity-apps/commit/cfde9313e89aef67ed0f8b380176d5de6ef2b044) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Support HSTS configuration updates through deployment.toml
+
+* [#5423](https://github.com/wso2/identity-apps/pull/5423) [`8549c61efd`](https://github.com/wso2/identity-apps/commit/8549c61efd7c90b808c7927f30fbdfa02e7be23a) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] add text customization to the password-reset-success interface
+
+- [#5193](https://github.com/wso2/identity-apps/pull/5193) [`084c806b45`](https://github.com/wso2/identity-apps/commit/084c806b45710419f016b837d1f9e07302327956) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce branding retrieve by app id.
+
+- Updated dependencies [[`8549c61efd`](https://github.com/wso2/identity-apps/commit/8549c61efd7c90b808c7927f30fbdfa02e7be23a)]:
+  - @wso2is/theme@2.0.61
+
 ## 2.1.12
 
 ### Patch Changes
