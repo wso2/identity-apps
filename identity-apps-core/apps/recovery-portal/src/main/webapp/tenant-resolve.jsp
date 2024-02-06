@@ -27,6 +27,7 @@
     String userTenant;
     String userTenantDomain;
     String spAppName = request.getParameter("sp");
+    String spAppId = request.getParameter("spId");
 
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         tenantDomain = IdentityTenantUtil.resolveTenantDomain();
@@ -53,7 +54,7 @@
             if (StringUtils.isNotBlank(tenantDomainOfUser)) {
                 tenantForTheming = tenantDomainOfUser;
             }
-            if (StringUtils.equals(spAppName, "My Account") 
+            if (StringUtils.equals(spAppName, "My Account")
                 && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
                 tenantForTheming = userTenantDomain;
                 userTenant = userTenantDomain;
@@ -89,7 +90,7 @@
             if (StringUtils.isNotBlank(tenantDomainOfUser)) {
                 tenantForTheming = tenantDomainOfUser;
             }
-            if (StringUtils.equals(spAppName, "My Account") 
+            if (StringUtils.equals(spAppName, "My Account")
                 && StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
                 tenantForTheming = userTenantDomain;
                 userTenant = userTenantDomain;
