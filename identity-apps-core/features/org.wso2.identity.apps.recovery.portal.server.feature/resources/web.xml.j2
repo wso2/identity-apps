@@ -93,15 +93,27 @@
     <filter>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+        {% set ns = namespace(hstsEnabledFound=false) %}
+        {% for parameter in accountrecoveryendpoint.tomcat.http_header_security_filter.parameters %}
+        <init-param>
+            <param-name>{{ parameter.name }}</param-name>
+            <param-value>{{ parameter.value }}</param-value>
+        </init-param>
+        {% if parameter.name == 'hstsEnabled' %}
+            {% set ns.hstsEnabledFound = true %}
+        {% endif %}
+        {% endfor %}
+        {% if not ns.hstsEnabledFound %}
         <init-param>
             <param-name>hstsEnabled</param-name>
             <param-value>false</param-value>
         </init-param>
+        {% endif %}
     </filter>
 
     <filter-mapping>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
-        <url-pattern>*</url-pattern>
+        <url-pattern>{{ accountrecoveryendpoint.tomcat.http_header_security_filter.url_pattern | default('*') }}</url-pattern>
     </filter-mapping>
 
     <filter>
