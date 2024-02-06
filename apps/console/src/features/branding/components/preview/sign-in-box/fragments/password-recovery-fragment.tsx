@@ -46,7 +46,7 @@ const PasswordRecoveryFragment: FunctionComponent<PasswordRecoveryFragmentInterf
             </h2>
             <div className="segment-form">
                 <form method="post" id="totpForm" className="ui large form otp-form">
-                    <p className="text-center" id="instruction">
+                    <p className="new-line-support text-center" id="instruction" >
                         { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RECOVERY.BODY,
                             "Don't worry, it happens. We will send you an email to reset your password.") }
                     </p>

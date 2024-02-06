@@ -31,6 +31,8 @@
 const processCustomTextTemplateLiterals = (original: string): string => {
     const currentYear: number = new Date().getFullYear();
 
+    original = original.replace(/\\n/g, "\n");
+
     return original.replace("{{currentYear}}", currentYear.toString());
 };
 

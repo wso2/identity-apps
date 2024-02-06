@@ -86,6 +86,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
 
     const {
         customTextDefaults,
+        customTextScreenMeta,
         updateCustomTextFormSubscription,
         selectedScreen,
         selectedLocale,
@@ -208,9 +209,11 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                                 i18n.exists(hintKey) && (
                                                     <Hint>{ t(hintKey, { productName }) }</Hint>
                                                 )
-
                                             ) }
                                             component={ TextFieldAdapter }
+                                            multiline={ customTextScreenMeta &&
+                                                customTextScreenMeta[fieldName.replaceAll("_", ".")].MULTI_LINE }
+                                            size="small"
                                             maxLength={
                                                 CustomTextPreferenceConstants.FORM_FIELD_CONSTRAINTS.MAX_LENGTH
                                             }

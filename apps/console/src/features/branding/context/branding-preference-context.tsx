@@ -24,7 +24,7 @@ import {
     BrandingSubFeatures,
     PreviewScreenType
 } from "../models/branding-preferences";
-import { CustomTextConfigurationModes, CustomTextInterface } from "../models/custom-text-preference";
+import { CustomTextConfigurationModes, CustomTextInterface, CustomTextPreferenceScreenMetaInterface } from "../models/custom-text-preference";
 
 /**
  * Props interface for BrandingPreferenceContext.
@@ -60,6 +60,10 @@ export interface BrandingPreferenceContextProps {
      * Default text customization preference from the in-app resource bundle.
      */
     customTextDefaults: CustomTextInterface;
+    /**
+     * Meta data for the custom text preference screen.
+     */
+    customTextScreenMeta: CustomTextPreferenceScreenMetaInterface
     /**
      * Updates the custom text preference.
      * @param values - Values to be updated.

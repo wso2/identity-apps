@@ -170,7 +170,7 @@
                                 <% } %>
 
                                 <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
-                                    <div class="equal width fields">
+                                    <div class="sms-otp-fields equal width fields">
                                         <input
                                             hidden
                                             type="text"

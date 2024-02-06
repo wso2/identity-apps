@@ -66,7 +66,7 @@ export const ProductFooter: FunctionComponent<ProductFooterInterface> = (
             <div className="ui container fluid">
                 <div className="ui text menu">
                     <div className="left menu">
-                        <a className="item no-hover" id="copyright">
+                        <a className="item no-hover copyright-text new-line-support" id="copyright">
                             { !isEmpty(i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, "")) && (
                                 <>
                                     <span>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.COPYRIGHT, "") }</span>

@@ -47,13 +47,12 @@ const PasswordResetSuccessFragment: FunctionComponent<PasswordResetSuccessFragme
             </h2>
             <div className="segment-form">
                 <form method="post" id="totpForm" className="ui large form otp-form">
-                    <p className="text-center" id="instruction">
-                        An email with a password reset link and instructions has been sent to your email.
-                    </p>
-                    <p className="text-center" id="instruction">
-                        Didn&apos;t receive an email yet? Your email address is not registered on
-                        or you have signed up using a social account with the provided email.
-                        Create an account or use a different login option.
+                    <p className="text-center new-line-support" id="instruction">
+                        { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RESET_SUCCESS.BODY,
+                            "An email with a password reset link and instructions has been sent to your email.\n\n" +
+                            "Didn't receive an email yet? Your email address might not be registered or you have" +
+                            "signed up using a social account with the provided email. Create an account or use a" +
+                            "different login option.") }
                     </p>
                     <div className="ui divider hidden"></div>
                     <div className="ui divider hidden"></div>

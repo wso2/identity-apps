@@ -52,6 +52,7 @@ import {
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
 import processCustomTextTemplateLiterals from "../utils/process-custom-text-template-literals";
+import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 
 /**
  * Props interface for the Branding preference provider.
@@ -137,6 +138,13 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const {
         data: customTextMeta
     } = useGetCustomTextPreferenceMeta();
+
+    const {
+        data: customTextScreenMeta
+    } = useGetCustomTextPreferenceScreenMeta(
+        !!selectedScreen,
+        selectedScreen
+    );
 
     /**
      * Merge the custom text preference with the fallbacks.
@@ -349,6 +357,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 customTextFormSubscription: customTextFormSubscription ?? {
                     values: resolvedCustomText?.preference?.text
                 },
+                customTextScreenMeta,
                 getLocales: (requestingView: BrandingSubFeatures): SupportedLanguagesMeta => {
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
                         return pick(supportedI18nLanguages, customTextMeta?.locales);

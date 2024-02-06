@@ -78,11 +78,9 @@
                     <%=i18n(recoveryResourceBundle, customText, "password.reset.success.heading")%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "follow.reset.password.email.instructions")%>
-                    <br><br>
-                    <%= IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "didnt.receive.email.not.registered.alt") + " "
-                        + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "signed.up.using.social.account.create.account.or.use.different.login")
-                    %>
+                    <span class="new-line-support">
+                        <%=i18n(recoveryResourceBundle, customText, "password.reset.success.heading")%>
+                    </span>
                     <%
                         if(StringUtils.isNotBlank(accessUrl)) {
                     %>
