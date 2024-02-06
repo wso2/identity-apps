@@ -693,6 +693,9 @@ export const console: ConsoleNS = {
                 "password.reset.success.action": {
                     hint: "මුරපදයේ මූලික කේතයේ ප්රධාන ක්රියාකාරී සබැඳියේ දිස්වන පෙළ.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
                 },
+                "password.reset.success.body": {
+                    hint: "මුරපදයේ ශරීර පෙළ නැවත සකස් කිරීමේ කොටුව.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
+                },
                 "password.reset.success.heading": {
                     hint: "මුරපදයේ ශීර්ෂය RESURD BOOTEX යළි පිහිටුවීම.සකසා නොමැති නම්, {{productName}} පෙරනිමි භාවිතා වේ."
                 }

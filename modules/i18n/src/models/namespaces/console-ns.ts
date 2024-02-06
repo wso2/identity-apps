@@ -503,6 +503,9 @@ export interface ConsoleNS {
                 "password.reset.success.action": {
                     hint: string;
                 };
+                "password.reset.success.body": {
+                    hint: string;
+                };
                 "password.reset.success.heading": {
                     hint: string;
                 };

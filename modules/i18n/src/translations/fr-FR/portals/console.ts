@@ -685,6 +685,9 @@ export const console: ConsoleNS = {
                 "password.reset.success.action": {
                     hint: "Le texte qui apparaît sur le lien d'action principal de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 },
+                "password.reset.success.body": {
+                    hint: "Le texte du corps de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
                 "password.reset.success.heading": {
                     hint: "L'en-tête de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 }

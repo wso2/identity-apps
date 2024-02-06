@@ -228,7 +228,7 @@
                                                     && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
 
                             %>
-                            <label class="mb-5" for="username">
+                            <label class="mb-5 line-break" for="username">
                                 <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
                             </label>
                             <% }  %>
