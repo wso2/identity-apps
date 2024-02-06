@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.11.32
+
+### Patch Changes
+
+- [#5427](https://github.com/wso2/identity-apps/pull/5427) [`fee5e11c17`](https://github.com/wso2/identity-apps/commit/fee5e11c17138e6bdee5a95efc595b07650a26e3) Thanks [@brionmario](https://github.com/brionmario)! - Remove `isAuthenticatorAllowed` method infavor of `hiddenAuthenticators`
+
 ## 2.11.31
 
 ### Patch Changes
