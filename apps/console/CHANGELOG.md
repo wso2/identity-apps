@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.11.30
+
+### Patch Changes
+
+- [#5246](https://github.com/wso2/identity-apps/pull/5246) [`5e4c709ceb`](https://github.com/wso2/identity-apps/commit/5e4c709cebce647c27b08ccd2f0ac6ebaa429103) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Handle application names with multiple words.
+
+* [#5421](https://github.com/wso2/identity-apps/pull/5421) [`651ccf51af`](https://github.com/wso2/identity-apps/commit/651ccf51af7ab8024690d1675fd30ecc74c47556) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Replace direct use of window object usage in getting org prefix
+
+- [#5411](https://github.com/wso2/identity-apps/pull/5411) [`6942e98f4a`](https://github.com/wso2/identity-apps/commit/6942e98f4af12c0a8c87b43d91a88167f646b206) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update Password Length Configuration Validation to Remove Hardcoded Minimum and Maximum Length
+
+* [#5419](https://github.com/wso2/identity-apps/pull/5419) [`e1dff567f6`](https://github.com/wso2/identity-apps/commit/e1dff567f633533d0773c3eacaeae86711c06766) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix truncation in the claims list table
+
 ## 2.11.29
 
 ### Patch Changes
