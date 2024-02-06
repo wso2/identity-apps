@@ -1094,7 +1094,10 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [],
+        "hiddenAuthenticators": [
+            "BasicAuthRequestPathAuthenticator",
+            "OAuthRequestPathAuthenticator"
+        ],
         "hiddenConnectionTemplates": [
             "hypr-idp",
             "swe-idp"
