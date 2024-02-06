@@ -166,7 +166,7 @@
         }
 
         /** Helper class to support new line */
-        .new-line-support {
+        .line-break {
             white-space: pre-line;
         }
 

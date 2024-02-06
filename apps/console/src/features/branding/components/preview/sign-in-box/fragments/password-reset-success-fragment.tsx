@@ -47,7 +47,7 @@ const PasswordResetSuccessFragment: FunctionComponent<PasswordResetSuccessFragme
             </h2>
             <div className="segment-form">
                 <form method="post" id="totpForm" className="ui large form otp-form">
-                    <p className="text-center new-line-support" id="instruction">
+                    <p className="text-center line-break" id="instruction">
                         { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.PASSWORD_RESET_SUCCESS.BODY,
                             "An email with a password reset link and instructions has been sent to your email.\n\n" +
                             "Didn't receive an email yet? Your email address might not be registered or you have" +

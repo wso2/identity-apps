@@ -55,7 +55,7 @@
                         String copyright = i18n(resourceBundle, customText, "copyright", __DEPRECATED__copyrightText);
                         if (StringUtils.isNotBlank(copyright)) {
                     %>
-                        <span class="copyright-text new-line-support"><%= copyright %></span>
+                        <span class="copyright-text line-break"><%= copyright %></span>
                     <% } %>
                     <%
                         if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {

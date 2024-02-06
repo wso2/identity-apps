@@ -78,7 +78,7 @@
                     <%=i18n(recoveryResourceBundle, customText, "password.reset.success.heading")%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <span class="new-line-support">
+                    <span class="line-break">
                         <%=i18n(recoveryResourceBundle, customText, "password.reset.success.heading")%>
                     </span>
                     <%
