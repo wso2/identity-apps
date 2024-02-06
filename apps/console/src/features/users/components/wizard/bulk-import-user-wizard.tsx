@@ -1416,8 +1416,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     <Button
                                                         disabled={
                                                             isAlphanumericUsername
-                                            && mode === MultipleInviteMode.MANUAL
-                                            && userConfig?.enableUsernameValidation
+                                                            && mode === MultipleInviteMode.MANUAL
+                                                            && userConfig?.enableUsernameValidation
                                                         }
                                                         data-componentid={ `${componentId}-${mode}-tab-option` }
                                                         key={ index }
@@ -1425,8 +1425,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         className="multiple-users-config-mode-wizard-tab"
                                                         content={
                                                             UserManagementUtils.resolveMultipleInvitesDisplayName(
-                                                mode as MultipleInviteMode
-                                                            )
+                                                                mode as MultipleInviteMode)
                                                         }
                                                         onClick={ (
                                                             event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -1445,6 +1444,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             disabled={
                                                 mode === MultipleInviteMode.META_FILE
                                                 || !isAlphanumericUsername
+                                                || !userConfig?.enableUsernameValidation
                                             }
                                             data-componentid={ `${componentId}-disabled-hint` }
                                         />
