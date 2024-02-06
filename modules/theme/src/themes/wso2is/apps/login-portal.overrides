@@ -165,20 +165,6 @@
             }
         }
 
-        /** Helper class to support new line */
-        .line-break {
-            white-space: pre-line;
-        }
-
-        /* SMS OTP interface */
-        .sms-otp-portal-layout {
-            .sms-otp-fields {
-                @media screen and (min-width: 500px) {
-                    flex-wrap: nowrap;
-                }
-            }
-        }
-
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
             display: none;
