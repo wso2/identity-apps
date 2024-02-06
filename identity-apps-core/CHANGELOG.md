@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.12
+
+### Patch Changes
+
+- [#5404](https://github.com/wso2/identity-apps/pull/5404) [`848e89cc65`](https://github.com/wso2/identity-apps/commit/848e89cc653f87b7fa879bc4bc59c01377fa057b) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add custom servlet mapping configuration support in deployment.toml for account recovery endpoint
+
 ## 2.1.11
 
 ### Patch Changes
