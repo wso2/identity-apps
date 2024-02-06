@@ -20,6 +20,7 @@ import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
+    LegacyModeInterface,
     LoadableComponentInterface,
     RolePermissionInterface,
     RolesInterface
@@ -30,19 +31,23 @@ import {
     Heading,
     PrimaryButton
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { AppState } from "../../../../core/store";
 import { updateRoleDetails } from "../../../../roles/api/roles";
 import { Schemas } from "../../../../roles/constants/role-constants";
 import { CreateRolePermissionInterface, PatchRoleDataInterface } from "../../../../roles/models/roles";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
+import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {
     APIResourceCollectionInterface,
     APIResourceCollectionPermissionCategoryInterface,
-    APIResourceCollectionPermissionScopeInterface
+    APIResourceCollectionPermissionScopeInterface,
+    APIResourceCollectionResponseInterface
 } from "../../../models/console-roles";
 import { SelectedPermissionCategoryInterface, SelectedPermissionsInterface } from "../../../models/permissions-ui";
 import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
@@ -100,7 +105,63 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         "apiResources"
     );
 
+    const legacyMode: LegacyModeInterface = useSelector((state: AppState) => state?.config?.ui?.legacyMode);
+
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
+
+    const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
+
+        if (!tenantAPIResourceCollections) {
+            return null;
+        }
+
+        const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(tenantAPIResourceCollections);
+        const filteringAPIResourceCollectionNames: string[] = [];
+
+        if (legacyMode?.rolesV1) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ROLE_API_RESOURCES_COLLECTION_NAME);
+        } else {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
+        }
+
+        clonedTenantAPIResourceCollections.apiResourceCollections =
+                clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
+                    (item: APIResourceCollectionInterface) =>
+                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                );
+
+        return clonedTenantAPIResourceCollections;
+    }, [ tenantAPIResourceCollections ]);
+
+    const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
+
+        if (!organizationAPIResourceCollections) {
+            return null;
+        }
+
+        const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(organizationAPIResourceCollections);
+        const filteringAPIResourceCollectionNames: string[] = [];
+
+        if (legacyMode?.rolesV1) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ROLE_API_RESOURCES_COLLECTION_NAME);
+        } else {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
+        }
+
+        clonedOrganizationAPIResourceCollections.apiResourceCollections =
+                clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
+                    (item: APIResourceCollectionInterface) =>
+                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                );
+
+        return clonedOrganizationAPIResourceCollections;
+    }, [ organizationAPIResourceCollections ]);
 
     /**
      * Process the collection and return the selected permissions.
@@ -158,18 +219,20 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             tenant: {}
         };
 
-        tenantAPIResourceCollections?.apiResourceCollections?.forEach((collection: APIResourceCollectionInterface) => {
-            const processedCollection: SelectedPermissionCategoryInterface = processCollection(
-                collection,
-                selectedFeatures
-            );
+        filteredTenantAPIResourceCollections?.apiResourceCollections?.forEach(
+            (collection: APIResourceCollectionInterface) => {
+                const processedCollection: SelectedPermissionCategoryInterface = processCollection(
+                    collection,
+                    selectedFeatures
+                );
 
-            if (processedCollection) {
-                permissions.tenant[collection.id] = processedCollection;
+                if (processedCollection) {
+                    permissions.tenant[collection.id] = processedCollection;
+                }
             }
-        });
+        );
 
-        organizationAPIResourceCollections?.apiResourceCollections?.forEach(
+        filteredOrganizationAPIResourceCollections?.apiResourceCollections?.forEach(
             (collection: APIResourceCollectionInterface) => {
                 const processedCollection: SelectedPermissionCategoryInterface = processCollection(
                     collection,
@@ -183,7 +246,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         );
 
         return permissions;
-    }, [ role, tenantAPIResourceCollections, organizationAPIResourceCollections ]);
+    }, [ role, filteredTenantAPIResourceCollections, filteredOrganizationAPIResourceCollections ]);
 
     /**
      * Update the role permissions.

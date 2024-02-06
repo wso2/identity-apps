@@ -494,7 +494,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                             readOnly={ isReadOnly }
                             disabled={ isReadOnly }
                             color="primary"
-                            defaultChecked={ false }
+                            checked={
+                                Object.keys(selectedPermissions.organization).length ===
+                                filteredOrganizationAPIResourceCollections?.apiResourceCollections?.length
+                            }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => {
                                 handleSelectAll(e, APIResourceCollectionTypes.ORGANIZATION);
                             } }
