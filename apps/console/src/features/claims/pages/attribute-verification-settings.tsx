@@ -81,9 +81,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         CONNECTOR_NAMES.INCLUDE_UPPERCASE_CHARACTERS_IN_OTP,
         CONNECTOR_NAMES.MOBILE_NUMBER_VERIFICATION_CODE_EXPIRY_TIME,
         CONNECTOR_NAMES.OTP_LENGTH,
-        CONNECTOR_NAMES.SEND_OTP_IN_EMAIL,
-        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
-        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS
+        CONNECTOR_NAMES.SEND_OTP_IN_EMAIL
     ];
 
     const [ connectorDetails, setConnectorDetails ] = useState<GovernanceConnectorInterface>(undefined);
@@ -430,6 +428,61 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         CATEGORY_NAME,
                         CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.description)
+                    }
+                />
+                <Field.Checkbox
+                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
+                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.displayName)
+                    }
+                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION) }
+                    className="toggle"
+                    label={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
+                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.displayName)
+                    }
+                    defaultValue={ formValues?.[
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION ] == true }
+                    readOnly={ isReadOnly }
+                    disabled={ !isConnectorEnabled }
+                    width={ 16 }
+                    data-componentid={ `${ componentId }-enable-auto-login` }
+                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION,
+                        formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.description)
+                    }
+                />
+                <Field.Checkbox
+                    ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                        formDisplayData?.
+                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
+                    }
+                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS) }
+                    className="toggle"
+                    label={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                        formDisplayData?.
+                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
+                    }
+                    defaultValue={ formValues?.[
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] == true }
+                    readOnly={ isReadOnly }
+                    disabled={ !isConnectorEnabled }
+                    width={ 16 }
+                    data-componentid={ `${ componentId }-enable-auto-login` }
+                    hint={ GovernanceConnectorUtils.resolveFieldLabel(
+                        CATEGORY_NAME,
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS,
+                        formDisplayData?.
+                            [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.description)
                     }
                 />
                 <Field.Button

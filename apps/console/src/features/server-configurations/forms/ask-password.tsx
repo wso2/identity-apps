@@ -261,7 +261,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MAX_VALUE
                 }
-                width={ 10 }
+                width={ 12 }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
                     PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME,
@@ -303,11 +303,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MAX_VALUE
                 }
-                width={ 10 }
+                width={ 12 }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME,
-                    "Password Setup Invitation Code Expiration Time") }
+                    "Password setup invitation code expiration time") }
                 required={ false }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
                 placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
