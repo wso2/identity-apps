@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.115
+
+### Patch Changes
+
+- [#5432](https://github.com/wso2/identity-apps/pull/5432) [`0f81fbe7f3`](https://github.com/wso2/identity-apps/commit/0f81fbe7f39a6f787867a281ab6b50f45ab0b57f) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Replace Roles dropdown with Groups in parent user invite flow
+
+* [#5437](https://github.com/wso2/identity-apps/pull/5437) [`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix search and filter action panel issues
+
 ## 2.0.114
 
 ### Patch Changes

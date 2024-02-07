@@ -1,5 +1,11 @@
 # @wso2is/forms
 
+## 2.0.19
+
+### Patch Changes
+
+- [#5437](https://github.com/wso2/identity-apps/pull/5437) [`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix search and filter action panel issues
+
 ## 2.0.18
 
 ### Patch Changes
