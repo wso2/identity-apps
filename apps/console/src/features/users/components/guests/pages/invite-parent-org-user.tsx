@@ -19,16 +19,13 @@
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { GroupsInterface, useGroupList } from "../../../../groups";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
 import { UserManagementConstants } from "../../../constants";
@@ -60,27 +57,13 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         onSubmit,
         [ "data-componentid"]: componentId
     } = props;
-    const dispatch: Dispatch = useDispatch();
     const userStore: string = PRIMARY_USERSTORE;
 
     const { t } = useTranslation();
 
     const {
-        data: groupList,
-        error: groupsError
+        data: groupList
     } = useGroupList(userStore, "members", null, true);
-
-    useEffect(() => {
-        if (groupsError) {
-            dispatch(addAlert({
-                description: groupsError?.response?.data?.description ?? groupsError?.response?.data?.detail
-                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: groupsError?.response?.data?.message
-                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
-            }));
-        }
-    },[ groupsError ]);
 
     const groupsAutocompleteOptions: GroupsAutoCompleteOption[] = useMemo(() => {
 
