@@ -66,7 +66,7 @@ type OutboundProvisioningSettingsPageInterface = IdentifiableComponentInterface;
 const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSettingsPageInterface> = (
     props: OutboundProvisioningSettingsPageInterface
 ): ReactElement => {
-    const { [ "data-componentid" ]: testId } = props;
+    const { [ "data-componentid" ]: componentId } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -308,9 +308,9 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             pageTitle={ t("console:develop.features.applications.resident.provisioning.outbound.heading") }
             title={ t("console:develop.features.applications.resident.provisioning.outbound.heading") }
             description={ t("console:develop.features.applications.resident.provisioning.outbound.subHeading") }
-            data-componentid={ `${ testId }-page-layout` }
+            data-componentid={ `${ componentId }-layout` }
             backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
+                "data-componentid": `${ componentId }-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
@@ -318,7 +318,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                 provisioningConfigurations?.outboundProvisioningIdps?.length > 0
                 && ( !isReadOnly
                     && (
-                        <PrimaryButton onClick={ () => setIsShowCreateWizard(true) }>
+                        <PrimaryButton
+                            onClick={ () => setIsShowCreateWizard(true) }
+                            data-componentid={ `${ componentId }-add-button` }
+                        >
                             <Icon name="add"/>
                             { t("console:develop.features.applications.resident." +
                                 "provisioning.outbound.emptyPlaceholder.action") }
@@ -359,9 +362,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                                         onSubmit={ (
                                                                             // eslint-disable-next-line max-len
                                                                             values: OutboundProvisioningConfigurationInterface
-                                                                        ) => onConnectorAdded(values , true) }
+                                                                        ) => onConnectorAdded(values, true) }
                                                                         idpList={ filteredIdpList }
-                                                                        data-testid={ `${ testId }-form` }
+                                                                        // eslint-disable-next-line max-len
+                                                                        data-componentid={ `${ componentId }-${provisioningIdp.idp}-form` }
                                                                         isSubmitting={ isSubmitting }
                                                                         isReadOnly={ isReadOnly }
                                                                         isEdit
@@ -375,7 +379,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                     accordionActiveIndexes = { accordionActiveIndexes }
                                                     accordionIndex = { index }
                                                     handleAccordionOnClick = { handleAccordionOnClick }
-                                                    data-testid={ `${ testId }-outbound-connector-accordion` }
+                                                    data-componentid={
+                                                        `${ componentId }-${provisioningIdp.idp}-
+                                                            outbound-connector-accordion`
+                                                    }
                                                 />
                                             );
                                         })
@@ -395,7 +402,10 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                 ] }
                                 imageSize="tiny"
                                 action={ (
-                                    <PrimaryButton onClick={ () => setIsShowCreateWizard(true) }>
+                                    <PrimaryButton
+                                        onClick={ () => setIsShowCreateWizard(true) }
+                                        data-componentid={ `${ componentId }-add-button` }
+                                    >
                                         <Icon name="add"/>
                                         { t("console:develop.features.applications.resident." +
                                             "provisioning.outbound.emptyPlaceholder.action") }

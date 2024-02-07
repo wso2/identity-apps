@@ -65,7 +65,7 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
         onUpdate,
         isSubmitting,
         availableIdpList,
-        [ "data-componentid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -88,7 +88,7 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            data-testid={ testId }
+            data-componentid={ componentId }
             closeOnDimmerClick={ false }
             closeOnEscape
         >
@@ -102,13 +102,13 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group
-                    data-testid={ `${ testId }-steps` }
+                    data-componentid={ `${ componentId }-steps` }
                 >
                     <Steps.Step
                         icon={ getApplicationWizardStepIcons().general }
                         title={ t("console:develop.features.applications.resident." +
                                     "provisioning.outbound.addIdpWizard.steps.details") }
-                        data-testid={ `${ testId }-step-${ 0 }` }
+                        data-componentid={ `${ componentId }-step-${ 0 }` }
                     />
                 </Steps.Group>
             </Modal.Content>
@@ -118,7 +118,7 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                     triggerSubmit={ finishSubmit }
                     onSubmit={ handleWizardFormFinish }
                     idpList={ availableIdpList }
-                    data-testid={ `${ testId }-form` }
+                    data-componentid={ `${ componentId }-form` }
                     isSubmitting={ isSubmitting }
                 />
             </Modal.Content>
@@ -134,7 +134,7 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                             floated="left"
                             onClick={ () => closeWizard() }
                             disabled={ isSubmitting }
-                            data-testid={ `${ testId }-cancel-button` }
+                            data-componentid={ `${ componentId }-cancel-button` }
                         >
                             { t("common:cancel") }
                         </LinkButton>
@@ -143,7 +143,7 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                         <PrimaryButton
                             floated="right"
                             onClick={ () => setFinishSubmit() }
-                            data-testid={ `${ testId }-finish-button` }
+                            data-componentid={ `${ componentId }-finish-button` }
                             loading={ isSubmitting }
                             disabled={ isSubmitting }
                         >

@@ -23,6 +23,7 @@ import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
+import { OutboundProvisioningConfigurationInterface } from "../../applications/models/application";
 import { OutboundProvisioningConnectorInterface } from "../../connections/models/connection";
 import { getIdentityProviderDetail } from "../../identity-providers/api/identity-provider";
 import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";
@@ -31,7 +32,10 @@ import { IdentityProviderInterface } from "../../identity-providers/models/ident
  * Proptypes for the outbound provisioning connector setup form component.
  */
 interface OutboundProvisioningConnectorSetupFormPropsInterface extends IdentifiableComponentInterface {
-    initialValues: any;
+    /**
+     * Form initial values.
+     */
+    initialValues: OutboundProvisioningConfigurationInterface;
     triggerSubmit: boolean;
     idpList: IdentityProviderInterface[];
     onSubmit: (values: any) => void;
@@ -172,7 +176,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
      * @param _ - Form values.
      * @returns Prepared values.
      */
-    const getFormValues = (_: any): Record<string, unknown> => {
+    const getFormValues = (_: Map<string, FormValue>): Record<string, unknown> => {
         const idpName: string = (idpListOptions.find(
             (idp: DropdownOptionsInterface) => idp.value === selectedIdp)).text;
 
@@ -214,7 +218,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     required={ false }
                                     value={ initialValues?.idp }
                                     listen={ handleIdpChange }
-                                    data-testid={ `${ componentId }-idp-dropdown` }
+                                    data-componentid={ `${ componentId }-idp-dropdown` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -246,7 +250,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     setConnector(values.get("connector").toString());
                                 }
                             }
-                            data-testid={ `${ componentId }-provisioning-connector-dropdown` }
+                            data-componentid={ `${ componentId }-provisioning-connector-dropdown` }
                         />
                         { connectorListOptions?.length <= 0 && (
                             <Hint icon="warning sign">
@@ -281,7 +285,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                         }
                                     }
                                     readOnly={ isReadOnly }
-                                    data-testid={ `${ componentId }-rules-checkbox` }
+                                    data-componentid={ `${ componentId }-rules-checkbox` }
                                 />
                                 <Hint>
                                     { t("console:develop.features.applications.forms.outboundProvisioning." +
@@ -312,7 +316,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     setIsBlockingChecked(values.get("blocking").includes("blocking"));
                                 }
                             }
-                            data-testid={ `${ componentId }-blocking-checkbox` }
+                            data-componentid={ `${ componentId }-blocking-checkbox` }
                         />
                         <Hint>
                             { t("console:develop.features.applications.forms.outboundProvisioning.fields.blocking" +
@@ -329,7 +333,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     type="submit"
                                     size="small"
                                     className="form-button"
-                                    data-testid={ `${ componentId }-submit-button` }
+                                    data-componentid={ `${ componentId }-submit-button` }
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
