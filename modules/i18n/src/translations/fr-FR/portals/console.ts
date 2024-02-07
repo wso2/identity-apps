@@ -9131,6 +9131,7 @@ export const console: ConsoleNS = {
                     emptyPlaceholders: {
                         emptyRoleList: {
                             action: "Nouveau {{type}}",
+                            emptyRoles: "Aucun {{type}} trouvé",
                             subtitles: {
                                 0: "Il n'y a actuellement aucun {{type}} disponible.",
                                 1: "Vous pouvez en ajouter facilement en suivant les",
@@ -10773,6 +10774,7 @@ export const console: ConsoleNS = {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: "Nouvel utilisateur",
+                            emptyUsers: "Aucun utilisateur trouvé",
                             subTitle: {
                                 0: "Il n'y a actuellement aucun utilisateur disponible.",
                                 1: "Ajoutez facilement un nouvel utilisateur en",

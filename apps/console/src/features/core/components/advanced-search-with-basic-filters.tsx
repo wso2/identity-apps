@@ -127,6 +127,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Enable query search with shift and enter.
      */
     enableQuerySearch?: boolean;
+    /**
+     * Disable search and filter options.
+     */
+    disableSearchAndFilterOptions?: boolean;
 }
 
 /**
@@ -167,6 +171,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         style,
         submitButtonLabel,
         triggerClearQuery,
+        disableSearchAndFilterOptions,
         [ "data-testid" ]: testId
     } = props;
 
@@ -187,7 +192,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + getFilterValue(values.get(FILTER_VALUES_FIELD_IDENTIFIER)[0]);
+            + getFilterValue(values.get(FILTER_VALUES_FIELD_IDENTIFIER) as string);
 
         setExternalSearchQuery(query);
         onFilter(query);
@@ -280,6 +285,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 
     return (
         <AdvancedSearch
+            disableSearchAndFilterOptions={ disableSearchAndFilterOptions }
             aligned="left"
             disableSearchFilterDropdown={ disableSearchFilterDropdown }
             clearButtonPopupLabel={ t("console:common.advancedSearch.popups.clear") }

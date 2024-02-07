@@ -98,6 +98,10 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
      * List of readOnly user stores.
      */
     readOnlyUserStores?: string[];
+    /**
+     * Indicates whether the currently selected user store is read-only or not.
+     */
+    isReadOnlyUserStore?: boolean;
 }
 
 /**
@@ -123,6 +127,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         searchQuery,
         showListItemActions,
         showMetaContent,
+        isReadOnlyUserStore,
         [ "data-testid" ]: testId
     } = props;
 
@@ -209,7 +214,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                    action={ (
+                    action={ !isReadOnlyUserStore && (
                         <Show when={ AccessControlConstants.GROUP_WRITE }>
                             <PrimaryButton
                                 data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
@@ -223,16 +228,28 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
-                        { type: "group" }) }
-                    subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                            { type: "groups" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
-                            { type: "group" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
-                            { type: "group" })
-                    ] }
+                    title={
+                        isReadOnlyUserStore
+                            ? t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.emptyRoles",
+                                { type: "group" })
+                            : t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
+                                { type: "group" })
+                    }
+                    subtitle={
+                        isReadOnlyUserStore
+                            ? [
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                    { type: "groups" })
+                            ]
+                            : [
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                    { type: "groups" }),
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                                    { type: "group" }),
+                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                                    { type: "group" })
+                            ]
+                    }
                 />
             );
         }

@@ -42,6 +42,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -190,6 +191,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         isLoading: isParentOrgUserInviteListLoading,
         mutate: mutateParentOrgUserInviteList
     } = useGetParentOrgUserInvites(isSubOrganization());
+
+    /**
+     * Indicates whether the currently selected user store is read-only or not.
+     */
+    const isReadOnlyUserStore: boolean = useMemo(() => {
+        if (readOnlyUserStoresList?.includes(userStore)) {
+            return true;
+        }
+
+        return false;
+    }, [ userStore ]);
 
     /**
      * Fetch the list of available userstores.
@@ -688,6 +700,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
             triggerClearQuery={ triggerClearQuery }
+            disableSearchAndFilterOptions={ usersList?.totalResults <= 0 && !searchQuery }
         />
     );
 
@@ -721,11 +734,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         />) : null
                 }
                 showPagination={ true }
-                showTopActionPanel={ isUserListRequestLoading
-                    || !(!searchQuery
-                        && !userStoreError
-                        && userStoreOptions.length < 3
-                        && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
                 paginationOptions={ {
@@ -753,6 +761,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         data-testid="user-mgt-user-list"
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
                     />)
                 }
             </ListLayout>
@@ -1033,6 +1042,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)
                 && !isUserListRequestLoading
                 && (!isSubOrganization() || !isParentOrgUserInviteListLoading)
+                && !isReadOnlyUserStore
                 && renderUserDropDown()
             }
             title={ t("console:manage.pages.users.title") }

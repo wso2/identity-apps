@@ -3990,6 +3990,7 @@ export interface ConsoleNS {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: string;
+                            emptyUsers: string;
                             subTitle: {
                                 0: string;
                                 1: string;
@@ -5780,7 +5781,9 @@ export interface ConsoleNS {
                     };
                     emptyPlaceholders: {
                         search: Placeholder;
-                        emptyRoleList: Placeholder;
+                        emptyRoleList: Placeholder & {
+                            emptyRoles: string
+                        };
                     };
                     popups: {
                         delete: string;
