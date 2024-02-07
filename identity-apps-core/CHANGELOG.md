@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.16
+
+### Patch Changes
+
+- [#5439](https://github.com/wso2/identity-apps/pull/5439) [`2e28ecb371`](https://github.com/wso2/identity-apps/commit/2e28ecb371408c9a8c66e8234869d3a35bad300f) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] issues in text customization
+
 ## 2.1.15
 
 ### Patch Changes
