@@ -79,7 +79,7 @@
                 </h3>
                 <p class="portal-tagline-description">
                     <span class="line-break">
-                        <%=i18n(recoveryResourceBundle, customText, "password.reset.success.heading")%>
+                        <%=i18n(recoveryResourceBundle, customText, "password.reset.success.body")%>
                     </span>
                     <%
                         if(StringUtils.isNotBlank(accessUrl)) {
