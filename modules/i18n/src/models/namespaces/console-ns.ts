@@ -1583,6 +1583,42 @@ export interface ConsoleNS {
                     emptyList: Placeholder;
                     emptyProtocolList: Placeholder;
                 };
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: string;
+                            };
+                            addIdpWizard: {
+                                heading: string;
+                                subHeading: string;
+                                steps: {
+                                    details: string;
+                                };
+                            };
+                            emptyPlaceholder: Placeholder;
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                };
+                            };
+                            heading: string;
+                            subHeading: string;
+                            notifications: {
+                                create: Notification;
+                                delete: Notification;
+                                fetch: Notification;
+                                update: Notification;
+                            }
+                        };
+                    };
+                }
                 templates: {
                     manualSetup: {
                         heading: string;

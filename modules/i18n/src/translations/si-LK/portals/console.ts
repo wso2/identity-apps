@@ -3515,6 +3515,82 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "නව සැපයුම්කරු"
+                            },
+                            addIdpWizard: {
+                                heading: "පිටතට යන කොමිෂන් සභා එක් කරන්න",
+                                steps: {
+                                    details: "කොමිෂන් සභා විස්තර"
+                                },
+                                subHeading: "පරිශීලකයින් ප්රතිපාදන සඳහා ප්රතිපාදකයා තෝරන්න."
+                            },
+                            emptyPlaceholder: {
+                                action: "නව කොමිෂන් සභා",
+                                subtitles: "පිටතට යන විධිවිධානයක් නොමැත.එය මෙහි බැලීමට ඇති විධිවිධානයක් එක් කරන්න.",
+                                title: "පිටතට යන විධිවිධාන නොමැත"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "සම්බන්ධතාවය",
+                                        placeholder: "සම්බන්ධතාවය තෝරන්න",
+                                        validations: {
+                                            empty: "සම්බන්ධතාවය තේරීම අනිවාර්ය වේ."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "පිටතට යන ප්රතිපාදනය",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසය එක් කරන අතරතුර යමක් වැරදී ඇත.",
+                                        message: "නිර්මාණය කිරීමේ දෝෂයකි"
+                                    },
+                                    success: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසය සාර්ථකව එකතු කරන ලදි.",
+                                        message: "නිර්මාණය සාර්ථකයි"
+                                    },
+                                    error: {
+                                        description: "නේවාසික අයදුම්පත සඳහා පිටතට යන ප්රතිපාදන වින්යාසය දැනටමත් පවතී.",
+                                        message: "නිර්මාණය කිරීමේ දෝෂයකි"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසය මකා දැමීමේදී යමක් වැරදී ඇත.",
+                                        message: "මකාදැමීමේ දෝෂයකි"
+                                    },
+                                    success: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසය සාර්ථකව ඉවත් කරන ලදි.",
+                                        message: "මකාදැමීම සාර්ථකයි"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසයන් ලබා ගැනීමේදී යමක් වැරදී ඇත.",
+                                        message: "මොකක්හරි වැරැද්දක් වෙලා"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසය යාවත්කාලීන කිරීමේදී යමක් වැරදී ඇත.",
+                                        message: "යාවත්කාලීන දෝෂය"
+                                    },
+                                    success: {
+                                        description: "පිටතට යන ප්රතිපාදන වින්යාසය සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                                    }
+                                }
+                            },
+                            subHeading: "නේවාසික යෙදුම සඳහා පිටතට යන ප්රතිපාදන සැකසුම් වින්යාස කරන්න."
+                        }
+                    }
+                },
                 templates: {
                     manualSetup: {
                         heading: "අතින් සැකසුම",

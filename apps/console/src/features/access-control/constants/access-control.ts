@@ -495,4 +495,28 @@ export class AccessControlConstants {
      */
     public static readonly NOTIFICATION_SENDERS_DELETE: string = "internal_notification_senders_delete";
 
+    /**
+     * Resident Application outbound provisioning configuration feature permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING: string = "residentOutboundProvisioning";
+
+    /**
+     * Resident Application outbound provisioning configuration write permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_WRITE: string = "residentOutboundProvisioning:write";
+
+    /**
+     * Resident Application outbound provisioning configuration edit permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_EDIT: string = "residentOutboundProvisioning:edit";
+
+    /**
+     * Resident Application outbound provisioning configuration delete permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_DELETE: string = "residentOutboundProvisioning:delete";
+
+    /**
+     * Resident Application outbound provisioning configuration read permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_READ: string = "residentOutboundProvisioning:read";
 }

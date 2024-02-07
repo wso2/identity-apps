@@ -3610,6 +3610,82 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "Nouvelles commissions"
+                            },
+                            addIdpWizard: {
+                                heading: "Ajouter des commissions sortantes",
+                                steps: {
+                                    details: "Détails des commissions"
+                                },
+                                subHeading: "Sélectionnez le provisoire pour fournir des utilisateurs."
+                            },
+                            emptyPlaceholder: {
+                                action: "Nouvelles commissions",
+                                subtitles: "Aucun provisionnement sortant configuré.Ajoutez un provisoire pour le voir ici.",
+                                title: "Pas de provisionneurs sortants"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connexion",
+                                        placeholder: "Sélectionner la connexion",
+                                        validations: {
+                                            empty: "Il est obligatoire de sélectionner la connexion."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "Provisioning sortant",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé tout en ajoutant la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de création"
+                                    },
+                                    success: {
+                                        description: "Ajout avec succès la configuration d'approvisionnement sortant.",
+                                        message: "La création réussie"
+                                    },
+                                    error: {
+                                        description: "La configuration de l'approvisionnement sortant existe déjà pour l'application résidente.",
+                                        message: "Erreur de création"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé lors de la suppression de la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de suppression"
+                                    },
+                                    success: {
+                                        description: "Supprimé avec succès la configuration de l'approvisionnement sortant.",
+                                        message: "Suppression réussie"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "Quelque chose a mal tourné tout en obtenant les configurations d'approvisionnement sortant.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé lors de la mise à jour de la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de mise à jour"
+                                    },
+                                    success: {
+                                        description: "Mis à jour avec succès la configuration de l'approvisionnement sortant.",
+                                        message: "Mise à jour réussie"
+                                    }
+                                }
+                            },
+                            subHeading: "Configurer les paramètres d'approvisionnement sortant pour l'application résidente."
+                        }
+                    }
+                },
                 templates: {
                     manualSetup: {
                         heading: "Configuration manuelle",

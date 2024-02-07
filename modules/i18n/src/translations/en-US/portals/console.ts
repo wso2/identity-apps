@@ -3634,6 +3634,82 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "New Provisioner"
+                            },
+                            addIdpWizard: {
+                                heading: "Add Outbound Provisioner",
+                                steps: {
+                                    details: "Provisioner Details"
+                                },
+                                subHeading: "Select the provisioner to provision users."
+                            },
+                            emptyPlaceholder: {
+                                action: "New Provisioner",
+                                subtitles: "No outbound provisioners configured. Add a provisioner to view it here.",
+                                title: "No outbound provisioners"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connection",
+                                        placeholder: "Select connection",
+                                        validations: {
+                                            empty: "It is mandatory to select connection."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "Outbound Provisioning Configuration",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "Something went wrong while adding the outbound provisioning configuration.",
+                                        message: "Creation error"
+                                    },
+                                    success: {
+                                        description: "Successfully added the outbound provisioning configuration.",
+                                        message: "Creation successful"
+                                    },
+                                    error: {
+                                        description: "Outbound provisioning configuration already exists for the resident application.",
+                                        message: "Creation error"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "Something went wrong while deleting the outbound provisioning configuration.",
+                                        message: "Deletion error"
+                                    },
+                                    success: {
+                                        description: "Successfully removed the outbound provisioning configuration.",
+                                        message: "Deletion successful"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "Something went wrong while getting the outbound provisioning configurations.",
+                                        message: "Something went wrong"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "Something went wrong while updating the outbound provisioning configuration.",
+                                        message: "Update error"
+                                    },
+                                    success: {
+                                        description: "Successfully updated the outbound provisioning configuration.",
+                                        message: "Update successful"
+                                    }
+                                }
+                            },
+                            subHeading: "Configure outbound provisioning settings for the resident application."
+                        }
+                    }
                 }
             },
             authenticationProvider: {

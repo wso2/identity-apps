@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -362,6 +362,8 @@ export class ServerConfigurationsConstants {
      */
     public static readonly SSO_SETTINGS_CATEGORY_ID: string = "sso-settings";
     public static readonly LOGIN_SECURITY_SETTINGS_CATEGORY_ID: string = "login-security";
+    public static readonly PROVISIONING_SETTINGS_CATEGORY_ID: string = "provider-settings";
+    public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
 
 	/**
 	 * Multi Attribute Login Constants.
