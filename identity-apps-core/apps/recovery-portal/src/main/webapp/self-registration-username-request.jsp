@@ -674,6 +674,7 @@
                             data-testid="registration-form-privacy-link"
                             rel="noopener noreferrer">
                                 <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
+                            </a>
                         </p>
                         <%
                             } else if (StringUtils.isNotBlank(termsOfUseURL)) {
