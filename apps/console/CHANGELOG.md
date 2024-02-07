@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.12.0
+
+### Minor Changes
+
+- [#5348](https://github.com/wso2/identity-apps/pull/5348) [`ddbab54578`](https://github.com/wso2/identity-apps/commit/ddbab5457853c557cd27e1bdb9af0590a4400ff4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring UI support to configure resident application's outbound provisioning
+
+### Patch Changes
+
+- [#5424](https://github.com/wso2/identity-apps/pull/5424) [`7b97eeb47f`](https://github.com/wso2/identity-apps/commit/7b97eeb47fd450d8b33e9aad28750788bbc0a2c4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add missing configs under user claim update settings
+
+* [#5426](https://github.com/wso2/identity-apps/pull/5426) [`866c2a9974`](https://github.com/wso2/identity-apps/commit/866c2a9974f4b2be1ab564c8c3364b6ed3338876) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add changeset
+
+* Updated dependencies [[`ddbab54578`](https://github.com/wso2/identity-apps/commit/ddbab5457853c557cd27e1bdb9af0590a4400ff4)]:
+  - @wso2is/i18n@2.0.113
+
 ## 2.11.32
 
 ### Patch Changes
