@@ -52,6 +52,7 @@ import {
     LinkButton,
     Message,
     PickerResult,
+    Popup,
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
@@ -81,6 +82,8 @@ import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-
 import { PatchRoleDataInterface } from "../../../roles/models";
 import { getAUserStore, getUserStores } from "../../../userstores/api";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
+import { useValidationConfigData } from "../../../validation/api";
+import { ValidationFormInterface } from "../../../validation/models";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
@@ -100,7 +103,7 @@ import {
     SCIMBulkResponseOperation,
     UserDetailsInterface
 } from "../../models";
-import { UserManagementUtils } from "../../utils";
+import { UserManagementUtils, getUsernameConfiguration } from "../../utils";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
 /**
@@ -200,6 +203,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
+
+    const { data: validationData } = useValidationConfigData();
+    const config: ValidationFormInterface = getUsernameConfiguration(validationData);
+    const isAlphanumericUsername: boolean = config?.enableValidator === "true";
 
     const optionsArray: string[] = [];
 
@@ -372,6 +379,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
+    useEffect(() => {
+        setConfigureMode(
+            isAlphanumericUsername
+            && userConfig?.enableUsernameValidation
+                ? MultipleInviteMode.META_FILE
+                : MultipleInviteMode.MANUAL
+        );
+    }, [ isAlphanumericUsername ]);
     /**
      * Fetches SCIM dialects.
      */
@@ -1394,22 +1409,46 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         {
                             Object.values(MultipleInviteMode).map((mode: string, index: number) => {
                                 return(
-                                    <Button
-                                        data-componentid={ `${componentId}-${mode}-tab-option` }
-                                        key={ index }
-                                        active={ configureMode === mode }
-                                        className="multiple-users-config-mode-wizard-tab"
-                                        content={
-                                            UserManagementUtils.resolveMultipleInvitesDisplayName(
-                                                mode as MultipleInviteMode
-                                            )
-                                        }
-                                        onClick={ (
-                                            event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                                            event.preventDefault();
-                                            setConfigureMode(mode);
-                                        } }
-                                    />
+                                    <>
+                                        <Popup
+                                            trigger={ (
+                                                <div className={ "inline-button" } >
+                                                    <Button
+                                                        disabled={
+                                                            isAlphanumericUsername
+                                                            && mode === MultipleInviteMode.MANUAL
+                                                            && userConfig?.enableUsernameValidation
+                                                        }
+                                                        data-componentid={ `${componentId}-${mode}-tab-option` }
+                                                        key={ index }
+                                                        active={ configureMode === mode }
+                                                        className="multiple-users-config-mode-wizard-tab"
+                                                        content={
+                                                            UserManagementUtils.resolveMultipleInvitesDisplayName(
+                                                                mode as MultipleInviteMode)
+                                                        }
+                                                        onClick={ (
+                                                            event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                                                            event.preventDefault();
+                                                            setConfigureMode(mode);
+                                                        } }
+                                                    />
+                                                </div>
+                                            ) }
+                                            content={
+                                                t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                ".wizardSummary.manualCreation.disabledHint" )
+                                            }
+                                            size="mini"
+                                            wide
+                                            disabled={
+                                                mode === MultipleInviteMode.META_FILE
+                                                || !isAlphanumericUsername
+                                                || !userConfig?.enableUsernameValidation
+                                            }
+                                            data-componentid={ `${componentId}-disabled-hint` }
+                                        />
+                                    </>
                                 );
                             })
                         }

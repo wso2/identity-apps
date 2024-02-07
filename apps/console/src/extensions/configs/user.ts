@@ -31,5 +31,6 @@ export const userConfig: User = {
     },
     disableManagedByColumn: true,
     enableAdminPrivilegeRevokeOption: false,
-    enableBulkImportSecondaryUserStore: true
+    enableBulkImportSecondaryUserStore: true,
+    enableUsernameValidation: false
 };

@@ -28,4 +28,5 @@ export interface User {
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
     disableManagedByColumn: boolean;
     enableAdminPrivilegeRevokeOption: boolean;
+    enableUsernameValidation: boolean;
 }
