@@ -192,7 +192,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + getFilterValue(values.get(FILTER_VALUES_FIELD_IDENTIFIER) as string);
+            + getFilterValue(values?.get(FILTER_VALUES_FIELD_IDENTIFIER) as string);
 
         setExternalSearchQuery(query);
         onFilter(query);
