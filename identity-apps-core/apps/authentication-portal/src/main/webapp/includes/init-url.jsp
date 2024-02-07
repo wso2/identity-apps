@@ -18,6 +18,7 @@
     String TENANT_DOMAIN_SHORT = "t";
     String USER_TENANT_DOMAIN_SHORT = "ut";
     String SERVICE_PROVIDER_NAME_SHORT = "sp";
+    String SERVICE_PROVIDER_ID_SHORT = "spId";
 
     String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
     String samlssoURL = "../samlsso";
