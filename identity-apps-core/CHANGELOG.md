@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.14
+
+### Patch Changes
+
+- [#5430](https://github.com/wso2/identity-apps/pull/5430) [`27dee6fc3b`](https://github.com/wso2/identity-apps/commit/27dee6fc3b07a9cf7eade6c785f9b468903a1567) Thanks [@Avarjana](https://github.com/Avarjana)! - Add missing constant
+
 ## 2.1.13
 
 ### Patch Changes
