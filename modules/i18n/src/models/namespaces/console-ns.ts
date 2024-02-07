@@ -6700,7 +6700,7 @@ export interface ConsoleNS {
                             required: string;
                         }
                     },
-                    roles: {
+                    groups: {
                         label: string;
                         placeholder: string;
                         hint: string;

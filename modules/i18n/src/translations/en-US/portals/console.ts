@@ -9590,12 +9590,12 @@ export const console: ConsoleNS = {
                             required: "Username is a required field."
                         }
                     },
-                    roles: {
-                        label: "Roles",
-                        placeholder: "Select roles",
-                        hint: "Assign roles for the user that is being invited.",
+                    groups: {
+                        label: "Groups",
+                        placeholder: "Select groups",
+                        hint: "Assign groups for the user that is being invited.",
                         validations: {
-                            required: "Roles is a required field."
+                            required: "Groups is a required field."
                         }
                     },
                     inviteButton: "Invite"

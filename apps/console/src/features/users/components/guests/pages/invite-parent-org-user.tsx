@@ -19,23 +19,21 @@
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
-import { useRolesList } from "../../../../roles/api";
+import { GroupsInterface, useGroupList } from "../../../../groups";
+import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
 import { UserManagementConstants } from "../../../constants";
-import {
-    InviteParentOrgUserFormValuesInterface,
-    RolesAutoCompleteOption
-} from "../models/invite";
+import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";
 
 interface InviteParentOrgUserFormErrorsInterface {
     username: string;
-    roles: string;
+    groups: string;
 }
 
 /**
@@ -59,31 +57,29 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         onSubmit,
         [ "data-componentid"]: componentId
     } = props;
+    const userStore: string = PRIMARY_USERSTORE;
 
     const { t } = useTranslation();
-    const { data: allowedRoles } = useRolesList(
-        undefined,
-        undefined,
-        undefined,
-        "users,groups,permissions,associatedApplications"
-    );
 
-    const rolesAutocompleteOptions: RolesAutoCompleteOption[] = useMemo(() => {
+    const {
+        data: groupList
+    } = useGroupList(userStore, "members", null, true);
 
-        if (isEmpty(allowedRoles?.Resources)) {
+    const groupsAutocompleteOptions: GroupsAutoCompleteOption[] = useMemo(() => {
+
+        if (isEmpty(groupList?.Resources)) {
             return [];
         }
 
-        return allowedRoles?.Resources
-            ?.filter((role: RolesInterface) => role.audience.display !== "Console")
-            ?.map((role: RolesInterface) => {
+        return groupList?.Resources
+            ?.map((group: GroupsInterface) => {
                 return {
-                    key: role.id,
-                    label: role.displayName,
-                    role
+                    group,
+                    key: group.id,
+                    label: group.displayName
                 };
             });
-    }, [ allowedRoles ]);
+    }, [ groupList ]);
 
     /**
      * Validates the invite parent org user form values.
@@ -95,7 +91,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
     ): InviteParentOrgUserFormErrorsInterface => {
 
         const errors: InviteParentOrgUserFormErrorsInterface = {
-            roles: undefined,
+            groups: undefined,
             username: undefined
         };
 
@@ -166,23 +162,23 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         <FinalFormField
                             fullWidth
                             multipleValues
-                            ariaLabel="Roles field"
-                            data-componentid={ `${componentId}-form-roles-field` }
-                            name="roles"
-                            label={ t("console:manage.features.parentOrgInvitations.addUserWizard.roles.label") }
+                            ariaLabel="Groups field"
+                            data-componentid={ `${componentId}-form-groups-field` }
+                            name="groups"
+                            label={ t("console:manage.features.parentOrgInvitations.addUserWizard.groups.label") }
                             helperText={
                                 (<Hint>
                                     <Typography variant="inherit">
-                                        { t("console:manage.features.parentOrgInvitations.addUserWizard.roles" +
+                                        { t("console:manage.features.parentOrgInvitations.addUserWizard.groups" +
                                             ".hint") }
                                     </Typography>
                                 </Hint>)
                             }
                             placeholder={
-                                t("console:manage.features.parentOrgInvitations.addUserWizard.roles.placeholder")
+                                t("console:manage.features.parentOrgInvitations.addUserWizard.groups.placeholder")
                             }
                             component={ AutocompleteFieldAdapter }
-                            options={ rolesAutocompleteOptions }
+                            options={ groupsAutocompleteOptions }
                             renderTags={ (value: readonly any[], getTagProps: AutocompleteRenderGetTagProps) => {
                                 return value.map((option: any, index: number) => (
                                     <Chip
