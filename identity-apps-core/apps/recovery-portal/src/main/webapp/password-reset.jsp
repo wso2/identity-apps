@@ -290,7 +290,7 @@
                                 <button id="submit"
                                         class="ui primary button"
                                         type="submit">
-                                    <%=i18n(recoveryResourceBundle, customText, "password.reset.heading")%>
+                                    <%=i18n(recoveryResourceBundle, customText, "password.reset.button")%>
                                 </button>
                             </div>
                         </form>
