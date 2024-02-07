@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.15
+
+### Patch Changes
+
+- [#5436](https://github.com/wso2/identity-apps/pull/5436) [`449b6c4cce`](https://github.com/wso2/identity-apps/commit/449b6c4cceee110dc61216e944df416664f39ea0) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] fix text customization issue in `password-reset-success`
+
 ## 2.1.14
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.3.16
+
+### Patch Changes
+
+- [#5384](https://github.com/wso2/identity-apps/pull/5384) [`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Sign-in Method` -> `Login Flow`
+
+- Updated dependencies [[`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3)]:
+  - @wso2is/i18n@2.0.114
+  - @wso2is/core@2.0.34
+
 ## 2.3.15
 
 ### Patch Changes

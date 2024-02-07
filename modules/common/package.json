@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/common",
-    "version": "2.0.31",
+    "version": "2.0.32",
     "description": "Common UI module for Asgardeo React Applications.",
     "keywords": [
         "Asgardeo",
@@ -38,9 +38,9 @@
         "@microsoft/applicationinsights-react-js": "^3.4.2",
         "@microsoft/applicationinsights-web": "^3.0.0",
         "@wso2is/access-control": "^2.0.18",
-        "@wso2is/core": "^2.0.33",
+        "@wso2is/core": "^2.0.34",
         "@wso2is/forms": "^2.0.18",
-        "@wso2is/i18n": "^2.0.111",
+        "@wso2is/i18n": "^2.0.114",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",
         "reduce-reducers": "^1.0.4",

@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.12.1
+
+### Patch Changes
+
+- [#5429](https://github.com/wso2/identity-apps/pull/5429) [`6a92ea16b9`](https://github.com/wso2/identity-apps/commit/6a92ea16b9622f7970005d0c49ac577795dc3b64) Thanks [@brionmario](https://github.com/brionmario)! - Add description for X509 authenticator
+
+* [#5384](https://github.com/wso2/identity-apps/pull/5384) [`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Sign-in Method` -> `Login Flow`
+
+* Updated dependencies [[`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3)]:
+  - @wso2is/i18n@2.0.114
+  - @wso2is/common@2.0.32
+  - @wso2is/core@2.0.34
+
 ## 2.12.0
 
 ### Minor Changes
