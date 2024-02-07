@@ -7734,12 +7734,12 @@ export const console: ConsoleNS = {
                             required: "Le nom d'utilisateur est un champ obligatoire."
                         }
                     },
-                    roles: {
-                        label: "Les rôles",
-                        placeholder: "Sélectionnez des rôles",
-                        hint: "Attribuez des rôles à l'utilisateur invité.",
+                    groups: {
+                        label: "les groupes",
+                        placeholder: "Sélectionnez des groupes",
+                        hint: "Attribuez des groupes à l'utilisateur invité.",
                         validations: {
-                            required: "Les rôles sont un champ obligatoire."
+                            required: "Les groupes sont un champ obligatoire."
                         }
                     },
                     inviteButton: "Inviter"
