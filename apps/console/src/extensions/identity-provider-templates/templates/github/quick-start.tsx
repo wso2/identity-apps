@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -76,7 +77,7 @@ const GitHubAuthenticatorQuickStart: FunctionComponent<GitHubAuthenticatorQuickS
                                 "extensions:develop.identityProviders.github.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }> 
+                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                             application </Link>
                             for which you want to set up Github login.
                         </Trans>
@@ -90,10 +91,10 @@ const GitHubAuthenticatorQuickStart: FunctionComponent<GitHubAuthenticatorQuickS
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ "extensions:develop.identityProviders.github.quickStart.steps." + 
+                            i18nKey={ "extensions:develop.identityProviders.github.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>
@@ -101,8 +102,8 @@ const GitHubAuthenticatorQuickStart: FunctionComponent<GitHubAuthenticatorQuickS
                 </>
             ),
             stepTitle: (
-                <Trans 
-                    i18nKey={ "extensions:develop.identityProviders.github.quickStart.steps." + 
+                <Trans
+                    i18nKey={ "extensions:develop.identityProviders.github.quickStart.steps." +
                     "selectDefaultConfig.heading" }
                 >
                     Select <strong>Start with default configuration</strong>

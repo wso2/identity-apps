@@ -1480,7 +1480,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 customization: {
-                                    heading: "පුරනය වීමේ ක්‍රමය රිසිකරණය කරන්න",
+                                    heading: "පිවිසුම් ප්රවාහ අභිරුචිකරණය කරන්න",
                                     revertToDefaultButton: {
                                         hint: "පෙරනිමි වින්‍යාසය වෙත ආපසු යන්න (පරිශීලක නාමය සහ මුරපදය)",
                                         label: "පෙරනිමියට ආපසු යන්න"
@@ -1652,7 +1652,7 @@ export const console: ConsoleNS = {
                                     popupContent: "වැඩිපුර විස්තර"
                                 }
                             },
-                            tabName: "පුරනය වීමේ ක්‍රමය"
+                            tabName: "පිවිසුම් ප්රවාහය"
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "සම්පත සඳහා නිශ්චිතව දක්වා ඇති අවසර ප්‍රතිපත්තිය නොතකා API සම්පතක සියලුම බලයලත් විෂය පථයන් M2M යෙදුමක් සඳහා ලබා ගත හැකිය."
@@ -3977,7 +3977,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 connectedApps: {
-                    action: "පුරනය වීමේ ක්‍රමය වෙත යන්න",
+                    action: "පිවිසුම් ප්රවාහය වෙත යන්න",
                     header: "{{idpName}} හා සබැඳුණු යෙදවුම්.",
                     subHeader: "{{idpName}} හා සබැඳුණු යෙදවුම් මෙහි දක්වා ඇත.",
                     placeholders: {

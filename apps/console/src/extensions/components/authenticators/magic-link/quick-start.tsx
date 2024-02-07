@@ -95,7 +95,7 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
                             i18nKey={ "extensions:develop.identityProviders.magicLink.quickStart.steps" +
                             ".selectMagicLink.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Magic Link login
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Magic Link login
                             </strong> to configure a basic Magic Link flow.
                         </Trans>
                     </Text>
