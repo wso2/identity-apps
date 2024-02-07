@@ -521,10 +521,10 @@ importers:
         specifier: ^2.0.18
         version: link:../../modules/access-control
       '@wso2is/common':
-        specifier: ^2.0.31
+        specifier: ^2.0.32
         version: link:../../modules/common
       '@wso2is/core':
-        specifier: ^2.0.33
+        specifier: ^2.0.34
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.0.29
@@ -536,7 +536,7 @@ importers:
         specifier: ^2.0.18
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.113
+        specifier: ^2.0.114
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.3
@@ -855,13 +855,13 @@ importers:
         specifier: ^2.0.18
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.33
+        specifier: ^2.0.34
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.0.18
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.113
+        specifier: ^2.0.114
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.3
@@ -1151,13 +1151,13 @@ importers:
         specifier: ^2.0.18
         version: link:../access-control
       '@wso2is/core':
-        specifier: ^2.0.33
+        specifier: ^2.0.34
         version: link:../core
       '@wso2is/forms':
         specifier: ^2.0.18
         version: link:../forms
       '@wso2is/i18n':
-        specifier: ^2.0.111
+        specifier: ^2.0.114
         version: link:../i18n
       '@wso2is/react-components':
         specifier: ^2.1.3
@@ -1621,7 +1621,7 @@ importers:
         specifier: ^26.0.14
         version: 26.0.24
       '@wso2is/core':
-        specifier: ^2.0.33
+        specifier: ^2.0.34
         version: link:../core
       babel-jest:
         specifier: ^26.3.0
@@ -2310,15 +2310,15 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@ampproject/remapping': 2.2.0
-      '@babel/code-frame': 7.22.13
-      '@babel/generator': 7.23.0
-      '@babel/helper-compilation-targets': 7.22.15
-      '@babel/helper-module-transforms': 7.23.0(@babel/core@7.23.0)
-      '@babel/helpers': 7.23.1
-      '@babel/parser': 7.23.0
-      '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.0
-      '@babel/types': 7.23.0
+      '@babel/code-frame': 7.23.5
+      '@babel/generator': 7.23.6
+      '@babel/helper-compilation-targets': 7.23.6
+      '@babel/helper-module-transforms': 7.23.3(@babel/core@7.23.0)
+      '@babel/helpers': 7.23.9
+      '@babel/parser': 7.23.9
+      '@babel/template': 7.23.9
+      '@babel/traverse': 7.23.9
+      '@babel/types': 7.23.9
       convert-source-map: 2.0.0
       debug: 4.3.4(supports-color@6.1.0)
       gensync: 1.0.0-beta.2
@@ -2693,19 +2693,6 @@ packages:
       '@babel/core': ^7.0.0
     dependencies:
       '@babel/core': 7.18.13
-      '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-module-imports': 7.22.15
-      '@babel/helper-simple-access': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/helper-validator-identifier': 7.22.20
-
-  /@babel/helper-module-transforms@7.23.0(@babel/core@7.23.0):
-    resolution: {integrity: sha512-WhDWw1tdrlT0gMgUJSlX0IQvoO1eN279zrAUbVB+KpV2c3Tylz8+GnKOLllCS6Z/iZQEyVYxhZVUdPTqs2YYPw==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    dependencies:
-      '@babel/core': 7.23.0
       '@babel/helper-environment-visitor': 7.22.20
       '@babel/helper-module-imports': 7.22.15
       '@babel/helper-simple-access': 7.22.5
