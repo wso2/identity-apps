@@ -1147,7 +1147,7 @@
         "legacyMode": {
             "apiResources": true,
             "applicationListSystemApps": false,
-            "applicationOIDCSubjectIdentifier": false,
+            "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
             "certificates": false,

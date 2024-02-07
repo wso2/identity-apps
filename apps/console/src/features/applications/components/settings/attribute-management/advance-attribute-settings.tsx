@@ -20,14 +20,15 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Code, Heading, Hint, Text } from "@wso2is/react-components";
+import { Code, Heading, Hint, Message, Text } from "@wso2is/react-components";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { Dispatch, FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
+import { AppState } from "../../../../core/store";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -97,11 +98,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const { UIConfig } = useUIConfig();
     const dispatch: Dispatch<any> = useDispatch();
 
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
+
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
         useState<string>();
     const [ selectedSubjectType, setSelectedSubjectType ] = useState(oidcInitialValues?.subject ?
         oidcInitialValues.subject.subjectType : SubjectTypes.PUBLIC);
+    const [ showSubjectAttribute, setShowSubjectAttribute ] = useState<boolean>(false);
 
     useEffect(() => {
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
@@ -158,6 +162,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     useEffect(() => {
         if(selectedSubjectValue) {
             setSelectedValue(selectedSubjectValue);
+            setShowSubjectAttribute(selectedSubjectValue !== defaultSubjectAttribute);
         }
     }, [ selectedSubjectValue ]);
 
@@ -282,6 +287,18 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         }
     };
 
+    /**
+     * This function resolves the hidden status of the subject attribute section.
+     * @returns The hidden status.
+     */
+    const resolveSubjectAttributeHiddenStatus = (): boolean => {
+        return (
+            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+            (onlyOIDCConfigured && !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) ||
+            (onlyOIDCConfigured && !showSubjectAttribute)
+        );
+    };
+
     const resolveSubjectAttributeHint = (): ReactElement => {
         if (
             technology.length === 1
@@ -369,7 +386,52 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
                             "sections.subject.heading") }
                     </Heading>
-                    <Divider hidden/>
+                    { onlyOIDCConfigured && (
+                        <>
+                            <Checkbox
+                                ariaLabel={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.subject.fields.alternateSubjectAttribute.label") }
+                                data-componentid={ `${ testId }-reassign-subject-attribute-checkbox` }
+                                checked={ showSubjectAttribute }
+                                label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.subject.fields.alternateSubjectAttribute.label") }
+                                onClick={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) =>
+                                    setShowSubjectAttribute(data?.checked) }
+                                disabled={ readOnly }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={ t("console:develop.features.applications.forms." +
+                                        "advancedAttributeSettings.sections.subject.fields.alternateSubjectAttribute." +
+                                        "hint") }
+                                >
+                                    This option will allow to use an alternate attribute as the subject identifier
+                                    instead of the <Code withBackground>userid</Code>.
+                                </Trans>
+                            </Hint>
+                        </>
+                    ) }
+                    {
+                        onlyOIDCConfigured && !resolveSubjectAttributeHiddenStatus() && (
+                            <Message
+                                type="warning"
+                                floating
+                                content={ (
+                                    <Trans
+                                        i18nKey={ "console:develop.features.applications.forms." +
+                                            "advancedAttributeSettings.sections.subject.fields." +
+                                            "alternateSubjectAttribute.info" }
+                                        tOptions={ { productName: productName } }
+                                    >
+                                        The subject identifier is locally unique and never reassigned within the Issuer.
+                                        Therefore changing the subject attribute is not recommended. productName
+                                        uses <Code withBackground>userid</Code> as the subject attribute.
+                                    </Trans>
+                                ) }
+                                data-componentid={ `${ testId }-subject-attribute-warning-message` }
+                            />
+                        )
+                    }
                     <Field.Dropdown
                         ariaLabel="Subject attribute"
                         name="subjectAttribute"
@@ -380,10 +442,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         options={ dropDownOptions }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showSubjectAttribute ||
-                            (onlyOIDCConfigured &&
-                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
+                        hidden={ resolveSubjectAttributeHiddenStatus() }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -399,10 +458,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.
-                            showIncludeUserstoreDomainSubject ||
-                            (onlyOIDCConfigured &&
-                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
+                        hidden={ resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -419,10 +475,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showIncludeTenantDomain ||
-                            (onlyOIDCConfigured &&
-                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
+                        hidden={ resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")

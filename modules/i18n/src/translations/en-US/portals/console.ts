@@ -1711,6 +1711,13 @@ export const console: ConsoleNS = {
                             },
                             subject: {
                                 fields:{
+                                    alternateSubjectAttribute: {
+                                        hint: "This option will allow to use an alternate attribute as the subject identifier instead of the <1>userid</1>.",
+                                        label: "Assign alternate subject identifier",
+                                        info: "The subject identifier is locally unique and never reassigned within the Issuer. " +
+                                            "Therefore changing the subject attribute is not recommended. {{productName}} " +
+                                            "uses <1>userid</1> as the subject attribute."
+                                    },
                                     subjectAttribute: {
                                         hint: "Select which of the shared attributes you want to use as the" +
                                             " subject identifier of the user",

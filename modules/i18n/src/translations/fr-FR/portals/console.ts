@@ -1736,6 +1736,14 @@ export const console: ConsoleNS = {
                             },
                             subject: {
                                 fields: {
+                                    alternateSubjectAttribute: {
+                                        hint: "Cette option permettra d'utiliser un autre attribut comme identifiant de sujet au lieu du <1>UserId</1>.",
+                                        label: "Affecter l'identifiant de sujet alternatif",
+                                        info: "Selon la spécification <1>OpenID Connect</1>, l'identifiant du sujet " +
+                                            "est localement unique et jamais réaffecté au sein de l'émetteur. " +
+                                            "Par conséquent, le changement de sujet n'est pas recommandé. {{ProductName}} " +
+                                            "utilise <2>userId</2> comme identifiant de sujet."
+                                    },
                                     subjectAttribute: {
                                         hint: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
                                             "comme identifiant de sujet de l'utilisateur.",
