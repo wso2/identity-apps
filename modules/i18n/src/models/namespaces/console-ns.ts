@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -4029,6 +4029,7 @@ export interface ConsoleNS {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: string;
+                            emptyUsers: string;
                             subTitle: {
                                 0: string;
                                 1: string;
@@ -5819,7 +5820,9 @@ export interface ConsoleNS {
                     };
                     emptyPlaceholders: {
                         search: Placeholder;
-                        emptyRoleList: Placeholder;
+                        emptyRoleList: Placeholder & {
+                            emptyRoles: string
+                        };
                     };
                     popups: {
                         delete: string;

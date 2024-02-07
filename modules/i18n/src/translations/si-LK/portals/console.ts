@@ -9016,6 +9016,7 @@ export const console: ConsoleNS = {
                     emptyPlaceholders: {
                         emptyRoleList: {
                             action: "නව {{type}}",
+                            emptyRoles: "{{type}} හමු නොවීය",
                             subtitles: {
                                 0: "දැනට {{type}} නොමැත.",
                                 1: "පහත දැක්වෙන දේ අනුගමනය කිරීමෙන් ඔබට පහසුවෙන් නව {{type}} එකතු කළ හැකිය",
@@ -10594,6 +10595,7 @@ export const console: ConsoleNS = {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: "නව පරිශීලක",
+                            emptyUsers: "පරිශීලකයන් හමු නොවීය",
                             subTitle: {
                                 0: "දැනට පරිශීලකයින් නොමැත.",
                                 1: "පහත සඳහන් දෑ අනුගමනය කිරීමෙන් ඔබට පහසුවෙන් නව පරිශීලකයෙකු එක් කළ හැකිය",

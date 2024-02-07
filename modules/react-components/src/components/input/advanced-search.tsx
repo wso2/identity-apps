@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -143,6 +143,10 @@ export interface AdvancedSearchPropsInterface extends IdentifiableComponentInter
      * Default filter attributes.
      */
     filterAttributeOptions?: any;
+    /**
+     * Disable search and filter options.
+     */
+    disableSearchAndFilterOptions?: boolean;
 }
 
 /**
@@ -182,7 +186,8 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         submitted,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
-        triggerClearQuery
+        triggerClearQuery,
+        disableSearchAndFilterOptions
     } = props;
 
     const searchInputRef: MutableRefObject<HTMLDivElement> = useRef();
@@ -270,7 +275,9 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
      * Handles the show options dropdown `onClick` event.
      */
     const handleShowOptionsClick = (): void => {
-        setIsDropdownVisible(!isDropdownVisible);
+        if (!disableSearchAndFilterOptions) {
+            setIsDropdownVisible(!isDropdownVisible);
+        }
     };
 
     /**
@@ -392,7 +399,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                             {
                                 !disableSearchFilterDropdown && (
                                     <Popup
-                                        disabled={ !dropdownTriggerPopupLabel || isDropdownVisible }
+                                        disabled={
+                                            !dropdownTriggerPopupLabel ||
+                                            isDropdownVisible ||
+                                            disableSearchAndFilterOptions
+                                        }
                                         trigger={
                                             (
                                                 <Button
@@ -429,6 +440,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     onBlur={ handleSearchFieldBlur }
                     onChange={ handleSearchQueryChange }
                     onKeyDown={ handleSearchQuerySubmit }
+                    disabled={ disableSearchAndFilterOptions }
                 />
             </div>
             <Popup
