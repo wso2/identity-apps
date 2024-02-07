@@ -231,7 +231,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     title={
                         isReadOnlyUserStore
                             ? t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.emptyRoles",
-                                { type: "group" })
+                                { type: "groups" })
                             : t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                                 { type: "group" })
                     }
