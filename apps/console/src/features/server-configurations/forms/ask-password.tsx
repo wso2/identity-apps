@@ -187,7 +187,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE,
-                    "Enable option to invite users for password setup via email") }
+                    "Enable email invitations for user password setup") }
                 defaultValue={ initialFormValues?.[
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE ] === "true" }
                 readOnly={ readOnly }

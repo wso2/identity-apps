@@ -8743,7 +8743,7 @@ export const console: ConsoleNS = {
                                 properties: {
                                     emailVerificationEnable: {
                                         hint: "An email will be sent to the user to set the password after creation.",
-                                        label: "Enable option to invite users for password setup via email"
+                                        label: "Enable email invitations for user password setup"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "The user account will be locked during user creation.",

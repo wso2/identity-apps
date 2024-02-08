@@ -7125,7 +7125,7 @@ export const console: ConsoleNS = {
                                 properties: {
                                     emailVerificationEnable: {
                                         hint: "Un email sera envoyé à l'utilisateur pour définir le mot de passe après création.",
-                                        label: "Activer l'option pour inviter les utilisateurs à configurer le mot de passe par e-mail"
+                                        label: "Activer les invitations par e-mail pour la configuration du mot de passe utilisateur"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "Le compte d'utilisateur sera verrouillé pendant la création d'utilisateurs.",
