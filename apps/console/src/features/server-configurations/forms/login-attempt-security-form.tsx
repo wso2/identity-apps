@@ -177,7 +177,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         accountLockIncrementFactor: property.value
                     };
                     setLockIncrementRatio(property.value);
-                } else if (property.name === ServerConfigurationsConstants.NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT) {
+                } else if (property?.name === ServerConfigurationsConstants.NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
                         notifyUserOnAccountLockIncrement: property?.value === "true"
