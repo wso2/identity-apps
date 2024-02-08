@@ -3178,6 +3178,7 @@ export interface Extensions {
                             accountLockTime: FormAttributes;
                             enable: FormAttributes;
                             maxFailedAttempts: FormAttributes;
+                            notifyUserOnAccountLockIncrement: FormAttributes;
                         };
                     };
                     info: string;

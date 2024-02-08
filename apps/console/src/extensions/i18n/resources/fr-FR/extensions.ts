@@ -3919,6 +3919,12 @@ export const extensions: Extensions = {
                                         "Le nombre maximal de tentatives infructueuses doit être un " +
                                         "nombre à 1 ou 2 chiffres."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "Informer l'utilisateur lorsque la durée de verrouillage du compte est " +
+                                    "augmentée en raison des tentatives de connexion en échec continu.",
+                                label: "Informer l'utilisateur lorsque le temps de verrouillage est augmenté"
                             }
                         }
                     },
