@@ -16,23 +16,27 @@
  * under the License.
  */
 
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import { 
-    ConnectionInterface, 
-    ConnectionTemplateInterface 
+import ApplicationSelectionModal
+    from "../../../../../extensions/components/shared/application-selection-modal";
+import {
+    ConnectionInterface,
+    ConnectionTemplateInterface
 } from "../../../../../features/connections/models/connection";
-import ApplicationSelectionModal 
-from "../../../../../extensions/components/shared/application-selection-modal";
+import { FeatureConfigInterface } from "../../../../core/models";
+import { AppState } from "../../../../core/store";
 
 /**
  * Prop types of the component.
@@ -67,6 +71,14 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     /**
      * Vertical Stepper steps.
      * @returns VerticalStepperStepInterface
@@ -82,8 +94,9 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
                                 ".steps.selectApplication.content"
                             }
                         >
-                            Choose the 
-                            <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application</Link>
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
                             for which you want to set up Microsoft login.
                         </Trans>
                     </Text>
@@ -96,12 +109,12 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ 
-                                "extensions:develop.identityProviders.microsoft.quickStart.steps."+ 
-                                "selectDefaultConfig.content" 
+                            i18nKey={
+                                "extensions:develop.identityProviders.microsoft.quickStart.steps."+
+                                "selectDefaultConfig.content"
                             }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>
@@ -109,7 +122,7 @@ const MicrosoftAuthenticatorQuickStart: FunctionComponent<MicrosoftAuthenticator
                 </>
             ),
             stepTitle: (
-                <Trans 
+                <Trans
                     i18nKey={
                         "extensions:develop.identityProviders.microsoft.quickStart.steps.selectDefaultConfig.heading"
                     }

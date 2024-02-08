@@ -104,8 +104,8 @@
 %>
 
 <%
-    String clientId = request.getParameter("client_id");
-    String sp = request.getParameter("sp");
+    String clientId = Encode.forJavaScriptBlock(request.getParameter("client_id"));
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
     boolean isFederatedOptionsAvailable = false;
     boolean isMagicLink = false;
@@ -179,7 +179,7 @@
     trackEvent("page-visit-authentication-portal-identifierauth", {
         "app": insightsAppIdentifier,
         "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-    });     
+    });
 
     function submitIdentifier (e) {
         e.preventDefault();
@@ -251,7 +251,7 @@
     <div class="ui visible negative message" id="error-msg">
         <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
     </div>
-    <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))) { %>
+    <% } else if ((Boolean.TRUE.toString()).equals(Encode.forJava(request.getParameter("authz_failure")))) { %>
     <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
@@ -323,7 +323,7 @@
     <div class="ui divider hidden"></div>
     <div class="align-center">
         <%
-            String multiOptionURI = request.getParameter("multiOptionURI");
+            String multiOptionURI = Encode.forJava(request.getParameter("multiOptionURI"));
             if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
             isMultiAuthAvailable(multiOptionURI)) {
         %>

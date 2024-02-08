@@ -20,16 +20,18 @@ import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInter
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code, Hint } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
+import { UsersConstants } from "../../../../extensions/components/users/constants/users";
 import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../core";
 import { RootOnlyComponent } from "../../../organizations/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../../userstores/api/user-stores";
+import { getAUserStore, getUserStoreList } from "../../../userstores/api/user-stores";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { UserStoreProperty } from "../../../userstores/models";
 
@@ -128,9 +130,34 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
     };
 
     /**
+     * Check the given user store is Read/Write enabled.
+     *
+     * @param userStoreID - Userstore Id.
+     * @returns If the given userstore is Read/Write enabled or not.
+     */
+    const isUserStoreReadWrite = async (userStoreID: string): Promise<boolean> => {
+        try {
+            const response: UserStoreDetails = await getAUserStore(userStoreID);
+
+            return response?.properties?.some(({ name, value }: UserStoreProperty) =>
+                name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY && value === "false"
+            ) || false;
+        } catch (error) {
+            dispatch(addAlert({
+                description: t("console:manage.features.users.notifications.fetchUserStores.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+            }));
+
+            return false;
+        }
+    };
+
+
+    /**
      * The following function fetch the user store list and set it to the state.
      */
-    const getUserStores = () => {
+    const getUserStores = async () => {
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
@@ -139,32 +166,39 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             }
         ];
 
-        let storeOption: DropdownItemProps = {
-            key: null,
-            text: "",
-            value: ""
-        };
-
         if (isSuperOrganization() || isFirstLevelOrganization()) {
-            getUserStoreList()
-                .then((response: UserstoreListResponseInterface[] | any) => {
-                    if (storeOptions.length === 0) {
-                        storeOptions.push(storeOption);
-                    }
-                    response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                        storeOption = {
+            try {
+                const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
+
+                const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
+                    async (store: UserstoreListResponseInterface) => {
+                        const isReadWrite: boolean = await isUserStoreReadWrite(store.id);
+
+                        return isReadWrite ? store : null;
+                    }));
+
+                readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
+                    if (store) {
+                        storeOptions.push({
                             key: index,
                             text: store.name,
                             value: store.name
-                        };
-                        storeOptions.push(storeOption);
+                        });
                     }
-                    );
-                    setUserStoresList(storeOptions);
                 });
-        }
 
-        setUserStoresList(storeOptions);
+                setUserStoresList(storeOptions);
+            } catch (error) {
+                dispatch(addAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.fetchUserStores.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                }));
+            }
+        } else {
+            setUserStoresList(storeOptions);
+        }
     };
 
     /**

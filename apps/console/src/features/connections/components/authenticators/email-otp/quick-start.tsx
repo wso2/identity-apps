@@ -51,7 +51,7 @@ const EmailOTPQuickStart: FunctionComponent<EmailOTPQuickStartPropsInterface> = 
 
     /**
      * Vertical Stepper steps.
-     * 
+     *
      * @returns An array of steps for the vertical stepper.
      */
     const steps: VerticalStepperStepInterface[] = [
@@ -64,9 +64,9 @@ const EmailOTPQuickStart: FunctionComponent<EmailOTPQuickStartPropsInterface> = 
                             ".quickStart.steps.selectApplication.content"
                         }
                     >
-                        Choose the <Link 
+                        Choose the <Link
                             external={ false }
-                            onClick={ 
+                            onClick={
                                 () => setShowApplicationModal(true) }> application </Link>
                         for which you want to set up Email OTP login.
                     </Trans>
@@ -82,7 +82,7 @@ const EmailOTPQuickStart: FunctionComponent<EmailOTPQuickStartPropsInterface> = 
                             i18nKey={ "extensions:develop.identityProviders.emailOTP.quickStart.steps.selectEmailOTP" +
                             ".content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
     SBACInterface,
@@ -31,8 +32,10 @@ import {
     DangerZoneGroup,
     EmphasizedSegment
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import moment from "moment";
 import React, {
+    FormEvent,
     FunctionComponent,
     ReactElement,
     useCallback,
@@ -40,6 +43,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { deleteOrganization, patchOrganization } from "../../api";
@@ -100,7 +104,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const editableFields: Array<string> = [ "name", "description" ];
 
@@ -114,13 +118,13 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         (state: AppState) => state?.organization?.organization
     );
 
-    const handleSubmit = useCallback(
+    const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
             setIsSubmitting(true);
 
             const patchData: OrganizationPatchData[] = Object.keys(values)
-                .filter(field => editableFields.includes(field))
-                .map(field => {
+                .filter((field: string) => editableFields.includes(field))
+                .map((field: string) => {
                     return {
                         operation: "REPLACE",
                         path: `/${ field }`,
@@ -129,7 +133,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                 });
 
             patchOrganization(organization.id, patchData)
-                .then(_response => {
+                .then((_response: OrganizationResponseInterface) => {
                     dispatch(
                         addAlert({
                             description: t(
@@ -146,7 +150,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
 
                     onOrganizationUpdate(organization.id);
                 })
-                .catch(error => {
+                .catch((error: IdentityAppsError) => {
                     if (error.description) {
                         dispatch(
                             addAlert({
@@ -181,7 +185,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         [ organization, setIsSubmitting ]
     );
 
-    const handleOnDeleteOrganization = useCallback(
+    const handleOnDeleteOrganization: (organizationId: string) => void = useCallback(
         (organizationId: string) => {
             deleteOrganization(organizationId)
                 .then(() => {
@@ -201,7 +205,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     setShowOrgDeleteConfirmationModal(false);
                     onOrganizationDelete(organizationId);
                 })
-                .catch(error => {
+                .catch((error: AxiosError) => {
                     if (
                         error.response &&
                         error.response.data &&
@@ -258,14 +262,14 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         [ organization ]
     );
 
-    const handleDisableOrganization = useCallback(
-        (event, data: CheckboxProps) => {
-            const isChecked = data.checked;
+    const handleDisableOrganization: (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => void = useCallback(
+        (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+            const isChecked: boolean = data.checked;
 
             const patchData: OrganizationPatchData = {
                 operation: "REPLACE",
                 path: "/status",
-                value: isChecked ? "ACTIVE" : "DISABLED"
+                value: isChecked ? "DISABLED" : "ACTIVE"
             };
 
             patchOrganization(organization.id, [ patchData ])
@@ -293,7 +297,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     setShowOrgDeleteConfirmationModal(false);
                     onOrganizationUpdate(organization.id);
                 })
-                .catch(error => {
+                .catch((error: IdentityAppsError) => {
                     if (error.description) {
                         if (error.code === "ORG-60029") {
                             dispatch(
@@ -417,6 +421,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         inputType="name"
                                         maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
                                         minLength={ ORGANIZATION_NAME_MIN_LENGTH }
+                                        readOnly={ isReadOnly }
                                     />
                                 ) }
                                 {
@@ -445,6 +450,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         minLength={
                                             ORGANIZATION_DESCRIPTION_MIN_LENGTH
                                         }
+                                        readOnly={ isReadOnly }
                                     />
                                 }
                                 { organization?.domain && (
@@ -611,23 +617,17 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     AccessControlConstants.ORGANIZATION_EDIT
                 }
             >
-                { currentOrganization.id !== organization.id && (
+                { !isReadOnly && currentOrganization.id !== organization.id && (
                     <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                         <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
                             <DangerZone
                                 actionTitle={ t(
-                                    organization.status === "ACTIVE"
-                                        ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".disableActionTitle"
-                                        : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".enableActionTitle"
+                                    "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".disableActionTitle"
                                 ) }
                                 header={ t(
-                                    organization.status === "ACTIVE"
-                                        ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".disableActionTitle"
-                                        : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".enableActionTitle"
+                                    "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".disableActionTitle"
                                 ) }
                                 subheader={ t(
                                     "console:manage.features.organizations.edit.dangerZone" +
@@ -636,7 +636,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 onActionClick={ undefined }
                                 data-testid={ `${ testId }-disable-danger-zone` }
                                 toggle={ {
-                                    checked: organization.status === "ACTIVE",
+                                    checked: organization.status !== "ACTIVE",
                                     onChange: handleDisableOrganization
                                 } }
                             />

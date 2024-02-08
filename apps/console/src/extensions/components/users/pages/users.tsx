@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -335,18 +335,21 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         getUserStores()
             .then((response: UserStoreDetails[]) => {
                 const readOnlyUserStoreArray: string[] = [];
-                const userStoreArray: DropdownItemProps[] = response?.map((item: UserStoreDetails, index: number) => {
-                    // Set readOnly userstores based on the ReadOnly property.
-                    if (checkReadOnlyUserStore(item)) {
-                        readOnlyUserStoreArray.push(item.name.toUpperCase());
-                    }
+                const userStoreArray: DropdownItemProps[] = response?.filter(
+                    (item: UserStoreDetails) => item.enabled).map(
+                    (item: UserStoreDetails, index: number) => {
+                        // Set readOnly userstores based on the ReadOnly property.
+                        if (checkReadOnlyUserStore(item)) {
+                            readOnlyUserStoreArray.push(item.name.toUpperCase());
+                        }
 
-                    return {
-                        key: index,
-                        text: item.name.toUpperCase(),
-                        value: item.name.toUpperCase()
-                    };
-                });
+                        return {
+                            key: index,
+                            text: item.name.toUpperCase(),
+                            value: item.name.toUpperCase()
+                        };
+                    }
+                );
 
                 setUserStoreError(false);
                 setUserStoreList(userStoreArray);
@@ -391,12 +394,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 
-    const resolveTotalPages = (): number => { 
-        if (selectedUserStore === CONSUMER_USERSTORE) { 
+    const resolveTotalPages = (): number => {
+        if (selectedUserStore === CONSUMER_USERSTORE) {
             return Math.ceil(usersList?.totalResults / listItemLimit);
         } else {
-            /** Response from the LDAP only contains the total items per page. 
-             * No way to resolve the total number of items. So a large value will be set here and the 
+            /** Response from the LDAP only contains the total items per page.
+             * No way to resolve the total number of items. So a large value will be set here and the
              * next button will be disabled if there are no more items to fetch.
             */
             return NUMBER_OF_PAGES_FOR_LDAP;
@@ -476,7 +479,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 value: UserAddOptionTypes.BULK_IMPORT
             }
         ];
-    
+
         return options;
     };
 
@@ -536,7 +539,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <Show when={ AccessControlConstants.USER_WRITE }>
                         { featureConfig?.bulkUserImport?.enabled
                             ? (
-                                addUserDropDown 
+                                addUserDropDown
                             ) : (
                                 <PrimaryButton
                                     data-componentid={ `${ componentId }-add-user-button` }
@@ -551,8 +554,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     <Icon name="add"/>
                                     { t("extensions:manage.users.buttons.addUserBtn") }
                                 </PrimaryButton>
-                            ) } 
-                        
+                            ) }
                     </Show>
                 )
             }

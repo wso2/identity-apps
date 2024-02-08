@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,20 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, RefObject, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
 import { AuthenticatorManagementConstants } from "../../../../../connections/constants/autheticator-constants";
-import { EventPublisher } from "../../../../../core";
+import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../core";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
@@ -141,6 +142,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const authenticationStepsDivRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -856,7 +860,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         return (
             <AddAuthenticatorModal
                 authenticationSteps={ authenticationSteps }
-                allowSocialLoginAddition={ true }
+                allowSocialLoginAddition={ hasRequiredScopes(featureConfig?.identityProviders,
+                    featureConfig?.identityProviders?.scopes?.create, allowedScopes) }
                 currentStep={ authenticatorAddStep }
                 open={ showAuthenticatorAddModal }
                 onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {

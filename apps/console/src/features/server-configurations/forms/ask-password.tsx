@@ -85,6 +85,32 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
     const [ initialFormValues, setInitialFormValues ]
         = useState<any>(undefined);
 
+    const PROPERTY_NAMES: { [key: string]: string } = {
+        EMAIL_VERIFICATION_ASK_PASSWORD_ACCOUNT_ACTIVATION: "EmailVerification.AskPassword.AccountActivation",
+        EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME: "EmailVerification.AskPassword.ExpiryTime",
+        EMAIL_VERIFICATION_ASK_PASSWORD_PASSWORD_GENERATOR: "EmailVerification.AskPassword.PasswordGenerator",
+        EMAIL_VERIFICATION_ENABLE: "EmailVerification.Enable",
+        EMAIL_VERIFICATION_EXPIRY_TIME: "EmailVerification.ExpiryTime",
+        EMAIL_VERIFICATION_LOCK_ON_CREATION: "EmailVerification.LockOnCreation",
+        EMAIL_VERIFICATION_NOTIFICATION_INTERNALLY_MANAGE: "EmailVerification.Notification.InternallyManage",
+        EMAIL_VERIFICATION_OTP_OTPLENGTH: "EmailVerification.OTP.OTPLength",
+        EMAIL_VERIFICATION_OTP_SEND_OTP_IN_EMAIL: "EmailVerification.OTP.SendOTPInEmail",
+        EMAIL_VERIFICATION_OTP_USELOWERCASECHARACTERS_IN_OTP: "EmailVerification.OTP.UseLowercaseCharactersInOTP",
+        EMAIL_VERIFICATION_OTP_USENUMBERS_IN_OTP: "EmailVerification.OTP.UseNumbersInOTP",
+        EMAIL_VERIFICATION_OTP_USEUPPPERCASECHARACTERS_IN_OTP: "EmailVerification.OTP.UseUppercaseCharactersInOTP",
+        JIT_PROVISIONING_PURPOSES_URL: "_url_listPurposeJITProvisioning"
+    };
+    const HIDDEN_PROPERTIES: string[] = [
+        PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_PASSWORD_GENERATOR,
+        PROPERTY_NAMES.EMAIL_VERIFICATION_NOTIFICATION_INTERNALLY_MANAGE,
+        PROPERTY_NAMES.EMAIL_VERIFICATION_OTP_OTPLENGTH,
+        PROPERTY_NAMES.EMAIL_VERIFICATION_OTP_SEND_OTP_IN_EMAIL,
+        PROPERTY_NAMES.EMAIL_VERIFICATION_OTP_USELOWERCASECHARACTERS_IN_OTP,
+        PROPERTY_NAMES.EMAIL_VERIFICATION_OTP_USENUMBERS_IN_OTP,
+        PROPERTY_NAMES.EMAIL_VERIFICATION_OTP_USEUPPPERCASECHARACTERS_IN_OTP,
+        PROPERTY_NAMES.JIT_PROVISIONING_PURPOSES_URL
+    ];
+
     /**
      * Flattens and resolved form initial values and field metadata.
      */
@@ -100,6 +126,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
             = null;
 
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
+
+            // Skip hidden properties.
+            if (HIDDEN_PROPERTIES.includes(property.name)) {
+                return;
+            }
 
             resolvedInitialValues.set(property.name, property);
             resolvedInitialFormValues = {
@@ -148,78 +179,80 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
             }
         >
             <Field.Checkbox
-                ariaLabel="EmailVerification.Enable"
+                ariaLabel="Enable email verification"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.Enable")
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE)
                 }
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.Enable",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE,
                     "Enable user email verification") }
                 defaultValue={ initialFormValues?.[
-                    "EmailVerification.Enable" ] === "true" }
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
                 data-componentid={ `${ testId }-enable-email-verification` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.Enable",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE,
                     "A verification notification will be triggered during user creation.")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Checkbox
-                ariaLabel="EmailVerification.LockOnCreation"
+                ariaLabel="Enable account lock on creation"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.LockOnCreation")
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_LOCK_ON_CREATION)
                 }
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.LockOnCreation",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_LOCK_ON_CREATION,
                     "Enable account lock on creation") }
                 defaultValue={ initialFormValues?.[
-                    "EmailVerification.LockOnCreation" ] === "true" }
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_LOCK_ON_CREATION ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
                 data-componentid={ `${ testId }-enable-account-lock-on-creation` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.LockOnCreation",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_LOCK_ON_CREATION,
                     "The user account will be locked during user creation.")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Checkbox
-                ariaLabel="EmailVerification.AskPassword.AccountActivation"
+                ariaLabel="Send account activation email"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.AskPassword.AccountActivation")
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_ACCOUNT_ACTIVATION)
                 }
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.AccountActivation",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_ACCOUNT_ACTIVATION,
                     "Send account activation email") }
                 defaultValue={ initialFormValues?.[
-                    "EmailVerification.AskPassword.AccountActivation" ] === "true" }
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_ACCOUNT_ACTIVATION ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
                 data-componentid={ `${ testId }-enable-send-account-activation-email` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.AccountActivation",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_ACCOUNT_ACTIVATION,
                     "Disable if account activation confirmation email is not required.")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Input
-                ariaLabel="EmailVerification.ExpiryTime"
+                ariaLabel="Email verification code expiry time"
                 inputType="number"
-                name="EmailVerification.ExpiryTime"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME)
+                }
                 min={
                     GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MIN_VALUE
@@ -228,10 +261,10 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MAX_VALUE
                 }
-                width={ 10 }
+                width={ 12 }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.ExpiryTime",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME,
                     "Email verification code expiry time") }
                 required={ false }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
@@ -248,6 +281,8 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
+                initialValue={ initialFormValues?.[
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME ] }
                 data-componentid={ `${ testId }-link-expiry-time` }
                 data-testid={ `${testId}-link-expiry-time` }
             >
@@ -255,9 +290,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 <Label>mins</Label>
             </Field.Input>
             <Field.Input
-                ariaLabel="EmailVerification.AskPassword.ExpiryTime"
+                ariaLabel="Password Setup Invitation Code Expiration Time"
                 inputType="number"
-                name="EmailVerification.AskPassword.ExpiryTime"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME)
+                }
                 min={
                     GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MIN_VALUE
@@ -266,11 +303,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MAX_VALUE
                 }
-                width={ 10 }
+                width={ 12 }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.ExpiryTime",
-                    "Password Setup Invitation Code Expiration Time") }
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME,
+                    "Password setup invitation code expiration time") }
                 required={ false }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
                 placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -286,11 +323,13 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
+                initialValue={ initialFormValues?.[
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME ] }
                 data-componentid={ `${ testId }-ask-password-code-expiry-time` }
                 data-testid={ `${testId}-link-ask-password-code-expiry-time` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.ExpiryTime",
+                    PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME,
                     "Set the time span that the password setup invitation e-mail would be valid, " +
                         "in minutes. (For infinite validity period, set -1).")
                 }

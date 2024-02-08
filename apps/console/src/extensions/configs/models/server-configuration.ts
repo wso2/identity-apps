@@ -60,13 +60,15 @@ export interface ServerConfigurationConfig {
         componentId: string,
         passwordHistoryEnabled: boolean,
         setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly?: boolean
     ) => ReactElement;
     passwordExpiryComponent: (
         componentId: string,
         passwordExpiryEnabled: boolean,
         setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly?: boolean
     ) => ReactElement;
     usePasswordExpiry: () => RequestResultInterface<GovernanceConnectorInterface, RequestErrorInterface>;
     processPasswordExpiryInitialValues: (

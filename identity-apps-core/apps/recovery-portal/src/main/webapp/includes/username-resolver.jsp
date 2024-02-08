@@ -26,7 +26,7 @@
 
 <%
     String username = Encode.forJava(request.getParameter("username"));
-    String userTenantHint = Encode.forJava(request.getParameter("t"));
+    String userTenantHint = (Encode.forJava(request.getParameter("t")) != "null") ? Encode.forJava(request.getParameter("t")) : null;
     if (StringUtils.isNotBlank(userTenantHint)) {
         username = MultitenantUtils.getTenantAwareUsername(username);
         username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);

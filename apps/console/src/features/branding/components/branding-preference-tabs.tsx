@@ -97,6 +97,15 @@ interface BrandingPreferenceTabsInterface extends IdentifiableComponentInterface
      * @param shouldShowNotifications - Should show success/error notifications on UI.
      */
     onSubmit: (values: Partial<BrandingPreferenceInterface>, shouldShowNotifications?: boolean) => void;
+    /**
+     * On layout change callback.
+     * @param values - Form Values.
+     */
+    onLayoutChange: (values: DesignFormValuesInterface) => void;
+    /**
+     * On preview resize callback.
+     */
+    onPreviewResize: (width: number) => void;
 }
 
 /**
@@ -118,7 +127,9 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         isSplitView,
         isUpdating,
         readOnly,
-        onSubmit
+        onSubmit,
+        onLayoutChange,
+        onPreviewResize
     } = props;
 
     const { t } = useTranslation();
@@ -254,6 +265,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                 theme: values.theme
                             })
                         });
+                        onLayoutChange(values);
                     } }
                     readOnly={ readOnly }
                     data-componentid="branding-preference-design-form"
@@ -352,6 +364,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                 screenType={ selectedScreen }
                 isLoading={ isLoading }
                 brandingPreference={ brandingPreferenceForPreview }
+                onPreviewResize={ onPreviewResize }
                 data-componentid="branding-preference-preview"
             />
         </ResourceTab.Pane>
@@ -359,7 +372,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText />
+            <CustomText readOnly={ readOnly } />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {

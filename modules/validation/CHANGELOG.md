@@ -1,5 +1,11 @@
 # @wso2is/validation
 
+## 2.0.3
+
+### Patch Changes
+
+- [#5141](https://github.com/wso2/identity-apps/pull/5141) [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b) Thanks [@brionmario](https://github.com/brionmario)! - Enable Organization login for My Account
+
 ## 2.0.2
 
 ### Patch Changes

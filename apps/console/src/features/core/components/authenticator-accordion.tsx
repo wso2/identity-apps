@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitlePropsInterface
 } from "@wso2is/react-components";
+import classNames from "classnames";
 import sortBy from "lodash-es/sortBy";
 import React, {
     Fragment,
@@ -74,6 +75,10 @@ export interface AuthenticatorAccordionItemInterface {
      */
     actions?: SegmentedAccordionTitlePropsInterface["actions"];
     /**
+     * Custom Classname for the authenticator title.
+     */
+    className?: string;
+    /**
      * Unique id for the authenticator.
      */
     id: string;
@@ -89,6 +94,15 @@ export interface AuthenticatorAccordionItemInterface {
      * Title of the authenticator.
      */
     title: string;
+    /**
+     * Additional Options for the title.
+     */
+    titleOptions?: {
+        /**
+         * Flag to determine if the accordion title should be flex.
+         */
+        flex?: boolean;
+    };
     /**
      * Icon for the authenticator
      */
@@ -139,7 +153,15 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                             accordionIndex={ accordionIndex }
                                             onClick={ !authenticator.hideChevron && handleAccordionOnClick }
                                             content={ (
-                                                <>
+                                                <div
+                                                    className={
+                                                        classNames(
+                                                            "segmented-accordion-title-content",
+                                                            authenticator.className,
+                                                            { flex: authenticator.titleOptions?.flex }
+                                                        )
+                                                    }
+                                                >
                                                     <GenericIcon
                                                         floated="left"
                                                         size="micro"
@@ -149,7 +171,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                                         { ...authenticator.icon }
                                                     />
                                                     { authenticator.title }
-                                                </>
+                                                </div>
                                             ) }
                                             actions={
                                                 (authenticator?.actions && globalActions)

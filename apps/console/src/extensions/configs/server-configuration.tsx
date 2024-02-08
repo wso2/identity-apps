@@ -54,10 +54,10 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     ],
     connectorCategoriesToIgnore: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
     ],
     connectorCategoriesToShow: [
+        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
         ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
@@ -78,7 +78,11 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
         ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
-        ServerConfigurationsConstants.USERNAME_VALIDATION
+        ServerConfigurationsConstants.USERNAME_VALIDATION,
+        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
+        ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
+        ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
     ],
     connectorsToShow: [
         "account-recovery",
@@ -97,33 +101,36 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         componentId: string,
         passwordExpiryEnabled: boolean,
         setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly: boolean = false
     ): ReactElement => {
         return generatePasswordExpiry(
             componentId,
             passwordExpiryEnabled,
             setPasswordExpiryEnabled,
-            t
+            t,
+            isReadOnly
         );
     },
     passwordHistoryCountComponent: (
         componentId: string,
         passwordHistoryEnabled: boolean,
         setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>
+        t: TFunction<"translation", undefined>,
+        isReadOnly: boolean = false
     ): ReactElement => {
         return generatePasswordHistoryCount(
             componentId,
             passwordHistoryEnabled,
             setPasswordHistoryEnabled,
-            t
+            t,
+            isReadOnly
         );
     },
     predefinedConnectorCategories: [
         "UGFzc3dvcmQgUG9saWNpZXM",
         "VXNlciBPbmJvYXJkaW5n",
         "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
-        "T3RoZXIgU2V0dGluZ3M",
         "QWNjb3VudCBNYW5hZ2VtZW50",
         "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
     ],

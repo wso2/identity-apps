@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -432,6 +432,9 @@ export interface ConsoleNS {
             "sign-up": string;
             "totp": string;
             myaccount: string;
+            "password-recovery": string;
+            "password-reset": string;
+            "password-reset-success": string;
         }
     };
     brandingCustomText: {
@@ -452,7 +455,13 @@ export interface ConsoleNS {
                 copyright: {
                     hint: string;
                 };
+                "privacy.policy": {
+                    hint: string;
+                };
                 "site.title": {
+                    hint: string;
+                };
+                "terms.of.service": {
                     hint: string;
                 };
                 "login.button": {
@@ -474,6 +483,30 @@ export interface ConsoleNS {
                     hint: string;
                 };
                 "sign.up.heading": {
+                    hint: string;
+                };
+                "password.recovery.body": {
+                    hint: string;
+                };
+                "password.recovery.button": {
+                    hint: string;
+                };
+                "password.recovery.heading": {
+                    hint: string;
+                };
+                "password.reset.button": {
+                    hint: string;
+                };
+                "password.reset.heading": {
+                    hint: string;
+                };
+                "password.reset.success.action": {
+                    hint: string;
+                };
+                "password.reset.success.body": {
+                    hint: string;
+                };
+                "password.reset.success.heading": {
                     hint: string;
                 };
             }
@@ -519,6 +552,13 @@ export interface ConsoleNS {
     };
     consoleSettings: {
         administrators: {
+            add: {
+                action: string;
+                options: {
+                    addExistingUser: string;
+                    inviteNewUser: string;
+                }
+            },
             edit: {
                 backButton: string;
             };
@@ -531,6 +571,14 @@ export interface ConsoleNS {
             tabLabel: string;
         };
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: string;
+                };
+                tenantPermissions: {
+                    label: string;
+                };
+            };
             tabLabel: string;
             permissionLevels: {
                 edit: string;
@@ -1140,6 +1188,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint?: {
                                     customOidc: string;
+                                    customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {
@@ -1534,6 +1583,42 @@ export interface ConsoleNS {
                     emptyList: Placeholder;
                     emptyProtocolList: Placeholder;
                 };
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: string;
+                            };
+                            addIdpWizard: {
+                                heading: string;
+                                subHeading: string;
+                                steps: {
+                                    details: string;
+                                };
+                            };
+                            emptyPlaceholder: Placeholder;
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                };
+                            };
+                            heading: string;
+                            subHeading: string;
+                            notifications: {
+                                create: Notification;
+                                delete: Notification;
+                                fetch: Notification;
+                                update: Notification;
+                            }
+                        };
+                    };
+                }
                 templates: {
                     manualSetup: {
                         heading: string;
@@ -1725,7 +1810,7 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
-                            useNumericChars: {
+                            useAlphanumericChars: {
                                 hint: string;
                                 label: string;
                                 validations: {
@@ -2773,6 +2858,7 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
+                    outboundProvisioningTitle: string;
                 };
                 helpPanel: HelpPanelInterface;
                 templates: {
@@ -3205,10 +3291,13 @@ export interface ConsoleNS {
             applications: Page;
             applicationsEdit: EditPage;
             authenticationProvider?: Page;
-            authenticationProviderTemplate?: {
+            authenticationProviderTemplate: {
                 title: string;
                 subTitle: string;
                 backButton: string;
+                disabledHint: {
+                    apple: string;
+                };
                 search: {
                     placeholder: string;
                 };
@@ -3806,6 +3895,9 @@ export interface ConsoleNS {
                         switchOrganization: Notification;
                     }
                 }
+                view: {
+                    description: string;
+                }
             };
             users: {
                 addUserType: {
@@ -3978,6 +4070,7 @@ export interface ConsoleNS {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: string;
+                            emptyUsers: string;
                             subTitle: {
                                 0: string;
                                 1: string;
@@ -5768,7 +5861,9 @@ export interface ConsoleNS {
                     };
                     emptyPlaceholders: {
                         search: Placeholder;
-                        emptyRoleList: Placeholder;
+                        emptyRoleList: Placeholder & {
+                            emptyRoles: string
+                        };
                     };
                     popups: {
                         delete: string;
@@ -5886,6 +5981,7 @@ export interface ConsoleNS {
                         }
                     };
                     dangerZone: {
+                        button: string,
                         title: string;
                         header: string;
                         subheader: string;
@@ -6140,17 +6236,20 @@ export interface ConsoleNS {
                             emailVerificationDisabled: string;
                             emailInvalid: string;
                             alphanumericUsernameEnabled: string;
+                            inviteViaEmail: string;
+                            inviteOffline: string;
                         };
                         steps: {
                             basicDetails: string;
                             roles: string;
                             groups: string;
-                            summary: string;
+                            invitation: string;
                             method: string;
                         };
                         buttons: {
                             next: string;
                             previous: string;
+                            saveAndContinue: string;
                         };
                         wizardSummary: {
                             name: string;
@@ -6184,6 +6283,7 @@ export interface ConsoleNS {
                             tableMessages: {
                                 userCreatedMessage: string;
                                 invalidDataMessage: string;
+                                invalidUserNameFormatMessage: string;
                                 userAlreadyExistsMessage: string;
                                 userCreationAcceptedMessage: string;
                                 internalErrorMessage: string;
@@ -6246,6 +6346,17 @@ export interface ConsoleNS {
                             fileFormatSampleHeading: string;
                         }
                     };
+                    inviteParentUserWizard: {
+                        totalInvitations: string;
+                        successAlert: NotificationItem;
+                        errorAlert: NotificationItem;
+                        tableMessages: {
+                            userNotFound: string;
+                            activeInvitationExists: string;
+                            userEmailNotFound: string;
+                            userAlreadyExist: string;
+                        }
+                    }
                     changePasswordModal: {
                         header: string;
                         message: string;
@@ -6536,6 +6647,7 @@ export interface ConsoleNS {
                 placeholders: {
                     emptySearch: Placeholder;
                     emptyList: Placeholder;
+                    emptyListReadOnly: Placeholder;
                 };
                 sqlEditor: {
                     reset: string;
@@ -6629,7 +6741,7 @@ export interface ConsoleNS {
                             required: string;
                         }
                     },
-                    roles: {
+                    groups: {
                         label: string;
                         placeholder: string;
                         hint: string;

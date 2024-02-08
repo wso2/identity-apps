@@ -42,7 +42,7 @@ import {
  * @param type - Resource Type.
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
-const useGetCustomTextPreference = <
+const useGetCustomTextPreferenceResolve = <
     Data = CustomTextPreferenceAPIResponseInterface,
     Error = RequestErrorInterface>(
         shouldFetch: boolean,
@@ -70,8 +70,8 @@ const useGetCustomTextPreference = <
             type
         },
         url: organizationType === OrganizationType.SUBORGANIZATION
-            ? store.getState().config.endpoints.brandingTextPreferenceSubOrg
-            : store.getState().config.endpoints.brandingTextPreference
+            ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
+            : `${store.getState().config.endpoints.brandingTextPreference}/resolve`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
@@ -98,4 +98,4 @@ const useGetCustomTextPreference = <
     };
 };
 
-export default useGetCustomTextPreference;
+export default useGetCustomTextPreferenceResolve;

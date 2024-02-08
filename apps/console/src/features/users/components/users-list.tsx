@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -127,6 +127,10 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      * List of readOnly user stores.
      */
     readOnlyUserStores?: string[];
+    /**
+     * Indicates whether the currently selected user store is read-only or not.
+     */
+    isReadOnlyUserStore?: boolean;
 }
 
 /**
@@ -153,6 +157,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         showMetaContent,
         userMetaListContent,
         usersList,
+        isReadOnlyUserStore,
         [ "data-testid" ]: testId
     } = props;
 
@@ -519,12 +524,22 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     data-testid={ `${testId}-empty-placeholder` }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }
-                    subtitle={ [
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.2")
-                    ] }
+                    title={
+                        isReadOnlyUserStore
+                            ? t("console:manage.features.users.usersList.list.emptyResultPlaceholder.emptyUsers")
+                            : t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title")
+                    }
+                    subtitle={
+                        isReadOnlyUserStore
+                            ? [
+                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0")
+                            ]
+                            : [
+                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
+                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
+                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.2")
+                            ]
+                    }
                 />
             );
         }

@@ -23,6 +23,8 @@ import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/common/src/configs/ui";
 import { AppConstants } from "@wso2is/common/src/constants/app-constants";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -45,35 +47,35 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getAuthenticatorList } from "./common";
 import { getApplicationDetails } from "../../applications/api";
-import { EventPublisher, history } from "../../core";
-import { 
-    deleteConnection, 
-    getConnectedApps 
+import { AppState, EventPublisher, FeatureConfigInterface, history } from "../../core";
+import {
+    deleteConnection,
+    getConnectedApps
 } from "../api/connections";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import { 
-    AuthenticatorExtensionsConfigInterface, 
-    AuthenticatorInterface 
+import {
+    AuthenticatorExtensionsConfigInterface,
+    AuthenticatorInterface
 } from "../models/authenticators";
-import { 
-    ApplicationBasicInterface, 
-    ConnectedAppInterface, 
-    ConnectedAppsInterface, 
+import {
+    ApplicationBasicInterface,
+    ConnectedAppInterface,
+    ConnectedAppsInterface,
     ConnectionInterface,
-    StrictConnectionInterface 
+    StrictConnectionInterface
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
 
 /**
  * Proptypes for the Authenticators Grid component.
  */
-interface AuthenticatorGridPropsInterface extends 
+interface AuthenticatorGridPropsInterface extends
     LoadableComponentInterface, TestableComponentInterface {
 
     /**
@@ -151,6 +153,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const { UIConfig } = useUIConfig();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictConnectionInterface>(undefined);
@@ -162,6 +165,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     ] = useState<boolean>(false);
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
+
     /**
      * Redirects to the authenticator edit page when the edit button is clicked.
      *
@@ -169,6 +177,16 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleAuthenticatorEdit = (id: string): void => {
         history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
+    };
+
+    /**
+     * Returns if the identityProviders is readonly or not based on the scopes.
+     *
+     * @returns If Read Only or not.
+     */
+    const resolveReadOnlyState = (): boolean => {
+        return !hasRequiredScopes(featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update,
+            allowedScopes);
     };
 
     /**
@@ -364,21 +382,21 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         return (
                             <Fragment key={ index }>
                                 <ResourceGrid.Card
-                                    editButtonLabel={ t("common:setup") }
+                                    editButtonLabel={ resolveReadOnlyState() ? t("common:view") : t("common:setup") }
                                     onEdit={ (e: MouseEvent<HTMLButtonElement>) => {
                                         eventPublisher.compute(() => {
                                             eventPublisher.publish("connections-click-template-setup", { type:
-                                                isIdP 
+                                                isIdP
                                                     ? AuthenticatorMeta.getAuthenticatorTemplateName(
                                                         (authenticator as ConnectionInterface)
                                                             .federatedAuthenticators?.defaultAuthenticatorId)
                                                         ? AuthenticatorMeta?.getAuthenticatorTemplateName(
                                                             (authenticator as ConnectionInterface)
-                                                                .federatedAuthenticators?.defaultAuthenticatorId) 
+                                                                .federatedAuthenticators?.defaultAuthenticatorId)
                                                         : "other"
                                                     : AuthenticatorMeta.getAuthenticatorTemplateName(authenticator.id)
                                                         ? AuthenticatorMeta.
-                                                            getAuthenticatorTemplateName(authenticator.id) 
+                                                            getAuthenticatorTemplateName(authenticator.id)
                                                         : ""
                                             });
                                         });
@@ -388,6 +406,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     showActions={ true }
                                     showResourceEdit={ true }
                                     showResourceDelete={
+                                        hasRequiredScopes(featureConfig?.identityProviders,
+                                            featureConfig?.identityProviders?.scopes?.delete, allowedScopes) &&
                                         isIdPDeletable && !AuthenticatorManagementConstants.DELETING_FORBIDDEN_IDPS
                                             .includes(authenticator.name)
                                     }
@@ -419,9 +439,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         (authenticator?.type === "FEDERATED" || isIdP) && !isOrganizationSSOIDP
                                             ? authenticator?.image
                                                 ? ConnectionsManagementUtils.resolveConnectionResourcePath(
-                                                    "", authenticator?.image)
-                                                : getConnectionIcons().default            
-                                            : isOrganizationSSOIDP 
+                                                    connectionResourcesUrl, authenticator?.image)
+                                                : getConnectionIcons().default
+                                            : isOrganizationSSOIDP
                                                 ? AuthenticatorMeta.getAuthenticatorIcon(
                                                     (authenticator as ConnectionInterface)
                                                         .federatedAuthenticators?.defaultAuthenticatorId)

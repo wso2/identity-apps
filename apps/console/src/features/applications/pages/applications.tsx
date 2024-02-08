@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import Chip from "@oxygen-ui/react/Chip";
+
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -168,7 +168,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading,
         error: myAccountStatusFetchRequestError
-    } = useMyAccountStatus(!isSubOrg);
+    } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
 
     /**
      * Sets the initial spinner.
@@ -457,18 +457,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
                                     {
-                                        isSAASDeployment && (
-                                            <Chip
-                                                label={ t("common:preview") }
-                                                className="oxygen-chip-beta ml-2"
+                                        applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
+                                            <Icon
+                                                color={ isMyAccountEnabled ? "green":"grey" }
+                                                name={ isMyAccountEnabled ? "check circle" : "minus circle" }
+                                                className="middle aligned ml-1"
                                             />
                                         )
                                     }
-                                    <Icon
-                                        color={ isMyAccountEnabled ? "green":"grey" }
-                                        name={ isMyAccountEnabled ? "check circle" : "minus circle" }
-                                        className="middle aligned ml-1"
-                                    />
                                 </List.Header>
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"
@@ -575,8 +571,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { !isMyAccountApplicationDataFetchRequestLoading && myAccountApplicationData?.applications?.length !== 0
-              && renderTenantedMyAccountLink() }
+            {
+                (
+                    isSAASDeployment
+                    || (
+                        !isMyAccountApplicationDataFetchRequestLoading
+                        && myAccountApplicationData?.applications?.length !== 0
+                    )
+                )
+                && renderTenantedMyAccountLink()
+            }
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters

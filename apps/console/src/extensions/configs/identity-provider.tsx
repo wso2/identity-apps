@@ -350,13 +350,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return true;
         },
-        isAuthenticatorAllowed: (name: string): boolean => {
-            return [
-                IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
-                IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR,
-                IdentityProviderManagementConstants.X509_AUTHENTICATOR
-            ].includes(name);
-        },
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             const excludedAuthenticators: Set<string> = new Set([
                 IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID

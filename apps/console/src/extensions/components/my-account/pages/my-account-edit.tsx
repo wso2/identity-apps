@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,7 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, CheckboxProps, Grid, Icon, Label, List, Ref } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Grid, Icon, List, Ref } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../../../features/applications/constants";
 import { AppConstants, AppState, history } from "../../../../features/core";
 import { useSMSNotificationSenders } from "../../identity-providers/api";
@@ -322,7 +322,7 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
     useEffect(() => {
         if (!isTOTPChecked) {
             setCheckTotpEnrollment(false);
-        } 
+        }
     }, [ isTOTPChecked ]);
 
     const getMyAccountStatus = (attributeName: string): boolean => {
@@ -640,14 +640,7 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
     return !isMyAccountDataValidating ?  (
         <PageLayout
             pageTitle={ t("extensions:manage.myAccount.editPage.pageTitle") }
-            title={ (
-                <>
-                    { t("extensions:manage.myAccount.editPage.pageTitle") }
-                    <Label size="medium" className="preview-label ml-2">
-                        { t("common:preview") }
-                    </Label>
-                </>
-            ) }
+            title={ t("extensions:manage.myAccount.editPage.pageTitle") }
             description={ (
                 <>
                     { t("extensions:manage.myAccount.editPage.description") }
@@ -715,7 +708,7 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                                             <Field.Checkbox
                                                 ariaLabel="totpEnrollmentEnabled"
                                                 name="totpEnrollmentEnabled"
-                                                label={ 
+                                                label={
                                                     t("extensions:manage.myAccount.editPage.EnableTotpEnrollment") }
                                                 required={ false }
                                                 disabled={ !isMyAccountEnabled || !isTOTPChecked }
@@ -784,7 +777,7 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                                                 name="backupCodeEnabled"
                                                 label={ t("extensions:manage.myAccount.editPage.enableBackupCodes") }
                                                 required={ false }
-                                                disabled={ !isMyAccountEnabled || !isOtpEnabled } 
+                                                disabled={ !isMyAccountEnabled || !isOtpEnabled }
                                                 width={ 16 }
                                                 data-testid={ `${ componentId }-backup-code-toggle` }
                                                 listen={ (value: boolean) => setCheckBackupCodeAuthenticator(value) }
@@ -793,7 +786,7 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                                         </div>
                                         { !isOtpEnabled && (
                                             <div className="mt-0 mb-0">
-                                                <Message 
+                                                <Message
                                                     content={ t("extensions:manage.myAccount.editPage.backupCodeInfo") }
                                                     type="warning"
                                                 />

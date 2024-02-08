@@ -822,7 +822,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         let response: ApplicationListInterface = null;
 
         try {
-            response = await getApplicationList(null, null, "name eq " + value.toString());
+            let filter: string = "name eq ";
+
+            if (value.toString().includes(" ")) {
+                filter += `"${value.toString()}"`;
+            } else {
+                filter += value.toString();
+            }
+
+            response = await getApplicationList(null, null, filter);
             if (response?.applications?.length > 0) {
                 validation.isValid = false;
                 validation.errorMessages.push(
@@ -1328,7 +1336,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("common:register") }
+                                        { t("common:create") }
                                     </PrimaryButton>
                                 </Grid.Column>
                             </Grid.Row>

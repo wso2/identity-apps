@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -154,7 +154,7 @@ export class AccessControlConstants {
      * Identity verification provider delete permission
      */
     public static readonly IDVP_DELETE: string = "identity_verification_provider:delete";
-    
+
     /**
      * Users feature permission
      */
@@ -281,6 +281,31 @@ export class AccessControlConstants {
     public static readonly BRANDING_DELETE: string = "branding:delete";
 
     /**
+     * Email Templates feature permission
+     */
+    public static readonly EMAIL_TEMPLATES: string = "emailTemplates";
+
+    /**
+     * Email Templates read permission
+     */
+    public static readonly EMAIL_TEMPLATES_READ: string = "emailTemplates:read";
+
+    /**
+     * Email Templates write permission
+     */
+    public static readonly EMAIL_TEMPLATES_WRITE: string = "emailTemplates:write";
+
+    /**
+     * Email Templates edit permission
+     */
+    public static readonly EMAIL_TEMPLATES_EDIT: string = "emailTemplates:edit";
+
+    /**
+     * Email Templates delete permission
+     */
+    public static readonly EMAIL_TEMPLATES_DELETE: string = "emailTemplates:delete";
+
+    /**
      * Scope feature permission
      */
     public static readonly SCOPE: string = "scope";
@@ -381,6 +406,31 @@ export class AccessControlConstants {
     public static readonly ORGANIZATION_READ: string = "organization:read";
 
     /**
+     * Organization Discovery feature permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY: string = "organization";
+
+    /**
+     * Organization Discovery write permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_WRITE: string = "organizationDiscovery:write";
+
+    /**
+     * Organization Discovery edit permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_EDIT: string = "organizationDiscovery:edit";
+
+    /**
+     * Organization Discovery delete permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_DELETE: string = "organizationDiscovery:delete";
+
+    /**
+     * Organization Discovery read permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_READ: string = "organizationDiscovery:read";
+
+    /**
      * Organization feature permission.
      */
     public static readonly ORGANIZATION_ROLES: string = "organization_roles";
@@ -425,4 +475,48 @@ export class AccessControlConstants {
      */
     public static readonly EVENT_CONFIG_DELETE: string = "internal_event_config_update";
 
+    /**
+     * Notifications senders read permission
+     */
+    public static readonly NOTIFICATION_SENDERS_READ: string = "internal_notification_senders_view";
+
+    /**
+     * Notifications senders write permission
+     */
+    public static readonly NOTIFICATION_SENDERS_WRITE: string = "internal_notification_senders_create";
+
+    /**
+     * Notifications senders edit permission
+     */
+    public static readonly NOTIFICATION_SENDERS_EDIT: string = "internal_notification_senders_update";
+
+    /**
+     * Notifications senders delete permission
+     */
+    public static readonly NOTIFICATION_SENDERS_DELETE: string = "internal_notification_senders_delete";
+
+    /**
+     * Resident Application outbound provisioning configuration feature permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING: string = "residentOutboundProvisioning";
+
+    /**
+     * Resident Application outbound provisioning configuration write permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_WRITE: string = "residentOutboundProvisioning:write";
+
+    /**
+     * Resident Application outbound provisioning configuration edit permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_EDIT: string = "residentOutboundProvisioning:edit";
+
+    /**
+     * Resident Application outbound provisioning configuration delete permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_DELETE: string = "residentOutboundProvisioning:delete";
+
+    /**
+     * Resident Application outbound provisioning configuration read permission.
+     */
+    public static readonly RESIDENT_OUTBOUND_PROVISIONING_READ: string = "residentOutboundProvisioning:read";
 }

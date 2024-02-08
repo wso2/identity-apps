@@ -68,6 +68,7 @@
     String CONSOLE_APP_NAME = "Console";
     String MY_ACCOUNT_APP_NAME = "My Account";
     String MY_ACCOUNT_APP_ID = "My_Account";
+    String APPLICATION = "Application";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
@@ -93,12 +94,12 @@
 
     if (StringUtils.isNotBlank(callback) &&
         StringUtils.isNotBlank(userStoreDomain)) {
-        if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
+        if (StringUtils.isNotBlank(sp)) {
+            applicationName = sp;
+        } else if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
         } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
             applicationName = MY_ACCOUNT_APP_NAME;
-        } else if (StringUtils.isNotBlank(sp)) {
-            applicationName = sp;
         }
     } else {
             if (StringUtils.isNotBlank(spId)) {
@@ -193,7 +194,7 @@
                 request.setAttribute(ERROR_CODE, error.getCode());
                 if (passwordHistoryErrorCode.equals(error.getCode()) ||
                         passwordPatternErrorCode.equals(error.getCode())) {
-                    String i18nKey = "error." + error.getCode(); 
+                    String i18nKey = "error." + error.getCode();
                     String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, i18nKey);
                     if (!i18Resource.equals(i18nKey)) {
                         request.setAttribute(ERROR_MESSAGE, i18Resource);
@@ -226,9 +227,11 @@
     if ((StringUtils.isNotBlank(userStoreDomain) && StringUtils.isNotBlank(callback)
         && callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")))) {
 
-	    applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getUserPortalUrl(
+        if (StringUtils.isBlank(applicationAccessURLWithoutEncoding)) {
+            applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
-                    tenantDomain);
+                tenantDomain);
+        }
 	}
 
     session.invalidate();
@@ -280,9 +283,15 @@
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
                         <br/>
                         <br/>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
-                        <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                            applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
+                        <% if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {%>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
+                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
+                        <% } else { %>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "can.sign.in.to")%>
+                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                applicationAccessURLWithoutEncoding)%>"><%=APPLICATION%></a>.
+                        <% } %>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.
                     <% } %>

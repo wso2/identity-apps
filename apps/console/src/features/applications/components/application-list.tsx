@@ -215,7 +215,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     history.push({
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
                         search: `#tab=${
-                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                            organizationType === OrganizationType.SUBORGANIZATION
+                                ? ApplicationManagementConstants.SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB
+                                : ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB
+                        }`
                     });
 
                     return;
@@ -432,14 +435,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     let inboundAuthType: ApplicationInboundTypes;
                     let inboundAuthTypeLabelClass: string = "";
 
-                    if (app.clientId) {
-                        inboundAuthKey = app.clientId;
-                        inboundAuthType = ApplicationInboundTypes.CLIENTID;
-                        inboundAuthTypeLabelClass = "client-id-label";
-                    } else if (app.issuer) {
-                        inboundAuthKey = app.issuer;
-                        inboundAuthType = ApplicationInboundTypes.ISSUER;
-                        inboundAuthTypeLabelClass = "issuer-label";
+                    if (app?.clientId) {
+                        if (!(app?.issuer || app?.realm)) {
+                            inboundAuthKey = app.clientId;
+                            inboundAuthType = ApplicationInboundTypes.CLIENTID;
+                            inboundAuthTypeLabelClass = "client-id-label";
+                        }
+                    } else if (app?.issuer) {
+                        if (!(app?.clientId || app?.realm)) {
+                            inboundAuthKey = app.issuer;
+                            inboundAuthType = ApplicationInboundTypes.ISSUER;
+                            inboundAuthTypeLabelClass = "issuer-label";
+                        }
                     }
 
                     return (

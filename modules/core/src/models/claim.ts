@@ -30,7 +30,7 @@ export interface Claim {
     regEx: string;
     required: boolean;
     supportedByDefault: boolean;
-    attributeMapping: AttributeMapping[];
+    attributeMapping?: AttributeMapping[];
     properties?: Property[];
 }
 

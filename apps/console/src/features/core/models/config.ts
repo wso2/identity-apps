@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -98,9 +98,17 @@ export interface FeatureConfigInterface {
      */
     emailProviders?: FeatureAccessConfigInterface;
     /**
+     * Getting started feature.
+     */
+    gettingStarted?: FeatureAccessConfigInterface;
+    /**
      * SMS providers feature.
      */
     smsProviders?: FeatureAccessConfigInterface;
+    /**
+     * Notification channels feature.
+     */
+    notificationChannels?: FeatureAccessConfigInterface;
     /**
      * Email templates feature.
      */
@@ -129,6 +137,10 @@ export interface FeatureConfigInterface {
      * Identity verification provider management feature.
      */
     identityVerificationProviders?: FeatureAccessConfigInterface;
+    /**
+     * Login and Registration feature.
+     */
+    loginAndRegistration?: FeatureAccessConfigInterface;
     /**
      * OIDC Scope management feature.
      */
@@ -174,6 +186,10 @@ export interface FeatureConfigInterface {
      */
     users?: FeatureAccessConfigInterface;
     /**
+     * User roles feature.
+     */
+    userRoles?: FeatureAccessConfigInterface;
+    /**
      * Secret Management Feature UI Access Scopes.
      */
     secretsManagement?: FeatureAccessConfigInterface;
@@ -209,6 +225,10 @@ export interface FeatureConfigInterface {
      * WS Federation Configurations feature
      */
     wsFedConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Resident Outbound Provisioning feature
+     */
+    residentOutboundProvisioning?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -332,6 +352,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     listAllAttributeDialects?: boolean;
     /**
+     * Flag to check whether to enable the identity claims.
+     */
+    enableIdentityClaims?: boolean;
+    /**
      * Should show/hide marketing consent banner.
      */
     isMarketingConsentBannerEnabled: boolean;
@@ -374,6 +398,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * is XACML connector enabled.
      */
     isXacmlConnectorEnabled?: boolean;
+    /**
+     * Display name of the console administrator role.
+     */
+    administratorRoleDisplayName?: string;
 }
 
 /**

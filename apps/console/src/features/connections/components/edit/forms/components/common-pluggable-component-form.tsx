@@ -22,6 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
     CommonPluggableComponentFormPropsInterface,
@@ -36,7 +37,7 @@ import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../h
  * Common pluggable connector configurations form.
  *
  * @param props - CommonPluggableComponentFormPropsInterface
- * @returns ReactElement 
+ * @returns ReactElement
  */
 export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props: CommonPluggableComponentFormPropsInterface
@@ -60,6 +61,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     // Used for field elements which needs to listen for any onChange events in the form.
     const [ dynamicValues, setDynamicValues ] = useState<CommonPluggableComponentInterface>(undefined);
     const [ customProperties, setCustomProperties ] = useState<string>(undefined);
+    const [ privateKeyValue, setPrivateKeyValue ] = useState<string>(undefined);
+
+    useEffect(() => {
+        dynamicValues?.properties?.map(
+            (prop: CommonPluggableComponentPropertyInterface) =>
+            {
+                if (prop.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+                    setPrivateKeyValue(prop.value);
+                }
+            }
+        );
+    },[ dynamicValues ]);
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
@@ -96,6 +109,17 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 properties.push({
                     key: key,
                     value: interpretValueByType(value, key, propertyMetadata?.type)
+                });
+            }
+
+            if (
+                !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
+                && !properties?.find(
+                    (item: CommonPluggableComponentMetaPropertyInterface) =>
+                        item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)){
+                properties.push({
+                    key: ConnectionManagementConstants.GOOGLE_PRIVATE_KEY,
+                    value: privateKeyValue
                 });
             }
 
@@ -171,7 +195,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
         isSub?: boolean,
         testId?: string,
-        listen?: (key: string, values: Map<string, FormValue>) => void):
+        listen?: (key: string, values: Map<string, FormValue>) => void,
+        onCertificateChange?: ( newFile: string) => void):
         ReactElement => {
 
         if (isSub) {
@@ -194,6 +219,27 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         }
                     </Grid.Column>
                 </Grid.Row>
+            );
+        } else if (eachPropertyMeta?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+            return (
+                (<Grid.Row key={ eachPropertyMeta?.displayOrder }>
+                    <Grid.Column computer={ 16 }>
+                        {
+                            getPropertyField(
+                                property,
+                                {
+                                    ...eachPropertyMeta,
+                                    readOnly: mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly
+                                },
+                                mode,
+                                listen,
+                                testId,
+                                onCertificateChange
+                            )
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+                )
             );
         } else {
             return (
@@ -234,7 +280,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES 
+                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES
                         && !isScopesDefined() && isScopesEmpty()) {
                         const updatedProperty: CommonPluggableComponentPropertyInterface = {
                             key: CommonConstants.FIELD_COMPONENT_SCOPES,
@@ -244,8 +290,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         field = getField(updatedProperty, metaProperty, isSub,
                             `${ testId }-form`, handleParentPropertyChange);
                     } else {
-                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
-                    }                  
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`,
+                            handleParentPropertyChange, onCertificateChange);
+                    }
                 } else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
                         (<React.Fragment key={ metaProperty?.key }>
@@ -361,6 +408,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 value: values?.get(key)?.includes(key)?.toString()
             } ]
         });
+    };
+
+    const onCertificateChange = (certificateContent: string) => {
+        setPrivateKeyValue(certificateContent);
     };
 
     const getSubmitButton = (content: string) => {

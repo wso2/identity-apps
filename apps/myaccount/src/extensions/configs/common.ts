@@ -56,6 +56,7 @@ export const commonConfig: CommonConfig = {
             disableExternalLoginsOnEmpty: true
         }
     },
+    showOrganizationManagedBy: false,
     userProfilePage: {
         showEmail: true
     },
@@ -82,7 +83,7 @@ export const commonConfig: CommonConfig = {
             return true;
         },
         isSchemaNameSkippableforProfileCompletion(schema: ProfileSchema): boolean {
-            return schema.displayName === "Role" || schema.displayName === "Local Credential Exists" 
+            return schema.displayName === "Role" || schema.displayName === "Local Credential Exists"
                 || schema.displayName === "Username";
         },
         isShowAdditionalWidgetAllowed(userstore: string): boolean {

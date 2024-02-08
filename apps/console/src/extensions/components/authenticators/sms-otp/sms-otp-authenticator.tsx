@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
@@ -27,6 +28,7 @@ import { useSelector } from "react-redux";
 import {
     SmsOtpAuthenticatorActivationSection
 } from "./sms-otp-authenticator-activation-section";
+import { FeatureConfigInterface } from "../../../../features/core/models";
 import { AppState } from "../../../../features/core/store";
 import {
     SMSOTPAuthenticatorForm
@@ -80,17 +82,17 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         ...rest
     } = props;
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
-        return state.config?.ui?.features?.smsProviders;
-    });
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const isChoreoEnabledAsSMSProvider: boolean = useMemo(() => {
-        const disabledFeatures: string[] = featureConfig?.disabledFeatures;
+        const disabledFeatures: string[] = featureConfig?.smsProviders?.disabledFeatures;
 
         return !disabledFeatures?.includes("choreoAsSMSProvider");
     }, [ featureConfig ]);
 
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(isChoreoEnabledAsSMSProvider);
+    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(isChoreoEnabledAsSMSProvider || !hasRequiredScopes(
+        featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes));
 
     return (
         <>
@@ -98,8 +100,8 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
                 isChoreoEnabledAsSMSProvider && (
                     <>
                         <SmsOtpAuthenticatorActivationSection
-                            onActivate={ 
-                                (isActivated: boolean) => setIsReadOnly(isChoreoEnabledAsSMSProvider && !isActivated) 
+                            onActivate={
+                                (isActivated: boolean) => setIsReadOnly(isChoreoEnabledAsSMSProvider && !isActivated)
                             }
                         />
                         <Divider hidden />

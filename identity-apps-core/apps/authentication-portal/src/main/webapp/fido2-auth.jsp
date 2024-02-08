@@ -32,8 +32,33 @@
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
 
+<%!
+    private boolean isMultiAuthAvailable(String multiOptionURI) {
+        boolean isMultiAuthAvailable = true;
+        if (multiOptionURI == null || multiOptionURI.equals("null")) {
+            isMultiAuthAvailable = false;
+        } else {
+            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+            if (authenticatorIndex == -1) {
+                isMultiAuthAvailable = false;
+            } else {
+                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                authenticators = authenticators.substring(0, authLastIndex);
+                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                if (authList.size() < 2) {
+                    isMultiAuthAvailable = false;
+                } else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                    isMultiAuthAvailable = false;
+                }
+            }
+        }
+        return isMultiAuthAvailable;
+    }
+%>
+
 <%
-    String authRequest = request.getParameter("data");
+    String authRequest = Encode.forJavaScriptBlock(request.getParameter("data"));
 
     Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
@@ -144,20 +169,40 @@
                             </p>
                             <div class="mt-4">
                                 <div class="buttons">
-                                    <button class="ui primary fluid large button" type="button" onclick="retry()" 
+                                    <button class="ui primary fluid large button" type="button" onclick="retry()"
                                     data-testid="login-page-fido-retry-button">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                     </button>
                                 </div>
                             </div>
-                            <div class="mt-3">
-                                <div class="buttons">
-                                    <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
-                                    data-testid="login-page-fido-cancel-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
-                                    </button>
+                            <%
+                                String multiOptionURI = Encode.forJava(request.getParameter("multiOptionURI"));
+                                if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                    isMultiAuthAvailable(multiOptionURI)) {
+                            %>
+                                <div class="text-center mt-1">
+                                    <a
+                                        class="ui primary basic button link-button"
+                                        id="goBackLink"
+                                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                    </a>
                                 </div>
-                            </div>
+                            <%
+                                } else {
+                            %>
+                                <div class="mt-3">
+                                    <div class="buttons">
+                                        <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
+                                        data-testid="login-page-fido-cancel-button">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                        </button>
+                                    </div>
+                                </div>
+                            <%
+                                }
+                            %>
                         </div>
                     </div>
                 </div>
@@ -199,7 +244,7 @@
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
-    <% String clientId=request.getParameter("client_id"); %>
+    <% String clientId=Encode.forJavaScriptBlock(request.getParameter("client_id")); %>
 
     <script type="text/javascript">
         var insightsAppIdentifier = "<%=clientId%>";
@@ -316,8 +361,7 @@
         let fidoError;
 
         function talkToDevice(){
-            var authRequest = '<%=Encode.forJavaScriptBlock(authRequest)%>';
-            var jsonAuthRequest = JSON.parse(authRequest);
+            var jsonAuthRequest = JSON.parse('<%=authRequest%>');
 
             navigator.credentials.get({
                 publicKey: decodePublicKeyCredentialRequestOptions(jsonAuthRequest.publicKeyCredentialRequestOptions),

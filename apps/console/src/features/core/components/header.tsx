@@ -31,14 +31,9 @@ import { OrganizationType } from "@wso2is/common";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
-import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
+import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import {
-    TenantTier,
-    TenantTierRequestResponse
-} from "apps/console/src/extensions/components/subscription/models/subscription";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -53,6 +48,10 @@ import { useSelector } from "react-redux";
 import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { SubscriptionContext } from "../../../extensions/components/subscription/contexts/subscription-context";
+import {
+    TenantTier,
+    TenantTierRequestResponse
+} from "../../../extensions/components/subscription/models/subscription";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -62,8 +61,6 @@ import {
 } from "../../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
-import { getApplicationList } from "../../applications/api";
-import { ApplicationListInterface } from "../../applications/models";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
@@ -170,7 +167,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 setUpgradeButtonURL(upgradeButtonURL);
             }
         );
-    }, []);
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Show the organization switching dropdown only if
@@ -213,40 +210,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             hasRequiredScopes(
                 feature?.organizations,
                 feature?.organizations?.scopes?.read,
-                scopes
+                scopes,
+                organizationType
             )
         );
     }, [
         tenantDomain,
-        feature.organizations
+        feature.organizations,
+        organizationType,
+        scopes
     ]);
-
-    /**
-     * Check if there are applications registered and set the value to local storage.
-     */
-    useEffect(() => {
-        if (
-            !isEmpty(
-                LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable")
-            ) &&
-            LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") ===
-            "true"
-        ) {
-            return;
-        }
-
-        getApplicationList(null, null, null)
-            .then((response: ApplicationListInterface) => {
-                LocalStorageUtils.setValueInLocalStorage(
-                    "IsAppsAvailable",
-                    response.totalResults > 0 ? "true" : "false"
-                );
-            })
-            .catch(() => {
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
-    }, []);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
@@ -438,7 +411,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     desktop: (<LOGO_IMAGE />),
                     mobile: (<LOGO_IMAGE />)
                 },
-                onClick: () => history.push(config.deployment.appHomePath),
+                onClick: () => hasRequiredScopes(feature?.gettingStarted,
+                    feature?.gettingStarted?.scopes?.feature, scopes)
+                    && history.push(config.deployment.appHomePath),
                 title: config.ui.appName
             } }
             user={ {

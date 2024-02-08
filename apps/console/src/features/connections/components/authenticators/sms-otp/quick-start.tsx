@@ -17,9 +17,9 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src/components/vertical-stepper/vertical-stepper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
@@ -82,7 +82,7 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
                             i18nKey={ "extensions:develop.identityProviders.smsOTP.quickStart.steps.selectSMSOTP" +
                                 ".content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add SMS OTP as a second
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add SMS OTP as a second
                             factor</strong> to configure a basic SMS OTP flow.
                         </Trans>
                     </Text>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,6 +38,7 @@ export interface ApplicationBasicInterface {
     accessUrl?: string;
     clientId?: string;
     issuer?: string;
+    realm?: string;
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
@@ -635,11 +636,17 @@ export interface ProvisioningConfigurationInterface {
 }
 
 /**
- * Captures name and id of the user store.
+ * Provisioning form data interface.
  */
-export interface SimpleUserStoreListItemInterface {
-    id?: string;
-    name: string;
+export interface ProvisioningFormDataInterface {
+    provisioningConfigurations: {
+        inboundProvisioning: InboundProvisioningFormValuesInterface;
+    };
+}
+
+export interface InboundProvisioningFormValuesInterface {
+    provisioningUserstoreDomain: string;
+    proxyMode: boolean;
 }
 
 /**

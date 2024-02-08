@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,16 +18,20 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, GenericIcon, Heading, LinkButton, Popup, PrimaryButton, Tooltip } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
 import { getOperationIcons } from "../../core/configs";
-import { RequiredBinary } from "../models";
+import { RequiredBinary, TypeProperty } from "../models";
 
 interface SqlEditorPropsInterface extends TestableComponentInterface {
     onChange: (name: string, value: string) => void;
     properties: RequiredBinary[ "optional" ][ "sql" ];
     values: Map<string, string>;
+    /**
+     * Readonly attribute for the component.
+     */
+    readOnly: boolean;
 }
 
 /**
@@ -44,6 +48,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     const {
         onChange,
         properties,
+        readOnly,
         values,
         [ "data-testid" ]: testId
     } = props;
@@ -56,8 +61,8 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     const [ isEditorDarkMode, setIsEditorDarkMode ] = useState(true);
     const [ isResetButtonEnabled, setIsResetButtonEnabled ] = useState(false);
 
-    const sidebar = useRef(null);
-    const editor = useRef(null);
+    const sidebar: MutableRefObject<any> = useRef(null);
+    const editor: MutableRefObject<any> = useRef(null);
 
     const { t } = useTranslation();
 
@@ -65,7 +70,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
      * Triggered on `sideBarVisible` change.
      */
     useEffect(() => {
-        let width = "100%";
+        let width: string = "100%";
 
         if (sideBarVisible) {
             width = `calc(100% - ${sidebar?.current?.ref?.current?.clientWidth}px)`;
@@ -117,7 +122,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                         data-testid={ `${ testId }-insert-query-accordion-content` }
                                     >
                                         {
-                                            properties.insert.map((property, index) => (
+                                            properties.insert.map((property: TypeProperty, index: number) => (
                                                 <Menu.Item
                                                     key={ index }
                                                     onClick={ () => {
@@ -162,7 +167,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     data-testid={ `${ testId }-select-query-accordion-content` }
                                 >
                                     {
-                                        properties.select.map((property, index) => (
+                                        properties.select.map((property: TypeProperty, index: number) => (
                                             <Menu.Item
                                                 key={ index }
                                                 onClick={ () => {
@@ -206,7 +211,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     data-testid={ `${ testId }-update-query-accordion-content` }
                                 >
                                     {
-                                        properties.update.map((property, index) => (
+                                        properties.update.map((property: TypeProperty, index: number) => (
                                             <Menu.Item
                                                 key={ index }
                                                 onClick={ () => {
@@ -250,7 +255,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     data-testid={ `${ testId }-delete-query-accordion-content` }
                                 >
                                     {
-                                        properties.delete.map((property, index) => (
+                                        properties.delete.map((property: TypeProperty, index: number) => (
                                             <Menu.Item
                                                 key={ index }
                                                 onClick={ () => {
@@ -286,21 +291,25 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
     return (
         <div className="script-editor-with-template-panel">
             <Sidebar.Pushable className="script-editor-section">
-                { editorSideBar() }
+                { !readOnly && editorSideBar() }
                 <Sidebar.Pusher>
                     <div className="script-editor-container" ref={ editor }>
                         <Menu attached="top" className="action-panel" secondary>
-                            <Menu.Menu position="left">
-                                <Menu.Item
-                                    onClick={
-                                        () => setSideBarVisible(!sideBarVisible)
-                                    }
-                                    className="action hamburger ml-3"
-                                    data-testid={ `${ testId }-sidebar-toggle` }
-                                >
-                                    <Icon name="bars"/>
-                                </Menu.Item>
-                            </Menu.Menu>
+                            {
+                                !readOnly && (
+                                    <Menu.Menu position="left">
+                                        <Menu.Item
+                                            onClick={
+                                                () => setSideBarVisible(!sideBarVisible)
+                                            }
+                                            className="action hamburger ml-3"
+                                            data-testid={ `${ testId }-sidebar-toggle` }
+                                        >
+                                            <Icon name="bars"/>
+                                        </Menu.Item>
+                                    </Menu.Menu>
+                                )
+                            }
                             <Menu.Item className="action mr-3" position="right">
                                 <Tooltip
                                     compact
@@ -340,7 +349,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     mode: "text/x-sql"
                                 } }
                                 showLineNumbers={ false }
-                                onChange={ (editor, data, value) => {
+                                onChange={ (editor: any, data: any, value: string) => {
                                     setPropertyValue(value);
                                     if (value !== propertyDefaultValue) {
                                         setIsResetButtonEnabled(true);
@@ -350,38 +359,43 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                 } }
                                 theme={ isEditorDarkMode ? "dark" : "light" }
                                 data-testid={ `${ testId }-code-editor` }
+                                readOnly={ readOnly }
                             />
                         </div>
-                        <Menu attached="bottom" className="action-panel" secondary>
-                            <Menu.Item position="right">
-                                <LinkButton
-                                    type="button"
-                                    disabled={ !isResetButtonEnabled }
-                                    onClick={ () => {
-                                        setPropertyValue(propertyDefaultValue);
-                                        const defaultValue = propertyDefaultValue;
+                        {
+                            !readOnly && (
+                                <Menu attached="bottom" className="action-panel" secondary>
+                                    <Menu.Item position="right">
+                                        <LinkButton
+                                            type="button"
+                                            disabled={ !isResetButtonEnabled }
+                                            onClick={ () => {
+                                                setPropertyValue(propertyDefaultValue);
+                                                const defaultValue: string = propertyDefaultValue;
 
-                                        setPropertyDefaultValue("");
-                                        setTimeout(() => {
-                                            setPropertyDefaultValue(defaultValue);
-                                            setIsResetButtonEnabled(false);
-                                        }, 1);
-                                    } }
-                                    data-testid={ `${ testId }-reset-button` }
-                                >
-                                    { t("console:manage.features.userstores.sqlEditor.reset") }
-                                </LinkButton>
-                                <PrimaryButton
-                                    type="button"
-                                    onClick={ () => {
-                                        onChange(propertyName, propertyValue);
-                                    } }
-                                    data-testid={ `${ testId }-save-button` }
-                                >
-                                    { t("common:save") }
-                                </PrimaryButton>
-                            </Menu.Item>
-                        </Menu>
+                                                setPropertyDefaultValue("");
+                                                setTimeout(() => {
+                                                    setPropertyDefaultValue(defaultValue);
+                                                    setIsResetButtonEnabled(false);
+                                                }, 1);
+                                            } }
+                                            data-testid={ `${ testId }-reset-button` }
+                                        >
+                                            { t("console:manage.features.userstores.sqlEditor.reset") }
+                                        </LinkButton>
+                                        <PrimaryButton
+                                            type="button"
+                                            onClick={ () => {
+                                                onChange(propertyName, propertyValue);
+                                            } }
+                                            data-testid={ `${ testId }-save-button` }
+                                        >
+                                            { t("common:save") }
+                                        </PrimaryButton>
+                                    </Menu.Item>
+                                </Menu>
+                            )
+                        }
                     </div>
                 </Sidebar.Pusher>
             </Sidebar.Pushable>

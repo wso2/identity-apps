@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,18 @@
  * under the License.
  */
 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/common/src";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
-} from "@wso2is/common/src";
 import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
@@ -34,13 +35,15 @@ import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import { getApplicationList } from "../../../../../features/applications/api";
 import { ApplicationList } from "../../../../../features/applications/components/application-list";
 import { ApplicationListInterface } from "../../../../../features/applications/models";
+import {
+    ConnectionInterface,
+    ConnectionTemplateInterface
+} from "../../../../../features/connections/models/connection";
 import { AdvancedSearchWithBasicFilters } from "../../../../../features/core/components";
 import { AppConstants } from "../../../../../features/core/constants";
 import { history } from "../../../../../features/core/helpers";
-import { 
-    ConnectionInterface, 
-    ConnectionTemplateInterface 
-} from "../../../../../features/connections/models/connection";
+import { FeatureConfigInterface } from "../../../../core/models";
+import { AppState } from "../../../../core/store";
 
 /**
  * Prop types of the component.
@@ -78,6 +81,14 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     /**
      * Retrieves the list of applications.
      *
@@ -86,6 +97,10 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
      * @param filter - Search query.
      */
     const getAppLists = (limit: number, offset: number, filter: string): void => {
+        if (!isApplicationReadAccessAllowed) {
+            return;
+        }
+
         setApplicationListRequestLoading(true);
 
         getApplicationList(limit, offset, filter)
@@ -185,8 +200,9 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.google.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }> 
-                            application </Link>
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
                             for which you want to set up Google login.
                         </Trans>
                     </Text>
@@ -199,10 +215,10 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ "extensions:develop.identityProviders.google.quickStart.steps." + 
+                            i18nKey={ "extensions:develop.identityProviders.google.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Google login
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Google login
                             </strong> to configure a Google login flow.
                         </Trans>
                     </Text>
@@ -210,7 +226,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                 </>
             ),
             stepTitle: (
-                <Trans 
+                <Trans
                     i18nKey="extensions:develop.identityProviders.google.quickStart.steps.selectDefaultConfig.heading"
                 >
                     Select <strong>Add Google login</strong>

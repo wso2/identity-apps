@@ -218,11 +218,11 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                                     selectedManualModeOption?.authenticatorId === template
                                                         .authenticatorId
                                                 }
-                                                className={ 
+                                                className={
                                                     selectedManualModeOption?.authenticatorId === template
-                                                        .authenticatorId 
-                                                        ? "selection-info-card selected" 
-                                                        : "selection-info-card"  
+                                                        .authenticatorId
+                                                        ? "selection-info-card selected"
+                                                        : "selection-info-card"
                                                 }
                                                 size="small"
                                             >
@@ -236,13 +236,13 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                                         inline
                                                         transparent
                                                     />
-                                                    <Card.Header 
-                                                        textAlign="left" 
+                                                    <Card.Header
+                                                        textAlign="left"
                                                         className="card-header ellipsis pt-1"
                                                     >
                                                         { template.displayName || template.name }
                                                     </Card.Header>
-                                                    <Card.Description 
+                                                    <Card.Description
                                                         className="card-description"
                                                     >
                                                         { template.description }

@@ -17,6 +17,13 @@
 --%>
 
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Properties" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.io.BufferedReader" %>
+<%@ page import="java.io.FileReader" %>
+
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
 
@@ -132,82 +139,53 @@
 
 <link href="css/language-selector.css" rel="stylesheet">
 
-<div id="language-selector-dropdown"
-     class="ui fluid search selection dropdown language-selector-dropdown"
-     data-testid="language-selector-dropdown"
->
-    <input type="hidden"
-           id="language-selector-input"
-           onChange="onLangChange()"
-           name="language-select"
-    />
+<%
+    // Specify the file path
+    String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
+
+    // Create a List to store the parsed data
+    List<String[]> languageList = new ArrayList<>();
+
+    // Use a BufferedReader to read the file content
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            // Ignore comments and empty lines
+            if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
+                // Split the line into key and value using '=' as the delimiter
+                String[] keyValue = line.split("=");
+                // Split the key further using '.' as the delimiter
+                String[] parts = keyValue[0].split("\\.");
+                String languageCode = parts[parts.length - 1];
+                // Split the value further using ',' as the delimiter
+                String[] values = keyValue[1].split(",");
+                String country = values[0];
+                String displayName = values[1];
+                // Add the values to the list
+                languageList.add(new String[]{languageCode, country, displayName});
+            }
+        }
+    } catch (Exception e) {
+        throw e;
+    }
+%>
+
+<div id="language-selector-dropdown" class="ui fluid search selection dropdown language-selector-dropdown" data-testid="language-selector-dropdown">
+    <input type="hidden" id="language-selector-input" onChange="onLangChange()" name="language-select" />
     <i class="dropdown icon"></i>
     <div id="language-selector-selected-text" class="default text">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.language")%>
     </div>
     <div class="menu">
-        <div class="item"
-             data-value="en_US"
-             style="background-color: var(--language-selector-background-color) !important;
-              color: var(--language-selector-text-color) !important;"
-        >
-            <i class="us flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.english")%>
-        </div>
-
-        <div class="item"
-             data-value="fr_FR"
-             style="background-color: var(--language-selector-background-color) !important;
-             color: var(--language-selector-text-color) !important;"
-        >
-            <i class="fr flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.french")%>
-        </div>
-
-        <div class="item"
-             data-value="es_ES"
-             style="background-color: var(--language-selector-background-color) !important;
-             color: var(--language-selector-text-color) !important;"
-        >
-            <i class="es flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.spanish")%>
-        </div>
-
-        <div class="item"
-             data-value="pt_PT"
-             style="background-color: var(--language-selector-background-color) !important;
-             color: var(--language-selector-text-color) !important;"
-        >
-            <i class="pt flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.portuguese")%>
-        </div>
-
-        <div class="item"
-             data-value="de_DE"
-             style="background-color: var(--language-selector-background-color) !important;
-             color: var(--language-selector-text-color) !important;"
-        >
-            <i class="de flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.german")%>
-        </div>
-
-        <div class="item"
-            data-value="zh_CN"
-            style="background-color: var(--language-selector-background-color) !important;
-            color: var(--language-selector-text-color) !important;"
-        >
-            <i class="cn flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.chinese")%>
-        </div>
-
-        <div class="item"
-            data-value="ja_JP"
-            style="background-color: var(--language-selector-background-color) !important;
-            color: var(--language-selector-text-color) !important;"
-        >
-            <i class="jp flag"></i>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.japanese")%>
-        </div>
+        <% for (String[] language : languageList) { %>
+            <div class="item"
+                 data-value="<%= language[0] %>"
+                 style="background-color: var(--language-selector-background-color) !important; color: var(--language-selector-text-color) !important;"
+            >
+                <i class="<%= language[1] %> flag"></i>
+                <%= AuthenticationEndpointUtil.i18n(resourceBundle, language[2]) %>
+            </div>
+        <% } %>
     </div>
 </div>
 

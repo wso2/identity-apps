@@ -35,8 +35,8 @@ import { UsersConstants } from "../../../../../extensions/components/users/const
 import { AppState } from "../../../../core/store";
 import { sendParentOrgUserInvite } from "../../../../users/components/guests/api/invite";
 import {
+    AdministratorInviteInterface,
     ParentOrgUserInvitationResult,
-    ParentOrgUserInviteInterface,
     ParentOrgUserInviteResultStatus
 } from "../../../../users/components/guests/models/invite";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
@@ -108,7 +108,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
      * Handles the API resource creation.
      */
     const handleInviteNewAdministratorFormSubmit = (values: InviteNewAdministratorWizardFormValuesInterface): void => {
-        const invite: ParentOrgUserInviteInterface = {
+        const invite: AdministratorInviteInterface = {
             roles: values.roles.map((role: InviteNewAdministratorWizardFormValuesRoleInterface) => role.role.id),
             usernames: [ values.username ]
         };

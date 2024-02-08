@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,7 @@ import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
 import { OrganizationType } from "@wso2is/common";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -47,7 +48,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
@@ -56,6 +57,8 @@ import { updateApplicationDetails } from "../../applications/api";
 import { useGetApplication } from "../../applications/api/use-get-application";
 import { ApplicationInterface } from "../../applications/models";
 import { history } from "../../core/helpers/history";
+import { FeatureConfigInterface } from "../../core/models";
+import { AppState } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
@@ -71,6 +74,10 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
      * on application update callback
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the component read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -84,6 +91,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const {
         onUpdate,
+        readOnly,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -112,8 +120,11 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
 
-    const isReadOnly: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+    const isReadOnly: boolean = readOnly || organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     /**
      * Fetch application roles on component load and audience switch.
@@ -326,7 +337,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
                                             {
-                                                roleAudience === RoleAudienceTypes.APPLICATION
+                                                roleAudience === RoleAudienceTypes.APPLICATION &&
+                                                hasRequiredScopes(featureConfig?.userRoles,
+                                                    featureConfig?.userRoles?.scopes?.create, allowedScopes)
                                                     && (
                                                         <LinkButton
                                                             fluid
@@ -388,10 +401,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             <Autocomplete
                                 multiple
                                 disableCloseOnSelect
-                                readOnly={ isReadOnly }
                                 loading={ isLoading }
                                 options={ roleList }
                                 value={ selectedRoles ?? [] }
+                                disabled = { isReadOnly }
                                 getOptionLabel={
                                     (role: BasicRoleInterface) => role.name
                                 }
@@ -537,5 +550,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
  * Default props for application roles tab component.
  */
 ApplicationRoles.defaultProps = {
-    "data-componentid": "application-roles-tab"
+    "data-componentid": "application-roles-tab",
+    readOnly: true
 };

@@ -1,5 +1,65 @@
 # @wso2is/core
 
+## 2.0.34
+
+### Patch Changes
+
+- [#5384](https://github.com/wso2/identity-apps/pull/5384) [`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Sign-in Method` -> `Login Flow`
+
+## 2.0.33
+
+### Patch Changes
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
+## 2.0.32
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+## 2.0.31
+
+### Patch Changes
+
+- [#5289](https://github.com/wso2/identity-apps/pull/5289) [`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Tenant Permissions` -> `Root Organization Permissions`
+
+## 2.0.30
+
+### Patch Changes
+
+- [#5260](https://github.com/wso2/identity-apps/pull/5260) [`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43) Thanks [@brionmario](https://github.com/brionmario)! - Fix OIDC Session Management issues in Console & My Account
+
+## 2.0.29
+
+### Patch Changes
+
+- [#5222](https://github.com/wso2/identity-apps/pull/5222) [`c9c2cc1996`](https://github.com/wso2/identity-apps/commit/c9c2cc19968d8985000fb310b98003a1b2934603) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix rbac issue with organization and api-resource permissions
+
+## 2.0.28
+
+### Patch Changes
+
+- [#5202](https://github.com/wso2/identity-apps/pull/5202) [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849) Thanks [@brionmario](https://github.com/brionmario)! - Add passive STS cert hint
+
+## 2.0.27
+
+### Patch Changes
+
+- [#5182](https://github.com/wso2/identity-apps/pull/5182) [`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally display the regex field for attributes
+
+## 2.0.26
+
+### Patch Changes
+
+- [#5141](https://github.com/wso2/identity-apps/pull/5141) [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b) Thanks [@brionmario](https://github.com/brionmario)! - Enable Organization login for My Account
+
+## 2.0.25
+
+### Patch Changes
+
+- [#5052](https://github.com/wso2/identity-apps/pull/5052) [`8c344f3ec4`](https://github.com/wso2/identity-apps/commit/8c344f3ec4ced3c93ede47a1c0accd023f2d73e0) Thanks [@brionmario](https://github.com/brionmario)! - Enable sub org logins for Console
+
 ## 2.0.24
 
 ### Patch Changes

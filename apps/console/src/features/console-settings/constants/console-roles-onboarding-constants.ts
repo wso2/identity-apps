@@ -26,4 +26,9 @@ export class ConsoleRolesOnboardingConstants {
     private constructor() {}
 
     public static readonly ADD_NEW_ROLE_FORM_ID: string = "add-new-console-role-wizard-form";
+
+    public static readonly ROLE_V1_API_RESOURCES_COLLECTION_NAME: string = "rolesV1";
+    public static readonly ROLE_API_RESOURCES_COLLECTION_NAME: string = "roles";
+    public static readonly ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME: string = "org_rolesV1";
+    public static readonly ORG_ROLE_API_RESOURCES_COLLECTION_NAME: string = "org_roles";
 }

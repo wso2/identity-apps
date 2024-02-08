@@ -180,3 +180,14 @@
         padding-left: 2.75rem;
     }
 }
+
+/*-----------------
+  Label styles
+------------------*/
+
+.oxygen-form-control-label {
+    .form-control-label {
+        font-size: 13px;
+        color: rgba(0,0,0,.87);
+    }
+}

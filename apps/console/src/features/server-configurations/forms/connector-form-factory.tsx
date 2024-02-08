@@ -18,6 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset";
@@ -29,8 +30,10 @@ import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
 import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
 import { AppState, FeatureConfigInterface, history } from "../../core";
+import DynamicConnectorForm from "../components/governance-connectors/dynamic-connector-form";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
-import { GovernanceConnectorInterface } from "../models/governance-connectors";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Proptypes for the connector form factory component.
@@ -78,7 +81,8 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         onSubmit,
         connectorId,
         isConnectorEnabled,
-        isSubmitting
+        isSubmitting,
+        [ "data-testid" ]: testId
     } = props;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -87,8 +91,8 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
     const isReadOnly: boolean = useMemo(
         () =>
             !hasRequiredScopes(
-                featureConfig?.attributeDialects,
-                featureConfig?.attributeDialects?.scopes?.update,
+                featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.update,
                 allowedScopes
             ),
         [ featureConfig, allowedScopes ]
@@ -96,6 +100,22 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
 
     const path: string[] = history?.location?.pathname?.split("/");
     const type: string = path && path[ path.length - 3 ];
+
+    const getConnectorInitialValues = (connector: GovernanceConnectorInterface) => {
+        const values: Record<string, string | boolean>= {};
+
+        connector?.properties.map((property: ConnectorPropertyInterface) => {
+            if (property.value === "true") {
+                values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = true;
+            } else if (property.value === "false") {
+                values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = false;
+            } else {
+                values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = property.value;
+            }
+        });
+
+        return values;
+    };
 
     switch (connectorId) {
         case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
@@ -179,7 +199,17 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 />
             );
         default:
-            return null;
+            return (
+                <DynamicConnectorForm
+                    onSubmit={ onSubmit }
+                    connector={ initialValues }
+                    props={ initialValues }
+                    initialValues={ getConnectorInitialValues(initialValues) }
+                    form={ kebabCase(initialValues?.friendlyName) + "-form" }
+                    data-testid={ `${ testId }-${ initialValues?.friendlyName }-form` }
+                    isSubmitting={ isSubmitting }
+                />
+            );
     }
 };
 

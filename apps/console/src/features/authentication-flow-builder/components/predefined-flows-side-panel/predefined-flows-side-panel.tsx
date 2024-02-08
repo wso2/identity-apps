@@ -26,6 +26,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Image from "@oxygen-ui/react/Image";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -54,6 +55,7 @@ import {
     AuthenticatorInterface
 } from "../../../applications/models/application";
 import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
+import { ConnectionManagementConstants } from "../../../connections/constants/connection-constants";
 import { getAuthenticatorIcons } from "../../../identity-providers/configs/ui";
 import { GenericAuthenticatorInterface } from "../../../identity-providers/models";
 import {
@@ -69,7 +71,7 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "../../../server-configurations/models/governance-connectors";
 import { GovernanceConnectorUtils } from "../../../server-configurations/utils/governance-connector-utils";
-import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../constants/template-constants";
+import { APPLE_LOGIN_SEQUENCE, ELK_RISK_BASED_TEMPLATE_NAME } from "../../constants/template-constants";
 import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
@@ -164,6 +166,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
     } = props;
 
     const { t } = useTranslation();
+    const { deploymentConfig } = useDeploymentConfig();
 
     const {
         adaptiveAuthTemplates,
@@ -310,6 +313,12 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     <Typography variant="body1">{ title }</Typography>
                     <Box className="predefined-flow-category-items">
                         { Object.entries(sequenceCategory).map(([ sequenceId, sequence ]: [string, any]) => {
+                            if (sequenceId === APPLE_LOGIN_SEQUENCE
+                                && new URL(deploymentConfig?.serverOrigin)?.hostname === ConnectionManagementConstants.
+                                    LOCAL_SERVER_URL) {
+                                return null;
+                            }
+
                             return (
                                 <Box
                                     key={ sequenceId }

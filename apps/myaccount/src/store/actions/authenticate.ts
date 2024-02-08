@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import { AuthenticatedUserInfo, useAuthContext } from "@asgardeo/auth-react";
-import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
+import { AuthenticatedUserInfo, BasicUserInfo } from "@asgardeo/auth-react";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
+import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
+import { AnyAction, Dispatch } from "redux";
 import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
@@ -28,7 +29,6 @@ import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getProfileSchemas, getUserReadOnlyStatus, switchAccount } from "../../api";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../../extensions/configs/scim";
-import { history } from "../../helpers";
 import {
     AlertLevels,
     BasicProfileInterface,
@@ -64,15 +64,14 @@ export const resetAuthentication = (): AuthAction => ({
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const setProfileInfo = (details: any): AuthAction => ({
+export const setProfileInfo = (details: BasicProfileInterface): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
 
 /**
  * Dispatches an action of type `SET_SCHEMAS`
- * @param schemas
+ * @param schemas - SCIM2 schemas
  */
 export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
@@ -81,7 +80,7 @@ export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
 
 /**
  * Dispatches an action of type `SET_INITIALIZED`
- * @param flag
+ * @param flag - Flag to indicate if the app is initialized
  */
 export const setInitialized = (flag: boolean): AuthAction => ({
     payload: flag,
@@ -95,7 +94,7 @@ export const setInitialized = (flag: boolean): AuthAction => ({
 export const getScimSchemas = (
     profileInfo: BasicProfileInterface = null,
     isReadOnlyUser: boolean
-) => (dispatch): void => {
+) => (dispatch: Dispatch<AnyAction>): void => {
 
     dispatch(setProfileSchemaLoader(true));
 
@@ -105,7 +104,7 @@ export const getScimSchemas = (
             dispatch(setScimSchemas(response));
 
             if (profileInfo) {
-                dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser));
+                dispatch(getProfileCompletion(profileInfo, response, isReadOnlyUser) as unknown as AnyAction);
             }
         })
         .catch(() => {
@@ -116,8 +115,10 @@ export const getScimSchemas = (
 /**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = (updateProfileCompletion = false) => (dispatch): void => {
-    let isCompletionCalculated = false;
+export const getProfileInformation = (
+    updateProfileCompletion: boolean = false
+) => (dispatch: Dispatch<AnyAction>): void => {
+    let isCompletionCalculated: boolean = false;
 
     dispatch(setProfileInfoLoader(true));
 
@@ -125,7 +126,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
         .then((response: ReadOnlyUserStatus) => {
             // Get the profile info
             getProfileInfo()
-                .then((infoResponse) => {
+                .then((infoResponse: BasicProfileInterface) => {
                     if (infoResponse.responseStatus === 200) {
                         dispatch(
                             setProfileInfo({
@@ -145,7 +146,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                                     toBoolean(
                                         response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser
                                     )
-                                )
+                                ) as unknown as AnyAction
                             );
                         }
 
@@ -187,7 +188,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         })
                     );
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.detail) {
                         dispatch(
                             addAlert({
@@ -221,7 +222,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(setProfileInfoLoader(false));
                 });
         })
-        .catch((error) => {
+        .catch((error: AxiosError & { description: string }) => {
             dispatch(setProfileInfoLoader(false));
             dispatch(
                 addAlert({
@@ -244,9 +245,10 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 /**
  * Resolves IDP URLs when the tenant resolves. Returns
  *
- * @param {string} originalURL - Original URL.
- * @param {string} overriddenURL - Overridden URL from config.
- * @return {string}
+ * @param originalURL - Original URL.
+ * @param overriddenURL - Overridden URL from config.
+ *
+ * @returns Resolved URL.
  */
 export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overriddenURL: string): string => {
 
@@ -268,39 +270,22 @@ export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overridde
 };
 
 /**
- * Handle user sign-out
- */
-export const useSignOut = (): () => (dispatch) => void => {
-    const { signOut } = useAuthContext();
-
-    return () => (dispatch) => {
-        signOut()
-            .then(() => {
-                AuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.MY_ACCOUNT_APP);
-                dispatch(setSignOut());
-            }).catch(() => {
-                history.push(window[ "AppUtils" ].getConfig().routes.home);
-            });
-    };
-};
-
-/**
  * Handles account switching.
  *
- * @param {LinkedAccountInterface} account Info about the the account to switch to.
+ * @param account - Info about the the account to switch to.
  *
- * @returns {(dispatch)=>void} A function that accepts dispatch as an argument.
+ * @returns A function that accepts dispatch as an argument.
  */
-export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch) => {
+export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch: Dispatch<AnyAction>): void => {
     switchAccount(account)
-        .then((response) => {
+        .then((response: BasicUserInfo) => {
             dispatch(
                 setSignIn(AuthenticateUtils.getSignInState(response))
             );
-            dispatch(getProfileInformation());
-            dispatch(getProfileLinkedAccounts());
+            dispatch(getProfileInformation() as unknown as AnyAction);
+            dispatch(getProfileLinkedAccounts() as unknown as AnyAction);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             throw error;
         });
 };

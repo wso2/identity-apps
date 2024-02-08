@@ -34,4 +34,23 @@ export interface AuthenticationFlowBuilderModesInterface {
      * Extra content for the mode.
      */
     extra?: ReactNode;
+    /**
+     * Mode of the flow.
+     */
+    mode?: AuthenticationFlowBuilderModes;
+}
+
+/**
+ * Enum for authentication flow builder modes.
+ */
+export enum AuthenticationFlowBuilderModes {
+    /**
+     * Classic mode for the authentication flow builder.
+     */
+    Classic = "classic",
+
+    /**
+     * Visual mode for the authentication flow builder.
+     */
+    Visual = "visual",
 }

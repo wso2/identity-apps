@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,9 +30,9 @@ import { ApplicationList } from "../../../../features/applications/components/ap
 import { AdvancedSearchWithBasicFilters } from "../../../../features/core/components";
 import { AppConstants } from "../../../../features/core/constants";
 import { history } from "../../../../features/core/helpers";
-import { 
-    IdentityProviderInterface, 
-    IdentityProviderTemplateInterface 
+import {
+    IdentityProviderInterface,
+    IdentityProviderTemplateInterface
 } from "../../../../features/identity-providers/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 
@@ -193,7 +193,7 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                                 ".content"
                             }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>

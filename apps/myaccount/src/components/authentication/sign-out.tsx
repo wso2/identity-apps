@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,26 +16,55 @@
  * under the License.
  */
 
-import { ReactElement, useEffect } from "react";
+import { Hooks, useAuthContext } from "@asgardeo/auth-react";
+import { AppConstants } from "@wso2is/core/constants";
+import { setSignOut } from "@wso2is/core/store";
+import { AuthenticateUtils } from "@wso2is/core/utils";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { history } from "../../helpers";
+import useOrganizations from "../../hooks/use-organizations";
 import { AppState } from "../../store";
-import { useSignOut } from "../../store/actions";
+import { PreLoader } from "../shared/pre-loader/pre-loader";
 
 /**
- * This component handles the sign-out function
+ * Virtual component used to handle Sign in action.
+ *
+ * @returns Sign Out component.
  */
-const SignOut = (): ReactElement => {
-    const dispatch = useDispatch();
-    const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
-    const signOut = useSignOut();
+const SignOut: FunctionComponent<Record<string, unknown>> = (): ReactElement => {
+    const dispatch: Dispatch = useDispatch();
+
+    const { signOut, on } = useAuthContext();
+
+    const {
+        removeOrgIdInLocalStorage,
+        removeUserOrgInLocalStorage
+    } = useOrganizations();
+
+    const logoutInit: boolean = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
+
+    useEffect(() => {
+        on(Hooks.SignOut, () => {
+            AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.MY_ACCOUNT_APP);
+            dispatch(setSignOut());
+        });
+    }, []);
 
     useEffect(() => {
         if (!logoutInit) {
-            dispatch(signOut());
-        }
-    }, [ logoutInit]);
+            removeOrgIdInLocalStorage();
+            removeUserOrgInLocalStorage();
 
-    return null;
+            signOut()
+                .catch(() => {
+                    history.push(window[ "AppUtils" ].getConfig().routes.home);
+                });
+        }
+    }, [ logoutInit ]);
+
+    return <PreLoader />;
 };
 
 /**

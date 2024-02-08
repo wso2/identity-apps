@@ -55,6 +55,18 @@
         String localeFromCookie = null;
         // Check cookie for the user selected language first
         Cookie[] cookies = request.getCookies();
+
+        // Map to store default supported language codes.
+        List<String> languageSupportedCountries = new ArrayList<>();
+        languageSupportedCountries.add("US");
+        languageSupportedCountries.add("FR");
+        languageSupportedCountries.add("ES");
+        languageSupportedCountries.add("PT");
+        languageSupportedCountries.add("DE");
+        languageSupportedCountries.add("CN");
+        languageSupportedCountries.add("JP");
+        languageSupportedCountries.add("BR");
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(COOKIE_NAME)) {
@@ -116,6 +128,15 @@
                 } catch (Exception e) {
                     userLocale = browserLocale;
                 }
+            }
+        } else {
+            // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
+            String countryCode = browserLocale.getCountry();
+
+            if (StringUtils.isNotBlank(countryCode) && languageSupportedCountries.contains(countryCode)) {
+                userLocale = new Locale(browserLocale.getLanguage(), countryCode);
+            } else {
+                userLocale = new Locale("en","US");
             }
         }
         return userLocale;
@@ -197,7 +218,7 @@
     String productLogoAlt = "WSO2 Identity Server Logo";
     String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
-    String[] screenNames = {"common", "sign-up"};
+    String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset", "password-reset-success"};
 
     // Constants used to create full custom layout name
     String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
@@ -367,7 +388,7 @@
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
-    String applicationRequestingPreferences = spAppName;
+    String applicationRequestingPreferences = spAppId;
     String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
 
     try {

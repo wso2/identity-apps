@@ -25,7 +25,6 @@ export interface CommonConfig {
     };
     blockLoopBackCalls: boolean;
     checkCustomLayoutExistanceBeforeEnabling: boolean;
-    checkForUIResourceScopes: boolean;
     enableDefaultBrandingPreviewSection: boolean;
     enableDefaultPreLoader: boolean;
     enableOrganizationAssociations: boolean;

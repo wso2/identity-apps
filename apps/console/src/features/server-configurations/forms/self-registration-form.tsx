@@ -303,12 +303,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             };
         }
 
-        // Temporarily make SelfRegistration.NotifyAccountConfirmation false.
-        data = {
-            ...data,
-            "SelfRegistration.NotifyAccountConfirmation": false
-        };
-
         if (serverConfigurationConfig.dynamicConnectors) {
 
             const keysToOmit: string[] = [
@@ -325,7 +319,15 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "SelfRegistration.AutoLogin.Enable",
                 "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
                 "SelfRegistration.CallbackRegex",
-                "SelfRegistration.SMSOTP.Regex"
+                "SelfRegistration.SMSOTP.Regex",
+                "SelfRegistration.OTP.SendOTPInEmail",
+                "SelfRegistration.OTP.UseUppercaseCharactersInOTP",
+                "SelfRegistration.OTP.UseLowercaseCharactersInOTP",
+                "SelfRegistration.OTP.UseNumbersInOTP",
+                "SelfRegistration.OTP.OTPLength",
+                "_url_listPurposeSelfSignUp",
+                "SelfRegistration.ResendConfirmationReCaptcha",
+                "SelfRegistration.AutoLogin.AliasName"
             ];
 
             for (const key in values) {

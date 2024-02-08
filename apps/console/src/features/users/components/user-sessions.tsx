@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,8 +46,9 @@ import React, {
     SyntheticEvent, useEffect,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions";
 import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "../../core";
@@ -94,11 +95,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const userAgentParser = new UserAgentParser();
+    const userAgentParser: UserAgentParser = new UserAgentParser();
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ userSessions, setUserSessions ] = useState<UserSessionsInterface>(undefined);
     const [ terminatingSession, setTerminatingSession ] = useState<UserSessionInterface>(undefined);
@@ -113,10 +114,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         setShowAllSessionsTerminateConfirmationModal
     ] = useState<boolean>(false);
     const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
-    const authenticatedUserComponents = authenticatedUserTenanted.split("@");
+    const authenticatedUserComponents: string[] = authenticatedUserTenanted.split("@");
 
     authenticatedUserComponents.pop();
-    const authenticatedUser = authenticatedUserComponents.join("@");
+    const authenticatedUser: string = authenticatedUserComponents.join("@");
 
     /**
      * Fetches the active sessions once the user prop is avaiable.
@@ -181,7 +182,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
      * @returns Device type icon
      */
     const resolveDeviceType = (type: string): SemanticICONS => {
-        const deviceType = {
+        const deviceType: Record<string,{
+            icon: string;
+            values: string[]
+        }> = {
             desktop: {
                 icon: "computer",
                 values: [ "desktop" ]
@@ -214,7 +218,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
      */
     const resolveOSIcon = (type: string): SemanticICONS => {
 
-        const osType = {
+        const osType: Record<string,{
+            icon: string;
+            values: string[]
+        }> = {
             android: {
                 icon: "android",
                 values: [ "Android" ]
@@ -252,7 +259,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
      */
     const resolveBrowserIcon = (type: string): SemanticICONS => {
 
-        const browserType = {
+        const browserType: Record<string,{
+            icon: string;
+            values: string[]
+        }> = {
             chrome: {
                 icon: "chrome",
                 values: [ "Chrome", "Chrome Headless", "Chrome WebView", "Chromium" ]
@@ -290,10 +300,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
      */
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
 
-        const newIndexes = [ ...accordionActiveIndexes ];
+        const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
         if (newIndexes.includes(index)) {
-            const removingIndex = newIndexes.indexOf(index);
+            const removingIndex: number = newIndexes.indexOf(index);
 
             newIndexes.splice(removingIndex, 1);
         } else {
@@ -311,8 +321,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
      */
     const getUsername = (applicationSubject: string): string => {
 
-        const splitComponents = applicationSubject.split("/");
-        let username = applicationSubject;
+        const splitComponents: string[] = applicationSubject.split("/");
+        let username: string = applicationSubject;
 
         if (splitComponents.length > 1 && !userstoresConfig.userstoreDomain.appendToUsername) {
             username = splitComponents[1];
@@ -454,25 +464,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 color="green"
                                                                 size="mini"
                                                             />
-                                                            <Trans
-                                                                i18nKey={
-                                                                    "console:manage.features.users.userSessions" +
-                                                                    ".components.sessionDetails.labels.loggedInAs"
-                                                                }
-                                                                tOptions={ {
-                                                                    app: application.appName,
-                                                                    user: getUsername(application.subject)
-                                                                } }
-                                                            >
-                                                                { "Logged in on " }
-                                                                <strong>
-                                                                    { application.appName }
-                                                                </strong>
-                                                                { " as " }
-                                                                <strong>
-                                                                    { application.subject.split("@")[ 0 ] }
-                                                                </strong>
-                                                            </Trans>
+                                                            { application.appName }
                                                         </List.Description>
                                                     ))
                                                 }

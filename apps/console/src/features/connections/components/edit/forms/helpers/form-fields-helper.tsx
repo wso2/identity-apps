@@ -24,11 +24,13 @@ import {
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
-import { CopyInputField, GenericIcon, Hint } from "@wso2is/react-components";
+import { CopyInputField, GenericIcon, Hint, P12FileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
+import { Pkcs12FileField } from "./pkcs12-file-field";
 import { commonConfig } from "../../../../../../extensions";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../../models/authenticators";
@@ -38,6 +40,7 @@ import {
 } from "../../../../models/connection";
 
 const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
+const P12_FILE_STRATEGY: P12FileStrategy = new P12FileStrategy();
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -156,12 +159,13 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
-                        return {
-                            label: val.displayName,
-                            value: val.defaultValue
-                        };
-                    })
+                    propertyMetadata?.subProperties?.map(
+                        function(val: CommonPluggableComponentMetaPropertyInterface): StrictRadioChild {
+                            return {
+                                label: val.displayName,
+                                value: val.defaultValue
+                            };
+                        })
                 }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
@@ -191,12 +195,14 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
-                        return {
-                            label: val.displayName,
-                            value: val.defaultValue
-                        };
-                    })
+                    propertyMetadata?.subProperties?.map(
+                        function(val: CommonPluggableComponentMetaPropertyInterface): StrictRadioChild {
+                            return {
+                                label: val.displayName,
+                                value: val.defaultValue
+                            };
+                        }
+                    )
                 }
                 listen={ (values: Map<string, FormValue>) => {
                     listen(propertyMetadata?.key, values);
@@ -264,7 +270,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms." +
                     "common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
-                validation={ (value, validation) => {
+                validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
@@ -369,7 +375,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
-                validation={ (value, validation) => {
+                validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url("https://www.sample.com?" + value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
@@ -433,7 +439,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                 } }
             />
             <Grid>
-                { eachProp?.value.split(" ").map((scope,index) => (
+                { eachProp?.value.split(" ").map((scope: string,index: number) => (
                     <Grid.Row columns={ 3 } key={ index }>
                         <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
                             <GenericIcon
@@ -494,8 +500,63 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
     );
 };
 
+/* eslint-disable react-hooks/rules-of-hooks */
+export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string,
+    onCertificateChange?: ( newFile: string) => void): ReactElement => {
+
+    const [ data, setData ] = useState<string>(eachProp?.value);
+
+    return (
+        <>
+            { (( data === "" || data?.length === 0 || eachProp?.value === undefined )) ? (
+                <>
+                    <Field
+                        name={ eachProp?.key || propertyMetadata?.key }
+                        label={ propertyMetadata?.displayName }
+                        required={ propertyMetadata?.isMandatory }
+                        requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
+                        "forms.common.requiredErrorMessage") }
+                        type="filePicker"
+                        value={ data }
+                        key={ propertyMetadata?.key }
+                        disabled={ propertyMetadata?.isDisabled }
+                        readOnly={ propertyMetadata?.readOnly }
+                        data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                        fileStrategy={ P12_FILE_STRATEGY }
+                        uploadButtonText="Upload certificate File"
+                        dropzoneText="Drag and drop a certificate file here."
+                    />
+                    { propertyMetadata?.description
+            && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+                </>
+            ) : (
+                <>
+                    <label>{ propertyMetadata?.displayName }</label>
+                    <Pkcs12FileField
+                        onCertificateChange={ (newData: string) =>
+                        {
+                            setData(newData);
+                            onCertificateChange(data);
+                        } }
+                    />
+                    { propertyMetadata?.description
+                    && (
+                        <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+                    )
+                    }
+                </>
+            )
+            }
+        </>);
+
+};
+
 const getDropDownChildren = (key: string, options: string[]) => {
-    return options.map((option) => {
+    return options.map((option: string) => {
         return ({
             key: key,
             text: key === "RequestMethod" ? mapSAMLProtocolBindingToProperDisplayNames(option) : option,
@@ -530,7 +591,8 @@ export enum FieldType {
     QUERY_PARAMS = "QueryParameters",
     DROP_DOWN = "DropDown",
     RADIO = "Radio",
-    COPY_INPUT = "CopyInput"
+    COPY_INPUT = "CopyInput",
+    FILE_PICKER = "FilePicker"
 }
 
 /**
@@ -578,6 +640,8 @@ export const getFieldType = (
         return FieldType.DROP_DOWN;
     } else if (propertyMetadata.type?.toUpperCase() === CommonConstants.RADIO) {
         return FieldType.RADIO;
+    } else if (propertyMetadata?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+        return FieldType.FILE_PICKER;
     }
 
     return FieldType.TEXT;
@@ -597,7 +661,8 @@ export const getPropertyField = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     mode: AuthenticatorSettingsFormModes,
     listen?: (key: string, values: Map<string, FormValue>) => void,
-    testId?: string
+    testId?: string,
+    onCertificateChange?: ( newFile: string) => void
 ): ReactElement => {
 
     switch (getFieldType(propertyMetadata, mode)) {
@@ -635,6 +700,9 @@ export const getPropertyField = (
         }
         case FieldType.TABLE:{
             return getTableField(property, propertyMetadata, testId);
+        }
+        case FieldType.FILE_PICKER:{
+            return getFilePicker(property, propertyMetadata, testId, onCertificateChange);
         }
         default: {
             return getTextField(property, propertyMetadata, testId);

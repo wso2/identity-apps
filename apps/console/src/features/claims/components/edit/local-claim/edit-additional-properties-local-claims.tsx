@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,21 +10,23 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
-import { DynamicField, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
+import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../../../core";
 import { updateAClaim } from "../../../api";
@@ -46,9 +48,9 @@ interface EditAdditionalPropertiesLocalClaimsPropsInterface extends TestableComp
 /**
  * This component renders the additional properties pane.
  *
- * @param {EditAdditionalPropertiesLocalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns EditAdditionalPropertiesLocalClaims.
  */
 export const EditAdditionalPropertiesLocalClaims:
     FunctionComponent<EditAdditionalPropertiesLocalClaimsPropsInterface> = (
@@ -60,14 +62,14 @@ export const EditAdditionalPropertiesLocalClaims:
 
         const [ submit, setSubmit ] = useTrigger();
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
 
         const { t } = useTranslation();
 
         const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
         const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-        const isReadOnly = useMemo(
+        const isReadOnly: boolean = useMemo(
             () =>
                 !hasRequiredScopes(
                     featureConfig?.attributeDialects,
@@ -98,12 +100,12 @@ export const EditAdditionalPropertiesLocalClaims:
                                 "valueRequiredErrorMessage"
                                 ) }
                                 requiredField={ true }
-                                update={ (data) => {
-                                    const claimData = { ...claim };
+                                update={ (data: KeyValue[]) => {
+                                    const claimData: Claim = { ...claim };
 
                                     delete claimData.id;
                                     delete claimData.dialectURI;
-                                    const submitData = {
+                                    const submitData: Claim = {
                                         ...claimData,
                                         properties: [ ...data ]
                                     };
@@ -126,7 +128,7 @@ export const EditAdditionalPropertiesLocalClaims:
                                             );
                                             update();
                                         })
-                                        .catch((error) => {
+                                        .catch((error: IdentityAppsError) => {
                                             dispatch(
                                                 addAlert({
                                                     description:

@@ -40,6 +40,11 @@ export class ConnectionManagementConstants {
      */
     public static readonly INTERNAL_DOMAIN: string  = "Internal/";
 
+    /**
+     * Local Server host.
+     */
+    public static readonly LOCAL_SERVER_URL: string = "localhost";
+
     public static readonly CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
@@ -181,6 +186,8 @@ export class ConnectionManagementConstants {
     public static readonly IDENTITY_PROVIDER_GROUPS_TAB_ID: string  = "identity-provider-groups";
 
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+
+    public static readonly GOOGLE_PRIVATE_KEY: string = "google_prov_private_key";
 
     /**
      * Google Scope mappings.

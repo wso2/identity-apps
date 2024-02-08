@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Avatar, CardContent } from "@oxygen-ui/react";
 import {
     ArrowLoopRightUserIcon,
     BuildingGearIcon,
@@ -35,7 +34,9 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
@@ -247,31 +248,38 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                             <div className="governance-connector-list-grid">
                                 {
                                     dynamicConnectors.map((connector: any) => {
-                                        return (
-                                            <Card
-                                                key={ connector.id }
-                                                className="governance-connector"
-                                                onClick={ (e: SyntheticEvent) => handleDynamicConnectorSelection(e,
-                                                    connector) }
-                                            >
-                                                <CardContent className="governance-connector-header">
-                                                    <div className="governance-connector-image-container">
-                                                        { resolveConnectorCategoryIcon(connector.id) }
-                                                    </div>
-                                                    <div>
-                                                        <Typography variant="h6">
-                                                            { connector.friendlyName }
+                                        if (!serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                                            return (
+                                                <Card
+                                                    key={ connector.id }
+                                                    className="governance-connector"
+                                                    onClick={ (e: SyntheticEvent) => handleDynamicConnectorSelection(e,
+                                                        connector) }
+                                                >
+                                                    <CardContent className="governance-connector-header">
+                                                        <Avatar
+                                                            variant="square"
+                                                            randomBackgroundColor
+                                                            backgroundColorRandomizer={ connector.id }
+                                                            className="governance-connector-icon-container"
+                                                        >
+                                                            { resolveConnectorCategoryIcon(connector.id) }
+                                                        </Avatar>
+                                                        <div>
+                                                            <Typography variant="h6">
+                                                                { connector.friendlyName }
+                                                            </Typography>
+                                                        </div>
+                                                    </CardContent>
+                                                    <CardContent>
+                                                        <Typography variant="body2" color="text.secondary">
+                                                            { `Configure settings related to
+                                                                ${ connector.friendlyName.toLowerCase() } connector.` }
                                                         </Typography>
-                                                    </div>
-                                                </CardContent>
-                                                <CardContent>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        { `Configure settings related to 
-                                                            ${ connector.friendlyName.toLowerCase() } connector.` }
-                                                    </Typography>
-                                                </CardContent>
-                                            </Card>
-                                        );
+                                                    </CardContent>
+                                                </Card>
+                                            );
+                                        }
                                     })
                                 }
                             </div>

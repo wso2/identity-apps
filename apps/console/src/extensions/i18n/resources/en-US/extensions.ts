@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -432,7 +432,7 @@ export const extensions: Extensions = {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "APIs"
+                title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
@@ -443,7 +443,7 @@ export const extensions: Extensions = {
                 },
                 title: "Something went wrong"
             },
-            addApiResourceButton: "New API",
+            addApiResourceButton: "New API Resource",
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
@@ -463,6 +463,14 @@ export const extensions: Extensions = {
             managementAPI: {
                 header: "Management APIs",
                 description: "APIs to manage resources in your organization (root)"
+            },
+            consoleFeature: {
+                header: "Console Features",
+                description: "Permissions to manage resources in the console"
+            },
+            businessAPI: {
+                header: "Business APIs",
+                description: "Custom APIs to created by the user"
             },
             notifications: {
                 deleteAPIResource: {
@@ -700,8 +708,8 @@ export const extensions: Extensions = {
                     cancelButton: "Cancel",
                     nextButton: "Next",
                     previousButton: "Previous",
-                    submitButton: "Finish",
-                    title: "Add API",
+                    submitButton: "Create",
+                    title: "Create an API",
                     subtitle: "Create a new API",
                     steps: {
                         basic: {
@@ -1910,8 +1918,12 @@ export const extensions: Extensions = {
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
                 title: "Branding"
             },
+            pageResolution: {
+                hint: "Pages in the Preview section may look different than the actual page. " +
+                    "To solve this issue please set your screen to a higher resolution."
+            },
             publishToggle: {
-                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your prefrences again.",
+                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your preferences again.",
                 label: "Publish",
                 enabled: "Enabled",
                 disabled: "Disabled"
@@ -2177,37 +2189,37 @@ export const extensions: Extensions = {
                     httpMethod: {
                         label: "HTTP Method",
                         placeholder: "POST",
-                        hint: "The HTTP method of the API request used for sending the SMS."
+                        hint: "The HTTP method of the API request. (Default is POST)"
                     },
                     contentType: {
                         label: "Content Type",
                         placeholder: "JSON",
-                        hint: "The content type of the API request used for sending the SMS."
+                        hint: "The content type of the API request. Accepted values are 'FORM' or 'JSON'"
                     },
                     headers: {
                         label: "Headers",
-                        placeholder: "Enter headers",
-                        hint: "Headers to be included in the send SMS API request."
+                        placeholder: "authorisation: Bearer {{token}}",
+                        hint: "Comma seperated list of HTTP headers to be included in the SMS API request."
                     },
                     payload: {
-                        label: "Payload",
-                        placeholder: "Enter the payload",
-                        hint: "Payload of the SMS API request."
+                        label: "Payload Template",
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "The payload template of the API request. Use {{body}} to represent the generated SMS body. Use {{mobile}} to represent the mobile number."
                     },
                     key: {
                         label: "SMS Provider Auth Key",
                         placeholder: "Enter the SMS provider auth key",
-                        hint: "The auth key of the SMS provider."
+                        hint: "Any authentication key that needs to be send as HTTP header."
                     },
                     secret: {
                         label: "SMS Provider Auth Secret",
                         placeholder: "Enter the SMS provider auth secret",
-                        hint: "The auth secret of the SMS provider."
+                        hint: "Any authentication secret that needs to be send as HTTP header."
                     },
                     sender: {
                         label: "Sender",
                         placeholder: "Enter the sender",
-                        hint: "The sender of the SMS."
+                        hint: "The SMS senders identification (phone number or name)."
                     },
                     validations: {
                         required: "This field cannot be empty",
@@ -2254,7 +2266,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Apple</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Apple</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Apple Login",
@@ -2270,7 +2282,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Apple login</3>" +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Apple login</3>" +
                                 " to configure a Apple login flow.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2285,7 +2297,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Email OTP</1> to <3>Step 2</3> on the <5>Sign-in Method" +
+                            "Add <1>Email OTP</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Email OTP Set Up Guide",
@@ -2302,7 +2314,7 @@ export const extensions: Extensions = {
                         },
                         selectEmailOTP: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Email OTP as a second " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Email OTP as a second " +
                                 "factor</3> to configure a basic Email OTP flow.",
                             heading: "Select <1>Add Email OTP as a second factor</1>"
                         }
@@ -2355,7 +2367,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>SMS OTP</1> to <3>Step 2</3> on the <5>Sign-in Method" +
+                            "Add <1>SMS OTP</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "SMS OTP Set Up Guide",
@@ -2368,7 +2380,7 @@ export const extensions: Extensions = {
                         },
                         selectSMSOTP: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add SMS OTP as a second " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add SMS OTP as a second " +
                                 "factor</3> to configure a basic SMS OTP flow.",
                             heading: "Select <1>Add SMS OTP as a second factor</1>"
                         }
@@ -2383,7 +2395,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Facebook</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Facebook</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Facebook Login",
@@ -2399,7 +2411,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2414,7 +2426,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>GitHub</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>GitHub</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add GitHub Login",
@@ -2430,7 +2442,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2445,7 +2457,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Google</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Google</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Google Login",
@@ -2461,7 +2473,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Google login</3> to " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Google login</3> to " +
                                 "configure a Google login flow.",
                             heading: "Select <1>Add Google login</1>"
                         }
@@ -2476,7 +2488,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Microsoft</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Microsoft</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Microsoft Login",
@@ -2492,7 +2504,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2507,7 +2519,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>HYPR</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>HYPR</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add HYPR Login",
@@ -2531,7 +2543,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to the <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to the <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2589,7 +2601,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Sign In With Ethereum</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Sign In With Ethereum</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Sign In With Ethereum",
@@ -2605,7 +2617,7 @@ export const extensions: Extensions = {
                         },
                         selectDefaultConfig: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
                                 "configuration</3>.",
                             heading: "Select <1>Start with default configuration</1>"
                         }
@@ -2658,7 +2670,7 @@ export const extensions: Extensions = {
                         },
                         selectTOTP: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add OTP as a second " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add OTP as a second " +
                                 "factor</3> to configure a basic TOTP flow.",
                             heading: "Select <1>Add TOTP as a second factor</1>"
                         }
@@ -2692,7 +2704,7 @@ export const extensions: Extensions = {
                         },
                         selectFIDO: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Passkey Login</3> to configure " +
                                 " a basic passkey flow.",
                             heading: "Select <1>Add Passkey Login</1>"
                         },
@@ -2747,7 +2759,7 @@ export const extensions: Extensions = {
                         },
                         selectMagicLink: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Magic Link login" +
+                                "Go to <1>Login Flow</1> tab and click on <3>Add Magic Link login" +
                                 "</3> to configure a basic magic-link flow.",
                             heading: "Select <1>Add Magic Link login</1>"
                         }
@@ -3060,7 +3072,7 @@ export const extensions: Extensions = {
                     2: "characters."
                 },
                 usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$%&'*+\\=?^_.{|}~-."
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^_.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3289,6 +3301,7 @@ export const extensions: Extensions = {
                         password:
                             "Your password must contain a minimum of 8 characters including at " +
                             "least one uppercase letter, one lowercase letter, and one number.",
+                        confirmPassword: "Both passwords should match",
                         passwordCase: "At least {{minUpperCase}} uppercase and {{minLowerCase}} lowercase letters",
                         upperCase: "At least {{minUpperCase}} uppercase letter(s)",
                         lowerCase: "At least {{minLowerCase}} lowercase letter(s)",
@@ -3304,7 +3317,7 @@ export const extensions: Extensions = {
                             "{{maxLength}} characters including at least one letter.",
                         usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long, " +
                             "including at least one letter, and may contain a combination of the following " +
-                            "characters: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_.{|}~-.",
+                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
                         usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
                         usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."
@@ -4121,8 +4134,8 @@ export const extensions: Extensions = {
                     }
                 },
                 addUser: {
-                    subtitle: "Follow the steps to add a new user.",
-                    title: "Add User"
+                    subtitle: "Follow the steps to create a new user.",
+                    title: "Create User"
                 }
             }
         },

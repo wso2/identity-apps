@@ -37,3 +37,25 @@ export enum ConsoleSettingsModes {
      */
     LOGIN_FLOW = "login-flow"
 }
+
+/**
+ * Enum for Console Settings tab IDs.
+ */
+export enum ConsoleSettingsTabIDs {
+    /**
+     * Administrators tab ID.
+     */
+    ADMINISTRATORS = 0,
+    /**
+     * Roles tab ID.
+     */
+    ROLES = 1,
+    /**
+     * Protocol tab ID.
+     */
+    PROTOCOL = 2,
+    /**
+     * Login flow tab ID.
+     */
+    LOGIN_FLOW = 3
+}

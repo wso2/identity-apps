@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,7 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showMyAccount: boolean;
+        showMyAccountStatus: boolean;
         showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
@@ -42,6 +43,7 @@ export interface ApplicationConfig {
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };
+    hiddenGrantTypes: string[],
     attributeSettings: {
         advancedAttributeSettings: {
             showIncludeTenantDomain: boolean;
@@ -76,6 +78,7 @@ export interface ApplicationConfig {
         getTabExtensions: (
             props: Record<string, unknown>,
             features: FeatureConfigInterface,
+            isReadOnly?: boolean,
             tenantDomain?: string
         ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
@@ -153,12 +156,12 @@ export interface ApplicationConfig {
         custom: boolean;
         mobile: boolean;
         m2m: boolean;
+        customProtocol: boolean;
     };
     customApplication: {
         allowedProtocolTypes: string[];
         defaultTabIndex: number;
     };
-    excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;
     quickstart: {
         oidcWeb: OIDCSDKMeta;

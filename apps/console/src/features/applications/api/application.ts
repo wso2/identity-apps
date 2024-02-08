@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgar
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -124,12 +125,19 @@ export const deleteApplication = (id: string): Promise<any> => {
  * Updates the application with basic details.
  *
  * @param app - Basic info about the application.
+ * @param skipEmptyPayloads - Skip empty payloads.
  *
  * @returns A promise containing the response.
  */
-export const updateApplicationDetails = (app: ApplicationInterface): Promise<any> => {
-
+export const updateApplicationDetails = (
+    app: ApplicationInterface,
+    skipEmptyPayloads?: boolean
+): Promise<ApplicationBasicInterface | void> => {
     const { id, ...rest } = app;
+
+    if (skipEmptyPayloads && isEmpty(rest)) {
+        return Promise.resolve();
+    }
 
     const requestConfig: AxiosRequestConfig = {
         data: rest,

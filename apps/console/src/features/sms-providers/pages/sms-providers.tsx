@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -39,6 +40,7 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import {
     AppConstants,
     AppState,
@@ -58,6 +60,7 @@ import {
     SMSProviderPropertiesInterface,
     SMSProviderSettingsState
 } from "../models";
+import "./sms-providers.scss";
 
 type SMSProviderPageInterface = IdentifiableComponentInterface;
 
@@ -162,12 +165,12 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                             (property: SMSProviderPropertiesInterface) => property.key === "http.headers")?.value,
                         httpMethod: provider.properties.find(
                             (property: SMSProviderPropertiesInterface) => property.key === "http.method")?.value,
-    
+
                         name: provider.name,
                         payload: provider.properties.find(
                             (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
                         provider: provider.provider,
-                        providerURL: provider.providerURL 
+                        providerURL: provider?.providerURL
                     };
 
                     if (configuredProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER) {
@@ -268,34 +271,35 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         const { selectedProvider } = smsProviderSettings;
 
         const properties: SMSProviderPropertiesInterface[] = buildProperties(values);
-        const provider: string = selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
-            SMSProviderConstants.TWILIO : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
-                SMSProviderConstants.VONAGE : values.provider;
+        const provider: string = selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
+            SMSProviderConstants.TWILIO : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
+                SMSProviderConstants.VONAGE : selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER ?
+                    SMSProviderConstants.CUSTOM : values.provider;
         const contentType: ContentType = values.contentType ?? ContentType.JSON;
         const submittingValues: SMSProviderAPIInterface = {
             contentType: contentType,
-            key: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
-                values.twilioKey : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+            key: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
+                values?.twilioKey : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageKey : values.key,
             properties: properties,
             provider: provider,
-            secret: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
-                values.twilioSecret : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+            secret: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
+                values?.twilioSecret : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageSecret : values.secret,
-            sender: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
-                values.twilioSender : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+            sender: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
+                values?.twilioSender : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageSender : values.sender
         };
-        
+
         if (values.providerURL) {
             submittingValues.providerURL = values.providerURL;
         }
 
-        const handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface> = 
+        const handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface> =
             existingSMSProviders.length >= 1
                 ? updateSMSProvider(submittingValues)
                 : createSMSProvider(submittingValues);
-        
+
         handleSMSConfigValues.then((updatedData: SMSProviderAPIInterface) => {
             const updatedSMSProvider: SMSProviderInterface = {
                 contentType: updatedData.contentType as ContentType,
@@ -396,23 +400,13 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 );
             }
         } else {
-            if (!values?.key) {
-                error.key = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!values?.secret) {
-                error.secret = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!values?.sender) {
-                error.sender = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
             if (!values?.providerURL) {
                 error.providerURL = t(
+                    "extensions:develop.smsProviders.form.custom.validations.required"
+                );
+            }
+            if (!values?.provider) {
+                error.provider = t(
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
@@ -421,18 +415,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
-            if (!(values?.contentType == ContentType.JSON || values?.contentType == ContentType.FORM)) {
-                error.contentType = t(
-                    "extensions:develop.smsProviders.form.custom.validations.contentTypeInvalid"
-                );
-            }
             if (!values?.payload) {
                 error.payload = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!values?.provider) {
-                error.key = t(
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
@@ -447,7 +431,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         return deleteSMSProviders()
             .then(() => {
                 handleDeleteSuccess();
-                setSmsProviderSettings({ providerParams: {}, 
+                setSmsProviderSettings({ providerParams: {},
                     selectedProvider: SMSProviderConstants.TWILIO_SMS_PROVIDER });
                 mutateSMSProviderConfig();
 
@@ -455,7 +439,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             })
             .catch((e: IdentityAppsApiException) => {
                 handleDeleteError(e);
-                
+
                 return false;
             }).finally(() => {
                 setIsDeleting(false);
@@ -558,14 +542,14 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 <FinalForm
                                     onSubmit={ handleSubmit }
                                     validate={ validateForm }
-                                    initialValues={ 
-                                        smsProviderSettings.selectedProvider 
+                                    initialValues={
+                                        smsProviderSettings?.selectedProvider
                                             ? smsProviderSettings
-                                                .providerParams[smsProviderSettings.selectedProvider] 
-                                            :  {} 
+                                                ?.providerParams[smsProviderSettings?.selectedProvider]
+                                            :  {}
                                     }
                                     render={ ({ handleSubmit }: FormRenderProps) => (
-                                        <form onSubmit={ handleSubmit } noValidate>
+                                        <form className="sms-provider-config-form" onSubmit={ handleSubmit } noValidate>
                                             <div className="card-list">
                                                 <Grid>
                                                     <Grid.Row columns={ 3 }>
@@ -583,15 +567,15 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                             provider.name
                                                                         }
                                                                         className=
-                                                                            {  smsProviderSettings.selectedProvider === 
-                                                                                provider.key 
-                                                                                ? "sms-provider-info-card selected" 
-                                                                                : "sms-provider-info-card" 
+                                                                            {  smsProviderSettings?.selectedProvider ===
+                                                                                provider?.key
+                                                                                ? "sms-provider-info-card selected"
+                                                                                : "sms-provider-info-card"
                                                                             }
                                                                         key={ provider.id }
-                                                                        onClick={ () => 
-                                                                            handleProviderChange(provider.key) 
-                                                                        } 
+                                                                        onClick={ () =>
+                                                                            handleProviderChange(provider?.key)
+                                                                        }
                                                                         showSetupGuideButton={ false }
                                                                         showCardAction={ false }
                                                                     />
@@ -602,21 +586,21 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             </div>
                                             { smsProviderSettings.selectedProvider && (
                                                 <>
-                                                    { smsProviderSettings.selectedProvider === 
+                                                    { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
                                                         <CustomSMSProvider
                                                             isReadOnly={ isReadOnly }
                                                             onSubmit={ handleSubmit }
                                                         />
                                                     ) }
-                                                    { smsProviderSettings.selectedProvider === 
+                                                    { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                                         <TwilioSMSProvider
                                                             isReadOnly={ isReadOnly }
                                                             onSubmit={ handleSubmit }
                                                         />
                                                     ) }
-                                                    { smsProviderSettings.selectedProvider === 
+                                                    { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                                         <VonageSMSProvider
                                                             isReadOnly={ isReadOnly }
@@ -636,7 +620,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             ) }
             {
                 !isLoading && !isSMSProviderConfigFetchRequestLoading && (
-                    <>
+                    <Show
+                        when={ AccessControlConstants.NOTIFICATION_SENDERS_DELETE }
+                    >
                         <Divider hidden />
                         <DangerZoneGroup
                             sectionHeader={ t("extensions:develop.smsProviders.dangerZoneGroup" +
@@ -667,7 +653,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                             primaryAction={ t("common:confirm") }
                             secondaryAction={ t("common:cancel") }
                             onSecondaryActionClick={ (): void => setOpenRevertConfigModal(false) }
-                            onPrimaryActionClick={ (): void => { 
+                            onPrimaryActionClick={ (): void => {
                                 setIsSubmitting(true);
                                 handleConfigurationDelete().finally(() => {
                                     setIsSubmitting(false);
@@ -696,7 +682,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 { t("extensions:develop.smsProviders.confirmationModal.content") }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
-                    </>
+                    </Show>
                 ) }
         </PageLayout>
     );

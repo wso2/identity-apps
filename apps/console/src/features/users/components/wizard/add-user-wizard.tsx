@@ -998,7 +998,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ),
             icon: getUserWizardStepIcons().summary,
             name: WizardStepsFormTypes.USER_SUMMARY,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
+            title: t("console:manage.features.user.modals.addUserWizard.steps.invitation")
         };
     };
 
@@ -1072,7 +1072,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     onClick={ navigateToNext }
                                     loading={ isBasicDetailsLoading }
                                 >
-                                    { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
+                                    { currentWizardStep === wizardSteps.length - 2
+                                        ? t("console:manage.features.user.modals.addUserWizard.buttons.saveAndContinue")
+                                        : t("console:manage.features.user.modals.addUserWizard.buttons.next")
+                                    }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }

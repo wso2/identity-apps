@@ -1,5 +1,208 @@
 # @wso2is/common
 
+## 2.0.33
+
+### Patch Changes
+
+- [#5437](https://github.com/wso2/identity-apps/pull/5437) [`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix search and filter action panel issues
+
+- Updated dependencies [[`0f81fbe7f3`](https://github.com/wso2/identity-apps/commit/0f81fbe7f39a6f787867a281ab6b50f45ab0b57f), [`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e)]:
+  - @wso2is/i18n@2.0.115
+  - @wso2is/react-components@2.1.4
+  - @wso2is/forms@2.0.19
+
+## 2.0.32
+
+### Patch Changes
+
+- [#5384](https://github.com/wso2/identity-apps/pull/5384) [`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Sign-in Method` -> `Login Flow`
+
+- Updated dependencies [[`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3)]:
+  - @wso2is/i18n@2.0.114
+  - @wso2is/core@2.0.34
+
+## 2.0.31
+
+### Patch Changes
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
+- Updated dependencies [[`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af)]:
+  - @wso2is/i18n@2.0.111
+  - @wso2is/core@2.0.33
+  - @wso2is/react-components@2.1.3
+
+## 2.0.30
+
+### Patch Changes
+
+- [#5347](https://github.com/wso2/identity-apps/pull/5347) [`cc28be662d`](https://github.com/wso2/identity-apps/commit/cc28be662d01e758f6b7df468b04186759cf2b9e) Thanks [@savindi7](https://github.com/savindi7)! - Improve button text consistency.
+
+- Updated dependencies [[`cc28be662d`](https://github.com/wso2/identity-apps/commit/cc28be662d01e758f6b7df468b04186759cf2b9e)]:
+  - @wso2is/i18n@2.0.108
+
+## 2.0.29
+
+### Patch Changes
+
+- [#5337](https://github.com/wso2/identity-apps/pull/5337) [`f34a5e6a7e`](https://github.com/wso2/identity-apps/commit/f34a5e6a7e11103584df5c8ae26274f5ef5e5c8a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add support to upload a pkcs12 file
+
+- Updated dependencies [[`f34a5e6a7e`](https://github.com/wso2/identity-apps/commit/f34a5e6a7e11103584df5c8ae26274f5ef5e5c8a)]:
+  - @wso2is/react-components@2.1.2
+  - @wso2is/forms@2.0.18
+
+## 2.0.28
+
+### Patch Changes
+
+- [#5327](https://github.com/wso2/identity-apps/pull/5327) [`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix placeholder text in mapped attributes.
+
+- Updated dependencies [[`4daf62f1b2`](https://github.com/wso2/identity-apps/commit/4daf62f1b20a50affa871e151b753e4b3f0219dc)]:
+  - @wso2is/i18n@2.0.107
+
+## 2.0.27
+
+### Patch Changes
+
+- [#5306](https://github.com/wso2/identity-apps/pull/5306) [`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to user store name.
+
+- Updated dependencies [[`e91ba6d123`](https://github.com/wso2/identity-apps/commit/e91ba6d12307d580608ecde1551f9541af426d30)]:
+  - @wso2is/i18n@2.0.106
+
+## 2.0.26
+
+### Patch Changes
+
+- [#5298](https://github.com/wso2/identity-apps/pull/5298) [`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with organization switch unauthorized route
+
+- Updated dependencies [[`f42ecb1522`](https://github.com/wso2/identity-apps/commit/f42ecb15227b64f51d68f91ed2f1580c1411c625)]:
+  - @wso2is/core@2.0.32
+  - @wso2is/access-control@2.0.18
+  - @wso2is/forms@2.0.17
+  - @wso2is/i18n@2.0.105
+  - @wso2is/react-components@2.1.1
+
+## 2.0.25
+
+### Patch Changes
+
+- [#5289](https://github.com/wso2/identity-apps/pull/5289) [`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Tenant Permissions` -> `Root Organization Permissions`
+
+* [#5272](https://github.com/wso2/identity-apps/pull/5272) [`99a993a902`](https://github.com/wso2/identity-apps/commit/99a993a9021727c62a00d75a805f37cccea882d1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix form autofill preventing form submission
+
+* Updated dependencies [[`0e70f8c7f9`](https://github.com/wso2/identity-apps/commit/0e70f8c7f968693397bd7bd6e4972bb0e1b8e111), [`99a993a902`](https://github.com/wso2/identity-apps/commit/99a993a9021727c62a00d75a805f37cccea882d1), [`6395f654df`](https://github.com/wso2/identity-apps/commit/6395f654df1e65dfb9219954abadcdf6c9754cf1), [`486a47329a`](https://github.com/wso2/identity-apps/commit/486a47329a0e025d4841ee8dc87b96519f1879cb)]:
+  - @wso2is/i18n@2.0.102
+  - @wso2is/core@2.0.31
+  - @wso2is/forms@2.0.16
+  - @wso2is/react-components@2.1.0
+
+## 2.0.24
+
+### Patch Changes
+
+- [#5260](https://github.com/wso2/identity-apps/pull/5260) [`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43) Thanks [@brionmario](https://github.com/brionmario)! - Fix OIDC Session Management issues in Console & My Account
+
+- Updated dependencies [[`6079baa09b`](https://github.com/wso2/identity-apps/commit/6079baa09b8fd353f5fd6b25197ec18fc3883a43)]:
+  - @wso2is/core@2.0.30
+  - @wso2is/access-control@2.0.17
+  - @wso2is/forms@2.0.15
+  - @wso2is/i18n@2.0.100
+  - @wso2is/react-components@2.0.39
+
+## 2.0.23
+
+### Patch Changes
+
+- [#5230](https://github.com/wso2/identity-apps/pull/5230) [`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8) Thanks [@savindi7](https://github.com/savindi7)! - Add WS Fed logo to app template listing page
+
+- Updated dependencies [[`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8)]:
+  - @wso2is/react-components@2.0.38
+
+## 2.0.22
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+* [#5202](https://github.com/wso2/identity-apps/pull/5202) [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849) Thanks [@brionmario](https://github.com/brionmario)! - Add passive STS cert hint
+
+* Updated dependencies [[`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf), [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849)]:
+  - @wso2is/react-components@2.0.35
+  - @wso2is/i18n@2.0.95
+  - @wso2is/access-control@2.0.16
+  - @wso2is/forms@2.0.13
+  - @wso2is/core@2.0.28
+
+## 2.0.21
+
+### Patch Changes
+
+- [#5182](https://github.com/wso2/identity-apps/pull/5182) [`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally display the regex field for attributes
+
+- Updated dependencies [[`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763)]:
+  - @wso2is/core@2.0.27
+  - @wso2is/access-control@2.0.15
+  - @wso2is/forms@2.0.12
+  - @wso2is/i18n@2.0.93
+  - @wso2is/react-components@2.0.34
+
+## 2.0.20
+
+### Patch Changes
+
+- [#5178](https://github.com/wso2/identity-apps/pull/5178) [`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix build failure in forms module
+
+- Updated dependencies [[`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674)]:
+  - @wso2is/forms@2.0.11
+
+## 2.0.19
+
+### Patch Changes
+
+- [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
+- Updated dependencies [[`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e), [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af)]:
+  - @wso2is/i18n@2.0.91
+  - @wso2is/react-components@2.0.33
+  - @wso2is/forms@2.0.10
+
+## 2.0.18
+
+### Patch Changes
+
+- [#5154](https://github.com/wso2/identity-apps/pull/5154) [`afbc0c147d`](https://github.com/wso2/identity-apps/commit/afbc0c147d9d8aaf43fe93a8fe56932d066f289e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump react-components module
+
+- Updated dependencies [[`afbc0c147d`](https://github.com/wso2/identity-apps/commit/afbc0c147d9d8aaf43fe93a8fe56932d066f289e)]:
+  - @wso2is/react-components@2.0.32
+  - @wso2is/i18n@2.0.90
+
+## 2.0.17
+
+### Patch Changes
+
+- [#5148](https://github.com/wso2/identity-apps/pull/5148) [`5fe0424f8e`](https://github.com/wso2/identity-apps/commit/5fe0424f8eb283e54d2f8f23eab6ffa7013e92c4) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Dynamically render custom connector wizard fields according to the selected mode
+
+* [#5141](https://github.com/wso2/identity-apps/pull/5141) [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b) Thanks [@brionmario](https://github.com/brionmario)! - Enable Organization login for My Account
+
+* Updated dependencies [[`5fe0424f8e`](https://github.com/wso2/identity-apps/commit/5fe0424f8eb283e54d2f8f23eab6ffa7013e92c4), [`fbdecb98fa`](https://github.com/wso2/identity-apps/commit/fbdecb98fa95cb15aa041bd21a52f0809ca82da9), [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b)]:
+  - @wso2is/react-components@2.0.31
+  - @wso2is/forms@2.0.9
+  - @wso2is/i18n@2.0.89
+  - @wso2is/access-control@2.0.14
+  - @wso2is/core@2.0.26
+
+## 2.0.16
+
+### Patch Changes
+
+- [#5052](https://github.com/wso2/identity-apps/pull/5052) [`8c344f3ec4`](https://github.com/wso2/identity-apps/commit/8c344f3ec4ced3c93ede47a1c0accd023f2d73e0) Thanks [@brionmario](https://github.com/brionmario)! - Enable sub org logins for Console
+
+- Updated dependencies [[`8c344f3ec4`](https://github.com/wso2/identity-apps/commit/8c344f3ec4ced3c93ede47a1c0accd023f2d73e0)]:
+  - @wso2is/react-components@2.0.30
+  - @wso2is/access-control@2.0.13
+  - @wso2is/core@2.0.25
+  - @wso2is/i18n@2.0.85
+
 ## 2.0.15
 
 ### Patch Changes

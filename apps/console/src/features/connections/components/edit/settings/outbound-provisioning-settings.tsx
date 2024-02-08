@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,11 +43,13 @@ import {
     updateOutboundProvisioningConnector,
     updateOutboundProvisioningConnectors
 } from "../../../api/connections";
+import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { AuthenticatorSettingsFormModes } from "../../../models/authenticators";
 import {
     ConnectionInterface,
     FederatedAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorMetaDataInterface,
     OutboundProvisioningConnectorMetaInterface,
     OutboundProvisioningConnectorWithMetaInterface,
     OutboundProvisioningConnectorsInterface
@@ -56,8 +58,9 @@ import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../../../utils/connection-utils";
-import { 
-    OutboundProvisioningConnectorCreateWizard 
+import { OutboundConnectors as OutboundConnectorsLocalMetadata } from "../../meta/connectors";
+import {
+    OutboundProvisioningConnectorCreateWizard
 } from "../../wizards/outbound-provisioning-connector-create-wizard";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 
@@ -151,6 +154,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             resolve({
                                 data: data,
                                 id: connectorId,
+                                localMeta: OutboundConnectorsLocalMetadata?.find(
+                                    (meta: OutboundProvisioningConnectorMetaDataInterface) => {
+                                        return meta.connectorId === connectorId;
+                                    }
+                                ),
                                 meta: meta
                             });
                         })
@@ -370,7 +378,9 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         <EmphasizedSegment padded="very">
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Heading as="h4">OutBound Provisioning Connectors</Heading>
+                    <Heading as="h4">
+                        { t("console:develop.features.idp.forms.outboundProvisioningTitle") }
+                    </Heading>
                 </Grid.Column>
             </Grid.Row>
 
@@ -398,25 +408,31 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                     <Grid.Row>
                                         <Grid.Column>
                                             {
-                                                availableConnectors.map((
-                                                    connector: OutboundProvisioningConnectorWithMetaInterface,
-                                                    index: number
-                                                ) => {
-                                                    return (
-                                                        <AuthenticatorAccordion
-                                                            key={ index }
-                                                            globalActions = {
-                                                                [
-                                                                    {
-                                                                        disabled: connector.data?.isEnabled,
-                                                                        icon: "trash alternate",
-                                                                        onClick: handleAuthenticatorDeleteOnClick,
-                                                                        type: "icon"
-                                                                    }
-                                                                ]
-                                                            }
-                                                            authenticators={
-                                                                [
+                                                availableConnectors
+                                                    // Filter the scim1 connector since it is deprecated.
+                                                    .filter((
+                                                        connector: OutboundProvisioningConnectorWithMetaInterface
+                                                    ) => connector.id !==
+                                                        AuthenticatorManagementConstants
+                                                            .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
+                                                    .map((
+                                                        connector: OutboundProvisioningConnectorWithMetaInterface,
+                                                        index: number
+                                                    ) => {
+                                                        return (
+                                                            <AuthenticatorAccordion
+                                                                key={ index }
+                                                                globalActions = {
+                                                                    [
+                                                                        {
+                                                                            disabled: connector.data?.isEnabled,
+                                                                            icon: "trash alternate",
+                                                                            onClick: handleAuthenticatorDeleteOnClick,
+                                                                            type: "icon"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                                authenticators={ [
                                                                     {
                                                                         actions: createAccordionActions(connector),
                                                                         content: (
@@ -434,18 +450,25 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                                 isReadOnly={ isReadOnly }
                                                                             />
                                                                         ),
+                                                                        icon: {
+                                                                            icon: connector?.localMeta?.icon,
+                                                                            verticalAlign: "middle"
+                                                                        },
                                                                         id: connector?.id,
-                                                                        title: connector?.meta?.displayName
+                                                                        title: connector?.localMeta?.displayName
+                                                                            ?? connector?.meta?.displayName,
+                                                                        titleOptions: {
+                                                                            flex: true
+                                                                        }
                                                                     }
-                                                                ]
-                                                            }
-                                                            data-testid={ `${ testId }-accordion` }
-                                                            accordionActiveIndexes = { accordionActiveIndexes }
-                                                            accordionIndex = { index }
-                                                            handleAccordionOnClick = { handleAccordionOnClick }
-                                                        />
-                                                    );
-                                                })
+                                                                ] }
+                                                                data-testid={ `${ testId }-accordion` }
+                                                                accordionActiveIndexes = { accordionActiveIndexes }
+                                                                accordionIndex = { index }
+                                                                handleAccordionOnClick = { handleAccordionOnClick }
+                                                            />
+                                                        );
+                                                    })
                                             }
                                         </Grid.Column>
                                     </Grid.Row>

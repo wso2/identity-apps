@@ -35,7 +35,7 @@
                     <%-- Customizable content. Due to this nature, i18n is not implemented for this section --%>
                     <div id="privacyPolicy" class="padding-double">
                         <h4><a href="http://wso2.org/library/identity-server">About WSO2 Identity Server</a></h4>
-                        <p>WSO2 Identity Server (referred to as &ldquo;WSO2 IS&rdquo; within this policy) is an open source Identity Management and Entitlement Server that is based on open standards and specifications.</p>
+                        <p>WSO2 Identity Server (referred to as "WSO2 IS" within this policy) is an open source Identity Management and Entitlement Server that is based on open standards and specifications.</p>
 
                         <h2 id="privacy-policy">Privacy Policy</h2>
                         <p>This policy describes how WSO2 IS captures your personal information, the purposes of collection, and information about the retention of your personal information.</p>
@@ -100,7 +100,7 @@
                         </ul>
 
                         <h2 id="disclosure-of-personal-information">Disclosure of personal information</h2>
-                        <p>WSO2 IS only discloses personal information to the relevant applications (also known as “Service Providers”) that are registered with WSO2 IS. These applications are registered by the identity administrator of your entity or organization. Personal information is disclosed only for the purposes for which it was collected (or for a use identified as consistent with that purpose), as controlled by such Service Providers, unless you have consented otherwise or where it is required by law.</p>
+                        <p>WSO2 IS only discloses personal information to the relevant applications (also known as "Service Providers") that are registered with WSO2 IS. These applications are registered by the identity administrator of your entity or organization. Personal information is disclosed only for the purposes for which it was collected (or for a use identified as consistent with that purpose), as controlled by such Service Providers, unless you have consented otherwise or where it is required by law.</p>
 
                         <h3 id="legal-process">Legal process</h3>
                         <p>Please note that the organisation, entity or individual running WSO2 IS may be compelled to disclose your personal information with or without your consent when it is required by law following due and lawful process.</p>
@@ -143,7 +143,7 @@
                         <ol>
                         <li>WSO2, its employees, partners, and affiliates do not have access to and do not require, store, process or control any of the data, including personal data contained in WSO2 IS. All data, including personal data is controlled and processed by the entity or individual running WSO2 IS.  WSO2, its employees partners and affiliates are not a data processor or a data controller within the meaning of any data privacy regulations.  WSO2 does not provide any warranties or undertake any responsibility or liability in connection with the lawfulness or the manner and purposes for which WSO2 IS is used by such entities or persons. </li>
                         </br>
-                        <li>This privacy policy is for the informational purposes of the entity or persons  running WSO2 IS and sets out the processes and functionality contained within WSO2 IS regarding personal data protection. It is the responsibility of entities and persons running WSO2 IS to create and administer its own rules and processes governing users’ personal data, and such  rules and processes may change the use, storage and disclosure policies contained herein. Therefore users should consult the entity or persons running WSO2 IS for its own privacy policy for details governing users’ personal data. </li>
+                        <li>This privacy policy is for the informational purposes of the entity or persons  running WSO2 IS and sets out the processes and functionality contained within WSO2 IS regarding personal data protection. It is the responsibility of entities and persons running WSO2 IS to create and administer its own rules and processes governing users' personal data, and such  rules and processes may change the use, storage and disclosure policies contained herein. Therefore users should consult the entity or persons running WSO2 IS for its own privacy policy for details governing users' personal data. </li>
                         </ol>
                     </div>
                     <%-- /Costomizable content --%>

@@ -52,6 +52,10 @@ interface EditUserDetailsPropsInterface extends TestableComponentInterface {
      * The connection properties.
      */
     properties: RequiredBinary;
+    /**
+     * Readonly attribute for the component.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -68,6 +72,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
     const {
         id,
         properties,
+        readOnly,
         update,
         [ "data-testid" ]: testId
     } = props;
@@ -257,7 +262,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                     type="password"
                                                     key={ index }
                                                     required={ true }
-                                                    disabled={ id === CONSUMER_USERSTORE_ID }
+                                                    disabled={ readOnly || id === CONSUMER_USERSTORE_ID }
                                                     label={ userStorePropertyName }
                                                     requiredErrorMessage={
                                                         t(
@@ -290,7 +295,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                         type="toggle"
                                                         key={ index }
                                                         required={ false }
-                                                        disabled={ id === CONSUMER_USERSTORE_ID }
+                                                        disabled={ readOnly || id === CONSUMER_USERSTORE_ID }
                                                         label={ userStorePropertyName }
                                                         requiredErrorMessage={
                                                             t(
@@ -324,7 +329,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 value={ property.value ?? property.defaultValue }
                                                                 type="text"
                                                                 key={ index }
-                                                                required={ true }
+                                                                required={ false }
                                                                 label={ userStorePropertyName }
                                                                 requiredErrorMessage={
                                                                     t(
@@ -347,6 +352,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 data-testid={
                                                                     `${ testId }-form-text-input-${ property.name }`
                                                                 }
+                                                                disabled={ readOnly }
                                                             />
                                                         )
                                                     )
@@ -379,6 +385,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             data-testid={
                                                                 `${ testId }-form-text-input-${ property?.name }`
                                                             }
+                                                            disabled={ readOnly }
                                                         />
                                                     )
                                     );
@@ -434,7 +441,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             type="password"
                                                             key={ index }
                                                             required={ false }
-                                                            disabled={ id === CONSUMER_USERSTORE_ID }
+                                                            disabled={ readOnly || id === CONSUMER_USERSTORE_ID }
                                                             label={ name }
                                                             requiredErrorMessage={
                                                                 t(
@@ -469,7 +476,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 type="toggle"
                                                                 key={ index }
                                                                 required={ false }
-                                                                disabled={ id === CONSUMER_USERSTORE_ID }
+                                                                disabled={ readOnly || id === CONSUMER_USERSTORE_ID }
                                                                 label={ property.description.split("#")[ 0 ] }
                                                                 requiredErrorMessage={
                                                                     t(
@@ -508,7 +515,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     type="text"
                                                                     key={ index }
                                                                     required={ false }
-                                                                    disabled={ id === CONSUMER_USERSTORE_ID }
+                                                                    disabled={ readOnly ||
+                                                                        id === CONSUMER_USERSTORE_ID }
                                                                     label={ property.description.split("#")[ 0 ] }
                                                                     requiredErrorMessage={
                                                                         t(
@@ -543,7 +551,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     type="text"
                                                                     key={ index }
                                                                     required={ false }
-                                                                    disabled={ id === CONSUMER_USERSTORE_ID }
+                                                                    disabled={ readOnly ||
+                                                                        id === CONSUMER_USERSTORE_ID }
                                                                     label={ property.description.split("#")[ 0 ] }
                                                                     requiredErrorMessage={
                                                                         t(
@@ -596,6 +605,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                     properties={ properties?.optional.sql }
                                     values={ sql }
                                     data-testid={ `${ testId }-sql-editor` }
+                                    readOnly={ readOnly }
                                 />
                             </Grid.Column>
                         </Grid>
@@ -603,14 +613,18 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                 }
                 <Grid columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <PrimaryButton
-                            type="submit"
-                            data-testid={ `${ testId }-form-submit-button` }
-                            loading={ isSubmitting }
-                            disabled={ isSubmitting }
-                        >
-                            Update
-                        </PrimaryButton>
+                        {
+                            !readOnly && (
+                                <PrimaryButton
+                                    type="submit"
+                                    data-testid={ `${ testId }-form-submit-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
+                                    Update
+                                </PrimaryButton>
+                            )
+                        }
                     </Grid.Column>
                 </Grid>
             </Forms>

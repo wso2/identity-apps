@@ -48,6 +48,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../applications/constants";
 import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
@@ -281,6 +282,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         listItemLimit,
         authorizedListNextCursor,
         authorizedListPrevCursor,
+        ApplicationManagementConstants.CONSOLE_APP_NAME,
         false
     );
 
@@ -368,7 +370,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             data: PaginationProps
         ): void => {
             const newPage: number = parseInt(data?.activePage as string);
-            
+
             if (newPage > activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, after, null);
                 setAuthorizedListNextCursor(after);

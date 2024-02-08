@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,11 +42,11 @@ import { AxiosError } from "axios";
 import difference from "lodash-es/difference";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Segment } from "semantic-ui-react";
 import { getAllLocalClaims } from "../../../../../features/claims/api";
-import { sortList } from "../../../../../features/core";
+import { AppState, sortList } from "../../../../../features/core";
 import { updateUserStoreAttributeMappings } from "../../../../../features/userstores/api/user-stores";
 import { DISABLED } from "../../../../../features/userstores/constants/user-store-constants";
 import {
@@ -54,7 +54,6 @@ import {
     UserStore,
     UserStoreProperty
 } from "../../../../../features/userstores/models/user-stores";
-import { attributeConfig } from "../../../../configs";
 import { RemoteUserStoreConstants } from "../../constants";
 
 /**
@@ -93,13 +92,16 @@ export const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterfac
     const { getLink } = useDocumentation();
     const { isMobileViewport } = useMediaContext();
 
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
+
     const [ attributes, setAttributes ] = useState<Claim[]>(null);
     const [ localAttributes, setLocalAttributes ] = useState<Claim[]>(null);
     const [ customAttributes, setCustomAttributes ] = useState<Claim[]>(null);
     const [ isAttributesListRequestLoading, setAttributesListRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, attributeConfig.attributes.excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, !enableIdentityClaims);
     }, []);
 
     useEffect(() => {

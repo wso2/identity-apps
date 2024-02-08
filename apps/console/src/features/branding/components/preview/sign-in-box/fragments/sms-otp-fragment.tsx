@@ -38,14 +38,14 @@ const SMSOTP: FunctionComponent<SMSOTPInterface> = (props: SMSOTPInterface): Rea
     const { i18n } = useBrandingPreference();
 
     return (
-        <div data-componentid={ componentId }>
+        <div className="sms-otp-portal-layout" data-componentid={ componentId }>
             <h2>{ i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.SMS_OTP.HEADING, "OTP Verification") }</h2>
             <div className="ui divider hidden" />
             <div className="segment-form">
                 <form className="ui large form" id="codeForm" name="codeForm" method="POST">
                     <div className="field">
                         <label htmlFor="password">Enter the code sent to your mobile phone (******3830)</label>
-                        <div className="equal width fields">
+                        <div className="sms-otp-fields equal width fields">
                             <div className="field mt-5">
                                 <input
                                     className="text-center p-3"

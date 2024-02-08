@@ -45,6 +45,16 @@
     supportedLanguages.put("de", "DE");
     supportedLanguages.put("zh", "CN");
     supportedLanguages.put("ja", "JP");
+    
+    List<String> languageSupportedCountries = new ArrayList<>();
+    languageSupportedCountries.add("US");
+    languageSupportedCountries.add("FR");
+    languageSupportedCountries.add("ES");
+    languageSupportedCountries.add("PT");
+    languageSupportedCountries.add("DE");
+    languageSupportedCountries.add("CN");
+    languageSupportedCountries.add("JP");
+    languageSupportedCountries.add("BR");
 
     // Check cookie for the user selected language first
     Cookie[] cookies = request.getCookies();
@@ -116,12 +126,15 @@
         }
     } else {
         // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
-        String countryCode = supportedLanguages.get(browserLocale.getLanguage());
+        String countryCode = browserLocale.getCountry();
+        String fallbackCountryCode = supportedLanguages.get(browserLocale.getLanguage());
 
-        if (StringUtils.isNotBlank(countryCode)) {
+        if (StringUtils.isNotBlank(countryCode) && languageSupportedCountries.contains(countryCode)) {
             userLocale = new Locale(browserLocale.getLanguage(), countryCode);
+        } else if (StringUtils.isNotBlank(fallbackCountryCode)){
+            userLocale = new Locale(browserLocale.getLanguage(), fallbackCountryCode);
         } else {
-            userLocale = browserLocale;
+            userLocale = new Locale("en","US");
         }
     }
 

@@ -9,11 +9,11 @@
 ~    You may not alter or remove any copyright or other notice from copies of this content."
 -->
 
-<web-app 
-    xmlns="http://java.sun.com/xml/ns/j2ee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<web-app
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
+    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     version="2.4"
 >
 
@@ -38,7 +38,7 @@
         <servlet-name>home</servlet-name>
         <jsp-file>/home.jsp</jsp-file>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/libs/*</url-pattern>
@@ -76,7 +76,7 @@
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
-        <url-pattern>/auth-spa-0.3.3.min.js</url-pattern>
+        <url-pattern>/auth-spa-3.0.1.min.js</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

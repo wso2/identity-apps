@@ -61,6 +61,10 @@ export const ThemeSwatchAdapter: FunctionComponent<ThemeSwatchAdapterInterface> 
 
     const toggleRadioState = (checked: boolean = isChecked): void => {
 
+        if (childFieldProps?.readOnly) {
+            return;
+        }
+
         if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
             childFieldProps.listen(checked);
         }

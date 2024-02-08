@@ -17,6 +17,7 @@
  */
 
 import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
@@ -25,6 +26,7 @@ import useConsoleRoles from "./use-console-roles";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../core/models/users";
 import { AppState } from "../../core/store";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useUsersList } from "../../users/api/users";
 import { useGetParentOrgUserInvites } from "../../users/components/guests/api/use-get-parent-org-user-invites";
 import { InvitationsInterface } from "../../users/components/guests/models/invite";
@@ -35,6 +37,10 @@ import { UserManagementUtils } from "../../users/utils/user-management-utils";
  * Props interface of {@link UseAdministrators}
  */
 export interface UseAdministratorsInterface {
+    /**
+     * Error occurred while fetching admin users list.
+     */
+    adminUserListFetchError: AxiosError;
     /**
      * Administrators list.
      */
@@ -94,8 +100,11 @@ const useAdministrators = (
 
     const modifiedLimit: number = count + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const {
         data: originalAdminUserList,
+        error: adminUserListFetchError,
         isLoading: isAdministratorsListFetchRequestLoading,
         mutate: mutateAdministratorsListFetchRequest
     } = useUsersList(
@@ -111,7 +120,7 @@ const useAdministrators = (
     const {
         data: invitedAdministrators,
         mutate: mutateInvitedAdministratorsListFetchRequest
-    } = useGetParentOrgUserInvites();
+    } = useGetParentOrgUserInvites(isSubOrganization());
 
     const { consoleRoles } = useConsoleRoles(null, null);
 
@@ -232,6 +241,7 @@ const useAdministrators = (
     }, [ originalAdminUserList, consoleRoles ]);
 
     return {
+        adminUserListFetchError,
         administrators,
         invitedAdministrators,
         isAdministratorsListFetchRequestLoading,

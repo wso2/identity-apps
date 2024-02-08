@@ -102,7 +102,8 @@ export class UserManagementConstants {
         .set("EMAILS", "emails")
         .set("USERNAME", "userName")
         .set("NAME", "name")
-        .set("DISPLAY_NAME", "displayName");
+        .set("DISPLAY_NAME", "displayName")
+        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User");
 
     /**
      * Set of SCIM2 enterprise attributes.
@@ -128,7 +129,8 @@ export class UserManagementConstants {
     public static readonly RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
 
     // ID of the form used in the invite parent organization user component.
-    public static readonly  INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
+    public static readonly INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
+    public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301"
 }
 
 /**
@@ -241,6 +243,14 @@ export enum HiddenFieldNames {
 export enum PasswordOptionTypes {
     ASK_PASSWORD = "ask-password",
     CREATE_PASSWORD = "create-password"
+}
+
+/**
+ * Enum for ask-password option types.
+ */
+export enum AskPasswordOptionTypes {
+    EMAIL = "email",
+    OFFLINE = "offline"
 }
 
 /**

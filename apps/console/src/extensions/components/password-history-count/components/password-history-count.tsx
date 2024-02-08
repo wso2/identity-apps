@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,8 @@ export const generatePasswordHistoryCount = (
     componentId: string,
     passwordHistoryEnabled: boolean,
     setPasswordHistoryEnabled: (value: boolean) => void,
-    t: TFunction<"translation", undefined>
+    t: TFunction<"translation", undefined>,
+    isReadOnly: boolean = false
 ): ReactElement => {
     return (
         <>
@@ -43,6 +44,7 @@ export const generatePasswordHistoryCount = (
                     } }
                     width={ 16 }
                     data-testid={ `${ componentId }-password-history-count-toggle` }
+                    readOnly={ isReadOnly }
                 />
                 <Field.Input
                     ariaLabel="Password History Count"
@@ -55,7 +57,7 @@ export const generatePasswordHistoryCount = (
                     placeholder="5"
                     maxLength={ 2 }
                     minLength={ 2 }
-                    readOnly={ false }
+                    readOnly={ isReadOnly }
                     disabled={ !passwordHistoryEnabled }
                     data-testid={ `${ componentId }-password-history-count` }
                     validation={ (value: string): string | undefined=> {

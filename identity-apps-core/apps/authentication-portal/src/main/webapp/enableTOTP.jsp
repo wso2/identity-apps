@@ -172,20 +172,22 @@
                                         value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>"
                                         class="ui primary fluid large button" disabled>
                             </div>
-                            <%
-                                String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null &&
-                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
-                                        isMultiAuthAvailable(multiOptionURI)) {
-                            %>
-                            <div class="mt-1 align-center">
-                                <a id="cancel"
-                                   href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
-                                   class="ui fluid large button secondary">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
-                                </a>
+                            <div class="text-center mt-1">
+                                <%
+                                    String multiOptionURI = request.getParameter("multiOptionURI");
+                                    if (multiOptionURI != null &&
+                                            AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                            isMultiAuthAvailable(multiOptionURI)) {
+                                %>
+                                    <a 
+                                        class="ui primary basic button link-button" 
+                                        id="goBackLink"
+                                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                    </a>
+                                <% } %>
                             </div>
-                            <% } %>
                         </form>
                     </div>
                 </div>

@@ -454,6 +454,14 @@ export const extensions: Extensions = {
                 header: "කළමනාකරණ API",
                 description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API (root)"
             },
+            consoleFeature: {
+                header: "කොන්සෝල ලක්ෂණ",
+                description: "කොන්සෝලය තුළ සම්පත් කළමනාකරණය කිරීමට අවසර"
+            },
+            businessAPI: {
+                header: "ව්යාපාර API",
+                description: "පරිශීලකයා විසින් නිර්මාණය කරන ලද අභිරුචි API"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -1008,7 +1016,7 @@ export const extensions: Extensions = {
                                     searchPlaceholer: "API නම සහ අවසර නාමය අනුව සොයන්න"
                                 }
                             },
-                            heading: "භූමිකාව සාදන්න",
+                            heading: "නව භූමිකාව",
                             subHeading: "ඔබගේ යෙදුමේ නව භූමිකාවක් සාදන්න.",
                             wizardSteps: {
                                 0: "මූලික විස්තර",
@@ -1885,6 +1893,10 @@ export const extensions: Extensions = {
                 description: "ඔබේ සංවිධානයේ යෙදුම්වල පාරිභෝගිකයින්ට මුහුණ දෙන පරිශීලක අතුරුමුහුණත් අභිරුචිකරණය කරන්න.",
                 title: "වෙළඳ නාමය අභිරුචිකරණය"
             },
+            pageResolution: {
+                hint: "පෙරදසුන් කොටසේ පිටු සැබෑ පිටුවට වඩා වෙනස් ලෙස පෙනෙනු ඇත. " +
+                    "මෙම ගැටළුව විසඳීමට කරුණාකර ඔබගේ තිරය ඉහළ විභේදනයකට සකසන්න."
+            },
             publishToggle: {
                 hint: "වෙනස්කම් සක්රිය / අක්රිය කරන්න",
                 label: "සජීවීව යන්න",
@@ -1997,14 +2009,13 @@ export const extensions: Extensions = {
                 },
                 smtpPort: {
                     label: "සේවාදායක වරාය",
-                    placeholder: "වරාය අංකයක් ඇතුළත් කරන්න",
-                    hint: "පෙරනිමි SMTP තොට <1>25</1> වේ, නමුත් සමහර විද්‍යුත් තැපැල් සේවා සපයන්නන් <3>587</3> වැනි විකල්ප වරායන් " +
-                        "භාවිතා කළ හැක. නිවැරදි SMTP තොට සඳහා ඔබේ විද්‍යුත් තැපැල් සේවා සපයන්නා සමඟ පරීක්ෂා කරන්න."
+                    placeholder: "කෙවෙනි අංකය ඇතුළත් කරන්න",
+                    hint: "ආරක්ෂක හේතූන් මත, අපි දැනට කෙවෙනි අංකය <1>587</1> පමණක් සහාය දක්වමු."
                 },
                 fromAddress: {
                     label: "ලිපිනයෙන්",
                     placeholder: "ඊමේල් ලිපිනයක් ඇතුලත් කරන්න",
-                    hint: "ආරක්ෂක හේතූන් මත, අපි දැනට වරාය <1>587</1> පමණක් සහාය දක්වමු."
+                    hint: "ඔබේ පිටතට යන ඊමේල් යවන්නා ලෙස ඔබට පෙනී සිටීමට අවශ්ය විද්යුත් තැපැල් ලිපිනය ලිපිනයකි.මෙය ඔබට ප්රවේශය ඇති ඊමේල් ලිපිනයක් විය යුතුය."
                 },
                 replyToAddress: {
                     label: "පිළිතුරු-ලිපිනයට",
@@ -2153,7 +2164,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "අන්තර්ගතයේ වර්ගය",
                         placeholder: "JSON",
-                        hint: "SMS යැවීම සඳහා භාවිතා කරන API ඉල්ලීමේ අන්තර්ගත වර්ගය."
+                        hint: "API ඉල්ලීමේ අන්තර්ගත වර්ගය. පිළිගත් අගයන් 'FORM' හෝ 'JSON' වේ"
                     },
                     headers: {
                         label: "ශීර්ෂ",
@@ -2162,8 +2173,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "ගෙවීම",
-                        placeholder: "ගෙවීම ඇතුළත් කරන්න",
-                        hint: "SMS API ඉල්ලීමේ ගෙවීම."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "API ඉල්ලීමේ ගෙවීමේ අච්චුව. උත්පාදනය කරන ලද SMS අන්තර්ගතය නියෝජනය කිරීමට {{body}} භාවිතා කරන්න. ජංගම දුරකථන අංකය නියෝජනය කිරීමට {{mobile}} භාවිතා කරන්න."
                     },
                     key: {
                         label: "SMS සපයන්නාගේ සත්‍යාපන යතුර",
@@ -3029,7 +3040,7 @@ export const extensions: Extensions = {
                     2: "අතර විය යුතුය."
                 },
                 usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "අකුරු (a-z, A-Z), අංක (0-9) සහ පහත දැක්වෙන අක්ෂරවල ඕනෑම සංයෝජනයක්: !@#$%&'*+\\=?^_.{|}~-."
+                usernameSpecialCharsHint: "අකුරු (a-z, A-Z), අංක (0-9) සහ පහත දැක්වෙන අක්ෂරවල ඕනෑම සංයෝජනයක්: !@#$&'+\\=^_.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "විකල්ප පිවිසුම් හඳුනාගැනීම්",
@@ -3255,6 +3266,7 @@ export const extensions: Extensions = {
                         password:
                             "ඔබගේ මුරපදයේ අවම වශයෙන් එක් ලොකු අකුරක්, කුඩා අකුරක් සහ එක් අංකයක් ඇතුළුව අවම වශයෙන් " +
                             "අක්ෂර 8ක් අඩංගු විය යුතුය.",
+                        confirmPassword: "මුරපද දෙකම ගැලපිය යුතුය",
                         passwordCase: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු සහ {{minLowerCase}} කුඩා අකුරු",
                         upperCase: "අවම වශයෙන් {{minUpperCase}} ලොකු අකුරු(ය)",
                         lowerCase: "අවම වශයෙන් {{minLowerCase}} කුඩා අකුරු(ය)",
@@ -3268,7 +3280,7 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා අක්ෂරාංක (a-z, A-Z, 0-9) තන්තුවක් විය යුතුය.",
                         usernameSpecialCharHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා දිගු " +
-                            "විය යුතු අතර, පහත දැක්වෙන අක්ෂරවල එකතුවක් අඩංගු විය හැක: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_.{|}~-.",
+                            "විය යුතු අතර, පහත දැක්වෙන අක්ෂරවල එකතුවක් අඩංගු විය හැක: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
                         usernameLength: "පරිශීලක නාමයේ දිග {{minLength}} සහ {{maxLength}} අතර විය යුතුය.",
                         usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය.",
                         usernameSpecialCharSymbols: "කරුණාකර ලබා දී ඇති මාර්ගෝපදේශවලට අනුකූල වන වලංගු පරිශීලක නාමයක් තෝරන්න."

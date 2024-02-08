@@ -310,6 +310,10 @@ export interface Extensions {
                 title: string;
             };
             addApiResourceButton: string;
+            businessAPI: {
+                header: string;
+                description: string;
+            };
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: string;
@@ -324,10 +328,14 @@ export interface Extensions {
                     message: string;
                 };
             };
-            managementAPI: {
+            consoleFeature: {
                 header: string;
                 description: string;
             }
+            managementAPI: {
+                header: string;
+                description: string;
+            };
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -1696,6 +1704,9 @@ export interface Extensions {
                 description: string;
                 title: string;
             };
+            pageResolution: {
+                hint: string;
+            };
             publishToggle: {
                 hint: string;
                 label: string;
@@ -3058,6 +3069,7 @@ export interface Extensions {
                     };
                     validation: {
                         password: string;
+                        confirmPassword: string;
                         passwordCase: string;
                         upperCase: string;
                         lowerCase: string;

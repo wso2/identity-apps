@@ -20,12 +20,12 @@ import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
-import { RenderChip } from "./render-chip";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 import "./permissions-list.scss";
 
@@ -108,6 +108,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                                 className: "permissions-label",
                                 required: true
                             } }
+                            size="small"
                         />
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
@@ -116,11 +117,10 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                         value: ScopeInterface[],
                         getTagProps: AutocompleteRenderGetTagProps
                     ) => value.map((option: ScopeInterface, index: number) => (
-                        <RenderChip
+                        <Chip
                             { ...getTagProps({ index }) }
                             key={ index }
-                            primaryText={ option.displayName }
-                            secondaryText={ option.name }
+                            label={ option.displayName }
                             option={ option }
                             activeOption={ activeOption }
                             setActiveOption={ setActiveOption }

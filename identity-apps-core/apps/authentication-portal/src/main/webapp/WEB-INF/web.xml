@@ -357,6 +357,11 @@
         <jsp-file>/magic_link_notification.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>duo_error.do</servlet-name>
+        <jsp-file>/duoError.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>magic_link_notification.do</servlet-name>
         <url-pattern>/magic_link_notification.do</url-pattern>
@@ -585,6 +590,11 @@
     <servlet-mapping>
         <servlet-name>error.do</servlet-name>
         <url-pattern>/error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>duo_error.do</servlet-name>
+        <url-pattern>/duo_error.do</url-pattern>
     </servlet-mapping>
 
     <error-page>

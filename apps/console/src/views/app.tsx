@@ -148,7 +148,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
     const initLoad: MutableRefObject<boolean> = useRef(true);
 
 
-    const sanitizedRoutes: RouteInterface[] = useMemo(() => {        
+    const sanitizedRoutes: RouteInterface[] = useMemo(() => {
         return [
             ...sortBy(developSanitizedRoutes, "order") ];
     }, [ developSanitizedRoutes ]);
@@ -317,7 +317,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
         const categorizedRoutes: CategorizedRouteInterface = {};
 
         let index: number = 0;
-        const UNCATEGORIZED: string = "uncategorized";        
+        const UNCATEGORIZED: string = "uncategorized";
 
         for (const route of RouteUtils.groupNavbarRoutes(sanitizedRoutes, saasFeatureStatus)) {
             if (route.navCategory) {
@@ -339,7 +339,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
             ([ _navCategory, routes ]: [ navCategory: string, routes: NavRouteInterface[] ]) => {
 
                 return {
-                    items: routes.map((route: NavRouteInterface) => ({  
+                    items: routes.map((route: NavRouteInterface) => ({
                         "data-componentid": `side-panel-items-${ kebabCase(route.id) }`,
                         "data-testid":  `side-panel-items-${ kebabCase(route.id) }`,
                         icon: <GenericIcon
@@ -371,7 +371,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
     };
 
     /**
-     * 
+     *
      * @param routePath - current route path
      * @returns if the navigation item is active.
      */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -58,7 +58,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
     useEffect(() => {
         setPermissionsList([ ...addedPermissions.values() ].reverse());
     }, [ addedPermissions ]);
-    
+
     /**
      * Resolves data table actions.
      *
@@ -69,7 +69,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
             {
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, permission: APIResourcePermissionInterface): void => {
-                    removeAdddedPermission(permission);
+                    removeAddedPermission(permission);
                 },
                 popupText: (): string => t("console:apiResources.tabs.scopes.removeScopePopupText"),
                 renderer: "semantic-icon"
@@ -136,14 +136,14 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
 
     /**
      * Empty placeholder for the permissions list.
-     * 
+     *
      * @returns `ReactElement`
      */
     const showPlaceholders = (): ReactElement => {
         if (permissionsList?.length === 0) {
-            return ( 
+            return (
                 <>
-                    <Divider className="mb-1"r hidden />
+                    <Divider className="mb-1" hidden />
                     <EmptyPlaceholder
                         subtitle={ [ t("console:apiResources.tabs.scopes.empty.title") ] }
                     />
@@ -151,16 +151,16 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 </>
             );
         }
-        
+
         return null;
     };
 
     /**
-     * Handels the remove permission action.
+     * Handles the remove permission action.
      *
      * @param permission - `APIResourcePermissionInterface`
      */
-    const removeAdddedPermission = (permission: APIResourcePermissionInterface): void => {
+    const removeAddedPermission = (permission: APIResourcePermissionInterface): void => {
         updatePermissions(permission, "delete");
     };
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,12 @@ import { getClaimsForDialect, getDialects } from "../components/claims/api";
  * @param claim - claim
  */
 const isIdentityClaims = (claim: ExternalClaim): boolean => {
+    const enableIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims;
+
+    if (enableIdentityClaims) {
+        return false;
+    }
+
     const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
 
     return identityRegex.test(claim.mappedLocalClaimURI);
@@ -47,7 +53,7 @@ export const attributeConfig: AttributeConfig = {
 
             if (attributeType == ClaimManagementConstants.SCIM) {
                 response.forEach((claim: ExternalClaim) => {
-                    if (!claim.mappedLocalClaimURI.match(/\/identity\//)) {
+                    if (!isIdentityClaims(claim)) {
                         claims.push(claim);
                     }
                 });
@@ -64,7 +70,6 @@ export const attributeConfig: AttributeConfig = {
         addAttribute: true,
         deleteAction: false,
         description: "extensions:manage.attributes.attributes.description",
-        excludeIdentityClaims: true,
         showEditTabs: true,
         showUserstoreMappingWarningIcon: true
     },
@@ -277,7 +282,7 @@ export const attributeConfig: AttributeConfig = {
             showOnlyMandatory: true,
             showPrimaryUserStore: false,
             showReadOnlyAttribute: false,
-            showRegularExpression: true,
+            showRegularExpression: false,
             showSummary: false
         },
         customDialectURI: "urn:scim:wso2:schema",

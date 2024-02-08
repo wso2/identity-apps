@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,16 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
+import { FeatureConfigInterface } from "../../../../features/core/models";
+import { AppState } from "../../../../features/core/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 
@@ -49,6 +53,14 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     /**
      * Vertical Stepper steps.
      * @returns An array of Vertical Stepper steps.
@@ -63,8 +75,10 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.smsOTP.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
-                            application </Link> for which you want to set up SMS OTP login.
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
+                            for which you want to set up SMS OTP login.
                         </Trans>
                     </Text>
                 </>
@@ -79,7 +93,7 @@ const SMSOTPQuickStart: FunctionComponent<SMSOTPQuickStartPropsInterface> = (
                             i18nKey={ "extensions:develop.identityProviders.smsOTP.quickStart.steps.selectSMSOTP" +
                                 ".content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add SMS OTP as a second
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add SMS OTP as a second
                             factor</strong> to configure a basic SMS OTP flow.
                         </Trans>
                     </Text>

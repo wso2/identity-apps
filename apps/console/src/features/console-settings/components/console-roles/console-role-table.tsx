@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     RoleListInterface,
@@ -41,9 +42,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
-import { AppConstants } from "../../../core/constants/app-constants";
-import { history } from "../../../core/helpers/history";
-import { FeatureConfigInterface } from "../../../core/models/config";
 import { AppState } from "../../../core/store/index";
 import { RoleAudienceTypes } from "../../../roles/constants/role-constants";
 
@@ -104,7 +102,10 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const administratorRoleDisplayName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -263,14 +264,14 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
         return [
             {
                 icon: (): SemanticICONS =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                         ? "pencil alternate"
                         : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                         && onRoleEdit(role),
                 popupText: (): string =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                         ? t("console:manage.features.roles.list.popups.edit",
                             { type: "Role" })
                         : t("common:view"),
@@ -278,8 +279,9 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
             },
             {
                 hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP)
-                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
+                    role?.displayName === RoleConstants.ADMIN_GROUP ||
+                    role?.displayName === administratorRoleDisplayName)
+                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);
@@ -299,7 +301,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ roleList?.Resources }
-                onRowClick={(_: SyntheticEvent, role: RolesInterface): void => {
+                onRowClick={ (_: SyntheticEvent, role: RolesInterface): void => {
                     onRoleEdit(role);
                 } }
                 placeholders={ showPlaceholders() }

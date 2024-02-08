@@ -68,7 +68,7 @@
     ValidationConfigurationRetrievalClient validationConfigurationRetrievalClient = new ValidationConfigurationRetrievalClient();
     JSONObject passwordConfig = null;
     /*
-     This variable exists for backward compatibility.If isPasswordInputValidationEnabled is true, the password 
+     This variable exists for backward compatibility.If isPasswordInputValidationEnabled is true, the password
      validation will be done via the new input validation listener. Otherwise, it will be done via the old password
      policy validation handler.
     */
@@ -113,9 +113,9 @@
                     <%-- content --%>
                     <h2>
                         <% if ("invite".equalsIgnoreCase(type)) { %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Set.Password")%>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Set.Password")%>
                         <% } else { %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
+                            <%=i18n(recoveryResourceBundle, customText, "password.reset.heading")%>
                         <% } %>
                     </h2>
 
@@ -290,7 +290,7 @@
                                 <button id="submit"
                                         class="ui primary button"
                                         type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Proceed")%>
+                                    <%=i18n(recoveryResourceBundle, customText, "password.reset.button")%>
                                 </button>
                             </div>
                         </form>
@@ -456,7 +456,7 @@
              * Util function to validate password
              */
             function validatePassword() {
-                
+
                 if (!isPasswordInputValidationEnabled){
                     return;
                 }
@@ -544,11 +544,11 @@
             }
 
             /**
-             * Function to enable cross-marks on unmet criteria when submitting. When isPasswordInputValidationEnabled 
+             * Function to enable cross-marks on unmet criteria when submitting. When isPasswordInputValidationEnabled
              * is false, only the basic password validation will be performed.
              */
             function passwordSubmitValidation() {
-                
+
                 if (!isPasswordInputValidationEnabled){
                     const errorMsg = $("#error-msg");
                     if (!passwordField.val() && passwordField.val().length === 0) {
@@ -593,7 +593,7 @@
             }
 
             function displayPasswordCross() {
-                
+
                 if (!isPasswordInputValidationEnabled){
                     return;
                 }

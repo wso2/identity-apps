@@ -32,7 +32,7 @@ export interface ErrorMessageProps {
 	 */
 	meta: FieldMetaState<any>;
 	/**
-	 * Props to be passed down to the `FormHelperText` component 
+	 * Props to be passed down to the `FormHelperText` component
 	 * from `oxygen-ui-react`.
 	 */
 	formHelperTextProps?: Partial<FormHelperTextProps>;
@@ -73,7 +73,7 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
             key={ index }
             name={ fieldProps.name }
             label={ fieldProps.label }
-            type={ fieldProps.type }
+            inputType={ fieldProps.type }
             { ...fieldProps }
         />
     ));

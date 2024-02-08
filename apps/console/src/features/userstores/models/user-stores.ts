@@ -38,6 +38,15 @@ export interface UserStoreListItem {
 }
 
 /**
+ * Type of userstore list item passed as options to dropdown fields.
+ */
+export interface UserStoreDropdownItem {
+    key: number;
+    text: string;
+    value: string;
+}
+
+/**
  * Type of a userstore property
  */
 export interface UserStoreProperty {

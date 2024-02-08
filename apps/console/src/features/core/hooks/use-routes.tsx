@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,14 +17,13 @@
  */
 
 import { AccessControlUtils } from "@wso2is/access-control";
-import { RouteInterface } from "@wso2is/core/models";
+import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig } from "../../../extensions/configs/common";
 import useAuthorization from "../../authorization/hooks/use-authorization";
-import { OrganizationManagementConstants } from "../../organizations/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getAppViewRoutes } from "../configs/routes";
 import { AppConstants } from "../constants/app-constants";
@@ -55,12 +54,14 @@ const useRoutes = (): useRoutesInterface => {
     const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const legacyModeConfigs: LegacyModeInterface = useSelector((state: AppState) => state.config.ui.legacyMode);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
-    const isSuperAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
+    const superAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state?.auth?.isPrivilegedUser);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
     /**
      * Filter the routes based on the user roles and permissions.
      *
@@ -94,7 +95,7 @@ const useRoutes = (): useRoutesInterface => {
                 if (legacyAuthzRuntime) {
                     if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
                         if (isPrivilegedUser) {
-                            if (loggedUserName === isSuperAdmin) {
+                            if (loggedUserName === superAdmin) {
                                 return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
                             } else {
                                 return [
@@ -104,7 +105,7 @@ const useRoutes = (): useRoutesInterface => {
                                 ];
                             }
                         } else {
-                            if (loggedUserName === isSuperAdmin) {
+                            if (loggedUserName === superAdmin) {
                                 return commonHiddenRoutes;
                             } else {
                                 return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
@@ -113,8 +114,7 @@ const useRoutes = (): useRoutesInterface => {
                     } else {
                         if (window["AppUtils"].getConfig().organizationName) {
                             return [
-                                ...AppUtils.getHiddenRoutes(),
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                                ...AppUtils.getHiddenRoutes()
                             ];
                         } else {
                             return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
@@ -127,9 +127,9 @@ const useRoutes = (): useRoutesInterface => {
                         ...AppUtils.getHiddenRoutes()
                     ];
                 } else {
-                    if (isCurrentOrgRootAndSuperTenant && loggedUserName === isSuperAdmin) {
+                    if (isCurrentOrgRootAndSuperTenant && loggedUserName === superAdmin) {
                         return commonHiddenRoutes;
-                    } else if (!isCurrentOrgRootAndSuperTenant || loggedUserName !== isSuperAdmin) {
+                    } else if (!isCurrentOrgRootAndSuperTenant || loggedUserName !== superAdmin) {
                         return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
                     }else {
                         return [ ...commonHiddenRoutes ];
@@ -156,6 +156,9 @@ const useRoutes = (): useRoutesInterface => {
                 && AppConstants.ORGANIZATION_ENABLED_ROUTES;
         }
 
+        // Console feature scope check is disabled when the consoleFeatureScopeCheck flag is explicitly set to false.
+        const checkConsoleScopes: boolean = !(legacyModeConfigs?.consoleFeatureScopeCheck === false);
+
         const [
             appRoutes,
             sanitizedAppRoutes
@@ -163,7 +166,7 @@ const useRoutes = (): useRoutesInterface => {
             getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
-            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
+            checkConsoleScopes,
             resolveHiddenRoutes(),
             allowedRoutes
         );

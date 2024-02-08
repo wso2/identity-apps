@@ -55,7 +55,7 @@
                         String copyright = i18n(resourceBundle, customText, "copyright", __DEPRECATED__copyrightText);
                         if (StringUtils.isNotBlank(copyright)) {
                     %>
-                        <span class="copyright-text"><%= copyright %></span>
+                        <span class="copyright-text line-break"><%= copyright %></span>
                     <% } %>
                     <%
                         if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
@@ -87,7 +87,7 @@
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
                 >
-                    <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
+                    <%=i18n(resourceBundle, customText, "privacy.policy")%>
                 </a>
             <% } %>
             <%
@@ -101,7 +101,7 @@
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
                 >
-                    <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "terms.of.service")%>
+                    <%=i18n(resourceBundle, customText, "terms.of.service")%>
                 </a>
             <% } %>
 
@@ -112,9 +112,14 @@
                     "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
                     "/backup_code.do", "/device.do", "/error.do");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
+                    File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
+                    if (languageSwitcherFile.exists()) {
             %>
-                <jsp:include page="language-switcher.jsp"/>
-            <% } %>
+                        <jsp:include page="../extensions/language-switcher.jsp"/>
+                    <% } else { %>
+                        <jsp:include page="language-switcher.jsp"/>
+                    <% } %>
+                <% } %>
             </div>
         </div>
     </div>

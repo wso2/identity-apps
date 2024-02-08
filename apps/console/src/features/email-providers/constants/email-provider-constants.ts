@@ -21,7 +21,7 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 export class EmailProviderConstants {
 
     private constructor() { }
-    
+
     public static readonly EMAIL_PROVIDER_CONFIG_NAME: string = "EmailPublisher";
     public static readonly REPLY_TO_ADDRESS_KEY: string = "mail.smtp.replyTo";
     public static readonly SIGNATURE_KEY: string = "mail.smtp.signature";
@@ -33,7 +33,8 @@ export class EmailProviderConstants {
     public static readonly EMAIL_PROVIDER_CONFIG_NOT_FOUND_ERROR_CODE: string = "NSM-60006";
 
     public static readonly EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH: number = 0;
-    public static readonly EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH: number = 100;
+    public static readonly EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH: number = 255;
+    public static readonly EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH: number = 6;
     public static readonly EMAIL_REGEX: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 	public static ErrorMessages: {

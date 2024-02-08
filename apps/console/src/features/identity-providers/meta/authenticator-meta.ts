@@ -75,7 +75,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
             "recovery option.",
             [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: "Limit the number " +
-            "of active user sessions."
+            "of active user sessions.",
+            [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
+                "client certificates."
         }, authenticatorId);
     }
 

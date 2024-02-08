@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -526,10 +526,10 @@ export const console: ConsoleNS = {
                 copiedPopupText: "Copied the Identifier",
                 removeScopePopupText: "Remove the scope",
                 form: {
-                    button: "Add Scope",
+                    button: "New Scope",
                     cancelButton: "Cancel",
-                    submitButton: "Finish",
-                    title: "Add Scope",
+                    submitButton: "Create",
+                    title: "Create a Scope",
                     subTitle: "Create a new Scope",
                     fields: {
                         displayName: {
@@ -615,7 +615,10 @@ export const console: ConsoleNS = {
             "email-template": "Email Templates",
             "sign-up": "Sign Up",
             "totp": "TOTP",
-            myaccount: "My Account"
+            myaccount: "My Account",
+            "password-recovery": "Password Recovery",
+            "password-reset": "Password Reset",
+            "password-reset-success": "Password Reset Success"
         }
     },
     brandingCustomText: {
@@ -636,8 +639,14 @@ export const console: ConsoleNS = {
                 copyright: {
                     hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
                 },
+                "privacy.policy": {
+                    hint: "The privacy policy text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
+                },
                 "site.title": {
                     hint: "The site title may appear in browser tabs, search engine results, social shares, etc. If not set, {{productName}} defaults are used."
+                },
+                "terms.of.service": {
+                    hint: "The terms of service text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
                 },
                 "login.button": {
                     hint: "The text that appears on the main action button of the login box. If not set, {{productName}} defaults are used."
@@ -659,6 +668,30 @@ export const console: ConsoleNS = {
                 },
                 "sign.up.heading": {
                     hint: "The heading of the sign up box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.body": {
+                    hint: "The body text of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.button": {
+                    hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.heading": {
+                    hint: "The heading of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.button": {
+                    hint: "The text that appears on the main action button of the password reset box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.heading": {
+                    hint: "The heading of the password reset box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.action": {
+                    hint: "The text that appears on the main action link of the password reset success box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.body": {
+                    hint: "The body text of the password reset success box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.heading": {
+                    hint: "The heading of the password reset success box. If not set, {{productName}} defaults are used."
                 }
             }
         },
@@ -703,6 +736,13 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            add: {
+                action: "Add Administrator",
+                options: {
+                    addExistingUser: "Add Existing User",
+                    inviteNewUser: "Invite New User"
+                }
+            },
             edit: {
                 backButton: "Go back to Administrators"
             },
@@ -715,6 +755,14 @@ export const console: ConsoleNS = {
             tabLabel: "Protocol"
         },
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: "Organization Permissions"
+                },
+                tenantPermissions: {
+                    label: "Root Organization Permissions"
+                }
+            },
             tabLabel: "Roles",
             permissionLevels: {
                 edit: "Edit",
@@ -1223,7 +1271,7 @@ export const console: ConsoleNS = {
                                     message: "Application sharing failed!"
                                 },
                                 success: {
-                                    description: "Application Shared with the organization(s) successfully",
+                                    description: "Application shared with the organization(s) successfully",
                                     message: "Application shared!"
                                 }
                             },
@@ -1241,7 +1289,7 @@ export const console: ConsoleNS = {
                                     message: "Application sharing stop failed!"
                                 },
                                 success: {
-                                    description: "Application Sharing stopped with the {{organization}} successfully",
+                                    description: "Application sharing stopped with the {{organization}} successfully",
                                     message: "Application shared stopped successfully!"
                                 }
                             },
@@ -1436,7 +1484,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 customization: {
-                                    heading: "Customize Sign-in Method",
+                                    heading: "Customize Login Flow",
                                     revertToDefaultButton: {
                                         hint: "Revert back to the default configuration (Username & Password)",
                                         label: "Revert to default"
@@ -1608,7 +1656,7 @@ export const console: ConsoleNS = {
                                     popupContent: "More details"
                                 }
                             },
-                            tabName: "Sign-in Method"
+                            tabName: "Login Flow"
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
@@ -1617,7 +1665,7 @@ export const console: ConsoleNS = {
                             createApplicationRoleWizard: {
                                 title: "Create Application Role",
                                 subTitle: "Create a new application role in the system.",
-                                button: "Create Role"
+                                button: "New Role"
                             }
                         }
                     }
@@ -1870,6 +1918,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "This certificate is used to encrypt the <1>id_token</1>" +
                                         " returned after the authentication.",
+                                    customPassiveSTS: "This certificate is used to validate the signatures of the signed requests.",
                                     customSaml: "This certificate is used to validate the signatures of the " +
                                         "signed requests and to encrypt the SAML assertions returned after " +
                                         "authentication."
@@ -1960,6 +2009,7 @@ export const console: ConsoleNS = {
                             },
                             generic: {
                                 label: "{{label}}",
+                                placeholder: "Enter {{name}}",
                                 validations: {
                                     empty: "Select the {{name}}"
                                 }
@@ -2124,7 +2174,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Allow revoking tokens of this application when a bound IDP session " +
-                                            "gets terminated through a user logout.",
+                                            "gets terminated through a user logout. Remember to include either <1>client_id</1> " +
+                                            "or <3>id_token_hint</3> in the logout request.",
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
@@ -2700,7 +2751,7 @@ export const console: ConsoleNS = {
                     inboundSTS: {
                         fields: {
                             realm: {
-                                hint: "Enter realm identifier for passive sts",
+                                hint: "Enter realm identifier for ws-federation",
                                 label: "Realm",
                                 placeholder: "Enter realm.",
                                 validations: {
@@ -2927,7 +2978,7 @@ export const console: ConsoleNS = {
                                 },
                                 wsFedConfigurations: {
                                     labels: {
-                                        passiveSTSUrl: "Passive STS URL"
+                                        passiveSTSUrl: "WS-Federation URL"
                                     }
                                 }
                             },
@@ -3583,6 +3634,82 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "New Provisioner"
+                            },
+                            addIdpWizard: {
+                                heading: "Add Outbound Provisioner",
+                                steps: {
+                                    details: "Provisioner Details"
+                                },
+                                subHeading: "Select the provisioner to provision users."
+                            },
+                            emptyPlaceholder: {
+                                action: "New Provisioner",
+                                subtitles: "No outbound provisioners configured. Add a provisioner to view it here.",
+                                title: "No outbound provisioners"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connection",
+                                        placeholder: "Select connection",
+                                        validations: {
+                                            empty: "It is mandatory to select connection."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "Outbound Provisioning Configuration",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "Something went wrong while adding the outbound provisioning configuration.",
+                                        message: "Creation error"
+                                    },
+                                    success: {
+                                        description: "Successfully added the outbound provisioning configuration.",
+                                        message: "Creation successful"
+                                    },
+                                    error: {
+                                        description: "Outbound provisioning configuration already exists for the resident application.",
+                                        message: "Creation error"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "Something went wrong while deleting the outbound provisioning configuration.",
+                                        message: "Deletion error"
+                                    },
+                                    success: {
+                                        description: "Successfully removed the outbound provisioning configuration.",
+                                        message: "Deletion successful"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "Something went wrong while getting the outbound provisioning configurations.",
+                                        message: "Something went wrong"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "Something went wrong while updating the outbound provisioning configuration.",
+                                        message: "Update error"
+                                    },
+                                    success: {
+                                        description: "Successfully updated the outbound provisioning configuration.",
+                                        message: "Update successful"
+                                    }
+                                }
+                            },
+                            subHeading: "Configure outbound provisioning settings for the resident application."
+                        }
+                    }
                 }
             },
             authenticationProvider: {
@@ -3607,7 +3734,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "New Authenticator",
                     addCertificate: "New Certificate",
                     addConnector: "New Connector",
-                    addIDP: "Create Connection"
+                    addIDP: "New Connection"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -3865,11 +3992,11 @@ export const console: ConsoleNS = {
                                     required: "Email OTP length is a required field."
                                 }
                             },
-                            useNumericChars: {
-                                hint: "Please clear this checkbox to enable alphanumeric characters.",
-                                label: "Use only numeric characters for OTP",
+                            useAlphanumericChars: {
+                                hint: "Please check this checkbox to enable alphanumeric characters. Otherwise numeric characters will be used.",
+                                label: "Use alphanumeric characters for OTP",
                                 validations: {
-                                    required: "Use only numeric characters for OTP is a required field."
+                                    required: "Use alphanumeric characters for OTP is a required field."
                                 }
                             }
                         },
@@ -5688,7 +5815,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 connectedApps: {
-                    action: "Go to Sign-in Method",
+                    action: "Go to Login Flow",
                     header: "Connected Application(s) of {{idpName}}.",
                     subHeader: "Applications connected to {{idpName}} are listed here.",
                     placeholders: {
@@ -5916,6 +6043,7 @@ export const console: ConsoleNS = {
                             content: "Add Role"
                         }
                     },
+                    outboundProvisioningTitle: "Outbound Provisioning Connectors",
                     roleMapping: {
                         heading: "Role Mapping",
                         hint: "Map local roles with the Identity Provider roles",
@@ -7076,13 +7204,13 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Go back to Applications",
-                subTitle: "Register an application using one of the templates given below. If nothing matches your " +
+                subTitle: "Create an application using one of the templates given below. If nothing matches your " +
                     "application type, start with the Standard-Based Application template.",
-                title: "Register New Application"
+                title: "Create a New Application"
             },
             applications: {
                 alternateSubTitle: "Manage your applications and customize login flows.",
-                subTitle: "Register and manage your applications and configure sign-in.",
+                subTitle: "Create and manage your applications and configure sign-in.",
                 title: "Applications"
             },
             applicationsEdit: {
@@ -7096,6 +7224,9 @@ export const console: ConsoleNS = {
             },
             authenticationProviderTemplate: {
                 backButton: "Go back to Connections",
+                disabledHint: {
+                    apple: "The Sign in with Apple feature cannot be configured with localhost or 127.0.0.1. Attempting this setup results in an invalid domain error from Apple's configuration step. For testing, use a real or DNS-resolvable domain name. For local development, domain mappings in the `etc/hosts` file can be utilized."
+                },
                 search: {
                     placeholder: "Search by name"
                 },
@@ -8120,7 +8251,7 @@ export const console: ConsoleNS = {
                     },
                     forms: {
                         attribute: {
-                            placeholder: "Select a user attribute to map to",
+                            placeholder: "Enter a user attribute to map to",
                             requiredErrorMessage: "Attribute name is a required field"
                         },
                         attributeHint: "A unique ID for the attribute."
@@ -9525,22 +9656,22 @@ export const console: ConsoleNS = {
             parentOrgInvitations: {
                 addUserWizard: {
                     heading: "Invite Parent User",
-                    description: "Invite a user from the parent organization.",
+                    description: "Invite users from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
                     username: {
                         label: "Username",
                         placeholder: "Enter the username",
-                        hint: "Username should belong to a user from the parent organization.",
+                        hint: "Add the username of a parent user and press enter. Repeat to include multiple users.",
                         validations: {
                             required: "Username is a required field."
                         }
                     },
-                    roles: {
-                        label: "Roles",
-                        placeholder: "Select roles",
-                        hint: "Assign roles for the user that is being invited.",
+                    groups: {
+                        label: "Groups",
+                        placeholder: "Select groups",
+                        hint: "Assign groups for the user that is being invited.",
                         validations: {
-                            required: "Roles is a required field."
+                            required: "Groups is a required field."
                         }
                     },
                     inviteButton: "Invite"
@@ -10050,8 +10181,8 @@ export const console: ConsoleNS = {
                         disableOrganization: {
                             disableActionTitle: "Disable Organization",
                             enableActionTitle: "Enable Organization",
-                            subheader: "Disabling an organization can make you lose access to the " +
-                                "organization relates. Proceed with caution."
+                            subheader: "Disabling an organization will make it unavailable for all users. " +
+                                "Proceed with caution."
                         },
                         subHeader: "Are you sure you want to delete this organization?",
                         title: "Delete Organization"
@@ -10127,7 +10258,7 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "Add Organization"
+                        add: "New Organization"
                     },
                     columns: {
                         actions: "Actions",
@@ -10136,7 +10267,7 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Add Organization",
+                        header: "Create an Organization",
                         subtitle1: "Create a new organization in {{parent}}.",
                         subtitle2: "Create a new organization."
                     }
@@ -10257,7 +10388,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Add Organization",
+                        action: "New Organization",
                         subtitles: {
                             0: "There are no organizations at the moment.",
                             1: "You can add a new organization easily by",
@@ -10294,7 +10425,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "Organizations"
+                title: "Organizations",
+                view: {
+                    description: "View Organization"
+                }
             },
             overview: {
                 widgets: {
@@ -10812,7 +10946,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Search users"
                             },
                             assign: {
-                                placeholder: "Assign users"
+                                placeholder: "Type username/s to search and assign users"
                             },
                             remove: {
                                 label: "Removing users",
@@ -10908,6 +11042,7 @@ export const console: ConsoleNS = {
                     emptyPlaceholders: {
                         emptyRoleList: {
                             action: "New {{type}}",
+                            emptyRoles: "No {{type}} found",
                             subtitles: {
                                 0: "There are currently no {{type}} available.",
                                 1: "You can add a new {{type}} easily by following the",
@@ -11108,7 +11243,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
-                    description: "Configure remote logging settings for the organization.",
+                    description: "Configure remote logging settings for audit logs in the organization.",
                     fields: {
                         logTypes: {
                             label: "Log types to be published",
@@ -11122,9 +11257,9 @@ export const console: ConsoleNS = {
                             label: "Destination URL"
                         },
                         advanced: {
-                            title: "Advanced settings",
+                            title: "Advanced Settings",
                             connectionTimeout: {
-                                label: "Connection Timeout (ms)"
+                                label: "Connection timeout (ms)"
                             },
                             verifyHostname: {
                                 label: "Verify the hostname"
@@ -11156,6 +11291,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restore",
                         title: "Restore Default Configuration",
                         header: "Restore Default Configuration",
                         subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
@@ -11509,18 +11645,20 @@ export const console: ConsoleNS = {
                             alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                            emailVerificationDisabled: "To invite users to set the password, enable email verification from " +
-                                "Login & Registration settings."
+                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
+                            inviteOffline: "Invite offline",
+                            inviteViaEmail: "Invite via email"
                         },
                         buttons: {
                             next: "Next",
-                            previous: "Previous"
+                            previous: "Previous",
+                            saveAndContinue: "Save & Continue"
                         },
                         steps: {
                             basicDetails: "Basic Details",
                             groups: "User Groups",
                             roles: "User Roles",
-                            summary: "Summary",
+                            invitation: "Invitation",
                             method: "Method"
                         },
                         subTitle: "Follow the steps to create the new user",
@@ -11557,6 +11695,7 @@ export const console: ConsoleNS = {
                             tableMessages: {
                                 userCreatedMessage: "User imported successfully",
                                 invalidDataMessage: "Invalid data provided",
+                                invalidUserNameFormatMessage: "Username does not match the specified format",
                                 userAlreadyExistsMessage: "User already exists",
                                 userCreationAcceptedMessage: "User creation accepted",
                                 internalErrorMessage: "Error occured while importing users",
@@ -11630,6 +11769,23 @@ export const console: ConsoleNS = {
                             fileFormatContent: "Headers of the CSV file should be user attributes that are " +
                                     "mapped to <1>local attributes</1>.",
                             fileFormatSampleHeading: "Sample CSV file format:"
+                        }
+                    },
+                    inviteParentUserWizard: {
+                        totalInvitations: "Total Invitation(s)",
+                        successAlert: {
+                            description: "Successfully invited the user(s).",
+                            message: "Invitation(s) Sent"
+                        },
+                        errorAlert: {
+                            description: "An error occurred while inviting {{ failedCount }} user(s).",
+                            message: "Review Required"
+                        },
+                        tableMessages: {
+                            userNotFound: "User not found",
+                            activeInvitationExists: "An active invitation for the user already exists",
+                            userEmailNotFound: "Could not find the email of the invited user",
+                            userAlreadyExist: "User already exists"
                         }
                     },
                     changePasswordModal: {
@@ -12464,6 +12620,7 @@ export const console: ConsoleNS = {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: "New User",
+                            emptyUsers: "No users found",
                             subTitle: {
                                 0: "There are currently no users available.",
                                 1: "You can add a new user easily by following the",
@@ -12566,7 +12723,8 @@ export const console: ConsoleNS = {
                             placeholder: "Enter a name",
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "A user store with this name already exists."
+                                alreadyExistsErrorMessage: "A user store with this name already exists.",
+                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
                             }
                         },
                         type: {
@@ -12683,10 +12841,14 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyList: {
                         action: "New User Store",
-                        subtitles: "There are currently no user stores available."
+                        subtitles: "There are currently no user stores available. "
                             + "You can add a new user store easily by following the "
                             + "steps in the user store creation wizard.",
                         title: "Add a new user store"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "There are currently no user stores available.",
+                        title: "No user stores"
                     },
                     emptySearch: {
                         action: "Clear search query",

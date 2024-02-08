@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,12 +23,14 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { ConsumerUserGroupsList } from "./consumer-user-groupslist";
 import { ConsumerUserProfile } from "./consumer-user-profile";
 import { FeatureConfigInterface } from "../../../../../features/core";
 import { GroupsInterface, useGroupList } from "../../../../../features/groups";
 import { ConnectorPropertyInterface } from "../../../../../features/server-configurations";
 import { UserSessions } from "../../../../../features/users/components/user-sessions";
+import useUserManagement from "../../../../../features/users/hooks/use-user-management";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { CONSUMER_USERSTORE } from "../../../users/constants";
 
@@ -84,6 +86,7 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const excludeMembers: string = "members";
+    const { activeTab, updateActiveTab } = useUserManagement();
 
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>(undefined);
 
@@ -93,14 +96,14 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
     } = useGroupList(
         user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource
             ? user[ SCIMConfigs.scim.enterpriseSchema ]?.userSource
-            : CONSUMER_USERSTORE, 
+            : CONSUMER_USERSTORE,
         excludeMembers
     );
 
     useEffect(() => {
         if (groupData?.totalResults > 0) {
             setGroupsList(groupData?.Resources);
-        } 
+        }
     }, [ groupData ]);
 
     const handleAlerts = (alert: AlertInterface) => {
@@ -184,6 +187,10 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
 
     return (
         <ResourceTab
+            activeIndex={ activeTab }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
             panes={ resolvePanes() }
         />
     );

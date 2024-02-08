@@ -69,6 +69,10 @@ interface BrandingPreferencePreviewInterface extends IdentifiableComponentInterf
      *
      */
     screenType: PreviewScreenType;
+    /**
+     * On preview resize callback.
+     */
+    onPreviewResize: (width: number) => void;
 }
 
 /**
@@ -86,7 +90,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         ["data-componentid"]: componentId,
         brandingPreference,
         isLoading,
-        screenType
+        screenType,
+        onPreviewResize
     } = props;
 
     const { t } = useTranslation();
@@ -120,17 +125,18 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     const { data: previewScreenSkeletonStyles } = usePreviewStyle(screenType);
 
     /**
-     * Update the ifram styles to acheive responsiveness.
+     * Update the iframe styles to achieve responsiveness.
      */
     const updateStyles = () => {
-        if (!brandingPreviewContainerRef) {
+
+        if (!brandingPreviewContainerRef?.current) {
             return;
         }
 
-        const parentHeight: number = brandingPreviewContainerRef.current.clientHeight;
-        const parentWidth: number = brandingPreviewContainerRef.current.clientWidth;
+        const parentHeight: number = brandingPreviewContainerRef?.current?.clientHeight;
+        const parentWidth: number = brandingPreviewContainerRef?.current?.clientWidth;
 
-        const nodeStyle: CSSStyleDeclaration = window.getComputedStyle(brandingPreviewContainerRef.current);
+        const nodeStyle: CSSStyleDeclaration = window?.getComputedStyle(brandingPreviewContainerRef?.current);
         const topPadding: string = nodeStyle.getPropertyValue("padding-top");
 
         const effectedHeight: number = parentHeight - parseInt(topPadding.substring(0, topPadding.length - 2));
@@ -151,6 +157,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             transformOrigin: "0 0",
             width: iFrameOriginalWidth
         });
+        onPreviewResize(parentWidth);
     };
 
     /**
@@ -259,7 +266,10 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.COMMON,
         PreviewScreenType.EMAIL_OTP,
         PreviewScreenType.SMS_OTP,
-        PreviewScreenType.TOTP
+        PreviewScreenType.TOTP,
+        PreviewScreenType.PASSWORD_RECOVERY,
+        PreviewScreenType.PASSWORD_RESET,
+        PreviewScreenType.PASSWORD_RESET_SUCCESS
     ];
 
     const resolvePreviewScreen = (): ReactElement => {

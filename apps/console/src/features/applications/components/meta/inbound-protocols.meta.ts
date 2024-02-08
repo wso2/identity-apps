@@ -17,12 +17,13 @@
  */
 
 import { ApplicationManagementConstants } from "../../constants";
-import { 
-    AuthProtocolMetaListItemInterface, 
-    SAMLConfigModes, 
-    SAMLConfigurationInterface, 
-    SupportedAuthProtocolTypes, 
-    SupportedAuthProtocolTypesInterface 
+import {
+    AuthProtocolMetaListItemInterface,
+    SAMLConfigModes,
+    SAMLConfigurationInterface,
+    SupportedAuthProtocolTypes,
+    SupportedAuthProtocolTypesInterface,
+    SupportedCustomAuthProtocolTypes
 } from "../../models";
 
 export const InboundProtocolDefaultFallbackTemplates: Map<string, string> = new Map<string, string>([
@@ -82,10 +83,12 @@ export const SupportedAuthProtocolTypeDisplayNames: SupportedAuthProtocolTypesIn
     [ SupportedAuthProtocolTypes.SAML ]: "SAML",
     [ SupportedAuthProtocolTypes.OIDC ]: "OpenID Connect",
     [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: "OAuth2.0/OpenID Connect",
-    [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Passive STS",
+    [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "WS-Federation",
     [ SupportedAuthProtocolTypes.WS_TRUST ]: "WS-Trust",
     [ SupportedAuthProtocolTypes.CUSTOM ]: "Custom",
-    [ SupportedAuthProtocolTypes.OAUTH2 ]: "OAuth 2.0"
+    [ SupportedAuthProtocolTypes.OAUTH2 ]: "OAuth 2.0",
+    [ SupportedCustomAuthProtocolTypes.CAS ]: "CAS Authenticator",
+    [ SupportedCustomAuthProtocolTypes.JWT_SSO ]: "JWT SSO Authenticator"
 };
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { getTechnologyLogos } from "../../../../core";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
@@ -90,15 +91,15 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim")?.toString());
     const [ isScimMappingRemoved, setIsScimMappingRemoved ] = useState<boolean>(false);
 
-    const nameField = useRef<HTMLElement>(null);
-    const claimField = useRef<HTMLElement>(null);
-    const regExField = useRef<HTMLElement>(null);
-    const displayOrderField = useRef<HTMLElement>(null);
+    const nameField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const claimField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const regExField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
+    const displayOrderField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
 
-    const nameTimer = useRef(null);
-    const claimTimer = useRef(null);
-    const regExTimer = useRef(null);
-    const displayTimer = useRef(null);
+    const nameTimer: React.MutableRefObject<any> = useRef(null);
+    const claimTimer: React.MutableRefObject<any> = useRef(null);
+    const regExTimer: React.MutableRefObject<any> = useRef(null);
+    const displayTimer: React.MutableRefObject<any> = useRef(null);
 
     const { t } = useTranslation();
 
@@ -117,7 +118,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
      */
     useEffect(() => {
         if (!noUniqueSCIMAttrib || !noUniqueOIDCAttrib) {
-            const claimElement = claimField.current.children[0].children[1].children[0] as HTMLInputElement;
+            const claimElement: HTMLInputElement
+                = claimField.current.children[0].children[1].children[0] as HTMLInputElement;
 
             claimElement.focus();
             claimElement.blur();
@@ -156,17 +158,18 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     return (
         <Forms
-            onSubmit={ (values) => {
-                const data = {
-                    claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
-                    description: values.get("description")?.toString(),
-                    displayName: values.get("name").toString(),
-                    displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : "0",
-                    readOnly: values.get("readOnly")?.length > 0,
-                    regEx: values.get("regularExpression")?.toString(),
-                    required: values.get("required")?.length > 0,
-                    supportedByDefault: values.get("supportedByDefault")?.length > 0
-                };
+            onSubmit={ (values: Map<string, FormValue>) => {
+                const data: Claim
+                 = {
+                     claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
+                     description: values.get("description")?.toString(),
+                     displayName: values.get("name").toString(),
+                     displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                     readOnly: values.get("readOnly")?.length > 0,
+                     regEx: values.get("regularExpression")?.toString(),
+                     required: values.get("required")?.length > 0,
+                     supportedByDefault: values.get("supportedByDefault")?.length > 0
+                 };
 
                 if (attributeConfig.localAttributes.createWizard.customWIzard) {
 
@@ -260,7 +263,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                 attributeConfig.localAttributes.checkAttributeNameAvailability(
                                                     value,
                                                     "BOTH"
-                                                ).then(response => {
+                                                ).then((response: Map<string, boolean>) => {
                                                     setValidateMapping(false);
                                                     if (response.has("SCIM")) {
                                                         setNoUniqueSCIMAttrib(response.get("SCIM"));
@@ -348,10 +351,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                 maxLength={ 30 }
                                                                 text={ oidcMapping }
                                                                 validation="^[A-za-z0-9#_]+$"
-                                                                errorHandler={ (status) => {
+                                                                errorHandler={ (status: boolean) => {
                                                                     setShowOIDCMappingError(status);
                                                                 } }
-                                                                onEdit={ (isEdit) => {
+                                                                onEdit={ (isEdit: boolean) => {
                                                                     setIsInlineEditMode(isEdit);
                                                                 } }
                                                                 onChangesSaved={ async (value: string) => {
@@ -362,7 +365,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                             .checkAttributeNameAvailability(
                                                                                 value, "OIDC"
                                                                             )
-                                                                            .then(response => {
+                                                                            .then((response: Map<string, boolean>) => {
                                                                                 setNoUniqueOIDCAttrib(
                                                                                     response.get("OIDC")
                                                                                 );
@@ -395,11 +398,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                     <InlineEditInput
                                                                         maxLength={ 30 }
                                                                         textPrefix="urn:scim:wso2:schema:"
-                                                                        validation="^[a-zA-Z0-9_-]*$"
-                                                                        errorHandler={ (status) => {
+                                                                        validation="^[a-zA-Z0-9_.-]*$"
+                                                                        errorHandler={ (status: boolean) => {
                                                                             setShowScimMappingError(status);
                                                                         } }
-                                                                        onEdit={ (isEdit) => {
+                                                                        onEdit={ (isEdit: boolean) => {
                                                                             setIsInlineEditMode(isEdit);
                                                                         } }
                                                                         onChangesSaved={ async (value: string) => {
@@ -410,7 +413,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                                     .checkAttributeNameAvailability(
                                                                                         value, "SCIM"
                                                                                     )
-                                                                                    .then(response => {
+                                                                                    .then((
+                                                                                        response: Map<string, boolean>
+                                                                                    ) => {
                                                                                         setNoUniqueSCIMAttrib(
                                                                                             response.get("SCIM")
                                                                                         );
@@ -569,7 +574,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     }
                     {
                         !attributeConfig.localAttributes.createWizard.showOnlyMandatory ||
-                        attributeConfig.localAttributes.createWizard.showRegularExpression && (
+                        !attributeConfig.localAttributes.createWizard.showRegularExpression && (
                             <Grid.Column width={ 8 }>
                                 <Field
                                     type="text"
@@ -587,6 +592,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     ref={ regExField }
                                     data-testid={ `${ testId }-form-regex-input` }
+                                    maxLength= { ClaimManagementConstants.REGEX_FIELD_MAX_LENGTH }
+                                    minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 />
                                 <Popup
                                     content={ t("console:manage.features.claims.local.forms.regExHint") }

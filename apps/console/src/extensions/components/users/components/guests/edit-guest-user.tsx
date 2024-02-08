@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -126,8 +126,8 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[ 0 ]
             : UserstoreConstants.PRIMARY_USER_STORE;
-        
-        setReadOnlyUserStore(readOnlyUserStores?.includes(userStore?.toString()));        
+
+        setReadOnlyUserStore(readOnlyUserStores?.includes(userStore?.toString()));
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
@@ -141,13 +141,13 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
             !(user.userName == realmConfigs?.adminUser) &&
             hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)) {
             setAllowDeleteOnly(true);
-        }        
+        }
 
         if (user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType === "Asgardeo") {
             setAdminUserType(AdminAccountTypes.EXTERNAL);
         } else {
             setAdminUserType(AdminAccountTypes.INTERNAL);
-        }        
+        }
 
     }, [ user, readOnlyUserStores ]);
 
@@ -161,6 +161,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
+                        adminUsername={ realmConfigs?.adminUser }
                         tenantAdmin={ realmConfigs?.adminUser }
                         editUserDisclaimerMessage={ (
                             <Grid>
@@ -214,7 +215,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
             : null,
         adminUserType === AdminAccountTypes.INTERNAL ||
         UserManagementUtils.isAuthenticatedUser(authenticatedUser, user?.userName)
-            ? {        
+            ? {
                 menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>

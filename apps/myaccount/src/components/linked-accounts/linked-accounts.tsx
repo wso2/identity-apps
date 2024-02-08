@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/common";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -68,6 +69,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
     const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
 
     /**
@@ -91,8 +94,15 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
         const superTenant: string = "carbon.super";
         let userId: string = username;
 
-        if (usernameSplit?.length >= 1 && tenantDomain !== superTenant && !usernameSplit.includes(tenantDomain)) {
-            userId = username + "@" + tenantDomain;
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
+            if (usernameSplit?.length >= 1 && !usernameSplit.includes(userOrganizationId)) {
+                userId = username + "@" + userOrganizationId;
+            }
+
+        } else {
+            if (usernameSplit?.length >= 1 && tenantDomain !== superTenant && !usernameSplit.includes(tenantDomain)) {
+                userId = username + "@" + tenantDomain;
+            }
         }
 
         const data: {

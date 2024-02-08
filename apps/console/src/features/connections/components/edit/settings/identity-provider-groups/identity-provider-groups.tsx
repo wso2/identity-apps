@@ -35,20 +35,20 @@ import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { IdentityProviderGroupsList } from "./identity-provider-groups-list";
 import { AppState, FeatureConfigInterface, store } from "../../../../../core";
+import { updateClaimsConfigs, useClaimConfigs } from "../../../../api/connections";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import {
     ConnectionClaimMappingInterface,
     ConnectionClaimsInterface,
     ConnectionInterface
 } from "../../../../models/connection";
-import { updateClaimsConfigs, useClaimConfigs } from "../../../../api/connections";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 
 const FORM_ID: string = "idp-group-attributes-form";
 
 /**
  * Proptypes for the identity provider groups component.
  */
-interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConfigInterface>, 
+interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
      * Currently editing IDP.
@@ -70,21 +70,21 @@ interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConf
 
 /**
  * Identity provider groups component.
- * 
+ *
  * @param props - Props related to identity provider groups component.
  */
-export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroupsPropsInterface> = ( 
+export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroupsPropsInterface> = (
     props: IdentityProviderGroupsPropsInterface
 ): ReactElement => {
 
     const {
         editingIDP,
         isReadOnly,
-        featureConfig,
         [ "data-componentid" ]: componentId
     } = props;
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -103,16 +103,16 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         if (originalClaimConfigs instanceof IdentityAppsApiException
                 || claimConfigsFetchRequestError) {
             handleRetrieveError();
-            
+
             return;
         }
-        
+
         if (!originalClaimConfigs) {
             return;
         }
-        
+
         setClaimConfigs(originalClaimConfigs);
-        setGroupAttribute(getGroupAttribute());        
+        setGroupAttribute(getGroupAttribute());
     }, [ originalClaimConfigs ]);
 
     /**
@@ -149,7 +149,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
     };
 
     const handleGroupMappingUpdate =() : void => {
-        if (groupAttribute.trim()) {            
+        if (groupAttribute.trim()) {
             setIsSubmitting(true);
             const mappedAttribute: ConnectionClaimsInterface = {
                 ...claimConfigs,
@@ -183,7 +183,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
 
             // Update the identity provider group mapping.
             updateClaimsConfigs(editingIDP?.id, mappedAttribute)
-                .then(() => {    
+                .then(() => {
                     store.dispatch(addAlert({
                         description: I18n.instance.t("console:develop.features.authenticationProvider." +
                                 "notifications.updateAttributes.success.description"),
@@ -206,7 +206,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                 "error.message")
                         }));
                     }
-    
+
                     store.dispatch(addAlert({
                         description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                             "updateClaimsConfigs.genericError.description"),

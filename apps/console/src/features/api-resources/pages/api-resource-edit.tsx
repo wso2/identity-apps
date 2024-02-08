@@ -73,11 +73,15 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     useEffect(() => {
         setAPIResourceIdFromPath();
     }, []);
-    
+
     /**
      * The following useEffect is used to handle if the user has the required scopes to update the API resource
      */
     useEffect(() => {
+        if (!apiResourceData) {
+            return;
+        }
+
         const updateForbidden: boolean = !APIResourceUtils.isAPIResourceUpdateAllowed(featureConfig, allowedScopes);
         const isSytemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResourceData?.type);
 
@@ -145,7 +149,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                     onClick: handleBackButtonClick,
                     text: categoryId === APIResourceType.MANAGEMENT
                         ? t("console:manage.pages.rolesEdit.backButton", { type: "Management APIs" })
-                        : categoryId === APIResourceType.ORGANIZATION 
+                        : categoryId === APIResourceType.ORGANIZATION
                             ? t("console:manage.pages.rolesEdit.backButton", { type: "Organization APIs" })
                             : t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
                 } }
@@ -153,12 +157,12 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                 bottomMargin={ false }
                 pageHeaderMaxWidth={ true }
             >
-                <EditAPIResource 
-                    apiResourceData={ apiResourceData } 
-                    isAPIResourceDataLoading={ isAPIResourceDatatLoading }   
+                <EditAPIResource
+                    apiResourceData={ apiResourceData }
+                    isAPIResourceDataLoading={ isAPIResourceDatatLoading }
                     featureConfig={ featureConfig }
                     isReadOnly={ isReadOnly }
-                    mutateAPIResource={ updateAPIResource }           
+                    mutateAPIResource={ updateAPIResource }
                 />
             </TabPageLayout>)
     );

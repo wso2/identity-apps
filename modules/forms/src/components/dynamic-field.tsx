@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,9 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Divider, Label, List, Message } from "semantic-ui-react";
-import { Popup } from "../popup";
 
 /**
  * Type of key-value object
@@ -471,10 +471,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         onClick={ () => {
                                                                             setUpdateMapIndex(mapIndex);
                                                                         } }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 ) }
                                                                 position="top center"
                                                                 content="Update"
+                                                                disabled={ readOnly }
                                                                 inverted
                                                             />
                                                         )
@@ -491,10 +493,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                             setEditKey(field.key);
                                                                             setEditValue(field.value);
                                                                         } }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 ) }
                                                                 position="top center"
                                                                 content="Edit"
+                                                                disabled={ readOnly }
                                                                 inverted
                                                             />
                                                         )
@@ -511,10 +515,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         onClick={ () => {
                                                                             setEditIndex(null);
                                                                         } }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 ) }
                                                                 position="top center"
                                                                 content="Cancel"
+                                                                disabled={ readOnly }
                                                                 inverted
                                                             />
                                                         )
@@ -538,10 +544,12 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                                                         listen(Array.from(tempFields.values()));
                                                                     }
                                                                 } }
+                                                                disabled={ readOnly }
                                                             />
                                                         ) }
                                                         position="top center"
                                                         content="Delete"
+                                                        disabled={ readOnly }
                                                         inverted
                                                     />
                                                 </List.Item>
@@ -567,3 +575,5 @@ DynamicField.defaultProps = {
     duplicateKeyErrorMsg: "This is key is already selected. Please choose another key.",
     requiredField: false
 };
+
+export default DynamicField;

@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps-myaccount</artifactId>
     <packaging>pom</packaging>
-    <version>2.2.71-SNAPSHOT</version>
+    <version>2.3.18-SNAPSHOT</version>
     <name>WSO2 Identity Server MyAccount - Parent</name>
     <description>WSO2 Identity Server MyAccount Parent</description>
 
@@ -546,12 +546,12 @@
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.25.271</carbon.identity.framework.version>
-        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 7.0.0]</carbon.identity.framework.imp.pkg.version.range>
+        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 8.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <identity.organization.management.core.service.version>1.0.0
         </identity.organization.management.core.service.version>
         <identity.org.mgt.core.version.range>[1.0.0, 2.0.0]</identity.org.mgt.core.version.range>
         <carbon.identity.oauth.version>6.7.130</carbon.identity.oauth.version>
-        <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0]</carbon.identity.oauth.imp.pkg.version.range>
+        <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 8.0.0)</carbon.identity.oauth.imp.pkg.version.range>
         <identity.governance.version>1.8.41</identity.governance.version>
         <totp.authenticator.version>3.2.2</totp.authenticator.version>
         <backupcode.authenticator.version>0.0.12</backupcode.authenticator.version>

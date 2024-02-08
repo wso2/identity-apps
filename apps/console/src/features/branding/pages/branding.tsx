@@ -49,7 +49,7 @@ import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get
 import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
-import { BrandingPreferenceTabs } from "../components";
+import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
 import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
 import {
@@ -57,6 +57,7 @@ import {
     BrandingPreferenceInterface,
     BrandingPreferenceLayoutInterface,
     BrandingPreferenceThemeInterface,
+    PredefinedLayouts,
     PredefinedThemes
 } from "../models";
 import BrandingPreferenceProvider from "../providers/branding-preference-provider";
@@ -145,6 +146,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     const [ isBrandingPublished, setIsBrandingPublished ] = useState<boolean>(false);
     const [ showSubOrgBrandingUpdateAlert, setShowSubOrgBrandingUpdateAlert ] = useState<boolean>(false);
     const [ showSubOrgBrandingDeleteAlert, setShowSubOrgBrandingDeleteAlert ] = useState<boolean>(false);
+    const [ showResolutionDisclaimerMessage, setShowResolutionDisclaimerMessage ] = useState<boolean>(false);
+    const [ selectedLayout, setSelectedLayout ] = useState<PredefinedLayouts>(DEFAULT_PREFERENCE.layout.activeLayout);
+    const [ currentWidth, setCurrentWidth ] = useState<number>(0);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -186,6 +190,12 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         });
     }, []);
 
+    useEffect(() => {
+        setShowResolutionDisclaimerMessage(
+            BrandingPreferenceUtils.isLayoutPreviewTrimmed(selectedLayout, currentWidth)
+        );
+    }, [ selectedLayout, currentWidth ]);
+
     /**
      * Moderates the Branding Peference response.
      */
@@ -225,6 +235,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 layout: predefinedLayouts
             }
         ));
+        setSelectedLayout(originalBrandingPreference.preference.layout.activeLayout);
     }, [ originalBrandingPreference ]);
 
     /**
@@ -644,6 +655,24 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                             </Alert>
                         ) : null
                 }
+                {
+                    showResolutionDisclaimerMessage && (
+                        <Message
+                            info
+                            floating
+                            attached="top"
+                            className="preview-disclaimer"
+                            content={
+                                (
+                                    <>
+                                        { t("extensions:develop.branding.pageResolution.hint") }
+                                    </>
+                                )
+                            }
+                            data-componentid="branding-preference-resolution-disclaimer"
+                        />
+                    )
+                }
                 <BrandingPreferenceTabs
                     key={ preferenceTabsComponentKey }
                     predefinedThemes={ predefinedThemes }
@@ -655,6 +684,12 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                     } }
                     isSplitView={ isGreaterThanComputerViewport }
                     readOnly={ isReadOnly }
+                    onLayoutChange={ (values: DesignFormValuesInterface): void => {
+                        setSelectedLayout(values.layout.activeLayout);
+                    } }
+                    onPreviewResize={ (width: number): void => {
+                        setCurrentWidth(width);
+                    } }
                 />
                 <ConfirmationModal
                     onClose={ (): void => setShowBrandingPublishStatusConfirmationModal(false) }

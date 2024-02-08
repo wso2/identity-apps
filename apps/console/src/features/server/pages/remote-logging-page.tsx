@@ -18,7 +18,7 @@
 
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout, ResourceTab } from "@wso2is/react-components";
+import { PageLayout } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -35,13 +35,14 @@ type RemoteLoggingPageInterface = IdentifiableComponentInterface;
 export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
     props: RemoteLoggingPageInterface
 ): ReactElement => {
-    
+
     const { [ "data-componentid" ]: componentId } = props;
 
     const {
         data: remoteLogPublishingConfigs,
         isLoading: isRemoteLogPublishingConfigsLoading,
-        error: remoteLogPublishingConfigRetrievalError
+        error: remoteLogPublishingConfigRetrievalError,
+        mutate: mutateRemoteLoggingRequest
     } = useRemoteLogPublishingConfigs();
 
     const dispatch: Dispatch = useDispatch();
@@ -51,10 +52,10 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         if (remoteLogPublishingConfigRetrievalError && !isRemoteLogPublishingConfigsLoading) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                    description: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                     "notification.error.fetchError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                    message: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                     "notification.error.fetchError.message")
                 })
             );
@@ -67,31 +68,6 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
     const handleBackButtonClick = (): void => {
         history.push(AppConstants.getPaths().get("SERVER"));
     };
-
-    const panes: any = [
-        {
-            menuItem: "Audit Logs",
-            render: () => (
-                <RemoteLoggingConfigForm
-                    logType={ LogType.AUDIT }
-                    logConfig={ remoteLogPublishingConfigs?.find(
-                        (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT
-                    ) }
-                />    
-            )
-        },
-        {
-            menuItem: "Carbon Logs",
-            render: () => (
-                <RemoteLoggingConfigForm
-                    logType={ LogType.CARBON }
-                    logConfig={ remoteLogPublishingConfigs?.find(
-                        (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.CARBON
-                    ) }
-                /> 
-            )
-        }
-    ];
 
     return (
         <PageLayout
@@ -107,11 +83,13 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             bottomMargin={ false }
             isLoading={ isRemoteLogPublishingConfigsLoading }
         >
-            <ResourceTab
-                className="tabs resource-tabs"
-                menu={ { pointing: true, secondary: true } }
-                panes={ panes }
-                renderActiveOnly
+            <RemoteLoggingConfigForm
+                mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
+                logType={ LogType.AUDIT }
+                logConfig={ remoteLogPublishingConfigs?.find(
+                    (config: RemoteLogPublishingConfigurationInterface) =>
+                        config.logType.toLowerCase() === LogType.AUDIT.toString()
+                ) }
             />
         </PageLayout>
     );

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { Box, Checkbox } from "@oxygen-ui/react";
+import Box from "@oxygen-ui/react/Box";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -29,13 +30,13 @@ import { Button, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore, testConnection } from "../../api";
 import { JDBC } from "../../constants";
-import { 
-    PatchData, 
-    PropertyAttribute, 
-    RequiredBinary, 
-    TestConnection, 
-    TypeProperty, 
-    UserstoreType 
+import {
+    PatchData,
+    PropertyAttribute,
+    RequiredBinary,
+    TestConnection,
+    TypeProperty,
+    UserstoreType
 } from "../../models";
 
 /**
@@ -58,6 +59,10 @@ interface EditConnectionDetailsPropsInterface extends TestableComponentInterface
      * The connection properties.
      */
     properties: RequiredBinary;
+    /**
+     * Readonly attribute for the component.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -74,6 +79,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     const {
         id,
         properties,
+        readOnly,
         type,
         update,
         [ "data-testid" ]: testId
@@ -174,13 +180,12 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         const requiredData: PatchData[] = properties?.required.reduce(
             (result: PatchData[], property: TypeProperty) => {
                 const value: FormValue = values.get(property.name);
-            
-                // Skip the property if 
+
+                // Skip the property if
                 // its name is "ConnectionPassword" and isPasswordEditing is false.
                 if (property.name === "ConnectionPassword" && !isPasswordEditing) {
                     return result;
                 }
-            
                 if (value) {
                     result.push({
                         operation: "REPLACE",
@@ -321,20 +326,20 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             ? (
                                                 <>
                                                     <Box display="flex" flexDirection="row">
-                                                        <Checkbox 
+                                                        <Checkbox
                                                             sx={ { pb: 1.4, pl: 0,pr: 1, pt: 0 } }
                                                             onChange={ (_e: React.SyntheticEvent) => {
                                                                 setIsPasswordEditing(!isPasswordEditing);
                                                             } }
+                                                            disabled={ readOnly }
                                                         />
-                                                        <p>{ t("console:manage.features.userstores.forms." + 
+                                                        <p>{ t("console:manage.features.userstores.forms." +
                                                                 "connection.updatePassword") }</p>
                                                     </Box>
                                                     <Field
                                                         name={ property.name }
                                                         className="addon-field-wrapper"
                                                         type="password"
-                                                        disabled={ !isPasswordEditing }
                                                         key={ index }
                                                         required={ isPasswordEditing }
                                                         label={ name }
@@ -350,11 +355,11 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                         }
-                                                        data-testid={ 
-                                                            `${ testId }-form-password-input-${ property.name }` 
+                                                        data-testid={
+                                                            `${ testId }-form-password-input-${ property.name }`
                                                         }
+                                                        disabled={ readOnly || !isPasswordEditing }
                                                     />
-                                                
                                                 </>
                                             )
                                             : toggle
@@ -382,6 +387,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         }
                                                         toggle
                                                         data-testid={ `${ testId }-form-toggle-${ property.name }` }
+                                                        disabled={ readOnly }
                                                     />
                                                 ) :
                                                 (
@@ -407,6 +413,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             })
                                                         }
                                                         data-testid={ `${ testId }-form-text-input-${ property.name }` }
+                                                        disabled={ readOnly }
                                                     />
                                                 )
                                     );
@@ -446,7 +453,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             )?.value,
                                                     driverName: formValue?.get("driverName").toString()
                                                         ?? properties?.required
-                                                            .find((property: TypeProperty) => 
+                                                            .find((property: TypeProperty) =>
                                                                 property.name === "driverName"
                                                             )?.value,
                                                     username: formValue?.get("userName").toString()
@@ -499,6 +506,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                         }
                                     }
                                     data-testid={ `${ testId }-test-connection-button` }
+                                    disabled={ readOnly }
                                 >
                                     <Icon
                                         size="small"
@@ -591,6 +599,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         }
                                                         data-testid={ `${ testId }-form--non-sql-password-input-${
                                                             property.name }` }
+                                                        disabled={ readOnly }
                                                     />
                                                 )
                                                 : toggle
@@ -619,6 +628,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             toggle
                                                             data-testid={ `${ testId }-form--non-sql-toggle-${
                                                                 property.name }` }
+                                                            disabled={ readOnly }
                                                         />
                                                     ) :
                                                     (
@@ -645,6 +655,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             }
                                                             data-testid={ `${ testId }-form--non-sql-text-input-${
                                                                 property.name }` }
+                                                            disabled={ readOnly }
                                                         />
                                                     )
                                         );
@@ -672,6 +683,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                 properties={ properties?.optional.sql }
                                 values={ sql }
                                 data-testid={ `${ testId }-sql-editor` }
+                                readOnly={ readOnly }
                             />
                         </Grid.Column>
                     </Grid>
@@ -679,14 +691,18 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                 }
                 <Grid columns={ 1 }>
                     <Grid.Column width={ 8 }>
-                        <PrimaryButton
-                            type="submit"
-                            data-testid={ `${ testId }-form-submit-button` }
-                            loading={ isSubmitting }
-                            disabled={ isSubmitting }
-                        >
-                            { t("common:update") }
-                        </PrimaryButton>
+                        {
+                            !readOnly && (
+                                <PrimaryButton
+                                    type="submit"
+                                    data-testid={ `${ testId }-form-submit-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            )
+                        }
                     </Grid.Column>
                 </Grid>
             </Forms>

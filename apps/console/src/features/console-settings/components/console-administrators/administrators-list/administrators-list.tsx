@@ -23,13 +23,14 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import { UsersConstants } from "apps/console/src/extensions/components/users/constants/users";
+import { UserStoreDropdownItem } from "apps/console/src/features/userstores/models";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import {
@@ -38,9 +39,11 @@ import {
     UIConstants,
     UserBasicInterface,
     UserRoleInterface,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
@@ -70,6 +73,24 @@ interface AdministratorsListProps extends IdentifiableComponentInterface {
      * List of readOnly user stores.
      */
     readOnlyUserStores?: string[];
+    /**
+     * List of available user stores
+     */
+    availableUserStores: UserStoreDropdownItem[]
+}
+
+/**
+ * Enum for add administrator modes.
+ */
+enum AddAdministratorModes {
+    /**
+     * To add an existing user as an administrator.
+     */
+    AddExisting = "addExistingUser",
+    /**
+     * To invite a new user as an administrator.
+     */
+    InviteNew = "inviteNewUser"
 }
 
 /**
@@ -87,6 +108,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         readOnlyUserStores,
         selection,
         showListItemActions,
+        availableUserStores,
         ["data-componentid"]: componentId
     } = props;
 
@@ -94,7 +116,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
 
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
@@ -104,18 +126,20 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ showAddExistingUserWizard, setShowAddExistingUserWizard ] = useState<boolean>(false);
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
 
     const {
         administrators,
         isNextPageAvailable,
         isAdministratorsListFetchRequestLoading,
-        mutateAdministratorsListFetchRequest
+        mutateAdministratorsListFetchRequest,
+        adminUserListFetchError
     } = useAdministrators(
         listItemLimit,
         listOffset,
         searchQuery,
         null,
-        null,
+        selectedUserStore,
         UsersConstants.GROUPS_ATTRIBUTE
     );
 
@@ -157,6 +181,10 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         );
     };
 
+    const handleSelectedUserStoreChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setSelectedUserStore(data.value as string);
+    };
+
     const handleListFilter = (query: string): void => {
         setSearchQuery(query);
     };
@@ -179,14 +207,58 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const renderAdministratorAddOptions = (): ReactElement => {
         if (isSubOrganization()) {
+            const getAddUserOptions = () => {
+                const options: DropdownItemProps[] = [
+                    {
+                        "data-componentid": `${ componentId }-add-existing-user-dropdown-item`,
+                        key: 1,
+                        text: t("console:consoleSettings.administrators.add.options.addExistingUser"),
+                        value: AddAdministratorModes.AddExisting
+                    },
+                    {
+                        "data-componentid": `${ componentId }-invite-new-user-dropdown-item`,
+                        key: 2,
+                        text: t("console:consoleSettings.administrators.add.options.inviteNewUser"),
+                        value: AddAdministratorModes.InviteNew
+                    }
+                ];
+
+                return options;
+            };
+
             return (
-                <PrimaryButton
-                    data-componentid={ `${ componentId }-add-button` }
-                    onClick={ () => setShowInviteNewAdministratorModal(true) }
+                <Dropdown
+                    data-componentid={ `${ componentId }-add-administrator-dropdown` }
+                    direction="left"
+                    floating
+                    icon={ null }
+                    trigger={ (
+                        <PrimaryButton
+                            data-componentid={ `${ componentId }-add-button` }
+                            className="add-administrator-dropdown-trigger"
+                        >
+                            <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
+                            { t("console:consoleSettings.administrators.add.action") }
+                            <Icon name="dropdown" className="add-administrator-dropdown-chevron"/>
+                        </PrimaryButton>
+                    ) }
                 >
-                    <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                Invite New User
-                </PrimaryButton>
+                    <Dropdown.Menu >
+                        { getAddUserOptions().map((option: DropdownItemProps) => (
+                            <Dropdown.Item
+                                key={ option.value as string }
+                                onClick={ () => {
+                                    if (option.value === AddAdministratorModes.AddExisting) {
+                                        setShowAddExistingUserWizard(true);
+                                    } else {
+                                        setShowInviteNewAdministratorModal(true);
+                                    }
+                                } }
+                                { ...option }
+                            />
+                        )) }
+                    </Dropdown.Menu>
+                </Dropdown>
             );
         }
 
@@ -196,7 +268,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                 onClick={ () => setShowAddExistingUserWizard(true) }
             >
                 <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                Add Administrator
+                { t("console:consoleSettings.administrators.add.action") }
             </PrimaryButton>
         );
     };
@@ -264,30 +336,53 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             paginationOptions={ {
                 disableNextButton: !isNextPageAvailable
             } }
-            disableRightActionPanel={ true }
+            rightActionPanel={
+                isFirstLevelOrganization() || isSuperOrganization()
+                    ? (
+                        <Dropdown
+                            data-testid="user-mgt-user-list-userstore-dropdown"
+                            selection
+                            options={ availableUserStores }
+                            onChange={ handleSelectedUserStoreChange }
+                            defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                        />
+                    ) : null
+            }
             topActionPanelExtension={ (
-                <Show when={ AccessControlConstants.USER_WRITE }>
+                <Show when={ [ AccessControlConstants.USER_WRITE, AccessControlConstants.ROLE_EDIT ] }>
                     { renderAdministratorAddOptions() }
                 </Show>
             ) }
         >
-            <AdministratorsTable
-                defaultListItemLimit={ defaultListItemLimit }
-                administrators={ administrators }
-                onUserEdit={ handleUserEdit }
-                onUserDelete={ handleUserDelete }
-                isLoading={ loading }
-                readOnlyUserStores={ readOnlyUserStores }
-                onSearchQueryClear={ handleSearchQueryClear }
-                searchQuery={ searchQuery }
-                triggerClearQuery={ triggerClearQuery }
-                onEmptyListPlaceholderActionClick={ () => null }
-                onIsLoading={ setLoading }
-                selection={ selection }
-                showListItemActions={ showListItemActions }
-                showMetaContent={ showMetaContent }
-                data-componentid={ `${componentId}-table` }
-            />
+            { adminUserListFetchError
+                ? (
+                    <EmptyPlaceholder
+                        subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
+                            t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
+                        title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                        image={ getEmptyPlaceholderIllustrations().genericError }
+                        imageSize="tiny"
+                    />
+                ): (
+                    <AdministratorsTable
+                        defaultListItemLimit={ defaultListItemLimit }
+                        administrators={ administrators }
+                        onUserEdit={ handleUserEdit }
+                        onUserDelete={ handleUserDelete }
+                        isLoading={ loading }
+                        readOnlyUserStores={ readOnlyUserStores }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        triggerClearQuery={ triggerClearQuery }
+                        onEmptyListPlaceholderActionClick={ () => null }
+                        onIsLoading={ setLoading }
+                        selection={ selection }
+                        showListItemActions={ showListItemActions }
+                        showMetaContent={ showMetaContent }
+                        data-componentid={ `${componentId}-table` }
+                    />
+                )
+            }
             { showAddExistingUserWizard && (
                 <AddExistingUserWizard
                     onSuccess={ () => mutateAdministratorsListFetchRequest() }

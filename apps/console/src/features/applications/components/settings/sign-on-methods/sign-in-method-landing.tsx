@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -22,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import { ConnectionManagementConstants } from "../../../../connections/constants/connection-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
     IdentityProviderManagementConstants
@@ -79,6 +81,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
     const { hiddenAuthenticators } = useAuthenticationFlow();
+    const { deploymentConfig } = useDeploymentConfig();
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -448,6 +451,10 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             onClick={ () => onLoginFlowSelect(LoginFlowTypes.APPLE_LOGIN) }
                                             showSetupGuideButton={ false }
                                             showCardAction={ false }
+                                            disabledHint={ t("console:develop.pages." +
+                                                "authenticationProviderTemplate.disabledHint.apple") }
+                                            disabled={ new URL(deploymentConfig?.serverOrigin)?.
+                                                hostname === ConnectionManagementConstants.LOCAL_SERVER_URL }
                                         />
                                     ) }
                                 </>

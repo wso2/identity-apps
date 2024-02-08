@@ -294,6 +294,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 maxLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.max }
                 minLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.min }
                 name="jwks_endpoint"
+                disabled={ isReadOnly }
             />
 
             <Show when={ AccessControlConstants.IDP_EDIT }>

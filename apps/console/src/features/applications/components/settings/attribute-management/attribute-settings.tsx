@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -153,27 +153,6 @@ export const DefaultSubjectAttribute: string = "http://wso2.org/claims/username"
 
 export const LocalDialectURI: string = "http://wso2.org/claims";
 
-export function isIdentityClaim(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean {
-
-    const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
-
-    if (isClaimInterface(claim)) {
-        return identityRegex.test(claim.claimURI);
-    }
-
-    return identityRegex.test(claim.mappedLocalClaimURI);
-}
-
-function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface):
-    claim is ExtendedClaimInterface {
-
-    if ((claim as ExtendedExternalClaimInterface).mappedLocalClaimURI == undefined) {
-        return true;
-    }
-
-    return false;
-}
-
 /**
  * Attribute settings component.
  */
@@ -197,6 +176,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
@@ -244,7 +226,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const {
         data: OIDCScopeList,
-        isLoading: isOIDCScopeListLoading
+        isLoading: isOIDCScopeListLoading,
+        isValidating: isOIDCScopeListValidating
     } = useOIDCScopesList();
 
     const [ duplicatedMappingValues,setDuplicatedMappingValues ] = useState<Array<string>>([]);
@@ -278,7 +261,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     }, [ claims, unfilteredExternalClaims ]);
 
     useEffect(() => {
-        if (!isOIDCScopeListLoading) {
+        if (!isOIDCScopeListLoading && !isOIDCScopeListValidating) {
             setScopes(OIDCScopeList);
             getClaims();
             getAllDialects();
@@ -286,7 +269,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
             return;
         }
-    }, [ isOIDCScopeListLoading, OIDCScopeList ]);
+    }, [ isOIDCScopeListLoading, isOIDCScopeListValidating, OIDCScopeList ]);
 
     useEffect(() => {
         getExternalClaimsGroupedByScopes();
@@ -455,7 +438,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const getClaims = () => {
         setIsClaimLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,
@@ -1240,6 +1223,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         triggerSubmission={ (submitFunction: () => void) => {
                                             submitAdvanceForm = submitFunction;
                                         } }
+                                        claimConfigurations={ claimConfigurations }
                                         setSubmissionValues={ setAdvanceSettingValues }
                                         setSelectedValue={ setSelectedSubjectValue }
                                         defaultSubjectAttribute={ DefaultSubjectAttribute }
@@ -1301,7 +1285,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                     }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
-                            { applicationConfig.attributeSettings.roleMapping && (
+                            { !readOnly && applicationConfig.attributeSettings.roleMapping && (
                                 <RoleMapping
                                     onChange={ setRoleMapping }
                                     initialMappings={ claimConfigurations?.role?.mappings }

@@ -9,6 +9,9 @@
     "name": "Traditional Web Application",
     "subTemplatesSectionTitle": "Protocol",
     "types": [
-        "java"
+        "java",
+        "dotNet",
+        "nodejs",
+        "php"
     ]
 }

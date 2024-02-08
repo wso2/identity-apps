@@ -437,6 +437,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     width={ 10 }
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${testId}-max-failed-attempts` }
+                    readOnly={ readOnly }
                 />
                 <Hint className={ "mb-5" }>
                     {
@@ -476,6 +477,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     disabled={ !isConnectorEnabled }
                     labelPosition="right"
                     data-testid={ `${testId}-account-lock-time` }
+                    readOnly={ readOnly }
                 >
                     <input/>
                     <Label
@@ -519,6 +521,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     width={ 10 }
                     disabled={ !isConnectorEnabled }
                     data-testid={ `${testId}-account-lock-increment` }
+                    readOnly={ readOnly }
                 />
                 <Hint className={ "mb-5" }>
                     {

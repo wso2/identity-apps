@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,7 @@ export interface UserSession {
     /**
      * List of applications in the session.
      */
-    applications: Application[];
+    applications: ApplicationSession[];
     /**
      * User agent of the session.
      */
@@ -63,7 +63,7 @@ export interface UserSession {
 /**
  * Model to represent logged in application details.
  */
-interface Application {
+export interface ApplicationSession {
     /**
      * Username of the logged in user for the application.
      */
@@ -80,8 +80,6 @@ interface Application {
 
 /**
  * Returns an empty user sessions object.
- *
- * @return {UserSessions} An empty user sessions object
  */
 export const emptyUserSessions = (): UserSessions => ({
     sessions: [],
@@ -90,8 +88,6 @@ export const emptyUserSessions = (): UserSessions => ({
 
 /**
  * Returns an empty user session object.
- *
- * @return {UserSession} An empty user session object
  */
 export const emptyUserSession = (): UserSession => ({
     applications: [],

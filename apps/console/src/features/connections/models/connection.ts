@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIconProps } from "@wso2is/react-components";
 import { ComponentType, LazyExoticComponent, ReactElement } from "react";
 import { AuthenticatorSettingsFormModes } from "./authenticators";
 
@@ -192,8 +193,21 @@ export interface FederatedAuthenticatorMetaInterface extends CommonPluggableComp
 }
 
 export interface OutboundProvisioningConnectorWithMetaInterface {
+    /**
+     * Id of the connector.
+     */
     id?: string;
+    /**
+     * API metadata of the connector.
+     */
     meta?: FederatedAuthenticatorMetaInterface;
+    /**
+     * Local metadata of the connector.
+     */
+    localMeta?: FederatedAuthenticatorMetaInterface & { icon: GenericIconProps };
+    /**
+     * Metadata object.
+     */
     data?: FederatedAuthenticatorInterface;
 }
 
@@ -734,4 +748,18 @@ export interface OutboundProvisioningConnectorMetaDataInterface {
      * Icon for the connector.
      */
     icon: any;
+}
+
+/**
+ * Interface representing the cache for IDP name validation results.
+ */
+export interface IdpNameValidationCache {
+    /**
+     * The previously validated IDP name.
+     */
+    value: string;
+    /**
+     * Indicates whether the above IDP name is already taken.
+     */
+    state: boolean;
 }

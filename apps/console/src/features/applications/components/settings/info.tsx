@@ -104,9 +104,13 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                 if (protocol.type == "oauth2") {
                     setIsOIDC(true);
                     setIsLoading(isOIDCConfigLoading);
-                } else if (protocol.type == "samlsso") {
+                }
+                if (protocol.type == "samlsso") {
                     setIsSAML(true);
                     setIsLoading(isSAMLConfigLoading);
+                }
+                if (protocol.type == "passivests") {
+                    setIsWSFed(true);
                 }
             });
         }

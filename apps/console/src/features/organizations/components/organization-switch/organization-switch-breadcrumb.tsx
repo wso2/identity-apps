@@ -21,6 +21,7 @@ import { OrganizationType } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
+import { Action, Location } from "history";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -45,6 +46,7 @@ import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-
 import useOrganizationSwitch from "../../hooks/use-organization-switch";
 import {
     BreadcrumbItem,
+    BreadcrumbList,
     GenericOrganization
 } from "../../models";
 import { OrganizationUtils } from "../../utils";
@@ -97,9 +99,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     }, [ isFirstLevelOrg, organizationType, tenantDomain ]);
 
     const {
-        data: breadcrumbList,
+        data: breadcrumbListData,
         error,
         isLoading,
+        isValidating,
         mutate: mutateOrganizationBreadCrumbFetchRequest
     } = useGetOrganizationBreadCrumb(
         shouldSendRequest
@@ -108,6 +111,41 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const isShowSwitcher: boolean = organizationConfigs?.showOrganizationDropdown || isSubOrg;
+
+    const [ triggerBackButtonOrganizationSwitch, setTriggerBackButtonOrganizationSwitch ] = useState<boolean>(false);
+
+    const previousPushedRouteKey: string = "previousPushedRoute";
+    const currentPath: string = history.location.pathname;
+
+    const breadcrumbList: BreadcrumbList = useMemo(() => {
+        if (!breadcrumbListData || breadcrumbListData.length < 1) {
+            return [];
+        }
+
+        return breadcrumbListData;
+    }, [ breadcrumbListData ]);
+
+    useEffect(() => {
+        history.listen((location: Location, action: Action) => {
+            const currentPathname: string = location.pathname;
+
+            if (action !== "POP") {
+                // Set the previous pushed route to the local storage.
+                SessionStorageUtils.setItemToSessionStorage(previousPushedRouteKey, currentPathname);
+            } else {
+                setTriggerBackButtonOrganizationSwitch(true);
+            }
+        });
+    }, []);
+
+    /**
+     * This useEffect will handle the organization switch when the user clicks on the back button.
+     */
+    useEffect(() => {
+        if (!isValidating && !isLoading && triggerBackButtonOrganizationSwitch) {
+            handleBackButtonOrganizationSwitch(currentPath, previousPushedRouteKey);
+        }
+    }, [ isValidating, isLoading, triggerBackButtonOrganizationSwitch ]);
 
     useEffect(() => {
         if (!error) {
@@ -123,7 +161,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     }, [ error ]);
 
     const handleOrganizationSwitch = async (
-        organization: GenericOrganization
+        organization: GenericOrganization,
+        redirectToStart: boolean = true
     ): Promise<void> => {
         if (legacyAuthzRuntime) {
             let newOrgPath: string = "";
@@ -161,7 +200,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         }
 
         let response: BasicUserInfo = null;
-        const isFirstLevelOrganization: boolean = breadcrumbList[0].id === organization.id;
 
         try {
             response = await switchOrganization(organization.id);
@@ -170,7 +208,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 () => null,
                 () => {
                     // If first level org, remove the `/o/` path from the location.
-                    if (isFirstLevelOrganization) {
+                    if (!response?.userOrg) {
                         window["AppUtils"].updateOrganizationName("");
                     }
                 },
@@ -178,9 +216,82 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             );
 
             mutateOrganizationBreadCrumbFetchRequest();
-            history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+            if (redirectToStart) {
+                history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+            }
         } catch(e) {
             // TODO: Handle error
+        }
+    };
+
+    /**
+     * This function will handle the organization switch when the user clicks on the back button.
+     *
+     * @param currentPath - Current path.
+     * @param previousPushedRouteKey - Key of the previous pushed route.
+     */
+    const handleBackButtonOrganizationSwitch = async (
+        currentPath: string,
+        previousPushedRouteKey: string
+    ): Promise<void> => {
+        setTriggerBackButtonOrganizationSwitch(false);
+
+        if (!breadcrumbList || breadcrumbList.length < 1) {
+            return;
+        }
+
+        // Get the previous pushed route from the local storage.
+        const previousPath: string = SessionStorageUtils
+            .getItemFromSessionStorage(previousPushedRouteKey);
+
+        let previousPathOrgId: string = null;
+        let currentPathOrgId: string = null;
+
+        if (previousPath?.includes("/o/")) {
+            previousPathOrgId = previousPath?.split("/o/")[1]?.split("/")[0];
+        }
+
+        if (currentPath?.includes("/o/")) {
+            currentPathOrgId = currentPath?.split("/o/")[1]?.split("/")[0];
+        }
+
+        // Check if previous route contains /o/ and current route does not contain /o/.
+        if (previousPath?.includes("/o/") && !currentPath?.includes("/o/")) {
+            // If so, switch to parent organization.
+            handleOrganizationSwitch(breadcrumbList[0], false).then(() => {
+                SessionStorageUtils.setItemToSessionStorage(previousPushedRouteKey, currentPath);
+            });
+        }
+
+        // Check if previous route does not contain /o/ and current route contains /o/.
+        if (!previousPath?.includes("/o/") && currentPath?.includes("/o/")) {
+            // If so, switch to sub organization from parent organization.
+            // Get the organization object from the breadcrumbList.
+            const switchingOrg: GenericOrganization = {
+                id: currentPathOrgId,
+                name: currentPathOrgId
+            };
+
+            switchingOrg && handleOrganizationSwitch(switchingOrg, false).then(() => {
+                SessionStorageUtils.setItemToSessionStorage(previousPushedRouteKey, currentPath);
+            });
+        }
+
+        // Check if previous route contains /o/ and current route contains /o/.
+        // But the organization id is different.
+        if (previousPath?.includes("/o/") && currentPath?.includes("/o/")
+            && previousPathOrgId !== currentPathOrgId) {
+            // If so, switch between sub organizations.
+
+            // Get the organization object from the breadcrumbList.
+            const switchingOrg: GenericOrganization = {
+                id: currentPathOrgId,
+                name: currentPathOrgId
+            };
+
+            switchingOrg && handleOrganizationSwitch(switchingOrg, false).then(() => {
+                SessionStorageUtils.setItemToSessionStorage(previousPushedRouteKey, currentPath);
+            });
         }
     };
 

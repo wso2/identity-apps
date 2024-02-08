@@ -16,13 +16,19 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    RolesInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import intersection from "lodash-es/intersection";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -41,6 +47,7 @@ import {
     OrganizationRoleListResponseInterface
 } from "../../../organizations/models";
 import { getRolesList, updateRole } from "../../../roles/api";
+import { RoleConstants } from "../../../roles/constants";
 import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../roles/models";
 import { UserBasicInterface } from "../../../users/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../userstores/constants";
@@ -122,12 +129,28 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
 
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
+
+    const isRoleReadOnly: boolean = useMemo(() => {
+        return (
+            !isFeatureEnabled(
+                featureConfig,
+                RoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")
+            ) || !hasRequiredScopes(
+                featureConfig,
+                featureConfig?.scopes?.update,
+                allowedScopes
+            )
+        );
+    }, [ featureConfig, allowedScopes ]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        if (isSuperOrganization()) {
+        if (isSuperOrganization() && !isRoleReadOnly) {
             setWizardSteps(filterSteps([
                 WizardStepsFormTypes.BASIC_DETAILS,
                 WizardStepsFormTypes.ROLE_LIST
@@ -515,7 +538,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         }
     };
 
-    const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization()
+    const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization() && !isRoleReadOnly
         ? [ getBasicDetailsWizardStep(), getRoleAssignmentWizardStep() ]
         : [ getBasicDetailsWizardStep() ];
 
@@ -542,7 +565,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 <Heading as="h6">Create new group and add users to the group.</Heading>
             </Modal.Header>
             {
-                showStepper && (
+                showStepper && !isRoleReadOnly && (
                     <Modal.Content className="steps-container">
                         <Steps.Group
                             current={ currentStep }

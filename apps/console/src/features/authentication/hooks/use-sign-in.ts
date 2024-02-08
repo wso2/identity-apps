@@ -94,7 +94,87 @@ const useSignIn = (): UseSignInInterface => {
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
-    const { transformTenantDomain } = useOrganizations();
+    const {
+        transformTenantDomain,
+        setUserOrgInLocalStorage,
+        setOrgIdInLocalStorage,
+        getUserOrgInLocalStorage,
+        removeOrgIdInLocalStorage,
+        removeUserOrgInLocalStorage
+    } = useOrganizations();
+
+    const setCustomServerHost = (orgType: string, wellKnownEndpoint: string) => {
+        const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
+
+        if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+            // Set configurations related to hostname branding.
+            axios
+                .get(wellKnownEndpoint)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
+
+                    let serverHost: string = splitted?.slice(0, -2)?.join("/");
+
+                    if (orgType === OrganizationType.SUBORGANIZATION) {
+                        serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                            window["AppUtils"]?.getConfig()?.organizationPrefix
+                        }/${window["AppUtils"]?.getConfig()?.organizationName}`;
+                    }
+
+                    window["AppUtils"]?.updateCustomServerHost(serverHost);
+                })
+                .catch((error: any) => {
+                    // In case of failure customServerHost is set to the serverHost.
+                    window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
+
+                    throw error;
+                })
+                .finally(() => {
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+
+                    // Set the deployment configs in the context.
+                    setDeploymentConfig(Config?.getDeploymentConfig());
+
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+                });
+        } else {
+            // In case of failure customServerHost is set to the serverHost.
+            let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
+
+            const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
+            const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
+                window["AppUtils"]?.getConfig()?.organizationName.length > 0;
+
+            if (!window["AppUtils"]?.getConfig()?.requireSuperTenantInUrls && isSuperTenant) {
+                // Removing super tenant from the server host.
+                const customServerHostSplit: string[] = customServerHost?.split("/t/");
+
+                if (customServerHostSplit?.length > 0) {
+                    customServerHost = customServerHostSplit[0];
+                }
+            }
+
+            if (isSubOrganization) {
+                customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                    window["AppUtils"]?.getConfig()?.organizationPrefix}/${
+                    window["AppUtils"]?.getConfig()?.organizationName}`;
+            }
+
+            window["AppUtils"]?.updateCustomServerHost(customServerHost);
+
+            // Update store with custom server host.
+            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+
+            // Set the deployment configs in the context.
+            setDeploymentConfig(Config?.getDeploymentConfig());
+
+            // Update runtime configurations.
+            ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+        }
+    };
 
     const onSignIn = async (
         response: BasicUserInfo,
@@ -172,6 +252,10 @@ const useSignIn = (): UseSignInInterface => {
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
+
+        if (legacyAuthzRuntime) {
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        }
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
@@ -296,62 +380,12 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
-        const disabledFeatures: string[] = window["AppUtils"].getConfig()?.ui?.features?.branding?.disabledFeatures;
 
         if (!legacyAuthzRuntime) {
             // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
             wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
         }
-
-        if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
-            // Set configurations related to hostname branding.
-            axios
-                .get(wellKnownEndpoint)
-                .then((response: AxiosResponse) => {
-                    // Use token endpoint to extract the host url.
-                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
-
-                    let serverHost: string = splitted.slice(0, -2).join("/");
-
-                    if (orgType === OrganizationType.SUBORGANIZATION) {
-                        serverHost = `${Config.getDeploymentConfig().serverOrigin}/${
-                            window["AppUtils"].getConfig().organizationPrefix
-                        }/${window["AppUtils"].getConfig().organizationName}`;
-                    }
-
-                    window["AppUtils"].updateCustomServerHost(serverHost);
-                })
-                .catch((error: any) => {
-                    // In case of failure customServerHost is set to the serverHost.
-                    window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
-
-                    throw error;
-                })
-                .finally(() => {
-                    // Update store with custom server host.
-                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
-
-                    // Set the deployment configs in the context.
-                    setDeploymentConfig(Config.getDeploymentConfig());
-
-                    // Update runtime configurations.
-                    ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-                });
-        } else {
-            // In case of failure customServerHost is set to the serverHost.
-            window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
-
-            // Update store with custom server host.
-            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
-
-            // Set the deployment configs in the context.
-            setDeploymentConfig(Config.getDeploymentConfig());
-
-            // Update runtime configurations.
-            ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-        }
-
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
         onAppReady();
 
@@ -403,7 +437,11 @@ const useSignIn = (): UseSignInInterface => {
                         endSessionEndpoint: logoutUrl.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
-                    signOutRedirectURL: logoutRedirectUrl
+                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
+                        logoutRedirectUrl,
+                        userOrganizationId,
+                        orgIdIdToken
+                    )
                 });
             })
             .catch((error: any) => {
@@ -413,7 +451,8 @@ const useSignIn = (): UseSignInInterface => {
         await dispatch(
             getProfileInformation(
                 Config.getServiceResourceEndpoints().me,
-                window["AppUtils"].getConfig().clientOriginWithTenant
+                window["AppUtils"].getConfig().clientOriginWithTenant,
+                true
             )
         );
 
@@ -422,6 +461,47 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         onSignInSuccessRedirect(idToken);
+        setCustomServerHost(orgType, wellKnownEndpoint);
+    };
+
+    /**
+     * Derives the logout redirect URL for sub-org logins.
+     *
+     * @remarks This only applies to the new authz runtime.
+     *
+     * @param currentLogoutRedirect - Current logout redirect URL.
+     * @param userOrg - User's org.
+     * @param orgId - User's org ID.
+     * @returns Derived logout redirect URL.
+     */
+    const deriveLogoutRedirectForSubOrgLogins = (currentLogoutRedirect: string, userOrg: string, orgId: string) => {
+        if (legacyAuthzRuntime) {
+            return currentLogoutRedirect;
+        }
+
+        let logoutRedirectUrl: string = currentLogoutRedirect;
+
+        // When a first level tenant login happens, `user_org` is undefined.
+        // We need to save that in the local storage to handle the login/logout if they switch.
+        if (userOrg === undefined && orgId) {
+            removeUserOrgInLocalStorage();
+            removeOrgIdInLocalStorage();
+
+            setUserOrgInLocalStorage(userOrg);
+            setOrgIdInLocalStorage(orgId);
+        }
+
+        if (userOrg) {
+            const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+
+            if (!isSwitchedFromRootOrg) {
+                logoutRedirectUrl = window["AppUtils"]?.getConfig()?.clientOriginWithTenant?.replace(
+                    orgId, userOrg
+                );
+            }
+        }
+
+        return logoutRedirectUrl;
     };
 
     return {

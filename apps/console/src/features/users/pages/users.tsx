@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { CommonHelpers, hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -43,6 +42,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -190,7 +190,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         data: parentOrgUserInviteList,
         isLoading: isParentOrgUserInviteListLoading,
         mutate: mutateParentOrgUserInviteList
-    } = useGetParentOrgUserInvites();
+    } = useGetParentOrgUserInvites(isSubOrganization());
+
+    /**
+     * Indicates whether the currently selected user store is read-only or not.
+     */
+    const isReadOnlyUserStore: boolean = useMemo(() => {
+        if (readOnlyUserStoresList?.includes(userStore)) {
+            return true;
+        }
+
+        return false;
+    }, [ userStore ]);
 
     /**
      * Fetch the list of available userstores.
@@ -507,6 +518,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         if (!attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"))) {
             attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"));
         }
+        if (isSubOrganization() &&
+            !attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("ENTERPRISE_USER"))) {
+            attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("ENTERPRISE_USER"));
+        }
 
         return attArray.toString();
     };
@@ -685,6 +700,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
             triggerClearQuery={ triggerClearQuery }
+            disableSearchAndFilterOptions={ usersList?.totalResults <= 0 && !searchQuery }
         />
     );
 
@@ -718,11 +734,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         />) : null
                 }
                 showPagination={ true }
-                showTopActionPanel={ isUserListRequestLoading
-                    || !(!searchQuery
-                        && !userStoreError
-                        && userStoreOptions.length < 3
-                        && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
                 paginationOptions={ {
@@ -750,6 +761,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         data-testid="user-mgt-user-list"
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
                     />)
                 }
             </ListLayout>
@@ -1021,18 +1033,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const handleInviteParentUserWizardClose = (): void => {
         setShowInviteParentUserWizard(false);
+        mutateParentOrgUserInviteList();
     };
 
     return (
         <PageLayout
             action={
-                !isUserListRequestLoading
-                && !isParentOrgUserInviteListLoading
-                && (
-                    <Show when={ AccessControlConstants.USER_WRITE }>
-                        { renderUserDropDown() }
-                    </Show>
-                )
+                hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)
+                && !isUserListRequestLoading
+                && (!isSubOrganization() || !isParentOrgUserInviteListLoading)
+                && !isReadOnlyUserStore
+                && renderUserDropDown()
             }
             title={ t("console:manage.pages.users.title") }
             pageTitle={ t("console:manage.pages.users.title") }

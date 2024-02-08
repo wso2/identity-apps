@@ -16,8 +16,15 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertInterface,
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -27,11 +34,12 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import BrandingPreferenceProvider from "../../branding/providers/branding-preference-provider";
 import { AppState, I18nConstants } from "../../core";
 import {
@@ -44,6 +52,7 @@ import {
 import { EmailCustomizationForm, EmailTemplatePreview } from "../components";
 import EmailCustomizationFooter from "../components/email-customization-footer";
 import EmailCustomizationHeader from "../components/email-customization-header";
+import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
 
 type EmailCustomizationPageInterface = IdentifiableComponentInterface;
@@ -73,10 +82,35 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
     const enableCustomEmailTemplates: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableCustomEmailTemplates);
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.emailTemplates);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const isReadOnly: boolean = useMemo(() => {
+        return !isFeatureEnabled(
+            featureConfig,
+            EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_UPDATE")
+        ) || !hasRequiredScopes(
+            featureConfig,
+            featureConfig?.scopes?.update,
+            allowedScopes
+        );
+    }, [ featureConfig, allowedScopes ]);
+
+    const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
+        return isFeatureEnabled(
+            featureConfig,
+            EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_CREATE")
+        ) && hasRequiredScopes(
+            featureConfig,
+            featureConfig?.scopes?.create,
+            allowedScopes
+        );
+    }, [ featureConfig, allowedScopes ]);
 
     const {
         data: emailTemplatesList,
@@ -165,9 +199,13 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // current template is a new template or not
         if (emailTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
-            setShowReplicatePreviousTemplateModal(true);
+            if (hasEmailTemplateCreatePermissions) {
+                setShowReplicatePreviousTemplateModal(true);
 
-            return;
+                return;
+            } else {
+                setCurrentEmailTemplate(undefined);
+            }
         }
 
         if (emailTemplateError.response.data.description) {
@@ -210,8 +248,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             (template: EmailTemplateType) => template.id === templateId)?.description);
     };
 
-    const handleTemplateChange = (template: EmailTemplate) => {
-        setSelectedEmailTemplate({ ...template });
+    const handleTemplateChange = (updatedTemplateAttributes: Partial<EmailTemplate>) => {
+        setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
     };
 
     const handleLocaleChange = (locale: string) => {
@@ -225,6 +263,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             ...selectedEmailTemplate,
             id: selectedLocale.replace("-", "_")
         };
+
+        if (!template?.contentType) {
+            template.contentType = EmailManagementConstants.DEFAULT_CONTENT_TYPE;
+        }
 
         if (isTemplateNotAvailable) {
             createNewEmailTemplate(selectedEmailTemplateId, template)
@@ -333,9 +375,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         isEmailTemplatesListLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
                         selectedEmailTemplate={ currentEmailTemplate }
                         selectedLocale={ selectedLocale }
-                        onTemplateChanged={ (template: EmailTemplate) => handleTemplateChange(template) }
+                        onTemplateChanged={
+                            (updatedTemplateAttributes: Partial<EmailTemplate>) =>
+                                handleTemplateChange(updatedTemplateAttributes) }
                         onSubmit={ handleSubmit }
                         onDeleteRequested={ handleDeleteRequest }
+                        readOnly={ isReadOnly || (isTemplateNotAvailable && !hasEmailTemplateCreatePermissions) }
                     />
                 </ResourceTab.Pane>
             )
@@ -382,10 +427,16 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     data-componentid={ `${ componentId }-forms` }
                 />
 
-                <EmailCustomizationFooter
-                    isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
-                    onSaveButtonClick={ handleSubmit }
-                />
+                <Show when={ AccessControlConstants.EMAIL_TEMPLATES_EDIT }>
+                    {
+                        (!isTemplateNotAvailable || hasEmailTemplateCreatePermissions) && (
+                            <EmailCustomizationFooter
+                                isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
+                                onSaveButtonClick={ handleSubmit }
+                            />
+                        )
+                    }
+                </Show>
 
                 <ConfirmationModal
                     type="info"

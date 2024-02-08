@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -264,7 +264,8 @@ export class RouteUtils {
         const userAttributesAndStores: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: DatabaseDocumentIcon,
             id: "userAttributesAndStores",
-            name: "User Attributes & Stores"
+            name: "User Attributes & Stores",
+            order: 2
         };
 
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
@@ -273,7 +274,7 @@ export class RouteUtils {
             name: "Branding"
         };
 
-        const overview: NavCategory= {
+        const overview: NavCategory = {
             id: "overview",
             order: 0
         };
@@ -293,106 +294,127 @@ export class RouteUtils {
             order: 3
         };
 
-        const monitoring: NavCategory = {
-            id: "monitoring",
+        const preferences: NavCategory = {
+            id: "preferences",
             order: 4
         };
 
-        const settings: NavCategory = {
-            id: "insights",
+        const monitoring: NavCategory = {
+            id: "monitoring",
             order: 5
         };
 
-        const other: NavCategory = {
-            id: "other",
+        const settings: NavCategory = {
+            id: "settings",
             order: 6
         };
 
-        const pathsToCheck: string[] = [
+        const loginAndRegPathsToCheck: string[] = [
             `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
             `${AppConstants.getAdminViewBasePath()}/connector/`,
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
             AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
-            AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN")
+            AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
+            AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
+            AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
+            AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
-                id: "gettingStarted"
+                id: "gettingStarted",
+                order: 0
             },
             {
-                category: monitoring,
-                id: "insights"
-            },
-            {
-                category: build,
-                id: "applications",
+                category: overview,
+                id: "insights",
                 order: 1
             },
             {
                 category: build,
-                id: "apiResources",
-                order: 3
+                id: "applications",
+                order: 0,
+                selected: history.location.pathname.includes("applications")
             },
             {
                 category: build,
                 id: "identityProviders",
-                order: 2
+                order: 1,
+                selected: history.location.pathname.includes("/connections")
+            },
+            {
+                category: build,
+                id: "apiResources",
+                order: 2,
+                selected: history.location.pathname.includes("/api-resources")
             },
             {
                 category: organizations,
-                id: "organizations"
+                id: "organizations",
+                selected: history.location.pathname.includes("/organizations")
             },
             {
                 category: manage,
                 id: "users",
+                order: 0,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "groups",
+                order: 1,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "applicationRoles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userRoles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userV1Roles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "roles",
+                order: 2,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userStores",
-                order: 2,
-                parent: userAttributesAndStores
-            },
-            {
-                category: manage,
-                id: "attributeDialects",
                 order: 1,
                 parent: userAttributesAndStores
             },
             {
                 category: manage,
-                id: "oidcScopes",
-                order: 3,
+                id: "attributeDialects",
+                order: 2,
                 parent: userAttributesAndStores
+            },
+            {
+                category: manage,
+                id: "oidcScopes",
+                order: 4,
+                parent: userAttributesAndStores
+            },
+            {
+                category: manage,
+                id: "approvals",
+                order: 3,
+                parent: userManagement,
+                selected: history.location.pathname.includes("approvals")
             },
             {
                 category: build,
@@ -405,54 +427,41 @@ export class RouteUtils {
                 parent: branding
             },
             {
-                category: settings,
-                id: "email-and-sms",
+                category: preferences,
+                id: "loginAndRegistration",
+                selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: preferences,
+                id: "notificationChannels",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
-            },
-            {
-                category: settings,
-                id: "administrators"
-            },
-            {
-                category: settings,
-                id: "consoleSettings"
-            },
-            {
-                category: settings,
-                id: "server"
-            },
-            {
-                category: build,
-                id: "emailProviders",
-                parent: branding
             },
             {
                 category: monitoring,
                 id: "logs"
             },
             {
-                category: build,
-                id: "smsProviders",
-                parent: branding
-            },
-            {
-                category: other,
-                id: "remoteLogging"
-            },
-            {
-                category: settings,
-                id: "eventPublishing"
-            },
-            {
-                category: settings,
-                id: "loginAndRegistration",
-                selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
-            },
-            {
-                category: other,
+                category: monitoring,
                 id: "analytics"
+            },
+            {
+                category: settings,
+                id: "administrators",
+                order: 0
+            },
+            {
+                category: settings,
+                id: "consoleSettings",
+                order: 1,
+                selected: history.location.pathname.includes("/settings")
+            },
+            {
+                category: settings,
+                id: "server",
+                order: 2,
+                selected: history.location.pathname.includes("server")
             }
         ];
 

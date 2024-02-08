@@ -27,7 +27,8 @@ export const generatePasswordExpiry = (
     componentId: string,
     passwordExpiryEnabled: boolean,
     setPasswordExpiryEnabled: (value: boolean) => void,
-    t: TFunction<"translation", undefined>
+    t: TFunction<"translation", undefined>,
+    isReadOnly: boolean = false
 ): ReactElement => {
     return (
         <>
@@ -44,6 +45,7 @@ export const generatePasswordExpiry = (
                     } }
                     width={ 16 }
                     data-testid={ `${ componentId }-password-expiry-toggle` }
+                    readOnly={ isReadOnly }
                 />
                 <Field.Input
                     ariaLabel="Password Expiry Time"
@@ -65,7 +67,7 @@ export const generatePasswordExpiry = (
                     minLength={
                         GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                     }
-                    readOnly={ false }
+                    readOnly={ isReadOnly }
                     disabled={ !passwordExpiryEnabled }
                     data-testid={ `${ componentId }-password-expiry-time` }
                     validation={ (value: string): string | undefined => {

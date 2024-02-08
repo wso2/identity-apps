@@ -32,6 +32,7 @@ import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
+    ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate,
     GrantTypeInterface,
@@ -340,8 +341,13 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                 = values.get("publicClients").includes("supportPublicClients");
         }
 
+        config.inboundProtocolConfiguration.oidc[ "refreshToken" ] = {
+            expiryInSeconds: parseInt(OIDCMeta?.defaultRefreshTokenExpiryTime, 10)
+        };
+
         if (showRefreshToken || (!fields || fields.includes("RefreshToken"))) {
             config.inboundProtocolConfiguration.oidc[ "refreshToken" ] = {
+                expiryInSeconds: parseInt(OIDCMeta?.defaultRefreshTokenExpiryTime, 10),
                 renewRefreshToken: values.get("RefreshToken").includes("refreshToken")
             };
         }
@@ -355,6 +361,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             config.inboundProtocolConfiguration.oidc[ "grantTypes" ] = selectedGrantTypes;
             config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = resolveAllowedOrigins( urls ? urls
                 : callBackUrls);
+        }
+
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SPA && OIDCMeta) {
+            config.inboundProtocolConfiguration.oidc["accessToken"] =
+           {
+               applicationAccessTokenExpiryInSeconds: parseInt(OIDCMeta?.defaultApplicationAccessTokenExpiryTime, 10),
+               userAccessTokenExpiryInSeconds: parseInt(OIDCMeta?.defaultUserAccessTokenExpiryTime, 10)
+           };
         }
 
         return config;

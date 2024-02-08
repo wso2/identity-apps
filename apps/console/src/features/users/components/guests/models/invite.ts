@@ -17,6 +17,8 @@
  */
 
 import { InviteUserStatus } from "apps/console/src/extensions/components/users/models";
+import { ReactNode } from "react";
+import { GroupsInterface } from "../../../../groups";
 
 /**
   * Enum for role types.
@@ -43,6 +45,18 @@ export interface UserInviteInterface {
  * Interface to represent invite for parent org user.
  */
 export interface ParentOrgUserInviteInterface {
+    id?: string;
+    groups?: string[];
+    email?: string;
+    status?: InviteUserStatus;
+    expiredAt?: string;
+    usernames?: string[];
+}
+
+/**
+ * Interface to represent invite for administrator.
+ */
+export interface AdministratorInviteInterface {
     id?: string;
     roles?: string[];
     email?: string;
@@ -88,4 +102,22 @@ export interface UserInviteInterface {
     email?: string;
     status?: InviteUserStatus;
     username?: string;
+}
+
+export interface GroupsAutoCompleteOption {
+    key: string;
+    label: ReactNode;
+    group: GroupsInterface;
+}
+
+export interface InviteParentOrgUserFormValuesInterface {
+    username: string[];
+    groups: GroupsAutoCompleteOption[];
+}
+
+export enum ParentOrgUserInviteErrorCode {
+    ERROR_CODE_USER_NOT_FOUND = "OUI-10011",
+    ERROR_CODE_ACTIVE_INVITATION_EXISTS = "OUI-10018",
+    ERROR_CODE_INVITED_USER_EMAIL_NOT_FOUND = "OUI-10030",
+    ERROR_CODE_USER_ALREADY_EXISTS_INVITED_ORGANIZATION = "OUI-10032"
 }

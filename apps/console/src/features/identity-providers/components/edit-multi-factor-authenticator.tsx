@@ -29,8 +29,8 @@ import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
 import {
-    AuthenticatorExtensionsConfigInterface,  
-    identityProviderConfig 
+    AuthenticatorExtensionsConfigInterface,
+    identityProviderConfig
 } from "../../../extensions";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -182,7 +182,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         if (authenticator.id === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
             return true;
         }
-        
+
         return false;
     };
 
@@ -213,7 +213,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                                             />
                                         </EmphasizedSegment>
                                         {
-                                            displayExternalResourcesButton() && 
+                                            displayExternalResourcesButton() &&
                                             authenticatorConfig.externalResourceButton
                                         }
                                     </Grid.Column>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,17 @@
  */
 
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Button, PasswordValidation, Popup } from "@wso2is/react-components";
+import { Button, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Message, Radio } from "semantic-ui-react";
-import { SharedUserStoreConstants } from "../../../../core/constants";
+import { Trans, useTranslation } from "react-i18next";
+import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
+import { AppConstants, SharedUserStoreConstants } from "../../../../core/constants";
+import { history } from "../../../../core/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
+import {
+    ServerConfigurationsConstants
+} from "../../../../server-configurations/constants/server-configurations-constants";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES
@@ -31,6 +35,7 @@ import {
 import { ValidationDataInterface, ValidationFormInterface } from "../../../../validation/models";
 import { getUsersList } from "../../../api/users";
 import {
+    AskPasswordOptionTypes,
     HiddenFieldNames,
     PasswordOptionTypes
 } from "../../../constants";
@@ -97,8 +102,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     } = props;
 
     const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(PasswordOptionTypes.CREATE_PASSWORD);
-    const [ askPasswordOption ] = useState<string>("email");
-    const [ password, setPassword ] = useState<string>("");
+    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(AskPasswordOptionTypes.OFFLINE);
+    const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ userStoreRegex, setUserStoreRegex ] = useState<string>("");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
@@ -153,15 +158,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             setOfflineUser(false);
         }
     }, [ passwordOption, askPasswordOption ]);
-
-    /**
-     * This sets the password option to create password if the email entered is not valid.
-     */
-    useEffect(() => {
-        if (!isEmailFilled || !isValidEmail) {
-            setPasswordOption(PasswordOptionTypes.CREATE_PASSWORD);
-        }
-    }, [ isEmailFilled, isValidEmail ]);
 
     /**
      * This sets the username and password validation rules.
@@ -328,10 +324,19 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         scrollToInValidField("formBottom");
     };
 
-    const resolveAskPasswordOptionPopupContent = (): string => {
+    const resolveAskPasswordOptionPopupContent = (): ReactElement => {
         if (!emailVerificationEnabled) {
-            return t(
-                "console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
+            return (
+                <Trans
+                    i18nKey="console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
+                >
+                    To invite users to set the password, enable email verification from <Link
+                        onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                            .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                            .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                        external={ false }
+                    >Login & Registration settings</Link>.
+                </Trans>
             );
         }
 
@@ -347,6 +352,45 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const renderAskPasswordOption = (): ReactElement => {
         return (
             <div className="mt-4 mb-4 ml-4">
+                <Menu
+                    compact={ true }
+                    size="small"
+                    className="mb-4"
+                >
+                    {
+                        !emailVerificationEnabled? (
+                            <Popup
+                                basic
+                                inverted
+                                position="top center"
+                                content={ resolveAskPasswordOptionPopupContent() }
+                                hoverable
+                                trigger={
+                                    (
+                                        <Menu.Item
+                                            name={ t("console:manage.features.user.modals.addUserWizard" +
+                                                ".askPassword.inviteViaEmail") }
+                                            disabled
+                                        />
+                                    )
+                                }
+                            />
+                        ) : (
+                            <Menu.Item
+                                name={ t("console:manage.features.user.modals.addUserWizard" +
+                                    ".askPassword.inviteViaEmail") }
+                                active={ askPasswordOption === AskPasswordOptionTypes.EMAIL }
+                                onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.EMAIL) }
+                            />
+                        )
+                    }
+                    <Menu.Item
+                        name={ t("console:manage.features.user.modals.addUserWizard" +
+                            ".askPassword.inviteOffline") }
+                        active={ askPasswordOption === AskPasswordOptionTypes.OFFLINE }
+                        onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.OFFLINE) }
+                    />
+                </Menu>
                 {
                     resolveAskPasswordOption()
                 }
@@ -355,7 +399,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     };
 
     const resolveAskPasswordOption = (): ReactElement => {
-        if (askPasswordOption === "email") {
+        if (askPasswordOption === AskPasswordOptionTypes.EMAIL) {
             return (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -369,7 +413,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     </Grid.Column>
                 </Grid.Row>
             );
-        } else if (askPasswordOption === "offline") {
+        }
+
+        if (askPasswordOption === AskPasswordOptionTypes.OFFLINE) {
             return (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -844,50 +890,17 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             { t("console:manage.features.user.forms.addUserForm" +
                                                 ".buttons.radioButton.label") }
                                         </label>
-                                        {
-                                            emailVerificationEnabled && isEmailFilled
-                                            || !isAlphanumericUsernameEnabled()
-                                                ? (
-                                                    <Radio
-                                                        label={ askPasswordOptionData.label }
-                                                        data-testId={ askPasswordOptionData["data-testid"] }
-                                                        name="handlePasswordGroup"
-                                                        value={ askPasswordOptionData.value }
-                                                        checked={ passwordOption === askPasswordOptionData.value }
-                                                        onChange={
-                                                            (e: React.ChangeEvent<HTMLInputElement>, item: any) =>
-                                                                setPasswordOption(item?.value)
-                                                        }
-                                                    />
-                                                ) : (
-                                                    <Popup
-                                                        basic
-                                                        inverted
-                                                        position="top center"
-                                                        content={ resolveAskPasswordOptionPopupContent() }
-                                                        trigger={
-                                                            (
-                                                                <Radio
-                                                                    label={ askPasswordOptionData.label }
-                                                                    data-testId={ askPasswordOptionData["data-testid"] }
-                                                                    name="handlePasswordGroup"
-                                                                    value={ askPasswordOptionData.value }
-                                                                    checked={ passwordOption ===
-                                                                        askPasswordOptionData.value }
-                                                                    onChange={
-                                                                        (
-                                                                            e: React.ChangeEvent<HTMLInputElement>,
-                                                                            item: any
-                                                                        ) =>
-                                                                            setPasswordOption(item?.value)
-                                                                    }
-                                                                    disabled
-                                                                />
-                                                            )
-                                                        }
-                                                    />
-                                                )
-                                        }
+                                        <Radio
+                                            label={ askPasswordOptionData.label }
+                                            data-testId={ askPasswordOptionData["data-testid"] }
+                                            name="handlePasswordGroup"
+                                            value={ askPasswordOptionData.value }
+                                            checked={ passwordOption === askPasswordOptionData.value }
+                                            onChange={
+                                                (e: React.ChangeEvent<HTMLInputElement>, item: any) =>
+                                                    setPasswordOption(item?.value)
+                                            }
+                                        />
                                     </Form.Field>
                                     {
                                         passwordOption === askPasswordOptionData.value

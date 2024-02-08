@@ -181,6 +181,7 @@ export class ApplicationManagementConstants {
     public static readonly CLIENT_CREDENTIALS_GRANT: string = "client_credentials";
     public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
     public static readonly ORGANIZATION_SWITCH_GRANT: string = "organization_switch";
+    public static readonly ORGANIZATION_SWITCH_CC_GRANT: string = "organization_switch_cc";
     public static readonly IMPLICIT_GRANT: string = "implicit";
     public static readonly PASSWORD: string = "password";
     public static readonly SAML2_BEARER: string = "urn:ietf:params:oauth:grant-type:saml2-bearer";
@@ -192,9 +193,24 @@ export class ApplicationManagementConstants {
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
 
     /**
-     * Set of grant types to hide from the UI.
+     * List of available grant types.
      */
-    public static readonly HIDDEN_GRANT_TYPES: string[] = [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ];
+    public static readonly AVAILABLE_GRANT_TYPES: string[] = [
+        this.AUTHORIZATION_CODE_GRANT,
+        this.CLIENT_CREDENTIALS_GRANT,
+        this.REFRESH_TOKEN_GRANT,
+        this.ORGANIZATION_SWITCH_GRANT,
+        this.ORGANIZATION_SWITCH_CC_GRANT,
+        this.IMPLICIT_GRANT,
+        this.PASSWORD,
+        this.SAML2_BEARER,
+        this.JWT_BEARER,
+        this.IWA_NTLM,
+        this.UMA_TICKET,
+        this.DEVICE_GRANT,
+        this.OAUTH2_TOKEN_EXCHANGE,
+        this.ACCOUNT_SWITCH_GRANT
+    ];
 
     /**
      * Currently refresh grant type is recommended to use at least one of below.
@@ -478,9 +494,14 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_SIGNIN_TAB: number = 3;
 
     /**
-     * Login Flow tab index of My Account application.
+     * Login Flow tab index of My Account application in root organization view.
      */
     public static readonly MY_ACCOUNT_LOGIN_FLOW_TAB: number = 2;
+
+    /**
+     * Login Flow tab index of My Account application in organization view.
+     */
+    public static readonly SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB: number = 0;
 }
 
 export enum ShareWithOrgStatus {

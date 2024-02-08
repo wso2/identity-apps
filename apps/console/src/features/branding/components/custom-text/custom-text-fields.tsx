@@ -42,6 +42,10 @@ import "./custom-text-fields.scss";
 export interface CustomTextFieldsProps extends IdentifiableComponentInterface {
     onSubmit: (values: any) => void;
     fields: Record<string, string>;
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
 }
 
 const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
@@ -71,12 +75,18 @@ const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElemen
  * @returns Text customization fields component.
  */
 const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: CustomTextFieldsProps): ReactElement => {
-    const { fields, onSubmit, "data-componentid": componentId } = props;
+    const {
+        fields,
+        onSubmit,
+        readOnly,
+        "data-componentid": componentId
+    } = props;
 
     const { t, i18n } = useTranslation();
 
     const {
         customTextDefaults,
+        customTextScreenMeta,
         updateCustomTextFormSubscription,
         selectedScreen,
         selectedLocale,
@@ -199,9 +209,11 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                                 i18n.exists(hintKey) && (
                                                     <Hint>{ t(hintKey, { productName }) }</Hint>
                                                 )
-
                                             ) }
                                             component={ TextFieldAdapter }
+                                            multiline={ customTextScreenMeta &&
+                                                customTextScreenMeta[fieldName.replaceAll("_", ".")].MULTI_LINE }
+                                            size="small"
                                             maxLength={
                                                 CustomTextPreferenceConstants.FORM_FIELD_CONSTRAINTS.MAX_LENGTH
                                             }
@@ -211,6 +223,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             InputProps={ {
                                                 endAdornment: renderInputAdornment(fieldName)
                                             } }
+                                            readOnly={ readOnly }
                                         />
                                     );
                                 }) }

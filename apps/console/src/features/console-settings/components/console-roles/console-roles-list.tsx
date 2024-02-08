@@ -16,20 +16,16 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface, RoleListInterface, RolesInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesListLayout from "./console-roles-list-layout";
-import { AppConstants } from "../../../core/constants/app-constants";
-import { UIConstants } from "../../../core/constants/ui-constants";
-import { history } from "../../../core/helpers";
-import { useRolesList } from "../../../roles/api/roles";
-import useConsoleSettings from "../../hooks/use-console-settings";
-import { AssociatedRolesPatchObjectInterface, BasicRoleInterface } from "../../../roles/models/roles";
 import CreateConsoleRoleWizard from "./create-console-role-wizard/create-console-role-wizard";
+import { UIConstants } from "../../../core/constants/ui-constants";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import useConsoleRoles from "../../hooks/use-console-roles";
 
 /**
@@ -64,6 +60,8 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
         isConsoleRolesFetchRequestLoading
     } = useConsoleRoles(true, listItemLimit, listOffset, searchQuery);
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     /**
      * The following useEffect is used to handle if any error occurs while fetching the roles list.
      */
@@ -87,7 +85,7 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
         <>
             <ConsoleRolesListLayout
                 data-componentid={ `${ componentId }-layout` }
-                isSubOrg={ false }
+                isSubOrg={ isSubOrganization() }
                 rolesList={ consoleRoles }
                 onMutateRolesList={ mutateConsoleRolesFetchRequest }
                 isRolesListLoading={ isConsoleRolesFetchRequestLoading }

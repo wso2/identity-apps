@@ -13,7 +13,8 @@
     "templateGroup": "",
     "types": [
         "oidc",
-        "saml"
+        "saml",
+        "wsFed"
     ],
     "application": {
         "name": "",

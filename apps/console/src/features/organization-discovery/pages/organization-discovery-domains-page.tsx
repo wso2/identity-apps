@@ -17,7 +17,8 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -36,7 +37,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     Checkbox,
@@ -47,7 +48,16 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "../../core";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
@@ -86,6 +96,19 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isReadOnly: boolean = useMemo(
+        () =>
+            !hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -328,6 +351,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                 onChange={ handleToggle }
                 checked={ isOrganizationDiscoveryEnabled }
                 data-testId={ `${ testId }-enable-toggle` }
+                readOnly={ isReadOnly }
             />
         );
     };
@@ -360,7 +384,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                         || discoverableOrganizations?.totalResults <= 0
                     )
                 ) && (
-                    <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                    <Show when={ AccessControlConstants.ORGANIZATION_DISCOVERY_WRITE }>
                         <PrimaryButton
                             disabled={ isDiscoverableOrganizationsFetchRequestLoading }
                             loading={ isDiscoverableOrganizationsFetchRequestLoading }

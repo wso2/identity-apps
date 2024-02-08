@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/core",
-    "version": "2.0.24",
+    "version": "2.0.34",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -85,7 +85,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^1.1.24",
+        "@asgardeo/auth-react": "^4.0.1",
         "@braintree/sanitize-url": "^5.0.0",
         "@types/jest": "^26.0.14",
         "axios": "^0.21.1",

@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
+import Typography from "@oxygen-ui/react/Typography";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     GenericIcon,
@@ -26,8 +27,9 @@ import {
     PageHeader,
     Text
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/build-login-flow.png";
@@ -35,6 +37,8 @@ import ConfigureParametersIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/configure-parameters.png";
 import CustomizeStepsIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/customize-steps.png";
+import { FeatureConfigInterface } from "../../../../features/core/models";
+import { AppState } from "../../../../features/core/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 
@@ -62,6 +66,14 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     /**
      * Vertical Stepper steps.
      *
@@ -77,8 +89,9 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.fido.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
-                                application </Link>
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
                             for which you want to set up passkey login.
                         </Trans>
                     </Text>
@@ -93,7 +106,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Passkey
                             Login</strong> to configure a basic passkey flow.
                         </Trans>
                     </Text>

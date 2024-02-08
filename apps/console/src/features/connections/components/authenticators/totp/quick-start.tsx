@@ -17,9 +17,9 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src/components/vertical-stepper/vertical-stepper";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
@@ -37,9 +37,8 @@ type TOTPQuickStartPropsInterface = TestableComponentInterface;
 /**
  * Quick start content for the TOTP authenticator.
  *
- * @param {TOTPQuickStartPropsInterface} props - Props injected into the component.
- *
- * @return {React.ReactElement}
+ * @param props - Props injected into the component.
+ * @returns TOTP authenticator quick start component.
  */
 const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
     props: TOTPQuickStartPropsInterface
@@ -55,7 +54,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
 
     /**
      * Vertical Stepper steps.
-     * @return {VerticalStepperStepInterface[]}
+     * @returns Stepper steps.
      */
     const steps: VerticalStepperStepInterface[] = [
         {
@@ -67,7 +66,10 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.totp.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application </Link>
+                            Choose the <Link
+                                external={ false }
+                                onClick={ () => setShowApplicationModal(true) }
+                            > application </Link>
                             for which you want to set up TOTP login.
                         </Trans>
                     </Text>
@@ -82,7 +84,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.totp.quickStart.steps.selectTOTP.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add OTP as a second
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Add OTP as a second
                             factor</strong> configure a basic TOTP flow.
                         </Trans>
                     </Text>
@@ -114,7 +116,7 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
 
     return (
         <>
-            <Grid container spacing={ { xs: 2, md: 3 } } columns={ { xs: 4, sm: 8, md: 12 } }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
                 <Grid xs={ 4 } sm={ 8 } md={ 12 }>
                     <PageHeader
                         className="mb-2"

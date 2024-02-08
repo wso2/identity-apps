@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,16 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
+import { DynamicField, KeyValue, useTrigger } from "@wso2is/forms";
 import {
-    DynamicField,
     EmphasizedSegment,
-    KeyValue,
     PrimaryButton
 } from "@wso2is/react-components";
 import differenceBy from "lodash-es/differenceBy";
@@ -38,6 +37,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
 import { patchOrganization } from "../../api";
@@ -77,12 +77,12 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ submit, setSubmit ] = useTrigger();
     const [ isSubmitting, setIsSubmitting ] = useState(false);
 
-    const updateOrgAttributes = useCallback(
+    const updateOrgAttributes: (data: KeyValue[]) => void = useCallback(
         (data: KeyValue[]) => {
             setIsSubmitting(true);
 
@@ -91,7 +91,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                 (attribute: OrganizationAttributesInterface) => attribute.key
             );
 
-            const removedKeys = differenceBy(
+            const removedKeys: string[] = differenceBy(
                 existingKeys ?? [],
                 dataKeys ?? []
             );
@@ -123,7 +123,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
             });
 
             patchOrganization(organization.id, patchData)
-                .then(_response => {
+                .then((_response: OrganizationResponseInterface) => {
                     dispatch(
                         addAlert({
                             description: t(
@@ -140,7 +140,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
                     onAttributeUpdate(organization.id);
                 })
-                .catch(error => {
+                .catch((error: IdentityAppsError) => {
                     if (error?.description) {
                         dispatch(
                             addAlert({

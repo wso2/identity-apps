@@ -66,6 +66,7 @@ export const AppUtils: AppUtilsInterface = (function() {
 
     const superTenantFallback: string = "carbon.super";
     const tenantPrefixFallback: string = "t";
+    const orgPrefixFallback: string = "o";
     const fallbackServerOrigin: string = "https://localhost:9443";
     const appBaseForHistoryAPIFallback: string = "/";
     const urlPathForSuperTenantOriginsFallback: string = "";
@@ -165,6 +166,40 @@ export const AppUtils: AppUtilsInterface = (function() {
         },
 
         /**
+         * Get app base with the tenant domain and organization.
+         *
+         * @returns App base with tenant and organization.
+         */
+        getAppBaseWithTenantAndOrganization: function() {
+            if (_config.legacyAuthzRuntime) {
+                return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
+                    ? ("/" + _config.appBaseName)
+                    : "" }`;
+            }
+
+            const tenantPath: string = this.getTenantPath(true)
+                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            const appBaseName: string = _config.appBaseName
+                ? `/${_config.appBaseName}`
+                : "";
+
+            return `${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
+        },
+
+        /**
+         * Get the client origin with the tenant.
+         *
+         * @returns
+         */
+        getClientOriginWithTenant: function() {
+            if (_config.legacyAuthzRuntime) {
+                return _config.clientOrigin + this.getAppBaseWithTenant();
+            }
+
+            return `${_config.clientOrigin}${this.getAppBaseWithTenantAndOrganization()}`;
+        },
+
+        /**
          * Get the config object.
          *
          * @returns Deployment Configuration.
@@ -192,10 +227,10 @@ export const AppUtils: AppUtilsInterface = (function() {
             return {
                 appBase: _config.appBaseName,
                 appBaseNameForHistoryAPI: this.constructAppBaseNameForHistoryAPI(),
-                appBaseWithTenant: this.getAppBaseWithTenant(),
+                appBaseWithTenant: this.getAppBaseWithTenantAndOrganization(),
                 clientID: clientID,
                 clientOrigin: _config.clientOrigin,
-                clientOriginWithTenant: _config.clientOrigin + tenantPath,
+                clientOriginWithTenant: this.getClientOriginWithTenant(),
                 consoleApp: {
                     path: _config.consoleApp?.path
                         ? _config.consoleAppOrigin + resolvedTenantPath + _config.consoleApp?.path
@@ -206,8 +241,10 @@ export const AppUtils: AppUtilsInterface = (function() {
                 extensions: _config.extensions,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
+                legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
+                organizationPrefix: this.getOrganizationPrefix(),
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
@@ -215,6 +252,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                     logout: this.constructAppPaths(_config.routePaths.logout)
                 },
                 serverOrigin: _config.serverOrigin,
+                serverOriginWithOrganization: _config.serverOrigin + this.getOrganizationPath(),
                 serverOriginWithTenant: _config.serverOrigin + tenantPath,
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
@@ -242,6 +280,52 @@ export const AppUtils: AppUtilsInterface = (function() {
             }
 
             return path;
+        },
+
+        /**
+         * Get the organization name.
+         *
+         * @returns Organization name.
+         */
+        getOrganizationName: function () {
+            if (_config.legacyAuthzRuntime) {
+                const path: string = window.location.pathname;
+                const pathChunks: string[] = path.split("/");
+
+                const orgPrefixIndex: number = pathChunks.indexOf(this.getOrganizationPrefix());
+
+                if (orgPrefixIndex !== -1) {
+                    return pathChunks[ orgPrefixIndex + 1 ];
+                }
+
+                return "";
+            }
+
+            if (_config.organizationName) {
+                return _config.organizationName;
+            }
+
+            return "";
+        },
+
+        /**
+         * Get the organization path.
+         *
+         * @returns Organization path.
+         */
+        getOrganizationPath: function () {
+            return this.getOrganizationName() !== ""
+                ? `/${ this.getOrganizationPrefix() }/${ this.getOrganizationName() }`
+                : "";
+        },
+
+        /**
+         * Get the organization prefix.
+         *
+         * @returns Organization prefix.
+         */
+        getOrganizationPrefix: function () {
+            return _args.organizationPrefix || orgPrefixFallback;
         },
 
         /**
@@ -478,6 +562,25 @@ export const AppUtils: AppUtilsInterface = (function() {
                             ? this.getTenantName()
                             : this.getSuperTenantProxy())
             };
+        },
+
+        /**
+         * Updates the organization name.
+         *
+         * @param organizationName - new Organization.
+         */
+        updateOrganizationName: function (organizationName: string) {
+            _config.organizationName = organizationName;
+        },
+
+        /**
+         * Updates the organization type.
+         *
+         * @param organizationType - new Organization type.
+         * @deprecated This is deprecated.
+         */
+        updateOrganizationType: function (organizationType: string) {
+            _config.organizationType = organizationType;
         },
 
         /**

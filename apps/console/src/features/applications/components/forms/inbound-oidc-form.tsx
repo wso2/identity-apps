@@ -865,7 +865,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Hides the grant types specified in the array.
                 // TODO: Remove this once the specified grant types such as `account-switch` are handled properly.
                 // See https://github.com/wso2/product-is/issues/8806.
-                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(name)) {
+                if (applicationConfig?.hiddenGrantTypes?.includes(name)) {
                     return;
                 }
 
@@ -880,7 +880,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     && template.id
                     && get(applicationConfig.allowedGrantTypes, template.id)
                     && !applicationConfig.allowedGrantTypes[ template.id ]
-                        .includes(name)) {
+                        .includes(name)
+                    && ApplicationManagementConstants.AVAILABLE_GRANT_TYPES.includes(name)) {
 
                     return;
                 }
@@ -921,13 +922,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         /**
          * Rearranging the allowed list according to the correct order.
-         * Below algorithm assumes that the template's arrange order map
-         * keys length is equals to allowedList.
          *
          * Below invariants must be satisfied to complete the operation: -
          *      - `template` AND `template.id` IS truthy
          *      - `arrangement` HAS `template.id`
-         *      - `length(arrangement.length)` == `length(allowedList)`
          *
          * If all the above invariants are satisfied then we can safely
          * attach a `index` property to every entry of the `allowedList`
@@ -938,7 +936,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             const arrangement: Map<string, number> = ApplicationManagementConstants
                 .TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER[ template.id ];
 
-            if (arrangement && arrangement.size === allowedList.length) {
+            if (arrangement) {
                 for (const grant of allowedList) {
                     const index: number = arrangement.get(grant.value);
 
@@ -2258,7 +2256,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        isValidateTokenBindingEnabled ? [ "validateTokenBinding" ] : []
+                                        isValidateTokenBindingEnabled() ? [ "validateTokenBinding" ] : []
                                     }
                                     children={ [
                                         {
@@ -2309,8 +2307,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".accessToken.fields.revokeToken.hint") }
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.revokeToken.hint"
+                                        }
+                                    >
+                                        Allow revoking tokens of this application when a bound IDP session gets
+                                        terminated through a user logout. Remember to include either
+                                        <Code withBackground>client_id</Code> or
+                                        <Code withBackground>id_token_hint</Code> in the logout request.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

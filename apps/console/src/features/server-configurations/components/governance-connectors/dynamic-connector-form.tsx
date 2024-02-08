@@ -18,34 +18,34 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";
-import { 
-    Hint, 
-    PrimaryButton, 
-    RenderInput, 
-    RenderToggle 
+import {
+    Hint,
+    PrimaryButton,
+    RenderInput,
+    RenderToggle
 } from "@wso2is/react-components";
 import camelCase from "lodash-es/camelCase";
 import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { 
-    Field, 
-    reduxForm 
+import {
+    Field,
+    reduxForm
 } from "redux-form";
-import { 
-    Divider, 
-    Form, 
-    Grid 
+import {
+    Divider,
+    Form,
+    Grid
 } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../../extensions";
-import { 
-    AppState, 
-    FeatureConfigInterface 
+import {
+    AppState,
+    FeatureConfigInterface
 } from "../../../core";
 import { ServerConfigurationsConstants } from "../../constants";
-import { 
-    ConnectorPropertyInterface, 
-    GovernanceConnectorInterface 
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
 } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -101,9 +101,9 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
     const { connector, isSubmitting, handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
-    const formValues: Record<string, string | boolean> 
+    const formValues: Record<string, string | boolean>
         = useSelector((state: AppState) => state.form[ props.form ].values);
-    
+
     const { t, i18n } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -118,24 +118,23 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
         <Form onSubmit={ handleSubmit }>
             { <Grid padded={ true }>
                 { properties?.map((property: ConnectorPropertyInterface, index: number) => {
-                    const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." + 
-                        camelCase(connector?.category) + ".connectors."+camelCase(connector?.name) + 
+                    const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+                        camelCase(connector?.category) + ".connectors."+camelCase(connector?.name) +
                         ".properties."+camelCase(property?.name)+".label";
                     let fieldLabel: string = property?.displayName;
 
                     if (i18n.exists(fieldLabelKey)) {
                         fieldLabel = t(fieldLabelKey);
-                    } 
+                    }
 
-                    const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." + 
-                        camelCase(connector?.category)+".connectors."+camelCase(connector?.name) + 
+                    const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+                        camelCase(connector?.category)+".connectors."+camelCase(connector?.name) +
                         ".properties."+camelCase(property?.name)+".hint";
                     let fieldHint: string = property?.description;
 
                     if (i18n.exists(fieldHintKey)) {
                         fieldHint = t(fieldHintKey);
-                    }                  
-                    
+                    }
 
                     return (
                         <Grid.Row
@@ -167,9 +166,9 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
                                 ) : (
                                     <label>{ fieldLabel }</label>
                                 ) }
-                                { 
-                                    (property.description) !== "" 
-                                        && <Hint>{ fieldHint }</Hint> 
+                                {
+                                    (property.description) !== ""
+                                        && <Hint>{ fieldHint }</Hint>
                                 }
                             </Grid.Column>
                             <Grid.Column
@@ -300,7 +299,7 @@ const validate = (values: Record<string, string>) => {
                 ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
             )
         ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
-    }  
+    }
 
     return errors;
 };

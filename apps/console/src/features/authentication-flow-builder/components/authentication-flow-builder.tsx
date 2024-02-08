@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,7 @@ import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switc
 import SidePanelDrawer from "./side-panel-drawer";
 import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
-import { AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
+import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
 
 /**
@@ -50,6 +50,10 @@ export interface AuthenticationFlowBuilderPropsInterface extends IdentifiableCom
      * Callback to trigger IDP create wizard.
      */
     onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
+    /**
+     * Make the component read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -61,7 +65,12 @@ export interface AuthenticationFlowBuilderPropsInterface extends IdentifiableCom
 const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderPropsInterface> = (
     props: AuthenticationFlowBuilderPropsInterface
 ): ReactElement => {
-    const { legacyBuilder: LegacyBuilder, onIDPCreateWizardTrigger, "data-componentid": componentId } = props;
+    const {
+        legacyBuilder: LegacyBuilder,
+        onIDPCreateWizardTrigger,
+        readOnly,
+        "data-componentid": componentId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -70,18 +79,28 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         isAuthenticationSequenceDefault,
         isVisualEditorEnabled,
         isLegacyEditorEnabled,
-        refetchApplication
+        refetchApplication,
+        preferredAuthenticationFlowBuilderMode,
+        setPreferredAuthenticationFlowBuilderMode
     } = useAuthenticationFlow();
 
-    const FlowModes: AuthenticationFlowBuilderModesInterface[] = [
+    const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
         {
             id: 0,
-            label: t("console:loginFlow.modes.legacy.label")
+            label: t("console:loginFlow.modes.legacy.label"),
+            mode: AuthenticationFlowBuilderModes.Classic
+        }
+    ] : [
+        {
+            id: 0,
+            label: t("console:loginFlow.modes.legacy.label"),
+            mode: AuthenticationFlowBuilderModes.Classic
         },
         {
             extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
-            label: t("console:loginFlow.modes.visual.label")
+            label: t("console:loginFlow.modes.visual.label"),
+            mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
 
@@ -103,12 +122,27 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             return;
         }
 
-        if (isVisualEditorEnabled) {
+        if (isVisualEditorEnabled && !readOnly) {
             setActiveFlowMode(FlowModes[1]);
         } else {
             setActiveFlowMode(FlowModes[0]);
         }
     }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
+
+    /**
+     * Set the active flow mode to the preferred flow mode when the user preference is updated.
+     */
+    useEffect(() => {
+        if (!preferredAuthenticationFlowBuilderMode) {
+            return;
+        }
+
+        const activeMode: AuthenticationFlowBuilderModesInterface = FlowModes.find(
+            (mode: AuthenticationFlowBuilderModesInterface) => mode.mode === preferredAuthenticationFlowBuilderMode
+        );
+
+        setActiveFlowMode(activeMode);
+    }, [ preferredAuthenticationFlowBuilderMode ]);
 
     /**
      * Handles the flow mode switch.
@@ -193,6 +227,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                             setFlowModeToSwitch(null);
                             setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
                             refetchApplication();
+                            setPreferredAuthenticationFlowBuilderMode(flowModeToSwitch?.mode);
                         } }
                         onClose={ () => {
                             setFlowModeToSwitch(null);
@@ -209,7 +244,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
  * Default props for the component.
  */
 AuthenticationFlowBuilder.defaultProps = {
-    "data-componentid": "authentication-flow-builder"
+    "data-componentid": "authentication-flow-builder",
+    readOnly: false
 };
 
 export default AuthenticationFlowBuilder;

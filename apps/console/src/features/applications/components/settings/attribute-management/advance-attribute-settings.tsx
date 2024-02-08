@@ -31,6 +31,7 @@ import { applicationConfig } from "../../../../../extensions";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
+    ClaimConfigurationInterface,
     InboundProtocolListItemInterface,
     OIDCDataInterface,
     RoleConfigInterface,
@@ -41,6 +42,7 @@ import {
 } from "../../../models";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
+    claimConfigurations: ClaimConfigurationInterface;
     dropDownOptions: any;
     setSubmissionValues: any;
     setSelectedValue: any;
@@ -75,6 +77,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const {
         applicationTemplateId,
+        claimConfigurations,
         dropDownOptions,
         setSubmissionValues,
         setSelectedValue,
@@ -260,6 +263,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         !config.showRoleMapping && delete settingValues.role.mappings;
         !config.showIncludeUserstoreDomainRole && settingValues.role.includeUserDomain;
         !config.showRoleAttribute && delete settingValues.role.claim;
+
+        // Assign default subject attribute, if the subject attribute property from the payload is undefined or empty,
+        // as sending an empty value for subject results in issues.
+        // Ref: https://github.com/wso2/product-is/issues/19054
+        if (!settingValues?.subject?.claim || settingValues?.subject?.claim === "") {
+            settingValues.subject.claim = claimConfigurations.subject.claim.uri;
+        }
 
         setSubmissionValues(settingValues);
     };

@@ -22,6 +22,8 @@ import {
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -38,7 +40,7 @@ import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
 import startCase from "lodash-es/startCase";
 import union from "lodash-es/union";
-import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -86,8 +88,13 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { deploymentConfig } = useDeploymentConfig();
+    const { UIConfig } = useUIConfig();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+
+    // External connection resources URL from the UI config.
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
@@ -483,6 +490,19 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                     return null;
                                                 }
 
+                                                let isTemplateDisabled: boolean = template.disabled;
+                                                let disabledHint: ReactNode = undefined;
+
+                                                // Disable the Apple template in localhost as it's not supported.
+                                                if (template.id === ConnectionManagementConstants
+                                                    .IDP_TEMPLATE_IDS.APPLE &&
+                                                    new URL(deploymentConfig?.serverOrigin)?.
+                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
+                                                    isTemplateDisabled = true;
+                                                    disabledHint = t("console:develop.pages." +
+                                                        "authenticationProviderTemplate.disabledHint.apple");
+                                                }
+
                                                 return (
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
@@ -490,7 +510,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                             resolveConnectionName(template?.name)
                                                         }
                                                         isResourceComingSoon={ template.comingSoon }
-                                                        disabled={ template.disabled }
+                                                        disabled={ isTemplateDisabled }
+                                                        disabledHint={ disabledHint }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
@@ -500,9 +521,11 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
-                                                                .resolveConnectionResourcePath("", template.image)
+                                                                .resolveConnectionResourcePath(
+                                                                    connectionResourcesUrl, template.image)
                                                         }
                                                         tags={ template.tags }
+                                                        showActions={ true }
                                                         onClick={ (e: SyntheticEvent) => {
                                                             handleTemplateSelection(e, template.id);
                                                             setShowWizard(true);

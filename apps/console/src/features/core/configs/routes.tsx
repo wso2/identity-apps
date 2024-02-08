@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import {
     ArrowRightToBracketPencilIcon,
     BoltIcon,
     BuildingIcon,
+    DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
     EnvelopeMagnifyingGlassIcon,
@@ -1000,6 +1001,28 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server-configurations/pages/connector-edit-page"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: <LinearNodesIcon fill="black" className="icon" />
+                        },
+                        id: "dynamicConnector",
+                        name: "Dynamic Connector",
+                        order: 24,
+                        path: AppConstants.getPaths()
+                            .get("GOVERNANCE_CONNECTOR_EDIT")
+                            .replace(
+                                ":categoryId",
+                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                            ),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
                         category: "extensions:manage.sidePanel.categories.settings",
                         children: [
                             {
@@ -1062,18 +1085,18 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.legacy",
+                        category: "extensions:manage.sidePanel.categories.userManagement",
                         component: lazy(() => import("../../workflow-approvals/pages/approvals")),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().approvals
+                            icon: <DocumentCheckIcon fill="black" className="icon" />
                         },
                         id: "approvals",
                         name: "console:manage.features.sidePanel.approvals",
                         order: 26,
                         path: AppConstants.getPaths().get("APPROVALS"),
                         protected: true,
-                        showOnSidePanel: legacyMode?.approvals
+                        showOnSidePanel: true
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",
@@ -1679,6 +1702,20 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                component: lazy(() => import("../../provisioning/pages/outbound-provisioning-settings")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().childIcon
+                },
+                id: "outboundProvisioningSettings",
+                name: "console:develop.features.applications.resident.provisioning.outbound.heading",
+                order: 6,
+                path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+                protected: true,
+                showOnSidePanel: false
             }
         );
 

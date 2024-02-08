@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,6 @@ export class LocalStorageUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -33,8 +31,8 @@ export class LocalStorageUtils {
     /**
      * Set a value in local storage.
      *
-     * @param {string} key - Key to set the value under.
-     * @param {string} value - Value to be set.
+     * @param key - Key to set the value under.
+     * @param value - Value to be set.
      */
     public static setValueInLocalStorage(key: string, value: string): void {
         localStorage.setItem(key, value);
@@ -43,11 +41,15 @@ export class LocalStorageUtils {
     /**
      * Get a value from local storage.
      *
-     * @param {string} key - Key to retrieve the value.
-     * @returns {string} Value or null.
+     * @param key - Key to retrieve the value.
+     * @returns Value or null.
      */
     public static getValueFromLocalStorage(key: string): string {
         return localStorage.getItem(key);
+    }
+
+    public static clearItemFromLocalStorage(key: string): void {
+        localStorage.removeItem(key);
     }
 }
 
@@ -59,8 +61,6 @@ export class SessionStorageUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -75,7 +75,7 @@ export class SessionStorageUtils {
     /**
      * Clear a specific item from the session storage.
      *
-     * @param {string} key - Key of the item to be removed.
+     * @param key - Key of the item to be removed.
      */
     public static clearItemFromSessionStorage(key: string): void {
         sessionStorage.removeItem(key);
@@ -84,8 +84,8 @@ export class SessionStorageUtils {
     /**
      * Set a specific item to the session storage.
      *
-     * @param {string} key - Key of the item to be set.
-     * @param {string} value - Value of the item to be set.
+     * @param key - Key of the item to be set.
+     * @param value - Value of the item to be set.
      */
     public static setItemToSessionStorage(key: string, value: string): void {
         sessionStorage.setItem(key, value);
@@ -94,7 +94,7 @@ export class SessionStorageUtils {
     /**
      * Get a specific item from the session storage.
      *
-     * @param {string} key - Key of the item to be retrieved.
+     * @param key - Key of the item to be retrieved.
      */
     public static getItemFromSessionStorage(key: string): string {
         return sessionStorage.getItem(key);
@@ -109,15 +109,13 @@ export class CookieStorageUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
     /**
      * Set a cookie.
      *
-     * @param {string} cookieString - Cookie to set.
+     * @param cookieString - Cookie to set.
      */
     public static setItem(cookieString: string): void {
 
@@ -127,7 +125,7 @@ export class CookieStorageUtils {
     /**
      * Get the value of a specific cookie.
      *
-     * @param {string} name - Name of the cookie to be retrieved.
+     * @param name - Name of the cookie to be retrieved.
      */
     public static getItem(name: string): string {
 

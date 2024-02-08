@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GridLayout, PageLayout, Section } from "@wso2is/react-components";
@@ -159,12 +158,7 @@ export const MyAccountSettingsPage: FunctionComponent<MyAccountSettingsPageInter
     return (
         <PageLayout
             pageTitle={ t("extensions:manage.myAccount.pageTitle") }
-            title={ (
-                <>
-                    { t("extensions:manage.myAccount.pageTitle") }
-                    <Chip label={ t("common:preview") } className="oxygen-chip-beta ml-2" />
-                </>
-            ) }
+            title={ t("extensions:manage.myAccount.pageTitle") }
             description={ t("extensions:manage.myAccount.description") }
             data-componentid={ `${ componentId }-page-layout` }
         >

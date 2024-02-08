@@ -24,6 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
@@ -126,7 +127,8 @@
     String allowedAttributes = null;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
+        isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain) &&
+                                                     Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
         isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
@@ -198,7 +200,7 @@
             <div class="ui segment">
                 <%-- page content --%>
                 <h3 class="ui header m-0" data-testid="password-recovery-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "forgot.password")%>
+                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.heading")%>
                 </h3>
                 <% if (error) { %>
                 <div class="ui visible negative message" id="server-error-msg">
@@ -221,9 +223,15 @@
                             if (StringUtils.isNotEmpty(username) && !error) {
                         %>
                         <div class="field">
-                            <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
+                            <%
+                               if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                    && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
+
+                            %>
+                            <label class="mb-5 line-break" for="username">
+                                <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
                             </label>
+                            <% }  %>
                             <div class="ui fluid left icon input">
                                 <input
                                     placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, "Username.email")%>"
@@ -251,9 +259,14 @@
                         %>
 
                         <div class="field">
-                            <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
-                            </label>
+                            <%
+                                if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                               && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
+                           %>
+                           <label class="mb-5 line-break" for="username">
+                               <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
+                           </label>
+                           <% } %>
                             <div class="ui fluid left icon input">
                                 <% if (isMultiAttributeLoginEnabledInTenant) { %>
                                     <input
@@ -360,11 +373,31 @@
                             }
                         %>
                         <div class="mt-4">
-                            <button id="recoverySubmit"
-                                    class="ui primary button large fluid"
-                                    type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "send.reset.link")%>
-                            </button>
+                            <%
+                               if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                    && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
+
+                            %>
+                                <button id="recoverySubmit"
+                                        class="ui primary button large fluid"
+                                        type="submit">
+                                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.button")%>
+                                </button>
+                            <% } else if (!isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                   && isQuestionBasedPasswordRecoveryEnabledByTenant) { %>
+                               <button id="recoverySubmit"
+                                       class="ui primary button large fluid"
+                                       type="submit">
+                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.question")%>
+                               </button>
+                            <% } else  if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                                                && isQuestionBasedPasswordRecoveryEnabledByTenant){ %>
+                               <button id="recoverySubmit"
+                                       class="ui primary button large fluid"
+                                       type="submit">
+                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                               </button>
+                            <% } %>
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">

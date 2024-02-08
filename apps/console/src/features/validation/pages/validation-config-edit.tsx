@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -36,6 +37,7 @@ import React, {
     MutableRefObject,
     ReactElement,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -44,7 +46,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, AppState, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -81,6 +83,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const { getLink } = useDocumentation();
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
@@ -108,6 +112,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     // State variables required to support legacy password policies.
     const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
     const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
+
+    const isReadOnly: boolean = useMemo(
+        () =>
+            !hasRequiredScopes(
+                featureConfig?.governanceConnectors,
+                featureConfig?.governanceConnectors?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
 
     const {
         data: passwordHistoryCountData,
@@ -357,12 +371,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         let description: string = "";
 
         if (isRuleType) {
-            if (Number(values.minLength) < 8) {
+            if (Number(values.minLength) <
+                ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MIN_VALUE) {
                 error = true;
                 description = t(
                     "console:manage.features.validation.validationError.minLimitError"
                 );
-            } else if (Number(values.maxLength) > 30) {
+            } else if (Number(values.maxLength) >
+                ValidationConfigConstants.VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS.PASSWORD_MAX_VALUE) {
                 error = true;
                 description = t(
                     "console:manage.features.validation.validationError.maxLimitError"
@@ -538,6 +554,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     width={ 16 }
                     data-componentid={ `${ componentId }-enable-password-policy` }
                     listen={ (data: boolean) => setIsLegacyPasswordPolicyEnabled(data) }
+                    readOnly={ isReadOnly }
                 />
                 <div className="validation-configurations-form mt-3 mb-3">
                     <div className="criteria">
@@ -607,7 +624,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                     .PASSWORD_MIN_LENGTH
                             }
-                            readOnly={ false }
+                            readOnly={ isReadOnly }
                             disabled={ !isLegacyPasswordPolicyEnabled }
                             data-testid={ `${ componentId }-min-length` }
                         />
@@ -679,7 +696,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                     .PASSWORD_MIN_LENGTH
                             }
-                            readOnly={ false }
+                            readOnly={ isReadOnly }
                             disabled={ !isLegacyPasswordPolicyEnabled  }
                             data-testid={ `${ componentId }-max-length` }
                         />
@@ -699,7 +716,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     labelPosition="top"
                     minLength={ 3 }
                     maxLength={ 100 }
-                    readOnly={ false }
+                    readOnly={ isReadOnly }
                     listen={ (
                         value: string
                     ) => {
@@ -744,7 +761,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     labelPosition="top"
                     minLength={ 3 }
                     maxLength={ 100 }
-                    readOnly={ false }
+                    readOnly={ isReadOnly }
                     listen={ (
                         value: string
                     ) => {
@@ -848,7 +865,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={ false }
                         data-testid={ `${ componentId }-min-length` }
                     />
@@ -917,7 +934,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .PASSWORD_MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={ false }
                         data-testid={ `${ componentId }-max-length` }
                     />
@@ -998,7 +1015,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={ false }
                         data-componentid={ `${ componentId }-min-numbers` }
                     ></Field.Input>
@@ -1070,7 +1087,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={ false }
                         data-testid={ `${ componentId }-min-upper-case-characters` }
                     />
@@ -1143,7 +1160,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={ false }
                         data-testid={ `${ componentId }-min-lower-case-characters` }
                     />
@@ -1216,7 +1233,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .PASSWORD_MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={ false }
                         data-testid={ `${ componentId }-min-special-characters` }
                     />
@@ -1242,6 +1259,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         } }
                         width={ 16 }
                         data-testid={ `${ componentId }-unique-chr-enable` }
+                        readOnly={ isReadOnly }
                     />
                     <Field.Input
                         ariaLabel="minUniqueCharacters"
@@ -1306,7 +1324,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .PASSWORD_MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={
                             !isUniqueChrValidatorEnabled
                         }
@@ -1334,6 +1352,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         } }
                         width={ 16 }
                         data-testid={ `${ componentId }-consecutive-chr-enable` }
+                        readOnly={ isReadOnly }
                     />
                     <Field.Input
                         ariaLabel="maxConsecutiveCharacters"
@@ -1398,7 +1417,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
                                 .PASSWORD_MIN_LENGTH
                         }
-                        readOnly={ false }
+                        readOnly={ isReadOnly }
                         disabled={
                             !isConsecutiveChrValidatorEnabled
                         }
@@ -1470,14 +1489,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                         componentId,
                                                         passwordExpiryEnabled,
                                                         setPasswordExpiryEnabled,
-                                                        t
+                                                        t,
+                                                        isReadOnly
                                                     ) }
                                                     <Divider className="mt-4 mb-5" />
                                                     { serverConfigurationConfig.passwordHistoryCountComponent(
                                                         componentId,
                                                         passwordHistoryEnabled,
                                                         setPasswordHistoryEnabled,
-                                                        t
+                                                        t,
+                                                        isReadOnly
                                                     ) }
                                                 </div>
                                             ) }
@@ -1494,6 +1515,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                 data-testid={ `${ componentId }-submit-button` }
                                                 loading={ isSubmitting }
                                                 label={ t("common:update") }
+                                                hidden={ isReadOnly }
                                             />
                                         </Form>
                                     ) : (

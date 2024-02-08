@@ -111,6 +111,20 @@ const URL_MAX_LENGTH: number = 2048;
 const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
 
 /**
+ * The set of authenticator templates in the Create New Connection Wizard.
+ */
+const commonAuthenticators: string[] = [
+    ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID,
+    ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
+    ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID
+];
+
+/**
  *  Identity Provider and advance settings component.
  *
  * @param props - Props injected to the component.
@@ -518,7 +532,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         const data: { authenticators: FederatedAuthenticatorInterface[], defaultAuthenticatorId: string } = {
             authenticators: authenticatorsList,
-            defaultAuthenticatorId: identityProvider.federatedAuthenticators.defaultAuthenticatorId
+            defaultAuthenticatorId:
+                authenticatorsList?.length !== 0
+                    ? identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    : ""
         };
 
         updateFederatedAuthenticators(data, identityProvider.id)
@@ -574,20 +591,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             return;
         }
 
-        if (id == identityProvider.federatedAuthenticators.defaultAuthenticatorId) {
-            dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider" +
-                    ".notifications.deleteDefaultAuthenticator" +
-                    ".error.description"),
-                level: AlertLevels.WARNING,
-                message: t("console:develop.features.authenticationProvider.notifications." +
-                    "deleteDefaultAuthenticator" +
-                    ".error.message")
-            }));
-
-            return;
-        }
-
         const deletingAuthenticator: FederatedAuthenticatorWithMetaInterface = availableAuthenticators
             .find((authenticator: FederatedAuthenticatorWithMetaInterface) => authenticator.id === id);
 
@@ -632,6 +635,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         let moderatedManualModeOptions: FederatedAuthenticatorMetaDataInterface[] = cloneDeep(
             availableFederatedAuthenticators as FederatedAuthenticatorMetaDataInterface[]
         );
+
+        moderatedManualModeOptions = moderatedManualModeOptions?.filter(
+            (moderatedManualModeOption: FederatedAuthenticatorMetaDataInterface) =>
+                !commonAuthenticators.includes(moderatedManualModeOption.authenticatorId));
 
         moderatedManualModeOptions = moderatedManualModeOptions?.map(
             (option: FederatedAuthenticatorMetaDataInterface) => {
@@ -679,7 +686,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         return [
             // Checkbox which triggers the default state of authenticator.
-            {
+            availableAuthenticators?.length > 1 && {
                 defaultChecked: isDefaultAuthenticator,
                 disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
                 label: t(isDefaultAuthenticator ?
@@ -690,7 +697,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 type: "checkbox"
             },
             // Toggle Switch which enables/disables the authenticator state.
-            {
+            availableAuthenticators?.length > 1 && {
                 defaultChecked: authenticator.data?.isEnabled,
                 disabled: isDefaultAuthenticator,
                 label: t(authenticator.data?.isEnabled ?
@@ -786,23 +793,28 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         return (
             <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 } textAlign="right">
-                        <PrimaryButton
-                            onClick={ handleAddAuthenticator }
-                            disabled={
-                                ConnectionManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
-                                    ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
-                                    : isEmpty(availableManualModeOptions)
-                            }
-                            loading={ isIdPTemplateFetchRequestLoading }
-                            data-testid={ `${ testId }-add-authenticator-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
-                        </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    availableAuthenticators?.length > 1
+                    && (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 } textAlign="right">
+                                <PrimaryButton
+                                    onClick={ handleAddAuthenticator }
+                                    disabled={
+                                        ConnectionManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
+                                            ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
+                                            : isEmpty(availableManualModeOptions)
+                                    }
+                                    loading={ isIdPTemplateFetchRequestLoading }
+                                    data-testid={ `${ testId }-add-authenticator-button` }
+                                >
+                                    <Icon name="add"/>
+                                    { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
@@ -813,7 +825,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                             key={ index }
                                             globalActions={ [
                                                 {
-                                                    disabled: isDefaultAuthenticatorPredicate(authenticator),
+                                                    disabled:
+                                                        availableAuthenticators?.length > 1
+                                                        && isDefaultAuthenticatorPredicate(authenticator),
                                                     icon: "trash alternate",
                                                     onClick: handleAuthenticatorDeleteOnClick,
                                                     popoverText: "Remove Authenticator",
@@ -847,7 +861,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                                 templateId={ identityProvider.templateId }
                                                             />
                                                         ),
-                                                        hideChevron: isEmpty(authenticator.meta?.properties),
+                                                        hideChevron: (
+                                                            availableAuthenticators?.length <= 1
+                                                            || isEmpty(authenticator.meta?.properties)
+                                                        ),
                                                         icon: {
                                                             icon: resolveAuthenticatorIcon(authenticator)
                                                         },
@@ -856,7 +873,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     }
                                                 ]
                                             }
-                                            accordionActiveIndexes={ accordionActiveIndexes }
+                                            accordionActiveIndexes={
+                                                availableAuthenticators?.length > 1
+                                                    ? accordionActiveIndexes
+                                                    : [ 0 ]
+                                            }
                                             accordionIndex={ index }
                                             handleAccordionOnClick={ handleAccordionOnClick }
                                             data-testid={ `${ testId }-accordion` }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -524,7 +524,7 @@ export const console: ConsoleNS = {
                 copiedPopupText: "Copié l'identifiant",
                 removeScopePopupText: "Retirez la portée",
                 form: {
-                    button: "Ajouter la portée",
+                    button: "Nouvelle portée",
                     cancelButton: "Annuler",
                     submitButton: "Finition",
                     title: "Ajouter une portée",
@@ -613,7 +613,10 @@ export const console: ConsoleNS = {
             "email-template": "Modèles de messagerie",
             "sign-up": "S'inscrire",
             "totp": "totp",
-            myaccount: "Mon compte"
+            myaccount: "Mon compte",
+            "password-recovery": "Récupération de mot de passe",
+            "password-reset": "Réinitialisation du mot de passe",
+            "password-reset-success": "Réinitialisation du mot de passe Succès"
         }
     },
     brandingCustomText: {
@@ -634,8 +637,14 @@ export const console: ConsoleNS = {
                 copyright: {
                     hint: "Texte qui apparaît au bas de l'écran de connexion. Vous pouvez utiliser le paramètre `{{currentYear}}` pour afficher automatiquement l'année en cours."
                 },
+                "privacy.policy": {
+                    hint: "Le texte de la politique de confidentialité qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
                 "site.title": {
                     hint: "Le titre du site peut apparaître dans les onglets du navigateur, les résultats des moteurs de recherche, les partages sur les réseaux sociaux, etc. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "terms.of.service": {
+                    hint: "Le texte des conditions d'utilisation qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 },
                 "login.button": {
                     hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
@@ -657,6 +666,30 @@ export const console: ConsoleNS = {
                 },
                 "sign.up.heading": {
                     hint: "Le titre de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "password.recovery.body": {
+                    hint: "Le texte du corps de la boîte de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.recovery.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principale de la zone de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.recovery.heading": {
+                    hint: "L'en-tête de la boîte de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principale de la zone de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.heading": {
+                    hint: "L'en-tête de la boîte de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.action": {
+                    hint: "Le texte qui apparaît sur le lien d'action principal de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.body": {
+                    hint: "Le texte du corps de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.heading": {
+                    hint: "L'en-tête de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 }
             }
         },
@@ -701,6 +734,13 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            add: {
+                action: "Ajouter l'administrateur",
+                options: {
+                    addExistingUser: "Ajouter l'utilisateur existant",
+                    inviteNewUser: "Inviter un nouvel utilisateur"
+                }
+            },
             edit: {
                 backButton: "Retourner aux administrateurs"
             },
@@ -713,6 +753,14 @@ export const console: ConsoleNS = {
             tabLabel: "Protocole"
         },
         roles: {
+            add: {
+                organizationPermissions: {
+                    label: "Autorisation d'organisation"
+                },
+                tenantPermissions: {
+                    label: "Autorisation d'organisation racinaire"
+                }
+            },
             tabLabel: "Les rôles",
             permissionLevels: {
                 edit: "Modifier",
@@ -1448,7 +1496,7 @@ export const console: ConsoleNS = {
                                     }
                                 },
                                 customization: {
-                                    heading: "Personnaliser la méthode de connexion",
+                                    heading: "Personnaliser la Flux de connexion",
                                     revertToDefaultButton: {
                                         hint: "Revenir à la configuration par défaut (nom d'utilisateur et " +
                                             "mot de passe)",
@@ -1578,7 +1626,7 @@ export const console: ConsoleNS = {
                                                     progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> Lors de la définition de " +
                                                     "la clé d'accès lors de la <2>première étape</2>, les utilisateurs doivent ajouter " +
                                                     "un script adaptatif. Utilisez le modèle <4>Inscription progressive des clés d'accès</4> " +
-                                                    "dans l'onglet <6>Méthode de connexion</6> de l'application.",
+                                                    "dans l'onglet <6>Flux de connexion</6> de l'application.",
                                                     progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
                                                     "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
                                                     "via <1>My Account</1> pour utiliser la connexion sans mot de passe."
@@ -1634,7 +1682,7 @@ export const console: ConsoleNS = {
                                     popupContent: "Plus de détails"
                                 }
                             },
-                            tabName: "Méthode de connexion"
+                            tabName: "Flux de connexion"
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "Toutes les étendues autorisées d'une ressource API sont disponibles pour une application M2M malgré la politique d'autorisation spécifiée pour la ressource."
@@ -1898,6 +1946,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>" +
                                         " renvoyé après l'authentification.",
+                                    customPassiveSTS: "Ce certificat est utilisé pour valider les signatures des demandes signées.",
                                     customSaml: "Ce certificat permet de valider les signatures des " +
                                         "requêtes signées et de chiffrer les assertions SAML renvoyées " +
                                         "après authentification."
@@ -2158,7 +2207,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Autoriser la révocation des jetons de cette application lorsqu'une " +
-                                            "session IDP liée se termine par une déconnexion utilisateur.",
+                                            "session IDP liée se termine par une déconnexion utilisateur. N'oubliez pas d'inclure " +
+                                            "<1>client_id</> ou <3>id_token_hint</3> dans la demande de déconnexion.",
                                         label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                     },
                                     type: {
@@ -2735,7 +2785,7 @@ export const console: ConsoleNS = {
                     inboundSTS: {
                         fields: {
                             realm: {
-                                hint: "Saisir l'identifiant du domaine STS passif",
+                                hint: "Saisissez l'identifiant du domaine ws-federation",
                                 label: "Domaine d'identité",
                                 placeholder: "Saisir le domaine.",
                                 validations: {
@@ -3560,6 +3610,82 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "Nouvelles commissions"
+                            },
+                            addIdpWizard: {
+                                heading: "Ajouter des commissions sortantes",
+                                steps: {
+                                    details: "Détails des commissions"
+                                },
+                                subHeading: "Sélectionnez le provisoire pour fournir des utilisateurs."
+                            },
+                            emptyPlaceholder: {
+                                action: "Nouvelles commissions",
+                                subtitles: "Aucun provisionnement sortant configuré.Ajoutez un provisoire pour le voir ici.",
+                                title: "Pas de provisionneurs sortants"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connexion",
+                                        placeholder: "Sélectionner la connexion",
+                                        validations: {
+                                            empty: "Il est obligatoire de sélectionner la connexion."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "Provisioning sortant",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé tout en ajoutant la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de création"
+                                    },
+                                    success: {
+                                        description: "Ajout avec succès la configuration d'approvisionnement sortant.",
+                                        message: "La création réussie"
+                                    },
+                                    error: {
+                                        description: "La configuration de l'approvisionnement sortant existe déjà pour l'application résidente.",
+                                        message: "Erreur de création"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé lors de la suppression de la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de suppression"
+                                    },
+                                    success: {
+                                        description: "Supprimé avec succès la configuration de l'approvisionnement sortant.",
+                                        message: "Suppression réussie"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "Quelque chose a mal tourné tout en obtenant les configurations d'approvisionnement sortant.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé lors de la mise à jour de la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de mise à jour"
+                                    },
+                                    success: {
+                                        description: "Mis à jour avec succès la configuration de l'approvisionnement sortant.",
+                                        message: "Mise à jour réussie"
+                                    }
+                                }
+                            },
+                            subHeading: "Configurer les paramètres d'approvisionnement sortant pour l'application résidente."
+                        }
+                    }
+                },
                 templates: {
                     manualSetup: {
                         heading: "Configuration manuelle",
@@ -3926,7 +4052,7 @@ export const console: ConsoleNS = {
                     addAuthenticator: "Ajouter un authentificateur",
                     addCertificate: "Ajouter un certificat",
                     addConnector: "Ajouter un connecteur",
-                    addIDP: "Nouveau connexion"
+                    addIDP: "Nouvelle connexion"
                 },
                 confirmations: {
                     deleteAuthenticator: {
@@ -3959,7 +4085,7 @@ export const console: ConsoleNS = {
                     }
                 },
                 connectedApps: {
-                    action: "Aller à la méthode de connexion",
+                    action: "Aller à la Flux de connexion",
                     header: "Applications connectées de {{idpName}}",
                     subHeader: "Les applications connectées à {{idpName}} sont listées ici.",
                     placeholders: {
@@ -4175,6 +4301,7 @@ export const console: ConsoleNS = {
                             1: "Désactivé"
                         }
                     },
+                    outboundProvisioningTitle: "Connecteurs de provisionnement sortant",
                     outboundProvisioningRoles: {
                         heading: "Approvisionnement externe des rôles",
                         hint: "Sélectionner et ajouter des rôles à approvisionner vers le connexion",
@@ -5369,9 +5496,9 @@ export const console: ConsoleNS = {
         pages: {
             applicationTemplate: {
                 backButton: "Retour aux applications",
-                subTitle: "Enregistrez une demande en utilisant l'un des modèles ci-dessous. Si rien ne correspond " +
+                subTitle: "Créez une application en utilisant l'un des modèles ci-dessous. Si rien ne correspond " +
                     "à votre type d'application, commencez par le modèle d'application standard.",
-                title: "Enregistrer une nouvelle candidature"
+                title: "Créer une nouvelle application"
             },
             applications: {
                 alternateSubTitle: "Gérez vos applications et personnalisez les flux de connexion.",
@@ -5382,6 +5509,21 @@ export const console: ConsoleNS = {
                 backButton: "Retour aux applications",
                 subTitle: null,
                 title: null
+            },
+            authenticationProviderTemplate: {
+                backButton: "Revenir aux connexions",
+                disabledHint: {
+                    apple: "La connexion avec la fonction avec Apple ne peut pas être configurée avec LocalHost ou 127.0.0.1.Tenter cette configuration entraîne une erreur de domaine non valide à partir de l'étape de configuration d'Apple.Pour les tests, utilisez un nom de domaine réel ou résoluble DNS.Pour le développement local, les mappages de domaines dans le fichier `etc/hosts` peuvent être utilisés."
+                },
+                search: {
+                    placeholder: "Recherche par nom"
+                },
+                subTitle: "Sélectionnez un type de connexion et créez une nouvelle connexion.",
+                supportServices: {
+                    authenticationDisplayName: "Authentification",
+                    provisioningDisplayName: "Provisionnement"
+                },
+                title: "Créer une nouvelle connexion"
             },
             idp: {
                 subTitle: "Gérez les fournisseurs d'identité pour permettre aux utilisateurs de se connecter à " +
@@ -7690,8 +7832,9 @@ export const console: ConsoleNS = {
             parentOrgInvitations: {
                 addUserWizard: {
                     heading: "Inviter un utilisateur parent",
-                    description: "Invitez un utilisateur de l’organisation parente.",
-                    hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
+                    description: "Inviter des utilisateurs de l'organisation parente.",
+                    hint: "Ajoutez le nom d'utilisateur d'un utilisateur parent et appuyez sur Entrée. Répétez " +
+                        "l’opération pour inclure plusieurs utilisateurs.",
                     username: {
                         label: "nom d'utilisateur",
                         placeholder: "Entrez le nom d'utilisateur",
@@ -7700,12 +7843,12 @@ export const console: ConsoleNS = {
                             required: "Le nom d'utilisateur est un champ obligatoire."
                         }
                     },
-                    roles: {
-                        label: "Les rôles",
-                        placeholder: "Sélectionnez des rôles",
-                        hint: "Attribuez des rôles à l'utilisateur invité.",
+                    groups: {
+                        label: "les groupes",
+                        placeholder: "Sélectionnez des groupes",
+                        hint: "Attribuez des groupes à l'utilisateur invité.",
                         validations: {
-                            required: "Les rôles sont un champ obligatoire."
+                            required: "Les groupes sont un champ obligatoire."
                         }
                     },
                     inviteButton: "Inviter"
@@ -8189,8 +8332,8 @@ export const console: ConsoleNS = {
                         disableOrganization: {
                             disableActionTitle: "Désactiver l'organisation",
                             enableActionTitle: "Activer l'organisation",
-                            subheader: "La désactivation d'une organisation peut vous faire perdre l'accès à" +
-                                " l'organisation associée. Procéder avec prudence."
+                            subheader: "La désactivation d'une organisation la rendra indisponible pour tous " +
+                                "les utilisateurs."
                         },
                         subHeader: "Voulez-vous vraiment supprimer cette organisation?",
                         title: "Supprimer l'organisation"
@@ -8266,7 +8409,7 @@ export const console: ConsoleNS = {
                 },
                 list: {
                     actions: {
-                        add: "Ajouter une organisation"
+                        add: "Nouvelle organisation"
                     },
                     columns: {
                         actions: "Actions",
@@ -8275,7 +8418,7 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Ajouter une Organisation",
+                        header: "Créer une organisation",
                         subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
                         subtitle2: "Créer une nouvelle organisation."
                     }
@@ -8397,7 +8540,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Ajouter une Organisation",
+                        action: "Nouvelle organisation",
                         subtitles: {
                             0: "Il n'y a pas d'organisations pour le moment.",
                             1: "Vous pouvez facilement ajouter une nouvelle organisation en",
@@ -8436,7 +8579,10 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
-                title: "Organisations"
+                title: "Organisations",
+                view: {
+                    description: "Voir l'organisation"
+                }
             },
             overview: {
                 widgets: {
@@ -9010,7 +9156,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Rechercher les utilisateurs"
                             },
                             assign: {
-                                placeholder: "Affecter les utilisateurs"
+                                placeholder: "Tapez le(s) nom(s) d'utilisateur pour rechercher et attribuer des utilisateurs"
                             },
                             remove: {
                                 label: "Suppression des utilisateurs",
@@ -9064,6 +9210,7 @@ export const console: ConsoleNS = {
                     emptyPlaceholders: {
                         emptyRoleList: {
                             action: "Nouveau {{type}}",
+                            emptyRoles: "Aucun {{type}} trouvé",
                             subtitles: {
                                 0: "Il n'y a actuellement aucun {{type}} disponible.",
                                 1: "Vous pouvez en ajouter facilement en suivant les",
@@ -9277,7 +9424,7 @@ export const console: ConsoleNS = {
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
                     pageTitle: "Publication de journaux à distance",
-                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    description: "Configurez les paramètres de journalisation à distance pour les journaux d'audit de l'organisation.",
                     fields: {
                         logTypes: {
                             label: "Types de journaux à publier",
@@ -9325,6 +9472,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
+                        button: "Restaurer",
                         title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
                         subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
@@ -9687,18 +9835,20 @@ export const console: ConsoleNS = {
                                 "Fonction de nom d'utilisateur alphanumérique.",
                             emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
                                 "l'identifiant.",
-                            emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
-                                "Configuration d'un fournisseur de messagerie."
+                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez la vérification par e-mail à partir des <1>paramètres de connexion et d'enregistrement</1>.",
+                            inviteOffline: "Inviter hors ligne",
+                            inviteViaEmail: "Inviter par e-mail"
                         },
                         buttons: {
                             next: "Suivant",
-                            previous: "Précédent"
+                            previous: "Précédent",
+                            saveAndContinue: "Enregistrer continuer"
                         },
                         steps: {
                             basicDetails: "Informations générales",
                             groups: "Groupes",
                             roles: "Rôles",
-                            summary: "Résumé",
+                            invitation: "Invitation",
                             method: "Méthode"
                         },
                         subTitle: "Assistant de création d'un nouvel utilisateur",
@@ -9736,6 +9886,8 @@ export const console: ConsoleNS = {
                             tableMessages: {
                                 userCreatedMessage: "Utilisateur importé avec succès",
                                 invalidDataMessage: "Données non valides fournies",
+                                invalidUserNameFormatMessage: "Le nom d'utilisateur ne correspond pas " +
+                                    "au format spécifié",
                                 userAlreadyExistsMessage: "L'utilisateur existe déjà",
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
                                 internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
@@ -9812,6 +9964,24 @@ export const console: ConsoleNS = {
                             fileFormatContent: "Les en-têtes du fichier CSV doivent être des attributs utilisateur " +
                                 "mappés aux <1>attributs locaux</1>.",
                             fileFormatSampleHeading: "Exemple de format de fichier CSV:"
+                        }
+                    },
+                    inviteParentUserWizard: {
+                        totalInvitations: "Nombre total d'invitations",
+                        successAlert: {
+                            description: "L'invitation du ou des utilisateurs a réussi.",
+                            message: "Invitation(s) envoyée(s)"
+                        },
+                        errorAlert: {
+                            description: "Une erreur s'est produite lors de l'invitation de {{ failedCount }} " +
+                                "utilisateur(s).",
+                            message: "Examen requis"
+                        },
+                        tableMessages: {
+                            userNotFound: "Utilisateur non trouvé",
+                            activeInvitationExists: "Une invitation active existe déjà pour l'utilisateur",
+                            userEmailNotFound: "Impossible de trouver l'e-mail de l'utilisateur invité",
+                            userAlreadyExist: "L'utilisateur existe déjà"
                         }
                     },
                     changePasswordModal: {
@@ -10683,6 +10853,7 @@ export const console: ConsoleNS = {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: "Nouvel utilisateur",
+                            emptyUsers: "Aucun utilisateur trouvé",
                             subTitle: {
                                 0: "Il n'y a actuellement aucun utilisateur disponible.",
                                 1: "Ajoutez facilement un nouvel utilisateur en",
@@ -10906,6 +11077,10 @@ export const console: ConsoleNS = {
                         subtitles: "Aucune annuaire n'est actuellement configuré. " +
                             "Vous pouvez en ajouter à l'aide de l'assistant de création.",
                         title: "Ajouter un annuaire"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "Il n'y a actuellement aucun magasin d'utilisateurs disponible.",
+                        title: "Pas de magasins d'utilisateurs"
                     },
                     emptySearch: {
                         action: "Réinitialiser la recherche",

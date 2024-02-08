@@ -1238,6 +1238,36 @@
                 ]
             },
             {% endif %}
+            {% if console.resident_outbound_provisioning is defined %}
+            "residentOutboundProvisioning": {
+                "enabled": {% if console.resident_outbound_provisioning.enabled is defined %} {{ console.resident_outbound_provisioning.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.resident_outbound_provisioning.scopes is defined %}
+                    {% for operation, scopes in console.resident_outbound_provisioning.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.resident_outbound_provisioning.disabled_features is defined %}
+                    {% for feature in console.resident_outbound_provisioning.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
+            {% endif %}
             {% if console.server is defined %}
             "server": {
                 "disabledFeatures": [
@@ -1433,6 +1463,36 @@
                 "scopes": {
                     {% if console.remote_fetch.scopes is defined %}
                     {% for operation, scopes in console.remote_fetch.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.user_v1_roles is defined %}
+            "userV1Roles": {
+                "disabledFeatures": [
+                    {% if console.user_v1_roles.disabled_features is defined %}
+                    {% for feature in console.user_v1_roles.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.user_v1_roles.enabled is defined %} {{ console.user_v1_roles.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.user_v1_roles.scopes is defined %}
+                    {% for operation, scopes in console.user_v1_roles.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1669,6 +1729,9 @@
         {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
+        {% if console.enable_identity_claims is defined %}
+        "enableIdentityClaims": {{ console.enable_identity_claims }},
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}
@@ -1703,6 +1766,9 @@
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
         {% endif %}
+        {% if console.ui.administrator_role_display_name is defined %}
+        "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
+        {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
             "apiResources": false,
@@ -1717,7 +1783,8 @@
             "rolesV1": true,
             "roleMapping": true,
             "secretsManagement": true,
-            "saasApplications": true
+            "saasApplications": true,
+            "consoleFeatureScopeCheck": true
             {% else %}
             {% if console.ui.legacy_mode.items() is defined %}
             {% for key, value in console.ui.legacy_mode.items() %}

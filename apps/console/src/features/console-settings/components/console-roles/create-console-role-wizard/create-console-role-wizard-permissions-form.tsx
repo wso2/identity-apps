@@ -30,17 +30,29 @@ import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, LegacyModeInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
-import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useState } from "react";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    SyntheticEvent,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../../core/store";
 import { CreateRolePermissionInterface } from "../../../../roles/models/roles";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
+import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {
     APIResourceCollectionInterface,
     APIResourceCollectionPermissionCategoryInterface,
     APIResourceCollectionPermissionScopeInterface,
+    APIResourceCollectionResponseInterface,
     APIResourceCollectionTypes
 } from "../../../models/console-roles";
 import "./create-console-role-wizard-permissions-form.scss";
@@ -84,6 +96,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     const { t } = useTranslation();
 
+    const legacyMode: LegacyModeInterface = useSelector((state: AppState) => state?.config?.ui?.legacyMode);
+
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(true, "type eq tenant", "apiResources");
 
     const { data: organizationAPIResourceCollections } = useGetAPIResourceCollections(
@@ -91,6 +105,60 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         "type eq organization",
         "apiResources"
     );
+
+    const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
+
+        if (!tenantAPIResourceCollections) {
+            return null;
+        }
+
+        const clonedTenantAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(tenantAPIResourceCollections);
+        const filteringAPIResourceCollectionNames: string[] = [];
+
+        if (legacyMode?.rolesV1) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ROLE_API_RESOURCES_COLLECTION_NAME);
+        } else {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
+        }
+
+        clonedTenantAPIResourceCollections.apiResourceCollections =
+                clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
+                    (item: APIResourceCollectionInterface) =>
+                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                );
+
+        return clonedTenantAPIResourceCollections;
+    }, [ tenantAPIResourceCollections ]);
+
+    const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
+
+        if (!organizationAPIResourceCollections) {
+            return null;
+        }
+
+        const clonedOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface =
+            cloneDeep(organizationAPIResourceCollections);
+        const filteringAPIResourceCollectionNames: string[] = [];
+
+        if (legacyMode?.rolesV1) {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ROLE_API_RESOURCES_COLLECTION_NAME);
+        } else {
+            filteringAPIResourceCollectionNames.push(
+                ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
+        }
+
+        clonedOrganizationAPIResourceCollections.apiResourceCollections =
+                clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
+                    (item: APIResourceCollectionInterface) =>
+                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                );
+
+        return clonedOrganizationAPIResourceCollections;
+    }, [ organizationAPIResourceCollections ]);
 
     const [ expanded, setExpanded ] = useState<string | false>(false);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>({
@@ -107,7 +175,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         if (type === APIResourceCollectionTypes.TENANT) {
             if (e.target.checked) {
-                _selectedPermissions.tenant = (tenantAPIResourceCollections?.apiResourceCollections || []).reduce(
+                _selectedPermissions.tenant = (
+                    filteredTenantAPIResourceCollections?.apiResourceCollections || []
+                ).reduce(
                     (
                         result: {
                             [key: string]: SelectedPermissionCategoryInterface;
@@ -130,7 +200,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         } else {
             if (e.target.checked) {
                 _selectedPermissions.organization = (
-                    organizationAPIResourceCollections?.apiResourceCollections || []
+                    filteredOrganizationAPIResourceCollections?.apiResourceCollections || []
                 ).reduce(
                     (
                         result: {
@@ -254,7 +324,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                             color="primary"
                             checked={
                                 Object.keys(selectedPermissions.tenant).length ===
-                                tenantAPIResourceCollections?.apiResourceCollections?.length
+                                filteredTenantAPIResourceCollections?.apiResourceCollections?.length
                             }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => {
                                 handleSelectAll(e, APIResourceCollectionTypes.TENANT);
@@ -263,16 +333,18 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                 "aria-label": "Select all tenant permissions"
                             } }
                         />
-                        <Typography className="permissions-accordion-label">Tenant Permissions</Typography>
+                        <Typography className="permissions-accordion-label">
+                            { t("console:consoleSettings.roles.add.tenantPermissions.label") }
+                        </Typography>
                         <Typography variant="body2">
-                            { tenantAPIResourceCollections?.apiResourceCollections?.length } Permissions
+                            { filteredTenantAPIResourceCollections?.apiResourceCollections?.length } Permissions
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <TableContainer component={ Paper } elevation={ 0 }>
                             <Table className="permissions-table" size="small" aria-label="tenant permissions table">
                                 <TableBody>
-                                    { tenantAPIResourceCollections?.apiResourceCollections?.map(
+                                    { filteredTenantAPIResourceCollections?.apiResourceCollections?.map(
                                         (collection: APIResourceCollectionInterface) => (
                                             <TableRow key={ collection.id } className="permissions-table-data-row">
                                                 <TableCell padding="checkbox">
@@ -309,6 +381,13 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         }
                                                         exclusive
                                                         onChange={ (e: MouseEvent<HTMLElement>, value: string) => {
+                                                            // If no value is selected and exclusive is true
+                                                            // the value is null. Purpose of this if block is
+                                                            // to prevent the submit in the case of null value.
+                                                            if (!value) {
+                                                                return;
+                                                            }
+
                                                             handlePermissionLevelChange(
                                                                 e,
                                                                 collection,
@@ -358,9 +437,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                 "aria-label": "Select all organization permissions"
                             } }
                         />
-                        <Typography className="permissions-accordion-label">Organization Permissions</Typography>
+                        <Typography className="permissions-accordion-label">
+                            { t("console:consoleSettings.roles.add.organizationPermissions.label") }
+                        </Typography>
                         <Typography variant="body2">
-                            { organizationAPIResourceCollections?.apiResourceCollections?.length } Permissions
+                            { filteredOrganizationAPIResourceCollections?.apiResourceCollections?.length } Permissions
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -371,7 +452,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                 aria-label="organization permissions table"
                             >
                                 <TableBody>
-                                    { organizationAPIResourceCollections?.apiResourceCollections?.map(
+                                    { filteredOrganizationAPIResourceCollections?.apiResourceCollections?.map(
                                         (collection: APIResourceCollectionInterface) => (
                                             <TableRow key={ collection.id } className="permissions-table-data-row">
                                                 <TableCell padding="checkbox">

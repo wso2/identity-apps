@@ -4,6 +4,10 @@
     flex-direction: column;
     height: inherit;
 
+    @media (max-width: 800px) {
+        overflow: visible;
+    }
+
     .branding-preference-custom-text-static-header {
         padding: 3em;
         background: linear-gradient(180deg, #ffffff 0%, #f7f7f9 100%);

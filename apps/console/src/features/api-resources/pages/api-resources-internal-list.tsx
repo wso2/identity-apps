@@ -38,7 +38,7 @@ import {
 } from "../../core";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
-import { APIResourceCategoryPrefixes, APIResourceType, APIResourcesConstants } from "../constants";
+import { APIResourceCategories, APIResourceType, APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
 
 /**
@@ -77,8 +77,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
     const [ filter, setFilter ] = useState<string>(categoryId === APIResourceType.MANAGEMENT
-        ? `type sw ${ APIResourceCategoryPrefixes.MANAGEMENT }`
-        : `type sw ${ APIResourceCategoryPrefixes.ORGANIZATION }`);
+        ? `type eq ${ APIResourceCategories.TENANT }`
+        : `type eq ${ APIResourceCategories.ORGANIZATION }`);
 
     const {
         data: apiResourcesListData,
@@ -162,8 +162,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      */
     useEffect(() => {
         const typeFilter: string = categoryId === APIResourceType.MANAGEMENT
-            ? `type sw ${ APIResourceCategoryPrefixes.MANAGEMENT }`
-            : `type sw ${ APIResourceCategoryPrefixes.ORGANIZATION }`;
+            ? `type eq ${ APIResourceCategories.TENANT }`
+            : `type eq ${ APIResourceCategories.ORGANIZATION }`;
 
         if (searchQuery) {
             setFilter(`${ searchQuery } and ${ typeFilter }`);

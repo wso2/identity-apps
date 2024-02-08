@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../applications/constants";
 import useSignIn from "../../authentication/hooks/use-sign-in";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
@@ -79,14 +80,15 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             !isFeatureEnabled(
                 featureConfig?.organizations,
                 OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-            ) || organization?.status !== "ACTIVE" || !isAuthorizedOrganization);
+            ) || !isAuthorizedOrganization);
     }, [ featureConfig, organization, isAuthorizedOrganization ]);
 
     const {
         data: authorizedOrganizationList,
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError
-    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null, false);
+    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null,
+        ApplicationManagementConstants.CONSOLE_APP_NAME, false);
 
     /**
      * Handles the authorized list fetch request error.
@@ -189,6 +191,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const handleOrganizationSwitch = async (): Promise<void> => {
         if (legacyAuthzRuntime) {
             switchOrganizationInLegacyMode(breadcrumbList, organization);
+
+            return;
         }
 
         let response: BasicUserInfo = null;
@@ -221,7 +225,9 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             isLoading={ isAuthorizedOrganizationListRequestLoading }
             title={ organization?.name ?? t("console:manage.features.organizations.title") }
             pageTitle={ organization?.name ?? t("console:manage.features.organizations.title") }
-            description={ t("console:manage.features.organizations.edit.description") }
+            description={ isReadOnly
+                ? t("console:manage.features.organizations.view.description")
+                : t("console:manage.features.organizations.edit.description") }
             image={ (
                 <GenericIcon
                     defaultIcon
@@ -238,7 +244,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            action={ !isReadOnly && (
+            action={ !isReadOnly && organization?.status === "ACTIVE" && (
                 <Button
                     basic
                     primary

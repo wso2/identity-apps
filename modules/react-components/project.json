@@ -8,7 +8,6 @@
     "tags": [],
     "implicitDependencies": [
         "core",
-        "forms",
         "theme"
     ],
     "targets": {

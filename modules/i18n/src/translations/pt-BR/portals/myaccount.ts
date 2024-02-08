@@ -28,15 +28,15 @@ export const myAccount: MyAccountNS = {
         accountRecovery: {
             codeRecovery: {
                 descriptions: {
-                    add: "Adicionar ou atualizar opções de recuperação de código"
+                    add: "Adicionar ou atualizar opções do código de recuperação"
                 },
-                heading: "Recuperação de código"
+                heading: "Código de Recuperação"
             },
             emailRecovery: {
                 descriptions: {
-                    add: "Adicionar um endereço de email de recuperação",
-                    emptyEmail: "Você precisa configurar seu endereço de e-mail para prosseguir com a recuperação de e-mail.",
-                    update: "Atualizar endereço de email de recuperação ({{email}})",
+                    add: "Adicionar um endereço de e-mail de recuperação",
+                    emptyEmail: "Você precisa configurar seu endereço de e-mail para prosseguir com a recuperação via e-mail.",
+                    update: "Atualizar endereço de e-mail de recuperação ({{email}})",
                     view: "Ver endereço de e-mail de recuperação ({{email}})"
                 },
                 forms: {
@@ -46,27 +46,27 @@ export const myAccount: MyAccountNS = {
                                 label: "Endereço de e-mail",
                                 placeholder: "Digite o endereço de e-mail de recuperação",
                                 validations: {
-                                    empty: "Digite um endereço de email",
-                                    invalidFormat: "O endereço de email não está no formato correto"
+                                    empty: "Digite um endereço de e-mail",
+                                    invalidFormat: "O endereço de e-mail não está no formato correto"
                                 }
                             }
                         }
                     }
                 },
-                heading: "Recuperação de Email",
+                heading: "Recuperação via E-mail",
                 notifications: {
                     updateEmail: {
                         error: {
                             description: "{{description}}",
-                            message: "Erro ao atualizar o email de recuperação"
+                            message: "Erro ao atualizar o e-mail de recuperação"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao atualizar o email de recuperação",
+                            description: "Ocorreu um erro ao atualizar o e-mail de recuperação",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O endereço de email no perfil do usuário foi atualizado com sucesso",
-                            message: "Endereço de email atualizado com sucesso"
+                            description: "O endereço de e-mail no perfil do usuário foi atualizado com sucesso",
+                            message: "Endereço de e-mail atualizado com sucesso"
                         }
                     }
                 }
@@ -82,27 +82,27 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "A preferência de recuperação foi recuperada com sucesso",
-                        message: "Recuperação de preferência de recuperação bem-sucedida"
+                        description: "A preferência de recuperação foi obtida com sucesso",
+                        message: "Obtenção da preferência de recuperação bem-sucedida"
                     }
                 }
             },
             questionRecovery: {
                 descriptions: {
-                    add: "Adicionar e atualizar perguntas de desafio de recuperação de conta"
+                    add: "Adicionar ou atualizar perguntas de segurança da recuperação de conta"
                 },
                 forms: {
                     securityQuestionsForm: {
                         inputs: {
                             answer: {
-                                label: "Responda",
+                                label: "Resposta",
                                 placeholder: "Digite sua resposta",
                                 validations: {
-                                    empty: "A resposta é um campo obrigatório"
+                                    empty: "A resposta não pode ser vazia"
                                 }
                             },
                             question: {
-                                label: "Pergunta, questão",
+                                label: "Pergunta",
                                 placeholder: "Selecione uma pergunta de segurança",
                                 validations: {
                                     empty: "Pelo menos uma pergunta de segurança deve ser selecionada"
@@ -111,7 +111,7 @@ export const myAccount: MyAccountNS = {
                         }
                     }
                 },
-                heading: "Questões de segurança",
+                heading: "Questões de Segurança",
                 notifications: {
                     addQuestions: {
                         error: {
@@ -124,7 +124,7 @@ export const myAccount: MyAccountNS = {
                         },
                         success: {
                             description: "As perguntas de segurança necessárias foram adicionadas com sucesso",
-                            message: "Perguntas de segurança foram adicionadas com sucesso"
+                            message: "As perguntas de segurança foram adicionadas com sucesso"
                         }
                     },
                     updateQuestions: {
@@ -149,23 +149,23 @@ export const myAccount: MyAccountNS = {
                 inputs: {
                     filterAttribute: {
                         label: "Atributo de filtro",
-                        placeholder: "ex: nome, descrição etc.",
+                        placeholder: "ex: 'Nome', 'Descrição', etc.",
                         validations: {
-                            empty: "O atributo de filtro é um campo obrigatório"
+                            empty: "O atributo de filtro não pode estar vazio"
                         }
                     },
                     filterCondition: {
                         label: "Condição do filtro",
-                        placeholder: "ex: começa com etc.",
+                        placeholder: "ex: 'Começa com', etc.",
                         validations: {
-                            empty: "A condição do filtro é um campo obrigatório"
+                            empty: "A condição do filtro não pode estar vazia"
                         }
                     },
                     filterValue: {
                         label: "Valor do filtro",
-                        placeholder: "Insira o valor para pesquisar",
+                        placeholder: "ex: 'admin', 'wso2', etc.",
                         validations: {
-                            empty: "O valor do filtro é um campo obrigatório"
+                            empty: "O valor do filtro não pode estar vazio"
                         }
                     }
                 }
@@ -179,49 +179,49 @@ export const myAccount: MyAccountNS = {
             options: {
                 header: "Busca Avançada"
             },
-            placeholder: "Procura por nome",
+            placeholder: "Pesquisar por {{attribute}}",
             popups: {
-                clear: "pesquisa clara",
-                dropdown: "mostrar opções"
+                clear: "limpar pesquisa",
+                dropdown: "Mostrar opções"
             },
-            resultsIndicator: "Mostrando resultados para \"{{query}}\""
+            resultsIndicator: "Mostrando resultados para a consulta \"{{query}}\""
         },
         applications: {
             advancedSearch: {
                 form: {
                     inputs: {
                         filterAttribute: {
-                            placeholder: "ex: nome, descrição etc."
+                            placeholder: "ex: 'Nome', 'Descrição', etc."
                         },
                         filterCondition: {
-                            placeholder: "ex: começa com etc."
+                            placeholder: "ex: 'Começa com', etc."
                         },
                         filterValue: {
-                            placeholder: "ex: Zoom, Salesforce etc."
+                            placeholder: "Insira o valor para pesquisar"
                         }
                     }
                 },
-                placeholder: "Procura por nome"
+                placeholder: "Pesquisar pelo nome da aplicação"
             },
             all: {
                 heading: "Todas as aplicações"
             },
             favourite: {
-                heading: "Favoritas"
+                heading: "Favoritos"
             },
             notifications: {
                 fetchApplications: {
                     error: {
                         description: "{{description}}",
-                        message: "Erro ao recuperar aplicativos"
+                        message: "Erro ao recuperar os aplicativos"
                     },
                     genericError: {
-                        description: "Não foi possível recuperar aplicativos",
+                        description: "Não foi possível recuperar os aplicativos",
                         message: "Algo deu errado"
                     },
                     success: {
                         description: "Os aplicativos foram recuperados com sucesso.",
-                        message: "Recuperação de aplicativos bem-sucedida"
+                        message: "Recuperação dos aplicativos bem-sucedida"
                     }
                 }
             },
@@ -230,8 +230,8 @@ export const myAccount: MyAccountNS = {
                     action: "Atualizar lista",
                     subtitles: {
                         0: "A lista de aplicativos retornou vazia.",
-                        1: "Isso pode ser devido a não ter aplicativos detectáveis.",
-                        2: "Peça a um administrador para ativar a capacidade de descoberta de aplicativos."
+                        1: "Isso pode ser devido a não ter aplicativos descobríveis.",
+                        2: "Por favor, peça a um administrador para ativar a capacidade de descoberta de aplicativos."
                     },
                     title: "Sem aplicações"
                 }
@@ -245,10 +245,10 @@ export const myAccount: MyAccountNS = {
                 passwordResetForm: {
                     inputs: {
                         confirmPassword: {
-                            label: "Confirme a Senha",
+                            label: "Confirme a senha",
                             placeholder: "Digite a nova senha",
                             validations: {
-                                empty: "Confirmar senha é um campo obrigatório",
+                                empty: "Confirmar a senha é obrigatório",
                                 mismatch: "A confirmação da senha não corresponde"
                             }
                         },
@@ -256,7 +256,7 @@ export const myAccount: MyAccountNS = {
                             label: "Senha atual",
                             placeholder: "Digite a senha atual",
                             validations: {
-                                empty: "A senha atual é um campo obrigatório",
+                                empty: "A senha atual não pode ser vazia",
                                 invalid: "A senha atual é inválida"
                             }
                         },
@@ -264,36 +264,34 @@ export const myAccount: MyAccountNS = {
                             label: "Nova senha",
                             placeholder: "Digite a nova senha",
                             validations: {
-                                empty: "Nova senha é um campo obrigatório"
+                                empty: "A nova senha não pode ser vazia"
                             }
                         }
                     },
                     validations: {
                         genericError: {
                             description: "Algo deu errado. Por favor, tente novamente",
-                            message: "Alterar erro de senha"
+                            message: "Erro na alteração de senha"
                         },
                         invalidCurrentPassword: {
-                            description: "A senha atual que você digitou parece ser inválida. Por favor, tente " +
-                                "novamente",
-                            message: "Alterar erro de senha"
+                            description: "A senha atual que você digitou parece ser inválida. Por favor, tente novamente",
+                            message: "Erro na alteração de senha"
                         },
                         invalidNewPassword: {
                             description: "A senha não atende às restrições exigidas.",
                             message: "Senha inválida"
                         },
-                        passwordCaseRequirement: "Pelo menos {{minUpperCase}} maiúsculas e {{minLowerCase}} " +
-                            "letras minúsculas",
+                        passwordCaseRequirement: "Pelo menos {{minUpperCase}} maiúsculas e {{minLowerCase}} letras minúsculas",
                         passwordCharRequirement: "Pelo menos {{minSpecialChr}} de caracteres especiais",
                         passwordLengthRequirement: "Deve ter entre {{min}} e {{max}} caracteres",
                         passwordLowerCaseRequirement: "Pelo menos {{minLowerCase}} letra(s) minúscula(s)",
                         passwordNumRequirement: "Pelo menos {{min}} número(s)",
                         passwordRepeatedChrRequirement: "Não mais que {{repeatedChr}} caracter(es) repetido(s)",
-                        passwordUniqueChrRequirement: "Pelo menos {{uniqueChr}} caractere(s) exclusivo(s)",
+                        passwordUniqueChrRequirement: "Pelo menos {{uniqueChr}} caractere(s) único(s)",
                         passwordUpperCaseRequirement: "Pelo menos {{minUpperCase}} letra(s) maiúscula(s)",
                         submitError: {
                             description: "{{description}}",
-                            message: "Alterar erro de senha"
+                            message: "Erro na alteração de senha"
                         },
                         submitSuccess: {
                             description: "A senha foi alterada com sucesso",
@@ -306,7 +304,7 @@ export const myAccount: MyAccountNS = {
                             },
                             genericError: {
                                 description: "Não foi possível recuperar os dados de configuração de validação.",
-                                message: "algo deu errado"
+                                message: "Algo deu errado"
                             }
                         }
                     }
@@ -315,8 +313,7 @@ export const myAccount: MyAccountNS = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmação",
-                    message: "A alteração da senha resultará no encerramento da sessão atual. Você precisará fazer " +
-                        "o login com a senha recém-alterada. Você deseja continuar?"
+                    message: "A alteração da senha resultará no encerramento da sessão atual. Você precisará fazer o login com a senha recém-alterada. Você deseja continuar?"
                 }
             }
         },
@@ -327,7 +324,7 @@ export const myAccount: MyAccountNS = {
                     revoke: {
                         actionTitle: "Revogar",
                         header: "Revogar consentimento",
-                        subheader: "Você precisará fornecer o consentimento para este aplicativo novamente."
+                        subheader: "Você precisará fornecer o consentimento para esta aplicação novamente."
                     }
                 },
                 description: "Descrição",
@@ -341,9 +338,8 @@ export const myAccount: MyAccountNS = {
             modals: {
                 consentRevokeModal: {
                     heading: "Você tem certeza?",
-                    message: "Esta operação não é reversível. Isso revogará permanentemente o consentimento para " +
-                        "todos os atributos. Tem certeza de que deseja continuar?",
-                    warning: "Observe que você será redirecionado para a página de consentimento de login"
+                    message: "Esta operação é irreversível. Isso revogará permanentemente o consentimento para todos os atributos. Tem certeza de que deseja continuar?",
+                    warning: "Por favor, observe que você será redirecionado para a página de consentimento de login"
                 }
             },
             notifications: {
@@ -353,11 +349,11 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     genericError: {
-                        description: "Não foi possível carregar as informações no aplicativo selecionado",
-                        message: "Something went wrong"
+                        description: "Não foi possível carregar as informações do aplicativo selecionado",
+                        message: "Algo deu errado"
                     },
                     success: {
-                        description: "Recuperado com sucesso o recibo de consentimento",
+                        description: "Recibo de consentimento recuperado com sucesso",
                         message: "Recuperação bem sucedida"
                     }
                 },
@@ -371,7 +367,7 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Recuperada com sucesso a lista de aplicativos consentidos",
+                        description: "Lista de aplicativos consentidos recuperada com sucesso",
                         message: "Recuperação bem sucedida"
                     }
                 },
@@ -381,12 +377,12 @@ export const myAccount: MyAccountNS = {
                         message: "Erro de revogação de consentimento"
                     },
                     genericError: {
-                        description: "Não foi possível revogar o consentimento para o aplicativo",
+                        description: "Não foi possível revogar o consentimento para a aplicação",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "O consentimento foi revogado com sucesso para o aplicativo",
-                        message: "O consentimento revoga o sucesso"
+                        description: "O consentimento foi revogado com sucesso para a aplicação",
+                        message: "Revogação de consentimentos bem sucedida"
                     }
                 },
                 updateConsentedClaims: {
@@ -395,25 +391,22 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     genericError: {
-                        description: "As reivindicações consentidas falharam ao atualizar para o aplicativo",
+                        description: "Falha ao atualizar as claims consentidas para a aplicação",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "As reivindicações consentidas foram atualizadas com sucesso para o aplicativo",
-                        message: "Reivindicações consentidas atualizadas com sucesso"
+                        description: "As claims consentidas foram atualizadas com sucesso para a aplicação",
+                        message: "Claims consentidas atualizadas com sucesso"
                     }
                 }
             }
         },
         cookieConsent: {
             confirmButton: "Entendi",
-            content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies " +
-                "são usados ​​para manter uma sessão contínua ininterrupta ao mesmo tempo em que oferece serviços " +
-                "personalizados e fluidos. Para saiba mais sobre como usamos cookies, consulte nossa " +
-                "<1>Política de Cookies</1>."
+            content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies são usados ​​para manter uma sessão contínua ininterrupta, enquanto fornecendo serviços estáveis e personalizados. Para aprender mais sobre como utilizamos cookies, consulte nossa <1>Política de Cookies</1>."
         },
         federatedAssociations: {
-            deleteConfirmation: "Isso removerá esse login externo da sua conta. Deseja continuar removendo?",
+            deleteConfirmation: "Isso removerá a conta de login social vinculada de sua conta local. Deseja continuar?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -421,12 +414,12 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     genericError: {
-                        description: "Não foi possível recuperar logons externos",
+                        description: "Não foi possível recuperar as contas de login social vinculadas",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Logins externos foram recuperados com sucesso",
-                        message: "Logins externos recuperados com sucesso"
+                        description: "As contas de login social vinculadas foram recuperadas com sucesso",
+                        message: "Contas de login social vinculadas recuperadas com sucesso"
                     }
                 },
                 removeAllFederatedAssociations: {
@@ -435,12 +428,12 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     genericError: {
-                        description: "Federated Associations couldn't be removed",
+                        description: "Não foi possível remover as contas de login social vinculadas",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Todos os logins externos foram removidos com sucesso",
-                        message: "Logins externos removidos com sucesso"
+                        description: "Todas as contas de login social vinculadas foram removidas com sucesso",
+                        message: "Contas de login social vinculadas removidas com sucesso"
                     }
                 },
                 removeFederatedAssociation: {
@@ -449,18 +442,18 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     genericError: {
-                        description: "Não foi possível remover o logon externo",
+                        description: "Não foi possível remover a conta de login social vinculada",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "O logon externo foi removido com sucesso",
-                        message: "O logon externo removido com sucesso"
+                        description: "A conta de login social vinculada foi removida com sucesso",
+                        message: "Contas de login social vinculada removida com sucesso"
                     }
                 }
             }
         },
         footer: {
-            copyright: "Servidor de Identidade WSO2 © {{year}}"
+            copyright: "WSO2 Identity Server © {{year}}"
         },
         header: {
             appSwitch: {
@@ -482,7 +475,7 @@ export const myAccount: MyAccountNS = {
                     label: "Adicionar conta de usuário local"
                 }
             },
-            deleteConfirmation: "Isso removerá a conta vinculada da sua conta. Deseja continuar removendo?",
+            deleteConfirmation: "Isso removerá a conta vinculada de sua conta. Deseja continuar?",
             forms: {
                 addAccountForm: {
                     inputs: {
@@ -490,14 +483,14 @@ export const myAccount: MyAccountNS = {
                             label: "Senha",
                             placeholder: "Digite a senha",
                             validations: {
-                                empty: "Senha é um campo obrigatório"
+                                empty: "A senha não pode estar vazia"
                             }
                         },
                         username: {
                             label: "Nome de usuário",
                             placeholder: "Digite o nome de usuário",
                             validations: {
-                                empty: "Nome de usuário é um campo obrigatório"
+                                empty: "O nome de usuário não pode estar vazio"
                             }
                         }
                     }
@@ -507,28 +500,28 @@ export const myAccount: MyAccountNS = {
                 addAssociation: {
                     error: {
                         description: "{{description}}",
-                        message: "Erro ao recuperar contas de usuário vinculadas"
+                        message: "Erro ao recuperar as contas de usuário vinculadas"
                     },
                     genericError: {
                         description: "Ocorreu um erro ao adicionar a conta vinculada",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "A conta de usuário vinculada necessária adicionada com sucesso",
+                        description: "A conta de usuário vinculada obrigatória foi adicionada com sucesso",
                         message: "Conta de usuário vinculada adicionada com sucesso"
                     }
                 },
                 getAssociations: {
                     error: {
                         description: "{{description}}",
-                        message: "Erro ao recuperar contas de usuário vinculadas"
+                        message: "Erro ao recuperar as contas de usuário vinculadas"
                     },
                     genericError: {
                         description: "Ocorreu um erro ao recuperar as contas de usuário vinculadas",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Os detalhes do perfil do usuário necessários são recuperados com sucesso",
+                        description: "Os detalhes obrigatórios do perfil do usuário foram recuperados com sucesso",
                         message: "Contas de usuário vinculadas recuperadas com sucesso"
                     }
                 },
@@ -538,12 +531,12 @@ export const myAccount: MyAccountNS = {
                         message: "Erro ao remover contas de usuário vinculadas"
                     },
                     genericError: {
-                        description: "O usuário vinculado é responsável por remover o erro",
+                        description: "Um erro ocorreu ao remover as contas de usuário vinculadas",
                         message: "Algo deu errado"
                     },
                     success: {
                         description: "Todas as contas de usuário vinculadas foram removidas",
-                        message: "Contas vinculadas removidas"
+                        message: "Contas vinculadas removidas com sucesso"
                     }
                 },
                 removeAssociation: {
@@ -552,12 +545,12 @@ export const myAccount: MyAccountNS = {
                         message: "Erro ao remover a conta de usuário vinculada"
                     },
                     genericError: {
-                        description: "A conta do usuário vinculado que remove o erro ocorreu",
+                        description: "Um erro ocorreu ao remover a conta de usuário vinculada",
                         message: "Algo deu errado"
                     },
                     success: {
                         description: "As contas de usuário vinculadas foram removidas",
-                        message: "A conta vinculada foi removida"
+                        message: "A conta vinculada foi removida com sucesso"
                     }
                 },
                 switchAccount: {
@@ -577,77 +570,68 @@ export const myAccount: MyAccountNS = {
             }
         },
         loginVerifyData: {
-            description: "Esses dados são usados para verificar ainda mais sua identidade durante o login ",
+            description: "Esses dados são usados para complementar a verificação de sua identidade durante o login ",
             heading: "Dados usados para verificar o seu login",
             modals: {
                 clearTypingPatternsModal: {
                     heading: "Confirmação",
-                    message: "Esta ação irá limpar seus padrões de digitação salvos no TypingDNA. "+
-                        "Você deseja continuar?"
+                    message: "Esta ação irá limpar seus padrões de digitação salvos no TypingDNA. Você deseja continuar?"
                 }
             },
             notifications: {
                 clearTypingPatterns: {
                     error: {
-                        description: "Os padrões de digitação não puderam ser apagados. Entre em contato com o"+
-                            " administrador do seu site",
-                        message: "Falha ao limpar padrões de digitação"
+                        description: "Os padrões de digitação não puderam ser apagados. Por favor, em contato com o administrador do seu site",
+                        message: "Falha ao apagar os padrões de digitação"
                     },
                     success: {
                         description: "Seus padrões de digitação no TypingDNA foram apagados com sucesso ",
-                        message: "Padrões de digitação limpos com sucesso"
+                        message: "Padrões de digitação apagados com sucesso"
                     }
                 }
             },
             typingdna: {
-                description: "Seus padrões de digitação podem ser apagados aqui",
-                heading: "TypingDNA padrões de Digitação"
+                description: "Seus padrões de digitação podem ser apagados a partir daqui",
+                heading: "Padrões de digitação TypingDNA"
             }
         },
         mfa: {
             authenticatorApp: {
                 addHint: "Configurar",
-                configuredDescription: "Você pode usar códigos TOTP de seu aplicativo " +
-                    "autenticador configurado para autenticação de dois fatores. " +
-                    "Se você não tiver acesso ao aplicativo, pode configurar um novo aplicativo autenticador aqui",
+                configuredDescription: "Você pode usar códigos TOTP do seu aplicativo autenticador configurado para autenticação de dois fatores. Se você não tiver acesso ao aplicativo, pode configurar um novo aplicativo autenticador a partir daqui.",
                 deleteHint: "Remover",
-                description: "Digitalize o código QR usando um aplicativo " +
-                    "Authenticator para usar senhas de uso único baseadas " +
-                    "em tempo (também conhecidas como TOTP) como um segundo " +
-                    "fator ao fazer login em aplicativos.",
-                enableHint: "Ativar/desativar o autenticador TOTP",
-                heading: "App autenticador",
-                hint: "Visão",
+                description: "Você pode usar o aplicativo autenticador para obter códigos de verificação para autenticação de dois fatores.",
+                enableHint: "Habilitar/Desabilitar Autenticador TOTP",
+                heading: "Aplicativo Autenticador",
+                hint: "Visualizar",
                 modals: {
                     delete: {
                         heading: "Confirmação",
-                        message: "Esta ação removerá o código QR adicionado ao seu perfil. Você deseja continuar ?"
+                        message: "Esta ação removerá o QR code adicionado ao seu perfil. Deseja continuar?"
                     },
-                    done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois " +
-                        "fatores",
-                    heading: "Configurar um aplicativo autenticador",
+                    done: "Sucesso! Agora você pode usar seu Aplicativo Autenticador para autenticação de dois fatores",
+                    heading: "Configurar um Aplicativo Autenticador",
                     scan: {
-                        additionNote: "O código QR foi adicionado com sucesso ao seu perfil",
-                        authenticatorApps: "Authenticator Apps",
-                        generate: "Gere um novo código",
-                        heading: "Leia este QR Code usando um aplicativo Authenticator",
-                        messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
-                        messageHeading: "Não tem um aplicativo autenticador instalado?",
-                        regenerateConfirmLabel: "Confirme a regeneração de um novo código QR",
+                        additionNote: "QR code foi adicionado com sucesso ao seu perfil!",
+                        authenticatorApps: "Aplicativos Autenticadores",
+                        generate: "Gerar um novo código",
+                        heading: "Escaneie o QR code abaixo usando um aplicativo autenticador",
+                        messageBody: "Você pode encontrar uma lista de Aplicativos Autenticadores disponíveis aqui.",
+                        messageHeading: "Não tem um Aplicativo Autenticador instalado?",
+                        regenerateConfirmLabel: "Confirmar a regeneração de um novo QR code.",
                         regenerateWarning: {
-                            extended: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Você não poderá mais fazer login com o código QR anterior.",
-                            generic: "Quando você regenera um novo código QR, você deve digitalizá-lo e recriar o aplicativo Authenticator.Sua configuração anterior não funcionará mais."
+                            extended: "Ao regenerar um novo QR code, você deve escaneá-lo e reconfigurar seu aplicativo autenticador. Você não poderá mais fazer login com o QR code anterior.",
+                            generic: "Ao regenerar um novo QR code, você deve escaneá-lo e reconfigurar seu aplicativo autenticador. Sua configuração anterior não funcionará mais."
                         }
                     },
-                    toolTip: "Não tem um aplicativo? Baixe um aplicativo autenticador como o " +
-                        "Google Authenticator na <1>App Store</1> ou <3>Google Play</3>",
+                    toolTip: "Não tem um aplicativo autenticador? Baixe um aplicativo autenticador como o Google Authenticator da <1>App Store</1> ou <3>Google Play</3>",
                     verify: {
-                        error: "Falha na verificação. Por favor, tente novamente.",
-                        heading: "Insira o código gerado para verificação",
-                        label: "Código de verificação",
-                        placeholder: "Digite seu código de verificação",
-                        reScan: "Verificar novamente",
-                        reScanQuestion: "Deseja digitalizar o código QR novamente?",
+                        error: "Verificação falhou. Por favor, tente novamente.",
+                        heading: "Digite o código gerado para verificação",
+                        label: "Código de Verificação",
+                        placeholder: "Insira seu código de verificação",
+                        reScan: "Reescanear",
+                        reScanQuestion: "Deseja escanear o QR code novamente?",
                         requiredError: "Insira o código de verificação"
                     }
                 },
@@ -658,13 +642,13 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao excluir a configuração do Autenticador TOTP",
+                            description: "Ocorreu um erro ao deletar o QR code",
                             message: "Algo deu errado"
                         }
                     },
                     deleteSuccess: {
                         genericMessage: "Removido com sucesso",
-                        message: "Configuração TOTP removida com sucesso."
+                        message: "Configuração TOTP removida com sucesso"
                     },
                     initError: {
                         error: {
@@ -672,7 +656,7 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao recuperar o código QR",
+                            description: "Ocorreu um erro ao recuperar o QR code",
                             message: "Algo deu errado"
                         }
                     },
@@ -682,7 +666,7 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         },
                         genericError: {
-                            description: "Erro ao tentar obter um novo código QR",
+                            description: "Ocorreu um erro ao tentar obter um novo QR code",
                             message: "Algo deu errado"
                         }
                     },
@@ -697,57 +681,50 @@ export const myAccount: MyAccountNS = {
                         }
                     }
                 },
-                regenerate: "Regenerado"
+                regenerate: "Regenerar"
             },
             backupCode: {
                 actions: {
-                    add: "Adicionar códigos alternativos",
-                    delete: "Remover códigos alternativos"
+                    add: "Adicionar códigos de backup",
+                    delete: "Remover códigos de backup"
                 },
-                description: "Use códigos de backup para acessar sua conta caso não consiga receber códigos de autenticação " +
-                    "multifator. Você pode regenerar novos códigos, se necessário.",
+                description: "Use códigos de backup para acessar sua conta no caso de não poder receber códigos de autenticação multifator. Você pode regenerar novos códigos se necessário.",
                 download: {
-                    heading: "SALVE SEUS CÓDIGOS DE BACKUP.",
+                    heading: "Códigos de backup para {{productName}}",
                     info1: "Você só pode usar cada código de backup uma vez.",
                     info2: "Esses códigos foram gerados em ",
-                    subHeading: "Você pode usar esses códigos de backup para entrar no Asgardeo quando estiver " +
-                        "longe do telefone. Mantenha esses códigos de backup em algum lugar seguro, mas acessível."
+                    subHeading: "Você pode usar esses códigos de backup para entrar no {{productName}} quando estiver longe do seu telefone. Mantenha esses códigos de backup em um local seguro, mas acessível."
                 },
-                heading: "Códigos de backup",
+                heading: "Códigos de Backup",
                 messages: {
-                    disabledMessage: "Pelo menos um autenticador adicional deve ser configurado para permitir códigos de backup."
+                    disabledMessage: "Pelo menos um autenticador adicional deve ser configurado para habilitar códigos de backup."
                 },
                 modals: {
                     actions: {
                         copied: "Copiado",
-                        copy: "Copiar códigos",
-                        download: "Códigos de download",
-                        regenerate: "Regenerado"
+                        copy: "Copiar Códigos",
+                        download: "Baixar Códigos",
+                        regenerate: "Regenerar"
                     },
                     delete: {
-                        description: "Esta ação removerá os códigos de backup e você não poderá mais usá-los. " +
-                            "Você deseja continuar?",
+                        description: "Esta ação removerá os códigos de backup e você não poderá mais usá-los. Deseja continuar?",
                         heading: "Confirmação"
                     },
-                    description: "Use os códigos de backup para fazer login quando estiver longe do telefone. " +
-                        "Você pode gerar mais quando todos são usados",
+                    description: "Use códigos de backup para entrar quando estiver longe do seu telefone.",
                     generate: {
-                        description: "Todos os seus códigos de backup são usados. " +
-                            "Permite gerar um novo conjunto de códigos de backup",
+                        description: "Todos os seus códigos de backup foram usados. Vamos gerar um novo conjunto de códigos de backup.",
                         heading: "Gerar"
                     },
-                    heading: "Códigos de backup",
-                    info: "Cada código só pode ser usado uma vez",
+                    heading: "Códigos de Backup",
+                    info: "Cada código só pode ser usado uma vez. Você pode gerar novos códigos a qualquer momento para substituir estes.",
                     regenerate: {
-                        description: "Depois de gerar novos códigos, seus códigos antigos não funcionarão mais. "
-                            + "Certifique-se de salvar os novos códigos assim que forem gerados.",
+                        description: "Após gerar novos códigos, seus códigos antigos não funcionarão mais. Certifique-se de salvar os novos códigos assim que forem gerados.",
                         heading: "Confirmação"
                     },
-                    subHeading: "Senhas de uso único que você pode usar para fazer login",
-                    warn: "Esses códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los "
-                        + "em algum lugar seguro, mas acessível."
+                    subHeading: "Códigos de uso único que você pode usar para entrar",
+                    warn: "Estes códigos aparecerão apenas uma vez. Certifique-se de salvá-los agora e armazená-los em algum lugar seguro, mas acessível."
                 },
-                mutedHeader: "Opções de recuperação",
+                mutedHeader: "Opções de Recuperação",
                 notifications: {
                     deleteError: {
                         error: {
@@ -755,13 +732,13 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao excluir códigos de backup",
+                            description: "Ocorreu um erro ao deletar códigos de backup",
                             message: "Algo deu errado"
                         }
                     },
                     deleteSuccess: {
                         genericMessage: "Removido com sucesso",
-                        message: "Códigos de backup removidos com sucesso."
+                        message: "Códigos de backup removidos com sucesso"
                     },
                     downloadError: {
                         error: {
@@ -769,18 +746,18 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao tentar baixar os códigos de backup",
+                            description: "Ocorreu um erro ao tentar baixar códigos de backup",
                             message: "Algo deu errado"
                         }
                     },
                     downloadSuccess: {
                         genericMessage: {
-                            description: "Os códigos de backup foram baixados com sucesso.",
-                            message: "Códigos de backup baixados com sucesso."
+                            description: "Os códigos de backup foram baixados com sucesso",
+                            message: "Códigos de backup baixados com sucesso"
                         },
                         message: {
                             description: "{{message}}",
-                            message: "Códigos de backup baixados com sucesso."
+                            message: "Códigos de backup baixados com sucesso"
                         }
                     },
                     refreshError: {
@@ -809,7 +786,7 @@ export const myAccount: MyAccountNS = {
                             message: "Algo deu errado"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao recuperar os códigos de backup",
+                            description: "Ocorreu um erro ao recuperar códigos de backup",
                             message: "Algo deu errado"
                         }
                     },
@@ -824,97 +801,93 @@ export const myAccount: MyAccountNS = {
                         }
                     }
                 },
-                remaining: "restante"
+                remaining: "restante(s)"
             },
             fido: {
-                description: "Você pode usar uma chave <1>Chave de acesso</1>, <1>De Segurança FIDO</1> ou " +
-                    "<1>Biometria</1> em seu dispositivo para fazer login em sua conta.",
+                description: "Você pode usar um <1>Passkey</1>, <1>Chave de Segurança FIDO2</1> ou <1>Biometria</1> em seu dispositivo para entrar na sua conta.",
                 form: {
-                    label: "Chave de acesso",
-                    placeholder: "Insira um nome para a chave de acesso",
-                    remove: "Remova a chave de acesso",
-                    required: "Insira um nome para sua chave de acesso"
+                    label: "Chave de Segurança/Biometria",
+                    placeholder: "Insira um nome para a chave de segurança/biometria",
+                    remove: "Remover a chave de segurança/biometria",
+                    required: "Por favor, insira um nome para sua chave de segurança/biometria"
                 },
-                heading: "Chave de acesso",
+                heading: "Chave de Segurança/Biometria",
                 modals: {
                     deleteConfirmation: {
                         assertionHint: "Por favor, confirme sua ação.",
-                        content: "Esta ação é irreversível e excluirá permanentemente a chave de acesso.",
-                        description: "Se você excluir essa chave de acesso, talvez não consiga fazer" +
-                            " login na sua conta novamente. Por favor, prossiga com cautela.",
+                        content: "Esta ação é irreversível e excluirá permanentemente a chave de segurança/biometria.",
+                        description: "Se você excluir esta chave de segurança/biometria, pode não conseguir entrar na sua conta novamente. Por favor, proceda com cautela.",
                         heading: "Tem certeza?"
                     },
                     deviceRegistrationErrorModal: {
-                        description: "TA chave de acesso foi interrompido. " +
-                            "Se isso não foi intencional, você pode tentar novamente o fluxo.",
-                        heading: "Falha no registro da chave de acesso",
-                        tryWithOlderDevice: "Você também pode tentar novamente com uma senha mais antiga."
+                        description: "O registro da chave de segurança/biometria foi interrompido. Se isso não foi intencional, você pode tentar o processo novamente.",
+                        heading: "Falha no Registro da Chave de Segurança/Biometria",
+                        tryWithOlderDevice: "Você também pode tentar novamente com uma chave de segurança/biometria mais antiga."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao remover a chave de acesso"
+                            message: "Ocorreu um erro ao remover a chave de segurança/biometria"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao remover a chave de acesso",
+                            description: "Ocorreu um erro ao remover a chave de segurança/biometria",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "A chave de acesso foi removida com sucesso da lista",
-                            message: "Sua chave de acesso removido com sucesso"
+                            description: "A chave de segurança/biometria foi removida com sucesso da lista",
+                            message: "Sua chave de segurança/biometria foi removida com sucesso"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao recuperar a chave de acesso"
+                            message: "Ocorreu um erro ao recuperar a chave de segurança/biometria"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao recuperar a chave de acesso",
+                            description: "Ocorreu um erro ao recuperar a chave de segurança/biometria",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "A chave de acesso foi registrada com sucesso " +
-                                "e agora você pode usá-la para autenticação.",
-                            message: "Sua chave de acesso registrado com sucesso"
+                            description: "A chave de segurança/biometria foi registrada com sucesso e agora você pode usá-la para autenticação.",
+                            message: "Sua chave de segurança/biometria foi registrada com sucesso"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao atualizar o nome da chave de acesso"
+                            message: "Ocorreu um erro ao atualizar o nome da chave de segurança/biometria"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao atualizar o nome da chave de acesso",
+                            description: "Ocorreu um erro ao atualizar o nome da chave de segurança/biometria",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O nome da sua chave de acesso foi atualizado com sucesso",
-                            message: "Nome da senha atualizado com sucesso"
+                            description: "O nome da sua chave de segurança/biometria foi atualizado com sucesso",
+                            message: "Nome da chave de Segurançabiometria foi atualizado com sucesso"
                         }
                     }
                 },
-                tryButton: "Tente com uma senha mais antiga"
+                tryButton: "Tente uma chave de segurança/biometria mais antiga"
             },
             smsOtp: {
                 descriptions: {
-                    hint: "Você receberá uma mensagem de texto contendo o código de verificação"
+                    hint: "Você receberá uma mensagem de texto contendo um código de verificação de uso único"
                 },
-                heading: "Número de telemóvel",
+                heading: "Número SMS",
                 notifications: {
                     updateMobile: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao atualizar o número do celular"
+                            message: "Ocorreu um erro ao atualizar o número de celular"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao atualizar o número do celular",
+                            description: "Ocorreu um erro ao atualizar o número de celular",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O número do celular no perfil do usuário é atualizado com sucesso",
+                            description: "O número de celular no perfil do usuário foi atualizado com sucesso",
                             message: "Número de celular atualizado com sucesso"
                         }
                     }
@@ -922,7 +895,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         mobileUpdateWizard: {
-            done: "Sucesso! O número do seu celular foi verificado com sucesso.",
+            done: "Sucesso! Seu número de celular foi verificado com sucesso.",
             notifications: {
                 resendError: {
                     error: {
@@ -930,23 +903,23 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao tentar obter um novo código de verificação",
+                        description: "Um erro ocorreu ao tentar obter um novo código de verificação",
                         message: "Algo deu errado"
                     }
                 },
                 resendSuccess: {
-                    message: "O pedido de reenvio do código foi enviado com sucesso"
+                    message: "Solicitação de reenvio de código enviada com sucesso"
                 }
             },
             submitMobile: {
                 heading: "Insira seu novo número de celular"
             },
             verifySmsOtp: {
-                error: "Falha na verificação. Por favor, tente novamente.",
+                error: "Verificação falhou. Por favor, tente novamente.",
                 generate: "Reenviar um novo código de verificação",
-                heading: "Digite o código de verificação enviado para o seu número de celular",
-                label: "Código de verificação",
-                placeholder: "Digite seu código de verificação",
+                heading: "Insira o código de verificação enviado para o seu número de celular",
+                label: "Código de Verificação",
+                placeholder: "Insira seu código de verificação",
                 requiredError: "Insira o código de verificação"
             }
         },
@@ -954,16 +927,16 @@ export const myAccount: MyAccountNS = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "Gerenciar a atividade da conta"
+                        update: "Gerenciar atividade da conta"
                     },
-                    description: "No momento, você está conectado no seguinte dispositivo",
+                    description: "Você está atualmente logado a partir do seguinte dispositivo",
                     header: "Sessões Ativas"
                 },
                 accountSecurity: {
                     actionTitles: {
-                        update: "Atualizar segurança da conta"
+                        update: "Atualizar a segurança da conta"
                     },
-                    description: "Configurações e recomendações para ajudar você a manter sua conta segura",
+                    description: "Configurações e recomendações para ajudá-lo a manter sua conta segura",
                     header: "Segurança da Conta"
                 },
                 accountStatus: {
@@ -972,143 +945,97 @@ export const myAccount: MyAccountNS = {
                     completionPercentage: "A conclusão do seu perfil está em {{percentage}}%",
                     inComplete: "Complete seu perfil",
                     inCompleteFields: "Campos incompletos",
-                    mandatoryFieldsCompletion: "{{completed}} de {{total}} campos obrigatórios preenchidos",
-                    optionalFieldsCompletion: "{{completed}} de {{total}} campos opcionais preenchidos"
+                    mandatoryFieldsCompletion: "{{completed}} de {{total}} campos obrigatórios concluídos",
+                    optionalFieldsCompletion: "{{completed}} de {{total}} campos opcionais concluídos"
                 },
                 consentManagement: {
                     actionTitles: {
                         manage: "Gerenciar consentimentos"
                     },
-                    description: "Controle os dados que você deseja compartilhar com os aplicativos",
-                    header: "Controle de Consentimento"
+                    description: "Controle os dados que deseja compartilhar com aplicativos",
+                    header: "Controle de Consentimentos"
                 },
                 profileStatus: {
                     completionPercentage: "A conclusão do seu perfil está em {{percentage}}%",
-                    description: "Gerencie seu perfil",
-                    header: "Seu perfil do {{productName}}",
+                    description: "Gerenciar seu perfil",
+                    header: "Seu Perfil {{productName}}",
                     profileText: "Detalhes do seu perfil pessoal",
-                    readOnlyDescription:"Ver seu perfil",
-                    userSourceText: "(Conectado via {{source}})"
+                    readOnlyDescription:"VVisualizar seu perfil",
+                    userSourceText: "(Cadastrado via {{source}})"
                 }
             }
         },
         privacy: {
             about: {
-                description: "O WSO2 Identity Server (referido como \"WSO2 IS\" nesta política) é um servidor de " +
-                    "gerenciamento e titularidade de identidades de código aberto baseado em padrões e " +
-                    "especificações abertos.",
-                heading: "Sobre o servidor de identidade WSO2"
+                description: "WSO2 Identity Server (referido como “WSO2 IS” nesta política) é um servidor de gerenciamento de identidade e direitos de código aberto baseado em padrões e especificações abertas.",
+                heading: "Sobre WSO2 Identity Server"
             },
             privacyPolicy: {
                 collectionOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "O WSO2 IS usa seu endereço IP para detectar tentativas suspeitas de login na sua " +
-                                "conta.",
-                            1: "O WSO2 IS usa atributos como seu nome, sobrenome, etc., para fornecer uma " +
-                                "experiência rica e personalizada ao usuário.",
-                            2: "O WSO2 IS usa suas perguntas e respostas de segurança apenas para permitir a " +
-                                "recuperação da conta."
+                            0: "WSO2 IS usa seu endereço IP para detectar tentativas suspeitas de login em sua conta.",
+                            1: "WSO2 IS usa atributos como seu nome, sobrenome, etc., para fornecer uma experiência de usuário rica e personalizada.",
+                            2: "WSO2 IS usa suas perguntas e respostas de segurança apenas para permitir a recuperação da conta."
                         },
-                        para1: "O WSO2 IS coleta suas informações apenas para atender aos seus requisitos de " +
-                            "acesso. Por exemplo:"
+                        para1: "WSO2 IS coleta suas informações apenas para atender às suas necessidades de acesso. Por exemplo:"
                     },
                     heading: "Coleta de informações pessoais",
                     trackingTechnologies: {
                         description: {
                             list1: {
-                                0: "Coletando informações da página de perfil do usuário em que você insere seus " +
-                                    "dados pessoais.",
-                                1: "Rastreando seu endereço IP com solicitação HTTP, cabeçalhos HTTP e TCP / IP.",
+                                0: "Coletando informações da página de perfil do usuário onde você insere seus dados pessoais.",
+                                1: "Rastreando seu endereço IP com solicitação HTTP, cabeçalhos HTTP e TCP/IP.",
                                 2: "Rastreando suas informações geográficas com o endereço IP.",
-                                3: "Rastreando seu histórico de login com cookies do navegador. Por favor, consulte " +
-                                    "nosso {{cookiePolicyLink}} para obter mais informações."
+                                3: "Rastreando seu histórico de login com cookies do navegador. Por favor, veja nossa {{cookiePolicyLink}} para mais informações."
                             },
-                            para1: "O WSO2 IS coleta suas informações por:"
+                            para1: "WSO2 IS coleta suas informações por:"
                         },
-                        heading: "Tecnologias de rastreamento"
+                        heading: "Tecnologias de Rastreamento"
                     }
                 },
                 description: {
-                    para1: "Esta política descreve como o WSO2 IS captura suas informações pessoais, os propósitos " +
-                        "de coleta e informações sobre a retenção de suas informações pessoais.",
-                    para2: "Observe que esta política é apenas para referência e é aplicável ao software como um " +
-                        "roduto. A WSO2 LLC. e seus desenvolvedores não têm acesso às informações mantidas no " +
-                        "WSO2 IS. Consulte a seção <1> isenção de responsabilidade </1> para obter mais informações.",
-                    para3: "Entidades, organizações ou indivíduos que controlam o uso e a administração do WSO2 IS " +
-                        "devem criar suas próprias políticas de privacidade, definindo a maneira pela qual os dados " +
-                        "são controlados ou processados ​​pela respectiva entidade, organização ou indivíduo."
+                    para1: "Esta política descreve como WSO2 IS captura suas informações pessoais, os propósitos da coleta e informações sobre a retenção de suas informações pessoais.",
+                    para2: "Por favor, note que esta política é apenas para referência e é aplicável ao software como um produto. WSO2 LLC. e seus desenvolvedores não têm acesso às informações mantidas dentro do WSO2 IS. Por favor, veja a seção <1>aviso legal</1> para mais informações.",
+                    para3: "Entidades, organizações ou indivíduos que controlam o uso e administração do WSO2 IS devem criar suas próprias políticas de privacidade definindo a maneira como os dados são controlados ou processados pela respectiva entidade, organização ou indivíduo."
                 },
                 disclaimer: {
                     description: {
                         list1: {
-                            0: "O WSO2, seus funcionários, parceiros e afiliados não têm acesso e não exigem, " +
-                                "armazenam, processam ou controlam nenhum dos dados, incluindo dados pessoais " +
-                                "contidos no WSO2 IS. Todos os dados, incluindo dados pessoais, são controlados " +
-                                "e processados ​​pela entidade ou indivíduo que executa o WSO2 IS. O WSO2, seus " +
-                                "funcionários parceiros e afiliados não são um processador de dados ou um " +
-                                "controlador de dados, de acordo com os regulamentos de privacidade de dados. " +
-                                "O WSO2 não fornece nenhuma garantia ou assume qualquer responsabilidade ou " +
-                                "obrigação relacionada à legalidade ou à maneira e aos propósitos pelos quais " +
-                                "o WSO2 IS é usado por essas entidades ou pessoas.",
-                            1: "Esta política de privacidade é para fins informativos da entidade ou pessoas que " +
-                                "executam o WSO2 IS e define os processos e a funcionalidade contidos no WSO2 IS em " +
-                                "relação à proteção de dados pessoais. É de responsabilidade das entidades e " +
-                                "pessoas que executam o WSO2 IS criar e administrar suas próprias regras e " +
-                                "processos que regem os dados pessoais dos usuários, e essas regras e processos " +
-                                "podem alterar as políticas de uso, armazenamento e divulgação aqui contidas. " +
-                                "Portanto, os usuários devem consultar a entidade ou pessoas que executam o " +
-                                "WSO2 IS para obter sua própria política de privacidade para obter detalhes sobre " +
-                                "os dados pessoais dos usuários."
+                            0: "WSO2, seus funcionários, parceiros e afiliados não têm acesso e não requerem, armazenam, processam ou controlam nenhum dos dados, incluindo dados pessoais contidos no WSO2 IS. Todos os dados, incluindo dados pessoais, são controlados e processados pela entidade ou indivíduo que executa o WSO2 IS. WSO2, seus funcionários, parceiros e afiliados não são um processador de dados ou um controlador de dados dentro do significado de quaisquer regulamentos de privacidade de dados. WSO2 não fornece quaisquer garantias ou assume qualquer responsabilidade ou obrigação em conexão com a legalidade ou a maneira e propósitos para os quais o WSO2 IS é usado por tais entidades ou pessoas.",
+                            1: "Esta política de privacidade é para fins informativos da entidade ou pessoas que executam o WSO2 IS e define os processos e funcionalidades contidos no WSO2 IS em relação à proteção de dados pessoais. É responsabilidade das entidades e pessoas que executam o WSO2 IS criar e administrar suas próprias regras e processos governando os dados pessoais dos usuários, e tais regras e processos podem alterar as políticas de uso, armazenamento e divulgação contidas aqui. Portanto, os usuários devem consultar a entidade ou pessoas que executam o WSO2 IS para sua própria política de privacidade para detalhes que governam os dados pessoais dos usuários."
                         }
                     },
-                    heading: "aviso Legal"
+                    heading: "Aviso Legal"
                 },
                 disclosureOfPersonalInfo: {
-                    description: "O WSO2 IS apenas divulga informações pessoais para os aplicativos relevantes " +
-                        "(também conhecidos como Provedor de Serviços) registrados no WSO2 IS. Esses aplicativos " +
-                        "são registrados pelo administrador de identidade de sua entidade ou organização. As " +
-                        "informações pessoais são divulgadas apenas para os fins para os quais foram coletadas " +
-                        "(ou para um uso identificado como consistente com essa finalidade), conforme controlado " +
-                        "por esses Provedores de Serviços, a menos que você tenha consentido de outra forma ou " +
-                        "onde seja exigido por lei.",
+                    description: "O WSO2 IS só divulga informações pessoais para as aplicações relevantes (também conhecidas como Provedor de Serviço) que estão registradas com o WSO2 IS. Essas aplicações são registradas pelo administrador de identidade da sua entidade ou organização. As informações pessoais são divulgadas apenas para os fins para os quais foram coletadas (ou para um uso identificado como consistente com esse propósito), conforme controlado por tais Provedores de Serviços, a menos que você tenha consentido de outra forma ou quando é exigido por lei.",
                     heading: "Divulgação de informações pessoais",
                     legalProcess: {
-                        description: "Observe que a organização, entidade ou indivíduo que executa o WSO2 IS " +
-                            "pode ser obrigado a divulgar suas informações pessoais com ou sem o seu consentimento, " +
-                            "quando exigidas por lei, após o devido e legal processo.",
-                        heading: "processo juridico"
+                        description: "Observe que a organização, entidade ou indivíduo que opera o WSO2 IS pode ser compelido a divulgar suas informações pessoais com ou sem o seu consentimento quando é exigido por lei, seguindo um processo legal e devido.",
+                        heading: "Processo legal"
                     }
                 },
                 heading: "Política de Privacidade",
                 moreInfo: {
                     changesToPolicy: {
                         description: {
-                            para1: "As versões atualizadas do WSO2 IS podem conter alterações nesta política e " +
-                                "as revisões dessa política serão incluídas nessas atualizações. Tais alterações " +
-                                "se aplicariam apenas aos usuários que optarem por usar versões atualizadas.",
-                            para2: "A organização que executa o WSO2 IS pode revisar a Política de Privacidade de " +
-                                "tempos em tempos. Você pode encontrar a política de governo mais recente com o " +
-                                "respectivo link fornecido pela organização que executa o WSO2 IS. " +
-                                "A organização notificará quaisquer alterações na política de privacidade " +
-                                "nos nossos canais públicos oficiais."
+                            para1: "Versões atualizadas do WSO2 IS podem conter alterações nesta política e revisões desta política serão incluídas nessas atualizações. Tais mudanças só se aplicam a usuários que optarem por usar versões atualizadas.",
+                            para2: "A organização que opera o WSO2 IS pode revisar a Política de Privacidade de tempos em tempos. Você pode encontrar a política mais recente com o respectivo link fornecido pela organização que opera o WSO2 IS. A organização notificará quaisquer alterações na política de privacidade através de nossos canais públicos oficiais."
                         },
-                        heading: "Alterações nesta política"
+                        heading: "Mudanças nesta política"
                     },
                     contactUs: {
                         description: {
-                            para1: "Entre em contato com o WSO2 se tiver alguma dúvida ou preocupação em relação " +
-                                "a esta política de privacidade."
+                            para1: "Por favor, entre em contato com a WSO2 se você tiver alguma dúvida ou preocupação em relação a esta política de privacidade."
                         },
-                        heading: "Contate-Nos"
+                        heading: "Fale conosco"
                     },
-                    heading: "Mais Informações",
+                    heading: "Mais informações",
                     yourChoices: {
                         description: {
-                            para1: "Se você já possui uma conta de usuário no WSO2 IS, tem o direito de desativar " +
-                                "sua conta se achar que esta política de privacidade é inaceitável para você.",
-                            para2: "Se você não possui uma conta e não concorda com nossa política de privacidade, " +
-                                "pode optar por não criar uma."
+                            para1: "Se você já tem uma conta de usuário no WSO2 IS, você tem o direito de desativar sua conta se achar que esta política de privacidade é inaceitável para você.",
+                            para2: "Se você não tem uma conta e não concorda com nossa política de privacidade, você pode optar por não criar uma."
                         },
                         heading: "Suas escolhas"
                     }
@@ -1121,33 +1048,22 @@ export const myAccount: MyAccountNS = {
                                 0: "Senha atual",
                                 1: "Senhas usadas anteriormente"
                             },
-                            para1: "O WSO2 IS retém seus dados pessoais, desde que você seja um usuário ativo do " +
-                                "nosso sistema. Você pode atualizar seus dados pessoais a qualquer momento usando " +
-                                "os portais de usuário de autocuidado fornecidos.",
-                            para2: "O WSO2 IS pode manter segredos de hash para fornecer um nível adicional de " +
-                                "segurança. Isso inclui:"
+                            para1: "O WSO2 IS retém seus dados pessoais enquanto você for um usuário ativo de nosso sistema. Você pode atualizar seus dados pessoais a qualquer momento usando os portais de autoatendimento fornecidos.",
+                            para2: "O WSO2 IS pode manter segredos hash para fornecer um nível adicional de segurança. Isso inclui:"
                         },
-                        heading: "Por quanto tempo suas informações pessoais são retidas"
+                        heading: "Quanto tempo suas informações pessoais são retidas"
                     },
                     requestRemoval: {
                         description: {
-                            para1: "Você pode solicitar que o administrador exclua sua conta. O administrador é " +
-                                "o administrador do inquilino no qual você está registrado ou o superadministrador " +
-                                "se você não usar o recurso de inquilino.",
-                            para2: "Além disso, você pode solicitar para anonimizar todos os vestígios de suas " +
-                                "atividades que o WSO2 IS possa ter retido em logs, bancos de dados ou " +
-                                "armazenamento analítico."
+                            para1: "Você pode solicitar ao administrador para excluir sua conta. O administrador é o administrador da organização na qual você está registrado, ou o super-administrador se você não usar o recurso de organização.",
+                            para2: "Além disso, você pode solicitar a anonimização de todos os vestígios de suas atividades que o WSO2 IS possa ter retido em logs, bancos de dados ou armazenamentos analíticos."
                         },
                         heading: "Como solicitar a remoção de suas informações pessoais"
                     },
                     where: {
                         description: {
-                            para1: "O WSO2 IS armazena suas informações pessoais em bancos de dados protegidos. " +
-                                "O WSO2 IS exerce medidas adequadas de segurança aceitas pelo setor para proteger " +
-                                "o banco de dados em que suas informações pessoais são mantidas. O WSO2 IS como " +
-                                "produto não transfere ou compartilha seus dados com terceiros ou locais.",
-                            para2: "O WSO2 IS pode usar criptografia para manter seus dados pessoais com um nível " +
-                                "adicional de segurança."
+                            para1: "O WSO2 IS armazena suas informações pessoais em bancos de dados seguros. O WSO2 IS exerce medidas de segurança aceitas na indústria para proteger o banco de dados onde suas informações pessoais são mantidas. O WSO2 IS, como produto, não transfere nem compartilha seus dados com terceiros ou locais.",
+                            para2: "O WSO2 IS pode usar criptografia para manter seus dados pessoais com um nível adicional de segurança."
                         },
                         heading: "Onde suas informações pessoais são armazenadas"
                     }
@@ -1155,32 +1071,25 @@ export const myAccount: MyAccountNS = {
                 useOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "Para fornecer uma experiência personalizada ao usuário. O WSO2 IS usa seu nome e " +
-                                "as imagens de perfil carregadas para esse fim.",
-                            1: "Para proteger sua conta contra acesso não autorizado ou possíveis tentativas de " +
-                                "hackers. O WSO2 IS usa cabeçalhos HTTP ou TCP / IP para esse fim.",
-                            2: "Derivar dados estatísticos para fins analíticos nas melhorias de desempenho do " +
-                                "sistema. O WSO2 IS não manterá nenhuma informação pessoal após cálculos " +
-                                "estatísticos. Portanto, o relatório estatístico não tem como identificar " +
-                                "uma pessoa individualmente."
+                            0: "Para fornecer uma experiência de usuário personalizada, o WSO2 IS usa seu nome e fotos de perfil enviadas.",
+                            1: "Para proteger sua conta de acessos não autorizados ou tentativas de hacking, o WSO2 IS usa Cabeçalhos HTTP ou TCP/IP.",
+                            2: "Prover dados estatísticos para fins analíticos sobre melhorias no desempenho do sistema. O WSO2 IS não manterá nenhuma informação pessoal após cálculos estatísticos. Portanto, o relatório estatístico não tem meios de identificar uma pessoa individual."
                         },
-                        para1: "O WSO2 IS usará suas informações pessoais apenas para os fins para os quais " +
-                            "foram coletadas (ou para um uso identificado como consistente com esse objetivo).",
-                        para2: "O WSO2 IS usa suas informações pessoais apenas para os seguintes fins.",
+                        para1: "O WSO2 IS usará suas informações pessoais apenas para os fins para os quais foram coletadas (ou para um uso identificado como consistente com esse propósito).",
+                        para2: "OO WSO2 IS usa suas informações pessoais apenas para os seguintes propósitos.",
                         subList1: {
                             heading: "Isso inclui:",
                             list: {
-                                0: "endereço de IP",
+                                0: "Endereço IP",
                                 1: "Impressão digital do navegador",
-                                2: "Biscoitos"
+                                2: "Cookies"
                             }
                         },
                         subList2: {
-                            heading: "WSO2 IS pode usar:",
+                            heading: "O WSO2 IS pode usar:",
                             list: {
                                 0: "Endereço IP para obter informações geográficas",
-                                1: "Impressão digital do navegador para determinar a tecnologia ou / e a versão " +
-                                    "do navegador"
+                                1: "Impressão digital do navegador para determinar a tecnologia e/ou versão do navegador"
                             }
                         }
                     },
@@ -1189,123 +1098,117 @@ export const myAccount: MyAccountNS = {
                 whatIsPersonalInfo: {
                     description: {
                         list1: {
-                            0: "Seu nome de usuário (exceto nos casos em que o nome de usuário criado por seu " +
-                                "empregador esteja sob contrato)",
-                            1: "Sua data de nascimento / idade",
-                            2: "Endereço IP usado para efetuar login",
-                            3: "O ID do seu dispositivo se você usar um dispositivo (por exemplo, telefone ou " +
-                                "tablet) para fazer login"
+                            0: "Seu nome de usuário (exceto nos casos em que o nome de usuário criado pelo seu empregador está sob contrato)",
+                            1: "Sua data de nascimento/idade",
+                            2: "Endereço IP usado para fazer login",
+                            3: "Seu ID de dispositivo se você usar um dispositivo (por exemplo, telefone ou tablet) para fazer login"
                         },
                         list2: {
-                            0: "Cidade / país de onde você originou a conexão TCP / IP",
-                            1: "Hora do dia em que você efetuou login (ano, mês, semana, hora ou minuto)",
+                            0: "Cidade/País de onde originou a conexão TCP/IP",
+                            1: "Horário do dia em que você fez login (ano, mês, semana, hora ou minuto)",
                             2: "Tipo de dispositivo que você usou para fazer login (por exemplo, telefone ou tablet)",
                             3: "Sistema operacional e informações genéricas do navegador"
                         },
-                        para1: "O WSO2 IS considera qualquer coisa relacionada a você e pela qual você pode ser " +
-                            "identificado como suas informações pessoais. Isso inclui, mas não se limita a:",
-                        para2: "No entanto, o WSO2 IS também coleta as seguintes informações que não são " +
-                            "consideradas informações pessoais, mas são usadas apenas para fins " +
-                            "<1> estatísticos </1>. A razão para isso é que essas informações não podem ser usadas " +
-                            "para rastrear você."
+                        para1: "O WSO2 IS considera qualquer coisa relacionada a você, e pela qual você pode ser identificado, como suas informações pessoais. Isso inclui, mas não está limitado a:",
+                        para2: "No entanto, o WSO2 IS também coleta as seguintes informações que não são consideradas informações pessoais, mas são usadas apenas para fins <1>estatísticos</1>. A razão para isso é que essas informações não podem ser usadas para rastrear você."
                     },
-                    heading: "O que são informações pessoais?"
+                    heading: "O que é informação pessoal?"
                 }
             }
         },
         profile: {
             fields: {
-                "Account Confirmed Time": "Tempo confirmado tempo",
-                "Account Disabled": "conta desativada",
-                "Account Locked": "Conta bloqueada",
-                "Account State": "Estado da conta",
-                "Active": "Ativa",
+                "Account Confirmed Time": "Hora da Confirmação da Conta",
+                "Account Disabled": "Conta Desativada",
+                "Account Locked": "Conta Bloqueada",
+                "Account State": "Estado da Conta",
+                "Active": "Ativo",
                 "Address - Street": "Endereço - Rua",
-                "Ask Password": "Pergunte a senha",
-                "Backup Code Enabled": "Código de backup ativado",
-                "Backup Codes": "Códigos de backup",
-                "Birth Date": "Data de nascimento",
+                "Ask Password": "Solicitar Senha",
+                "Backup Code Enabled": "Código de Backup Habilitado",
+                "Backup Codes": "Códigos de Backup",
+                "Birth Date": "Data de Nascimento",
                 "Country": "País",
-                "Created Time": "Tempo criado",
-                "Disable EmailOTP": "DDesative o email OTP",
-                "Disable SMSOTP": "Desative smsotp",
-                "Display Name": "Nome de exibição",
+                "Created Time": "Hora da Criação",
+                "Disable EmailOTP": "Desabilitar OTP de E-mail",
+                "Disable SMSOTP": "Desabilitar OTP de SMS",
+                "Display Name": "Nome de Exibição",
                 "Email": "E-mail",
-                "Email Verified": "email verificado",
-                "Enabled Authenticators": "Autenticadores habilitados",
-                "Existing Lite User": "Usuário Lite existente",
-                "External ID": "ID externo",
-                "Failed Attempts Before Success": "Tentativas fracassadas antes do sucesso",
-                "Failed Backup Code Attempts": "Tentativas de código de backup com falha",
-                "Failed Email OTP Attempts": "Tentativas de OTP de e -mail fracassado",
-                "Failed Lockout Count": "Contagem de bloqueio com falha",
-                "Failed Login Attempts": "Tentativas de login com falha",
-                "Failed Password Recovery Attempts": "Tentativas de recuperação de senha com falha",
-                "Failed SMS OTP Attempts": "Falha no SMS OTP Tentativas",
-                "Failed TOTP Attempts": "Totp com falha",
-                "First Name": "Primeiro nome",
-                "Force Password Reset": "Redefinição de senha de força",
-                "Full Name": "Nome completo",
+                "Email Verified": "E-mail Verificado",
+                "Enabled Authenticators": "Autenticadores Habilitados",
+                "Existing Lite User": "Usuário Lite Existente",
+                "External ID": "ID Externo",
+                "Failed Attempts Before Success": "Tentativas Falhas Antes do Sucesso",
+                "Failed Backup Code Attempts": "Tentativas Falhas no Código de Backup",
+                "Failed Email OTP Attempts": "Tentativas Falhas no OTP de E-mail",
+                "Failed Lockout Count": "Contagem de Bloqueio por Falhas",
+                "Failed Login Attempts": "Tentativas de Login Falhas",
+                "Failed Password Recovery Attempts": "Tentativas Falhas de Recuperação de Senha",
+                "Failed SMS OTP Attempts": "Tentativas Falhas no OTP de SMS",
+                "Failed TOTP Attempts": "Tentativas Falhas no TOTP",
+                "First Name": "Nome",
+                "Force Password Reset": "Forçar Redefinição de Senha",
+                "Full Name": "Nome Completo",
                 "Gender": "Gênero",
                 "Groups": "Grupos",
-                "Identity Provider Type": "Tipo de provedor de identidade",
-                "Last Logon": "Último logon",
-                "Last Modified Time": "Último tempo modificado",
+                "Identity Provider Type": "Tipo de Provedor de Identidade",
+                "Last Logon": "Último Login",
+                "Last Modified Time": "Hora da Última Modificação",
                 "Last Name": "Sobrenome",
-                "Last Password Update": "Última atualização de senha",
-                "Lite User": "Usuário de Lite",
-                "Lite User ID": "ID do usuário Lite",
-                "Local": "local",
-                "Local Credential Exists": "Credencial local existe",
+                "Last Password Update": "Última Atualização de Senha",
+                "Lite User": "Usuário Lite",
+                "Lite User ID": "ID do Usuário Lite",
+                "Local": "Local",
+                "Local Credential Exists": "Credencial Local Existe",
                 "Locality": "Localidade",
                 "Location": "Localização",
-                "Locked Reason": "Razão bloqueada",
-                "Manager - Name": "Nome do gerente",
-                "Middle Name": "Nome do meio",
-                "Mobile": "Móvel",
+                "Locked Reason": "Motivo do Bloqueio",
+                "Manager - Name": "Gerente - Nome",
+                "Middle Name": "Nome do Meio",
+                "Mobile": "Celular",
                 "Nick Name": "Apelido",
-                "Phone Verified": "Telefone verificado",
+                "Phone Verified": "Telefone Verificado",
                 "Photo - Thumbnail": "Foto - Miniatura",
-                "Photo URL": "photoUrl",
-                "Postal Code": "Código postal",
-                "Preferred Channel": "Canal preferido",
-                "Read Only User": "Leia apenas o usuário",
+                "Photo URL": "URL da Foto",
+                "Postal Code": "Código Postal",
+                "Preferred Channel": "Canal Preferencial",
+                "Read Only User": "Usuário Somente Leitura",
                 "Region": "Região",
-                "Resource Type": "Tipo de recurso",
-                "Roles": "Papéis",
-                "Secret Key": "Chave secreta",
-                "TOTP Enabled": "TOTP ativado",
-                "Time Zone": "Tfazer para zona",
-                "URL": "Url",
-                "Unlock Time": "Desbloquear o tempo",
-                "User Account Type": "Tipo de conta de usuário",
-                "User ID": "ID do usuário",
-                "User Metadata - Version": "Metadados do usuário - versão",
-                "User Source": "Fonte do usuário",
-                "User Source ID": "ID de origem do usuário",
-                "Username": "Nome de usuário",
-                "Verification Pending Email": "Verificação em e -mail pendente",
-                "Verification Pending Mobile Number": "Verificação com número de celular pendente",
-                "Verify Email": "Verificar e-mail",
-                "Verify Mobile": "Verifique o celular",
-                "Verify Secret Key": "Verifique a chave secreta",
-                "Website URL": "URL do site",
-                emails: "O email",
+                "Resource Type": "Tipo de Recurso",
+                "Roles": "Atribuições",
+                "Secret Key": "Chave Secreta",
+                "TOTP Enabled": "TOTP Habilitado",
+                "Time Zone": "Fuso Horário",
+                "URL": "URL",
+                "Unlock Time": "Hora do Desbloqueio",
+                "User Account Type": "Tipo de Conta do Usuário",
+                "User ID": "ID do Usuário",
+                "User Metadata - Version": "Metadados do Usuário - Versão",
+                "User Source": "Fonte do Usuário",
+                "User Source ID": "ID da Fonte do Usuário",
+                "Username": "Nome de Usuário",
+                "Verification Pending Email": "E-mail Pendente de Verificação",
+                "Verification Pending Mobile Number": "Número de Celular Pendente de Verificação",
+                "Verify Email": "Verificar E-mail",
+                "Verify Mobile": "Verificar Celular",
+                "Verify Secret Key": "Verificar Chave Secreta",
+                "Website URL": "URL do Site",
+                emails: "E-mail",
                 generic: {
                     default: "Adicionar {{fieldName}}"
                 },
-                nameFamilyName: "Último nome",
-                nameGivenName: "Primeiro nome",
+                nameFamilyName: "Sobrenome",
+                nameGivenName: "Nome",
                 phoneNumbers: "Número de telefone",
-                profileImage: "Imagem de perfil",
+                profileImage: "Imagem de Perfil",
                 profileUrl: "URL",
-                userName: "Nome de usuário"
+                userName: "Nome de Usuário"
             },
             forms: {
                 countryChangeForm: {
                     inputs: {
                         country: {
-                            placeholder: "Escolha o seu país"
+                            placeholder: "Selecione seu país"
                         }
                     }
                 },
@@ -1313,8 +1216,8 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         date: {
                             validations: {
-                                futureDateError: "A data inserida no campo {{field}} é inválida.",
-                                invalidFormat: "Insira um {{fieldName}} válido no formato AAAA-MM-DD."
+                                futureDateError: "A data que você inseriu para o campo {{field}} é inválida.",
+                                invalidFormat: "Por favor, insira um {{fieldName}} válido no formato AAAA-MM-DD."
                             }
                         }
                     }
@@ -1322,29 +1225,26 @@ export const myAccount: MyAccountNS = {
                 emailChangeForm: {
                     inputs: {
                         email: {
-                            label: "O email",
-                            note: "NOTA: Editar isso altera o endereço de e-mail associado a esta conta. Este " +
-                                "endereço de e-mail também é usado para recuperação de conta.",
-                            placeholder: "Insira o seu endereço de email",
+                            label: "E-mail",
+                            note: "NOTA: Editar isso altera o endereço de e-mail associado a esta conta. Este endereço de e-mail também é usado para recuperação de conta.",
+                            placeholder: "Insira seu endereço de e-mail",
                             validations: {
-                                empty: "O endereço de email é um campo obrigatório",
-                                invalidFormat: "O endereço de email não está no formato correto. Você pode usar " +
-                                    "caracteres alfanuméricos, caracteres Unicode, sublinhados (_), travessões (-), " +
-                                    "pontos (.) E uma arroba (@)."
+                                empty: "O endereço de e-mail não pode estar vazio",
+                                invalidFormat: "Por favor, insira um endereço de email válido. Você pode usar caracteres alfanuméricos, caracteres unicode, sublinhados (_), traços (-), pontos (.), e um sinal de arroba (@)."
                             }
                         }
                     }
                 },
                 generic: {
                     inputs: {
-                        placeholder: "Insira o seu {{fieldName}}",
+                        placeholder: "Insira seu {{fieldName}}",
                         readonly: {
                             placeholder: "Este valor está vazio",
                             popup: "Contate o administrador para atualizar seu {{fieldName}}"
                         },
                         validations: {
                             empty: "{{fieldName}} é um campo obrigatório",
-                            invalidFormat: "The {{fieldName}} não está no formato correto"
+                            invalidFormat: "O formato do {{fieldName}} inserido está incorreto"
                         }
                     }
                 },
@@ -1352,12 +1252,11 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         mobile: {
                             label: "Número de celular",
-                            note: "NOTA: Isso mudará o número do celular em seu perfil",
-                            placeholder: "Digite seu número de celular",
+                            note: "NOTA: Isso mudará o número de celular em seu perfil",
+                            placeholder: "Insira seu número de celular",
                             validations: {
-                                empty: "O número do celular é um campo obrigatório",
-                                invalidFormat: "Insira um número de celular válido no formato [+][código do país]"+
-                                    "[código de área][número de telefone local]."
+                                empty: "O número de celular não pode estar vazio",
+                                invalidFormat: "Por favor, insira um número de celular válido no formato [+][código do país][código de área][número de telefone local]."
                             }
                         }
                     }
@@ -1365,17 +1264,17 @@ export const myAccount: MyAccountNS = {
                 nameChangeForm: {
                     inputs: {
                         firstName: {
-                            label: "Primeiro nome",
-                            placeholder: "Digite o primeiro nome",
+                            label: "Nome",
+                            placeholder: "Insira o nome",
                             validations: {
-                                empty: "O primeiro nome é um campo obrigatório"
+                                empty: "O nome não pode estar vazio"
                             }
                         },
                         lastName: {
-                            label: "Último nome",
-                            placeholder: "Digite o sobrenome",
+                            label: "Sobrenome",
+                            placeholder: "Insira o sobrenome",
                             validations: {
-                                empty: "O sobrenome é um campo obrigatório"
+                                empty: "O sobrenome não pode estar vazio"
                             }
                         }
                     }
@@ -1384,9 +1283,9 @@ export const myAccount: MyAccountNS = {
                     inputs: {
                         organization: {
                             label: "Organização",
-                            placeholder: "Entre na sua organização",
+                            placeholder: "Insira sua organização",
                             validations: {
-                                empty: "Organização é um campo obrigatório"
+                                empty: "A organização não pode estar vazio"
                             }
                         }
                     }
@@ -1394,15 +1293,11 @@ export const myAccount: MyAccountNS = {
             },
             messages: {
                 emailConfirmation: {
-                    content: "Please confirm the email address update in order to add the new email to your profile.",
-                    header: "Confirmation pending!"
+                    content: "Por favor, confirme a atualização do endereço de e-mail para adicionar o novo e-mail ao seu perfil.",
+                    header: "Confirmação pendente!"
                 },
                 mobileVerification: {
-                    content: "Este número de celular é usado para enviar SMS OTP quando a autenticação de segundo " +
-                        "fator está habilitada e para enviar códigos de recuperação em caso de recuperação de nome " +
-                        "de usuário / senha. Para atualizar este número, você deve verificar o novo número " +
-                        "inserindo o código de verificação enviado para o seu novo número. Clique em atualizar se " +
-                        "quiser continuar."
+                    content: "Este número de celular é usado para enviar OTPs de SMS quando a autenticação de segundo fator estiver habilitada e para enviar códigos de recuperação em caso de recuperação de nome de usuário/senha. Para atualizar este número, você deve verificar o novo número inserindo o código de verificação enviado para seu novo número. Clique em atualizar se desejar prosseguir."
                 }
             },
             notifications: {
@@ -1412,12 +1307,12 @@ export const myAccount: MyAccountNS = {
                         message: "Ocorreu um erro"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao calcular a conclusão do perfil",
+                        description: "Ocorreu um erro ao avaliar a conclusão do perfil",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "A conclusão do perfil foi calculada com sucesso",
-                        message: "Cálculo bem sucedido"
+                        description: "A conclusão do perfil foi avaliada com sucesso",
+                        message: "Cálculo Bem-Sucedido"
                     }
                 },
                 getProfileInfo: {
@@ -1430,13 +1325,13 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Os detalhes do perfil do usuário necessários são recuperados com sucesso",
-                        message: "Perfil de usuário recuperado com sucesso"
+                        description: "Os detalhes necessários do perfil do usuário foram recuperados com sucesso",
+                        message: "Perfil do usuário recuperado com sucesso"
                     }
                 },
                 getUserReadOnlyStatus: {
                     genericError: {
-                        description: "Ocorreu um erro ao recuperar o status somente leitura do usuário",
+                        description: "Ocorreu um erro ao recuperar o status de somente leitura do usuário",
                         message: "Algo deu errado"
                     }
                 },
@@ -1450,14 +1345,14 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Os detalhes do perfil de usuário necessários foram atualizados com sucesso",
-                        message: "Perfil de usuário atualizado com sucesso"
+                        description: "Os detalhes necessários do perfil do usuário foram atualizados com sucesso",
+                        message: "Perfil do usuário atualizado com sucesso"
                     }
                 }
             },
             placeholders: {
                 SCIMDisabled: {
-                    heading: "Este recurso não está disponível para sua conta."
+                    heading: "Este recurso não está disponível para sua conta"
                 }
             }
         },
@@ -1473,8 +1368,7 @@ export const myAccount: MyAccountNS = {
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "O arquivo que contém os detalhes necessários do perfil do usuário começou a " +
-                            "baixar",
+                        description: "O arquivo contendo os detalhes necessários do perfil do usuário começou a ser baixado",
                         message: "Download dos detalhes do perfil do usuário iniciado"
                     }
                 }
@@ -1482,80 +1376,77 @@ export const myAccount: MyAccountNS = {
         },
         userAvatar: {
             infoPopover: "Esta imagem foi recuperada do serviço <1>Gravatar</1>.",
-            urlUpdateHeader: "Insira um URL da imagem para definir sua foto de perfil"
+            urlUpdateHeader: "Insira uma URL de imagem para definir sua foto de perfil"
         },
         userSessions: {
             browserAndOS: "{{browser}} no {{os}} {{version}}",
             dangerZones: {
                 terminate: {
-                    actionTitle: "Terminar",
+                    actionTitle: "Encerrar",
                     header: "Encerrar sessão",
                     subheader: "Você será desconectado da sessão no dispositivo específico."
                 }
             },
-            lastAccessed: "Último acesso {{date}}",
+            lastAccessed: "Último acesso em {{date}}",
             modals: {
                 terminateActiveUserSessionModal: {
-                    heading: "Encerrar sessões ativas atuais",
+                    heading: "Encerrar Sessões Ativas Atuais",
                     message:
-                        "As alterações da opção de autenticação de segundo fator (2FA) não serão aplicadas às suas sessões ativas. " +
-                        "Recomendamos que você os encerre.",
-                    primaryAction: "Terminar tudo",
+                        "As alterações na opção de autenticação de segundo fator (2FA) não serão aplicadas às suas sessões ativas. Recomendamos que você as encerre.",
+                    primaryAction: "Encerrar tudo",
                     secondaryAction: "Revisar e encerrar"
 
                 },
                 terminateAllUserSessionsModal: {
                     heading: "Confirmação",
-                    message: "A ação o desconectará desta sessão e de todas as outras sessões em todos os " +
-                        "dispositivos. Você deseja continuar?"
+                    message: "A ação irá desconectá-lo desta sessão e de todas as outras sessões em todos os dispositivos. Deseja continuar?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmação",
-                    message: "Esta ação fará com que você saia da sessão no dispositivo específico. Você deseja " +
-                        "continuar?"
+                    message: "Esta ação irá desconectá-lo da sessão no dispositivo específico. Deseja continuar?"
                 }
             },
             notifications: {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Erro ao recuperar a sessão do IDP"
+                        message: "Erro ao recuperar sessão ativa"
                     },
                     genericError: {
-                        description: "Não foi possível recuperar nenhuma sessão do IDP",
+                        description: "Não foi possível recuperar nenhuma sessão ativa",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Recuperadas com sucesso as sessões do IDP",
-                        message: "Recuperação de sessão IDP bem-sucedida"
+                        description: "Sessões ativas recuperadas com sucesso",
+                        message: "Recuperação de sessão ativa bem-sucedida"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Não foi possível encerrar as sessões do IDP"
+                        message: "Não foi possível encerrar sessões ativas"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao encerrar as sessões do IDP",
-                        message: "Não foi possível encerrar as sessões do IDP"
+                        description: "Algo deu errado ao encerrar sessões ativas",
+                        message: "Não foi possível encerrar sessões ativas"
                     },
                     success: {
-                        description: "Terminou com êxito todas as sessões do IDP",
-                        message: "Terminou todas as sessões do IDP"
+                        description: "Todas as sessões ativas foram encerradas com sucesso",
+                        message: "Todas as sessões ativas foram encerradas"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "Não foi possível encerrar a sessão do IDP"
+                        message: "Não foi possível encerrar a sessão ativa"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao encerrar a sessão do IDP",
-                        message: "Não foi possível encerrar a sessão do IDP"
+                        description: "Algo deu errado ao encerrar a sessão ativa",
+                        message: "Não foi possível encerrar a sessão ativa"
                     },
                     success: {
-                        description: "Encerrada com êxito a sessão do IDP",
-                        message: "Sessão finalizada com sucesso"
+                        description: "Sessão ativa encerrada com sucesso",
+                        message: "Sucesso no encerramento da sessão"
                     }
                 }
             }
@@ -1567,10 +1458,8 @@ export const myAccount: MyAccountNS = {
                 gravatar: {
                     errors: {
                         noAssociation: {
-                            content: "Parece que o email selecionado não está registrado no Gravatar. " +
-                                "Cadastre-se para uma conta do Gravatar visitando o <1>site oficial do Gravatar</1> ou " +
-                                "use um dos seguintes.",
-                            header: "Nenhuma imagem do Gravatar correspondente encontrada!"
+                            content: "Parece que o email selecionado não está registrado no Gravatar. Inscreva-se para uma conta Gravatar visitando <1>site oficial do Gravatar</1> ou use uma das seguintes opções.",
+                            header: "Nenhuma imagem Gravatar correspondente encontrada!"
                         }
                     },
                     heading: "Gravatar baseado em "
@@ -1580,21 +1469,19 @@ export const myAccount: MyAccountNS = {
                     input: {
                         errors: {
                             http: {
-                                content: "O URL selecionado aponta para uma imagem não segura veiculada por HTTP. " +
-                                    "Prossiga com cuidado.",
-                                header: "Conteúdo inseguro!"
+                                content: "A URL selecionada aponta para uma imagem insegura servida por HTTP. Por favor, prossiga com cautela.",
+                                header: "Conteúdo Inseguro!"
                             },
                             invalid: {
-                                content: "Insira um URL de imagem válido"
+                                content: "Por favor, insira um URL de imagem válido"
                             }
                         },
                         hint: "Insira um URL de imagem válido que esteja hospedado em um local de terceiros.",
                         placeholder: "Insira o URL da imagem.",
                         warnings: {
                             dataURL: {
-                                content: "Usar URLs de dados com grande contagem de caracteres pode resultar em " +
-                                    "problemas de banco de dados. Prossiga com cuidado.",
-                                header: "Verifique novamente o URL de dados inserido!"
+                                content: "Usar URLs de Dados com grande quantidade de caracteres pode resultar em problemas de banco de dados. Prossiga com cautela.",
+                                header: "Verifique novamente o URL de Dados inserido!"
                             }
                         }
                     }
@@ -1602,129 +1489,124 @@ export const myAccount: MyAccountNS = {
                 systemGenAvatars: {
                     heading: "Avatar gerado pelo sistema",
                     types: {
-                        initials: "Initials"
+                        initials: "Iniciais"
                     }
                 }
             },
             description: null,
             heading: "Atualizar foto de perfil",
-            primaryButton: "Salve",
+            primaryButton: "Salvar",
             secondaryButton: "Cancelar"
         },
         sessionTimeoutModal: {
-            description: "Ao clicar em <1>Voltar</1>, tentaremos recuperar a sessão, se ela existir. Se você " +
-                "não tiver uma sessão ativa, será redirecionado para a página de login.",
-            heading: "Parece que você está inativo há muito tempo.",
+            description: "Quando você clicar em <1>Voltar</1>, tentaremos recuperar a sessão, se ela existir. Se você não tiver uma sessão ativa, será redirecionado para a página de login.",
+            heading: "Parece que você esteve inativo por muito tempo.",
             loginAgainButton: "Entrar novamente",
-            primaryButton: "Volte",
+            primaryButton: "Voltar",
             secondaryButton: "Sair",
-            sessionTimedOutDescription: "Please log in again to continue from where you left off.",
-            sessionTimedOutHeading: "A sessão do usuário expirou devido à inatividade."
+            sessionTimedOutDescription: "Por favor, faça login novamente para continuar de onde parou.",
+            sessionTimedOutHeading: "Sessão do usuário expirou devido à inatividade."
         }
     },
     pages: {
         applications: {
-            subTitle: "Descubra e acesse seus aplicativos",
-            title: "Applications"
+            subTitle: "Descubra e acesse suas aplicações",
+            title: "Aplicações"
         },
         overview: {
-            subTitle: "Gerenciar suas informações pessoais, segurança da conta e configurações de privacidade",
+            subTitle: "Gerencie suas informações pessoais, segurança da conta e configurações de privacidade",
             title: "Bem-vindo, {{firstName}}"
         },
         personalInfo: {
             subTitle: "Edite ou exporte seu perfil pessoal e gerencie contas vinculadas",
-            title: "Informação pessoal"
+            title: "Informações Pessoais"
         },
         personalInfoWithoutExportProfile: {
-            subTitle: "Edite o seu perfil pessoal",
-            title: "Informação pessoal"
+            subTitle: "Visualize e gerencie suas informações pessoais",
+            title: "Informações Pessoais"
         },
         personalInfoWithoutLinkedAccounts: {
-            subTitle: "Edite ou exporte o seu perfil pessoal",
-            title: "Informação pessoal"
+            subTitle: "Edite ou exporte seu perfil pessoal",
+            title: "Informações Pessoais"
         },
         privacy: {
             subTitle: "",
-            title: "Política de Privacidade do Servidor de Identidade WSO2"
+            title: "Política de Privacidade do WSO2 Identity Server"
         },
-        readOnlyProfileBanner: "Seu perfil não pode ser modificado neste portal. " +
-            "Entre em contato com seu administrador para obter mais detalhes.",
+        readOnlyProfileBanner: "Seu perfil não pode ser modificado por este portal. Por favor, entre em contato com seu administrador para mais detalhes.",
         security: {
-            subTitle: "Atualize as configurações para tornar sua conta segura",
+            subTitle: "Proteja sua conta gerenciando consentimentos, sessões e configurações de segurança",
             title: "Segurança"
         }
     },
     placeholders: {
         404: {
-            action: "Voltar para casa",
+            action: "Voltar para a página inicial",
             subtitles: {
-                0: "Não foi possível encontrar a página que você estava procurando.",
-                1: "Por favor, verifique o URL ou clique no botão abaixo para ser redirecionado de volta à página " +
-                    "inicial."
+                0: "Não conseguimos encontrar a página que você está procurando.",
+                1: "Por favor, verifique o URL ou clique no botão abaixo para ser redirecionado de volta para a página inicial."
             },
-            title: "página não encontrada"
+            title: "Página não encontrada"
         },
         accessDeniedError: {
-            action: "Voltar para casa",
+            action: "Voltar para a página inicial",
             subtitles: {
                 0: "Parece que você não tem permissão para acessar esta página.",
-                1: "Tente fazer login com uma conta diferente."
+                1: "Por favor, tente entrar com uma conta diferente."
             },
             title: "Acesso não concedido"
         },
         emptySearchResult: {
             action: "Limpar consulta de pesquisa",
             subtitles: {
-                0: "Não conseguimos encontrar resultados para \"{{query}}\"",
-                1: "Tente um termo de pesquisa diferente."
+                0: "Não encontramos resultados para \"{{query}}\"",
+                1: "Por favor, tente um termo de pesquisa diferente."
             },
             title: "Nenhum resultado encontrado"
         },
         genericError: {
-            action: "Recarregue a página",
+            action: "Atualize a página",
             subtitles: {
-                0: "Ocorreu um erro ao exibir esta página.",
-                1: "Consulte o console do navegador para obter detalhes técnicos."
+                0: "Algo deu errado ao exibir esta página.",
+                1: "Veja o console do navegador para detalhes técnicos."
             },
             title: "Algo deu errado"
         },
         loginError: {
-            action: "Continuar logout",
+            action: "Continuar o logout",
             subtitles: {
                 0: "Parece que você não tem permissão para usar este portal.",
-                1: "Faça login com uma conta diferente."
+                1: "Por favor, entre com uma conta diferente."
             },
             title: "Você não está autorizado"
         },
         sessionStorageDisabled: {
             subtitles: {
-                0: "Para usar este aplicativo, você deve habilitar os cookies nas configurações do seu navegador.",
-                1: "Para obter mais informações sobre como habilitar cookies, consulte a seção de ajuda " +
-                    "do seu navegador."
+                0: "Para usar este aplicativo, você precisa habilitar cookies nas configurações do seu navegador.",
+                1: "Para mais informações sobre como habilitar cookies, veja a seção de ajuda do seu navegador."
             },
-            title: "Os cookies estão desabilitados em seu navegador."
+            title: "Cookies estão desabilitados no seu navegador."
         }
     },
     sections: {
         accountRecovery: {
-            description: "Gerenciar informações de recuperação que podemos usar para ajudá -lo a recuperar sua senha",
+            description: "Gerencie informações de recuperação que podemos usar para ajudá-lo a recuperar sua senha",
             emptyPlaceholderText: "Sem opções de recuperação de conta disponíveis",
             heading: "Recuperação de Conta"
         },
         changePassword: {
             actionTitles: {
-                change: "Mude sua senha"
+                change: "Alterar sua senha"
             },
-            description: "Alterar e modificar a senha existente",
-            heading: "Mudar Senha"
+            description: "Atualize sua senha regularmente e certifique-se de que ela seja única em relação a outras senhas que você usa.",
+            heading: "Alterar Senha"
         },
         consentManagement: {
             actionTitles: {
                 empty: "Você não concedeu consentimento a nenhum aplicativo"
             },
-            description: "Revise os consentimentos que você forneceu para cada aplicativo. " +
-                "Além disso, você pode revogar um ou mais deles, conforme necessário.",
-            heading: "Aplicações Consentidas",
+            description: "Revise os consentimentos que você forneceu para cada aplicativo. Além disso, você pode revogar um ou mais deles conforme necessário.",
+            heading: "Gerenciar Consentimentos",
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
@@ -1735,48 +1617,45 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 create: "Criar senha"
             },
-            description: "Crie uma senha no {{productName}}. " +
-                "Você pode usar essa senha para fazer login no {{productName}}, " +
-                "além do login social.",
-            heading: "Criar senha"
+            description: "Crie uma senha no {{productName}}. Você pode usar esta senha para entrar no {{productName}} além do login social.",
+            heading: "Criar Senha"
         },
         federatedAssociations: {
-            description: "Veja suas contas de outros provedores de identidade que estão vinculados a esta conta",
-            heading: "Logins Externos"
+            description: "Veja suas contas de outros provedores de identidade que estão vinculadas a esta conta",
+            heading: "Contas de Login Social Vinculadas"
         },
         linkedAccounts: {
             actionTitles: {
-                add: "Adicionar Conta"
+                add: "Adicionar conta"
             },
-            description: "Gerencie todas as suas contas vinculadas em um só lugar",
-            heading: "Contas Ligadas"
+            description: "Vincule/associe suas outras contas e acesse-as sem precisar fazer login novamente",
+            heading: "Contas Vinculadas"
         },
         mfa: {
-            description: "Adicione uma camada extra de proteção à sua conta configurando várias etapas de " +
-                "autenticação.",
-            heading: "Autenticação Multifatorial"
+            description: "Configure autenticações adicionais para entrar facilmente ou adicionar uma camada extra de segurança à sua conta.",
+            heading: "Autenticação Adicional"
         },
         profile: {
-            description: "Gerencie e atualize suas informações básicas de perfil",
+            description: "Gerencie seu perfil pessoal",
             heading: "Perfil"
         },
         profileExport: {
             actionTitles: {
-                export: "Baixe o perfil"
+                export: "Baixar o perfil"
             },
-            description: "Baixe todos os dados do seu perfil, incluindo dados pessoais e contas vinculadas",
+            description: "Baixe todos os seus dados de perfil, incluindo dados pessoais e contas vinculadas",
             heading: "Exportar Perfil"
         },
         userSessions: {
             actionTitles: {
-                empty: "Sem sessões ativas",
-                terminateAll: "Terminar todas as sessões"
+                empty: "Nenhuma sessão ativa",
+                terminateAll: "Encerrar todas as sessões"
             },
-            description: "Reveja todas as sessões que estão atualmente ativas em sua conta",
+            description: "Revise todas as sessões de usuário ativas para sua conta",
             heading: "Sessões Ativas",
             placeholders: {
                 emptySessionList: {
-                    heading: "Não há sessões IDP ativas para este usuário"
+                    heading: "Não há sessões ativas para este usuário"
                 }
             }
         }

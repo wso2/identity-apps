@@ -55,6 +55,10 @@ interface EditBasicDetailsUserStorePropsInterface extends TestableComponentInter
      * The connection properties.
      */
     properties: RequiredBinary;
+    /**
+     * Readonly attribute for the component.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -71,6 +75,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         userStore,
         id,
         properties,
+        readOnly,
         update,
         [ "data-testid" ]: testId
     } = props;
@@ -401,7 +406,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                         label={
                                             t("console:manage.features.userstores.forms.general.description.label") }
                                         name="description"
-                                        disabled={ id == CONSUMER_USERSTORE_ID }
+                                        disabled={ id == CONSUMER_USERSTORE_ID || readOnly }
                                         type="textarea"
                                         required={ false }
                                         requiredErrorMessage=""
@@ -460,6 +465,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                             hidePassword={ t("common:hidePassword") }
                                                             data-testid={ `${ testId }-form-password-input-${
                                                                 property.name }` }
+                                                            disabled={ readOnly }
                                                         />
                                                     )
                                                     : toggle
@@ -489,6 +495,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 data-testid={
                                                                     `${ testId }-form-toggle-${ property.name }`
                                                                 }
+                                                                disabled={ readOnly }
                                                             />
                                                         ) :
                                                         (
@@ -515,6 +522,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                 }
                                                                 data-testid={ `${ testId }-form-text-input-${
                                                                     property.name }` }
+                                                                disabled={ readOnly }
                                                             />
                                                         )
                                             );
@@ -591,6 +599,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                         `${ testId }-form-non-sql-password-input-${
                                                                             property.name }`
                                                                     }
+                                                                    disabled={ readOnly }
                                                                 />
                                                             )
                                                             : toggle
@@ -623,6 +632,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                             `${ testId }-form-non-sql-toggle-${
                                                                                 property.name }`
                                                                         }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 )
                                                                 : (
@@ -653,6 +663,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                                             `${ testId }-form-non-sql-text-input-${
                                                                                 property.name }`
                                                                         }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 )
                                                     );
@@ -681,6 +692,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                             properties={ properties?.optional.sql }
                                             values={ sql }
                                             data-testid={ `${ testId }-sql-editor` }
+                                            readOnly={ readOnly }
                                         />
                                     </Grid.Column>
                                 </Grid>
@@ -688,13 +700,17 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 8 }>
-                                <PrimaryButton
-                                    data-testid={ `${ testId }-form-submit-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
-                                >
-                                    { t("common:update") }
-                                </PrimaryButton>
+                                {
+                                    !readOnly && (
+                                        <PrimaryButton
+                                            data-testid={ `${ testId }-form-submit-button` }
+                                            loading={ isSubmitting }
+                                            disabled={ isSubmitting }
+                                        >
+                                            { t("common:update") }
+                                        </PrimaryButton>
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -704,7 +720,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             <Divider hidden />
 
             {
-                id !== CONSUMER_USERSTORE_ID &&
+                id !== CONSUMER_USERSTORE_ID && !readOnly &&
                 (<Grid columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup

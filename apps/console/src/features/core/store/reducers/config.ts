@@ -70,6 +70,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             helpCenterURL: "",
             idpConfigs: null,
             loginCallbackUrl: "",
+            organizationPrefix: "",
             serverHost: "",
             serverOrigin: "",
             superTenant: "",

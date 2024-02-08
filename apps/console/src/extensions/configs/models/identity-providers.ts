@@ -120,7 +120,6 @@ export interface IdentityProviderConfig {
         showCertificate: boolean;
     };
     utils: {
-        isAuthenticatorAllowed: (name: string) => boolean;
         isProvisioningAttributesEnabled: (authenticatorId: string) => boolean;
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
         /**

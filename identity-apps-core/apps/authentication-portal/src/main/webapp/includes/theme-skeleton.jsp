@@ -341,7 +341,7 @@
         if (theme.has(PAGE_KEY) || theme.has(LOGIN_PAGE_KEY)) {
 
             JSONObject pageBody = null;
-            
+
             if (theme.has(PAGE_KEY)) {
                 pageBody = theme.optJSONObject(PAGE_KEY);
             }
@@ -1316,6 +1316,11 @@
 
     .ui.checkbox input:focus~label {
         color: var(--asg-input-field-base-label-text-color);
+    }
+
+    .ui.checkbox:not(.toggle, .radio) input[type="checkbox"]:checked~label:after {
+        background: var(--asg-colors-primary-main);
+        color: var(--asg-primary-button-base-text-color);
     }
 
     /* Input Addons */

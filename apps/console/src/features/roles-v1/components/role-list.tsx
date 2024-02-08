@@ -18,8 +18,9 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { RoleConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     LoadableComponentInterface,
     RoleListInterface,
     RolesInterface,
@@ -38,19 +39,18 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import moment from "moment";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { APPLICATION_DOMAIN } from "../constants/role-constants";
+import { APPLICATION_DOMAIN, RoleConstants as LocalRoleConstants } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -139,11 +139,19 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const { t } = useTranslation();
 
+    const featureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userV1Roles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
+
+    const isReadOnly: boolean = useMemo(() => {
+        return !isFeatureEnabled(featureConfig,
+            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
+            !hasRequiredScopes(featureConfig,
+                featureConfig?.scopes?.update, allowedScopes);
+    }, [ featureConfig, allowedScopes ]);
 
     const handleRoleEdit = (roleId: string) => {
         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
@@ -342,14 +350,13 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         return [
             {
                 icon: (): SemanticICONS =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    !isReadOnly
                         ? "pencil alternate"
                         : "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
-                        && handleRoleEdit(role?.id),
+                    !isReadOnly && handleRoleEdit(role?.id),
                 popupText: (): string =>
-                    hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
+                    !isReadOnly
                         ? t("console:manage.features.roles.list.popups.edit",
                             { type: "Role" })
                         : t("common:view"),
@@ -358,7 +365,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             {
                 hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
                     role?.displayName === RoleConstants.ADMIN_GROUP)
-                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
+                    || !isFeatureEnabled(featureConfig, LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
+                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);

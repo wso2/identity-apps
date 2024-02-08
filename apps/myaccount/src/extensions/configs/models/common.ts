@@ -60,6 +60,7 @@ export interface CommonConfig {
             disableExternalLoginsOnEmpty: boolean;
         };
     };
+    showOrganizationManagedBy: boolean;
     utils: {
         isManageConsentAllowedForUser: (userstore: string) => boolean;
         isShowAdditionalWidgetAllowed: (userstore: string) => boolean;

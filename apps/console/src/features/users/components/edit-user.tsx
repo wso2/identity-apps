@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,7 @@ import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
-import { UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -109,6 +109,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
+    const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
     const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
@@ -168,6 +169,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 const loggedUserName: string = store.getState().profile.profileInfo.userName;
                 const adminUser: string = response?.realmConfig.adminUser;
 
+                setAdminUsername(adminUser);
+
                 if (loggedUserName === adminUser) {
                     setIsSuperAdmin(true);
                 }
@@ -216,6 +219,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
+                        adminUsername={ adminUsername }
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
@@ -223,6 +227,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                        adminUserType={ AdminAccountTypes.INTERNAL }
                     />
                 </ResourceTab.Pane>
             )

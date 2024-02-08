@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import set from "lodash-es/set";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { InboundCustomProtocolWizardForm } from "./custom-protcol-settings-wizard-form";
@@ -43,7 +43,7 @@ import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
-import { AppConstants, AppState, history } from "../../../core";
+import { AppConstants, history } from "../../../core";
 import {
     createApplication,
     getApplicationTemplateData,
@@ -57,24 +57,19 @@ import CustomApplicationTemplate
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
-    AuthProtocolMetaInterface,
+    CustomInboundProtocolMetaDataInterface,
     DefaultProtocolTemplate,
     MainApplicationInterface,
     OIDCDataInterface,
     SAML2ConfigurationInterface,
-    SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes,
     URLFragmentTypes,
     emptyApplication
 } from "../../models";
-import { setAuthProtocolMeta } from "../../store";
 import {
     OAuthProtocolTemplate,
-    OAuthProtocolTemplateItem,
     PassiveStsProtocolTemplate,
-    PassiveStsProtocolTemplateItem,
-    SAMLProtocolTemplate,
-    SAMLProtocolTemplateItem
+    SAMLProtocolTemplate
 } from "../meta";
 
 /**
@@ -149,28 +144,114 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const { t } = useTranslation();
 
-    const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
-        (state: AppState) => state.application.meta.protocolMeta);
+    const dispatch: Dispatch = useDispatch();
 
-    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
-    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ selectedCustomInboundProtocol, setSelectedCustomInboundProtocol ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ selectedSAMLMetaFile ] = useState<boolean>(false);
+    const [ authProtocolMeta, setAuthProtocolMeta ] = useState<CustomInboundProtocolMetaDataInterface>(undefined);
+    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
+    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(undefined);
-
-    const dispatch: Dispatch = useDispatch();
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitOAuth, setSubmitOauth ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
-    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
     const [ triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit ] = useTrigger();
-    const [ selectedCustomInboundProtocol, setSelectedCustomInboundProtocol ] = useState<boolean>(false);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const [ selectedSAMLMetaFile ] = useState<boolean>(false);
+    /**
+     * Load template data and initialize the wizard.
+     */
+    useEffect(() => {
+        if (selectedTemplate) {
+            if (selectedTemplate.id === CustomApplicationTemplate.id) {
+                const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+                setWizardSteps(NEW_STEPS.splice(1, 1));
+            } else {
+                setWizardState(merge(wizardState,
+                    {
+                        [WizardStepsFormTypes.PROTOCOL_SELECTION]: selectedTemplate.authenticationProtocol
+                    }));
+
+                // Load template if it is not custom protocol.
+                if (!selectedCustomInboundProtocol) {
+                    loadApplicationTemplateData(selectedTemplate.id);
+                }
+                // Set the steps for the wizard.
+                if (addProtocol) {
+                    setCurrentWizardStep(currentWizardStep + 1);
+                } else {
+                    setWizardSteps(STEPS.slice(1));
+                }
+            }
+        }
+    }, [ selectedTemplate, selectedCustomInboundProtocol ]);
+
+    /**
+     *  If custom protocol is selected
+     */
+    useEffect(() => {
+        if (!selectedTemplate) {
+            return;
+        }
+
+        getAuthProtocolMetadata(selectedTemplate.authenticationProtocol)
+            .then((response: CustomInboundProtocolMetaDataInterface) => {
+                setAuthProtocolMeta(response);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    setAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.applications.notifications.fetchProtocolMeta.error" +
+                            ".message")
+                    });
+
+                    return;
+                }
+
+                setAlert({
+                    description: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                        ".genericError.message")
+                });
+            });
+    }, [ selectedCustomInboundProtocol, selectedTemplate ]);
+
+    /**
+     * Set initial steps.
+     */
+    useEffect(() => {
+        if (addProtocol) {
+            const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
+
+            NEW_STEPS.splice(1, 1);
+            setWizardSteps(NEW_STEPS);
+        }
+    }, [ addProtocol ]);
+
+    /**
+     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
+     * value change , and resets the partially completed step value.
+     */
+    useEffect(() => {
+        if (partiallyCompletedStep === undefined) {
+            return;
+        }
+
+        setCurrentWizardStep(currentWizardStep - 1);
+
+        setPartiallyCompletedStep(undefined);
+    }, [ partiallyCompletedStep ]);
 
     /**
      *  Retrieve Application template data.
@@ -490,11 +571,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         onSubmit={ (
                             values: ApplicationTemplateListItemInterface
                         ): void => handleWizardFormSubmit(values, WizardStepsFormTypes.PROTOCOL_SELECTION) }
-                        defaultTemplates={ [
-                            PassiveStsProtocolTemplateItem,
-                            OAuthProtocolTemplateItem,
-                            SAMLProtocolTemplateItem
-                        ] }
+                        defaultTemplates={ [] }
                         triggerSubmit={ triggerProtocolSelectionSubmit }
                         selectedProtocols={ selectedProtocols }
                         setSelectedCustomInboundProtocol={ setSelectedCustomInboundProtocol }
@@ -537,7 +614,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 triggerSubmit={ submitOAuth }
                                 protocolName={ selectedTemplate.id }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
-                                metadata={ authProtocolMeta[selectedTemplate.id] }
+                                metadata={ authProtocolMeta }
                                 //TODO: [Type fix] Define the type of `values` in form component.
                                 onSubmit={ (values: any): void => handleWizardFormSubmit(values,
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
@@ -652,102 +729,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
         }
     };
-
-    /**
-     * Load template data and initialize the wizard.
-     */
-    useEffect(() => {
-        if (selectedTemplate) {
-            if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
-
-                setWizardSteps(NEW_STEPS.splice(1, 1));
-            } else {
-                setWizardState(merge(wizardState,
-                    {
-                        [WizardStepsFormTypes.PROTOCOL_SELECTION]: selectedTemplate.authenticationProtocol
-                    }));
-
-                // Load template if it is not custom protocol.
-                if (!selectedCustomInboundProtocol) {
-                    loadApplicationTemplateData(selectedTemplate.id);
-                }
-                // Set the steps for the wizard.
-                if (addProtocol) {
-                    setCurrentWizardStep(currentWizardStep + 1);
-                } else {
-                    setWizardSteps(STEPS.slice(1));
-                }
-            }
-        }
-    }, [ selectedTemplate, selectedCustomInboundProtocol ]);
-
-    /**
-     *  If custom protocol is selected
-     */
-    useEffect(() => {
-
-        if (!selectedTemplate) {
-            return;
-        }
-
-        if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedTemplate.authenticationProtocol)) {
-            getAuthProtocolMetadata(selectedTemplate.authenticationProtocol)
-                .then((response: unknown) => {
-                    dispatch(
-                        setAuthProtocolMeta(
-                            selectedTemplate.authenticationProtocol as SupportedAuthProtocolMetaTypes, response
-                        )
-                    );
-                })
-                .catch((error: IdentityAppsApiException) => {
-                    if (error.response && error.response.data && error.response.data.description) {
-                        setAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.fetchProtocolMeta.error" +
-                                ".message")
-                        });
-
-                        return;
-                    }
-
-                    setAlert({
-                        description: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
-                            ".genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
-                            ".genericError.message")
-                    });
-                });
-        }
-    }, [ selectedCustomInboundProtocol ]);
-
-    /**
-     * Set initial steps.
-     */
-    useEffect(() => {
-        if (addProtocol) {
-            const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
-
-            NEW_STEPS.splice(1, 1);
-            setWizardSteps(NEW_STEPS);
-        }
-    }, [ addProtocol ]);
-
-    /**
-     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
-     * value change , and resets the partially completed step value.
-     */
-    useEffect(() => {
-        if (partiallyCompletedStep === undefined) {
-            return;
-        }
-
-        setCurrentWizardStep(currentWizardStep - 1);
-
-        setPartiallyCompletedStep(undefined);
-    }, [ partiallyCompletedStep ]);
 
     const STEPS: WizardStepInterface[] = [
         {

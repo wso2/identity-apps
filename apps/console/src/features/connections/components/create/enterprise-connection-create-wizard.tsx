@@ -49,6 +49,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, {
@@ -77,7 +78,8 @@ import {
     AuthProtocolTypes,
     ConnectionInterface,
     ConnectionTemplateInterface,
-    GenericConnectionCreateWizardPropsInterface
+    GenericConnectionCreateWizardPropsInterface,
+    IdpNameValidationCache
 } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
@@ -150,6 +152,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
+    const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+    const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const dispatch: Dispatch = useDispatch();
@@ -206,22 +211,43 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         ] as WizardStepInterface[];
     };
 
-    const isIdpNameAlreadyTaken = (userInput: string): Promise<boolean> => {
-        return ConnectionsManagementUtils.searchIdentityProviderName(userInput)
-            .then((isIdpExist: boolean) => {
-                return Promise.resolve(isIdpExist);
-            })
-            .catch(() => {
-                /**
-                 * Ignore the error, as a failed identity provider search
-                 * should not result in user blocking. However, if the
-                 * identity provider name already exists, it will undergo
-                 * validation from the backend, and any resulting errors
-                 * will be displayed in the user interface.
-                 */
-                return Promise.resolve(false);
-            });
-    };
+    /**
+     * Check if the typed IDP name is already taken.
+     *
+     * @param value - User input for the IDP name.
+     */
+    const idpNameValidation: DebouncedFunc<(value: string) => void> = debounce(
+        async (value: string) => {
+            let idpExist: boolean;
+
+            if (idpNameValidationCache?.current?.value === value) {
+                idpExist = idpNameValidationCache?.current?.state;
+            }
+
+            if (idpExist === undefined) {
+                try {
+                    idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                } catch (e) {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    idpExist = false;
+                }
+
+                idpNameValidationCache.current = {
+                    state: idpExist,
+                    value
+                };
+            }
+
+            setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+        },
+        500
+    );
 
     const renderDimmerOverlay = (): ReactNode => {
         return (
@@ -408,11 +434,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const wizardCommonFirstPage = () => (
         <WizardPage
-            validate={ async (values: any) => {
+            validate={ (values: any) => {
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
-                if (values?.name && await isIdpNameAlreadyTaken(values?.name)) {
+                if (values?.name && isUserInputIdpNameAlreadyTaken) {
                     errors.name = t("console:develop.features.authenticationProvider." +
                         "forms.generalDetails.name.validations.duplicate");
                 }
@@ -438,11 +464,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 format = { (values: any) => {
                     return values.toString().trimStart();
                 } }
-                validation={ async (values: any) => {
+                listen={ idpNameValidation }
+                validation={ (values: any) => {
                     let errors: "";
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
-                    if (values && await isIdpNameAlreadyTaken(values)) {
+                    if (values && isUserInputIdpNameAlreadyTaken) {
                         errors = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
@@ -953,7 +980,6 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                             uncontrolledForm={ true }
                             pageChanged={ (index: number) => setCurrentWizardStep(index) }
                             data-componentid={ componentId }
-                            validateOnBlur
                         >
                             { resolveWizardPages() }
                         </Wizard2>

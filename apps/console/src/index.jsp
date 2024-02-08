@@ -182,9 +182,9 @@
 
             if(!authorizationCode) {
                 function getTenantName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
-                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+                    var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
                     if (tenantPrefixIndex !== -1) {
                         return pathChunks[ tenantPrefixIndex + 1 ];
                     }
@@ -225,10 +225,10 @@
                  * @returns {string}
                  */
                 function getOrganizationName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
 
-                    const orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+                    var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
 
                     if (orgPrefixIndex !== -1) {
                         return pathChunks[ orgPrefixIndex + 1 ];
@@ -276,6 +276,38 @@
                     return applicationDomain.replace(/\/+$/, '') + getTenantPath();
                 }
 
+                /**
+                 * Construct the auth params for organization login `authorize` requets.
+                 *
+                 * @remarks This only applies to the new authz runtime.
+                 *
+                 * @returns {string} Contructed auth params.
+                 */
+                function getAuthParamsForOrganizationLogins(orginalParams) {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return orginalParams;
+                    }
+
+                    var authParams = Object.assign({}, orginalParams);
+
+                    if (getOrganizationPath()) {
+                        var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
+                        var orgIdInLocalStorage = localStorage.getItem("org-id");
+
+                        if (orgIdInLocalStorage) {
+                            if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        } else {
+                            authParams["fidp"] = "OrganizationSSO";
+                            authParams["orgId"] = getOrganizationName();
+                        }
+                    }
+
+                    return authParams;
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
@@ -311,12 +343,12 @@
 
                 var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
                 var isTenantSwitchPath = userAccessedPath.includes("switch_tenant");
-                const promptParam = new URL(location.href).searchParams.get("prompt");
+                var promptParam = new URL(location.href).searchParams.get("prompt");
 
                 // Redirect user to the login page if the prompt parameter is set to login.
                 if (promptParam && promptParam === 'login') {
                     auth.initialize(authConfig);
-                    auth.signIn({ prompt: "login" });
+                    auth.signIn(getAuthParamsForOrganizationLogins({ prompt: "login" }));
 
                     return;
                 }
@@ -338,7 +370,7 @@
                         sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                     }
 
-                    auth.signIn();
+                    auth.signIn(getAuthParamsForOrganizationLogins({}));
                 }
             }
         }
@@ -346,12 +378,12 @@
     <script>
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-0.3.3.min.js' : '/auth-spa-0.3.3.min.js'%>";
+            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.0.1.min.js' : '/auth-spa-3.0.1.min.js'%>";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
-            let head = document.head;
+            var head = document.head;
             head.insertBefore(authSPAJS, head.firstElementChild);
 
             authSPAJS.addEventListener("load", authenticateWithSDK, false);

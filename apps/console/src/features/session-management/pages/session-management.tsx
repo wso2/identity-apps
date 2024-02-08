@@ -36,7 +36,6 @@ import {
     SessionManagementConfigFormErrorValidationsInterface,
     SessionManagementConfigFormValuesInterface
 } from "../models/session-management";
-import { ServerConfigurationsConstants } from "../../server-configurations";
 
 /**
  * Props for session management settings page.
@@ -58,10 +57,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    
+
     const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.sessionManagement,
-        featureConfig?.sessionManagement?.scopes?.update,
+        featureConfig?.governanceConnectors,
+        featureConfig?.governanceConnectors?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
@@ -70,7 +69,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ sessionManagementConfig , setSessionManagementConfig ] = 
+    const [ sessionManagementConfig , setSessionManagementConfig ] =
         useState<SessionManagementConfigFormValuesInterface>(undefined);
 
     const {
@@ -81,7 +80,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     } = useSessionManagementConfig();
 
     useEffect(() => {
-        if (originalSessionManagementConfig instanceof IdentityAppsApiException 
+        if (originalSessionManagementConfig instanceof IdentityAppsApiException
             || sessionManagementConfigFetchRequestError) {
             handleRetrieveError();
 
@@ -93,13 +92,13 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
         }
 
         // Validate if the email provider config exists.
-        if (originalSessionManagementConfig.idleSessionTimeoutPeriod 
+        if (originalSessionManagementConfig.idleSessionTimeoutPeriod
             && originalSessionManagementConfig.rememberMePeriod) {
             setSessionManagementConfig({
                 idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
                 rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
             });
-        }        
+        }
     }, [ originalSessionManagementConfig ]);
 
     /**
@@ -174,7 +173,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                 "console:sessionManagement.form.validation.rememberMePeriod"
             );
         }
-       
+
 
         return error;
     };
@@ -196,7 +195,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                 "value": values.rememberMePeriod.toString()
             }
         ];
-        
+
         updateSessionManagmentConfigurations(updateValues)
             .then(() => {
                 handleUpdateSuccess();
@@ -269,7 +268,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { isSessionManagementFetchRequestLoading
-                                    ? renderLoadingPlaceholder() 
+                                    ? renderLoadingPlaceholder()
                                     : (
                                         <>
                                             <Form
@@ -305,7 +304,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 minLength={ SessionManagementConstants
                                                                     .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
                                                                 width={ 16 }
-                                                                data-componentid={ 
+                                                                data-componentid={
                                                                     `${componentId}-idle-session-timeout` }
                                                                 autoComplete="new-password"
                                                             />
@@ -337,31 +336,38 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     </Grid.Row>
                                                 </Grid>
                                             </Form>
-                                            <Divider hidden />
-                                            <Grid.Row columns={ 1 } className="mt-6">
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <PrimaryButton
-                                                        size="small"
-                                                        loading={ isSubmitting }
-                                                        disabled={ isReadOnly }
-                                                        onClick={ () => {
-                                                            formRef?.current?.triggerSubmit();
-                                                        } }
-                                                        ariaLabel="Session management form update button"
-                                                        data-componentid={ `${ componentId }-update-button` }
-                                                    >
-                                                        { t("common:update") }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
+                                            {
+                                                !isReadOnly && (
+                                                    <>
+                                                        <Divider hidden />
+                                                        <Grid.Row columns={ 1 } className="mt-6">
+                                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                                <PrimaryButton
+                                                                    size="small"
+                                                                    loading={ isSubmitting }
+                                                                    onClick={ () => {
+                                                                        formRef?.current?.triggerSubmit();
+                                                                    } }
+                                                                    ariaLabel="Session management form update button"
+                                                                    data-componentid={
+                                                                        `${ componentId }-update-button`
+                                                                    }
+                                                                >
+                                                                    { t("common:update") }
+                                                                </PrimaryButton>
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </>
+                                                )
+                                            }
                                         </>
-                                    ) 
+                                    )
                                 }
                             </EmphasizedSegment>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Ref> 
+            </Ref>
         </PageLayout>
     );
 };

@@ -464,6 +464,14 @@ export const extensions: Extensions = {
                 header: "API de gestion",
                 description: "API pour gérer les ressources de votre organisation (racine)"
             },
+            consoleFeature: {
+                header: "Caractéristiques de la console",
+                description: "Les autorisations gèrent les ressources dans la console"
+            },
+            businessAPI: {
+                header: "API d'affaires",
+                description: "API personnalisés à créer par l'utilisateur"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -1022,7 +1030,7 @@ export const extensions: Extensions = {
                                     searchPlaceholer: "Rechercher par nom d'API et nom d'autorisation"
                                 }
                             },
-                            heading: "Créer un rôle",
+                            heading: "Nouveau rôle",
                             subHeading: "Créez un nouveau rôle dans votre application.",
                             wizardSteps: {
                                 0: "Détails de base",
@@ -1940,6 +1948,10 @@ export const extensions: Extensions = {
                     "les applications de votre organisation.",
                 title: "l'image de marque"
             },
+            pageResolution: {
+                hint: "Les pages de la section Aperçu peuvent différer de la page réelle. " +
+                    "Pour résoudre ce problème, veuillez régler votre écran sur une résolution supérieure."
+            },
             publishToggle: {
                 hint: "Activer/Désactiver les modifications",
                 label: "Passez en direct",
@@ -2057,13 +2069,12 @@ export const extensions: Extensions = {
                 smtpPort: {
                     label: "Port de serveur",
                     placeholder: "Entrez un numéro de port",
-                    hint: "Le port SMTP par défaut est <1>25</1>, mais certains fournisseurs de services de messagerie peuvent utiliser d'autres ports " +
-                        "tels que <3>587</3>. Vérifiez auprès de votre fournisseur de services de messagerie le port SMTP correct."
+                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
                 },
                 fromAddress: {
                     label: "De l'adresse",
                     placeholder: "entrez une adresse email",
-                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
+                    hint: "L'adresse from est l'adresse e-mail que vous souhaitez apparaître comme l'expéditeur de vos e-mails sortants.Cela devrait être une adresse e-mail auquel vous avez accès."
                 },
                 replyToAddress: {
                     label: "Répondre à l'adresse",
@@ -2215,7 +2226,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "Type de contenu",
                         placeholder: "JSON",
-                        hint: "Le type de contenu de la requête API utilisée pour l'envoi du SMS."
+                        hint: "Le type de contenu de la requête API. Les valeurs acceptées sont 'FORM' ou 'JSON'"
                     },
                     headers: {
                         label: "En-têtes",
@@ -2224,8 +2235,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "Charge utile",
-                        placeholder: "Entrez la charge utile",
-                        hint: "Charge utile de la requête API SMS."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "Le modèle de charge utile de la requête API. Utilisez {{body}} pour représenter le corps du SMS généré. Utilisez {{mobile}} pour représenter le numéro de mobile."
                     },
                     key: {
                         label: "Clé d'authentification du fournisseur SMS",
@@ -3135,7 +3146,7 @@ export const extensions: Extensions = {
                     2: "caractères."
                 },
                 usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants: !@#$%&'*+\\=?^_.{|}~-."
+                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants: !@#$&'+\\=^_.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
@@ -3372,6 +3383,7 @@ export const extensions: Extensions = {
                         password:
                             "Votre mot de passe doit contenir un minimum de 8 caractères dont au moins une " +
                             "lettre majuscule, une lettre minuscule et un chiffre.",
+                        confirmPassword: "Les deux mots de passe doivent correspondre",
                         passwordCase: "Au moins {{minUpperCase}} lettres majuscules et {{minLowerCase}} " +
                             "lettres minuscules",
                         upperCase: "Au moins {{minUpperCase}} lettre(s) majuscule(s)",
@@ -3388,7 +3400,7 @@ export const extensions: Extensions = {
                             "au moins une lettre.",
                         usernameSpecialCharHint: "TDoit contenir entre {minLength}} et {{maxLength}} caractères, dont au " +
                             "moins une lettre, et peut contenir une combinaison des caractères " +
-                            "suivants: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_.{|}~-.",
+                            "suivants: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",
                         usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",

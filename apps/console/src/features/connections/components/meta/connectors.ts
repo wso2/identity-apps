@@ -37,11 +37,11 @@ export const OutboundConnectors: OutboundProvisioningConnectorMetaDataInterface[
         self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
     },
     {
-        connectorId: "c2NpbQ",
-        description: "Provision users to SCIM 1.1 or SCIM 2.0 applications.",
-        displayName: "SCIM",
+        connectorId: "U0NJTTI",
+        description: "Provision users to SCIM 2.0 applications.",
+        displayName: "SCIM2",
         icon: getConnectorIcons().scim,
         name: "scim",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2NpbQ"
+        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/U0NJTTI"
     }
 ];

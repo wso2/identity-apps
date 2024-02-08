@@ -893,6 +893,17 @@ TODO : Move values to separate variables and cleanup styles.
     margin-bottom: 0px !important;
 }
 
+/*-------------------------------------
+    Application API Authorization Tab
+---------------------------------------*/
+
+.authorized-scope-select-input {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 /*-------------------------------
     Application Tabs common
 --------------------------------*/

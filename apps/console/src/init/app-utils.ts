@@ -304,6 +304,7 @@ export const AppUtils: any = (function() {
                 organizationPrefix: this.getOrganizationPrefix(),
                 organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
+                requireSuperTenantInUrls: _config.requireSuperTenantInUrls,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),
@@ -510,10 +511,28 @@ export const AppUtils: any = (function() {
          * @returns Tenant qualified account app path.
          */
         getTenantQualifiedAccountAppPath: function(pathname: string) {
-            return (((this.getTenantPrefix() !== "") && (this.getTenantName() !== "")) ?
-                _config.accountAppOrigin +
-                "/" + this.getTenantPrefix() +
-                "/" + this.getTenantName() : "") + pathname;
+            let url: string = "";
+
+            if (_config.legacyAuthzRuntime) {
+                if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
+                    url = `${_config.accountAppOrigin}/${this.getTenantPrefix()}/${this.getTenantName()}`;
+                }
+
+                url += pathname;
+
+                return url;
+            }
+
+            if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
+                const tenantPath: string = this.getTenantPath(true)
+                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+
+                url = `${_config.accountAppOrigin}${tenantPath}${ this.getOrganizationPath() }`;
+            }
+
+            url += pathname;
+
+            return url;
         },
 
         /**

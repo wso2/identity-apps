@@ -8,3 +8,10 @@
         align-items: center;
     }
 }
+
+.add-administrator-dropdown-trigger {
+    &.ui.button>.icon:not(.button).add-administrator-dropdown-chevron {
+        margin-left: 1rem;
+        margin-right: 0;
+    }
+}

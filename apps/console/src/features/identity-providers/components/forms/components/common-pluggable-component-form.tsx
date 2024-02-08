@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,7 +36,7 @@ import { CommonConstants, FieldType, getFieldType, getPropertyField } from "../h
  * Common pluggable connector configurations form.
  *
  * @param props - CommonPluggableComponentFormPropsInterface
- * @returns ReactElement 
+ * @returns ReactElement
  */
 export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComponentFormPropsInterface> = (
     props: CommonPluggableComponentFormPropsInterface
@@ -60,6 +60,47 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     // Used for field elements which needs to listen for any onChange events in the form.
     const [ dynamicValues, setDynamicValues ] = useState<CommonPluggableComponentInterface>(undefined);
     const [ customProperties, setCustomProperties ] = useState<string>(undefined);
+    const [ manualMode, setManualMode ] = useState<boolean>(true);
+
+    const samlManualkeys: string[] = [
+        "isAssertionSigned",
+        "ACSUrl",
+        "ForceAuthentication",
+        "IncludeAuthnContext",
+        "SignatureAlgorithm",
+        "RequestMethod",
+        "SSOUrl",
+        "IsAuthnRespSigned",
+        "AuthnContextClassRef",
+        "AttributeConsumingServiceIndex",
+        "IdPEntityId",
+        "IncludeNameIDPolicy",
+        "ResponseAuthnContextClassRef",
+        "ArtifactResolveUrl",
+        "ISArtifactResolveReqSigned",
+        "ISArtifactResponseSigned",
+        "DigestAlgorithm",
+        "IsLogoutReqSigned",
+        "IsAssertionEncrypted",
+        "commonAuthQueryParams",
+        "IncludeCert",
+        "IsLogoutEnabled",
+        "LogoutReqUrl",
+        "IncludeProtocolBinding",
+        "IsUserIdInClaims",
+        "AuthnContextComparisonLevel",
+        "IsSLORequestAccepted",
+        "ISAuthnReqSigned"
+    ];
+
+    const samlFileBasedkeys: string[] = [
+        "meta_data_saml"
+    ];
+
+    const enum SelectModeTypes {
+        MANUAL = "Manual Configuration",
+        FILEBASED = "Metadata File Configuration"
+    }
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
@@ -83,32 +124,34 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
 
-        const properties = [];
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
         const resolvedCustomProperties: string | string[] = showCustomProperties
             ? values.get("customProperties")
             : customProperties;
 
-        values?.forEach((value, key) => {
-            const propertyMetadata = getPropertyMetadata(key, metadata?.properties);
+        values?.forEach((value: FormValue, key: string) => {
+            const propertyMetadata: CommonPluggableComponentMetaPropertyInterface
+                = getPropertyMetadata(key, metadata?.properties);
 
             if (key !== undefined && !isEmpty(value) && key !== "customProperties") {
                 properties.push({
                     key: key,
-                    value: interpretValueByType(value, key, propertyMetadata?.type)
+                    value: interpretValueByType(value, key, propertyMetadata?.type) as string
                 });
             }
 
         });
 
-        const modifiedCustomProperties = resolvedCustomProperties?.toString()?.split(",")
-            ?.map((customProperty: string) => {
-                const keyValuePair = customProperty.split("=");
+        const modifiedCustomProperties: CommonPluggableComponentPropertyInterface[]
+            = resolvedCustomProperties?.toString()?.split(",")
+                ?.map((customProperty: string) => {
+                    const keyValuePair: string[] = customProperty.split("=");
 
-                return {
-                    key: keyValuePair[ 0 ],
-                    value: keyValuePair[ 1 ]
-                };
-            });
+                    return {
+                        key: keyValuePair[ 0 ],
+                        value: keyValuePair[ 1 ]
+                    };
+                });
 
         modifiedCustomProperties?.length > 0 && properties.push(...modifiedCustomProperties);
 
@@ -170,12 +213,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         eachPropertyMeta: CommonPluggableComponentMetaPropertyInterface,
         isSub?: boolean,
         testId?: string,
-        listen?: (key: string, values: Map<string, FormValue>) => void):
+        listen?: (key: string, values: Map<string, FormValue>) => void,
+        showField?: boolean):
         ReactElement => {
 
         if (isSub) {
             return (
-                <Grid.Row columns={ 2 } key={ eachPropertyMeta?.displayOrder }>
+                showField && (<Grid.Row columns={ 2 } key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 1 }>
                     </Grid.Column>
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 7 }>
@@ -188,15 +232,36 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                                 },
                                 mode,
                                 listen,
-                                testId
+                                testId,
+                                showField
                             )
                         }
                     </Grid.Column>
-                </Grid.Row>
+                </Grid.Row>)
+            );
+        } else if (eachPropertyMeta?.key === "meta_data_saml") {
+            return (
+                showField && (<Grid.Row key={ eachPropertyMeta?.displayOrder }>
+                    <Grid.Column computer={ 16 }>
+                        {
+                            getPropertyField(
+                                property,
+                                {
+                                    ...eachPropertyMeta,
+                                    readOnly: mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly
+                                },
+                                mode,
+                                listen,
+                                testId,
+                                showField
+                            )
+                        }
+                    </Grid.Column>
+                </Grid.Row>)
             );
         } else {
             return (
-                <Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
+                showField && (<Grid.Row columns={ 1 } key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         {
                             getPropertyField(
@@ -207,11 +272,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                                 },
                                 mode,
                                 listen,
-                                testId
+                                testId,
+                                showField
                             )
                         }
                     </Grid.Column>
-                </Grid.Row>
+                </Grid.Row>)
             );
         }
     };
@@ -222,18 +288,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         const bucket: ReactElement[] = [];
 
         metaProperties?.forEach((metaProperty: CommonPluggableComponentMetaPropertyInterface) => {
-
             // Ignoring elements with empty display name.
             // Note: This will remove the element from all API requests as well. If an element that is required
             // by the API is removed, that will break the app. In that case, metadata API needs to updated to
             // send a displayName for such required elements.
             if (!isEmpty(metaProperty?.displayName)) {
                 const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(
-                    property => property.key === metaProperty.key);
+                    (property: CommonPluggableComponentPropertyInterface) => property.key === metaProperty.key);
                 let field: ReactElement;
 
                 if (!isCheckboxWithSubProperties(metaProperty)) {
-                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES 
+
+                    if (metaProperty?.key === CommonConstants.FIELD_COMPONENT_SCOPES
                         && !isScopesDefined() && isScopesEmpty()) {
                         const updatedProperty: CommonPluggableComponentPropertyInterface = {
                             key: CommonConstants.FIELD_COMPONENT_SCOPES,
@@ -241,26 +307,42 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         };
 
                         field = getField(updatedProperty, metaProperty, isSub,
-                            `${ testId }-form`, handleParentPropertyChange);
-                    } else {
-                        field = getField(property, metaProperty, isSub, `${ testId }-form`, handleParentPropertyChange);
-                    }                  
-                } else if (isRadioButtonWithSubProperties(metaProperty)) {
+                            `${ testId }-form`, handleParentPropertyChange, manualMode);
+                    }
+                    else if (
+                        samlManualkeys.includes(metaProperty?.key)
+                    ) {
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`,
+                            handleParentPropertyChange, manualMode);
+                    }
+                    else if (
+                        samlFileBasedkeys.includes(metaProperty?.key)
+                    ) {
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`,
+                            handleParentPropertyChange, !manualMode);
+                    }
+                    else {
+                        field = getField(property, metaProperty, isSub, `${ testId }-form`,
+                            handleParentPropertyChange, true);
+                    }
+                }
+                else if (isRadioButtonWithSubProperties(metaProperty)) {
                     field =
-                        (<React.Fragment key={ metaProperty?.key }>
-                            {
+                        (
+                            <React.Fragment key={ metaProperty?.key }>
+                                {
                                 // Render parent property.
-                                getField(property, metaProperty, isSub, `${ testId }-form`,
-                                    handleParentPropertyChange)
-                            }
-                        </React.Fragment>);
+                                    getField(property, metaProperty, isSub, `${ testId }-form`,
+                                        handleParentPropertyChange, manualMode)
+                                }
+                            </React.Fragment>);
                 } else {
                     field =
                         (<React.Fragment key={ metaProperty?.key }>
                             {
                                 // Render parent property.
                                 getField(property, metaProperty, isSub, `${ testId }-form`,
-                                    handleParentPropertyChange)
+                                    handleParentPropertyChange, manualMode)
                             }
                             {
                                 getSortedPropertyFields(metaProperty?.subProperties, true)
@@ -272,7 +354,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             }
         });
 
-        return bucket.sort((a, b) => Number(a.key) - Number(b.key));
+        return bucket.sort((
+            a: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
+            b: React.ReactElement<any, string | React.JSXElementConstructor<any>>
+        ) => Number( Number(a.key) - Number(b.key)) );
     };
 
     const triggerAlgorithmSelectionDropdowns = (key: string, values: Map<string, FormValue>) => {
@@ -280,25 +365,25 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         if (key === "IsLogoutReqSigned" || key === "ISAuthnReqSigned") {
 
             const enableField = (formKey: string): void => {
-                const props = metadata
+                const props: CommonPluggableComponentMetaPropertyInterface = metadata
                     ?.properties
-                    .find(({ key }) => key === formKey);
+                    .find(({ key }: { key: string } ) => key === formKey);
 
                 if (props) props.isDisabled = false;
             };
 
             const disableField = (formKey: string): void => {
-                const props = metadata
+                const props: CommonPluggableComponentMetaPropertyInterface = metadata
                     ?.properties
-                    ?.find(({ key }) => key === formKey);
+                    ?.find(( { key }: { key: string } ) => key === formKey);
 
                 if (props) props.isDisabled = true;
             };
 
             const isChecked = (value: FormValue): boolean =>
                 value &&
-                (Array.isArray(value) && value.length > 0) ||
-                (typeof value === "string" && value == "true");
+            (Array.isArray(value) && value.length > 0) ||
+            (typeof value === "string" && value === "true");
 
             const logoutRequestSigned: FormValue = values.get("IsLogoutReqSigned");
             const authenticationRequestSigned: FormValue = values.get("ISAuthnReqSigned");
@@ -310,21 +395,32 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 disableField("SignatureAlgorithm");
                 disableField("DigestAlgorithm");
             }
-
         }
+    };
 
+    const changeMode = (key: string, values: Map<string, FormValue>) => {
+        const selectedMode: FormValue = values.get("SelectMode");
+
+        if (key === "SelectMode") {
+
+            if (selectedMode === SelectModeTypes.MANUAL) {
+                setManualMode(true);
+            } else if (selectedMode === SelectModeTypes.FILEBASED){
+                setManualMode(false);
+            }
+        }
     };
 
     const changeUserIdInClaimCheckboxLabelBasedOnValue = (key: string, values: Map<string, FormValue>) => {
 
-        const TARGET_FORM_KEY = "IsUserIdInClaims";
+        const TARGET_FORM_KEY: string = "IsUserIdInClaims";
 
-        if (key === TARGET_FORM_KEY) {
+        if (key === TARGET_FORM_KEY && !isEmpty(values)) {
 
             const changeLabel = (to: string): void => {
-                const props = metadata
+                const props: CommonPluggableComponentMetaPropertyInterface = metadata
                     ?.properties
-                    .find(({ key }) => key === TARGET_FORM_KEY);
+                    .find(({ key }: { key: string }) => key === TARGET_FORM_KEY);
 
                 if (props) props.displayName = to;
             };
@@ -339,14 +435,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             } else {
                 changeLabel("User Identifier found among claims");
             }
-
         }
-
     };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
 
         triggerAlgorithmSelectionDropdowns(key, values);
+        changeMode(key, values);
         changeUserIdInClaimCheckboxLabelBasedOnValue(key, values);
 
         setDynamicValues({
@@ -391,13 +486,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         setDynamicValues(initialValues);
 
-        const initialFormValues = initialValues?.properties?.reduce((values, { key, value }) => {
-            return values.set(key, value);
-        }, new Map<string, FormValue>()) || new Map<string, FormValue>();
+        const initialFormValues: Map<string, FormValue>
+            = initialValues?.properties?.reduce((
+                values: Map<string, FormValue>,
+                { key, value }: CommonPluggableComponentPropertyInterface
+            ) => {
+                return values.set(key, value);
+            }, new Map<string, FormValue>()) || new Map<string, FormValue>();
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
         changeUserIdInClaimCheckboxLabelBasedOnValue("IsUserIdInClaims", initialFormValues);
+        changeMode("SelectMode", initialFormValues);
 
     }, []);
 
@@ -412,7 +512,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
-                if (!metadata?.properties?.find(meta => meta.key === property.key)) {
+                if (!metadata?.properties?.find((
+                    meta: CommonPluggableComponentMetaPropertyInterface)=>
+                    meta.key === property.key
+                )) {
                     values.push(property.key + "=" + property.value);
                 }
             });
@@ -422,7 +525,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     return (
         <Forms
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string, FormValue>) => {
                 onSubmit(getUpdatedConfigurations(values));
             } }
             submitState={ triggerSubmit }

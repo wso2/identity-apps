@@ -17,6 +17,7 @@
  */
 
 import { OrganizationType } from "@wso2is/common";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormState } from "@wso2is/form";
@@ -36,9 +37,10 @@ import { OrganizationResponseInterface } from "../../organizations/models/organi
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
-import useGetCustomTextPreference from "../api/use-get-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
+import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
@@ -99,19 +101,26 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         CustomTextConfigurationModes
     >(CustomTextConfigurationModes.TEXT_FIELDS);
 
+    const [ isCustomTextPreferenceConfigured, setIsCustomTextPreferenceConfigured ] = useState<boolean>(true);
+
+
     const {
         data: brandingPreference
     } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
         data: customTextCommons
-    } = useGetCustomTextPreference(!!selectedLocale, tenantDomain, "common", selectedLocale);
+    } = useGetCustomTextPreferenceResolve(!!selectedLocale, tenantDomain, "common", selectedLocale);
 
     const {
         data: customText,
         error: customTextPreferenceFetchRequestError,
         mutate: mutateCustomTextPreferenceFetchRequest
-    } = useGetCustomTextPreference(!!selectedScreen && !!selectedLocale, tenantDomain, selectedScreen, selectedLocale);
+    } = useGetCustomTextPreferenceResolve(
+        !!selectedScreen && !!selectedLocale,
+        tenantDomain,
+        selectedScreen,
+        selectedLocale);
 
     const {
         data: customTextFallbackCommons
@@ -129,6 +138,13 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const {
         data: customTextMeta
     } = useGetCustomTextPreferenceMeta();
+
+    const {
+        data: customTextScreenMeta
+    } = useGetCustomTextPreferenceScreenMeta(
+        !!selectedScreen,
+        selectedScreen
+    );
 
     /**
      * Merge the custom text preference with the fallbacks.
@@ -173,22 +189,36 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     }, [ customTextPreferenceFetchRequestError ]);
 
     /**
-     * Updates the custom text preference.
-     *
-     * @param values - Values to be updated.
-     * @returns Promise containing the API response.
+     * Moderates the Custom Text Preference response.
      */
-    const _updateCustomTextPreference = (values: CustomTextPreferenceInterface): Promise<void> => {
-        let isAlreadyConfigured: boolean = !!customText;
-
+    useEffect(() => {
+        if (!customText) {
+            return;
+        }
         if (organizationType === OrganizationType.SUBORGANIZATION
             && customText?.name !== currentOrganization?.id) {
             // This means the sub-org has no custom text preference configured.
             // It gets the custom text preference from the parent org.
-            isAlreadyConfigured = false;
+            setIsCustomTextPreferenceConfigured(false);
+        } else {
+            setIsCustomTextPreferenceConfigured(true);
         }
+    }, [ customText ]);
 
-        return updateCustomTextPreference(isAlreadyConfigured, values, tenantDomain, selectedScreen, selectedLocale)
+    /**
+     * Updates the custom text preference.
+     *
+     * @param values - Values to be updated.
+     * @param _isCustomTextPreferenceConfigured - Flag to check if the custom text preference is configured.
+     * @returns Promise containing the API response.
+     */
+    const _updateCustomTextPreference = (
+        values: CustomTextPreferenceInterface,
+        _isCustomTextPreferenceConfigured: boolean
+    ): Promise<void> => {
+
+        return updateCustomTextPreference(_isCustomTextPreferenceConfigured, values, tenantDomain, selectedScreen,
+            selectedLocale)
             .then(
                 () => {
                     dispatch(
@@ -205,7 +235,13 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     mutateCustomTextPreferenceFetchRequest();
                 }
             )
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                // Edge Case.Try again with POST, if custom text preference has been removed due to concurrent sessions.
+                if (error.code === BrandingPreferencesConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
+                    _updateCustomTextPreference(values, false);
+
+                    return;
+                }
                 addAlert<AlertInterface>({
                     description: t("console:brandingCustomText.notifications.updateError.description", {
                         locale: selectedLocale,
@@ -299,7 +335,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
         };
 
         // Update the value in the API.
-        _updateCustomTextPreference(updatedValues).then(() => {
+        _updateCustomTextPreference(updatedValues, isCustomTextPreferenceConfigured).then(() => {
             // Update the value in the form state.
             setCustomTextFormSubscription({
                 ...customTextFormSubscription,
@@ -321,6 +357,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 customTextFormSubscription: customTextFormSubscription ?? {
                     values: resolvedCustomText?.preference?.text
                 },
+                customTextScreenMeta,
                 getLocales: (requestingView: BrandingSubFeatures): SupportedLanguagesMeta => {
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
                         return pick(supportedI18nLanguages, customTextMeta?.locales);
@@ -391,7 +428,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                     _updateCustomTextPreference({
                         ...resolvedCustomText?.preference,
                         text: customTextFormSubscription?.values
-                    });
+                    }, isCustomTextPreferenceConfigured);
                 }
             } }
         >

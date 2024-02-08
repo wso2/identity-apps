@@ -30,7 +30,7 @@ import {
     FederatedAuthenticatorWithMetaInterface
 } from "../../../../models/connection";
 import { AuthenticatorSettingsForm } from "../authenticator-settings-form";
-import { 
+import {
     AppleAuthenticatorForm,
     CommonAuthenticatorForm,
     EmailOTPAuthenticatorForm,
@@ -149,6 +149,24 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
     if (OverriddenForm) {
         return OverriddenForm;
+    }
+
+    // Render the form dynamically for federated authenticators in custom connector.
+    if (templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID) {
+        return (
+            <CommonAuthenticatorForm
+                mode={ mode }
+                initialValues={ initialValues }
+                metadata={ metadata }
+                onSubmit={ onSubmit }
+                triggerSubmit={ triggerSubmit }
+                enableSubmitButton={ enableSubmitButton }
+                data-testid={ testId }
+                showCustomProperties={ showCustomProperties }
+                readOnly={ isReadOnly }
+                isSubmitting={ isSubmitting }
+            />
+        );
     }
 
     switch (type) {
@@ -322,7 +340,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-            
+
         default:
             return (
                 <AuthenticatorSettingsForm

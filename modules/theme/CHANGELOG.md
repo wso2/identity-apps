@@ -1,5 +1,67 @@
 # @wso2is/theme
 
+## 2.0.61
+
+### Patch Changes
+
+- [#5423](https://github.com/wso2/identity-apps/pull/5423) [`8549c61efd`](https://github.com/wso2/identity-apps/commit/8549c61efd7c90b808c7927f30fbdfa02e7be23a) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] add text customization to the password-reset-success interface
+
+## 2.0.60
+
+### Patch Changes
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
+## 2.0.59
+
+### Patch Changes
+
+- [#5286](https://github.com/wso2/identity-apps/pull/5286) [`486a47329a`](https://github.com/wso2/identity-apps/commit/486a47329a0e025d4841ee8dc87b96519f1879cb) Thanks [@brionmario](https://github.com/brionmario)! - Fix Backup code icon branding issues
+
+## 2.0.58
+
+### Patch Changes
+
+- [#5262](https://github.com/wso2/identity-apps/pull/5262) [`4d6fe7fd99`](https://github.com/wso2/identity-apps/commit/4d6fe7fd999d0e4023dbcd13e855e0122723bc75) Thanks [@savindi7](https://github.com/savindi7)! - Add password validation in sign up page for JIT provisioned users.
+
+## 2.0.57
+
+### Patch Changes
+
+- [#5230](https://github.com/wso2/identity-apps/pull/5230) [`1e8fab14ee`](https://github.com/wso2/identity-apps/commit/1e8fab14eef7fb055ac861dcfe0a07c568b17be8) Thanks [@savindi7](https://github.com/savindi7)! - Add WS Fed logo to app template listing page
+
+## 2.0.56
+
+### Patch Changes
+
+- [#5174](https://github.com/wso2/identity-apps/pull/5174) [`59b0340c95`](https://github.com/wso2/identity-apps/commit/59b0340c9583e44b8f08ef7f4cd8d4e3b0ed58ca) Thanks [@brionmario](https://github.com/brionmario)! - Fix outbound provisioning list
+
+## 2.0.55
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+## 2.0.54
+
+### Patch Changes
+
+- [#5194](https://github.com/wso2/identity-apps/pull/5194) [`05673b852f`](https://github.com/wso2/identity-apps/commit/05673b852f9b0fc80ec2b5e092d310c01a06ceee) Thanks [@brionmario](https://github.com/brionmario)! - Fix federated association image resolving issues.
+
+## 2.0.53
+
+### Patch Changes
+
+- [#5052](https://github.com/wso2/identity-apps/pull/5052) [`8c344f3ec4`](https://github.com/wso2/identity-apps/commit/8c344f3ec4ced3c93ede47a1c0accd023f2d73e0) Thanks [@brionmario](https://github.com/brionmario)! - Enable sub org logins for Console
+
+## 2.0.52
+
+### Patch Changes
+
+- [#5126](https://github.com/wso2/identity-apps/pull/5126) [`f506af671f`](https://github.com/wso2/identity-apps/commit/f506af671ffdaca6414fe8ca4b90a635b32684f6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Bump oxygen-ui version
+
+* [#5128](https://github.com/wso2/identity-apps/pull/5128) [`3e05f7c015`](https://github.com/wso2/identity-apps/commit/3e05f7c0157657798b982446608866d0d445809f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the checkbox branding issue
+
 ## 2.0.51
 
 ### Patch Changes

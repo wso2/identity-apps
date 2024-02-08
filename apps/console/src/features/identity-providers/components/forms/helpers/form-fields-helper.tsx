@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import {
     Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
-import { CopyInputField, GenericIcon, Hint } from "@wso2is/react-components";
+import { CopyInputField, GenericIcon, Hint, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
@@ -36,6 +36,7 @@ import {
 } from "../../../models";
 
 const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
+const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 
 export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
@@ -73,10 +74,11 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
 
 export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-    testId?: string): ReactElement => {
+    testId?: string,
+    showField?: boolean): ReactElement => {
     return (
         <>
-            <Field
+            { showField && (<Field
                 name={ propertyMetadata?.key }
                 key={ propertyMetadata?.key }
                 type="checkbox"
@@ -95,10 +97,16 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
-            />
-            { propertyMetadata?.description && (
-                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
-            ) }
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>
+                        { propertyMetadata?.description }
+                    </Hint>
+                )
+            }
         </>
     );
 };
@@ -106,10 +114,11 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
 export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
-    testId?: string): ReactElement => {
+    testId?: string,
+    showField?: boolean): ReactElement => {
     return (
         <>
-            <Field
+            { showField && (<Field
                 name={ propertyMetadata?.key }
                 key={ propertyMetadata?.key }
                 type="checkbox"
@@ -131,10 +140,14 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
-            />
-            { propertyMetadata?.description && (
-                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
-            ) }
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+                )
+            }
         </>
     );
 };
@@ -154,12 +167,13 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
-                        return {
-                            label: val.displayName,
-                            value: val.defaultValue
-                        };
-                    })
+                    propertyMetadata?.subProperties?.map(
+                        function(val: CommonPluggableComponentMetaPropertyInterface): StrictRadioChild {
+                            return {
+                                label: val?.displayName,
+                                value: val?.defaultValue
+                            };
+                        })
                 }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
@@ -189,12 +203,13 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
-                        return {
-                            label: val.displayName,
-                            value: val.defaultValue
-                        };
-                    })
+                    propertyMetadata?.subProperties?.map(
+                        function(val: CommonPluggableComponentMetaPropertyInterface): StrictRadioChild {
+                            return {
+                                label: val?.displayName,
+                                value: val?.defaultValue
+                            };
+                        })
                 }
                 listen={ (values: Map<string, FormValue>) => {
                     listen(propertyMetadata?.key, values);
@@ -212,10 +227,12 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
 
 export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-    testId?: string): ReactElement => {
+    testId?: string,
+    showField?: boolean): ReactElement => {
+
     return (
         <>
-            <Field
+            { showField && (<Field
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
@@ -242,27 +259,35 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                             propertyMetadata.maxLength + " characters.");
                     }
                 } }
-            />
-            { propertyMetadata?.description && (
-                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
-            ) }
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>
+                        { propertyMetadata?.description }
+                    </Hint>
+                )
+            }
         </>
     );
 };
 
 export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-    testId?: string): ReactElement => {
+    testId?: string,
+    showField?: boolean): ReactElement => {
+
     return (
         <>
-            <Field
+            { showField && (<Field
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms." +
                     "common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
-                validation={ (value, validation) => {
+                validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
@@ -289,10 +314,14 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
-            />
-            { propertyMetadata?.description && (
-                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
-            ) }
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+                )
+            }
         </>
     );
 };
@@ -358,16 +387,18 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
 
 export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-    testId?: string): ReactElement => {
+    testId?: string,
+    showField?: boolean): ReactElement => {
+
     return (
         <>
-            <Field
+            { showField && (<Field
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
-                validation={ (value, validation) => {
+                validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url("https://www.sample.com?" + value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
@@ -381,10 +412,16 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
-            />
-            { propertyMetadata?.description && (
-                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
-            ) }
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>
+                        { propertyMetadata?.description }
+                    </Hint>
+                )
+            }
         </>
     );
 };
@@ -431,7 +468,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                 } }
             />
             <Grid>
-                { eachProp?.value.split(" ").map((scope,index) => (
+                { eachProp?.value.split(" ").map((scope: string, index: number) => (
                     <Grid.Row columns={ 3 } key={ index }>
                         <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
                             <GenericIcon
@@ -468,24 +505,101 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
 
 export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
-    testId?: string): ReactElement => {
+    testId?: string,
+    showField?: boolean): ReactElement => {
     return (
         <>
-            <Field
+            { showField && (<Field
                 name={ eachProp?.key || propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
                     "forms.common.requiredErrorMessage") }
                 type="dropdown"
-                value={ eachProp?.value || propertyMetadata?.key }
+                value={ eachProp?.value || propertyMetadata?.defaultValue }
                 key={ eachProp?.key || propertyMetadata?.key }
                 children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
-            />
-            { propertyMetadata?.description && (
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>
+                        { propertyMetadata?.description }
+                    </Hint>
+                )
+            }
+        </>
+    );
+};
+
+export const getDropDownFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    listen: (key: string, values: Map<string, FormValue>) => void,
+    testId?: string,
+    showField?: boolean): ReactElement => {
+    return (
+        <>
+            { showField && (<Field
+                name={ eachProp?.key || propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
+                    "forms.common.requiredErrorMessage") }
+                type="dropdown"
+                value={ eachProp?.value }
+                key={ eachProp?.key || propertyMetadata?.key }
+                children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                listen={ (values: Map<string, FormValue>) => {
+                    listen(propertyMetadata?.key, values);
+                } }
+                default ={ propertyMetadata?.key === "SelectMode" && propertyMetadata?.defaultValue }
+            />) }
+            {
+                showField
+                && propertyMetadata?.description
+                && (
+                    <Hint disabled={ propertyMetadata?.isDisabled }>
+                        { propertyMetadata?.description }
+                    </Hint>
+                )
+            }
+        </>
+    );
+};
+
+export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    testId?: string,
+    showField?: boolean): ReactElement => {
+
+    return (
+        <>
+            { showField && (<Field
+                name={ propertyMetadata?.key }
+                label={ propertyMetadata?.displayName }
+                required={ propertyMetadata?.isMandatory }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
+                "requiredErrorMessage") }
+                type="filePicker"
+                value={ eachProp?.value }
+                key={ propertyMetadata?.key }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
+                uploadButtonText="Upload Metadata File"
+                dropzoneText="Drag and drop a XML file here."
+            />) }
+            { showField
+            && propertyMetadata?.description
+            && (
                 <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
             ) }
         </>
@@ -493,7 +607,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
 };
 
 const getDropDownChildren = (key: string, options: string[]) => {
-    return options.map((option) => {
+    return options.map((option: string) => {
         return ({
             key: key,
             text: key === "RequestMethod" ? mapSAMLProtocolBindingToProperDisplayNames(option) : option,
@@ -528,7 +642,8 @@ export enum FieldType {
     QUERY_PARAMS = "QueryParameters",
     DROP_DOWN = "DropDown",
     RADIO = "Radio",
-    COPY_INPUT = "CopyInput"
+    COPY_INPUT = "CopyInput",
+    FILEPICKER = "FilePicker"
 }
 
 /**
@@ -541,7 +656,8 @@ export enum CommonConstants {
     FIELD_COMPONENT_SCOPES = "Scopes",
     QUERY_PARAMETERS_KEY = "commonAuthQueryParams",
     SCOPE_KEY = "scopes",
-    RADIO = "RADIO"
+    RADIO = "RADIO",
+    SELECTMODE = "SelectMode"
 }
 
 /**
@@ -559,7 +675,11 @@ export const getFieldType = (
         return FieldType.CONFIDENTIAL;
     } else if (propertyMetadata?.key === CommonConstants.SCOPE_KEY) {
         return FieldType.TABLE;
-    }  else if (propertyMetadata?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
+    }
+    else if (propertyMetadata?.key === "meta_data_saml") {
+        return FieldType.FILEPICKER;
+    }
+    else if (propertyMetadata?.key === CommonConstants.FIELD_COMPONENT_SCOPES) {
         return FieldType.SCOPES;
     } else if (propertyMetadata?.key.toUpperCase().includes(CommonConstants.FIELD_COMPONENT_KEYWORD_URL)) {
         if (propertyMetadata?.key === AUTHORIZATION_REDIRECT_URL && mode !== AuthenticatorSettingsFormModes.CREATE) {
@@ -595,16 +715,17 @@ export const getPropertyField = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     mode: AuthenticatorSettingsFormModes,
     listen?: (key: string, values: Map<string, FormValue>) => void,
-    testId?: string
+    testId?: string,
+    showField?: boolean
 ): ReactElement => {
 
     switch (getFieldType(propertyMetadata, mode)) {
         case FieldType.CHECKBOX : {
             if (listen) {
-                return getCheckboxFieldWithListener(property, propertyMetadata, listen, testId);
+                return getCheckboxFieldWithListener(property, propertyMetadata, listen, testId, showField);
             }
 
-            return getCheckboxField(property, propertyMetadata, testId);
+            return getCheckboxField(property, propertyMetadata, testId, showField);
         }
         case FieldType.RADIO : {
             if (listen) {
@@ -617,7 +738,7 @@ export const getPropertyField = (
             return getConfidentialField(property, propertyMetadata, testId);
         }
         case FieldType.URL : {
-            return getURLField(property, propertyMetadata, testId);
+            return getURLField(property, propertyMetadata, testId, showField);
         }
         case FieldType.COPY_INPUT : {
             return getCopyInputField(property, propertyMetadata, testId);
@@ -626,16 +747,23 @@ export const getPropertyField = (
             return getScopesField(property, propertyMetadata, testId);
         }
         case FieldType.QUERY_PARAMS : {
-            return getQueryParamsField(property, propertyMetadata, testId);
+            return getQueryParamsField(property, propertyMetadata, testId, showField);
         }
         case FieldType.DROP_DOWN : {
-            return getDropDownField(property, propertyMetadata, testId);
+            if (listen) {
+                return getDropDownFieldWithListener(property, propertyMetadata, listen, testId, showField);
+            }
+
+            return getDropDownField(property, propertyMetadata, testId, showField);
         }
         case FieldType.TABLE:{
             return getTableField(property, propertyMetadata, testId);
         }
+        case FieldType.FILEPICKER:{
+            return getFilePicker(property, propertyMetadata, testId, showField);
+        }
         default: {
-            return getTextField(property, propertyMetadata, testId);
+            return getTextField(property, propertyMetadata, testId, showField);
         }
     }
 };

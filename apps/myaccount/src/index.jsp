@@ -61,7 +61,7 @@
             .pre-loader-logo {
                 margin-top: -0.1rem;
             }
-    
+
             .content-loader {
                 display: flex;
                 flex-direction: column;
@@ -69,24 +69,24 @@
                 align-items: center;
                 user-select: none;
             }
-    
+
             .content-loader .ui.loader {
                 display: block;
                 position: relative;
                 margin-top: 10px;
                 margin-bottom: 25px;
             }
-    
+
             @keyframes loader {
                 0% {
                     transform: rotate(0)
                 }
-    
+
                 to {
                     transform: rotate(1turn)
                 }
             }
-    
+
             .content-loader .ui.loader:before {
                 content: "";
                 display: block;
@@ -95,7 +95,7 @@
                 border: .2em solid rgba(0,0,0,.1);
                 border-radius: 500rem;
             }
-    
+
             .content-loader .ui.loader:after {
                 content: "";
                 position: absolute;
@@ -149,7 +149,7 @@
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
-        
+
                 if (userTenant && userTenant == startupConfig.superTenantProxy) {
                     if (startupConfig.enableDefaultPreLoader) {
                         defaultPreLoader.style.display = 'block';
@@ -166,12 +166,12 @@
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-            
-            if(isSignOutSuccess && userTenant) {
+
+            if(startupConfig.legacyAuthzRuntime && isSignOutSuccess && userTenant) {
                 if (startupConfig.subdomainApplication) {
                     window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
                 } else {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
+                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/myaccount";
                 }
             }
 
@@ -192,9 +192,9 @@
 
             if(!authorizationCode) {
                 function getTenantName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
-                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+                    var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
                     if (tenantPrefixIndex !== -1) {
                         return pathChunks[ tenantPrefixIndex + 1 ];
                     }
@@ -235,7 +235,7 @@
                  */
                  function signInRedirectURL() {
                     if (startupConfig.legacyAuthzRuntime) {
-                        return applicationDomain.replace(/\/+$/, '') + getOrganizationPath() 
+                        return applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
                     if (getTenantName() === startupConfig.superTenant) {
@@ -245,7 +245,7 @@
                     return applicationDomain.replace(/\/+$/, '') + getTenantPath()
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                 }
-                
+
                 /**
                  * Construct the sign-out redirect URL.
                  *
@@ -300,6 +300,68 @@
                     return getApiPath("/oidc/checksession");
                 }
 
+                /**
+                 * Get the organization name.
+                 *
+                 * @returns {string}
+                 */
+                function getOrganizationName() {
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+
+                    var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+
+                    if (orgPrefixIndex !== -1) {
+                        return pathChunks[ orgPrefixIndex + 1 ];
+                    }
+
+                    return "";
+                };
+
+                /**
+                 * Get the organization path.
+                 *
+                 * @returns {string}
+                 */
+                function getOrganizationPath() {
+                    return getOrganizationName() !== ""
+                        ? "/" + startupConfig.orgPrefix + "/" + getOrganizationName()
+                        : "";
+                };
+
+                /**
+                 * Construct the auth params for organization login `authorize` requets.
+                 *
+                 * @remarks This only applies to the new authz runtime.
+                 *
+                 * @params orginalPrams - Original auth params.
+                 * @returns {string} Contructed auth params.
+                 */
+                function getAuthParamsForOrganizationLogins(orginalPrams) {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return orginalPrams;
+                    }
+
+                    var authParams = Object.assign({}, orginalPrams);
+
+                    if (getOrganizationPath()) {
+                        var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
+                        var orgIdInLocalStorage = localStorage.getItem("org-id");
+
+                        if (orgIdInLocalStorage) {
+                            if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        } else {
+                            authParams["fidp"] = "OrganizationSSO";
+                            authParams["orgId"] = getOrganizationName();
+                        }
+                    }
+
+                    return authParams;
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
@@ -321,21 +383,21 @@
                     },
                     enablePKCE: true
                 }
-                
+
                 auth.initialize(authConfig);
-                auth.signIn();
+                auth.signIn(getAuthParamsForOrganizationLogins({}));
             }
         }
     </script>
     <script>
         if (!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-0.3.3.min.js' : '/auth-spa-0.3.3.min.js'%>";
+            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.0.1.min.js' : '/auth-spa-3.0.1.min.js'%>";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
-            let head = document.head;
+            var head = document.head;
             head.insertBefore(authSPAJS, head.firstElementChild);
 
             authSPAJS.addEventListener("load", authenticateWithSDK, false);

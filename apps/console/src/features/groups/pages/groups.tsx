@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -88,6 +88,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ userStore, setUserStore ] = useState(
         commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
@@ -102,6 +103,17 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         isLoading: isGroupsListRequestLoading,
         mutate: mutateGroupsFetchRequest
     } = useGroupList(userStore, "members,roles", searchQuery, true);
+
+    /**
+     * Indicates whether the currently selected user store is read-only or not.
+     */
+    const isReadOnlyUserStore: boolean = useMemo(() => {
+        if (readOnlyUserStoresList?.includes(userStore)) {
+            return true;
+        }
+
+        return false;
+    }, [ userStore ]);
 
     useEffect(() => {
         getUserStores();
@@ -317,6 +329,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                         defaultSearchAttribute="displayName"
                         defaultSearchOperator="sw"
+                        triggerClearQuery={ triggerClearQuery }
+                        disableSearchAndFilterOptions={ data?.totalResults <= 0 && !searchQuery }
                     />
                 ) }
                 currentListSize={ listItemLimit }
@@ -338,13 +352,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     </RootOnlyComponent>
                 ) }
                 showPagination={ paginatedGroups?.length > 0  }
-                showTopActionPanel={
-                    !isGroupsListRequestLoading
-                    && !(!searchQuery
-                        && !groupsError
-                        && userStoreOptions?.length < 3
-                        && (!paginatedGroups || paginatedGroups?.length <= 0))
-                }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
                 isLoading={ isGroupsListRequestLoading }
@@ -384,16 +391,22 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                                 placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                                 defaultSearchAttribute="displayName"
                                 defaultSearchOperator="sw"
+                                triggerClearQuery={ triggerClearQuery }
+                                disableSearchAndFilterOptions={ data?.totalResults <= 0 && !searchQuery }
                             />
                         ) }
                         data-testid="group-mgt-groups-list"
                         handleGroupDelete={ handleOnDelete }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                        onSearchQueryClear={ () => setSearchQuery("") }
+                        onSearchQueryClear={ () => {
+                            setTriggerClearQuery(!triggerClearQuery);
+                            setSearchQuery("");
+                        } }
                         groupList={ paginatedGroups }
                         searchQuery={ searchQuery }
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
+                        isReadOnlyUserStore={ isReadOnlyUserStore }
                     />)
                 }
             </ListLayout>

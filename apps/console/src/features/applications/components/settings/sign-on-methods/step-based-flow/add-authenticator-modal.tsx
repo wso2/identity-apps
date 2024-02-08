@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     EmptyPlaceholder,
@@ -179,6 +180,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const { hiddenAuthenticators } = useAuthenticationFlow();
+    const { deploymentConfig } = useDeploymentConfig();
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
@@ -559,6 +561,19 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 return null;
                                             }
 
+                                            let isTemplateDisabled: boolean = template.disabled;
+                                            let disabledHint: ReactNode = undefined;
+
+                                            // Disable the Apple template in localhost as it's not supported.
+                                            if (template.id === ConnectionManagementConstants
+                                                .IDP_TEMPLATE_IDS.APPLE &&
+                                                    new URL(deploymentConfig?.serverOrigin)?.
+                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
+                                                isTemplateDisabled = true;
+                                                disabledHint = t("console:develop.pages." +
+                                                    "authenticationProviderTemplate.disabledHint.apple");
+                                            }
+
                                             return (
                                                 <ResourceGrid.Card
                                                     showSetupGuideButton={ !!isSAASDeployment }
@@ -573,7 +588,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                             : template?.name
                                                     }
                                                     isResourceComingSoon={ template.comingSoon }
-                                                    disabled={ template.disabled }
+                                                    disabled={ isTemplateDisabled }
+                                                    disabledHint={ disabledHint }
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }
                                                     resourceDescription={ template.description }
                                                     resourceImage={

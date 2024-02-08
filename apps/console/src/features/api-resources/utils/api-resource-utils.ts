@@ -92,23 +92,47 @@ export class APIResourceUtils {
      */
     public static isSystemAPI(type: string): boolean {
 
-        return type === APIResourcesConstants.SYSTEM
-            || type === APIResourcesConstants.SYSTEM_ORG
-            || type === APIResourcesConstants.SYSTEM_FEATURE;
+        return type !== APIResourcesConstants.BUSINESS;
     }
 
     public static resolveApiResourceGroup = (groupName: string): string => {
         switch (groupName) {
-            case APIResourceCategories.TENANT_ADMIN:
+            case APIResourceCategories.TENANT:
                 return "Management";
-            case APIResourceCategories.TENANT_USER:
-                return "Management";
-            case APIResourceCategories.ORGANIZATION_ADMIN:
-                return "Organization";
-            case APIResourceCategories.ORGANIZATION_USER:
+            case APIResourceCategories.ORGANIZATION:
                 return "Organization";
             case APIResourceCategories.BUSINESS:
                 return "Business";
+            default:
+                return groupName;
+        }
+    };
+
+    public static resolveApiResourceGroupDisplayName = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourceCategories.ORGANIZATION:
+                return "Organization API";
+            case APIResourceCategories.TENANT:
+                return "Management API";
+            case APIResourceCategories.CONSOLE_FEATURE:
+                return "Console Feature";
+            case APIResourceCategories.BUSINESS:
+                return "Business API";
+            default:
+                return groupName;
+        }
+    };
+
+    public static resolveApiResourceGroupDescription = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourceCategories.ORGANIZATION:
+                return "extensions:develop.apiResource.organizationAPI.description";
+            case APIResourceCategories.TENANT:
+                return "extensions:develop.apiResource.managementAPI.description";
+            case APIResourceCategories.CONSOLE_FEATURE:
+                return "extensions:develop.apiResource.consoleFeature.description";
+            case APIResourceCategories.BUSINESS:
+                return "extensions:develop.apiResource.businessAPI.description";
             default:
                 return groupName;
         }

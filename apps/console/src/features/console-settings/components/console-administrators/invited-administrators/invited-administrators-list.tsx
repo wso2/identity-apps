@@ -22,19 +22,22 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PrimaryButton } from "@wso2is/react-components";
-import { UsersConstants } from "apps/console/src/extensions/components/users/constants/users";
-import { UserInviteInterface } from "apps/console/src/extensions/components/users/models/invite";
+import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
+import { PRIMARY_USERSTORE, UsersConstants } from "apps/console/src/extensions/components/users/constants/users";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
+import { UserInviteInterface } from "../../../../../extensions/components/users/models/invite";
+import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
+import { UserStoreDropdownItem } from "../../../../../features/userstores/models";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
-    UIConstants
+    UIConstants,
+    getEmptyPlaceholderIllustrations
 } from "../../../../core";
 import { deleteParentOrgInvite } from "../../../../users/components/guests/api/invite";
 import useAdministrators from "../../../hooks/use-administrators";
@@ -64,6 +67,10 @@ interface InvitedAdministratorsListProps extends IdentifiableComponentInterface 
      * List of readOnly user stores.
      */
     readOnlyUserStores?: string[];
+    /**
+     * List of available user stores.
+     */
+    availableUserStores: UserStoreDropdownItem[]
 }
 
 /**
@@ -81,6 +88,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         readOnlyUserStores,
         selection,
         showListItemActions,
+        availableUserStores,
         ["data-componentid"]: componentId
     } = props;
 
@@ -93,9 +101,12 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState(false);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
 
     const {
         invitedAdministrators,
+        adminUserListFetchError,
         isNextPageAvailable,
         isAdministratorsListFetchRequestLoading,
         mutateInvitedAdministratorsListFetchRequest
@@ -104,11 +115,11 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         listOffset,
         searchQuery,
         null,
-        null,
+        selectedUserStore,
         UsersConstants.GROUPS_ATTRIBUTE
     );
 
-    const [ loading, setLoading ] = useState(false);
+    const { isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
 
     const handleUserDelete = (user: UserInviteInterface, onComplete: () => void): Promise<void> => {
         return deleteParentOrgInvite(user.id)
@@ -150,6 +161,10 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         data: DropdownProps
     ): void => {
         setListItemLimit(data.value as number);
+    };
+
+    const handleSelectedUserStoreChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setSelectedUserStore(data.value as string);
     };
 
     /**
@@ -223,7 +238,16 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
             paginationOptions={ {
                 disableNextButton: !isNextPageAvailable
             } }
-            disableRightActionPanel={ true }
+            rightActionPanel={
+                isFirstLevelOrganization() || isSuperOrganization()
+                    ? (<Dropdown
+                        data-testid="user-mgt-user-list-userstore-dropdown"
+                        selection
+                        options={ availableUserStores }
+                        onChange={ handleSelectedUserStoreChange }
+                        defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                    />) : null
+            }
             topActionPanelExtension={ (
                 <Show when={ AccessControlConstants.USER_WRITE }>
                     <PrimaryButton
@@ -236,22 +260,32 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                 </Show>
             ) }
         >
-            <InvitedAdministratorsTable
-                defaultListItemLimit={ defaultListItemLimit }
-                administrators={ invitedAdministrators?.invitations }
-                onUserDelete={ handleUserDelete }
-                isLoading={ loading }
-                readOnlyUserStores={ readOnlyUserStores }
-                onSearchQueryClear={ handleSearchQueryClear }
-                searchQuery={ searchQuery }
-                triggerClearQuery={ triggerClearQuery }
-                onEmptyListPlaceholderActionClick={ () => null }
-                onIsLoading={ setLoading }
-                selection={ selection }
-                showListItemActions={ showListItemActions }
-                showMetaContent={ showMetaContent }
-                data-componentid={ `${componentId}-table` }
-            />
+            { adminUserListFetchError
+                ? (<EmptyPlaceholder
+                    subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
+                        t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
+                    title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                    image={ getEmptyPlaceholderIllustrations().genericError }
+                    imageSize="tiny"
+                />)
+                : (<InvitedAdministratorsTable
+                    defaultListItemLimit={ defaultListItemLimit }
+                    administrators={ invitedAdministrators?.invitations }
+                    onUserDelete={ handleUserDelete }
+                    isLoading={ loading }
+                    readOnlyUserStores={ readOnlyUserStores }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    searchQuery={ searchQuery }
+                    triggerClearQuery={ triggerClearQuery }
+                    onEmptyListPlaceholderActionClick={ () => null }
+                    onIsLoading={ setLoading }
+                    selection={ selection }
+                    showListItemActions={ showListItemActions }
+                    showMetaContent={ showMetaContent }
+                    data-componentid={ `${componentId}-table` }
+                />)
+            }
+
             { showInviteNewAdministratorModal && (
                 <InviteNewAdministratorWizard
                     onClose={ () => setShowInviteNewAdministratorModal(false) }

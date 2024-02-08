@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -199,7 +199,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
         if (event.keyCode === 13) {
             const nextButton: HTMLElement = document.getElementById(`${ testId }-next-button`);
             const finishButton: HTMLElement = document.getElementById(`${ testId }-finish-button`);
-            
+
             if (nextButton)
                 document.getElementById(`${ testId }-next-button`).click();
             else if (finishButton) {
@@ -648,7 +648,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
             ),
             icon: getUserWizardStepIcons().summary,
             name: WizardStepsFormTypes.SUMMARY,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
+            title: t("console:manage.features.user.modals.addUserWizard.steps.invitation")
         };
     };
 

@@ -629,17 +629,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             textAlign="right"
                                                         >
                                                             <Popup
-                                                                content={ attributeConfig.isSCIMEditable
+                                                                content={ hasRequiredScopes(
+                                                                    featureConfig?.attributeDialects,
+                                                                    featureConfig?.
+                                                                        attributeDialects?.scopes?.create,
+                                                                    allowedScopes
+                                                                ) && attributeConfig.isSCIMEditable
                                                                     ? t("common:edit")
                                                                     : t("common:view") }
                                                                 trigger={
-                                                                    (<Icon
-                                                                        color="grey"
-                                                                        name={
-                                                                            attributeConfig.isSCIMEditable
-                                                                                ? "pencil"
-                                                                                : "eye"
-                                                                        } />)
+                                                                    hasRequiredScopes(
+                                                                        featureConfig?.attributeDialects,
+                                                                        featureConfig?.
+                                                                            attributeDialects?.scopes?.create,
+                                                                        allowedScopes
+                                                                    ) && attributeConfig.isSCIMEditable ?
+                                                                        <Icon color="grey" name="pencil" /> :
+                                                                        <Icon color="grey" name="eye" />
                                                                 }
                                                                 inverted
                                                             />

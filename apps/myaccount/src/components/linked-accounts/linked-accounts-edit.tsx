@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,10 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Form, Grid, Input, InputOnChangeData } from "semantic-ui-react";
 import { UIConstants } from "../../constants";
-import { AppState } from "../../store";
 import { EditSection } from "../shared";
 
 /**
@@ -61,8 +59,6 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
 
     const { t } = useTranslation();
 
-    const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
-
     const [ userName, setUserName ] = useState<string>(undefined);
 
     /**
@@ -79,7 +75,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
      * @param values - Form values.
      */
     const getFormValues = (values: Map<string, FormValue>): void => {
-        const formValues = {
+        const formValues: { password: string; username: string } = {
             password: values.get("password").toString(),
             username: userName
         };
@@ -96,7 +92,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                     </Grid.Column>
                     <Grid.Column width={ 10 }>
                         <Forms
-                            onSubmit={ (values) => getFormValues(values) }
+                            onSubmit={ (values: Map<string, FormValue>) => getFormValues(values) }
                             data-testid={ `${testId}-editing-section-form` }
                         >
                             <Form.Field required data-testid={ `${testId}-editing-section-form-field-username` }>
@@ -108,7 +104,6 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                                 </label>
                                 <Input
                                     autoFocus={ true }
-                                    label={ "@" + tenantDomain }
                                     labelPosition="right"
                                     name="username"
                                     placeholder={ t(

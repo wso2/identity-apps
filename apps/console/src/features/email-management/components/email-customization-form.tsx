@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -29,10 +30,13 @@ import {
 import * as codemirror from "codemirror";
 import React, {
     FunctionComponent,
-    ReactElement
+    ReactElement,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { I18nConstants } from "../../core";
 import { EmailTemplate } from "../models";
 
@@ -56,7 +60,7 @@ interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInte
      * Callback to be called when the template is changed.
      * @param template - Email template
      */
-    onTemplateChanged: (template: EmailTemplate) => void;
+    onTemplateChanged: (updatedTemplateAttributes: Partial<EmailTemplate>) => void;
 
     /**
      * Callback to be called when the form is submitted.
@@ -67,6 +71,11 @@ interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInte
      * Callback to be called when the template delete requested
      */
     onDeleteRequested: () => void;
+
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
 }
 
 const FORM_ID: string = "email-customization-content-form";
@@ -89,11 +98,24 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
         onTemplateChanged,
         onSubmit,
         onDeleteRequested,
+        readOnly,
         ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    /**
+     * Following `key` state and the use of the useEffect are temporary
+     * fixes for the issue of the input not re-rendering when the props change.
+     * The ideal solution is to use Final Form directly without employing
+     * the Final Form wrapper component.
+     */
+    const [ key, setKey ] = useState<number>(0);
+
+    useEffect(() => {
+        setKey((key + 1) % 100);
+    }, [ selectedEmailTemplate ]);
 
     return (
         (isEmailTemplatesListLoading) ? (
@@ -127,10 +149,11 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     data-componentid={ `${ componentId }-email-subject` }
                                     listen={ (value: string) => {
                                         onTemplateChanged({
-                                            ...selectedEmailTemplate,
                                             subject: value
                                         });
                                     } }
+                                    readOnly={ readOnly }
+                                    key={ key }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -180,7 +203,6 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                         onChange={ (editor: codemirror.Editor, _data: codemirror.EditorChange,
                                             _value: string) => {
                                             onTemplateChanged({
-                                                ...selectedEmailTemplate,
                                                 body: editor.getValue()
                                             });
                                         } }
@@ -192,6 +214,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                             goFullScreen: t("common:goFullScreen")
                                         } }
                                         data-componentId={ `${ componentId }-email-body-editor` }
+                                        readOnly={ readOnly }
                                     />
                                 </div>
                             </Grid.Column>
@@ -217,25 +240,28 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     data-componentid={ `${ componentId }-email-footer` }
                                     listen={ (value: string) => {
                                         onTemplateChanged({
-                                            ...selectedEmailTemplate,
                                             footer: value
                                         });
                                     } }
+                                    readOnly={ readOnly }
+                                    key={ key }
                                 />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Form>
 
-                <DangerZone
-                    data-componentid={ `${ componentId }-revert-email-provider-config` }
-                    actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
-                    header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
-                    subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
-                    isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
-                    buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
-                    onActionClick={ onDeleteRequested }
-                />
+                <Show when={ AccessControlConstants.EMAIL_TEMPLATES_DELETE }>
+                    <DangerZone
+                        data-componentid={ `${ componentId }-revert-email-provider-config` }
+                        actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
+                        header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
+                        subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
+                        isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
+                        buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
+                        onActionClick={ onDeleteRequested }
+                    />
+                </Show>
             </>
         )
     );

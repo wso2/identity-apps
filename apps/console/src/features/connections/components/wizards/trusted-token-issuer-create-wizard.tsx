@@ -41,6 +41,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FC,
@@ -75,6 +76,7 @@ import {
 import { createConnection } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { IdpNameValidationCache } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
@@ -116,6 +118,9 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
     const [ finishShouldBeDisabled, setFinishShouldBeDisabled ] = useState<boolean>(true);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
+
+    const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+    const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
     const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
     const { t } = useTranslation();
@@ -170,25 +175,40 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     /**
      * Check if the typed IDP name is already taken.
      *
-     * @param userInput - User input for the IDP name.
-     * @returns `true` if the IDP name is already taken else `false`.
+     * @param value - User input for the IDP name.
      */
-    const isIdpNameAlreadyTaken = (userInput: string): Promise<boolean> =>  {
-        return ConnectionsManagementUtils.searchIdentityProviderName(userInput)
-            .then((isIdpExist: boolean) => {
-                return Promise.resolve(isIdpExist);
-            })
-            .catch(() => {
-                /**
-                 * Ignore the error, as a failed identity provider search
-                 * should not result in user blocking. However, if the
-                 * identity provider name already exists, it will undergo
-                 * validation from the backend, and any resulting errors
-                 * will be displayed in the user interface.
-                 */
-                return Promise.resolve(false);
-            });
-    };
+    const idpNameValidation: DebouncedFunc<(value: string) => void> = debounce(
+        async (value: string) => {
+            let idpExist: boolean;
+
+            if (idpNameValidationCache?.current?.value === value) {
+                idpExist = idpNameValidationCache?.current?.state;
+            }
+
+            if (idpExist === undefined) {
+                try {
+                    idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                } catch (e) {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    idpExist = false;
+                }
+
+                idpNameValidationCache.current = {
+                    state: idpExist,
+                    value
+                };
+            }
+
+            setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+        },
+        500
+    );
 
     /**
      * Check whether loop back call is allowed or not.
@@ -322,10 +342,11 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 required={ true }
                 width={ 15 }
                 format = { (values: string) => values.trimStart() }
-                validation={ async (values: string) => {
+                listen={ idpNameValidation }
+                validation={ (values: string) => {
                     let errorMsg: string;
 
-                    if (values && await isIdpNameAlreadyTaken(values)) {
+                    if (values && isUserInputIdpNameAlreadyTaken) {
                         errorMsg = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
@@ -631,7 +652,6 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                         uncontrolledForm={ true }
                         pageChanged={ (index: number) => setCurrentWizardStep(index) }
                         data-componentid={ componentId }
-                        validateOnBlur
                     >
                         { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step?.content) }
                     </Wizard2>

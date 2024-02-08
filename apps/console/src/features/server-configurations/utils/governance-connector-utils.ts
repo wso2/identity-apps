@@ -358,7 +358,7 @@ export class GovernanceConnectorUtils {
                         description: "Manage settings for WS-Federation based single sign-on.",
                         header: I18n.instance.t("console:wsFederationConfig.title"),
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID,
-                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION").replace,
+                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                         testId: "ws-federation-sso-card"
                     }
                 ],
@@ -379,6 +379,22 @@ export class GovernanceConnectorUtils {
                 displayOrder: 0,
                 id: "organization-settings",
                 title: "Organization Settings"
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t(
+                            "console:develop.features.applications.resident.provisioning.outbound.subHeading"),
+                        header: I18n.instance.t(
+                            "console:develop.features.applications.resident.provisioning.outbound.heading"),
+                        id: ServerConfigurationsConstants.OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID,
+                        route: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+                        testId: "outbound-provisioning-settings-card"
+                    }
+                ],
+                displayOrder: 0,
+                id: ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID,
+                title: "Provisioning Settings"
             }
         ];
     }

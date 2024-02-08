@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { Grid, IconButton, ListItemText } from "@oxygen-ui/react";
 import { ChevronDownIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Grid from "@oxygen-ui/react/Grid";
+import IconButton from "@oxygen-ui/react/IconButton";
 import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -64,7 +66,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
 
         // check if all scopes are selected from the api resource
         const isAllScopesSelected = (): boolean =>
-            apiResource?.scopes?.length === selectedPermissions?.length;
+            apiResource?.scopes?.length !== 0 && apiResource?.scopes?.length === selectedPermissions?.length;
 
         /**
          * Handles the remove API resource action.

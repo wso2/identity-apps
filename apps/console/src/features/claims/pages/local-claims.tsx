@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -88,6 +88,8 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -117,7 +119,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
  * @param filter - Search Filter.
  */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string,
-        excludeIdentity?: boolean) => {
+        excludeIdentity: boolean = !enableIdentityClaims) => {
         setIsLoading(true);
         const params: ClaimsGetParams = {
             "exclude-identity-claims": excludeIdentity,
@@ -154,7 +156,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     }, [ sortBy, sortOrder ]);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, attributeConfig.attributes.excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, !enableIdentityClaims);
         getADialect("local").then((response: any) => {
             setClaimURIBase(response.dialectURI);
         }).catch((error: IdentityAppsError) => {

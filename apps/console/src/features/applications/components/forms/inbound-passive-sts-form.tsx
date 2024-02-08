@@ -227,6 +227,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <ApplicationCertificateWrapper
+                            hideJWKS={ true }
                             protocol={ SupportedAuthProtocolTypes.WS_FEDERATION }
                             deleteAllowed={ true }
                             reasonInsideTooltipWhyDeleteIsNotAllowed={ <Fragment /> }

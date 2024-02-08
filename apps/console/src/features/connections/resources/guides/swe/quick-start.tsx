@@ -16,29 +16,32 @@
  * under the License.
  */
 
-import { 
-    VerticalStepper, 
-    VerticalStepperStepInterface 
+import {
+    VerticalStepper,
+    VerticalStepperStepInterface
 } from "@wso2is/common/src";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import { useApplicationList } from "../../../../../features/applications/api";
 import { ApplicationList } from "../../../../../features/applications/components/application-list";
+import {
+    ConnectionInterface,
+    ConnectionTemplateInterface
+} from "../../../../../features/connections/models/connection";
 import { AdvancedSearchWithBasicFilters } from "../../../../../features/core/components";
 import { AppConstants } from "../../../../../features/core/constants";
 import { history } from "../../../../../features/core/helpers";
-import { 
-    ConnectionInterface, 
-    ConnectionTemplateInterface 
-} from "../../../../../features/connections/models/connection";
+import { FeatureConfigInterface } from "../../../../core/models";
+import { AppState } from "../../../../core/store";
 
 /**
  * Prop types of the component.
@@ -80,11 +83,19 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError
-    } = useApplicationList(null, listItemLimit, listOffset, searchQuery);
+    } = useApplicationList(null, listItemLimit, listOffset, searchQuery, isApplicationReadAccessAllowed);
 
     /**
      * Handles the application list fetch request error.
@@ -179,8 +190,10 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                                 "extensions:develop.identityProviders.siwe.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
-                                application </Link>for which you want to set up Sign In With Ethereum.
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
+                            for which you want to set up Sign In With Ethereum.
                         </Trans>
                     </Text>
                 </>
@@ -197,7 +210,7 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                                 ".content"
                             }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Start with default
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
                             configuration</strong>.
                         </Trans>
                     </Text>

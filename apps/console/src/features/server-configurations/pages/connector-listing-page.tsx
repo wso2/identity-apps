@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -74,21 +74,42 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const predefinedCategories: any = useMemo(() => {
-        let originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        const originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        const refinedConnectorCategories: Array<any> = [];
 
-        if (!featureConfig?.organizationDiscovery?.enabled ||
-            !UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery) {
-            originalConnectors = originalConnectors.filter(
-                (category: any) => category.id !== ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID
+        const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
+            && UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery
+            && hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.read,
+                allowedScopes
             );
+
+        const isResidentOutboundProvisioningEnabled: boolean = hasRequiredScopes(
+            featureConfig?.residentOutboundProvisioning,
+            featureConfig?.residentOutboundProvisioning?.scopes?.feature,
+            allowedScopes
+        );
+
+        for (const category of originalConnectors) {
+            if (!isOrganizationDiscoveryEnabled
+                    && category.id === ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID) {
+                continue;
+            }
+
+            if (!isResidentOutboundProvisioningEnabled
+                    && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
+                continue;
+            }
+
+            const filteredConnectors: Array<any> = category.connectors.
+                filter((connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+
+            refinedConnectorCategories.push({ ...category, connectors: filteredConnectors });
         }
 
-        return originalConnectors.map((category: any) => ({
-            ...category,
-            connectors: category.connectors.filter(
-                (connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id))
-        }));
-    }, []);
+        return refinedConnectorCategories;
+    }, [ featureConfig, UIConfig, allowedScopes ]);
 
     const [
         dynamicConnectorCategories,
@@ -96,7 +117,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
-    const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(false);
+    const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(true);
 
     useEffect(() => {
 
@@ -108,6 +129,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             return;
         }
 
+        setConnectorCategoryLoading(true);
         getConnectorCategories()
             .then((response: GovernanceConnectorInterface[]) => {
 
@@ -144,6 +166,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         "getConfigurations.genericError.message")
                     }));
                 }
+            })
+            .finally(() => {
+                setConnectorCategoryLoading(false);
             });
     }, []);
 
@@ -155,20 +180,23 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     }, [ dynamicConnectorCategories ]);
 
     const loadCategoryConnectors = (categoryId: string): void => {
-        setConnectorCategoryLoading(true);
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                response?.connectors.map((connector: GovernanceConnectorWithRef) => {
+                const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
+                    (connector: GovernanceConnectorInterface) =>
+                        !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+
+                connectorList?.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
                 });
 
                 setConnectors((connectors: GovernanceConnectorWithRef[]) => [
-                    ...connectors, ...response?.connectors as GovernanceConnectorWithRef[]
+                    ...connectors, ...connectorList as GovernanceConnectorWithRef[]
                 ]);
-                !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
+                !selectedConnector && setSelectorConnector(connectorList[ 0 ] as GovernanceConnectorWithRef);
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.detail) {
@@ -202,9 +230,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         })
                     );
                 }
-            })
-            .finally(() => {
-                setConnectorCategoryLoading(false);
             });
     };
 
@@ -213,13 +238,17 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
      */
     const renderLoadingPlaceholder = (): ReactElement => {
         const placeholders: ReactElement[] = [];
+        const cardsPerRow: number[] = [ 1, 4, 2, 3 ];
 
-        for (let loadedPlaceholders: number = 0; loadedPlaceholders <= 1; loadedPlaceholders++) {
-            placeholders.push(
-                <Grid xs={ 12 } lg={ 6 } key={ loadedPlaceholders }>
+        for (let rowIndex: number = 0; rowIndex < cardsPerRow.length; rowIndex++) {
+            const cardsInRow: number = cardsPerRow[ rowIndex ];
+            const cards: ReactElement[] = [];
+
+            for (let columnIndex: number = 0; columnIndex < cardsInRow; columnIndex++) {
+                cards.push(
                     <div
                         className="ui card fluid settings-card"
-                        data-testid={ `${testId}-loading-card` }
+                        data-testid={ `${ testId }-loading-card` }
                     >
                         <div className="content no-padding">
                             <div className="header-section placeholder">
@@ -228,26 +257,37 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                         <Placeholder.Line length="medium" />
                                         <Placeholder.Line length="full" />
                                     </Placeholder.Header>
-                                </Placeholder>
-                            </div>
-                        </div>
-                        <div className="content extra extra-content">
-                            <div className="action-button">
-                                <Placeholder>
-                                    <Placeholder.Line length="very short" />
+                                    <Placeholder.Paragraph>
+                                        <Placeholder.Line />
+                                        <Placeholder.Line />
+                                    </Placeholder.Paragraph>
                                 </Placeholder>
                             </div>
                         </div>
                     </div>
-                </Grid>
+                );
+            }
+
+            placeholders.push(
+                <div key={ rowIndex } className="catergory-container">
+                    <Typography className="mb-3" variant="h4">
+                        <Placeholder>
+                            <Placeholder.Header>
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </Placeholder.Header>
+                        </Placeholder>
+                    </Typography>
+                    <div className="governance-connector-list-grid-wrapper">
+                        <div className="governance-connector-list-grid">
+                            { cards }
+                        </div>
+                    </div>
+                </div>
             );
         }
 
-        return (
-            <Grid container rowSpacing={ 2 } columnSpacing={ { md: 3, sm: 2, xs: 1 } }>
-                { placeholders }
-            </Grid>
-        );
+        return <>{ placeholders }</>;
     };
 
     return (
