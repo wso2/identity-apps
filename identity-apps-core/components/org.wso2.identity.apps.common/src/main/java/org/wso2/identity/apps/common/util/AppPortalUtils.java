@@ -432,7 +432,7 @@ public class AppPortalUtils {
         try {
             String userID = getUserId(appOwner, tenantId);
             AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().addRole(ADMINISTRATOR,
-                Collections.singletonList(userID), Collections.emptyList(), getAllPermissions(tenantDomain),
+                Collections.singletonList(userID), Collections.emptyList(), Collections.emptyList(),
                 APPLICATION, appId, tenantDomain);
         } catch (IdentityRoleManagementException e) {
             throw new IdentityApplicationManagementException("Failed to add Administrator role for the " +
