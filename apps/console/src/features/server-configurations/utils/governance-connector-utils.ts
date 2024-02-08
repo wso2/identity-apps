@@ -283,7 +283,8 @@ export class GovernanceConnectorUtils {
                         testId: "self-registration-card"
                     },
                     {
-                        description: "Allow users choose passwords in admin-initiated onboarding.",
+                        description: "Allow users to set their own passwords during admin-initiated onboarding " +
+                                    "and configure related settings",
                         header: "Invite User to Set Password",
                         id: ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")

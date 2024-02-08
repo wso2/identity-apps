@@ -7124,8 +7124,8 @@ export const console: ConsoleNS = {
                                 friendlyName: "Demander le mot de passe",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "Une notification de vérification sera déclenchée pendant la création d'utilisateurs.",
-                                        label: "Activer la vérification de l'e-mail utilisateur"
+                                        hint: "Un email sera envoyé à l'utilisateur pour définir le mot de passe après création.",
+                                        label: "Activer l'option pour inviter les utilisateurs à configurer le mot de passe par e-mail"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "Le compte d'utilisateur sera verrouillé pendant la création d'utilisateurs.",

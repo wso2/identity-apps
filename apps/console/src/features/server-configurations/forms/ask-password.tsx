@@ -187,7 +187,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE,
-                    "Enable user email verification") }
+                    "Enable option to invite users for password setup via email") }
                 defaultValue={ initialFormValues?.[
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE ] === "true" }
                 readOnly={ readOnly }
@@ -254,11 +254,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME)
                 }
                 min={
-                    GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
+                    GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MIN_VALUE
                 }
                 max={
-                    GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
+                    GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MAX_VALUE
                 }
                 width={ 12 }
@@ -272,12 +272,12 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     "selfRegistration.form.fields.expiryTime.placeholder") }
                 maxLength={
                     GovernanceConnectorConstants
-                        .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
+                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
                 }
                 labelPosition="right"
                 minLength={
                     GovernanceConnectorConstants
-                        .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
+                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                 }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
@@ -296,11 +296,11 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME)
                 }
                 min={
-                    GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
+                    GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MIN_VALUE
                 }
                 max={
-                    GovernanceConnectorConstants.SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS
+                    GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
                         .EXPIRY_TIME_MAX_VALUE
                 }
                 width={ 12 }
@@ -314,12 +314,12 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     "selfRegistration.form.fields.expiryTime.placeholder") }
                 maxLength={
                     GovernanceConnectorConstants
-                        .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
+                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
                 }
                 labelPosition="right"
                 minLength={
                     GovernanceConnectorConstants
-                        .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
+                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                 }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
@@ -331,7 +331,8 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     "User Onboarding",
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_EXPIRY_TIME,
                     "Set the time span that the password setup invitation e-mail would be valid, " +
-                        "in minutes. (For infinite validity period, set -1).")
+                        "in minutes. (For infinite validity period, set -1. Setting 0 will cause immediate" +
+                        " expiry of the invitation)")
                 }
             >
                 <input/>

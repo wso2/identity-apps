@@ -8742,8 +8742,8 @@ export const console: ConsoleNS = {
                                 friendlyName: "Ask Password",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "A verification notification will be triggered during user creation.",
-                                        label: "Enable user email verification"
+                                        hint: "An email will be sent to the user to set the password after creation.",
+                                        label: "Enable option to invite users for password setup via email"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "The user account will be locked during user creation.",
