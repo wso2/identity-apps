@@ -21,7 +21,7 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 export class SMSProviderConstants {
 
     private constructor() { }
-    
+
     public static readonly SMS_PROVIDER_CONFIG_NAME: string = "SMSPublisher";
     public static readonly TWILIO_SMS_PROVIDER: string = "TwilioSMSProvider";
     public static readonly TWILIO: string = "Twilio";
@@ -39,6 +39,7 @@ export class SMSProviderConstants {
 
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH: number = 0;
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH: number = 100;
+    public static readonly SMS_PROVIDER_CONFIG_TEMPLATE_FIELD_MAX_LENGTH: number = 1020;
     public static readonly SMS_REGEX: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 	public static ErrorMessages: {

@@ -2164,7 +2164,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "අන්තර්ගතයේ වර්ගය",
                         placeholder: "JSON",
-                        hint: "SMS යැවීම සඳහා භාවිතා කරන API ඉල්ලීමේ අන්තර්ගත වර්ගය."
+                        hint: "API ඉල්ලීමේ අන්තර්ගත වර්ගය. පිළිගත් අගයන් 'FORM' හෝ 'JSON' වේ"
                     },
                     headers: {
                         label: "ශීර්ෂ",
@@ -2173,8 +2173,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "ගෙවීම",
-                        placeholder: "ගෙවීම ඇතුළත් කරන්න",
-                        hint: "SMS API ඉල්ලීමේ ගෙවීම."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "API ඉල්ලීමේ ගෙවීමේ අච්චුව. උත්පාදනය කරන ලද SMS අන්තර්ගතය නියෝජනය කිරීමට {{body}} භාවිතා කරන්න. ජංගම දුරකථන අංකය නියෝජනය කිරීමට {{mobile}} භාවිතා කරන්න."
                     },
                     key: {
                         label: "SMS සපයන්නාගේ සත්‍යාපන යතුර",

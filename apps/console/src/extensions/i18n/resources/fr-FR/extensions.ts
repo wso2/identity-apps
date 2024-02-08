@@ -2226,7 +2226,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "Type de contenu",
                         placeholder: "JSON",
-                        hint: "Le type de contenu de la requête API utilisée pour l'envoi du SMS."
+                        hint: "Le type de contenu de la requête API. Les valeurs acceptées sont 'FORM' ou 'JSON'"
                     },
                     headers: {
                         label: "En-têtes",
@@ -2235,8 +2235,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "Charge utile",
-                        placeholder: "Entrez la charge utile",
-                        hint: "Charge utile de la requête API SMS."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "Le modèle de charge utile de la requête API. Utilisez {{body}} pour représenter le corps du SMS généré. Utilisez {{mobile}} pour représenter le numéro de mobile."
                     },
                     key: {
                         label: "Clé d'authentification du fournisseur SMS",
