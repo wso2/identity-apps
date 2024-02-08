@@ -8742,7 +8742,7 @@ export const console: ConsoleNS = {
                                 friendlyName: "Ask Password",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "An email will be sent to the user to set the password after creation.",
+                                        hint: "An email will be sent to the user to set the password after user creation.",
                                         label: "Enable email invitations for user password setup"
                                     },
                                     emailVerificationLockOnCreation: {
@@ -11492,7 +11492,7 @@ export const console: ConsoleNS = {
                             alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
                             inviteOffline: "Invite offline",
                             inviteViaEmail: "Invite via email"
                         },
@@ -12143,7 +12143,7 @@ export const console: ConsoleNS = {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
                         content: "Invite User to Set Password should be enabled to add multiple users. " +
-                            "Please enable email verification from Login & Registration settings.",
+                            "Please enable email invitations for user password setup from Login & Registration settings.",
                         assertionHint: "Please confirm your action."
                     }
                 },

@@ -197,7 +197,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
                     PROPERTY_NAMES.EMAIL_VERIFICATION_ENABLE,
-                    "A verification notification will be triggered during user creation.")
+                    "An email will be sent to the user to set the password after user creation.")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
             />

@@ -330,7 +330,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 <Trans
                     i18nKey="console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
                 >
-                    To invite users to set the password, enable email verification from <Link
+                    To invite users to set the password, enable email invitations for user password setup from <Link
                         onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
                             .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
                             .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
