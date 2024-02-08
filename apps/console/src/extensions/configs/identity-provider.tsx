@@ -208,7 +208,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,

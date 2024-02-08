@@ -239,6 +239,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
+            isCustomClaimMappingEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
