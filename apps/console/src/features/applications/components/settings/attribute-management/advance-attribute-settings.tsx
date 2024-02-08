@@ -20,15 +20,14 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Code, Heading, Hint, Message, Text } from "@wso2is/react-components";
+import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { Dispatch, FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
-import { AppState } from "../../../../core/store";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -97,8 +96,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
     const dispatch: Dispatch<any> = useDispatch();
-
-    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -411,27 +408,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             </Hint>
                         </>
                     ) }
-                    {
-                        onlyOIDCConfigured && !resolveSubjectAttributeHiddenStatus() && (
-                            <Message
-                                type="warning"
-                                floating
-                                content={ (
-                                    <Trans
-                                        i18nKey={ "console:develop.features.applications.forms." +
-                                            "advancedAttributeSettings.sections.subject.fields." +
-                                            "alternateSubjectAttribute.info" }
-                                        tOptions={ { productName: productName } }
-                                    >
-                                        The subject identifier is locally unique and never reassigned within the Issuer.
-                                        Therefore changing the subject attribute is not recommended. productName
-                                        uses <Code withBackground>userid</Code> as the subject attribute.
-                                    </Trans>
-                                ) }
-                                data-componentid={ `${ testId }-subject-attribute-warning-message` }
-                            />
-                        )
-                    }
                     <Field.Dropdown
                         ariaLabel="Subject attribute"
                         name="subjectAttribute"
