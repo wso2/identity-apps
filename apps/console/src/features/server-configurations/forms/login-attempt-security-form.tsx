@@ -139,6 +139,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<LoginAttemptSecurityFormInitialValuesInterface>(undefined);
+    const [ manageNotificationInternally, setManageNotificationInternally ] = useState<boolean>(undefined);
     const [ maxAttempts, setMaxAttempts ] = useState<string>(undefined);
     const [ lockDuration, setLockDuration ] = useState<string>(undefined);
     const [ lockIncrementRatio, setLockIncrementRatio ] = useState<string>(undefined);
@@ -182,6 +183,9 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         notifyUserOnAccountLockIncrement: property?.value === "true"
                     };
                     setNotifyUserOnAccountLockIncrement(property?.value === "true");
+                } else if (property?.name ===
+                    ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT) {
+                    setManageNotificationInternally(property?.value === "true");
                 }
             }
         });
@@ -205,6 +209,9 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             "account.lock.handler.login.fail.timeout.ratio": values.accountLockIncrementFactor !== undefined
                 ? values.accountLockIncrementFactor
                 : initialConnectorValues?.accountLockIncrementFactor,
+            "account.lock.handler.notification.manageInternally": isConnectorEnabled
+                ? true
+                : manageNotificationInternally,
             "account.lock.handler.notification.notifyOnLockIncrement":
                 values?.notifyUserOnAccountLockIncrement !== undefined
                     ? `${values?.notifyUserOnAccountLockIncrement}`
