@@ -91,8 +91,8 @@ export const hasRequiredScopes = (
             const interal: string = "internal_";
             const internalOrg: string = "internal_org_";
             const internalLogin: string = "internal_login";
-            const console: string = "console:";
-            const consoleOrg: string = "console:org:";
+            const consolePrefix: string = "console:";
+            const consoleOrgPrefix: string = "console:org:";
 
             return scopes.every((scope: string) => {
                 // If the scope begins with `internal_`, replace it with `internal_org_`.
@@ -101,8 +101,8 @@ export const hasRequiredScopes = (
                 }
 
                 // If the scope begins with `console:`, replace it with `console:org:`
-                if (scope.startsWith(console)) {
-                    scope = scope.replace(console, consoleOrg);
+                if (scope.startsWith(consolePrefix)) {
+                    scope = scope.replace(consolePrefix, consoleOrgPrefix);
                 }
 
                 return AuthenticateUtils.hasScope(scope, allowedScopes);
