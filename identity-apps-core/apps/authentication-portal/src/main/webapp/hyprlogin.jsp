@@ -83,6 +83,7 @@
                         </div>
                         <input id="sessionDataKeyLoginForm" type="hidden" name="sessionDataKey"
                             value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
+                        <input id="authType" name="authType" type="hidden" value="hypr">
                         <div class="ui divider hidden"></div>
                         <div class="align-center buttons">
                             <button type="button" class="ui primary large button" tabindex="4" role="button"
@@ -101,6 +102,7 @@
                     <form id="completeAuthenticationForm" action="<%=commonauthURL%>" method="POST">
                         <input id="sessionDataKeyAuthenticationForm" type="hidden" name="sessionDataKey"
                         value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
+                        <input id="authType" name="authType" type="hidden" value="hypr">
                     </form>
                 </div>
             </div>
