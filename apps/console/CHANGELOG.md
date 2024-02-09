@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.12.3
+
+### Patch Changes
+
+- [#5442](https://github.com/wso2/identity-apps/pull/5442) [`898a56743a`](https://github.com/wso2/identity-apps/commit/898a56743ad007e407e22ac599d636cbfcc2471c) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Add support for custom payload templating to custom SMS provider.
+
+* [#5444](https://github.com/wso2/identity-apps/pull/5444) [`5bfcf35aea`](https://github.com/wso2/identity-apps/commit/5bfcf35aea22e485f4ed423db2af198630899d48) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add configuration option to enable email notifications for extended lockout periods resulting from continuous login failures
+
 ## 2.12.2
 
 ### Patch Changes
