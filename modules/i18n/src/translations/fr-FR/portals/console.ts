@@ -7204,8 +7204,8 @@ export const console: ConsoleNS = {
                                 friendlyName: "Demander le mot de passe",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "Une notification de vérification sera déclenchée pendant la création d'utilisateurs.",
-                                        label: "Activer la vérification de l'e-mail utilisateur"
+                                        hint: "Un email sera envoyé à l'utilisateur pour définir le mot de passe après la création de l'utilisateur.",
+                                        label: "Activer les invitations par e-mail pour la configuration du mot de passe utilisateur"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "Le compte d'utilisateur sera verrouillé pendant la création d'utilisateurs.",
@@ -9839,7 +9839,7 @@ export const console: ConsoleNS = {
                                 "Fonction de nom d'utilisateur alphanumérique.",
                             emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
                                 "l'identifiant.",
-                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez la vérification par e-mail à partir des <1>paramètres de connexion et d'enregistrement</1>.",
+                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez les invitations par e-mail pour la configuration du mot de passe utilisateur dans les <1>Paramètres de connexion et d'inscription</1>.",
                             inviteOffline: "Inviter hors ligne",
                             inviteViaEmail: "Inviter par e-mail"
                         },
@@ -10529,9 +10529,9 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Avant de continuer",
                         message: "L'option Inviter des utilisateurs est désactivée",
-                        content: "Inviter l'utilisateur à définir le mot de passe doit être activé pour ajouter " +
-                            "plusieurs utilisateurs. Veuillez activer la vérification des e-mails dans les paramètres" +
-                            " de connexion et d'inscription.",
+                        content: "Inviter l'utilisateur à définir le mot de passe doit être activé pour ajouter plusieurs utilisateurs. " +
+                            "Veuillez activer les invitations par courrier électronique pour la configuration du mot de passe utilisateur dans" +
+                            " les paramètres de connexion et d'inscription.",
                         assertionHint: "Veuillez confirmer votre action."
                     }
                 },

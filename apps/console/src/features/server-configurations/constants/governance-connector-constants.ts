@@ -22,6 +22,21 @@
 export class GovernanceConnectorConstants {
 
     /**
+     * Ask Password Form element constraints.
+     */
+    public static readonly ASK_PASSWORD_FORM_FIELD_CONSTRAINTS: {
+        EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
+        EXPIRY_TIME_MIN_LENGTH: number;
+        EXPIRY_TIME_MIN_VALUE: number;
+    } = {
+        EXPIRY_TIME_MAX_LENGTH: 5,
+        EXPIRY_TIME_MAX_VALUE: 10080,
+        EXPIRY_TIME_MIN_LENGTH: 1,
+        EXPIRY_TIME_MIN_VALUE: -1
+    };
+
+    /**
      * Self Registration Form element constraints.
      */
     public static readonly SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS: {
