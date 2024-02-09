@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -3919,6 +3919,12 @@ export const extensions: Extensions = {
                                         "Le nombre maximal de tentatives infructueuses doit être un " +
                                         "nombre à 1 ou 2 chiffres."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "Informer l'utilisateur lorsque la durée de verrouillage du compte est " +
+                                    "augmentée en raison des tentatives de connexion en échec continu.",
+                                label: "Informer l'utilisateur lorsque le temps de verrouillage est augmenté"
                             }
                         }
                     },

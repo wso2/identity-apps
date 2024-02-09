@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -3749,6 +3749,12 @@ export const extensions: Extensions = {
                                     maxLengthReached:
                                         "උපරිම අසාර්ථක උත්සාහයන් ඉලක්කම් 1 ක් හෝ 2 ක් සහිත අංකයක් විය යුතුය."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "අඛණ්ඩව අසාර්ථක වූ පිවිසුම් උත්සාහයන් හේතුවෙන් ගිණුම් අගුළු කාලය වැඩි වන විට " +
+                                    "පරිශීලකයාට දැනුම් දෙන්න.",
+                                label: "අගුළු කාලය වැඩි වන විට පරිශීලකයාට දැනුම් දෙන්න"
                             }
                         }
                     },
