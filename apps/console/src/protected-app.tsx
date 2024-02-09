@@ -175,7 +175,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             };
 
             try {
-                if (getOrganizationName()) {
+                // The organization switch is not needed for organization users who directly SSO to the organization.
+                if (getOrganizationName() && signInResponse.userOrg != signInResponse.orgId) {
                     response = await switchOrganization(getOrganizationName());
                 } else {
                     response = { ...signInResponse };
