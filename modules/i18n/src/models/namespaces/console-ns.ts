@@ -1819,6 +1819,7 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
+                            hint: string;
                             expiryTime: {
                                 hint: string;
                                 label: string;
