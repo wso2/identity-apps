@@ -77,22 +77,22 @@
     }
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
-        try {
-            ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
-                "self-registration");
-            if (reCaptchaProperties.getReCaptchaEnabled()) {
-                Map<String, List<String>> headers = new HashMap<>();
-                headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
-                headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
-                headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
-                IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
-            }
-        } catch (ApiException e) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
+    try {
+        ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
+            "self-registration");
+        if (reCaptchaProperties.getReCaptchaEnabled()) {
+            Map<String, List<String>> headers = new HashMap<>();
+            headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
+            headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
+            headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
+            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
         }
+    } catch (ApiException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", e.getMessage());
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
 %>
 
 <%-- Data for the layout from the page --%>
@@ -269,6 +269,7 @@
         function onCompleted() {
             $('#register').submit();
         }
+
         function goBack() {
             window.history.back();
         }
