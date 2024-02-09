@@ -265,6 +265,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * is XACML connector enabled.
      */
     isXacmlConnectorEnabled?: boolean;
+    /**
+     * Enable/Disable the custom claim mapping feature.
+     */
+    isCustomClaimMappingEnabled?: boolean;
 }
 
 /**

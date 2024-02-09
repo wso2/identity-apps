@@ -1151,6 +1151,7 @@
         "isSAASDeployment": false,
         "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
+        "isCustomClaimMappingEnabled": true,
         "listAllAttributeDialects": true,
         "enableIdentityClaims": true,
         "privacyPolicyConfigs": {},

@@ -561,6 +561,7 @@ interface CustomExtendedWindow extends Window {
                 isCookieConsentBannerEnabled: true,
                 isGroupAndRoleSeparationEnabled: true,
                 isSignatureValidationCertificateAliasEnabled: false,
+                isCustomClaimMappingEnabled: true,
                 isClientSecretHashEnabled: false,
                 isDefaultDialectEditingEnabled: false,
                 isDialectAddingEnabled: false,

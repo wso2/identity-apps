@@ -372,6 +372,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
     /**
+     * Enable/Disable the custom claim mapping feature.
+     */
+    isCustomClaimMappingEnabled?: boolean;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
