@@ -406,6 +406,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Display name of the console administrator role.
      */
     administratorRoleDisplayName?: string;
+    /**
+     * Whether to consider the role claim as the group claim.
+     */
+    useRoleClaimAsGroupClaim?: boolean;
 }
 
 /**

@@ -1769,6 +1769,9 @@
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
         {% endif %}
+        {% if federated.idp.use_idp_role_claim_as_idp_group_claim is defined %}
+        "useRoleClaimAsGroupClaim": {{ federated.idp.use_idp_role_claim_as_idp_group_claim }},
+        {% endif %}
         {% if console.ui.administrator_role_display_name is defined %}
         "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
         {% endif %}
