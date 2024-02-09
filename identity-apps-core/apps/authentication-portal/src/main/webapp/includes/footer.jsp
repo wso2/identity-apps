@@ -29,7 +29,7 @@
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
     $(document).ready(function () {
         // downtime-banner.
-        var SHOW_DOWNTIME_BANNER = <%= StringUtils.equalsIgnoreCase(isDowntimeBannerEnabled,"true")%>;
+        var SHOW_DOWNTIME_BANNER = <%= StringUtils.equalsIgnoreCase(isDowntimeBannerEnabled, "true")%>;
 
         if(SHOW_DOWNTIME_BANNER) {
             $("#downtime-banner")
