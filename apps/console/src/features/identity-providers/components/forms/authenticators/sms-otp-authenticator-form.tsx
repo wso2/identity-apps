@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,13 +18,17 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code } from "@wso2is/react-components";
+import { Code, Link } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Label } from "semantic-ui-react";
+import { Icon, Label, Message } from "semantic-ui-react";
+import {
+    AppConstants,
+    history
+} from "../../../../core";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
@@ -349,6 +353,27 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             initialValues={ initialValues }
             validate={ validateForm }
         >
+            <Message info>
+                <Icon name="info circle" />
+                <Trans
+                    i18nKey={
+                        "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".smsOTP.hint"
+                    }
+                >
+                    Ensure that an
+                    <Link
+                        external={ false }
+                        onClick={ () => {
+                            history.push(
+                                AppConstants.getPaths().get("SMS_PROVIDER")
+                            );
+                        } }
+                    > SMS Provider
+                    </Link>
+                    &nbsp;is configured for the OTP feature to work properly.
+                </Trans>
+            </Message>
             <Field.Input
                 ariaLabel="SMS OTP expiry time"
                 inputType="number"

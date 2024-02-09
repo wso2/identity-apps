@@ -4005,6 +4005,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
+                            hint: "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly.",
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
