@@ -92,7 +92,7 @@ export const hasRequiredScopes = (
             const internalOrg: string = "internal_org_";
             const internalLogin: string = "internal_login";
             const consolePrefix: string = "console:";
-            const consoleOrgPrefix: string = "console:org:";
+            const consoleOrgPrefix: string = `${ consolePrefix }org:`;
 
             return scopes.every((scope: string) => {
                 // If the scope begins with `internal_`, replace it with `internal_org_`.
