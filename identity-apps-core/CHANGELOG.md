@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.18
+
+### Patch Changes
+
+- [#5450](https://github.com/wso2/identity-apps/pull/5450) [`afc7e6c8bd`](https://github.com/wso2/identity-apps/commit/afc7e6c8bd39700ef53f1b7193e0eac2ccb85189) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Remove permission assignment from console admin role
+
+* [#5446](https://github.com/wso2/identity-apps/pull/5446) [`b9339a95cc`](https://github.com/wso2/identity-apps/commit/b9339a95cc5c84f3b2c21f68955494956831a695) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Update for sp parameter and login.jsp
+
 ## 2.1.17
 
 ### Patch Changes
