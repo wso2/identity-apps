@@ -8,7 +8,7 @@
 
 .ui.nag {
     &.downtime-banner {
-        background: @downtimeBannerBackground;
+        background: @warningBackgroundColor;
         border-radius: 0;
         min-height: fit-content;
         position: sticky;

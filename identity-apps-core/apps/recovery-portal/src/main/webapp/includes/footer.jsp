@@ -19,13 +19,20 @@
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script src="libs/themes/wso2is/semantic.min.js"></script>
 
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+
+<% 
+    String isDowntimeBannerEnabled = application.getInitParameter("isDowntimeBannerEnabled");
+%>
+
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
     $(document).ready(function () {
-        // downtime-banner
-        var SHOW_DOWNTIME_BANNER = false;
+        // downtime-banner.
+        var SHOW_DOWNTIME_BANNER = <%= StringUtils.equalsIgnoreCase(isDowntimeBannerEnabled,"true")%>;
 
-        if (SHOW_DOWNTIME_BANNER) {
+        if(SHOW_DOWNTIME_BANNER) {
             $("#downtime-banner")
             .nag("show");
         }
