@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -49,7 +50,13 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications/constants";
-import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants
+} from "../../core";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {
@@ -109,6 +116,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
+
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features
+    );
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -221,6 +234,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         _recursive?: boolean
         ) => void = useCallback(
             (limit?: number, filter?: string, after?: string, before?: string, _recursive?: boolean): void => {
+                if (!hasRequiredScopes(featureConfig?.organizations,
+                    featureConfig?.organizations?.scopes?.read, allowedScopes)) {
+                    // If the user does not have the required scopes, do not proceed.
+                    // This is to avoid unnecessary requests to the when performing the org switch.
+                    return;
+                }
+
                 setOrganizationListRequestLoading(true);
                 getOrganizations(filter, limit, after, before, false)
                     .then((response: OrganizationListInterface) => {
