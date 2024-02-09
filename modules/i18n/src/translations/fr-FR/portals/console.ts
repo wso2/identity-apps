@@ -1739,6 +1739,10 @@ export const console: ConsoleNS = {
                             },
                             subject: {
                                 fields: {
+                                    alternateSubjectAttribute: {
+                                        hint: "Cette option permettra d'utiliser un autre attribut comme identifiant de sujet au lieu du <1>userid</1>.",
+                                        label: "Affecter l'identifiant de sujet alternatif"
+                                    },
                                     subjectAttribute: {
                                         hint: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
                                             "comme identifiant de sujet de l'utilisateur.",

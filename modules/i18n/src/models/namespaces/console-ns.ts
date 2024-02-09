@@ -1134,6 +1134,7 @@ export interface ConsoleNS {
                             }
                             subject: {
                                 fields: {
+                                    alternateSubjectAttribute: FormAttributes;
                                     subjectAttribute: FormAttributes;
                                     subjectIncludeTenantDomain: FormAttributes;
                                     subjectIncludeUserDomain: FormAttributes;
