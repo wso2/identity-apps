@@ -269,6 +269,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable/Disable the custom claim mapping feature.
      */
     isCustomClaimMappingEnabled?: boolean;
+    /**
+     * Whether to consider the role claim as the group claim.
+     */
+    useRoleClaimAsGroupClaim?: boolean;
 }
 
 /**

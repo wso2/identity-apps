@@ -1166,6 +1166,7 @@
         ],
         "isXacmlConnectorEnabled": false,
         "administratorRoleDisplayName": "Administrator",
+        "useRoleClaimAsGroupClaim": false,
         "legacyMode": {
             "apiResources": true,
             "applicationListSystemApps": false,

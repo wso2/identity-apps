@@ -316,7 +316,8 @@ export class Config {
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
-            theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme
+            theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
+            useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim
         };
     }
 }
