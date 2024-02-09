@@ -18,7 +18,8 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
@@ -72,41 +73,49 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
+    const shouldShowOutboundProvisioningConfigurations: boolean = useMemo(() => {
+        return application?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0;
+    }, [ application ]);
+
     return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                    <InboundProvisioningConfigurations
-                        appId={ application.id }
-                        provisioningConfigurations={ provisioningConfigurations }
-                        onUpdate={ onUpdate }
-                        readOnly={
-                            readOnly
-                            || !hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update,
-                                allowedScopes)
-                        }
-                        data-testid={ `${ componentId }-inbound-configuration` }
-                    />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                    <OutboundProvisioningConfiguration
-                        application={ application }
-                        provisioningConfigurations={ provisioningConfigurations }
-                        onUpdate={ onUpdate }
-                        readOnly={
-                            readOnly
-                            || !hasRequiredScopes(featureConfig?.applications,
-                                featureConfig?.applications?.scopes?.update,
-                                allowedScopes)
-                        }
-                        data-testid={ `${ componentId }-outbound-configuration` }
-                    />
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        <EmphasizedSegment padded="very">
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <InboundProvisioningConfigurations
+                            appId={ application.id }
+                            provisioningConfigurations={ provisioningConfigurations }
+                            onUpdate={ onUpdate }
+                            readOnly={
+                                readOnly
+                                || !hasRequiredScopes(featureConfig?.applications,
+                                    featureConfig?.applications?.scopes?.update,
+                                    allowedScopes)
+                            }
+                            data-testid={ `${ componentId }-inbound-configuration` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                { shouldShowOutboundProvisioningConfigurations &&  (
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                            <OutboundProvisioningConfiguration
+                                application={ application }
+                                provisioningConfigurations={ provisioningConfigurations }
+                                onUpdate={ onUpdate }
+                                readOnly={
+                                    readOnly
+                                    || !hasRequiredScopes(featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update,
+                                        allowedScopes)
+                                }
+                                data-testid={ `${ componentId }-outbound-configuration` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
+            </Grid>
+        </EmphasizedSegment>
     );
 };
 
