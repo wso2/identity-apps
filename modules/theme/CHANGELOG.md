@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.62
+
+### Patch Changes
+
+- [#5454](https://github.com/wso2/identity-apps/pull/5454) [`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add support to conditionally enable downtime banner
+
 ## 2.0.61
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @wso2is/common
 
+## 2.0.35
+
+### Patch Changes
+
+- [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
+- Updated dependencies [[`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf), [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209)]:
+  - @wso2is/react-components@2.1.5
+  - @wso2is/core@2.0.35
+  - @wso2is/access-control@2.0.19
+  - @wso2is/forms@2.0.20
+  - @wso2is/i18n@2.0.117
+
 ## 2.0.34
 
 ### Patch Changes

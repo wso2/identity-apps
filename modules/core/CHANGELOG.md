@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.35
+
+### Patch Changes
+
+- [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
 ## 2.0.34
 
 ### Patch Changes
