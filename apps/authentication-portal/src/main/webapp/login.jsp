@@ -102,13 +102,24 @@
     String multiOptionURIParam = "";
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
-        try {
-            baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
-        } catch (URLBuilderException e) {
-            request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
-            request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
-            request.getRequestDispatcher("error.do").forward(request, response);
-            return;
+        // Check whether authentication endpoint is hosted externally.
+        String isHostedExternally = application.getInitParameter("IsHostedExternally");
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            String requestURI = request.getRequestURI();
+            if (StringUtils.isNotBlank(requestURI)) {
+                requestURI = requestURI.startsWith("/") ? requestURI : "/" + requestURI;
+                requestURI = requestURI.endsWith("/") ? requestURI.substring(0, requestURI.length() - 1) : requestURI;
+            }
+            baseURL = requestURI;
+        } else {
+            try {
+                baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
+            } catch (URLBuilderException e) {
+                request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
+                request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
+                request.getRequestDispatcher("error.do").forward(request, response);
+                return;
+            }
         }
 
         // Build the query string using the parameter map since the query string can contain fewer parameters
@@ -486,7 +497,7 @@
                                 <button class="ui blue labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        'IWAAuthenticator')"
+                                        'IwaNTLMAuthenticator')"
                                     id="icon-<%=iconId%>"
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> IWA">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>IWA</strong>
