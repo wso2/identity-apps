@@ -58,7 +58,7 @@
         ? Encode.forHtmlAttribute(request.getParameter("username"))
         : "";
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
@@ -215,7 +215,7 @@
                         <%
                         if (StringUtils.isNotBlank(sp)) {
                         %>
-                            <input id="sp" name="sp" type="hidden" value="<%=sp%>"/>
+                            <input id="sp" name="sp" type="hidden" value="<%=Encode.forHtmlAttribute(sp)%>"/>
                         <%
                         }
                         %>

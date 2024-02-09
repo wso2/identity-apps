@@ -21,7 +21,6 @@ package org.wso2.identity.apps.common.util;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.identity.api.resource.mgt.APIResourceMgtException;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.AssociatedRolesConfig;
@@ -31,7 +30,6 @@ import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.Scope;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
 import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
@@ -44,7 +42,6 @@ import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
 import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
-import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
@@ -376,19 +373,6 @@ public class AppPortalUtils {
         return null;
     }
 
-    private static List<Permission> getAllPermissions(String tenantDomain)
-        throws IdentityApplicationManagementException {
-
-        try {
-            List<Scope> scopes = AppsCommonDataHolder.getInstance().getAPIResourceManager()
-                .getSystemAPIScopes(tenantDomain);
-            return scopes.stream().map(scope -> new Permission(scope.getName())).collect(Collectors.toList());
-        } catch (APIResourceMgtException e) {
-            throw new IdentityApplicationManagementException("Error while retrieving internal scopes for tenant " +
-                "domain : " + tenantDomain, e);
-        }
-    }
-
     private static void shareApplication(String tenantDomain, int tenantId, String appId, String appName,
                                          String appOwner)
         throws IdentityApplicationManagementException {
@@ -432,7 +416,7 @@ public class AppPortalUtils {
         try {
             String userID = getUserId(appOwner, tenantId);
             AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().addRole(ADMINISTRATOR,
-                Collections.singletonList(userID), Collections.emptyList(), getAllPermissions(tenantDomain),
+                Collections.singletonList(userID), Collections.emptyList(), Collections.emptyList(),
                 APPLICATION, appId, tenantDomain);
         } catch (IdentityRoleManagementException e) {
             throw new IdentityApplicationManagementException("Failed to add Administrator role for the " +

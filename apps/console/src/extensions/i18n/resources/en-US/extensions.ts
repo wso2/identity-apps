@@ -3787,6 +3787,12 @@ export const extensions: Extensions = {
                                     range: "Max failed attempts should be between 1 & 10.",
                                     maxLengthReached: "Max failed attempts should be a number with 1 or 2 digits."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "Notify user when the account lock duration is increased due to " +
+                                    "continuous failed login attempts.",
+                                label: "Notify user when lock time is increased"
                             }
                         }
                     },

@@ -81,7 +81,7 @@
     String username = request.getParameter("username");
     String password = request.getParameter("password");
     String sessionDataKey = request.getParameter("sessionDataKey");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
     String applicationAccessUrl = "";
     JSONObject usernameValidityResponse;
