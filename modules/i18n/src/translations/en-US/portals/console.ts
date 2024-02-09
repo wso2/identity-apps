@@ -4592,13 +4592,13 @@ export const console: ConsoleNS = {
                         valueName: "Identity Provider Role"
                     },
                     uriAttributeSettings: {
-                        role: {
-                            heading: "Role",
-                            hint: "Specifies the attribute that identifies the roles at the Identity Provider.",
-                            label: "Role Attribute",
-                            placeHolder: "Default Role",
+                        group: {
+                            heading: "Group",
+                            hint: "Specifies the attribute that identifies the groups at the Connection.",
+                            label: "Group Attribute",
+                            placeHolder: "Select the attribute",
                             validation: {
-                                empty: "Please select an attribute for role"
+                                empty: "Please select an attribute for groups"
                             }
                         },
                         subject: {

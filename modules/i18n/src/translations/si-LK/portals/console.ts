@@ -3694,6 +3694,28 @@ export const console: ConsoleNS = {
                 }
             },
             authenticationProvider: {
+                forms:{
+                    uriAttributeSettings: {
+                        group: {
+                            heading: "සමූහය",
+                            hint: "සම්බන්ධතාවයේ ඇති කණ්ඩායම් හඳුනා ගන්නා ගුණාංගය නියම කරයි.",
+                            label: "කණ්ඩායම් ගුණාංගය",
+                            placeHolder: "ගුණාංගය තෝරන්න",
+                            validation: {
+                                empty: "කරුණාකර කණ්ඩායම් සඳහා ගුණාංගයක් තෝරන්න"
+                            }
+                        },
+                        subject: {
+                            heading: "විෂය",
+                            hint: "අනන්‍යතා සැපයුම්කරු තුළ පරිශීලකයා හඳුනා ගන්නා ගුණාංගය නියම කරයි",
+                            label: "විෂය ගුණාංගය",
+                            placeHolder: "ගුණාංගය තෝරන්න",
+                            validation: {
+                                empty: "කරුණාකර විෂය සඳහා ලක්ෂණයක් තෝරන්න"
+                            }
+                        }
+                    }
+                },
                 templates: {
                     apple: {
                         wizardHelp: {

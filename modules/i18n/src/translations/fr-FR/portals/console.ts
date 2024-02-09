@@ -3793,6 +3793,28 @@ export const console: ConsoleNS = {
                 }
             },
             authenticationProvider: {
+                forms: {
+                    uriAttributeSettings: {
+                        group: {
+                            heading: "Groupe",
+                            hint: "Spécifie l'attribut qui identifie les groupes au niveau de la connexion.",
+                            label: "Attribut de groupe",
+                            placeHolder: "Sélectionnez l'attribut",
+                            validation: {
+                                empty: "Veuillez sélectionner un attribut pour les groupes"
+                            }
+                        },
+                        subject: {
+                            heading: "Sujet",
+                            hint: "Spécifie l'attribut qui identifie l'utilisateur auprès du connexion",
+                            label: "Attribut du sujet",
+                            placeHolder: "Sélectionner un attribut",
+                            validation: {
+                                empty: "Veuillez sélectionner un attribut pour le sujet"
+                            }
+                        }
+                    }
+                },
                 templates: {
                     apple: {
                         wizardHelp: {
