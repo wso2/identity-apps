@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.3.20
+
+### Patch Changes
+
+- [#5455](https://github.com/wso2/identity-apps/pull/5455) [`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add info message to the SMS Provider
+
+* [#5447](https://github.com/wso2/identity-apps/pull/5447) [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298) Thanks [@savindi7](https://github.com/savindi7)! - Update content and validations in Ask password configs
+
+* Updated dependencies [[`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76), [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298)]:
+  - @wso2is/i18n@2.0.118
+
 ## 2.3.19
 
 ### Patch Changes

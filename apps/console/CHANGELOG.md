@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.12.6
+
+### Patch Changes
+
+- [#5462](https://github.com/wso2/identity-apps/pull/5462) [`02d1aee28e`](https://github.com/wso2/identity-apps/commit/02d1aee28eb5fc1734df8be0deb97ad3a1f27e2c) Thanks [@brionmario](https://github.com/brionmario)! - Enable `showBackChannelLogout` field
+
+* [#5455](https://github.com/wso2/identity-apps/pull/5455) [`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add info message to the SMS Provider
+
+- [#5463](https://github.com/wso2/identity-apps/pull/5463) [`d4eba50c28`](https://github.com/wso2/identity-apps/commit/d4eba50c28c180160f20574fbd9090c664e15fd1) Thanks [@brionmario](https://github.com/brionmario)! - Only show `Outbound Provisioning` section in Application configurations for migrating users
+
+* [#5459](https://github.com/wso2/identity-apps/pull/5459) [`9bbdcde28f`](https://github.com/wso2/identity-apps/commit/9bbdcde28f0e05e345d5af8f0cb2fdc64d9b96b6) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Avoid making an organization switch call for users who directly SSO to the console.
+
+- [#5447](https://github.com/wso2/identity-apps/pull/5447) [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298) Thanks [@savindi7](https://github.com/savindi7)! - Update content and validations in Ask password configs
+
+- Updated dependencies [[`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76), [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298)]:
+  - @wso2is/i18n@2.0.118
+  - @wso2is/common@2.0.36
+
 ## 2.12.5
 
 ### Patch Changes

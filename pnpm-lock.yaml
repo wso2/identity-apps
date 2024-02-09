@@ -521,7 +521,7 @@ importers:
         specifier: ^2.0.19
         version: link:../../modules/access-control
       '@wso2is/common':
-        specifier: ^2.0.35
+        specifier: ^2.0.36
         version: link:../../modules/common
       '@wso2is/core':
         specifier: ^2.0.35
@@ -536,7 +536,7 @@ importers:
         specifier: ^2.0.20
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.117
+        specifier: ^2.0.118
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.5
@@ -861,7 +861,7 @@ importers:
         specifier: ^2.0.20
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.117
+        specifier: ^2.0.118
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.5
@@ -1157,7 +1157,7 @@ importers:
         specifier: ^2.0.20
         version: link:../forms
       '@wso2is/i18n':
-        specifier: ^2.0.117
+        specifier: ^2.0.118
         version: link:../i18n
       '@wso2is/react-components':
         specifier: ^2.1.5
