@@ -2091,6 +2091,7 @@ export interface ConsoleNS {
                         group: {
                             heading: string;
                             hint: string;
+                            message: string;
                             placeHolder: string;
                             label: string;
                             validation: {

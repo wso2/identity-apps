@@ -4596,6 +4596,9 @@ export const console: ConsoleNS = {
                             heading: "Group",
                             hint: "Specifies the attribute that identifies the groups at the Connection.",
                             label: "Group Attribute",
+                            message: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default" +
+                                "<1>Group Attribute</1> as you have not added a custom attribute " +
+                                "mapping for the connection roles attribute.",
                             placeHolder: "Select the attribute",
                             validation: {
                                 empty: "Please select an attribute for groups"
