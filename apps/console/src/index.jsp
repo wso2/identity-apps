@@ -158,6 +158,10 @@
             };
         </script>
 
+        <!-- Start of custom stylesheets -->
+        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <!-- End of custom stylesheets -->
+
         <!-- Start of custom scripts added to the head -->
         <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
         <!-- End of custom scripts added to the head -->
