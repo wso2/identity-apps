@@ -20,6 +20,7 @@ import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Hint, Message } from "@wso2is/react-components";
 import find from "lodash-es/find";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
@@ -96,6 +97,12 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
 
         setGroupAttribute(getGroupAttribute());
     }, [ selectedClaimMappings ]);
+
+    useEffect(() => {
+
+        // If the initial role uri is not available, then use the group attribute.
+        updateRole(initialRoleUri ? initialRoleUri : groupAttribute);
+    }, [ groupAttribute ]);
 
     const getGroupAttribute = (): string => {
         if (selectedClaimMappings?.length > 0) {
@@ -205,25 +212,24 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 "group.heading") }
                                 </Heading>
                                 {
-                                    claimMappingOn && (
+                                    (claimMappingOn && !isEmpty(groupAttribute)) && (
                                         <Form>
                                             <Form.Select
-                                                hidden={ !claimMappingOn }
                                                 fluid
                                                 options={
                                                     dropDownOptions.concat(
-                                        {
-                                            key: "default_subject",
-                                            text: t("console:develop.features.authenticationProvider" +
-                                                ".forms.uriAttributeSettings.group.placeHolder"),
-                                            value: ""
-                                        } as DropdownOptionsInterface
+                                                        {
+                                                            key: "default_subject",
+                                                            text: t("console:develop.features.authenticationProvider" +
+                                                                ".forms.uriAttributeSettings.group.placeHolder"),
+                                                            value: ""
+                                                        } as DropdownOptionsInterface
                                                     )
                                                 }
                                                 value={
                                                     initialRoleUri
                                                         ? getValidatedInitialValue(initialRoleUri)
-                                                        : groupAttribute
+                                                        : getValidatedInitialValue(groupAttribute)
                                                 }
                                                 placeholder={ t("console:develop.features.authenticationProvider" +
                                                     ".forms.uriAttributeSettings.group.placeHolder") }
@@ -254,7 +260,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     )
                                 }
                                 <Message
-                                    hidden={ claimMappingOn }
+                                    hidden={ claimMappingOn && !isEmpty(groupAttribute)  }
                                     type="info"
                                     content={
                                         (
