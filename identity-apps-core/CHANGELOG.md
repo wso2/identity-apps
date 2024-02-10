@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.20
+
+### Patch Changes
+
+- [#5465](https://github.com/wso2/identity-apps/pull/5465) [`faa889cba5`](https://github.com/wso2/identity-apps/commit/faa889cba5447bfea4c0242c4b390240abd0b5ab) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove downtime banner message variable
+
+* [#5453](https://github.com/wso2/identity-apps/pull/5453) [`c08def6a5d`](https://github.com/wso2/identity-apps/commit/c08def6a5d9e99044b91b3fe880f9f7784e0d3aa) Thanks [@Yoshani](https://github.com/Yoshani)! - add hidden input to hyprelogin
+
 ## 2.1.19
 
 ### Patch Changes
