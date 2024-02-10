@@ -88,6 +88,8 @@ export class ConnectionManagementConstants {
     public static readonly CLAIM_APP_ROLE: string  = "http://wso2.org/claims/groups";
     public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
     public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
+    public static readonly CLAIM_ROLES: string  = "http://wso2.org/claims/roles";
+    public static readonly OIDC_ROLES_CLAIM: string  = "roles";
 
     public static readonly TRUSTED_TOKEN_TEMPLATE_ID: string = "trusted-token-issuer";
     public static readonly EXPERT_MODE_TEMPLATE_ID: string = "expert-mode-idp";

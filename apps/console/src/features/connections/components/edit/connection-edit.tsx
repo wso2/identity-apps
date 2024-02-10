@@ -269,6 +269,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
+                isOIDC={ isOidc }
                 isSaml={ isSaml }
             />
         </ResourceTab.Pane>
@@ -451,8 +452,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         const isAttributesEnabledForOIDC: boolean = isOidc && UIConfig?.isCustomClaimMappingEnabled;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if ((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
-            && (IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC === type && isAttributesEnabledForOIDC)
+        if (((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
+            || (IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC === type && isAttributesEnabledForOIDC))
             && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,

@@ -16,12 +16,15 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Hint, Message } from "@wso2is/react-components";
 import find from "lodash-es/find";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionClaimInterface, ConnectionCommonClaimMappingInterface } from "../../../../models/connection";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
@@ -47,9 +50,21 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      */
     isReadOnly: boolean;
     /**
+     * Is the IdP type OIDC
+     */
+    isOIDC: boolean;
+    /**
      * Is the IdP type SAML
      */
     isSaml: boolean;
+    /**
+     * ID of the connection.
+     */
+    connectionId?: string;
+    /**
+     * List of claim mappings.
+     */
+    selectedClaimMappings?: ConnectionCommonClaimMappingInterface[];
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -57,6 +72,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
 ): ReactElement => {
 
     const {
+        connectionId,
         dropDownOptions,
         initialSubjectUri,
         initialRoleUri,
@@ -64,14 +80,41 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         updateRole,
         updateSubject,
         roleError,
+        selectedClaimMappings,
         subjectError,
         isReadOnly,
         isMappingEmpty,
+        isOIDC,
         isSaml,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const [ groupAttribute, setGroupAttribute ] = useState<string>("");
+
+    useEffect(() => {
+        if (!selectedClaimMappings || selectedClaimMappings.length === 0) {
+            return;
+        }
+
+        setGroupAttribute(getGroupAttribute());
+    }, [ selectedClaimMappings ]);
+
+    const getGroupAttribute = (): string => {
+        if (selectedClaimMappings?.length > 0) {
+            const groupAttribute: ConnectionCommonClaimMappingInterface = selectedClaimMappings.find(
+                (claimMapping: ConnectionCommonClaimMappingInterface) => {
+                    return claimMapping.claim.uri == ConnectionManagementConstants.CLAIM_ROLES;
+                }
+            );
+
+            return groupAttribute ? groupAttribute.mappedValue : "";
+        } else {
+            return "";
+        }
+    };
 
     const getValidatedInitialValue = (initialValue: string) => {
         return find(
@@ -156,61 +199,97 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            <Divider hidden/>
-            <Grid.Row columns={ 2 }>
-                <Grid.Column>
-                    <Heading as="h4">
-                        { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
-                            "group.heading") }
-                    </Heading>
-                    <Form>
-                        <Form.Select
-                            fluid
-                            options={
-                                dropDownOptions.concat(
-                                    {
-                                        key: "default_subject",
-                                        text: t("console:develop.features.authenticationProvider" +
-                                            ".forms.uriAttributeSettings.group.placeHolder"),
-                                        value: ""
-                                    } as DropdownOptionsInterface
-                                )
-                            }
-                            value={ getValidatedInitialValue(initialRoleUri) }
-                            placeholder={ t("console:develop.features.authenticationProvider" +
-                                 ".forms.uriAttributeSettings.group.placeHolder") }
-                            onChange={
-                                (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-                                    updateRole(data.value.toString());
+            {
+                UIConfig.useRoleClaimAsGroupClaim && (
+                    <>
+                        <Divider hidden/>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column>
+                                <Heading as="h4">
+                                    { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
+                                "group.heading") }
+                                </Heading>
+                                {
+                                    claimMappingOn && (
+                                        <Form>
+                                            <Form.Select
+                                                hidden={ !claimMappingOn }
+                                                fluid
+                                                options={
+                                                    dropDownOptions.concat(
+                                        {
+                                            key: "default_subject",
+                                            text: t("console:develop.features.authenticationProvider" +
+                                                ".forms.uriAttributeSettings.group.placeHolder"),
+                                            value: ""
+                                        } as DropdownOptionsInterface
+                                                    )
+                                                }
+                                                value={
+                                                    initialRoleUri
+                                                        ? getValidatedInitialValue(initialRoleUri)
+                                                        : groupAttribute
+                                                }
+                                                placeholder={ t("console:develop.features.authenticationProvider" +
+                                            ".forms.uriAttributeSettings.group.placeHolder") }
+                                                onChange={
+                                                    (_event: React.SyntheticEvent<HTMLElement, Event>,
+                                                        data: DropdownProps) => {
+                                                        updateRole(data.value.toString());
+                                                    }
+                                                }
+                                                search
+                                                fullTextSearch={ false }
+                                                label={ t("console:develop.features.authenticationProvider.forms." +
+                                            "uriAttributeSettings.group.label") }
+                                                data-testid={ `${ testId }-form-element-role` }
+                                                error={ roleError && {
+                                                    content: t("console:develop.features.authenticationProvider" +
+                                                ".forms.uriAttributeSettings.group.validation.empty"),
+                                                    pointing: "above"
+                                                } }
+                                                disabled={ !claimMappingOn }
+                                                readOnly={ isReadOnly }
+                                            />
+                                            <Hint>
+                                                { t("console:develop.features.authenticationProvider." +
+                                                    "forms.uriAttributeSettings.group.hint") }
+                                            </Hint>
+                                        </Form>
+                                    )
                                 }
-                            }
-                            search
-                            fullTextSearch={ false }
-                            label={ t("console:develop.features.authenticationProvider.forms." +
-                                "uriAttributeSettings.group.label") }
-                            data-testid={ `${ testId }-form-element-role` }
-                            error={ roleError && {
-                                content: t("console:develop.features.authenticationProvider" +
-                                    ".forms.uriAttributeSettings.group.validation.empty"),
-                                pointing: "above"
-                            } }
-                            disabled={ !claimMappingOn }
-                            readOnly={ isReadOnly }
-                        />
-                    </Form>
-                    <Hint>
-                        { t("console:develop.features.authenticationProvider." +
-                            "forms.uriAttributeSettings.group.hint") }
-                    </Hint>
-                    <Message
-                        type="info"
-                        content="We would like to inform you that the field previously
-                        labeled as 'Role Attribute' has been changed to 'Group Attribute'. This adjustment 
-                        aligns with our strategy of introducing connection group to organization 
-                        group mapping to resolve connection groups, in the latest versions of Identity Server."
-                    />
-                </Grid.Column>
-            </Grid.Row>
+                                <Message
+                                    hidden={ claimMappingOn }
+                                    type="info"
+                                    content={
+                                        (
+                                            <Trans
+                                                i18nKey={
+                                                    "console:develop.features.authenticationProvider." +
+                                                        "forms.uriAttributeSettings.group.message"
+                                                }
+                                                tOptions={ {
+                                                    attribute: isOIDC
+                                                        ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                                        : ConnectionManagementConstants.CLAIM_ROLES
+                                                } }
+                                            >
+                                                Please note that <strong>{ isOIDC
+                                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                                    : ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                                                 attribute will be considered as the default
+                                                <strong>Group Attribute</strong> as you have not added a
+                                                custom attribute mapping for the connection roles attribute.
+                                            </Trans>
+                                        )
+                                    }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+
+                )
+            }
         </>
     );
 };

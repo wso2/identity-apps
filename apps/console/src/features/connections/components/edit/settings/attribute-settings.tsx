@@ -114,6 +114,10 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
      */
     loader: () => ReactElement;
     /**
+     * Is the IdP type OIDC
+     */
+    isOIDC: boolean;
+    /**
      * Is the IdP type SAML
      */
     isSaml: boolean;
@@ -135,6 +139,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         isReadOnly,
         isRoleMappingsEnabled,
         loader: Loader,
+        isOIDC,
         isSaml,
         [ "data-testid" ]: testId
     } = props;
@@ -390,7 +395,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                 subjectError={ isSubmitting && !subjectClaimUri }
                                 isReadOnly={ isReadOnly }
                                 isMappingEmpty={ isEmpty(selectedClaimsWithMapping) }
+                                isOIDC={ isOIDC }
                                 isSaml={ isSaml }
+                                selectedClaimMappings={ selectedClaimsWithMapping }
                             />
                         )
                     }
