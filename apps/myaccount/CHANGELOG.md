@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.21
+
+### Patch Changes
+
+- [#5466](https://github.com/wso2/identity-apps/pull/5466) [`9344aa01a5`](https://github.com/wso2/identity-apps/commit/9344aa01a5d5b296f65b50d41e06c83b76218af9) Thanks [@brionmario](https://github.com/brionmario)! - Add JavaScript & CSS extension points for Console & My Account
+
 ## 2.3.20
 
 ### Patch Changes
