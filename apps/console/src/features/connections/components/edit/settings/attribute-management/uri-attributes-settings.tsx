@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
-import { ConnectionClaimInterface, ConnectionCommonClaimMappingInterface } from "../../../../models/connection";
+import { ConnectionCommonClaimMappingInterface } from "../../../../models/connection";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
@@ -58,10 +58,6 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      */
     isSaml: boolean;
     /**
-     * ID of the connection.
-     */
-    connectionId?: string;
-    /**
      * List of claim mappings.
      */
     selectedClaimMappings?: ConnectionCommonClaimMappingInterface[];
@@ -72,7 +68,6 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
 ): ReactElement => {
 
     const {
-        connectionId,
         dropDownOptions,
         initialSubjectUri,
         initialRoleUri,
@@ -231,7 +226,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                         : groupAttribute
                                                 }
                                                 placeholder={ t("console:develop.features.authenticationProvider" +
-                                            ".forms.uriAttributeSettings.group.placeHolder") }
+                                                    ".forms.uriAttributeSettings.group.placeHolder") }
                                                 onChange={
                                                     (_event: React.SyntheticEvent<HTMLElement, Event>,
                                                         data: DropdownProps) => {
@@ -241,11 +236,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                 search
                                                 fullTextSearch={ false }
                                                 label={ t("console:develop.features.authenticationProvider.forms." +
-                                            "uriAttributeSettings.group.label") }
+                                                    "uriAttributeSettings.group.label") }
                                                 data-testid={ `${ testId }-form-element-role` }
                                                 error={ roleError && {
                                                     content: t("console:develop.features.authenticationProvider" +
-                                                ".forms.uriAttributeSettings.group.validation.empty"),
+                                                        ".forms.uriAttributeSettings.group.validation.empty"),
                                                     pointing: "above"
                                                 } }
                                                 disabled={ !claimMappingOn }
