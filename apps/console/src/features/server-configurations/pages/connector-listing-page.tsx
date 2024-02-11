@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -115,7 +115,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         dynamicConnectorCategories,
         setDynamicConnectorCategories
     ] = useState<GovernanceConnectorCategoryInterface[]>([]);
-    const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
+    const [ connectors, setConnectors ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
     const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(true);
 
@@ -141,7 +141,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         return !isPasswordInputValidationEnabled;
                     }
 
-                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id);
+                    return !serverConfigurationConfig.connectorCategoriesToHide.includes(category.id);
                 }));
 
                 setDynamicConnectorCategories(connectorCategoryArray);
@@ -193,9 +193,18 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     connector.ref = React.createRef();
                 });
 
-                setConnectors((connectors: GovernanceConnectorWithRef[]) => [
-                    ...connectors, ...connectorList as GovernanceConnectorWithRef[]
+                // Group the connectors by category.
+
+                const connectorCategory: GovernanceConnectorCategoryInterface = {
+                    ...response,
+                    connectors: connectorList
+                };
+
+                setConnectors((connectors: GovernanceConnectorCategoryInterface[]) => [
+                    ...connectors,
+                    connectorCategory
                 ]);
+
                 !selectedConnector && setSelectorConnector(connectorList[ 0 ] as GovernanceConnectorWithRef);
             })
             .catch((error: IdentityAppsApiException) => {
