@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -52,16 +52,11 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
-    connectorCategoriesToIgnore: [
+    connectorCategoriesToHide: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
     ],
-    connectorCategoriesToShow: [
-        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-    ],
+    connectorCategoriesToShow: [ "all" ],
     connectorPropertiesToShow: [ "all" ],
     connectorStatusViewDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
@@ -84,11 +79,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID,
         ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID
     ],
-    connectorsToShow: [
-        "account-recovery",
-        "self-sign-up",
-        "user-email-verification"
-    ],
+    connectorsToShow: [ "all" ],
     customConnectors: [
         ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
         ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,

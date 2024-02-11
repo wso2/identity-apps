@@ -45,6 +45,7 @@ import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import "./governance-connector-grid.scss";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
 
 /**
  * Props for the Governance connector configuration categories page.
@@ -58,7 +59,7 @@ export interface GovernanceConnectorCategoriesGridInterface extends
         /**
          * Dynamic connector catergories.
          */
-        dynamicConnectors: any;
+        dynamicConnectors: GovernanceConnectorCategoryInterface[];
     }
 
 /**
@@ -91,9 +92,31 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     const handleDynamicConnectorSelection = (e: SyntheticEvent, connector: any): void => {
         history.push(AppConstants.getPaths()
             .get("GOVERNANCE_CONNECTOR_EDIT")
-            .replace(":categoryId",
-                connector.categoryId)
+            .replace(":categoryId", connector.categoryId)
             .replace(":connectorId", connector.id));
+    };
+
+    /**
+     * Resolve the visibility of the dynamic connector category.
+     *
+     * @param connectorCategory - Connector category.
+     *
+     * @returns - If the category is visible or not.
+     */
+    const resolveDynamicConnectorCategoryVisibility = (
+        connectorCategory: GovernanceConnectorCategoryInterface): boolean => {
+
+        if (connectorCategory?.connectors?.length <= 0) {
+            return false;
+        }
+
+        // Hide the category if all the connectors are hidden.
+        if (connectorCategory?.connectors?.every((connector: GovernanceConnectorInterface) =>
+            serverConfigurationConfig.connectorsToHide.includes(connector.id))) {
+            return false;
+        }
+
+        return true;
     };
 
     if (isLoading) {
@@ -235,56 +258,70 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
             })
             }
             {
-                (serverConfigurationConfig.dynamicConnectors && dynamicConnectors.length > 0) && (
-                    <div className="catergory-container">
-                        <Typography
-                            color="text.primary"
-                            className="mb-3"
-                            variant="h4"
-                        >
-                            Other Settings
-                        </Typography>
-                        <div className="governance-connector-list-grid-wrapper" data-componentid={ componentId }>
-                            <div className="governance-connector-list-grid">
-                                {
-                                    dynamicConnectors.map((connector: any) => {
-                                        if (!serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
-                                            return (
-                                                <Card
-                                                    key={ connector.id }
-                                                    className="governance-connector"
-                                                    onClick={ (e: SyntheticEvent) => handleDynamicConnectorSelection(e,
-                                                        connector) }
-                                                >
-                                                    <CardContent className="governance-connector-header">
-                                                        <Avatar
-                                                            variant="square"
-                                                            randomBackgroundColor
-                                                            backgroundColorRandomizer={ connector.id }
-                                                            className="governance-connector-icon-container"
+                (serverConfigurationConfig.dynamicConnectors && dynamicConnectors?.length > 0) && (
+                    dynamicConnectors.map((connectorCategory: GovernanceConnectorCategoryInterface, index: number) => ((
+                        resolveDynamicConnectorCategoryVisibility(connectorCategory) && (
+                            <div
+                                className="catergory-container"
+                                key={ index }
+                            >
+                                <Typography
+                                    color="text.primary"
+                                    className="mb-3"
+                                    variant="h4"
+                                >
+                                    { connectorCategory?.name }
+                                </Typography>
+                                <div
+                                    className="governance-connector-list-grid-wrapper"
+                                    data-componentid={ componentId }
+                                >
+                                    <div className="governance-connector-list-grid">
+                                        {
+                                            connectorCategory?.connectors?.map((
+                                                connector: GovernanceConnectorInterface) => {
+                                                if (!serverConfigurationConfig.connectorsToHide
+                                                    .includes(connector?.id)) {
+                                                    return (
+                                                        <Card
+                                                            key={ connector.id }
+                                                            className="governance-connector"
+                                                            onClick={ (e: SyntheticEvent) =>
+                                                                handleDynamicConnectorSelection(e, connector) }
                                                         >
-                                                            { resolveConnectorCategoryIcon(connector.id) }
-                                                        </Avatar>
-                                                        <div>
-                                                            <Typography variant="h6">
-                                                                { connector.friendlyName }
-                                                            </Typography>
-                                                        </div>
-                                                    </CardContent>
-                                                    <CardContent>
-                                                        <Typography variant="body2" color="text.secondary">
-                                                            { `Configure settings related to
-                                                                ${ connector.friendlyName.toLowerCase() } connector.` }
-                                                        </Typography>
-                                                    </CardContent>
-                                                </Card>
-                                            );
+                                                            <CardContent className="governance-connector-header">
+                                                                <Avatar
+                                                                    variant="square"
+                                                                    randomBackgroundColor
+                                                                    backgroundColorRandomizer={ connector?.id }
+                                                                    className="governance-connector-icon-container"
+                                                                >
+                                                                    { resolveConnectorCategoryIcon(connector?.id) }
+                                                                </Avatar>
+                                                                <div>
+                                                                    <Typography variant="h6">
+                                                                        { connector?.friendlyName }
+                                                                    </Typography>
+                                                                </div>
+                                                            </CardContent>
+                                                            <CardContent>
+                                                                <Typography variant="body2" color="text.secondary">
+                                                                    { `Configure settings related to
+                                                                    ${ connector?.friendlyName?.toLowerCase() }
+                                                                    connector.` }
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </Card>
+                                                    );
+                                                }
+                                            })
                                         }
-                                    })
-                                }
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        )
+                    )
+                    ))
                 )
             }
         </div>
