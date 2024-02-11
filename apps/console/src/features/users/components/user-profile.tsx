@@ -49,7 +49,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { SCIMConfigs, commonConfig,userConfig } from "../../../extensions";
+import { SCIMConfigs, commonConfig, userConfig } from "../../../extensions";
 import { TenantInfo } from "../../../extensions/components/tenants/models";
 import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
 import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/users/constants";
@@ -1008,10 +1008,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     {
                         "op": "replace",
                         "value": {
-                            [ SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled
-                                .startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA) &&
-                                SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked
-                                    .startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA)
+                            [ SCIMConfigs?.scimEnterpriseUserClaimUri?.accountDisabled?.
+                                startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA) &&
+                                SCIMConfigs?.scimEnterpriseUserClaimUri?.accountLocked?.
+                                    startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA)
                                 ? ProfileConstants.SCIM2_WSO2_USER_SCHEMA
                                 : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
                                 [attributeName]: attributeValue
