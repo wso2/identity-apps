@@ -326,6 +326,8 @@ export const extensions: Extensions = {
                 groupAttributeLabel: "Group attribute",
                 groupAttributeHint: "The attribute from the connection that will be mapped to the organization's group attribute.",
                 groupAttributePlaceholder: "Enter mapped attribute",
+                groupAttributeMessage1: "Please be aware that the attribute selected in the <1>Attributes tab</1> as the group attribute is used to identify groups at the Connection.",
+                groupAttributeMessage2: "For modifications to the group attribute, please visit the <1>Attributes tab</1>.",
                 notifications: {
                     fetchConfigs: {
                         error: {
