@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.22
+
+### Patch Changes
+
+- [#5471](https://github.com/wso2/identity-apps/pull/5471) [`a403c37202`](https://github.com/wso2/identity-apps/commit/a403c372020862d14438a24de3ddfa9fc3df2de6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix for the SCIM attribute URI issue
+
 ## 2.3.21
 
 ### Patch Changes

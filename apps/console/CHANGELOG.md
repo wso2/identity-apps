@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.12.8
+
+### Patch Changes
+
+- [#5472](https://github.com/wso2/identity-apps/pull/5472) [`4cd0cb463b`](https://github.com/wso2/identity-apps/commit/4cd0cb463b5d4aa1cb46f4e004054f2e63860f91) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Issue of SCIM Operation for Account Locking
+
+* [#5468](https://github.com/wso2/identity-apps/pull/5468) [`0347c6ca45`](https://github.com/wso2/identity-apps/commit/0347c6ca454d6804e188ef9f8a07e1149d1bbe03) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix custom governance connector not displaying under login and registration
+
 ## 2.12.7
 
 ### Patch Changes
