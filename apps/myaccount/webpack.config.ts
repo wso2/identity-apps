@@ -486,9 +486,23 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                                                 // specific folders like `WEB_INF` etc.
                                                 ...RELATIVE_PATHS.javaEEFolders
                                             ]
+                                        },
+                                        info: {
+                                            // No need to minify the `public` directory.
+                                            minimized: true
                                         }
                                     };
                                 }
+                            }
+
+                            // No need to minify the `public` directory.
+                            if (pattern.context.match(/public/)) {
+                                return {
+                                    ...pattern,
+                                    info: {
+                                        minimized: true
+                                    }
+                                };
                             }
 
                             return pattern;
