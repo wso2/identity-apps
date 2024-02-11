@@ -314,7 +314,7 @@
                                 <% } else {
                                     String multiOptionURI = request.getParameter("multiOptionURI");
                                     if (multiOptionURI != null &&
-                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                        AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
                                         isMultiAuthAvailable(multiOptionURI)) {
                                 %>
                                     <a class="ui fluid large button secondary mt-2" id="goBackLink"

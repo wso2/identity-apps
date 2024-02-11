@@ -175,7 +175,7 @@
                             <%
                                 String multiOptionURI = request.getParameter("multiOptionURI");
                                 if (multiOptionURI != null &&
-                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                        AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
                                         isMultiAuthAvailable(multiOptionURI)) {
                             %>
                             <div class="mt-1 align-center">
