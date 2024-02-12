@@ -90,6 +90,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
 
     const [ groupAttribute, setGroupAttribute ] = useState<string>("");
 
+    // Set the initial value of the mapped connection attribute of the organization's roles attribute.
     useEffect(() => {
         if (!selectedClaimMappings || selectedClaimMappings.length === 0) {
             return;
@@ -98,9 +99,10 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         setGroupAttribute(getGroupAttribute());
     }, [ selectedClaimMappings ]);
 
+    // Set the initial value of the Group Attribute dropdown.
     useEffect(() => {
         // If the initial role uri is not available, then use the group attribute.
-        updateRole(initialRoleUri ? initialRoleUri : groupAttribute);
+        updateRole(initialRoleUri ?? groupAttribute);
     }, [ groupAttribute ]);
 
     const getGroupAttribute = (): string => {
