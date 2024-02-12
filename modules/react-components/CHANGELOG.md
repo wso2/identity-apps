@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.1.6
+
+### Patch Changes
+
+- [#5470](https://github.com/wso2/identity-apps/pull/5470) [`f58ad94c02`](https://github.com/wso2/identity-apps/commit/f58ad94c02ba67759480812d52e6cecc9bd3bc95) Thanks [@brionmario](https://github.com/brionmario)! - Stop minifying public assets
+
 ## 2.1.5
 
 ### Patch Changes
