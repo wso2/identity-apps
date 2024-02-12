@@ -29,4 +29,12 @@
             }
         }
     }
+
+    .accordion-container {
+        .oxygen-accordion {
+            &.Mui-expanded:first-of-type {
+                margin-top: 10px;
+            }
+        }
+    }
 }
