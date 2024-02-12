@@ -77,7 +77,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                if ( key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+                if (key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
                     return value;
                 } else {
                     return value?.includes(key);

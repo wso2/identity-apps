@@ -179,7 +179,8 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
 };
 
 // Add a radio field for user id in claims with predefined options.
-export const getUserIdClaimRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
+export const getUserIdClaimRadioButtonField = (
+    eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
     testId?: string): ReactElement => {
@@ -662,7 +663,7 @@ export const getFieldType = (
 ): FieldType => {
     if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
         return FieldType.RADIO;
-    } if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
+    } else if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
     } else if (propertyMetadata?.isConfidential) {
         return FieldType.CONFIDENTIAL;

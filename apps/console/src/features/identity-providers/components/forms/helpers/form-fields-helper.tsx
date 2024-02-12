@@ -188,7 +188,8 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
 };
 
 // Add a radio field for user id in claims with predefined options.
-export const getUserIdClaimRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
+export const getUserIdClaimRadioButtonField = (
+    eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
     testId?: string): ReactElement => {
