@@ -176,6 +176,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         resolveDynamicCategories(dynamicConnectorCategories);
     }, [ dynamicConnectorCategories ]);
 
+    /**
+     * This will get the information from dynamic categories and will be combined with the existing categories
+     *
+     * @param categories - Dynamic categories to get information from
+     */
     const resolveDynamicCategories = async (categories: GovernanceConnectorCategoryInterface[]): Promise<void> => {
         const dynamicConnectorCategoryArray: GovernanceConnectorCategoryInterface[] = [];
 
@@ -198,6 +203,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         ]);
     };
 
+    /**
+     * This will get the information from a given category
+     *
+     * @param categoryId - ID of the category
+     */
     const loadCategoryConnectors = (categoryId: string): Promise<GovernanceConnectorCategoryInterface | null> => {
         return getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {

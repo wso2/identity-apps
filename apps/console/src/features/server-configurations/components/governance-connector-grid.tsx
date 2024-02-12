@@ -87,7 +87,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
             ...connectorCategories
         ];
 
-        // Add the dynamic connectors to the combined list according to the title.
+        // Add the dynamic connectors to the combined list grouped by title.
         serverConfigurationConfig.dynamicConnectors && dynamicConnectors?.length > 0 && dynamicConnectors.forEach(
             (dynamicConnector: GovernanceConnectorCategoryInterface) => {
                 const index: number = combined.findIndex((category: GovernanceConnectorCategoryInterface) =>
