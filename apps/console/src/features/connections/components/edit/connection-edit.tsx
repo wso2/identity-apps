@@ -269,6 +269,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
+                isOIDC={ isOidc }
                 isSaml={ isSaml }
             />
         </ResourceTab.Pane>

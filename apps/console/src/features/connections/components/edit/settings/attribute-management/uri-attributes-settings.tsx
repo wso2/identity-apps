@@ -16,12 +16,16 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Code, Heading, Hint } from "@wso2is/react-components";
+import { Code, Heading, Hint, Message } from "@wso2is/react-components";
 import find from "lodash-es/find";
-import React, { FunctionComponent, ReactElement } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
+import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionCommonClaimMappingInterface } from "../../../../models/connection";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
@@ -36,7 +40,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     claimMappingOn: boolean;
     /**
      * Specifies if the IdP Attribute Mappings are available.
-     */  
+     */
     isMappingEmpty: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;
@@ -47,9 +51,17 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      */
     isReadOnly: boolean;
     /**
+     * Is the IdP type OIDC
+     */
+    isOIDC: boolean;
+    /**
      * Is the IdP type SAML
      */
     isSaml: boolean;
+    /**
+     * List of claim mappings.
+     */
+    selectedClaimMappings?: ConnectionCommonClaimMappingInterface[];
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -64,18 +76,52 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         updateRole,
         updateSubject,
         roleError,
+        selectedClaimMappings,
         subjectError,
         isReadOnly,
         isMappingEmpty,
+        isOIDC,
         isSaml,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const [ groupAttribute, setGroupAttribute ] = useState<string>("");
+
+    // Set the initial value of the mapped connection attribute of the organization's roles attribute.
+    useEffect(() => {
+        if (!selectedClaimMappings || selectedClaimMappings.length === 0) {
+            return;
+        }
+
+        setGroupAttribute(getGroupAttribute());
+    }, [ selectedClaimMappings ]);
+
+    // Set the initial value of the Group Attribute dropdown.
+    useEffect(() => {
+        // If the initial role uri is not available, then use the group attribute.
+        updateRole(initialRoleUri ?? groupAttribute);
+    }, [ groupAttribute ]);
+
+    const getGroupAttribute = (): string => {
+        if (selectedClaimMappings?.length > 0) {
+            const groupAttribute: ConnectionCommonClaimMappingInterface = selectedClaimMappings.find(
+                (claimMapping: ConnectionCommonClaimMappingInterface) => {
+                    return claimMapping.claim.uri == ConnectionManagementConstants.CLAIM_ROLES;
+                }
+            );
+
+            return groupAttribute ? groupAttribute.mappedValue : "";
+        } else {
+            return "";
+        }
+    };
 
     const getValidatedInitialValue = (initialValue: string) => {
         return find(
-            dropDownOptions, 
+            dropDownOptions,
             (option: DropdownOptionsInterface) => option?.value === initialValue
         ) !== undefined ? initialValue : "";
     };
@@ -91,7 +137,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Form>
                         <Form.Select
                             fluid
-                            options={ 
+                            options={
                                 dropDownOptions.concat(
                                     {
                                         key: "default_subject",
@@ -99,7 +145,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                             "uriAttributeSettings.subject." +
                                             "placeHolder"),
                                         value: ""
-                                    } as DropdownOptionsInterface 
+                                    } as DropdownOptionsInterface
                                 )
                             }
                             value={ getValidatedInitialValue(initialSubjectUri) }
@@ -127,7 +173,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         />
                     </Form>
                     <Hint>
-                        { isSaml 
+                        { isSaml
                             ? (
                                 <Trans
                                     i18nKey={
@@ -135,10 +181,10 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".uriAttributeSettings.subject.hint"
                                     }
                                 >
-                                The attribute that identifies the user at the enterprise identity provider. 
-                                When attributes are configured based on the authentication response of this 
-                                IdP connection, you can use one of them as the subject. Otherwise, the 
-                                default <Code>saml2:Subject</Code> in the SAML response is used as the 
+                                The attribute that identifies the user at the enterprise identity provider.
+                                When attributes are configured based on the authentication response of this
+                                IdP connection, you can use one of them as the subject. Otherwise, the
+                                default <Code>saml2:Subject</Code> in the SAML response is used as the
                                 subject attribute.
                                 </Trans>
                             )
@@ -156,55 +202,94 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            <Divider hidden/>
             {
-                claimMappingOn && (
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column>
-                            <Heading as="h4">
-                                { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
-                                    "role.heading") }
-                            </Heading>
-                            <Form>
-                                <Form.Select
-                                    fluid
-                                    options={
-                                        dropDownOptions.concat(
-                                            {
-                                                key: "default_subject",
-                                                text: t("console:develop.features.authenticationProvider" +
-                                                    ".forms.uriAttributeSettings.role.placeHolder"),
-                                                value: ""
-                                            } as DropdownOptionsInterface 
+                UIConfig.useRoleClaimAsGroupClaim && (
+                    <>
+                        <Divider hidden/>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column>
+                                <Heading as="h4">
+                                    { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
+                                "group.heading") }
+                                </Heading>
+                                {
+                                    (claimMappingOn && !isEmpty(initialRoleUri)) && (
+                                        <Form>
+                                            <Form.Select
+                                                fluid
+                                                options={
+                                                    dropDownOptions.concat(
+                                                        {
+                                                            key: "default_subject",
+                                                            text: t("console:develop.features.authenticationProvider" +
+                                                                ".forms.uriAttributeSettings.group.placeHolder"),
+                                                            value: ""
+                                                        } as DropdownOptionsInterface
+                                                    )
+                                                }
+                                                value={
+                                                    initialRoleUri
+                                                        ? getValidatedInitialValue(initialRoleUri)
+                                                        : getValidatedInitialValue(groupAttribute)
+                                                }
+                                                placeholder={ t("console:develop.features.authenticationProvider" +
+                                                    ".forms.uriAttributeSettings.group.placeHolder") }
+                                                onChange={
+                                                    (_event: React.SyntheticEvent<HTMLElement, Event>,
+                                                        data: DropdownProps) => {
+                                                        updateRole(data.value.toString());
+                                                    }
+                                                }
+                                                search
+                                                fullTextSearch={ false }
+                                                label={ t("console:develop.features.authenticationProvider.forms." +
+                                                    "uriAttributeSettings.group.label") }
+                                                data-testid={ `${ testId }-form-element-role` }
+                                                error={ roleError && {
+                                                    content: t("console:develop.features.authenticationProvider" +
+                                                        ".forms.uriAttributeSettings.group.validation.empty"),
+                                                    pointing: "above"
+                                                } }
+                                                disabled={ !claimMappingOn }
+                                                readOnly={ isReadOnly }
+                                            />
+                                            <Hint>
+                                                { t("console:develop.features.authenticationProvider." +
+                                                    "forms.uriAttributeSettings.group.hint") }
+                                            </Hint>
+                                        </Form>
+                                    )
+                                }
+                                <Message
+                                    hidden={ claimMappingOn && !isEmpty(initialRoleUri)  }
+                                    type="info"
+                                    content={
+                                        (
+                                            <Trans
+                                                i18nKey={
+                                                    "console:develop.features.authenticationProvider." +
+                                                        "forms.uriAttributeSettings.group.message"
+                                                }
+                                                tOptions={ {
+                                                    attribute: isOIDC
+                                                        ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                                        : ConnectionManagementConstants.CLAIM_ROLES
+                                                } }
+                                            >
+                                                Please note that <strong>{ isOIDC
+                                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                                    : ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                                                 attribute will be considered as the default
+                                                <strong>Group Attribute</strong> as you have not added a
+                                                custom attribute mapping for the connection roles attribute.
+                                            </Trans>
                                         )
                                     }
-                                    value={ getValidatedInitialValue(initialRoleUri) }
-                                    placeholder={ t("console:develop.features.authenticationProvider" +
-                                        ".forms.uriAttributeSettings.role.placeHolder") }
-                                    onChange={
-                                        (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
-                                            updateRole(data.value.toString());
-                                        }
-                                    }
-                                    search
-                                    fullTextSearch={ false }
-                                    label={ t("console:develop.features.authenticationProvider.forms." +
-                                        "uriAttributeSettings.role.label") }
-                                    data-testid={ `${ testId }-form-element-role` }
-                                    error={ roleError && {
-                                        content: t("console:develop.features.authenticationProvider" +
-                                            ".forms.uriAttributeSettings.role.validation.empty"),
-                                        pointing: "above"
-                                    } }
-                                    readOnly={ isReadOnly }
                                 />
-                            </Form>
-                            <Hint>
-                                { t("console:develop.features.authenticationProvider." +
-                                    "forms.uriAttributeSettings.role.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+
                 )
             }
         </>
