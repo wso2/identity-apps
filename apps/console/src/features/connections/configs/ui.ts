@@ -38,7 +38,7 @@ import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
 import { ReactComponent as DefaultConnectionIcon
 } from "../resources/assets/images/icons/default-connection-icon.svg";
 import { ReactComponent as DocumentIcon } from "../resources/assets/images/icons/document-icon.svg";
-import EmailOTPIcon from "../resources/assets/images/icons/email-otp.svg";
+import EmailOTPIcon from "../resources/assets/images/icons/email-solid.svg";
 import { ReactComponent as EnterpriseConnectionIcon
 } from "../resources/assets/images/icons/enterprise-icon.svg";
 import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/gears-icon.svg";
