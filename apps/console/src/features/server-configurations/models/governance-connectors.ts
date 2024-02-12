@@ -47,11 +47,16 @@ export interface GovernanceConnectorInterface {
 	subCategory: string;
 	properties: ConnectorPropertyInterface[];
 	displayName: string;
+    header?: string;
+    isCustom?: boolean;
+    route?: string;
+    testId?: string;
 }
 
 export interface GovernanceConnectorCategoryInterface {
 	id?: string;
 	name?: string;
+    title?: string;
 	description?: string;
 	connectors?: GovernanceConnectorInterface[];
 	route?: string;

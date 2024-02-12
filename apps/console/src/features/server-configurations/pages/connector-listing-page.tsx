@@ -173,39 +173,72 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     }, []);
 
     useEffect(() => {
-        dynamicConnectorCategories?.forEach((connectorCategory: GovernanceConnectorCategoryInterface) => {
-            !serverConfigurationConfig.predefinedConnectorCategories.includes(connectorCategory.id)
-            && loadCategoryConnectors(connectorCategory.id);
-        });
+        resolveDynamicCategories(dynamicConnectorCategories);
     }, [ dynamicConnectorCategories ]);
 
-    const loadCategoryConnectors = (categoryId: string): void => {
+    /**
+     * This will get the information from dynamic categories and will be combined with the existing categories
+     *
+     * @param categories - Dynamic categories to get information from
+     */
+    const resolveDynamicCategories = async (categories: GovernanceConnectorCategoryInterface[]): Promise<void> => {
+        const dynamicConnectorCategoryArray: GovernanceConnectorCategoryInterface[] = [];
 
-        getConnectorCategory(categoryId)
+        if (categories?.length <= 0) {
+            return;
+        }
+
+        for (const category of categories) {
+            if (!serverConfigurationConfig.predefinedConnectorCategories.includes(category.id)) {
+                const connectorCategory: GovernanceConnectorCategoryInterface | null =
+                    await loadCategoryConnectors(category.id);
+
+                connectorCategory && dynamicConnectorCategoryArray.push(connectorCategory);
+            }
+        }
+
+        setConnectors((connectors: GovernanceConnectorCategoryInterface[]) => [
+            ...connectors,
+            ...dynamicConnectorCategoryArray
+        ]);
+    };
+
+    /**
+     * This will get the information from a given category
+     *
+     * @param categoryId - ID of the category
+     */
+    const loadCategoryConnectors = (categoryId: string): Promise<GovernanceConnectorCategoryInterface | null> => {
+        return getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-
                 const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
                     (connector: GovernanceConnectorInterface) =>
                         !serverConfigurationConfig.connectorsToHide.includes(connector.id));
 
+                // If there are no connectors, skip the rest of the logic.
+                if (!connectorList || connectorList.length < 1) {
+                    return null;
+                }
+
                 connectorList?.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
+                    connector.header = connector.friendlyName;
+                    connector.description = t("console:manage.features.governanceConnectors" +
+                    ".genericDescription", { name: connector.friendlyName.toLowerCase() });
+                    connector.isCustom =  true;
+                    connector.testId = `${ connector.name }-card`;
                 });
 
                 // Group the connectors by category.
-
                 const connectorCategory: GovernanceConnectorCategoryInterface = {
-                    ...response,
-                    connectors: connectorList
+                    connectors: connectorList,
+                    title: response.name
                 };
 
-                setConnectors((connectors: GovernanceConnectorCategoryInterface[]) => [
-                    ...connectors,
-                    connectorCategory
-                ]);
-
                 !selectedConnector && setSelectorConnector(connectorList[ 0 ] as GovernanceConnectorWithRef);
+
+                return connectorCategory;
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.detail) {
@@ -239,6 +272,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         })
                     );
                 }
+
+                return null;
             });
     };
 

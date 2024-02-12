@@ -9264,6 +9264,7 @@ export const console: ConsoleNS = {
                         positiveIntegers: "The number should not be less than 0."
                     }
                 },
+                genericDescription: "Configure settings related to {{ name }} connector.",
                 notifications: {
                     getConnector: {
                         error: {
