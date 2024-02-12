@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- [#5362](https://github.com/wso2/identity-apps/pull/5362) [`299ca3430a`](https://github.com/wso2/identity-apps/commit/299ca3430a2709cc52668ec85252de294cccdf48) Thanks [@brionmario](https://github.com/brionmario)! - Remove `isAuthenticatorAllowed` method infavor of `hiddenAuthenticators`
+- [#5362](https://github.com/wso2/identity-apps/pull/5362) [`299ca3430a`](https://github.com/wso2/identity-apps/commit/299ca3430a2709cc52668ec85252de294cccdf48) Thanks [@brionmario](https://github.com/brionmario)! - Add ability to edit Console Role permissions
 
 ## 2.12.12
 
