@@ -18,7 +18,6 @@
 
 import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
-import EmailOTPIcon from "../../../themes/default/assets/images/authenticators/email-otp.svg";
 import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SMSOTPIcon from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
@@ -35,6 +34,7 @@ import MagnifierColoredIcon from "../../../themes/default/assets/images/icons/ma
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
 import TOTPIcon from "../../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
+import EmailOTPIcon from "../../../themes/default/assets/images/icons/solid-icons/email-solid.svg";
 import {
     ReactComponent as ProvisionCapabilityIcon
 } from "../../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
