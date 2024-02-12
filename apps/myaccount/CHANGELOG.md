@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.3.24
+
+### Patch Changes
+
+- [#5467](https://github.com/wso2/identity-apps/pull/5467) [`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add support to show group attribute in conntections attributes tab
+
+- Updated dependencies [[`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11)]:
+  - @wso2is/i18n@2.0.119
+
 ## 2.3.23
 
 ### Patch Changes
