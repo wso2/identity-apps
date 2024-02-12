@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.120
+
+### Patch Changes
+
+- [#5483](https://github.com/wso2/identity-apps/pull/5483) [`2575c34693`](https://github.com/wso2/identity-apps/commit/2575c34693943f56dbe824f69ac2f7ba715bd721) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix grouping in dynamic governance connectors
+
 ## 2.0.119
 
 ### Patch Changes
