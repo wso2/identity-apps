@@ -327,6 +327,8 @@ export const extensions: Extensions = {
                 groupAttributeHint: "L'attribut de l'authentificateur fédéré sera mappé aux rôles spécifiques à l'application. " +
                     "Cela doit être défini pour que l'attribut d'application soit renvoyé.",
                 groupAttributePlaceholder: "Saisir l'attribut mappé",
+                groupAttributeMessage1: "Veuillez noter que l'attribut sélectionné dans l'onglet <1>Attributs</1> car l'attribut de groupe est utilisé pour identifier les groupes à la connexion.",
+                groupAttributeMessage2: "Pour des modifications de l'attribut de groupe, veuillez visiter l'onglet <1>Attributs</1>.",
                 notifications: {
                     fetchConfigs: {
                         error: {

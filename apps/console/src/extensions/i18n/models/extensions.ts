@@ -243,6 +243,8 @@ export interface Extensions {
                 groupAttributeLabel: string;
                 groupAttributeHint: string;
                 groupAttributePlaceholder: string;
+                groupAttributeMessage1: string;
+                groupAttributeMessage2: string;
                 notifications: {
                     fetchConfigs: Notification;
                 };
