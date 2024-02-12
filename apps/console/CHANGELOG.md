@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.12.15
+
+### Patch Changes
+
+- [#5488](https://github.com/wso2/identity-apps/pull/5488) [`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix overflow issue in workflow approvals
+
+* [#5484](https://github.com/wso2/identity-apps/pull/5484) [`dda7bab511`](https://github.com/wso2/identity-apps/commit/dda7bab5111d4133e16ce840e30f9fc096400731) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Onboard the organization-wise JWT Token re-use config
+
+- [#5487](https://github.com/wso2/identity-apps/pull/5487) [`abf0e385d4`](https://github.com/wso2/identity-apps/commit/abf0e385d4d26f1f3746abe2d9b4b1f0bfe129e2) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issue in login and registration page
+
+- Updated dependencies [[`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250)]:
+  - @wso2is/react-components@2.1.7
+  - @wso2is/dynamic-forms@2.0.33
+  - @wso2is/common@2.0.39
+  - @wso2is/forms@2.0.22
+  - @wso2is/theme@2.0.63
+  - @wso2is/form@2.0.35
+
 ## 2.12.14
 
 ### Patch Changes
