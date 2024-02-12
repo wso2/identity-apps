@@ -41,6 +41,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ValidationConfigurationRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
@@ -171,6 +172,18 @@
     }
 
     Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
+
+    final String ALLOW_ASSOCIATING_TO_EXISTING_USER = "JITProvisioning.AllowAssociatingToExistingUser";
+    boolean allowAssociationToExistingUser = Boolean.parseBoolean(
+                                IdentityUtil.getProperty(ALLOW_ASSOCIATING_TO_EXISTING_USER));
+
+    if (consentPurposeGroupName == "JIT" && userNameValidityStatusCode != null && allowAssociationToExistingUser) {
+        String errorCode = String.valueOf(userNameValidityStatusCode);
+        if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
+             userNameValidityStatusCode = Integer.valueOf(SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE);
+        }
+    }
+
     if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
         if (allowchangeusername || !skipSignUpEnableCheck) {
             request.setAttribute("error", true);
