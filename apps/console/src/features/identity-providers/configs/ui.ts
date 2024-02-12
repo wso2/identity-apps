@@ -51,7 +51,7 @@ import HyprLogo from "../../../themes/default/assets/images/identity-providers/h
 import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
 import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
 import OrganizationSSOIcon from "../../../themes/default/assets/images/identity-providers/organization-sso.svg";
-import TrustedTokenIssuerIcon 
+import TrustedTokenIssuerIcon
     from "../../../themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
 import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
 import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
