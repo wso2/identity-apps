@@ -99,7 +99,6 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
     }, [ selectedClaimMappings ]);
 
     useEffect(() => {
-
         // If the initial role uri is not available, then use the group attribute.
         updateRole(initialRoleUri ? initialRoleUri : groupAttribute);
     }, [ groupAttribute ]);
