@@ -31,9 +31,6 @@ export const SCIMConfigs: SCIMConfigInterface = {
         enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
-    scimDialectID: {
-        customEnterpriseSchema: "dXJuOnNjaW06d3NvMjpzY2hlbWE"
-    },
     scimEnterpriseUserClaimUri: {
         accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
         accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
