@@ -67,8 +67,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         dynamicValues?.properties?.map(
             (prop: CommonPluggableComponentPropertyInterface) =>
             {
-                if (prop.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
-                    setPrivateKeyValue(prop.value);
+                if (prop?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+                    setPrivateKeyValue(prop?.value);
                 }
             }
         );
@@ -117,10 +117,28 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             }
 
             if (
-                !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
-                && !properties?.find(
-                    (item: CommonPluggableComponentMetaPropertyInterface) =>
-                        item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)){
+                (
+                    // Check whether the values has the google private key.
+                    !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
+                    // Check whether the property values list does not have the google private key-value pair.
+                    && !properties?.find(
+                        (item: CommonPluggableComponentPropertyInterface) =>
+                            (item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY))
+                    // Check whether the properties key-value pair has the value undefined.
+                    && properties?.find(
+                        (item: CommonPluggableComponentPropertyInterface) => (
+                            item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY
+                            && item?.value !== undefined
+                        )
+                    )
+                ) || (
+                    // // Check whether the properties key-value pair has an already added google private key.
+                    !properties?.find(
+                        (item: CommonPluggableComponentPropertyInterface) =>
+                            (item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY))
+                        && privateKeyValue !== undefined
+                )
+            ){
                 properties.push({
                     key: ConnectionManagementConstants.GOOGLE_PRIVATE_KEY,
                     value: privateKeyValue
