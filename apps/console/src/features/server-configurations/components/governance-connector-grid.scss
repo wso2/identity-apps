@@ -12,7 +12,7 @@
         .governance-connector {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             border: 1px solid #e8e8e8;
             border-radius: 10px;
             transition: box-shadow 0.3s ease;
