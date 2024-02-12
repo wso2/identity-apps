@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.12
+
+### Patch Changes
+
+- [#5478](https://github.com/wso2/identity-apps/pull/5478) [`76b3ccbec2`](https://github.com/wso2/identity-apps/commit/76b3ccbec282d8b58843abd0718a9de71562c272) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix User Attributes tab visible logic in connection edit view
+
 ## 2.12.11
 
 ### Patch Changes
