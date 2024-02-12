@@ -191,7 +191,8 @@ export const getUserIdClaimRadioButtonField = (
     eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
-    testId?: string): ReactElement => {
+    testId?: string
+): ReactElement => {
     const options: StrictRadioChild[] = [
         {
             label: "Use NameID as the User Identifier",
