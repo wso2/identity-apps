@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.11
+
+### Patch Changes
+
+- [#5477](https://github.com/wso2/identity-apps/pull/5477) [`10ab493023`](https://github.com/wso2/identity-apps/commit/10ab49302394f397453ff60f7f1f113200f4c340) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement radio input for user id in the claims field
+
 ## 2.12.10
 
 ### Patch Changes
