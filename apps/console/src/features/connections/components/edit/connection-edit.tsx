@@ -442,7 +442,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
          * models folder for types. identity-provider.ts
          */
         const attributesForSamlEnabled: boolean = isSaml &&
-        identityProviderConfig.editIdentityProvider.attributesSettings;
+            identityProviderConfig.editIdentityProvider.attributesSettings;
 
         /**
          * If the protocol is OIDC and if the Custom Claim Mapping feature is enabled
@@ -451,9 +451,10 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         const isAttributesEnabledForOIDC: boolean = isOidc && UIConfig?.isCustomClaimMappingEnabled;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if ((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
-            && (IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC === type && isAttributesEnabledForOIDC)
-            && !isOrganizationEnterpriseAuthenticator) {
+        if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
+            && !isOrganizationEnterpriseAuthenticator
+            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
+            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
                 menuItem: "Attributes",
