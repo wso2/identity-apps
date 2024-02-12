@@ -949,7 +949,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-                    { hasRequiredScopes(featureConfig?.secretsManagement,
+                    { featureConfig?.secretsManagement?.enabled && hasRequiredScopes(featureConfig?.secretsManagement,
                         featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
                         (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                         OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
@@ -961,7 +961,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Dropdown.Item
                                 key={ "createSecret" }
                                 text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
+                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.createss") }
                                 onClick={ () => {
                                     setShowAddSecretModal(true);
                                 } }
@@ -1344,20 +1344,19 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            {
+                                            { featureConfig?.secretsManagement?.enabled &&
                                                 hasRequiredScopes(featureConfig?.secretsManagement,
                                                     featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
-                                                    <Menu.Item
-                                                        className={ `action ${ isSecretsDropdownOpen
-                                                            ? "selected-secret"
-                                                            : ""
-                                                        }` }>
-                                                        <div>
-                                                            { renderSecretListDropdown() }
-                                                        </div>
-                                                    </Menu.Item>
-                                                )
-                                            }
+                                                <Menu.Item
+                                                    className={ `action ${ isSecretsDropdownOpen
+                                                        ? "selected-secret"
+                                                        : ""
+                                                    }` }>
+                                                    <div>
+                                                        { renderSecretListDropdown() }
+                                                    </div>
+                                                </Menu.Item>
+                                            ) }
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact

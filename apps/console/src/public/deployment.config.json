@@ -747,7 +747,7 @@
                 }
             },
             "secretsManagement": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "feature": [
                         "console:secretsManagement"
