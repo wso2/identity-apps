@@ -365,7 +365,7 @@
             {% endif %}
         },
         {% if scim2.custom_user_schema_uri is defined %}
-        "customUserSchemaURI": {{ scim2.custom_user_schema_uri }},
+        "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
         {% endif %}
         "privacyPolicyConfigs": {
             {% if myaccount.privacy_policy_configs.items() is defined %}
