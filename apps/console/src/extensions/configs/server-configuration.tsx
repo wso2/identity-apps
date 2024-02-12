@@ -72,7 +72,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
-        ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
         ServerConfigurationsConstants.USERNAME_VALIDATION,
         ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID,
         ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID,
