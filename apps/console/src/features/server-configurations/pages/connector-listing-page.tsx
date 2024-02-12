@@ -185,10 +185,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
         for (const category of categories) {
             if (!serverConfigurationConfig.predefinedConnectorCategories.includes(category.id)) {
-                const connectorCategory: GovernanceConnectorCategoryInterface =
+                const connectorCategory: GovernanceConnectorCategoryInterface | null =
                     await loadCategoryConnectors(category.id);
 
-                dynamicConnectorCategoryArray.push(connectorCategory);
+                connectorCategory && dynamicConnectorCategoryArray.push(connectorCategory);
             }
         }
 
