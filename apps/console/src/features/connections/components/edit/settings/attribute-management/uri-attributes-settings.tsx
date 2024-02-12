@@ -212,7 +212,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 "group.heading") }
                                 </Heading>
                                 {
-                                    (claimMappingOn && !isEmpty(groupAttribute)) && (
+                                    (claimMappingOn && !isEmpty(initialRoleUri)) && (
                                         <Form>
                                             <Form.Select
                                                 fluid
@@ -260,7 +260,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     )
                                 }
                                 <Message
-                                    hidden={ claimMappingOn && !isEmpty(groupAttribute)  }
+                                    hidden={ claimMappingOn && !isEmpty(initialRoleUri)  }
                                     type="info"
                                     content={
                                         (
