@@ -190,6 +190,7 @@ export class ConnectionManagementConstants {
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
     public static readonly GOOGLE_PRIVATE_KEY: string = "google_prov_private_key";
+    public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
 
     /**
      * Google Scope mappings.
