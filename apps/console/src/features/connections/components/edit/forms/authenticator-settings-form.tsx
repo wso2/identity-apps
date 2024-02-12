@@ -22,7 +22,7 @@ import {
     DynamicField,
     DynamicFieldInputTypes,
     DynamicForm,
-    FieldInputPropsInterface,
+    renderFormFields as renderDynamicFormFields,
     FieldInputTypes
 } from "@wso2is/dynamic-forms";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
@@ -249,7 +249,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
 
         return {
             ...originalInitialValues,
-            properties
+            properties: properties
         };
     };
 
@@ -285,20 +285,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
      */
     const renderFormFields = () => {
         if (settings) {
-            return (
-                settings?.edit?.tabs?.settings?.map(
-                    (connectorField: FieldInputPropsInterface) => {
-                        return (
-                            <DynamicField.Input
-                                key={ connectorField.name }
-                                name={ connectorField.name }
-                                label={ connectorField.label }
-                                inputType={ connectorField.inputType }
-                                { ...connectorField }
-                            />
-                        );
-                    })
-            );
+            return renderDynamicFormFields(settings?.edit?.tabs?.settings);
         } else if (formFields) {
             const fields: DynamicInputElementsInterface[] = [];
 
