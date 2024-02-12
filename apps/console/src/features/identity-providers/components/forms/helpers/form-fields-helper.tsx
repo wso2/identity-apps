@@ -221,6 +221,7 @@ export const getUserIdClaimRadioButtonField = (eachProp: CommonPluggableComponen
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                data-componentid={ `${ testId }-${ propertyMetadata?.key }` }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
