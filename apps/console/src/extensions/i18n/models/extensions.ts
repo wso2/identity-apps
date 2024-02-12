@@ -2274,6 +2274,38 @@ export interface Extensions {
                     };
                 };
             };
+            iproov: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    connectApp: {
+                        description: string;
+                    };
+                    heading: string;
+                    subHeading: string;
+                    steps: {
+                        configureLogin: {
+                            heading: string;
+                            addIproov: string;
+                            update: string;
+                        };
+                        customizeFlow: {
+                            content: string;
+                            heading: string;
+                        };
+                        selectApplication: {
+                            content: string;
+                            heading: string;
+                        };
+                        selectDefaultConfig: {
+                            content: string;
+                            heading: string;
+                        };
+                    };
+                };
+            };
             siwe: {
                 forms: {
                     authenticatorSettings: {

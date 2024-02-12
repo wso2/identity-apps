@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,6 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import ConditionalAuthIllustration from "./assets/conditional-auth.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import {
     ConnectionInterface,
@@ -58,32 +57,6 @@ const IproovAuthenticatorQuickStart: FunctionComponent<IproovAuthenticatorQuickS
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
-    const authScript: string = `var onLoginRequest = function onLoginRequest(context) {
-
-        var fedUser;
-        executeStep(1,
-            {
-                onSuccess: function (context) {
-                    var idpName = context.steps[1].idp;
-
-                    if (idpName === "IPROOV") {
-                        fedUser = context.currentKnownSubject;
-
-                        var associatedUser = getAssociatedLocalUser(fedUser);
-                        if (associatedUser == null) {
-                            var claimMap = {};
-                            claimMap["http://wso2.org/claims/username"] = fedUser.username;
-                            var storedLocalUser = getUniqueUserWithClaimValues(claimMap, context);
-                            if (storedLocalUser !== null) {
-                                doAssociationWithLocalUser(fedUser, storedLocalUser.username,
-                                    storedLocalUser.tenantDomain, storedLocalUser.userStoreDomain);
-                            }
-                        }
-                    }
-                }
-            });
-    };`;
-
     /**
      * Vertical Stepper steps.
      * @returns VerticalStepperStepInterface
@@ -94,13 +67,12 @@ const IproovAuthenticatorQuickStart: FunctionComponent<IproovAuthenticatorQuickS
                 <Text>
                     <Trans
                         i18nKey={
-                            "extensions:develop.identityProviders.iproov.quickStart" +
-                            ".steps.selectApplication.content"
+                            "extensions:develop.identityProviders.iproov.quickStart.steps.selectApplication.content"
                         }
                     >
                         Choose the
-                        <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application</Link>
-                        for which you want to set up IPROOV login.
+                        <Link external={ false } onClick={ () => setShowApplicationModal(true) }> application </Link>
+                        for which you want to set up iProov login.
                     </Trans>
                 </Text>
             ),
@@ -142,34 +114,12 @@ const IproovAuthenticatorQuickStart: FunctionComponent<IproovAuthenticatorQuickS
                                 "extensions:develop.identityProviders.iproov.quickStart.steps.configureLogin.addIproov"
                             }
                         >
-                            Add IPROOV authenticator to step 1 by clicking on
+                            Add iProov authenticator to step 2 by clicking on
                             the <strong>Add Authentication</strong> button.
                         </Trans>
                     </Text>
 
                     <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-
-                    <Text>
-                        <Trans
-                            i18nKey={
-                                "extensions:develop.identityProviders.iproov.quickStart.steps." +
-                                    "configureLogin.conditionalAuth"
-                            }
-                        >
-                            Turn on <strong>Conditional Authentication</strong> by switching the toggle and
-                            add the following conditional authentication script.
-                        </Trans>
-                    </Text>
-
-                    <div className="connection-code-segment">
-                        <CodeEditor
-                            height={ "100%" }
-                            readOnly
-                            withClipboardCopy
-                            language="typescript"
-                            sourceCode={ authScript }
-                        />
-                    </div>
 
                     <Text>
                         <Trans
@@ -180,8 +130,6 @@ const IproovAuthenticatorQuickStart: FunctionComponent<IproovAuthenticatorQuickS
                             Click <strong>Update</strong> to confirm.
                         </Trans>
                     </Text>
-
-                    <GenericIcon inline transparent icon={ ConditionalAuthIllustration } size="huge"/>
                 </>
             ),
             stepTitle: t("extensions:develop.identityProviders.iproov.quickStart.steps.configureLogin.heading")
@@ -190,7 +138,7 @@ const IproovAuthenticatorQuickStart: FunctionComponent<IproovAuthenticatorQuickS
 
     return (
         <>
-            <Grid data-testid={ componentId } className="authenticator-quickstart-content">
+            <Grid data-componentid={ componentId } className="authenticator-quickstart-content">
                 <Grid.Row textAlign="left">
                     <Grid.Column width={ 16 }>
                         <PageHeader
@@ -218,7 +166,7 @@ const IproovAuthenticatorQuickStart: FunctionComponent<IproovAuthenticatorQuickS
             {
                 showApplicationModal && (
                     <ApplicationSelectionModal
-                        data-testid={ `${ componentId }-application-selection-modal` }
+                        data-componentid={ `${ componentId }-application-selection-modal` }
                         open={ showApplicationModal }
                         onClose={ () => setShowApplicationModal(false) }
                         heading={

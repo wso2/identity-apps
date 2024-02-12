@@ -2550,6 +2550,42 @@ export const extensions: Extensions = {
                     }
                 }
             },
+            iproov: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "Add iProov Login",
+                        subHeading: "Select an application to set up iProov login."
+                    },
+                    connectApp: {
+                        description:
+                            "Add <1>iProov</1> authenticator to <3>Step 2</3> on the <5>Login Flow" +
+                            "</5> section of your <7>application</7>."
+                    },
+                    heading: "Add iProov Login",
+                    subHeading: "iProov is now ready to be used as a login option for your applications.",
+                    steps: {
+                        configureLogin: {
+                            heading: "Configure the Login Flow",
+                            addIproov: "Add iProov authenticator to step 2 by clicking on the <1>Add Authentication</1> button.",
+                            update: "Click <1>Update</1> to confirm."
+                        },
+                        customizeFlow: {
+                            content: "Continue to configure the login flow as required.",
+                            heading: "Customize the flow"
+                        },
+                        selectApplication: {
+                            content: "Choose the <1>application</1> for which you want to set up iProov login.",
+                            heading: "Select Application"
+                        },
+                        selectDefaultConfig: {
+                            content:
+                                "Go to the <1>Login Flow</1> tab and click on <3>Start with default " +
+                                "configuration</3>.",
+                            heading: "Select <1>Start with default configuration</1>"
+                        }
+                    }
+                }
+            },
             siwe: {
                 forms: {
                     authenticatorSettings: {

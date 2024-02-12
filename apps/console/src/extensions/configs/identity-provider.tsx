@@ -211,6 +211,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         SIWEIdPTemplate.templateId
@@ -223,7 +224,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.ATTRIBUTES, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                     ])
                 ],
                 [
@@ -238,22 +239,26 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.OUTBOUND_PROVISIONING, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ADVANCED, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
                     ])
                 ]
             ]);

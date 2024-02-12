@@ -2608,6 +2608,44 @@ export const extensions: Extensions = {
                     }
                 }
             },
+            iproov: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "Ajouter une connexion iProov",
+                        subHeading: "Sélectionnez une application pour configurer la connexion iProov."
+                    },
+                    connectApp: {
+                        description:
+                            "Ajoutez l'authentificateur <1>iProov</1> à l'<3>étape 2</3> de la section" +
+                            "<5>Méthode de connexion </5> de votre <7>application</7>."
+                    },
+                    heading: "Ajouter une connexion iProov",
+                    subHeading: "iproov est maintenant prêt à être utilisé comme option de connexion pour" +
+                        "vos applications",
+                    steps: {
+                        configureLogin: {
+                            heading: "Configurer le flux de connexion",
+                            addIproov: "Ajoutez l'authentificateur iProov à l'étape 2 en cliquant sur le bouton <1>Ajouter une authentification</1>.",
+                            update: "Cliquez sur <1>Mettre à jour</1> pour confirmer."
+                        },
+                        customizeFlow: {
+                            content: "Continuez à configurer le flux de connexion selon vos besoins.",
+                            heading: "Personnalisez le flux"
+                        },
+                        selectApplication: {
+                            content: "Choisissez l'<1>application</1> pour laquelle vous souhaitez configurer" +
+                                "la connexion iProov.",
+                            heading: "Sélectionnez l'application"
+                        },
+                        selectDefaultConfig: {
+                            content:
+                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur" +
+                                "<3>Démarrer avec la configuration par défaut</3>.",
+                            heading: "Sélectionnez <1>Démarrer avec la configuration par défaut</1>"
+                        }
+                    }
+                }
+            },
             siwe: {
                 forms: {
                     authenticatorSettings: {

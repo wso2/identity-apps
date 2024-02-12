@@ -2521,6 +2521,42 @@ export const extensions: Extensions = {
                     }
                 }
             },
+            iproov: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "iProov Login එක් කරන්න",
+                        subHeading: "iProov පිවිසුම සැකසීමට යෙදුමක් තෝරන්න."
+                    },
+                    connectApp: {
+                        description:
+                            "ඔබගේ <7>යෙදුමෙහි</7> <5>පුරන ක්‍රමය</5> කොටසෙහි <3>පියවර 2</3>" +
+                            "වෙත <1>iProov</1> සත්‍යාපකය එක් කරන්න."
+                    },
+                    heading: "iProov Login එක් කරන්න",
+                    subHeading: "iProov දැන් ඔබගේ යෙදුම් සඳහා පිවිසුම් විකල්පයක් ලෙස භාවිතා කිරීමට සූදානම්ය",
+                    steps: {
+                        configureLogin: {
+                            heading: "පිවිසුම් ප්‍රවාහය වින්‍යාස කරන්න",
+                            addIproov: "<1>සත්‍යාපනය එක් කරන්න</1> බොත්තම ක්ලික් කිරීමෙන් පියවර 1 වෙත iProov සත්‍යාපනය එක් කරන්න.",
+                            update: "තහවුරු කිරීමට <1>යාවත්කාලීන කරන්න</1> ක්ලික් කරන්න."
+                        },
+                        customizeFlow: {
+                            content: "අවශ්‍ය පරිදි පිවිසුම් ප්‍රවාහය වින්‍යාස කිරීම දිගටම කරගෙන යන්න.",
+                            heading: "ප්රවාහය අභිරුචිකරණය කරන්න"
+                        },
+                        selectApplication: {
+                            content: "ඔබට iProov පිවිසුම පිහිටුවීමට අවශ්‍ය <1>යෙදුම</1> තෝරන්න.",
+                            heading: "යෙදුම තෝරන්න"
+                        },
+                        selectDefaultConfig: {
+                            content:
+                                "<1>පුරන ක්‍රමය</1> ටැබය වෙත ගොස් <3>පෙරනිමි වින්‍යාසය සමඟ ආරම්භ කරන්න</3>" +
+                                "ක්ලික් කරන්න.",
+                            heading: "<1>පෙරනිමි වින්‍යාසය සමඟ ආරම්භ කරන්න</1> තෝරන්න"
+                        }
+                    }
+                }
+            },
             siwe: {
                 forms: {
                     authenticatorSettings: {
