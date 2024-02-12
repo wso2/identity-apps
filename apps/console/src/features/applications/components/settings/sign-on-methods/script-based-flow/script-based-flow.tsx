@@ -961,7 +961,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Dropdown.Item
                                 key={ "createSecret" }
                                 text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
-                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.createss") }
+                                    ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
                                 onClick={ () => {
                                     setShowAddSecretModal(true);
                                 } }
