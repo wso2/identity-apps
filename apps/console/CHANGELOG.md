@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.12.16
+
+### Patch Changes
+
+- [#5485](https://github.com/wso2/identity-apps/pull/5485) [`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81) Thanks [@savindi7](https://github.com/savindi7)! - Update Connection icons.
+
+* [#5490](https://github.com/wso2/identity-apps/pull/5490) [`c62257a794`](https://github.com/wso2/identity-apps/commit/c62257a7941c8492af70e8c052f327e81e0f3d21) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve logic to display google private key file picker
+
+* Updated dependencies [[`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81)]:
+  - @wso2is/react-components@2.1.8
+  - @wso2is/dynamic-forms@2.0.34
+  - @wso2is/theme@2.0.64
+  - @wso2is/form@2.0.36
+  - @wso2is/common@2.0.40
+  - @wso2is/forms@2.0.23
+
 ## 2.12.15
 
 ### Patch Changes
