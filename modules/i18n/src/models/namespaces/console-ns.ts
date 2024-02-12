@@ -4757,6 +4757,7 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
+                genericDescription?: string;
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;

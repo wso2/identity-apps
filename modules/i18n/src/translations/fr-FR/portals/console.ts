@@ -7642,6 +7642,7 @@ export const console: ConsoleNS = {
                         positiveIntegers: "Le nombre ne doit pas être inférieur à 0."
                     }
                 },
+                genericDescription: "Configurer les paramètres liés au connecteur {{nom}}.",
                 notifications: {
                     getConnector: {
                         error: {

@@ -356,14 +356,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Handle back button click.
      */
     const handleBackButtonClick = () => {
-        history.push(
-            AppConstants.getPaths()
-                .get("GOVERNANCE_CONNECTOR")
-                .replace(
-                    ":id",
-                    ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
-                )
-        );
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     const validateForm = (values: ValidationFormInterface): boolean => {

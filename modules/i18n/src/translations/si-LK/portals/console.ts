@@ -7474,6 +7474,7 @@ export const console: ConsoleNS = {
                         positiveIntegers: "අංකය 0 ට නොඅඩු විය යුතුය."
                     }
                 },
+                genericDescription: "{{Name}} සම්බන්ධකයට අදාළ සැකසුම් වින්යාස කරන්න.",
                 notifications: {
                     getConnector: {
                         error: {
