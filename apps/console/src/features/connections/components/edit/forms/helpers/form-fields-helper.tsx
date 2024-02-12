@@ -178,6 +178,47 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
     );
 };
 
+export const getUserIdClaimRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    listen: (key: string, values: Map<string, FormValue>) => void,
+    testId?: string): ReactElement => {
+    const options: StrictRadioChild[] = [
+        {
+            label: "Use NameID as the User Identifier",
+            value: "true"
+        },
+        {
+            label: "User Identifier found among claims",
+            value: "false"
+        }
+    ];
+
+    return (
+        <>
+            <Field
+                label={ propertyMetadata?.displayName }
+                name={ propertyMetadata?.key }
+                key={ propertyMetadata?.key }
+                type="radio"
+                required={ propertyMetadata?.isMandatory }
+                value={ eachProp?.value }
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
+                    "requiredErrorMessage") }
+                children={ options }
+                listen={ (values: Map<string, FormValue>) => {
+                    listen(propertyMetadata?.key, values);
+                } }
+                disabled={ propertyMetadata?.isDisabled }
+                readOnly={ propertyMetadata?.readOnly }
+                data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+            />
+            { propertyMetadata?.description && (
+                <Hint disabled={ propertyMetadata?.isDisabled }>{ propertyMetadata?.description }</Hint>
+            ) }
+        </>
+    );
+};
+
 export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
@@ -617,7 +658,9 @@ export const getFieldType = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     mode: AuthenticatorSettingsFormModes
 ): FieldType => {
-    if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
+    if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+        return FieldType.RADIO;
+    } if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
     } else if (propertyMetadata?.isConfidential) {
         return FieldType.CONFIDENTIAL;
@@ -675,7 +718,11 @@ export const getPropertyField = (
         }
         case FieldType.RADIO : {
             if (listen) {
-                return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);
+                if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+                    return getUserIdClaimRadioButtonField(property, propertyMetadata, listen, testId);
+                } else {
+                    return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);
+                }
             }
 
             return getRadioButtonField(property, propertyMetadata, testId);

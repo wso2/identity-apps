@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -109,6 +109,11 @@ export class IdentityProviderConstants {
      * Minimum length of the JWKS URL.
      */
     public static readonly JWKS_URL_MIN_LENGTH: number = 10;
+
+    /**
+     * Key for user id in claims.
+     */
+    public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
 
 }
 

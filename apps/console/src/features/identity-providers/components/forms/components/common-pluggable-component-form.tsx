@@ -22,6 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
+import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonPluggableComponentFormPropsInterface,
@@ -105,7 +106,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                return value?.includes(key);
+                if ( key === IdentityProviderConstants.USER_ID_IN_CLAIMS) {
+                    return value;
+                } else {
+                    return value?.includes(key);
+                }
             }
             case CommonConstants.RADIO: {
                 return value?.includes(key);
@@ -411,38 +416,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         }
     };
 
-    const changeUserIdInClaimCheckboxLabelBasedOnValue = (key: string, values: Map<string, FormValue>) => {
-
-        const TARGET_FORM_KEY: string = "IsUserIdInClaims";
-
-        if (key === TARGET_FORM_KEY && !isEmpty(values)) {
-
-            const changeLabel = (to: string): void => {
-                const props: CommonPluggableComponentMetaPropertyInterface = metadata
-                    ?.properties
-                    .find(({ key }: { key: string }) => key === TARGET_FORM_KEY);
-
-                if (props) props.displayName = to;
-            };
-
-            const isChecked = (value: FormValue): boolean =>
-                value &&
-                (Array.isArray(value) && value.length > 0) ||
-                (typeof value === "string" && value == "true");
-
-            if (isChecked(values.get(TARGET_FORM_KEY))) {
-                changeLabel("Use NameID as the User Identifier");
-            } else {
-                changeLabel("User Identifier found among claims");
-            }
-        }
-    };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
 
         triggerAlgorithmSelectionDropdowns(key, values);
         changeMode(key, values);
-        changeUserIdInClaimCheckboxLabelBasedOnValue(key, values);
 
         setDynamicValues({
             ...dynamicValues,
@@ -496,7 +474,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
-        changeUserIdInClaimCheckboxLabelBasedOnValue("IsUserIdInClaims", initialFormValues);
         changeMode("SelectMode", initialFormValues);
 
     }, []);
