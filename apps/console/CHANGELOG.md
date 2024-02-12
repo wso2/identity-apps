@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.12.10
+
+### Patch Changes
+
+- [#5473](https://github.com/wso2/identity-apps/pull/5473) [`09d5e74a52`](https://github.com/wso2/identity-apps/commit/09d5e74a52b56081871c0b25d6a8ad62681d4f18) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX related to IDP groups section
+
+* [#5467](https://github.com/wso2/identity-apps/pull/5467) [`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add support to show group attribute in conntections attributes tab
+
+* Updated dependencies [[`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11)]:
+  - @wso2is/i18n@2.0.119
+
 ## 2.12.9
 
 ### Patch Changes
