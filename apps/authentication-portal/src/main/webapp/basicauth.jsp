@@ -177,6 +177,13 @@
 
         ResendCodeRequestDTO selfRegistrationRequest = new ResendCodeRequestDTO();
         UserDTO userDTO = AuthenticationEndpointUtil.getUser(resendUsername);
+        int firstIndex = resendUsername.indexOf('@');
+        int lastIndex = resendUsername.lastIndexOf('@');
+
+        // Username doesn't have a tenant domain OR username is an email which doesn't have tenant domain.
+        if ((lastIndex == -1) || (firstIndex == lastIndex)) {
+            userDTO.setTenantDomain(request.getParameter("tenantDomain"));
+        }
         selfRegistrationRequest.setUser(userDTO);
 
         PropertyDTO propertyDTO = new PropertyDTO();
@@ -452,11 +459,11 @@
 
         <% if (isIdentifierFirstLogin(inputType)) { %>
         <div class="field">
-            <a 
-                id="backLink" 
-                class="clickable-link" 
-                tabindex="0" 
-                onclick="goBack()" 
+            <a
+                id="backLink"
+                class="clickable-link"
+                tabindex="0"
+                onclick="goBack()"
                 onkeypress="javascript: if (window.event.keyCode === 13) goBack()"
                 data-testid="login-page-back-button">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
