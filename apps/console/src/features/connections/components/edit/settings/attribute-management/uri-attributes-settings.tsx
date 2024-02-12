@@ -21,7 +21,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Hint, Message } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
@@ -76,7 +76,6 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         updateRole,
         updateSubject,
         roleError,
-        selectedClaimMappings,
         subjectError,
         isReadOnly,
         isMappingEmpty,
@@ -87,37 +86,6 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
-
-    const [ groupAttribute, setGroupAttribute ] = useState<string>("");
-
-    // Set the initial value of the mapped connection attribute of the organization's roles attribute.
-    useEffect(() => {
-        if (!selectedClaimMappings || selectedClaimMappings.length === 0) {
-            return;
-        }
-
-        setGroupAttribute(getGroupAttribute());
-    }, [ selectedClaimMappings ]);
-
-    // Set the initial value of the Group Attribute dropdown.
-    useEffect(() => {
-        // If the initial role uri is not available, then use the group attribute.
-        updateRole(initialRoleUri ?? groupAttribute);
-    }, [ groupAttribute ]);
-
-    const getGroupAttribute = (): string => {
-        if (selectedClaimMappings?.length > 0) {
-            const groupAttribute: ConnectionCommonClaimMappingInterface = selectedClaimMappings.find(
-                (claimMapping: ConnectionCommonClaimMappingInterface) => {
-                    return claimMapping.claim.uri == ConnectionManagementConstants.CLAIM_ROLES;
-                }
-            );
-
-            return groupAttribute ? groupAttribute.mappedValue : "";
-        } else {
-            return "";
-        }
-    };
 
     const getValidatedInitialValue = (initialValue: string) => {
         return find(
@@ -213,7 +181,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 "group.heading") }
                                 </Heading>
                                 {
-                                    (claimMappingOn && !isEmpty(initialRoleUri)) && (
+                                    claimMappingOn && (
                                         <Form>
                                             <Form.Select
                                                 fluid
@@ -227,11 +195,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                         } as DropdownOptionsInterface
                                                     )
                                                 }
-                                                value={
-                                                    initialRoleUri
-                                                        ? getValidatedInitialValue(initialRoleUri)
-                                                        : getValidatedInitialValue(groupAttribute)
-                                                }
+                                                value={ getValidatedInitialValue(initialRoleUri) }
                                                 placeholder={ t("console:develop.features.authenticationProvider" +
                                                     ".forms.uriAttributeSettings.group.placeHolder") }
                                                 onChange={
@@ -261,7 +225,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     )
                                 }
                                 <Message
-                                    hidden={ claimMappingOn && !isEmpty(initialRoleUri)  }
+                                    hidden={ claimMappingOn && !isEmpty(initialRoleUri) }
                                     type="info"
                                     content={
                                         (
@@ -280,7 +244,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                     ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
                                                     : ConnectionManagementConstants.CLAIM_ROLES }</strong>
                                                  attribute will be considered as the default
-                                                <strong>Group Attribute</strong> as you have not added a
+                                                <strong> Group Attribute</strong> as you have not added a
                                                 custom attribute mapping for the connection roles attribute.
                                             </Trans>
                                         )

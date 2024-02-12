@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { LinkButton, Media, useMediaContext } from "@wso2is/react-components";
+import { LinkButton, Media, Popup, Text, useMediaContext } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,6 +28,7 @@ import {
     Header,
     Label,
     List,
+    ListItem,
     Modal,
     SemanticCOLORS,
     Table
@@ -111,10 +112,24 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      */
     const cleanupPropertyValues = (key: string, value: string): string | JSX.Element => {
         if (key === "Claims") {
-            const claims = value.split(",");
+            const claims: string[] = value.split(",");
 
             return (
-                <List className="values-list" items={ claims } />
+                <List className="values-list" items={ claims }>
+                    { claims.map((claim: string, index: number) => (
+                        <Popup
+                            inverted
+                            position="top left"
+                            key={ `${ claim }-popup` }
+                            content={ claim }
+                            trigger={ (
+                                <ListItem key={ index } className="ellipsis">
+                                    <Text truncate>{ claim }</Text>
+                                </ListItem>
+                            ) }
+                        />
+                    )) }
+                </List>
             );
         }
 
@@ -131,7 +146,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             }
         }
 
-        const lastChar = value.substr(value.length - 1);
+        const lastChar: string = value.substr(value.length - 1);
 
         if (lastChar !== ",") {
             return value;
@@ -146,7 +161,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @param assignees - List of assignees.
      * @returns - A table containing the list of assignees.
      */
-    const assigneesTable = (assignees): JSX.Element => (
+    const assigneesTable = (assignees: { key: string, value: string }[]): JSX.Element => (
         <Table celled compact className="edit-segment-table">
             <Table.Header>
                 <Table.Row>
@@ -160,7 +175,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             </Table.Header>
             <Table.Body>
                 {
-                    assignees.map((assignee, i) => (
+                    assignees.map((assignee: { key: string, value: string }, i: number) => (
                         <Table.Row key={ i }>
                             <Table.Cell className="key-cell">
                                 { assignee.key }
@@ -181,11 +196,11 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @param properties - List of properties.
      * @returns A table containing the list of properties.
      */
-    const propertiesTable = (properties): JSX.Element => (
-        <Table celled compact className="edit-segment-table" verticalAlign="top">
+    const propertiesTable = (properties: { key: string, value: string }[]): JSX.Element => (
+        <Table celled compact className="approval-tasks-table" verticalAlign="top">
             <Table.Body>
                 {
-                    properties.map((property, i) => (
+                    properties.map((property: { key: string, value: string }, i: number) => (
                         property.key && property.value
                             ? (
                                 <Table.Row key={ i }>
@@ -212,7 +227,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @param editingApproval - The editing approval.
      * @returns A panel containing all the possible action buttons.
      */
-    const approvalActions = (editingApproval): JSX.Element => (
+    const approvalActions = (editingApproval: ApprovalTaskDetails): JSX.Element => (
         <>
             {
                 editingApproval?.taskStatus === ApprovalStatus.READY
@@ -298,10 +313,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 5 }>
+                                    <Grid.Column width={ 4 }>
                                         { t("common:createdOn") }
                                     </Grid.Column>
-                                    <Grid.Column width={ 11 }>
+                                    <Grid.Column width={ 12 }>
                                         <List.Description>
                                             {
                                                 moment(parseInt(approval?.createdTimeInMillis,
@@ -319,10 +334,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 5 }>
+                                    <Grid.Column width={ 4 }>
                                         { t("common:description") }
                                     </Grid.Column>
-                                    <Grid.Column width={ 11 }>
+                                    <Grid.Column width={ 12 }>
                                         <List.Description>
                                             {
                                                 approval?.description
@@ -342,10 +357,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 5 }>
+                                    <Grid.Column width={ 4 }>
                                         { t("common:priority") }
                                     </Grid.Column>
-                                    <Grid.Column width={ 11 }>
+                                    <Grid.Column width={ 12 }>
                                         <List.Description>
                                             { approval?.priority }
                                         </List.Description>
@@ -360,10 +375,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 5 }>
+                                    <Grid.Column width={ 4 }>
                                         { t("common:initiator") }
                                     </Grid.Column>
-                                    <Grid.Column width={ 11 }>
+                                    <Grid.Column width={ 12 }>
                                         <List.Description>
                                             { approval?.initiator }
                                         </List.Description>
@@ -378,10 +393,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                         <List.Content>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 5 }>
+                                    <Grid.Column width={ 4 }>
                                         { t("common:approvalStatus") }
                                     </Grid.Column>
-                                    <Grid.Column width={ 11 }>
+                                    <Grid.Column width={ 12 }>
                                         <List.Description>
                                             { approval?.approvalStatus }
                                         </List.Description>
@@ -399,10 +414,10 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     <List.Content>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 5 }>
+                                                <Grid.Column width={ 4 }>
                                                     { t("common:assignees") }
                                                 </Grid.Column>
-                                                <Grid.Column mobile={ 16 } computer={ 11 }>
+                                                <Grid.Column mobile={ 16 } computer={ 12 }>
                                                     <List.Description>
                                                         <Media lessThan="tablet">
                                                             <Divider hidden />
@@ -426,16 +441,14 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     <List.Content>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 5 }>
+                                                <Grid.Column width={ 4 }>
                                                     { t("common:properties") }
                                                 </Grid.Column>
-                                                <Grid.Column mobile={ 16 } computer={ 11 }>
-                                                    <List.Description>
-                                                        <Media lessThan="tablet">
-                                                            <Divider hidden />
-                                                        </Media>
-                                                        { propertiesTable(approval?.properties) }
-                                                    </List.Description>
+                                                <Grid.Column mobile={ 16 } computer={ 12 }>
+                                                    <Media lessThan="tablet">
+                                                        <Divider hidden />
+                                                    </Media>
+                                                    { propertiesTable(approval?.properties) }
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </Grid>
