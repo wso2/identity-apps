@@ -26,7 +26,7 @@ import GithubIdPIcon from "../../../themes/default/assets/images/identity-provid
 import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
 import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
 import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
-import TrustedTokenIssuerIcon 
+import TrustedTokenIssuerIcon
     from "../../../themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
 import TwitterLogo from "../../../themes/default/assets/images/identity-providers/twitter.svg";
 import YahooLogo from "../../../themes/default/assets/images/identity-providers/yahoo.svg";
@@ -38,7 +38,7 @@ import ConnectionIcon from "../resources/assets/images/icons/connection.svg";
 import { ReactComponent as DefaultConnectionIcon 
 } from "../resources/assets/images/icons/default-connection-icon.svg";
 import { ReactComponent as DocumentIcon } from "../resources/assets/images/icons/document-icon.svg";
-import EmailOTPIcon from "../resources/assets/images/icons/email-solid.svg";
+import EmailOTPIcon from "../resources/assets/images/icons/email-otp.svg";
 import { ReactComponent as EnterpriseConnectionIcon
 } from "../resources/assets/images/icons/enterprise-icon.svg";
 import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/gears-icon.svg";
