@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -114,7 +114,6 @@ export class IdentityProviderConstants {
      * Key for user id in claims.
      */
     public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
-
 }
 
 export const GOOGLE_IDP_NAME: string  = "Google";
