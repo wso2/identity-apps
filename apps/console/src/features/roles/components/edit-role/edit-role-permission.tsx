@@ -573,7 +573,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                             item?.type === APIResourceCategories.ORGANIZATION ||
                             item?.type === APIResourceCategories.BUSINESS
                         ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                            -b?.type?.localeCompare(a?.type)
+                            APIResourceUtils.resolveApiResourceGroup(a?.type)
+                                ?.localeCompare(APIResourceUtils
+                                    .resolveApiResourceGroup(b?.type))
                         )
                     }
                     noOptionsText={ t("common:noResultsFound") }
