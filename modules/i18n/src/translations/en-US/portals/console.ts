@@ -4598,7 +4598,7 @@ export const console: ConsoleNS = {
                             label: "Group Attribute",
                             message: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
                                 "<1>Group Attribute</1> as you have not added a custom attribute " +
-                                "mapping for the connection roles attribute.",
+                                "mapping.",
                             placeHolder: "Select the attribute",
                             validation: {
                                 empty: "Please select an attribute for groups"
@@ -5846,7 +5846,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Mapped Attribute",
-                                externalAttributeColumnHeader: "External IdP Attribute"
+                                externalAttributeColumnHeader: "External Connection Attribute"
                             },
                             heading: "Connection Attribute Mappings",
                             subheading: "Add and map the supported attributes from external connection.",
