@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.123
+
+### Patch Changes
+
+- [#5511](https://github.com/wso2/identity-apps/pull/5511) [`101b8e535e`](https://github.com/wso2/identity-apps/commit/101b8e535e67354cb3bbb5c88f3b9d3633d596a4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve the messaging of the group attribute dropdown in connections
+
 ## 2.0.122
 
 ### Patch Changes
