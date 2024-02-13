@@ -312,7 +312,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".subject.hint"
                                     }
                                 >
-                                Specifies the attribute that identifies the user at the Connection.
+                                Specifies the attribute that identifies the user at the connection.
                                 </Trans>
                             )
                         }
