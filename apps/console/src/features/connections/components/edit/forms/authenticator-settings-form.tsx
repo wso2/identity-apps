@@ -22,8 +22,8 @@ import {
     DynamicField,
     DynamicFieldInputTypes,
     DynamicForm,
-    renderFormFields as renderDynamicFormFields,
-    FieldInputTypes
+    FieldInputTypes,
+    renderFormFields as renderDynamicFormFields
 } from "@wso2is/dynamic-forms";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
