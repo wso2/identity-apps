@@ -1203,7 +1203,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 data-testid={ testId }
                 isRowSelectable={ (claim: Claim | ExternalClaim | ClaimDialect) =>
                     attributeConfig.isRowSelectable(claim) }
-                fixed
             />
         </>
     );
