@@ -1152,6 +1152,7 @@
         "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
         "isCustomClaimMappingEnabled": true,
+        "isCustomClaimMappingMergeEnabled": true,
         "listAllAttributeDialects": true,
         "enableIdentityClaims": true,
         "privacyPolicyConfigs": {},
