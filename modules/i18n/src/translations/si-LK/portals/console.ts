@@ -10959,6 +10959,7 @@ export const console: ConsoleNS = {
                                     oidc: "OIDC IdP",
                                     saml: "SAML IdP",
                                     hypr: "HYPR",
+                                    iproov: "IPROOV",
                                     organizationLogin: "සංවිධාන පිවිසුම්"
                                 }
                             },

@@ -1997,6 +1997,7 @@ export interface ConsoleNS {
                             oauthPassword: FormAttributes;
                             apiKey: FormAttributes;
                             apiSecret: FormAttributes;
+                            enableProgressiveEnrollment:FormAttributes;
                         };
                         saml: {
                             AuthRedirectUrl: FormAttributes;
@@ -2344,6 +2345,10 @@ export interface ConsoleNS {
                                 description: string;
                                 heading: string;
                             };
+                            enableProgressiveEnrollment: {
+                                description: string;
+                                heading: string;
+                            }
                             heading: string;
                             name: {
                                 idpDescription: string;
@@ -6895,6 +6900,7 @@ export interface ConsoleNS {
                                     oidc: string;
                                     saml: string;
                                     hypr: string;
+                                    iproov: string;
                                     organizationLogin: string;
                                 };
                             };

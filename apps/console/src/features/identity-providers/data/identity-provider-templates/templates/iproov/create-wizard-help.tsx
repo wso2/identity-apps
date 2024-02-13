@@ -33,7 +33,7 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
 ): ReactElement => {
 
     const {
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -54,7 +54,7 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
     }, [ identityProviderConfig ]);
 
     return (
-        <div data-testid={ testId }>
+        <div data-testid={ componentId }>
             <Message
                 type="info"
                 header={

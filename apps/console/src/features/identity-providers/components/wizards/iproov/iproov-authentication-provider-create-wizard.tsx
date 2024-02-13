@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -55,7 +55,7 @@ import {
 /**
  * Proptypes for the Iproov Authentication Provider Create Wizard.
  */
-interface IproovAuthenticationProviderCreateWizardPropsInterface extends TestableComponentInterface,
+interface IproovAuthenticationProviderCreateWizardPropsInterface extends
     GenericIdentityProviderCreateWizardPropsInterface, IdentifiableComponentInterface {
 }
 
@@ -87,6 +87,10 @@ export interface IproovAuthenticationProviderCreateWizardFormValuesInterface {
      * Iproov Authenticator Oauth password
      */
     oauthPassword: string;
+    /**
+     * Whether progressive enrollment is enabled or not
+     */
+    enableProgressiveEnrollment: boolean;
 }
 
 /**
@@ -109,7 +113,6 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
             title,
             subTitle,
             template,
-            [ "data-testid" ]: testId,
             [ "data-componentid" ]: componentId
         } = props;
 
@@ -164,16 +167,16 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
 
             identityProvider.federatedAuthenticators.authenticators[0].properties = [
                 {
-                    "key": "apiKey",
-                    "value": values.apiKey.toString()
-                },
-                {
                     "key": "apiSecret",
                     "value": values.apiSecret.toString()
                 },
                 {
-                    "key": "oauthUsername",
-                    "value": values.oauthUsername.toString()
+                    "key": "apiKey",
+                    "value": values.apiKey.toString()
+                },
+                {
+                    "key": "enableProgressiveEnrollment",
+                    "value": values.enableProgressiveEnrollment.toString()
                 },
                 {
                     "key": "oauthPassword",
@@ -278,7 +281,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                             <LinkButton
                                 floated="left"
                                 onClick={ handleWizardClose }
-                                data-testid={ `${ testId }-modal-cancel-button` }
+                                data-testid={ `${ componentId }-modal-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -290,7 +293,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                                     onClick={ () => {
                                         submitForm();
                                     } }
-                                    data-testid={ `${ testId }-modal-finish-button` }
+                                    data-testid={ `${ componentId }-modal-finish-button` }
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
@@ -303,7 +306,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                                         onClick={ () => {
                                             submitForm();
                                         } }
-                                        data-testid={ `${ testId }-modal-finish-button` }
+                                        data-testid={ `${ componentId }-modal-finish-button` }
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
@@ -318,7 +321,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                                 onClick={ () => {
                                     triggerPreviousForm();
                                 } }
-                                data-testid={ `${ testId }-modal-previous-button` }
+                                data-testid={ `${ componentId }-modal-previous-button` }
                             >
                                 { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
                             </LinkButton>)
@@ -402,12 +405,12 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                     onClose={ handleWizardClose }
                     closeOnDimmerClick={ false }
                     closeOnEscape
-                    data-testid={ `${ testId }-modal` }
+                    data-testid={ `${ componentId }-modal` }
                 >
                     <ModalWithSidePanel.MainPanel>
                         <ModalWithSidePanel.Header
                             className="wizard-header"
-                            data-testid={ `${ testId }-modal-header` }
+                            data-testid={ `${ componentId }-modal-header` }
                         >
                             <div className="display-flex">
                                 <GenericIcon
@@ -415,7 +418,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                                     size="mini"
                                     transparent
                                     spaced="right"
-                                    data-testid={ `${ testId }-image` }
+                                    data-testid={ `${ componentId }-image` }
                                 />
                                 <div className="ml-1">
                                     { title }
@@ -436,7 +439,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                         </ModalWithSidePanel.Header>
                         <ModalWithSidePanel.Content
                             className="content-container"
-                            data-testid={ `${ testId }-modal-content` }
+                            data-testid={ `${ componentId }-modal-content` }
                         >
                             { alert && alertComponent }
                             <IproovAuthenticationProviderCreateWizardContent
@@ -452,7 +455,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                                 template={ template }
                             />
                         </ModalWithSidePanel.Content>
-                        <ModalWithSidePanel.Actions data-testid={ `${ testId }-modal-actions` }>
+                        <ModalWithSidePanel.Actions data-testid={ `${ componentId }-modal-actions` }>
                             { resolveStepActions() }
                         </ModalWithSidePanel.Actions>
                     </ModalWithSidePanel.MainPanel>
@@ -468,5 +471,4 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
 IproovAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
     "data-componentid": "iproov-idp",
-    "data-testid": "iproov-idp-create-wizard"
 };

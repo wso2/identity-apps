@@ -6,7 +6,7 @@
     "category": "DEFAULT",
     "displayOrder": 5,
     "services": [],
-    "tags": [ "Social-Login" ],
+    "tags": [ "Passwordless" ],
     "idp": {
         "name": "iProov",
         "description": "",
@@ -100,6 +100,19 @@
                             "regex": ".*",
                             "isMandatory": true,
                             "isConfidential": true,
+                            "options": [],
+                            "defaultValue": "",
+                            "subProperties": []
+                        },
+                        {
+                            "key": "enableProgressiveEnrollment",
+                            "displayName": "Enable Progressive Enrollment",
+                            "description": "Enable Progressive Enrollment with iProov",
+                            "type": "BOOLEAN",
+                            "displayOrder": 6,
+                            "regex": ".*",
+                            "isMandatory": true,
+                            "isConfidential": false,
                             "options": [],
                             "defaultValue": "",
                             "subProperties": []

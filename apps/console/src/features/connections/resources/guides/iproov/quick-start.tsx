@@ -16,12 +16,9 @@
  * under the License.
  */
 
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "@wso2is/common/src";
+import { VerticalStepper, VerticalStepperStepInterface} from "@wso2is/common/src";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CodeEditor, GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
+import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";

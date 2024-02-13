@@ -4348,6 +4348,10 @@ export const console: ConsoleNS = {
                                     required: "API Secret is a required field."
                                 }
                             },
+                            enableProgressiveEnrollment: {
+                                hint: "Enable Progressive Enrollment with iProov.",
+                                label: "Enable Progressive Enrollment"
+                            },
                         },
                         saml: {
                             AuthRedirectUrl: {
@@ -5614,6 +5618,10 @@ export const console: ConsoleNS = {
                             apiSecret: {
                                 description: "Provide the <1>API Secret</1> of the application registered in the iProov control center.",
                                 heading: "API Secret"
+                            },
+                            enableProgressiveEnrollment: {
+                                description: "Enable Progressive Enrollment with iProov.",
+                                heading: "Enable Progressive Enrollment"
                             },
                             heading: "Help",
                             name: {
@@ -12991,6 +12999,7 @@ export const console: ConsoleNS = {
                                     oidc: "OIDC IdP",
                                     saml: "SAML IdP",
                                     hypr: "HYPR",
+                                    iproov: "IPROOV",
                                     organizationLogin: "Organization Login"
                                 }
                             },

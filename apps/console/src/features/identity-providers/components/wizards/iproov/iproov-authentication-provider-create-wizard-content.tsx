@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,15 +18,14 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
-import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     IproovAuthenticationProviderCreateWizardFormValuesInterface
 } from "./iproov-authentication-provider-create-wizard";
-import { getIdentityProviderList } from "../../../api";
+import { useIdentityProviderList } from "../../../api";
 import { IdentityProviderManagementConstants } from "../../../constants";
-import { IdentityProviderListResponseInterface, IdentityProviderTemplateInterface } from "../../../models";
+import { IdentityProviderTemplateInterface } from "../../../models";
 import { handleGetIDPListCallError } from "../../utils";
 
 /**
@@ -90,35 +89,24 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
 
     const { t } = useTranslation();
 
-    const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
     const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
 
+    const {
+        data: idpList,
+        isLoading: isIdPListFetchRequestLoading,
+        error: idpListFetchRequestError
+    } = useIdentityProviderList();
+
     /**
-     * Loads the identity provider authenticators on initial component load.
+     * Handles the IdP list fetch request error.
      */
     useEffect(() => {
+        if (!idpListFetchRequestError) {
+            return;
+        }
 
-        getIDPlist();
-    }, []);
-
-    /**
-     * Get Idp List.
-     */
-    const getIDPlist = (): void => {
-
-        setIdPListRequestLoading(true);
-
-        getIdentityProviderList(null, null, null)
-            .then((response: IdentityProviderListResponseInterface) => {
-                setIdPList(response);
-            })
-            .catch((error: AxiosError) => {
-                handleGetIDPListCallError(error);
-            })
-            .finally(() => {
-                setIdPListRequestLoading(false);
-            });
-    };
+        handleGetIDPListCallError(idpListFetchRequestError);
+    }, [ idpListFetchRequestError ]);
 
     /**
      * Check whether IDP name is already exist or not.
@@ -131,7 +119,7 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
         let nameExist: boolean = false;
 
         if (idpList?.count > 0) {
-            idpList?.identityProviders.map((idp: IdentityProviderTemplateInterface) => {
+            idpList?.identityProviders.some((idp: IdentityProviderTemplateInterface) => {
                 if (idp?.name === value) {
                     nameExist = true;
                 }
@@ -154,11 +142,12 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
         IproovAuthenticationProviderCreateWizardFormValuesInterface => {
 
         const errors: IproovAuthenticationProviderCreateWizardFormValuesInterface = {
-            apiSecret: undefined,
             apiKey: undefined,
-            oauthUsername: undefined,
-            oauthPassword: undefined,
+            apiSecret: undefined,
             baseUrl: undefined,
+            enableProgressiveEnrollment: undefined,
+            oauthPassword: undefined,
+            oauthUsername: undefined,
             name: undefined
         };
 
@@ -172,6 +161,10 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
         }
         if (!values.apiKey) {
             errors.apiKey = t("console:develop.features.authenticationProvider.forms.common" +
+                ".requiredErrorMessage");
+        }
+        if (!values.enableProgressiveEnrollment) {
+            errors.enableProgressiveEnrollment = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.oauthUsername) {
@@ -290,34 +283,34 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
                             width={ 13 }
                         />
                         <Field.Input
-                                    ariaLabel="Iproov Oauth Username"
-                                    inputType="client_id"
-                                    name="oauthUsername"
-                                    label={
-                                        t("console:develop.features.authenticationProvider.forms" +
-                                            ".authenticatorSettings.iproov.oauthUsername.label")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.authenticationProvider.forms" +
-                                            ".authenticatorSettings.iproov.oauthUsername.placeholder")
-                                    }
-                                    required={ true }
-                                    message={
-                                        t("console:develop.features.authenticationProvider.forms" +
-                                            ".authenticatorSettings.iproov.oauthUsername.validations.required")
-                                    }
-                                    type="text"
-                                    maxLength={
-                                        IdentityProviderManagementConstants
-                                            .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
-                                    }
-                                    minLength={
-                                        IdentityProviderManagementConstants
-                                            .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
-                                    }
-                                    data-testid={ `${ componentId }-idp-oauth-username` }
-                                    width={ 13 }
-                                />
+                            ariaLabel="Iproov Oauth Username"
+                            inputType="client_id"
+                            name="oauthUsername"
+                            label={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.oauthUsername.label")
+                            }
+                            placeholder={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.oauthUsername.placeholder")
+                            }
+                            required={ true }
+                            message={
+                                t("console:develop.features.authenticationProvider.forms" +
+                                    ".authenticatorSettings.iproov.oauthUsername.validations.required")
+                            }
+                            type="text"
+                            maxLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number
+                            }
+                            minLength={
+                                IdentityProviderManagementConstants
+                                    .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
+                            }
+                            data-testid={ `${ componentId }-idp-oauth-username` }
+                            width={ 13 }
+                        />
                         <Field.Input
                             ariaLabel="Iproov Oauth Password"
                             inputType="password"

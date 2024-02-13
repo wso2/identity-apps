@@ -225,6 +225,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 [
                     IdentityProviderTabTypes.ATTRIBUTES, new Set([
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
