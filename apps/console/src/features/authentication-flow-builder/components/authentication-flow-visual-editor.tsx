@@ -527,6 +527,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             || orgType === OrganizationType.SUBORGANIZATION
         ) {
             sequence.script = "";
+        } else {
+            sequence.script = AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n");
         }
 
         // Update the modified script state in the context.
