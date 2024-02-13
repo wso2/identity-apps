@@ -110,9 +110,9 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
             setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME);
         }
 
-        const filtered: GenericAuthenticatorInterface[] = authenticators.social.filter(
+        const filtered: GenericAuthenticatorInterface[] = authenticators?.social?.filter(
             (authenticator: GenericAuthenticatorInterface) => {
-                return authenticator.defaultAuthenticator.authenticatorId === authenticatorId;
+                return authenticator?.defaultAuthenticator?.authenticatorId === authenticatorId;
             }
         );
 
