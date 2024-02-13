@@ -133,6 +133,7 @@ export const common: CommonNS = {
     "personalInfo": "个人信息",
     "pin": "别针",
     "pinned": "固定",
+    "pressEnterPrompt": "按<1>Enter</1>键选择",
     "preview": "预览",
     "previous": "以前的",
     "priority": "优先事项",

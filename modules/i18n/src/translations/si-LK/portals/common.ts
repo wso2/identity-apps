@@ -133,6 +133,7 @@ export const common: CommonNS = {
     personalInfo: "පෞද්ගලික තොරතුරු",
     pin: "තබා ගන්න",
     pinned: "තබා ඇත",
+    pressEnterPrompt: "තේරීමට <1>Enter</1> ඔබන්න",
     preview: "පෙරදසුන",
     previous: "පෙර",
     priority: "ප්\u200Dරමුඛතාවය",

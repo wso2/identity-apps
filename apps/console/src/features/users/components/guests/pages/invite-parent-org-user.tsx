@@ -22,14 +22,17 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { GroupsInterface, useGroupList } from "../../../../groups";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
 import { UserManagementConstants } from "../../../constants";
 import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";
+
+import "./invite-parent-org-user.scss";
 
 interface InviteParentOrgUserFormErrorsInterface {
     username: string;
@@ -123,7 +126,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         />
                         <FinalFormField
                             fullWidth
-                            ariaLabel="Username field"
+                            ariaLabel="Usernames field"
                             data-componentid={ `${componentId}-external-form-username-input` }
                             label={ t("console:manage.features.parentOrgInvitations.addUserWizard.username.label") }
                             name="username"
@@ -156,6 +159,32 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                     />
                                 ))
                             }
+                            filterOptions={ (_options: any, params: any) => {
+                                const { inputValue } = params;
+
+                                if (inputValue !== "") {
+                                    return [ `"${inputValue}"` ];
+                                } else {
+                                    return [];
+                                }
+                            } }
+                            renderOption={ (props: any, option: string) => {
+                                return (
+                                    <li
+                                        { ...props }
+                                        className={ classNames("press-enter-prompt", props.className) }
+                                    >
+                                        { option }
+                                        <p>
+                                            <Trans
+                                                i18nKey={ "common:pressEnterPrompt" }
+                                            >
+                                                Press <kbd>Enter</kbd> to select
+                                            </Trans>
+                                        </p>
+                                    </li>
+                                );
+                            } }
                             multipleValues
                             freeSolo
                         />
