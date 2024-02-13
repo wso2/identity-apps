@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.12.20
+
+### Patch Changes
+
+- [#5501](https://github.com/wso2/identity-apps/pull/5501) [`c64b5ce413`](https://github.com/wso2/identity-apps/commit/c64b5ce4136387c317035dca71f4ab57a5ac629a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix ordering in API resource selection dropdown
+
+* [#5503](https://github.com/wso2/identity-apps/pull/5503) [`0974e19d60`](https://github.com/wso2/identity-apps/commit/0974e19d60308fcf88f83717c5531a6d5e056e60) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the missing connection name issue in the warning alert
+
+- [#5504](https://github.com/wso2/identity-apps/pull/5504) [`70c73eb8b2`](https://github.com/wso2/identity-apps/commit/70c73eb8b2bbc70c10e545b133ae8b2ec3fa2385) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix overflow hidden issue in the oidc attribute mapping section
+
 ## 2.12.19
 
 ### Patch Changes
