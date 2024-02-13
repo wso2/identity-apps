@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.12.17
+
+### Patch Changes
+
+- [#5493](https://github.com/wso2/identity-apps/pull/5493) [`a857f2b241`](https://github.com/wso2/identity-apps/commit/a857f2b241ca9080cfc7ef1d814fb20fa9e7b943) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with custom connector dynamically renedering forms
+
+- Updated dependencies [[`a857f2b241`](https://github.com/wso2/identity-apps/commit/a857f2b241ca9080cfc7ef1d814fb20fa9e7b943)]:
+  - @wso2is/dynamic-forms@2.0.35
+
 ## 2.12.16
 
 ### Patch Changes
