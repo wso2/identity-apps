@@ -271,10 +271,23 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         const { selectedProvider } = smsProviderSettings;
 
         const properties: SMSProviderPropertiesInterface[] = buildProperties(values);
-        const provider: string = selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
-            SMSProviderConstants.TWILIO : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
-                SMSProviderConstants.VONAGE : selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER ?
-                    SMSProviderConstants.CUSTOM : values.provider;
+
+        let provider: string;
+
+        // If the selected provider is Twilio or Vonage, set the provider to the respective provider.
+        // Else, set the provider to the value of the provider input value.
+        switch (selectedProvider) {
+            case SMSProviderConstants.TWILIO_SMS_PROVIDER:
+                provider = SMSProviderConstants.TWILIO;
+
+                break;
+            case SMSProviderConstants.VONAGE_SMS_PROVIDER:
+                provider = SMSProviderConstants.VONAGE;
+
+                break;
+            default:
+                provider = values.provider;
+        }
         const contentType: ContentType = values.contentType ?? ContentType.JSON;
         const submittingValues: SMSProviderAPIInterface = {
             contentType: contentType,
