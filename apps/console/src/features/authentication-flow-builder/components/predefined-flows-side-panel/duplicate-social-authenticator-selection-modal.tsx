@@ -120,7 +120,7 @@ const DuplicateSocialAuthenticatorSelectionModal: FunctionComponent<
                         }
                         tOptions={ { authenticator: authenticatorCategoryDisplayName } }
                     >
-                        You have multiple Social Connections configured with{ " " }
+                        You have multiple Social Connections configured with &nbsp;
                         <Code>
                             { authenticatorCategoryDisplayName }
                             Authenticator
