@@ -167,6 +167,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -429,7 +430,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     }
                                     resourceDescription={
                                         !isEmpty(authenticator.description)
-                                            ? authenticator.description
+                                            ? authenticator?.description?.replaceAll("{{productName}}", productName)
                                             : !isIdP
                                                 ? AuthenticatorMeta.getAuthenticatorDescription(authenticator.id)
                                                 : ""

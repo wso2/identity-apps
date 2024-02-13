@@ -3874,7 +3874,7 @@ export const console: ConsoleNS = {
                         addWizard: {
                             title: "Émetteur de jeton de confiance",
                             subtitle: "Enregistrez un émetteur de jeton de confiance pour échanger son jeton contre " +
-                                "un jeton émis par Asgardeo"
+                                "un jeton émis par {{productName}}"
                         },
                         forms: {
                             steps: {
@@ -3909,7 +3909,7 @@ export const console: ConsoleNS = {
                                 optionLabel: "Point de terminaison JWKS",
                                 placeholder: "Entrez l'URL de point de terminaison JWKS",
                                 label: "URL de point de terminaison JWKS",
-                                hint: "Asgardeo utilisera cette URL pour obtenir des clés pour vérifier les réponses " +
+                                hint: "{{productName}} utilisera cette URL pour obtenir des clés pour vérifier les réponses " +
                                     "signées de Votre émetteur de jeton de confiance.",
                                 validation: {
                                     notValid: "Veuillez saisir une URL valide"
@@ -3917,7 +3917,7 @@ export const console: ConsoleNS = {
                             },
                             pem: {
                                 optionLabel: "Utiliser le certificat PEM",
-                                hint: "Asgardeo utilisera ce certificat pour vérifier les réponses signées de "+
+                                hint: "{{productName}} utilisera ce certificat pour vérifier les réponses signées de "+
                                     "Votre émetteur de jeton de confiance.",
                                 uploadCertificateButtonLabel: "Télécharger le fichier de certificat",
                                 dropzoneText: "Faites glisser et déposez un fichier de certificat ici.",

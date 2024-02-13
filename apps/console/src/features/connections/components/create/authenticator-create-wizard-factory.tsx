@@ -21,8 +21,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CreateConnectionWizard } from "./add-connection-wizard";
-import { 
-    EnterpriseConnectionCreateWizard 
+import {
+    EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
@@ -31,17 +31,19 @@ import {
     GenericConnectionCreateWizardPropsInterface,
     StrictConnectionInterface
 } from "../../models/connection";
-import { 
-    handleGetConnectionTemplateRequestError, 
-    handleGetConnectionsError 
+import {
+    handleGetConnectionTemplateRequestError,
+    handleGetConnectionsError
 } from "../../utils/connection-utils";
-import { 
-    ExpertModeAuthenticationProviderCreateWizard 
+import {
+    ExpertModeAuthenticationProviderCreateWizard
 } from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
-import { 
-    OrganizationEnterpriseConnectionCreateWizard 
+import {
+    OrganizationEnterpriseConnectionCreateWizard
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../core";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -112,11 +114,13 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
     ] = useState<ConnectionTemplateInterface>(undefined);
     const { t } = useTranslation();
 
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
     const {
         data: connectionsResponse,
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError
-    } = useGetConnections(null, null, !selectedTemplate?.idp?.name 
+    } = useGetConnections(null, null, !selectedTemplate?.idp?.name
         ? "name sw " + selectedTemplate?.name : "name sw " + selectedTemplate?.idp?.name, null, true
     );
 
@@ -294,7 +298,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                         title= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
                             "addWizard.title") }
                         subTitle= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
-                            "addWizard.subtitle") }
+                            "addWizard.subtitle", { productName }) }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
@@ -346,7 +350,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                         { ...rest }
                     />
                 );
-                
+
             default:
                 return (
                     <CreateConnectionWizard

@@ -230,7 +230,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         const identityProvider: IdentityProviderInterface = template.idp;
 
         identityProvider.templateId = template.templateId;
-        identityProvider.description = template.description;
+        identityProvider.description = template?.description?.replaceAll("{{productName}}", config?.ui?.productName);
 
         // Populate general settings.
         identityProvider.name = values?.name?.toString();
@@ -482,8 +482,11 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                             placeholder={ t("console:develop.features.authenticationProvider." +
                                 "templates.trustedTokenIssuer.forms.jwksUrl.placeholder") }
                             data-componentid={ `${ componentId }-form-wizard-oidc-jwks-endpoint-url` }
-                            hint={ t("console:develop.features.authenticationProvider." +
-                                "templates.trustedTokenIssuer.forms.jwksUrl.hint") }
+                            hint={
+                                t("console:develop.features.authenticationProvider." +
+                                "templates.trustedTokenIssuer.forms.jwksUrl.hint",
+                                { productName: config?.ui?.productName })
+                            }
                             validation={ (values: string) => {
                                 let errorMsg: string;
 
@@ -544,8 +547,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                                 data-componentid={ `${ componentId }-form-wizard-pem-certificate` }
                             />
                             <Hint>
-                                { t("console:develop.features.authenticationProvider." +
-                                    "templates.trustedTokenIssuer.forms.pem.hint") }
+                                {
+                                    t(
+                                        "console:develop.features.authenticationProvider." +
+                                        "templates.trustedTokenIssuer.forms.pem.hint",
+                                        { productName: config?.ui?.productName }
+                                    )
+                                }
                             </Hint>
                         </>
                     ) }

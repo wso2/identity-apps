@@ -92,6 +92,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const { UIConfig } = useUIConfig();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
@@ -513,7 +514,10 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         disabled={ isTemplateDisabled }
                                                         disabledHint={ disabledHint }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                        resourceDescription={ template.description }
+                                                        resourceDescription={
+                                                            template?.description
+                                                                ?.replaceAll("{{productName}}", productName)
+                                                        }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
                                                         resourceDocumentationLink={
                                                             getLink(ConnectionsManagementUtils

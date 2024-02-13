@@ -5335,7 +5335,7 @@ export const console: ConsoleNS = {
                     trustedTokenIssuer: {
                         addWizard: {
                             title: "Trusted token issuer",
-                            subtitle: "Register a trusted token issuer to exchange its token for an Asgardeo issued " +
+                            subtitle: "Register a trusted token issuer to exchange its token for an {{productName}} issued " +
                                 "token"
                         },
                         forms: {
@@ -5371,7 +5371,7 @@ export const console: ConsoleNS = {
                                 optionLabel: "JWKS endpoint",
                                 placeholder: "Enter JWKS endpoint URL",
                                 label: "JWKS endpoint URL",
-                                hint: "Asgardeo will use this URL to obtain keys to verify the signed responses from " +
+                                hint: "{{productName}} will use this URL to obtain keys to verify the signed responses from " +
                                     "your trusted token issuer.",
                                 validation: {
                                     notValid: "Please enter a valid URL"
@@ -5379,7 +5379,7 @@ export const console: ConsoleNS = {
                             },
                             pem: {
                                 optionLabel: "Use PEM certificate",
-                                hint: "Asgardeo will use this certificate to verify the signed responses from " +
+                                hint: "{{productName}} will use this certificate to verify the signed responses from " +
                                     "your trusted token issuer.",
                                 uploadCertificateButtonLabel: "Upload certificate file",
                                 dropzoneText: "Drag and drop a certificate file here.",
