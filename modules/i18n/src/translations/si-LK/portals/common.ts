@@ -133,6 +133,7 @@ export const common: CommonNS = {
     personalInfo: "පෞද්ගලික තොරතුරු",
     pin: "තබා ගන්න",
     pinned: "තබා ඇත",
+    pressEnterPrompt: "තේරීමට <1>Enter</1> ඔබන්න",
     preview: "පෙරදසුන",
     previous: "පෙර",
     priority: "ප්\u200Dරමුඛතාවය",
@@ -184,6 +185,5 @@ export const common: CommonNS = {
     verify: "සත්‍යාපනය කරන්න",
     view: "බලන්න",
     weak: "දුර්වලයි",
-    weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය.",
-    pressEnterPrompt: "තේරීමට <1>Enter</1> ඔබන්න"
+    weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය."
 };

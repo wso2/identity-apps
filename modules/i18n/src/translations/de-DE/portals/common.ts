@@ -133,6 +133,7 @@ export const common: CommonNS = {
     "personalInfo": "Persönliche Informationen",
     "pin": "PIN",
     "pinned": "Gepinnt",
+    "pressEnterPrompt": "Drücken Sie zur Auswahl die <1>Eingabetaste</1>",
     "preview": "Vorschau",
     "previous": "Bisherige",
     "priority": "Priorität",
@@ -184,6 +185,5 @@ export const common: CommonNS = {
     "verify": "Überprüfen",
     "view": "Aussicht",
     "weak": "Schwach",
-    "weakPassword": "Die Passwortstärke sollte zumindest gut sein.",
-    "pressEnterPrompt": "Drücken Sie zur Auswahl die <1>Eingabetaste</1>"
+    "weakPassword": "Die Passwortstärke sollte zumindest gut sein."
 };
