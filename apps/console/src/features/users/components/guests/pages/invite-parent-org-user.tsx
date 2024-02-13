@@ -33,7 +33,6 @@ import { UserManagementConstants } from "../../../constants";
 import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";
 
 import "./invite-parent-org-user.scss";
-import { AutocompleteRenderOptionState } from "@mui/material";
 
 interface InviteParentOrgUserFormErrorsInterface {
     username: string;
