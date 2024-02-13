@@ -77,7 +77,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
      * When the authenticators are fetched, filter the social authenticators.
      */
     useEffect(() => {
-        if (isEmpty(authenticators?.social) || !selectedSequence) {
+        if (!selectedSequence) {
             return;
         }
 
