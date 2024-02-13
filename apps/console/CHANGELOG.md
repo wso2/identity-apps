@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.12.21
+
+### Patch Changes
+
+- [#5508](https://github.com/wso2/identity-apps/pull/5508) [`4d0ad1dc0d`](https://github.com/wso2/identity-apps/commit/4d0ad1dc0dd7cf8fe700e249af512445abaf3255) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Send empty string when conditional auth is disabled for sub organizations
+
+* [#5498](https://github.com/wso2/identity-apps/pull/5498) [`900d253e7e`](https://github.com/wso2/identity-apps/commit/900d253e7e15fb74ee6d149ff19bb87e88c835e7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify the trusted token issuer text content
+
+* Updated dependencies [[`900d253e7e`](https://github.com/wso2/identity-apps/commit/900d253e7e15fb74ee6d149ff19bb87e88c835e7)]:
+  - @wso2is/i18n@2.0.122
+  - @wso2is/common@2.0.41
+
 ## 2.12.20
 
 ### Patch Changes

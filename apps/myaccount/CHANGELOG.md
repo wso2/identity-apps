@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.3.29
+
+### Patch Changes
+
+- [#5498](https://github.com/wso2/identity-apps/pull/5498) [`900d253e7e`](https://github.com/wso2/identity-apps/commit/900d253e7e15fb74ee6d149ff19bb87e88c835e7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify the trusted token issuer text content
+
+- Updated dependencies [[`900d253e7e`](https://github.com/wso2/identity-apps/commit/900d253e7e15fb74ee6d149ff19bb87e88c835e7)]:
+  - @wso2is/i18n@2.0.122
+
 ## 2.3.28
 
 ### Patch Changes
