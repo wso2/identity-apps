@@ -298,9 +298,9 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".uriAttributeSettings.subject.hint"
                                     }
                                 >
-                                The attribute that identifies the user at the enterprise identity provider.
+                                The attribute that identifies the user at the enterprise connection.
                                 When attributes are configured based on the authentication response of this
-                                IdP connection, you can use one of them as the subject. Otherwise, the
+                                connection, you can use one of them as the subject. Otherwise, the
                                 default <Code>saml2:Subject</Code> in the SAML response is used as the
                                 subject attribute.
                                 </Trans>

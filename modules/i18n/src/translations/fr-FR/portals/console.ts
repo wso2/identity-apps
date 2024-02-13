@@ -4221,7 +4221,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Attribut mappé",
-                                externalAttributeColumnHeader: "Attribut IdP externe"
+                                externalAttributeColumnHeader: "Attribut de connexion externe"
                             },
                             heading: "Mappages d'attributs de connexion",
                             subheading: "Ajoutez et mappez les attributs pris en charge à partir du connexion externe.",

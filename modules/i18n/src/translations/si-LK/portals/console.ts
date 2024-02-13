@@ -4113,7 +4113,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "සිතියම්ගත කළ ගුණාංගය",
-                                externalAttributeColumnHeader: "බාහිර IdP ගුණාංගය"
+                                externalAttributeColumnHeader: "බාහිර සම්බන්ධතා ගුණාංගය"
                             },
                             heading: "අනන්‍යතා සපයන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
                             subheading: "බාහිර අනන්‍යතා සපයන්නා වෙතින් සහාය දක්වන උපලක්ෂණ එකතු කර සිතියම්ගත කරන්න.",

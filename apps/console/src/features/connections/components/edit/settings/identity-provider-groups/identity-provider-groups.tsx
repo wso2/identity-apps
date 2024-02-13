@@ -21,6 +21,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, EmphasizedSegment, Hint, Message } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -28,7 +29,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
@@ -64,6 +65,10 @@ interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConf
      * Loading Component.
      */
     loader: () => ReactElement;
+    /**
+     * Whether the editing IDP is an OIDC IDP.
+     */
+    isOIDC: boolean;
 }
 
 /**
@@ -78,6 +83,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
     const {
         editingIDP,
         isReadOnly,
+        isOIDC,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -129,7 +135,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         if (originalClaimConfigs?.mappings?.length > 0) {
             const groupAttribute: ConnectionClaimMappingInterface = originalClaimConfigs.mappings.find(
                 (claim: ConnectionClaimMappingInterface) => {
-                    return claim.localClaim.uri === ConnectionManagementConstants.CLAIM_APP_ROLE;
+                    return claim.localClaim.uri === ConnectionManagementConstants.LOCAL_DIALECT_GROUP_CLAIM;
                 }
             );
 
@@ -144,85 +150,149 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
     };
 
     /**
-     * Renders the group attribute update form.
+     * Renders the group attribute section based on the configurations and
+     * the availability of the group attribute mapping.
      */
-    const renderGroupAttributeUpdateForm = (): ReactElement => {
-        return (
-            <EmphasizedSegment padded="very">
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={ 8 }>
-                            <Form
-                                id={ FORM_ID }
-                            >
-                                <Form.Input
-                                    name="groupAttribute"
-                                    label={ t("extensions:console.identityProviderGroups.claimConfigs." +
-                                        "groupAttributeLabel") }
-                                    placeholder={ t("extensions:console.identityProviderGroups.claimConfigs." +
-                                        "groupAttributePlaceholder") }
-                                    readOnly={ true }
-                                    maxLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MAX_LENGTH }
-                                    minLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MIN_LENGTH }
-                                    data-componentid={ `${ componentId }-group-attribute-input` }
-                                    value={ groupAttribute }
-                                    onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                                        setGroupAttribute(e.target.value);
-                                    } }
-                                    width={ 16 }
-                                />
-                                <Hint>
-                                    { t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeHint") }
-                                </Hint>
-                            </Form>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </EmphasizedSegment>
-        );
-    };
+    const renderGroupAttributeSection = (): ReactElement => {
+        /**
+         * Handle the scenario where the UI config is not initialized.
+         */
+        if (!UIConfig) {
+            return null;
+        }
 
-    /**
-     * Renders the group attribute message when the `useRoleClaimAsGroupClaim` is enabled.
-     */
-    const renderGroupAttributeMessage = (): ReactElement => {
-        return (
+        /**
+         * If the role claim is used as the group claim, display the message.
+         */
+        if (UIConfig.useRoleClaimAsGroupClaim) {
+            return (
+                <Message
+                    header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                    content={
+                        (<>
+                            <p>
+                                Please note that the attribute selected in the Group section of
+                                the <strong>Attributes tab</strong> as
+                                the <strong>Group Attribute</strong> is used to identify groups at the Connection.
+                            </p>
+                            <p>
+                                For modifications to the <strong>Group Attribute</strong>, please go to the
+                                Group section in the <strong>Attributes tab</strong>.
+                            </p>
+                        </>)
+                    }
+                    data-componentid={ `${ componentId }-group-attribute-message` }
+                    info
+                />
+            );
+        }
+
+        // The default group claim is determined based on the IDP type.
+        const groupClaim: string = isOIDC
+            ? ConnectionManagementConstants.STANDARD_DIALECT_GROUP_CLAIM
+            : ConnectionManagementConstants.LOCAL_DIALECT_GROUP_CLAIM;
+
+        // Construct the default dialect group claim message.
+        const defaultDialectMessage: ReactElement = (
             <Message
-                data-componentid={ `${ componentId }-group-attribute-message` }
                 header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
-                content={
-                    (<>
-                        <p>
-                            <Trans
-                                i18nKey="extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessage1"
-                            >
-                                Please be aware that the attribute selected in the <b>Attributes tab</b> as
-                                the group attribute is used to identify groups at the Connection.
-                            </Trans>
-                        </p>
-                        <p>
-                            <Trans
-                                i18nKey="extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessage2"
-                            >
-                                For modifications to the group attribute, please visit the <b>Attributes tab</b>.
-                            </Trans>
-                        </p>
-                    </>)
-                }
+                content={ (
+                    <p>
+                        Please note that <strong>{
+                            groupClaim
+                        }</strong> { isOIDC ? "OIDC" : "" } attribute will be considered as the default <strong>
+                        Group Attribute</strong> as you have not added a
+                        custom attribute mapping for the connection&apos;s groups attribute.
+                    </p>
+                ) }
+                data-componentid={ `${ componentId }-group-attribute-message` }
                 info
             />
         );
+
+        /**
+         * If the claim mappings are empty,
+         * display the message mentioning that the default dialect group claim will be used.
+         */
+        if ((editingIDP?.claims?.mappings?.length ?? 0) === 0) {
+            return defaultDialectMessage;
+        }
+
+        /**
+         * If the group attribute is available, display the mapped group attribute.
+         */
+        if (!isEmpty(groupAttribute)) {
+            return (
+                <EmphasizedSegment padded="very">
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={ 8 }>
+                                <Form
+                                    id={ FORM_ID }
+                                >
+                                    <Form.Input
+                                        name="groupAttribute"
+                                        label={ t("extensions:console.identityProviderGroups.claimConfigs." +
+                                            "groupAttributeLabel") }
+                                        placeholder={ t("extensions:console.identityProviderGroups.claimConfigs." +
+                                            "groupAttributePlaceholder") }
+                                        readOnly={ true }
+                                        maxLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MAX_LENGTH }
+                                        minLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MIN_LENGTH }
+                                        data-componentid={ `${ componentId }-group-attribute-input` }
+                                        value={ groupAttribute }
+                                        onChange={ (e: ChangeEvent<HTMLInputElement>) => {
+                                            setGroupAttribute(e.target.value);
+                                        } }
+                                        width={ 16 }
+                                    />
+                                    <Hint>
+                                        The attribute from the connection that will be mapped to the
+                                        organization&apos;s group attribute. For modifications, please go to the
+                                        <strong> Attributes tab</strong>.
+                                    </Hint>
+                                </Form>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EmphasizedSegment>
+            );
+        }
+
+        /**
+         * If the custom claim mapping is enabled and the custom claim mapping merge is not enabled,
+         * display a message asking the user to add a custom attribute mapping for the connection groups attribute.
+         */
+        if (UIConfig.isCustomClaimMappingEnabled
+            && !UIConfig.isCustomClaimMappingMergeEnabled) {
+            return (
+                <Message
+                    header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                    content={
+                        (<p>
+                            Please note that you have enabled custom attribute mapping, but have not added a custom
+                            attribute mapping for the connection&apos;s groups attribute. Go to the <strong>
+                                Attributes tab
+                            </strong> to add a custom attribute mapping for the connection&apos;s groups attribute.
+                        </p>)
+                    }
+                    data-componentid={ `${ componentId }-group-attribute-message` }
+                    info
+                />
+            );
+        }
+
+        /**
+         * For all other cases, display the message mentioning that the default dialect group claim will be used.
+         */
+        return defaultDialectMessage;
     };
 
     return (
         !isClaimConfigsFetchRequestLoading
             ? (
                 <>
-                    {
-                        UIConfig?.useRoleClaimAsGroupClaim
-                            ? renderGroupAttributeMessage()
-                            : renderGroupAttributeUpdateForm()
-                    }
+                    { renderGroupAttributeSection() }
                     <Divider hidden/>
 
                     <EmphasizedSegment padded="very">
