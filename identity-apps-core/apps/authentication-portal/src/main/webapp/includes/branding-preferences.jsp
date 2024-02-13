@@ -65,6 +65,7 @@
         supportedLanguages.put("de", "DE");
         supportedLanguages.put("zh", "CN");
         supportedLanguages.put("ja", "JP");        
+        
         List<String> languageSupportedCountries = new ArrayList<>();
         languageSupportedCountries.add("US");
         languageSupportedCountries.add("FR");
