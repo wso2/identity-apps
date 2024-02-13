@@ -22,12 +22,13 @@ import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInter
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { useApplicationList } from "../../applications/api";
 import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants } from "../../core";
 import { history } from "../../core/helpers";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
@@ -61,6 +62,15 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+    const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
+
+    const consoleId: string = useMemo(() => {
+        return consoleApplicationFilter?.applications[0]?.id;
+    }, [ consoleApplicationFilter ]);
+
+    const useRolesListFilterBy = (filterBy: string) => {
+        return `audience.value ne ${consoleId}${ filterBy ? ` and ${ filterBy }` : "" }`
+    }
 
     const {
         data: rolesList,
@@ -70,7 +80,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     } = useRolesList(
         listItemLimit,
         listOffset,
-        filterBy,
+        useRolesListFilterBy(filterBy),
         "users,groups,permissions,associatedApplications"
     );
 
