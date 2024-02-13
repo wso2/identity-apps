@@ -171,12 +171,13 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                     content={
                         (<>
                             <p>
-                                Please note that the attribute selected in the <strong>Attributes tab</strong> as
+                                Please note that the attribute selected in the Group section of
+                                the <strong>Attributes tab</strong> as
                                 the <strong>Group Attribute</strong> is used to identify groups at the Connection.
                             </p>
                             <p>
-                                For modifications to the <strong>
-                                Group Attribute</strong>, please visit the <strong>Attributes tab</strong>.
+                                For modifications to the <strong>Group Attribute</strong>, please visit the
+                                Group section in the <strong>Attributes tab</strong>.
                             </p>
                         </>)
                     }
@@ -195,15 +196,15 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         const defaultDialectMessage: ReactElement = (
             <Message
                 header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
-                content={
-                    (<p>
+                content={ (
+                    <p>
                         Please note that <strong>{
                             groupClaim
-                        }</strong> attribute will be considered as the default <strong>
+                        }</strong> { isOIDC ? "OIDC" : "" } attribute will be considered as the default <strong>
                         Group Attribute</strong> as you have not added a
-                        custom attribute mapping for the connection groups attribute.
-                    </p>)
-                }
+                        custom attribute mapping for the connection&apos;s groups attribute.
+                    </p>
+                ) }
                 data-componentid={ `${ componentId }-group-attribute-message` }
                 info
             />
@@ -246,8 +247,9 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                         width={ 16 }
                                     />
                                     <Hint>
-                                        { t("extensions:console.identityProviderGroups."
-                                            + "claimConfigs.groupAttributeHint") }
+                                        The attribute from the connection that will be mapped to the
+                                        organization&apos;s group attribute. For modifications, please visit the
+                                        <strong> Attributes tab</strong>.
                                     </Hint>
                                 </Form>
                             </Grid.Column>
@@ -268,10 +270,10 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                     header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
                     content={
                         (<p>
-                            Please note that you have enabled custom claim mapping, but have not added a custom
-                            attribute mapping for the connection groups attribute. Visit the <strong>
+                            Please note that you have enabled custom attribute mapping, but have not added a custom
+                            attribute mapping for the connection&apos;s groups attribute. Visit the <strong>
                                 Attributes tab
-                            </strong> to add a custom attribute mapping for the connection groups attribute.
+                            </strong> to add a custom attribute mapping for the connection&apos;s groups attribute.
                         </p>)
                     }
                     data-componentid={ `${ componentId }-group-attribute-message` }
