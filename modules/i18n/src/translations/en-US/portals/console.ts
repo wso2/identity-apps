@@ -9584,15 +9584,15 @@ export const console: ConsoleNS = {
             },
             parentOrgInvitations: {
                 addUserWizard: {
-                    heading: "Invite Parent User",
+                    heading: "Invite Parent Users",
                     description: "Invite users from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
                     username: {
-                        label: "Username",
-                        placeholder: "Enter the username",
+                        label: "Usernames",
+                        placeholder: "Enter the usernames",
                         hint: "Add the username of a parent user and press enter. Repeat to include multiple users.",
                         validations: {
-                            required: "Username is a required field."
+                            required: "At least one user should be selected."
                         }
                     },
                     groups: {

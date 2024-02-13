@@ -184,5 +184,6 @@ export const common: CommonNS = {
     "verify": "確認する",
     "view": "ビュー",
     "weak": "弱い",
-    "weakPassword": "パスワードの強度は少なくとも良いはずです。"
+    "weakPassword": "パスワードの強度は少なくとも良いはずです。",
+    "pressEnterPrompt": "<1>Enter</1> を押して選択します"
 };

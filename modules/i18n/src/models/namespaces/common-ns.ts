@@ -181,4 +181,5 @@ export interface CommonNS {
         primaryActionText: string;
     },
     noResultsFound: string;
+    pressEnterPrompt: string;
 }

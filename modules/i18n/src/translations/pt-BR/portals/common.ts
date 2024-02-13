@@ -184,5 +184,6 @@ export const common: CommonNS = {
     verify: "Verificar",
     view: "Visualizar",
     weak: "Fraco",
-    weakPassword: "A força da senha deve ser pelo menos boa."
+    weakPassword: "A força da senha deve ser pelo menos boa.",
+    pressEnterPrompt: "Pressione <1>Enter</1> para selecionar"
 };

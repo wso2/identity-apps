@@ -184,5 +184,6 @@ export const common: CommonNS = {
     "verify": "核实",
     "view": "看法",
     "weak": "虚弱的",
-    "weakPassword": "密码强度至少应该很好。"
+    "weakPassword": "密码强度至少应该很好。",
+    "pressEnterPrompt": "按<1>Enter</1>键选择"
 };

@@ -184,5 +184,6 @@ export const common: CommonNS = {
     verify: "සත්‍යාපනය කරන්න",
     view: "බලන්න",
     weak: "දුර්වලයි",
-    weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය."
+    weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය.",
+    pressEnterPrompt: "තේරීමට <1>Enter</1> ඔබන්න"
 };
