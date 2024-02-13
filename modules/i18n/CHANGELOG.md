@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.124
+
+### Patch Changes
+
+- [#5515](https://github.com/wso2/identity-apps/pull/5515) [`a252735e1f`](https://github.com/wso2/identity-apps/commit/a252735e1f206c2c47e0d5d0011381e793cc83f4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues related to role attributes in connections
+
 ## 2.0.123
 
 ### Patch Changes
