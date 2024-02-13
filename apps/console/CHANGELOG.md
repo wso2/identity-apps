@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.12.18
+
+### Patch Changes
+
+- [#5496](https://github.com/wso2/identity-apps/pull/5496) [`a88524bc3e`](https://github.com/wso2/identity-apps/commit/a88524bc3e704e80927eb6e5c3fdcba555b82818) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Exclude console audience roles from the roles
+
+* [#5494](https://github.com/wso2/identity-apps/pull/5494) [`3377084214`](https://github.com/wso2/identity-apps/commit/33770842141e8177d3e17be382256d3ab647be51) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in selecting usernames to invite in parent org user invite modal
+
+* Updated dependencies [[`3377084214`](https://github.com/wso2/identity-apps/commit/33770842141e8177d3e17be382256d3ab647be51)]:
+  - @wso2is/i18n@2.0.121
+
 ## 2.12.17
 
 ### Patch Changes
