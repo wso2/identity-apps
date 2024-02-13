@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState, IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
 import {
     EnterpriseConnectionCreateWizard
@@ -42,8 +43,6 @@ import {
     OrganizationEnterpriseConnectionCreateWizard
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
-import { useSelector } from "react-redux";
-import { AppState } from "../../../core";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
