@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React from "react";
 import SmsProviderConfig from "./models/sms-provider";
 
 const smsProviderConfig: SmsProviderConfig = {
