@@ -372,6 +372,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
     /**
+     * Enable/Disable the custom claim mapping feature.
+     */
+    isCustomClaimMappingEnabled?: boolean;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;
@@ -402,6 +406,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Display name of the console administrator role.
      */
     administratorRoleDisplayName?: string;
+    /**
+     * Whether to consider the role claim as the group claim.
+     */
+    useRoleClaimAsGroupClaim?: boolean;
 }
 
 /**

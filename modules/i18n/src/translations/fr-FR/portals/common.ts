@@ -134,6 +134,7 @@ export const common: CommonNS = {
     personalInfo: "Informations personnelles",
     pin: "Épingler",
     pinned: "Épinglé",
+    pressEnterPrompt: "Appuyez sur <1>Entrée</1> pour sélectionner",
     preview: "Aperçu",
     previous: "Précédent",
     priority: "Priorité",

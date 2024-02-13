@@ -1,5 +1,171 @@
 # @wso2is/console
 
+## 2.12.17
+
+### Patch Changes
+
+- [#5493](https://github.com/wso2/identity-apps/pull/5493) [`a857f2b241`](https://github.com/wso2/identity-apps/commit/a857f2b241ca9080cfc7ef1d814fb20fa9e7b943) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with custom connector dynamically renedering forms
+
+- Updated dependencies [[`a857f2b241`](https://github.com/wso2/identity-apps/commit/a857f2b241ca9080cfc7ef1d814fb20fa9e7b943)]:
+  - @wso2is/dynamic-forms@2.0.35
+
+## 2.12.16
+
+### Patch Changes
+
+- [#5485](https://github.com/wso2/identity-apps/pull/5485) [`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81) Thanks [@savindi7](https://github.com/savindi7)! - Update Connection icons.
+
+* [#5490](https://github.com/wso2/identity-apps/pull/5490) [`c62257a794`](https://github.com/wso2/identity-apps/commit/c62257a7941c8492af70e8c052f327e81e0f3d21) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve logic to display google private key file picker
+
+* Updated dependencies [[`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81)]:
+  - @wso2is/react-components@2.1.8
+  - @wso2is/dynamic-forms@2.0.34
+  - @wso2is/theme@2.0.64
+  - @wso2is/form@2.0.36
+  - @wso2is/common@2.0.40
+  - @wso2is/forms@2.0.23
+
+## 2.12.15
+
+### Patch Changes
+
+- [#5488](https://github.com/wso2/identity-apps/pull/5488) [`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix overflow issue in workflow approvals
+
+* [#5484](https://github.com/wso2/identity-apps/pull/5484) [`dda7bab511`](https://github.com/wso2/identity-apps/commit/dda7bab5111d4133e16ce840e30f9fc096400731) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Onboard the organization-wise JWT Token re-use config
+
+- [#5487](https://github.com/wso2/identity-apps/pull/5487) [`abf0e385d4`](https://github.com/wso2/identity-apps/commit/abf0e385d4d26f1f3746abe2d9b4b1f0bfe129e2) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issue in login and registration page
+
+- Updated dependencies [[`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250)]:
+  - @wso2is/react-components@2.1.7
+  - @wso2is/dynamic-forms@2.0.33
+  - @wso2is/common@2.0.39
+  - @wso2is/forms@2.0.22
+  - @wso2is/theme@2.0.63
+  - @wso2is/form@2.0.35
+
+## 2.12.14
+
+### Patch Changes
+
+- [#5483](https://github.com/wso2/identity-apps/pull/5483) [`2575c34693`](https://github.com/wso2/identity-apps/commit/2575c34693943f56dbe824f69ac2f7ba715bd721) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix grouping in dynamic governance connectors
+
+- Updated dependencies [[`2575c34693`](https://github.com/wso2/identity-apps/commit/2575c34693943f56dbe824f69ac2f7ba715bd721)]:
+  - @wso2is/i18n@2.0.120
+  - @wso2is/common@2.0.38
+
+## 2.12.13
+
+### Patch Changes
+
+- [#5362](https://github.com/wso2/identity-apps/pull/5362) [`299ca3430a`](https://github.com/wso2/identity-apps/commit/299ca3430a2709cc52668ec85252de294cccdf48) Thanks [@brionmario](https://github.com/brionmario)! - Add ability to edit Console Role permissions
+
+## 2.12.12
+
+### Patch Changes
+
+- [#5478](https://github.com/wso2/identity-apps/pull/5478) [`76b3ccbec2`](https://github.com/wso2/identity-apps/commit/76b3ccbec282d8b58843abd0718a9de71562c272) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix User Attributes tab visible logic in connection edit view
+
+## 2.12.11
+
+### Patch Changes
+
+- [#5477](https://github.com/wso2/identity-apps/pull/5477) [`10ab493023`](https://github.com/wso2/identity-apps/commit/10ab49302394f397453ff60f7f1f113200f4c340) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement radio input for user id in the claims field
+
+## 2.12.10
+
+### Patch Changes
+
+- [#5473](https://github.com/wso2/identity-apps/pull/5473) [`09d5e74a52`](https://github.com/wso2/identity-apps/commit/09d5e74a52b56081871c0b25d6a8ad62681d4f18) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX related to IDP groups section
+
+* [#5467](https://github.com/wso2/identity-apps/pull/5467) [`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add support to show group attribute in conntections attributes tab
+
+* Updated dependencies [[`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11)]:
+  - @wso2is/i18n@2.0.119
+
+## 2.12.9
+
+### Patch Changes
+
+- [#5470](https://github.com/wso2/identity-apps/pull/5470) [`f58ad94c02`](https://github.com/wso2/identity-apps/commit/f58ad94c02ba67759480812d52e6cecc9bd3bc95) Thanks [@brionmario](https://github.com/brionmario)! - Stop minifying public assets
+
+- Updated dependencies [[`f58ad94c02`](https://github.com/wso2/identity-apps/commit/f58ad94c02ba67759480812d52e6cecc9bd3bc95)]:
+  - @wso2is/react-components@2.1.6
+  - @wso2is/common@2.0.37
+  - @wso2is/dynamic-forms@2.0.32
+  - @wso2is/form@2.0.34
+  - @wso2is/forms@2.0.21
+
+## 2.12.8
+
+### Patch Changes
+
+- [#5472](https://github.com/wso2/identity-apps/pull/5472) [`4cd0cb463b`](https://github.com/wso2/identity-apps/commit/4cd0cb463b5d4aa1cb46f4e004054f2e63860f91) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Issue of SCIM Operation for Account Locking
+
+* [#5468](https://github.com/wso2/identity-apps/pull/5468) [`0347c6ca45`](https://github.com/wso2/identity-apps/commit/0347c6ca454d6804e188ef9f8a07e1149d1bbe03) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix custom governance connector not displaying under login and registration
+
+## 2.12.7
+
+### Patch Changes
+
+- [#5466](https://github.com/wso2/identity-apps/pull/5466) [`9344aa01a5`](https://github.com/wso2/identity-apps/commit/9344aa01a5d5b296f65b50d41e06c83b76218af9) Thanks [@brionmario](https://github.com/brionmario)! - Add JavaScript & CSS extension points for Console & My Account
+
+## 2.12.6
+
+### Patch Changes
+
+- [#5462](https://github.com/wso2/identity-apps/pull/5462) [`02d1aee28e`](https://github.com/wso2/identity-apps/commit/02d1aee28eb5fc1734df8be0deb97ad3a1f27e2c) Thanks [@brionmario](https://github.com/brionmario)! - Enable `showBackChannelLogout` field
+
+* [#5455](https://github.com/wso2/identity-apps/pull/5455) [`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add info message to the SMS Provider
+
+- [#5463](https://github.com/wso2/identity-apps/pull/5463) [`d4eba50c28`](https://github.com/wso2/identity-apps/commit/d4eba50c28c180160f20574fbd9090c664e15fd1) Thanks [@brionmario](https://github.com/brionmario)! - Only show `Outbound Provisioning` section in Application configurations for migrating users
+
+* [#5459](https://github.com/wso2/identity-apps/pull/5459) [`9bbdcde28f`](https://github.com/wso2/identity-apps/commit/9bbdcde28f0e05e345d5af8f0cb2fdc64d9b96b6) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Avoid making an organization switch call for users who directly SSO to the console.
+
+- [#5447](https://github.com/wso2/identity-apps/pull/5447) [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298) Thanks [@savindi7](https://github.com/savindi7)! - Update content and validations in Ask password configs
+
+- Updated dependencies [[`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76), [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298)]:
+  - @wso2is/i18n@2.0.118
+  - @wso2is/common@2.0.36
+
+## 2.12.5
+
+### Patch Changes
+
+- [#5454](https://github.com/wso2/identity-apps/pull/5454) [`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add support to conditionally enable downtime banner
+
+* [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
+* Updated dependencies [[`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf), [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209)]:
+  - @wso2is/theme@2.0.62
+  - @wso2is/react-components@2.1.5
+  - @wso2is/core@2.0.35
+  - @wso2is/access-control@2.0.19
+  - @wso2is/common@2.0.35
+  - @wso2is/dynamic-forms@2.0.31
+  - @wso2is/form@2.0.33
+  - @wso2is/forms@2.0.20
+  - @wso2is/i18n@2.0.117
+
+## 2.12.4
+
+### Patch Changes
+
+- [#5438](https://github.com/wso2/identity-apps/pull/5438) [`c8df38c747`](https://github.com/wso2/identity-apps/commit/c8df38c747c0b802c733639642f21367279fd5c4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix subject attribute issue in OIDC applications
+
+* [#5445](https://github.com/wso2/identity-apps/pull/5445) [`2716489838`](https://github.com/wso2/identity-apps/commit/2716489838478b4092beec1201fb936a8b4042ee) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable attributes section for OIDC connections
+
+* Updated dependencies [[`c8df38c747`](https://github.com/wso2/identity-apps/commit/c8df38c747c0b802c733639642f21367279fd5c4), [`2716489838`](https://github.com/wso2/identity-apps/commit/2716489838478b4092beec1201fb936a8b4042ee)]:
+  - @wso2is/i18n@2.0.116
+  - @wso2is/common@2.0.34
+
+## 2.12.3
+
+### Patch Changes
+
+- [#5442](https://github.com/wso2/identity-apps/pull/5442) [`898a56743a`](https://github.com/wso2/identity-apps/commit/898a56743ad007e407e22ac599d636cbfcc2471c) Thanks [@JKAUSHALYA](https://github.com/JKAUSHALYA)! - Add support for custom payload templating to custom SMS provider.
+
+* [#5444](https://github.com/wso2/identity-apps/pull/5444) [`5bfcf35aea`](https://github.com/wso2/identity-apps/commit/5bfcf35aea22e485f4ed423db2af198630899d48) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add configuration option to enable email notifications for extended lockout periods resulting from continuous login failures
+
 ## 2.12.2
 
 ### Patch Changes

@@ -1714,6 +1714,10 @@ export const console: ConsoleNS = {
                             },
                             subject: {
                                 fields:{
+                                    alternateSubjectAttribute: {
+                                        hint: "This option will allow to use an alternate attribute as the subject identifier instead of the <1>userid</1>.",
+                                        label: "Assign alternate subject identifier"
+                                    },
                                     subjectAttribute: {
                                         hint: "Select which of the shared attributes you want to use as the" +
                                             " subject identifier of the user",
@@ -4001,6 +4005,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
+                            hint: "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly.",
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
@@ -4633,13 +4638,16 @@ export const console: ConsoleNS = {
                         valueName: "Identity Provider Role"
                     },
                     uriAttributeSettings: {
-                        role: {
-                            heading: "Role",
-                            hint: "Specifies the attribute that identifies the roles at the Identity Provider.",
-                            label: "Role Attribute",
-                            placeHolder: "Default Role",
+                        group: {
+                            heading: "Group",
+                            hint: "Specifies the attribute that identifies the groups at the Connection.",
+                            label: "Group Attribute",
+                            message: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute " +
+                                "mapping for the connection roles attribute.",
+                            placeHolder: "Select the attribute",
                             validation: {
-                                empty: "Please select an attribute for role"
+                                empty: "Please select an attribute for groups"
                             }
                         },
                         subject: {
@@ -8902,8 +8910,8 @@ export const console: ConsoleNS = {
                                 friendlyName: "Ask Password",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "A verification notification will be triggered during user creation.",
-                                        label: "Enable user email verification"
+                                        hint: "An email will be sent to the user to set the password after user creation.",
+                                        label: "Enable email invitations for user password setup"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "The user account will be locked during user creation.",
@@ -9340,6 +9348,7 @@ export const console: ConsoleNS = {
                         positiveIntegers: "The number should not be less than 0."
                     }
                 },
+                genericDescription: "Configure settings related to {{ name }} connector.",
                 notifications: {
                     getConnector: {
                         error: {
@@ -9663,15 +9672,15 @@ export const console: ConsoleNS = {
             },
             parentOrgInvitations: {
                 addUserWizard: {
-                    heading: "Invite Parent User",
+                    heading: "Invite Parent Users",
                     description: "Invite users from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
                     username: {
-                        label: "Username",
-                        placeholder: "Enter the username",
+                        label: "Usernames",
+                        placeholder: "Enter the usernames",
                         hint: "Add the username of a parent user and press enter. Repeat to include multiple users.",
                         validations: {
-                            required: "Username is a required field."
+                            required: "At least one user should be selected."
                         }
                     },
                     groups: {
@@ -11653,7 +11662,7 @@ export const console: ConsoleNS = {
                             alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
                             inviteOffline: "Invite offline",
                             inviteViaEmail: "Invite via email"
                         },
@@ -12304,7 +12313,7 @@ export const console: ConsoleNS = {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
                         content: "Invite User to Set Password should be enabled to add multiple users. " +
-                            "Please enable email verification from Login & Registration settings.",
+                            "Please enable email invitations for user password setup from Login & Registration settings.",
                         assertionHint: "Please confirm your action."
                     }
                 },

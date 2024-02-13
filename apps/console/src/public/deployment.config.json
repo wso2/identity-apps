@@ -747,7 +747,7 @@
                 }
             },
             "secretsManagement": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "feature": [
                         "console:secretsManagement"
@@ -1151,6 +1151,7 @@
         "isSAASDeployment": false,
         "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
+        "isCustomClaimMappingEnabled": true,
         "listAllAttributeDialects": true,
         "enableIdentityClaims": true,
         "privacyPolicyConfigs": {},
@@ -1165,10 +1166,11 @@
         ],
         "isXacmlConnectorEnabled": false,
         "administratorRoleDisplayName": "Administrator",
+        "useRoleClaimAsGroupClaim": false,
         "legacyMode": {
             "apiResources": true,
             "applicationListSystemApps": false,
-            "applicationOIDCSubjectIdentifier": false,
+            "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
             "certificates": false,

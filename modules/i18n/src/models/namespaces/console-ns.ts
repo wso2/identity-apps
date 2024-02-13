@@ -1134,6 +1134,7 @@ export interface ConsoleNS {
                             }
                             subject: {
                                 fields: {
+                                    alternateSubjectAttribute: FormAttributes;
                                     subjectAttribute: FormAttributes;
                                     subjectIncludeTenantDomain: FormAttributes;
                                     subjectIncludeUserDomain: FormAttributes;
@@ -1702,7 +1703,7 @@ export interface ConsoleNS {
                     };
                 };
                 forms?: {
-                    advancedConfigs: {
+                    advancedConfigs?: {
                         federationHub: FormAttributes;
                         homeRealmIdentifier: FormAttributes;
                         alias: FormAttributes;
@@ -1713,7 +1714,7 @@ export interface ConsoleNS {
                             certificateJWKS: FormAttributes;
                         };
                     };
-                    attributeSettings: {
+                    attributeSettings?: {
                         attributeMapping: {
                             attributeColumnHeader: string;
                             attributeMapColumnHeader: string;
@@ -1742,7 +1743,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    authenticatorAccordion: {
+                    authenticatorAccordion?: {
                         default: {
                             0: string;
                             1: string;
@@ -1752,7 +1753,7 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    authenticatorSettings: {
+                    authenticatorSettings?: {
                         apple: {
                             additionalQueryParameters: FormAttributes;
                             callbackUrl: FormAttributes;
@@ -1819,6 +1820,7 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
+                            hint: string;
                             expiryTime: {
                                 hint: string;
                                 label: string;
@@ -2034,7 +2036,7 @@ export interface ConsoleNS {
                             authContextComparisonLevel: FormAttributes;
                         }
                     },
-                    outboundConnectorAccordion: {
+                    outboundConnectorAccordion?: {
                         default: {
                             0: string;
                             1: string;
@@ -2044,21 +2046,21 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    common: {
+                    common?: {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
-                    generalDetails: {
+                    generalDetails?: {
                         name: FormAttributes;
                         issuer: FormAttributes;
                         alias: FormAttributes;
                         description: FormAttributes;
                         image: FormAttributes;
                     };
-                    jitProvisioning: {
+                    jitProvisioning?: {
                         enableJITProvisioning: FormAttributes;
                         provisioningUserStoreDomain: FormAttributes;
                         provisioningScheme: {
@@ -2073,7 +2075,7 @@ export interface ConsoleNS {
                         };
                         associateLocalUser: FormAttributes;
                     };
-                    roleMapping: {
+                    roleMapping?: {
                         heading: string;
                         keyName: string;
                         valueName: string;
@@ -2084,7 +2086,7 @@ export interface ConsoleNS {
                         };
                         hint: string;
                     };
-                    uriAttributeSettings: {
+                    uriAttributeSettings?: {
                         subject: {
                             heading: string;
                             hint: string;
@@ -2094,9 +2096,10 @@ export interface ConsoleNS {
                                 empty: string;
                             };
                         };
-                        role: {
+                        group: {
                             heading: string;
                             hint: string;
+                            message: string;
                             placeHolder: string;
                             label: string;
                             validation: {
@@ -2104,7 +2107,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    outboundProvisioningRoles: {
+                    outboundProvisioningRoles?: {
                         heading: string;
                         hint: string;
                         placeHolder: string;
@@ -2113,7 +2116,7 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
-                    certificateSection: {
+                    certificateSection?: {
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;
@@ -4801,6 +4804,7 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
+                genericDescription?: string;
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;

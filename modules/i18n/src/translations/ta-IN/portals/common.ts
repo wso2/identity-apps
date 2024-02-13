@@ -134,6 +134,7 @@ export const common: CommonNS = {
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",
     pinned: "பொருத்தப்பட்டுள்ளது",
+    pressEnterPrompt: "தேர்ந்தெடுக்க <1>Enter</1> ஐ அழுத்தவும்",
     preview: "முன்னோட்ட",
     previous: "பின் செல்",
     priority: "முன்னுரிமை",

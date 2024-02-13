@@ -1014,11 +1014,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "Dynamic Connector",
                         order: 24,
                         path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTOR_EDIT")
-                            .replace(
-                                ":categoryId",
-                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                            ),
+                            .get("GOVERNANCE_CONNECTOR_EDIT"),
                         protected: true,
                         showOnSidePanel: false
                     },

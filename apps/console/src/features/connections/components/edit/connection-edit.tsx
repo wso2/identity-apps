@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -45,7 +46,11 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../../extensions";
-import { AppState, FeatureConfigInterface } from "../../../core";
+import { FeatureConfigInterface } from "../../../core/models/config";
+import { AppState } from "../../../core/store";
+import {
+    IdentityProviderManagementConstants
+} from "../../../identity-providers/constants/identity-provider-management-constants";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {
@@ -150,6 +155,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
+
+    const { UIConfig } = useUIConfig();
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -262,6 +269,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
+                isOIDC={ isOidc }
                 isSaml={ isSaml }
             />
         </ResourceTab.Pane>
@@ -435,11 +443,19 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
          * models folder for types. identity-provider.ts
          */
         const attributesForSamlEnabled: boolean = isSaml &&
-        identityProviderConfig.editIdentityProvider.attributesSettings;
+            identityProviderConfig.editIdentityProvider.attributesSettings;
+
+        /**
+         * If the protocol is OIDC and if the Custom Claim Mapping feature is enabled
+         * in the deployment configuration level, we can show the attributes section for OIDC.
+         */
+        const isAttributesEnabledForOIDC: boolean = isOidc && UIConfig?.isCustomClaimMappingEnabled;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if ((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
-        && !isOrganizationEnterpriseAuthenticator) {
+        if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
+            && !isOrganizationEnterpriseAuthenticator
+            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
+            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
                 menuItem: "Attributes",

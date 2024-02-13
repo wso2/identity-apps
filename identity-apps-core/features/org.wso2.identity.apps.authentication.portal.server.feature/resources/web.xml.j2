@@ -42,6 +42,12 @@
         <param-name>ServiceProviderApp-/oauth2_consent.do</param-name>
         <param-value>http://localhost:8080/authenticationendpoint/oauth2_consent.do</param-value>
     </context-param-->
+    {% if downtime_banner.enabled is defined %}
+        <context-param>
+            <param-name>isDowntimeBannerEnabled</param-name>
+            <param-value>{{ downtime_banner.enabled }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- **************** End of Application specific configurations ************************* -->
 
     <!-- *************** Global configurations ********************** -->

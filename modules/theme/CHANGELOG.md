@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.0.64
+
+### Patch Changes
+
+- [#5485](https://github.com/wso2/identity-apps/pull/5485) [`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81) Thanks [@savindi7](https://github.com/savindi7)! - Update Connection icons.
+
+## 2.0.63
+
+### Patch Changes
+
+- [#5488](https://github.com/wso2/identity-apps/pull/5488) [`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix overflow issue in workflow approvals
+
+## 2.0.62
+
+### Patch Changes
+
+- [#5454](https://github.com/wso2/identity-apps/pull/5454) [`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add support to conditionally enable downtime banner
+
 ## 2.0.61
 
 ### Patch Changes

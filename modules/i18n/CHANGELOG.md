@@ -1,5 +1,40 @@
 # @wso2is/i18n
 
+## 2.0.120
+
+### Patch Changes
+
+- [#5483](https://github.com/wso2/identity-apps/pull/5483) [`2575c34693`](https://github.com/wso2/identity-apps/commit/2575c34693943f56dbe824f69ac2f7ba715bd721) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix grouping in dynamic governance connectors
+
+## 2.0.119
+
+### Patch Changes
+
+- [#5467](https://github.com/wso2/identity-apps/pull/5467) [`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add support to show group attribute in conntections attributes tab
+
+## 2.0.118
+
+### Patch Changes
+
+- [#5455](https://github.com/wso2/identity-apps/pull/5455) [`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add info message to the SMS Provider
+
+* [#5447](https://github.com/wso2/identity-apps/pull/5447) [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298) Thanks [@savindi7](https://github.com/savindi7)! - Update content and validations in Ask password configs
+
+## 2.0.117
+
+### Patch Changes
+
+- [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
+- Updated dependencies [[`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209)]:
+  - @wso2is/core@2.0.35
+
+## 2.0.116
+
+### Patch Changes
+
+- [#5438](https://github.com/wso2/identity-apps/pull/5438) [`c8df38c747`](https://github.com/wso2/identity-apps/commit/c8df38c747c0b802c733639642f21367279fd5c4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix subject attribute issue in OIDC applications
+
 ## 2.0.115
 
 ### Patch Changes

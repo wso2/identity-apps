@@ -318,7 +318,8 @@ export class RouteUtils {
             AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
             AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
             AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
-            AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS")
+            AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+            AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [

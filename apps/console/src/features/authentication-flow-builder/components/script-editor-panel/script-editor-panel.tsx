@@ -257,18 +257,17 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                                 </FormControl>
                             </div>
                             <div className="secret-selection-menu-wrapper">
-                                {
+                                { featureConfig?.secretsManagement?.enabled &&
                                     hasRequiredScopes(featureConfig?.secretsManagement,
                                         featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
-                                        <SecretSelectionDropdown
-                                            open={ isSecretSelectionDropdownOpen }
-                                            onClose={ () => setIsSecretSelectionDropdownOpen(false) }
-                                            onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
-                                            onSecretSelect={ (secret: SecretModel) =>
-                                                replaceCodeBlock(secret.secretName) }
-                                        />
-                                    )
-                                }
+                                    <SecretSelectionDropdown
+                                        open={ isSecretSelectionDropdownOpen }
+                                        onClose={ () => setIsSecretSelectionDropdownOpen(false) }
+                                        onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
+                                        onSecretSelect={ (secret: SecretModel) =>
+                                            replaceCodeBlock(secret.secretName) }
+                                    />
+                                ) }
                             </div>
                         </>
                     ) }

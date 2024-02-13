@@ -1698,6 +1698,9 @@
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
+        {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
+        "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},
+        {% endif %}
         {% if console.ui.is_default_dialect_editing_enabled is defined %}
         "isDefaultDialectEditingEnabled": {{ console.ui.is_default_dialect_editing_enabled }},
         {% endif %}
@@ -1765,6 +1768,9 @@
         ],
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
+        {% endif %}
+        {% if federated.idp.use_idp_role_claim_as_idp_group_claim is defined %}
+        "useRoleClaimAsGroupClaim": {{ federated.idp.use_idp_role_claim_as_idp_group_claim }},
         {% endif %}
         {% if console.ui.administrator_role_display_name is defined %}
         "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",

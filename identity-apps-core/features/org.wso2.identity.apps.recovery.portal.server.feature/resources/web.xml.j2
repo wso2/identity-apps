@@ -54,6 +54,12 @@
             <param-value>{{ event.default_listener.validation.enable }}</param-value>
         </context-param>
     {% endif %}
+    {% if downtime_banner.enabled is defined %}
+        <context-param>
+            <param-name>isDowntimeBannerEnabled</param-name>
+            <param-value>{{ downtime_banner.enabled }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- *************** End of Global configurations ********************** -->
     <!--  End of Custom Page configurations -->
     <context-param>
@@ -243,17 +249,6 @@
         <servlet-name>acceptinvitation.do</servlet-name>
         <jsp-file>/accept-invitation.jsp</jsp-file>
     </servlet>
-
-    {% for custom_servlet in accountrecoveryendpoint.servlet %}
-    <servlet>
-        <servlet-name>{{custom_servlet.name}}</servlet-name>
-        <jsp-file>{{custom_servlet.jsp}}</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>{{custom_servlet.name}}</servlet-name>
-        <url-pattern>{{custom_servlet.url}}</url-pattern>
-    </servlet-mapping>
-    {% endfor %}
 
     <servlet-mapping>
         <servlet-name>recoveraccountrouter.do</servlet-name>

@@ -432,7 +432,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Manage and configure settings related configuring "
                     + "multiple attributes as the login identifier.";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
-                return "Allow users choose passwords in admin-initiated onboarding.";
+                return "Allow users to set their own passwords during admin-initiated onboarding" +
+                    " and configure related settings.";
             default:
                 return connector?.description
                     ? connector.description

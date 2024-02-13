@@ -1,5 +1,48 @@
 # @wso2is/identity-apps-core
 
+## 2.1.22
+
+### Patch Changes
+
+- [#5485](https://github.com/wso2/identity-apps/pull/5485) [`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81) Thanks [@savindi7](https://github.com/savindi7)! - Update Connection icons.
+
+- Updated dependencies [[`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81)]:
+  - @wso2is/theme@2.0.64
+
+## 2.1.21
+
+### Patch Changes
+
+- [#5488](https://github.com/wso2/identity-apps/pull/5488) [`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix overflow issue in workflow approvals
+
+- Updated dependencies [[`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250)]:
+  - @wso2is/theme@2.0.63
+
+## 2.1.20
+
+### Patch Changes
+
+- [#5465](https://github.com/wso2/identity-apps/pull/5465) [`faa889cba5`](https://github.com/wso2/identity-apps/commit/faa889cba5447bfea4c0242c4b390240abd0b5ab) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove downtime banner message variable
+
+* [#5453](https://github.com/wso2/identity-apps/pull/5453) [`c08def6a5d`](https://github.com/wso2/identity-apps/commit/c08def6a5d9e99044b91b3fe880f9f7784e0d3aa) Thanks [@Yoshani](https://github.com/Yoshani)! - add hidden input to hyprelogin
+
+## 2.1.19
+
+### Patch Changes
+
+- [#5454](https://github.com/wso2/identity-apps/pull/5454) [`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add support to conditionally enable downtime banner
+
+- Updated dependencies [[`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf)]:
+  - @wso2is/theme@2.0.62
+
+## 2.1.18
+
+### Patch Changes
+
+- [#5450](https://github.com/wso2/identity-apps/pull/5450) [`afc7e6c8bd`](https://github.com/wso2/identity-apps/commit/afc7e6c8bd39700ef53f1b7193e0eac2ccb85189) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Remove permission assignment from console admin role
+
+* [#5446](https://github.com/wso2/identity-apps/pull/5446) [`b9339a95cc`](https://github.com/wso2/identity-apps/commit/b9339a95cc5c84f3b2c21f68955494956831a695) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Update for sp parameter and login.jsp
+
 ## 2.1.17
 
 ### Patch Changes

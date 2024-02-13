@@ -70,6 +70,7 @@ export const TextFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): Re
 
     return (
         <TextField
+            name={ name }
             variant="outlined"
             placeholder={ placeholder }
             fullWidth={ fullWidth }
@@ -319,6 +320,7 @@ export const CheckboxAdapter = (props: CheckboxProps): ReactElement => {
             { ...filteredRest }
             label={ childFieldProps?.label }
             name={ childFieldProps?.name }
+            checked={ input.checked }
             onChange={ (event: React.FormEvent<HTMLInputElement>, { checked }:any ) => {
                 if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(checked);

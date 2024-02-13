@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -318,6 +318,8 @@ export const extensions: Extensions = {
                 groupAttributeLabel: "කණ්ඩායම් ගුණාංගය",
                 groupAttributeHint: "Federated Authenticator වෙතින් වන ගුණාංගය යෙදුම් විශේෂිත භූමිකාවන්ට සිතියම්ගත කෙරේ. යෙදුම් ගුණාංගය ආපසු ලබා දීම සඳහා මෙය අර්ථ දැක්විය යුතුය.",
                 groupAttributePlaceholder: "සිතියම්ගත ගුණාංගය ඇතුළත් කරන්න",
+                groupAttributeMessage1: "<1>ගුණාංග පටිත්තෙහි</1> තෝරාගත් ගුණාංගය මෙම සම්බන්ධතාවයේ කණ්ඩායම් හඳුනා ගැනීම සඳහා කණ්ඩායම් ලක්ෂණය භාවිතා කරන බැවින්.",
+                groupAttributeMessage2: "කණ්ඩායම් ගුණාංගයට වෙනස් කිරීම සඳහා කරුණාකර <1>ගුණාංග පටිත්ත</1> වෙත පිවිසෙන්න.",
                 notifications: {
                     fetchConfigs: {
                         error: {
@@ -3785,6 +3787,12 @@ export const extensions: Extensions = {
                                     maxLengthReached:
                                         "උපරිම අසාර්ථක උත්සාහයන් ඉලක්කම් 1 ක් හෝ 2 ක් සහිත අංකයක් විය යුතුය."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "අඛණ්ඩව අසාර්ථක වූ පිවිසුම් උත්සාහයන් හේතුවෙන් ගිණුම් අගුළු කාලය වැඩි වන විට " +
+                                    "පරිශීලකයාට දැනුම් දෙන්න.",
+                                label: "අගුළු කාලය වැඩි වන විට පරිශීලකයාට දැනුම් දෙන්න"
                             }
                         }
                     },
