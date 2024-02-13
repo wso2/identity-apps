@@ -158,7 +158,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
          * Handle the scenario where the UI config is not initialized.
          */
         if (!UIConfig) {
-            return <></>;
+            return null;
         }
 
         /**
@@ -176,7 +176,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                 the <strong>Group Attribute</strong> is used to identify groups at the Connection.
                             </p>
                             <p>
-                                For modifications to the <strong>Group Attribute</strong>, please visit the
+                                For modifications to the <strong>Group Attribute</strong>, please go to the
                                 Group section in the <strong>Attributes tab</strong>.
                             </p>
                         </>)
@@ -248,7 +248,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                     />
                                     <Hint>
                                         The attribute from the connection that will be mapped to the
-                                        organization&apos;s group attribute. For modifications, please visit the
+                                        organization&apos;s group attribute. For modifications, please go to the
                                         <strong> Attributes tab</strong>.
                                     </Hint>
                                 </Form>
@@ -271,7 +271,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                     content={
                         (<p>
                             Please note that you have enabled custom attribute mapping, but have not added a custom
-                            attribute mapping for the connection&apos;s groups attribute. Visit the <strong>
+                            attribute mapping for the connection&apos;s groups attribute. Go to the <strong>
                                 Attributes tab
                             </strong> to add a custom attribute mapping for the connection&apos;s groups attribute.
                         </p>)
