@@ -4596,10 +4596,18 @@ export const console: ConsoleNS = {
                             heading: "Group",
                             hint: "Specifies the attribute that identifies the groups at the Connection.",
                             label: "Group Attribute",
-                            message: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
+                            mappedRolesAbsentMessage: "With your current configuration, <1>Group Attribute</1> is not configured. " +
+                                "You can select an attribute from the dropdown.",
+                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> " +
+                                "will be considered as the default <1> Group Attribute</1> with the current configuration. " +
+                                "You can select an attribute from the dropdown.",
+                            message: "Please note that <1>{{ attribute }}</1> {{ suffix }} will be considered as the default " +
                                 "<1>Group Attribute</1> as you have not added a custom attribute " +
-                                "mapping for the connection roles attribute.",
+                                "mapping.",
                             placeHolder: "Select the attribute",
+                            roleMappingDisabledMessage: "<1>Custom Attribute Mapping</1> is disabled in " +
+                                "your configuration. This might affect certain flows in the " +
+                                "application. Proceed with caution.",
                             validation: {
                                 empty: "Please select an attribute for groups"
                             }

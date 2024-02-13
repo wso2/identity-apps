@@ -81,6 +81,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         isMappingEmpty,
         isOIDC,
         isSaml,
+        selectedClaimMappings,
         [ "data-testid" ]: testId
     } = props;
 
@@ -92,6 +93,154 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             dropDownOptions,
             (option: DropdownOptionsInterface) => option?.value === initialValue
         ) !== undefined ? initialValue : "";
+    };
+
+    /**
+     * Resolves the mapped roles claim attribute name.
+     * @returns Mapped roles claim attribute name.
+     */
+    const resolveMappedRolesClaimAttributeName = (): string => {
+        if (isOIDC || isSaml) {
+            // Find the role claim URI from the selected claim mappings.
+            const roleClaim: ConnectionCommonClaimMappingInterface = selectedClaimMappings?.find(
+                (claimMapping: ConnectionCommonClaimMappingInterface) =>
+                    claimMapping?.claim?.uri === ConnectionManagementConstants.CLAIM_ROLES);
+
+            return roleClaim?.mappedValue;
+        }
+
+        return "";
+    };
+
+    /**
+     * Resolves the custom attribute mapping info box content.
+     * @returns Custom attribute mapping info box.
+     */
+    const resolveCustomClaimMappingInfoBox = (): ReactElement => {
+        // Custom attribute mapping is not enabled.
+        if (!claimMappingOn) {
+            return (
+                <Message
+                    type="info"
+                    content={
+                        (
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider." +
+                                        "forms.uriAttributeSettings.group.message"
+                                }
+                                tOptions={ {
+                                    attribute: isOIDC
+                                        ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                        : ConnectionManagementConstants.CLAIM_ROLES,
+                                    suffix: isOIDC
+                                        ? "OIDC attribute"
+                                        : "attribute"
+                                } }
+                            >
+                                Please note that <strong>{ isOIDC
+                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                    : ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                                will be considered as the default
+                                <strong> Group Attribute</strong> as you have not added a
+                                custom attribute mapping.
+                            </Trans>
+                        )
+                    }
+                />
+            );
+        }
+
+        // Custom attribute mapping is enabled
+        // roleClaimURI is not empty.
+        // No need to show the info box as there is a custom attribute mapping.
+        if (!isEmpty(initialRoleUri)) {
+            return null;
+        }
+
+        // Custom attribute mapping is enabled
+        // roleClaimURI is empty.
+        if (UIConfig.isCustomClaimMappingEnabled && !UIConfig.isCustomClaimMappingMergeEnabled) {
+            const mappedRolesClaim: string = resolveMappedRolesClaimAttributeName();
+
+            // roles mapped attribute present
+            if (!isEmpty(mappedRolesClaim)) {
+                return (
+                    <Message
+                        type="info"
+                        content={
+                            (
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider." +
+                                            "forms.uriAttributeSettings.group.mappedRolesPresentMessage"
+                                    }
+                                    tOptions={ {
+                                        mappedRolesClaim: mappedRolesClaim
+                                    } }
+                                >
+                                    Please note that <strong>{ mappedRolesClaim }</strong>
+                                    will be considered as the default
+                                    <strong> Group Attribute</strong> with the current configuration.
+                                    You can select an attribute from the dropdown.
+                                </Trans>
+                            )
+                        }
+                    />
+                );
+            }
+
+            // roles mapped attribute not present
+            return (
+                <Message
+                    type="info"
+                    content={
+                        (
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider." +
+                                        "forms.uriAttributeSettings.group.mappedRolesAbsentMessage"
+                                }
+                            >
+                                With your current configuration, <strong>Group Attribute</strong> is not configured.
+                                You can select an attribute from the dropdown.
+                            </Trans>
+                        )
+                    }
+                />
+            );
+        }
+
+        return (
+            <Message
+                type="info"
+                content={
+                    (
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider." +
+                                    "forms.uriAttributeSettings.group.message"
+                            }
+                            tOptions={ {
+                                attribute: isOIDC
+                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                    : ConnectionManagementConstants.CLAIM_ROLES,
+                                suffix: isOIDC
+                                    ? "OIDC attribute"
+                                    : "attribute"
+                            } }
+                        >
+                            Please note that <strong>{ isOIDC
+                                ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                : ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                            will be considered as the default
+                            <strong> Group Attribute</strong> as you have not added a
+                            custom attribute mapping.
+                        </Trans>
+                    )
+                }
+            />
+        );
     };
 
     return (
@@ -163,7 +312,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".subject.hint"
                                     }
                                 >
-                                Specifies the attribute that identifies the user at the identity provider.
+                                Specifies the attribute that identifies the user at the Connection.
                                 </Trans>
                             )
                         }
@@ -224,32 +373,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         </Form>
                                     )
                                 }
-                                <Message
-                                    hidden={ claimMappingOn && !isEmpty(initialRoleUri) }
-                                    type="info"
-                                    content={
-                                        (
-                                            <Trans
-                                                i18nKey={
-                                                    "console:develop.features.authenticationProvider." +
-                                                        "forms.uriAttributeSettings.group.message"
-                                                }
-                                                tOptions={ {
-                                                    attribute: isOIDC
-                                                        ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
-                                                        : ConnectionManagementConstants.CLAIM_ROLES
-                                                } }
-                                            >
-                                                Please note that <strong>{ isOIDC
-                                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
-                                                    : ConnectionManagementConstants.CLAIM_ROLES }</strong>
-                                                 attribute will be considered as the default
-                                                <strong> Group Attribute</strong> as you have not added a
-                                                custom attribute mapping for the connection roles attribute.
-                                            </Trans>
-                                        )
-                                    }
-                                />
+                                { resolveCustomClaimMappingInfoBox() }
                             </Grid.Column>
                         </Grid.Row>
                     </>
