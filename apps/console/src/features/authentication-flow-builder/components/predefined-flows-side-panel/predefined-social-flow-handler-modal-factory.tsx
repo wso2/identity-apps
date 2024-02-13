@@ -77,7 +77,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
      * When the authenticators are fetched, filter the social authenticators.
      */
     useEffect(() => {
-        if (isEmpty(authenticators?.social) || !selectedSequence) {
+        if (!selectedSequence) {
             return;
         }
 
@@ -110,9 +110,9 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
             setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME);
         }
 
-        const filtered: GenericAuthenticatorInterface[] = authenticators.social.filter(
+        const filtered: GenericAuthenticatorInterface[] = authenticators?.social?.filter(
             (authenticator: GenericAuthenticatorInterface) => {
-                return authenticator.defaultAuthenticator.authenticatorId === authenticatorId;
+                return authenticator?.defaultAuthenticator?.authenticatorId === authenticatorId;
             }
         );
 
