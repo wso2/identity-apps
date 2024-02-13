@@ -524,11 +524,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             !isAdaptiveAuthAvailable
             || !isConditionalAuthenticationEnabled
             || AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)
-            || orgType === OrganizationType.SUBORGANIZATION
         ) {
+            sequence.script = AdaptiveScriptUtils.generateScript(
+                authenticationSequence?.steps?.length + 1).join("\n"
+            );
+        }
+
+        if (orgType === OrganizationType.SUBORGANIZATION) {
             sequence.script = "";
-        } else {
-            sequence.script = AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n");
         }
 
         // Update the modified script state in the context.
