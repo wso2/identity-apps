@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +25,7 @@ import { CreateConnectionWizard } from "./add-connection-wizard";
 import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
+import { AppState } from "../../../core";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {
