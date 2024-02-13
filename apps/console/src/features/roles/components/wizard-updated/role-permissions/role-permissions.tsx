@@ -421,7 +421,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                             (option: DropdownProps, value: DropdownProps) =>
                                 option.value === value.value
                         }
-                        loading={ iscurrentAPIResourcesListLoading }
+                        loading={ roleAudience === RoleAudienceTypes.ORGANIZATION && iscurrentAPIResourcesListLoading }
                         onChange={ onAPIResourceSelected }
                         options={ allAPIResourcesDropdownOptions
                             ?.filter((item: DropdownItemProps) =>
@@ -429,7 +429,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                 item?.type === APIResourceCategories.ORGANIZATION ||
                                 item?.type === APIResourceCategories.BUSINESS
                             ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                -b?.type?.localeCompare(a?.type)
+                                APIResourceUtils.resolveApiResourceGroup(a?.type)
+                                    ?.localeCompare(APIResourceUtils
+                                        .resolveApiResourceGroup(b?.type))
                             )
                         }
                         noOptionsText={ t("common:noResultsFound") }

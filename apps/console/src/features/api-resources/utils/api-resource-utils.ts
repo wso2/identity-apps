@@ -98,11 +98,11 @@ export class APIResourceUtils {
     public static resolveApiResourceGroup = (groupName: string): string => {
         switch (groupName) {
             case APIResourceCategories.TENANT:
-                return "Management";
+                return "Management APIs";
             case APIResourceCategories.ORGANIZATION:
-                return "Organization";
+                return "Organization APIs";
             case APIResourceCategories.BUSINESS:
-                return "Business";
+                return "Business APIs";
             default:
                 return groupName;
         }

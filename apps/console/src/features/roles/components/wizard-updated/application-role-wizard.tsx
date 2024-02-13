@@ -434,7 +434,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             item?.type === APIResourceCategories.ORGANIZATION ||
                                             item?.type === APIResourceCategories.BUSINESS
                                         ).sort((a: DropdownProps, b: DropdownProps) =>
-                                            -b?.type?.localeCompare(a?.type)
+                                            APIResourceUtils.resolveApiResourceGroup(a?.type)
+                                                ?.localeCompare(APIResourceUtils
+                                                    .resolveApiResourceGroup(b?.type))
                                         )
                                     }
                                     onChange={ onAPIResourceSelected }
