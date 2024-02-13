@@ -29,7 +29,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
@@ -171,21 +171,12 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                     content={
                         (<>
                             <p>
-                                <Trans
-                                    i18nKey={ "extensions:console.identityProviderGroups."
-                                        + "claimConfigs.groupAttributeMessage1" }
-                                >
-                                    Please be aware that the attribute selected in the <b>Attributes tab</b> as
-                                    the group attribute is used to identify groups at the Connection.
-                                </Trans>
+                                Please note that the attribute selected in the <strong>Attributes tab</strong> as
+                                the <strong>Group Attribute</strong> is used to identify groups at the Connection.
                             </p>
                             <p>
-                                <Trans
-                                    i18nKey={ "extensions:console.identityProviderGroups."
-                                        + "claimConfigs.groupAttributeMessage2" }
-                                >
-                                    For modifications to the group attribute, please visit the <b>Attributes tab</b>.
-                                </Trans>
+                                For modifications to the <strong>
+                                Group Attribute</strong>, please visit the <strong>Attributes tab</strong>.
                             </p>
                         </>)
                     }
