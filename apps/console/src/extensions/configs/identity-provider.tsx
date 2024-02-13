@@ -237,6 +237,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],

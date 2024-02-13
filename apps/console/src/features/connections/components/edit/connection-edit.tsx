@@ -352,6 +352,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
+                isOIDC={ isOidc }
                 data-componentid={ `${ testId }-groups-settings` }
             />
         </ResourceTab.Pane>
