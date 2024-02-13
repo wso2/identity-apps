@@ -2091,8 +2091,11 @@ export interface ConsoleNS {
                         group: {
                             heading: string;
                             hint: string;
+                            mappedRolesAbsentMessage: string;
+                            mappedRolesPresentMessage: string;
                             message: string;
                             placeHolder: string;
+                            roleMappingDisabledMessage: string;
                             label: string;
                             validation: {
                                 empty: string;

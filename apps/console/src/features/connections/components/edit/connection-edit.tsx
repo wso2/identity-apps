@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -155,8 +154,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
-
-    const { UIConfig } = useUIConfig();
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -446,11 +443,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         const attributesForSamlEnabled: boolean = isSaml &&
             identityProviderConfig.editIdentityProvider.attributesSettings;
 
-        /**
-         * If the protocol is OIDC and if the Custom Claim Mapping feature is enabled
-         * in the deployment configuration level, we can show the attributes section for OIDC.
-         */
-        const isAttributesEnabledForOIDC: boolean = isOidc && UIConfig?.isCustomClaimMappingEnabled;
+        const isAttributesEnabledForOIDC: boolean = isOidc;
 
         // Evaluate whether to Show/Hide `Attributes`.
         if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
