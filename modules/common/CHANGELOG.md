@@ -1,5 +1,14 @@
 # @wso2is/common
 
+## 2.0.42
+
+### Patch Changes
+
+- [#5514](https://github.com/wso2/identity-apps/pull/5514) [`1e6be6b088`](https://github.com/wso2/identity-apps/commit/1e6be6b088742e6efbde124e4e7b05636ee64719) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX related to IDP groups section
+
+- Updated dependencies [[`101b8e535e`](https://github.com/wso2/identity-apps/commit/101b8e535e67354cb3bbb5c88f3b9d3633d596a4)]:
+  - @wso2is/i18n@2.0.123
+
 ## 2.0.41
 
 ### Patch Changes

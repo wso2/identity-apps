@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.12.22
+
+### Patch Changes
+
+- [#5514](https://github.com/wso2/identity-apps/pull/5514) [`1e6be6b088`](https://github.com/wso2/identity-apps/commit/1e6be6b088742e6efbde124e4e7b05636ee64719) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX related to IDP groups section
+
+* [#5512](https://github.com/wso2/identity-apps/pull/5512) [`e2e8dda0f2`](https://github.com/wso2/identity-apps/commit/e2e8dda0f2ffb9633477ee69aad6defa1047efbd) Thanks [@savindi7](https://github.com/savindi7)! - Update passkey icon.
+
+- [#5511](https://github.com/wso2/identity-apps/pull/5511) [`101b8e535e`](https://github.com/wso2/identity-apps/commit/101b8e535e67354cb3bbb5c88f3b9d3633d596a4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve the messaging of the group attribute dropdown in connections
+
+* [#5505](https://github.com/wso2/identity-apps/pull/5505) [`15fa8b8ea7`](https://github.com/wso2/identity-apps/commit/15fa8b8ea7cacfb2d627225e76a6253674d11422) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix missing social authenticator modal display issue
+
+* Updated dependencies [[`1e6be6b088`](https://github.com/wso2/identity-apps/commit/1e6be6b088742e6efbde124e4e7b05636ee64719), [`e2e8dda0f2`](https://github.com/wso2/identity-apps/commit/e2e8dda0f2ffb9633477ee69aad6defa1047efbd), [`101b8e535e`](https://github.com/wso2/identity-apps/commit/101b8e535e67354cb3bbb5c88f3b9d3633d596a4)]:
+  - @wso2is/common@2.0.42
+  - @wso2is/theme@2.0.65
+  - @wso2is/i18n@2.0.123
+
 ## 2.12.21
 
 ### Patch Changes
