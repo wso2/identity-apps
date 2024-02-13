@@ -68,9 +68,14 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
         return consoleApplicationFilter?.applications[0]?.id;
     }, [ consoleApplicationFilter ]);
 
+    /**
+     * Generates the final filter string to obtain the filtered roles list.
+     *
+     * @param filterBy - filter string.
+     */
     const useRolesListFilterBy = (filterBy: string) => {
-        return `audience.value ne ${consoleId}${ filterBy ? ` and ${ filterBy }` : "" }`
-    }
+        return `audience.value ne ${consoleId}${ filterBy ? ` and ${ filterBy }` : "" }`;
+    };
 
     const {
         data: rolesList,
