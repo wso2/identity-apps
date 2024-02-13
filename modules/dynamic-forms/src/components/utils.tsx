@@ -17,6 +17,7 @@
  */
 
 import FormHelperText, { FormHelperTextProps } from "@oxygen-ui/react/FormHelperText";
+import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
 import { FieldMetaState } from "react-final-form";
 import { DynamicField } from "./dynamic-form-field";
@@ -67,16 +68,42 @@ export const showErrorOnBlur: ShowErrorFunc = ({
 }: ShowErrorProps) => !!(((submitError && !dirtySinceLastSubmit) || error) && touched);
 
 export const renderFormFields = (fields: Record<string, any>): ReactElement => {
+    return fields?.map((fieldProps) => {
 
-    return fields?.map((fieldProps, index) => (
-        <DynamicField.Input
-            key={ index }
-            name={ fieldProps.name }
-            label={ fieldProps.label }
-            inputType={ fieldProps.type }
-            { ...fieldProps }
-        />
-    ));
+        const otherProps = omit(fieldProps, "type");
+
+        switch (fieldProps.type) {
+            case "STRING":
+                return (
+                    <DynamicField.Input
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        inputType={ fieldProps.inputType ?? "text" }
+                        { ...otherProps }
+                    />
+                );
+            case "BOOLEAN":
+                return (
+                    <DynamicField.CheckBox
+                        ariaLabel={ fieldProps.name }
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        { ...otherProps }
+                    />
+                );
+            default:
+                return (
+                    <DynamicField.Input
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        inputType={ fieldProps.inputType ?? "text" }
+                        { ...otherProps }
+                    />
+                );
+        }});
 };
 
 export const resolveFieldInitailValue = (meta: FieldMetaState<any>, name: string, values: Partial<any>): any => {
