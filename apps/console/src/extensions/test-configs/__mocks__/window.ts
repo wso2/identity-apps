@@ -562,6 +562,7 @@ interface CustomExtendedWindow extends Window {
                 isGroupAndRoleSeparationEnabled: true,
                 isSignatureValidationCertificateAliasEnabled: false,
                 isCustomClaimMappingEnabled: true,
+                isCustomClaimMappingMergeEnabled: true,
                 isClientSecretHashEnabled: false,
                 isDefaultDialectEditingEnabled: false,
                 isDialectAddingEnabled: false,
