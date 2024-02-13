@@ -33,6 +33,7 @@ import { UserManagementConstants } from "../../../constants";
 import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";
 
 import "./invite-parent-org-user.scss";
+import { AutocompleteRenderOptionState } from "@mui/material";
 
 interface InviteParentOrgUserFormErrorsInterface {
     username: string;
@@ -168,7 +169,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                     return [];
                                 }
                             } }
-                            renderOption={ (props: any, option: any) => {
+                            renderOption={ (props: any, option: string) => {
                                 return (
                                     <li
                                         { ...props }
