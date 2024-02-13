@@ -4606,8 +4606,8 @@ export const console: ConsoleNS = {
                                 "mapping.",
                             placeHolder: "Select the attribute",
                             roleMappingDisabledMessage: "<1>Custom Attribute Mapping</1> is disabled in " +
-                                "your configuration. This might affect certain flows in the " +
-                                "application. Proceed with caution.",
+                                "your system configuration. This might affect certain flows related to " +
+                                "the connection. Proceed with caution.",
                             validation: {
                                 empty: "Please select an attribute for groups"
                             }

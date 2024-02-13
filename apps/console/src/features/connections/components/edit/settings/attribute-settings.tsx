@@ -368,8 +368,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                                             (
                                                 <Trans>
                                                     <strong>Custom Attribute Mapping</strong> is disabled in
-                                                    your configuration. This might affect certain flows in the
-                                                    application. Proceed with caution.
+                                                    your system configuration. This might affect certain flows related
+                                                    to the connection. Proceed with caution.
                                                 </Trans>
                                             )
                                         }
