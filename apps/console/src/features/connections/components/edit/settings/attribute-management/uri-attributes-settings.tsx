@@ -149,9 +149,9 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".uriAttributeSettings.subject.hint"
                                     }
                                 >
-                                The attribute that identifies the user at the enterprise identity provider.
+                                The attribute that identifies the user at the enterprise connection.
                                 When attributes are configured based on the authentication response of this
-                                IdP connection, you can use one of them as the subject. Otherwise, the
+                                connection, you can use one of them as the subject. Otherwise, the
                                 default <Code>saml2:Subject</Code> in the SAML response is used as the
                                 subject attribute.
                                 </Trans>
@@ -163,7 +163,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".subject.hint"
                                     }
                                 >
-                                Specifies the attribute that identifies the user at the identity provider.
+                                Specifies the attribute that identifies the user at the connection.
                                 </Trans>
                             )
                         }
@@ -245,7 +245,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                     : ConnectionManagementConstants.CLAIM_ROLES }</strong>
                                                  attribute will be considered as the default
                                                 <strong> Group Attribute</strong> as you have not added a
-                                                custom attribute mapping for the connection roles attribute.
+                                                custom attribute.
                                             </Trans>
                                         )
                                     }

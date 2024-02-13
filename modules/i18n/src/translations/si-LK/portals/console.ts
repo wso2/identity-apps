@@ -3700,7 +3700,7 @@ export const console: ConsoleNS = {
                             heading: "සමූහය",
                             hint: "සම්බන්ධතාවයේ ඇති කණ්ඩායම් හඳුනා ගන්නා ගුණාංගය නියම කරයි.",
                             label: "කණ්ඩායම් ගුණාංගය",
-                            message: "ඔබ සම්බන්ධතා භූමිකාවන් සඳහා අභිරුචි ගුණාංග සිතියම්ගත කිරීමක් එක් කර " +
+                            message: "ඔබ අභිරුචි ගුණාංග සිතියම්ගත කිරීමක් එක් කර " +
                                 "නොමැති බැවින් <1>{{ attribute }}</1> ගුණාංගය පෙරනිමියෙන් <1>කණ්ඩායම් ගුණාංගය</1> " +
                                 "ලෙස සලකනු ඇති බව කරුණාවෙන් සලකන්න.",
                             placeHolder: "ගුණාංගය තෝරන්න",
@@ -4105,7 +4105,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "සිතියම්ගත කළ ගුණාංගය",
-                                externalAttributeColumnHeader: "බාහිර IdP ගුණාංගය"
+                                externalAttributeColumnHeader: "බාහිර සම්බන්ධතා ගුණාංගය"
                             },
                             heading: "අනන්‍යතා සපයන්නාගේ ගුණාංග සිතියම්ගත කිරීම්",
                             subheading: "බාහිර අනන්‍යතා සපයන්නා වෙතින් සහාය දක්වන උපලක්ෂණ එකතු කර සිතියම්ගත කරන්න.",

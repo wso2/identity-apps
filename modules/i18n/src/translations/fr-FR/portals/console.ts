@@ -3801,7 +3801,7 @@ export const console: ConsoleNS = {
                             label: "Attribut de groupe",
                             message: "Veuillez noter que l'attribut <1>{{attribut }}</1> sera considéré " +
                                 "comme <1>attribut de groupe</1> par défaut car vous n'avez pas ajouté de " +
-                                "mappage d'attribut personnalisé pour l'attribut des rôles de connexion.",
+                                "mappage d'attribut personnalisé.",
                             placeHolder: "Sélectionnez l'attribut",
                             validation: {
                                 empty: "Veuillez sélectionner un attribut pour les groupes"
@@ -4213,7 +4213,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Attribut mappé",
-                                externalAttributeColumnHeader: "Attribut IdP externe"
+                                externalAttributeColumnHeader: "Attribut de connexion externe"
                             },
                             heading: "Mappages d'attributs de connexion",
                             subheading: "Ajoutez et mappez les attributs pris en charge à partir du connexion externe.",

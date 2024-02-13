@@ -4598,7 +4598,7 @@ export const console: ConsoleNS = {
                             label: "Group Attribute",
                             message: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
                                 "<1>Group Attribute</1> as you have not added a custom attribute " +
-                                "mapping for the connection roles attribute.",
+                                "mapping.",
                             placeHolder: "Select the attribute",
                             validation: {
                                 empty: "Please select an attribute for groups"
@@ -4606,9 +4606,9 @@ export const console: ConsoleNS = {
                         },
                         subject: {
                             heading: "Subject",
-                            hint: "The attribute that identifies the user at the enterprise identity provider. " +
+                            hint: "The attribute that identifies the user at the enterprise connection. " +
                                 "When attributes are configured based on the authentication response of " +
-                                "this IdP connection, you can use one of them as the subject. " +
+                                "this connection, you can use one of them as the subject. " +
                                 "Otherwise, the default <1>saml2:Subject</1> in the SAML response is used " +
                                 "as the subject attribute.",
                             label: "Subject Attribute",
@@ -5845,7 +5845,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Mapped Attribute",
-                                externalAttributeColumnHeader: "External IdP Attribute"
+                                externalAttributeColumnHeader: "External Connection Attribute"
                             },
                             heading: "Connection Attribute Mappings",
                             subheading: "Add and map the supported attributes from external connection.",
