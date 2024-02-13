@@ -5335,8 +5335,7 @@ export const console: ConsoleNS = {
                     trustedTokenIssuer: {
                         addWizard: {
                             title: "Trusted token issuer",
-                            subtitle: "Register a trusted token issuer to exchange its token for an {{productName}} issued " +
-                                "token"
+                            subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}}"
                         },
                         forms: {
                             steps: {
