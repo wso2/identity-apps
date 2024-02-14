@@ -4594,11 +4594,11 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         group: {
                             heading: "Group",
-                            hint: "Specifies the attribute that identifies the groups at the Connection.",
+                            hint: "Specifies the attribute that identifies the groups at the connection.",
                             label: "Group Attribute",
                             mappedRolesAbsentMessage: "With your current configuration, <1>Group Attribute</1> is not configured. " +
                                 "You can select an attribute from the dropdown.",
-                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> which is mapped to the <1>roles</1> claim " +
+                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> which is mapped to the <1>{{ rolesClaim }}</1> attribute " +
                                 "will be considered as the default <1>Group Attribute</1> with the current configuration. " +
                                 "You can select an attribute from the dropdown.",
                             messageOIDC: "Please note that OpenID Connect attribute named <1>{{ attribute }}</1> will be considered as the default " +

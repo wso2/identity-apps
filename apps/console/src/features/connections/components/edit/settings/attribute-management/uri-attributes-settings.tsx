@@ -194,13 +194,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                             "forms.uriAttributeSettings.group.mappedRolesPresentMessage"
                                     }
                                     tOptions={ {
-                                        mappedRolesClaim: mappedRolesClaim
+                                        mappedRolesClaim: mappedRolesClaim,
+                                        rolesClaim: ConnectionManagementConstants.CLAIM_ROLES
                                     } }
                                 >
                                     Please note that <strong>{ mappedRolesClaim }</strong>
-                                    which is mapped to the <strong>roles</strong> claim will be considered
-                                    as the default <strong> Group Attribute</strong> with the current configuration.
-                                    You can select an attribute from the dropdown.
+                                    which is mapped to the <strong>{
+                                        ConnectionManagementConstants.CLAIM_ROLES }</strong> attribute will
+                                    be considered as the default <strong> Group Attribute</strong> with the
+                                    current configuration. You can select an attribute from the dropdown.
                                 </Trans>
                             )
                         }

@@ -29,7 +29,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
@@ -196,14 +196,32 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         const defaultDialectMessage: ReactElement = (
             <Message
                 header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
-                content={ (
-                    <p>
-                        Please note that <strong>{
-                            groupClaim
-                        }</strong> { isOIDC ? "OIDC" : "" } attribute will be considered as the default <strong>
-                        Group Attribute</strong> as you have not added a
-                        custom attribute mapping for the connection&apos;s groups attribute.
-                    </p>
+                content={ isOIDC ? (
+                    <Trans
+                        i18nKey={
+                            "extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessageOIDC"
+                        }
+                        tOptions={ {
+                            attribute: groupClaim
+                        } }
+                    >
+                        Please note that OpenID Connect attribute <strong>{ groupClaim }</strong> will be
+                        considered as the default <strong>Group Attribute</strong> as you have not added
+                        a custom attribute mapping for the connection&apos;s group attribute.
+                    </Trans>
+                ) : (
+                    <Trans
+                        i18nKey={
+                            "extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessageSAML"
+                        }
+                        tOptions={ {
+                            attribute: groupClaim
+                        } }
+                    >
+                        Please note that <strong>{ groupClaim }</strong> attribute will be
+                        considered as the default <strong>Group Attribute</strong> as you have not added
+                        a custom attribute mapping for the connection&apos;s group attribute.
+                    </Trans>
                 ) }
                 data-componentid={ `${ componentId }-group-attribute-message` }
                 info

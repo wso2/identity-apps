@@ -3802,7 +3802,7 @@ export const console: ConsoleNS = {
                             mappedRolesAbsentMessage: "Avec votre configuration actuelle, <1> l'attribut de groupe </1> n'est pas configuré. " +
                                 "Vous pouvez sélectionner un attribut dans la liste déroulante.",
                             mappedRolesPresentMessage: "Veuillez noter que <1> {{ mappedRolesClaim }} </1> " +
-                                "volontéêtre considéré comme l'attribut de groupe par défaut <1> </1> avec la configuration actuelle. " +
+                                "volontéêtre considéré comme l'attribut de groupe par défaut <1>{{ rolesClaim }}</1> avec la configuration actuelle. " +
                                 "Vous pouvez sélectionner un attribut dans la liste déroulante.",
                             messageOIDC: "Veuillez noter que l'attribut OpenId Connect nommé <1>{{ attribute }}</1> sera considéré comme la valeur par défaut " +
                                 "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",

@@ -329,6 +329,10 @@ export const extensions: Extensions = {
                 groupAttributePlaceholder: "Saisir l'attribut mappé",
                 groupAttributeMessage1: "Veuillez noter que l'attribut sélectionné dans l'onglet <1>Attributs</1> car l'attribut de groupe est utilisé pour identifier les groupes à la connexion.",
                 groupAttributeMessage2: "Pour des modifications de l'attribut de groupe, veuillez visiter l'onglet <1>Attributs</1>.",
+                groupAttributeMessageOIDC: "Veuillez noter cet attribut OpenID Connect <1>{{attribute}}</1> sera considéré comme la valeur par défaut " +
+                    "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé pour l'attribut de groupe de la connexion.",
+                groupAttributeMessageSAML: "Veuillez noter que <1>{{attribute}}</1> L'attribut sera considéré comme la valeur par défaut " +
+                    "<1>Attribut de groupe</1> asVous n'avez pas ajouté de mappage d'attribut personnalisé pour l'attribut de groupe de la connexion.",
                 notifications: {
                     fetchConfigs: {
                         error: {

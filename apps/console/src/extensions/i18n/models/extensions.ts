@@ -245,6 +245,8 @@ export interface Extensions {
                 groupAttributePlaceholder: string;
                 groupAttributeMessage1: string;
                 groupAttributeMessage2: string;
+                groupAttributeMessageOIDC: string;
+                groupAttributeMessageSAML: string;
                 notifications: {
                     fetchConfigs: Notification;
                 };
