@@ -28,7 +28,7 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
-import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
+import { ContentLoader } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

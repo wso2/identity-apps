@@ -1,7 +1,7 @@
 {
     "id": "iproov-idp",
     "name": "iProov",
-    "description": "Enable login for users with existing iProov accounts.",
+    "description": "Enable login for users with iProov.",
     "image": "iproov",
     "category": "DEFAULT",
     "displayOrder": 5,
@@ -122,6 +122,6 @@
             ]
         }
     },
-    "type": "SOCIAL",
+    "type": "PASSWORDLESS",
     "templateId": "iproov-idp"
 }
