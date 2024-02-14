@@ -1,5 +1,11 @@
 # @wso2is/dynamic-forms
 
+## 2.0.36
+
+### Patch Changes
+
+- [#5518](https://github.com/wso2/identity-apps/pull/5518) [`0ee8258112`](https://github.com/wso2/identity-apps/commit/0ee8258112921250fdbff47b7e766cb7e1f583ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with dynamic form
+
 ## 2.0.35
 
 ### Patch Changes
