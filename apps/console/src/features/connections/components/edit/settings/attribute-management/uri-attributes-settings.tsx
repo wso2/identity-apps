@@ -249,7 +249,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 Please note that OpenID Connect attribute named
                                 <strong>{ ConnectionManagementConstants.OIDC_ROLES_CLAIM }</strong>
                                 will be considered as the default <strong>Group Attribute</strong>
-                                as you have not added a custom attribute mapping
+                                as you have not added a custom attribute mapping.
                             </Trans>
                         )
                     }
