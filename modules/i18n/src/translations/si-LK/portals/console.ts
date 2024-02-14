@@ -1297,7 +1297,7 @@ export const console: ConsoleNS = {
                                     message: "යෙදුම් හුවමාරුව සාර්ථකව නතර විය!"
                                 }
                             },
-                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "සියලුම සංවිධාන සමඟ යෙදුම බෙදාගැනීමේ සිට තෝරාගත් ඒවා සමඟ බෙදාගැනීම දක්වා මාරු කිරීම, " + 
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "සියලුම සංවිධාන සමඟ යෙදුම බෙදාගැනීමේ සිට තෝරාගත් ඒවා සමඟ බෙදාගැනීම දක්වා මාරු කිරීම, " +
                                 "දැනටමත් බෙදාගෙන ඇති සංවිධානවල යෙදුම් වින්‍යාසයන් යළි සකසනු ඇත."
                         },
                         signOnMethod: {
