@@ -376,6 +376,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isCustomClaimMappingEnabled?: boolean;
     /**
+     * Enable/Disable the custom claim mapping merge feature.
+     */
+    isCustomClaimMappingMergeEnabled?: boolean;
+    /**
      * Self app name.
      */
     selfAppIdentifier: string;

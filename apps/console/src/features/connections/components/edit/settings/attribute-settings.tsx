@@ -15,15 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { EmphasizedSegment, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
@@ -147,6 +147,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const { UIConfig } = useUIConfig();
 
     // Manage available local claims.
     const [ availableLocalClaims, setAvailableLocalClaims ] = useState<ConnectionClaimInterface[]>([]);
@@ -356,6 +358,27 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         <EmphasizedSegment padded="very">
             <Grid className="attributes-settings">
                 <div className="form-container with-max-width">
+                    {
+                        !UIConfig?.isCustomClaimMappingEnabled && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column>
+                                    <Message
+                                        type="warning"
+                                        content={
+                                            (
+                                                <Trans>
+                                                    <strong>Custom Attribute Mapping</strong> is disabled in
+                                                    your system configuration. This might affect certain flows related
+                                                    to the connection. Proceed with caution.
+                                                </Trans>
+                                            )
+                                        }
+                                    />
+                                    <Divider hidden/>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                    }
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
                             <AttributesSelectionV2

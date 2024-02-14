@@ -70,27 +70,27 @@ export const showErrorOnBlur: ShowErrorFunc = ({
 export const renderFormFields = (fields: Record<string, any>): ReactElement => {
     return fields?.map((fieldProps) => {
 
-        const otherProps = omit(fieldProps, "type");
+        const inputLowerCase = fieldProps?.type?.toLowerCase();
 
-        switch (fieldProps.type) {
-            case "STRING":
+        switch (inputLowerCase) {
+            case "string":
                 return (
                     <DynamicField.Input
                         key={ fieldProps.name }
                         name={ fieldProps.name }
                         label={ fieldProps.label }
-                        inputType={ fieldProps.inputType ?? "text" }
-                        { ...otherProps }
+                        inputType={ fieldProps.inputType }
+                        { ...omit(fieldProps, "type") }
                     />
                 );
-            case "BOOLEAN":
+            case "boolean":
                 return (
                     <DynamicField.CheckBox
                         ariaLabel={ fieldProps.name }
                         key={ fieldProps.name }
                         name={ fieldProps.name }
                         label={ fieldProps.label }
-                        { ...otherProps }
+                        { ...omit(fieldProps, "type") }
                     />
                 );
             default:
@@ -99,8 +99,8 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
                         key={ fieldProps.name }
                         name={ fieldProps.name }
                         label={ fieldProps.label }
-                        inputType={ fieldProps.inputType ?? "text" }
-                        { ...otherProps }
+                        inputType={ fieldProps.inputType }
+                        { ...fieldProps }
                     />
                 );
         }});

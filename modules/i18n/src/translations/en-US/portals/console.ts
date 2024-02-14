@@ -4642,19 +4642,27 @@ export const console: ConsoleNS = {
                             heading: "Group",
                             hint: "Specifies the attribute that identifies the groups at the Connection.",
                             label: "Group Attribute",
-                            message: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
+                            mappedRolesAbsentMessage: "With your current configuration, <1>Group Attribute</1> is not configured. " +
+                                "You can select an attribute from the dropdown.",
+                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> " +
+                                "will be considered as the default <1> Group Attribute</1> with the current configuration. " +
+                                "You can select an attribute from the dropdown.",
+                            message: "Please note that <1>{{ attribute }}</1> {{ suffix }} will be considered as the default " +
                                 "<1>Group Attribute</1> as you have not added a custom attribute " +
-                                "mapping for the connection roles attribute.",
+                                "mapping.",
                             placeHolder: "Select the attribute",
+                            roleMappingDisabledMessage: "<1>Custom Attribute Mapping</1> is disabled in " +
+                                "your system configuration. This might affect certain flows related to " +
+                                "the connection. Proceed with caution.",
                             validation: {
                                 empty: "Please select an attribute for groups"
                             }
                         },
                         subject: {
                             heading: "Subject",
-                            hint: "The attribute that identifies the user at the enterprise identity provider. " +
+                            hint: "The attribute that identifies the user at the enterprise connection. " +
                                 "When attributes are configured based on the authentication response of " +
-                                "this IdP connection, you can use one of them as the subject. " +
+                                "this connection, you can use one of them as the subject. " +
                                 "Otherwise, the default <1>saml2:Subject</1> in the SAML response is used " +
                                 "as the subject attribute.",
                             label: "Subject Attribute",
@@ -5381,8 +5389,7 @@ export const console: ConsoleNS = {
                     trustedTokenIssuer: {
                         addWizard: {
                             title: "Trusted token issuer",
-                            subtitle: "Register a trusted token issuer to exchange its token for an Asgardeo issued " +
-                                "token"
+                            subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}}"
                         },
                         forms: {
                             steps: {
@@ -5417,7 +5424,7 @@ export const console: ConsoleNS = {
                                 optionLabel: "JWKS endpoint",
                                 placeholder: "Enter JWKS endpoint URL",
                                 label: "JWKS endpoint URL",
-                                hint: "Asgardeo will use this URL to obtain keys to verify the signed responses from " +
+                                hint: "{{productName}} will use this URL to obtain keys to verify the signed responses from " +
                                     "your trusted token issuer.",
                                 validation: {
                                     notValid: "Please enter a valid URL"
@@ -5425,7 +5432,7 @@ export const console: ConsoleNS = {
                             },
                             pem: {
                                 optionLabel: "Use PEM certificate",
-                                hint: "Asgardeo will use this certificate to verify the signed responses from " +
+                                hint: "{{productName}} will use this certificate to verify the signed responses from " +
                                     "your trusted token issuer.",
                                 uploadCertificateButtonLabel: "Upload certificate file",
                                 dropzoneText: "Drag and drop a certificate file here.",
@@ -5930,7 +5937,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Mapped Attribute",
-                                externalAttributeColumnHeader: "External IdP Attribute"
+                                externalAttributeColumnHeader: "External Connection Attribute"
                             },
                             heading: "Connection Attribute Mappings",
                             subheading: "Add and map the supported attributes from external connection.",

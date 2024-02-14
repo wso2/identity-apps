@@ -1,5 +1,20 @@
 # @wso2is/identity-apps-core
 
+## 2.1.24
+
+### Patch Changes
+
+- [#5512](https://github.com/wso2/identity-apps/pull/5512) [`e2e8dda0f2`](https://github.com/wso2/identity-apps/commit/e2e8dda0f2ffb9633477ee69aad6defa1047efbd) Thanks [@savindi7](https://github.com/savindi7)! - Update passkey icon.
+
+- Updated dependencies [[`e2e8dda0f2`](https://github.com/wso2/identity-apps/commit/e2e8dda0f2ffb9633477ee69aad6defa1047efbd)]:
+  - @wso2is/theme@2.0.65
+
+## 2.1.23
+
+### Patch Changes
+
+- [#5502](https://github.com/wso2/identity-apps/pull/5502) [`cf0158028d`](https://github.com/wso2/identity-apps/commit/cf0158028d8fb76644e3dc3ff503ec4c82c0f81e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Added fallbackCountry code to resolve userLocale in branding
+
 ## 2.1.22
 
 ### Patch Changes

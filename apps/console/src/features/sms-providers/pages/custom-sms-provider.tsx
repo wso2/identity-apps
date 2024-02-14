@@ -125,7 +125,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="contentType"
                             readOnly={ isReadOnly }
-                            required={ false }
                             data-componentid={ `${componentId}-contentType` }
                             name="contentType"
                             type="text"
@@ -144,6 +143,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                             }
                             autoComplete="new-password"
+                            required
                         />
                     </Grid.Column>
                     <Grid.Column>

@@ -1701,6 +1701,9 @@
         {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
         "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},
         {% endif %}
+        {% if authentication.endpoint.enable_merging_custom_claim_mappings_with_default is defined %}
+        "isCustomClaimMappingMergeEnabled": {{ authentication.endpoint.enable_merging_custom_claim_mappings_with_default }},
+        {% endif %}
         {% if console.ui.is_default_dialect_editing_enabled is defined %}
         "isDefaultDialectEditingEnabled": {{ console.ui.is_default_dialect_editing_enabled }},
         {% endif %}

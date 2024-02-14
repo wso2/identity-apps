@@ -3799,10 +3799,18 @@ export const console: ConsoleNS = {
                             heading: "Groupe",
                             hint: "Spécifie l'attribut qui identifie les groupes au niveau de la connexion.",
                             label: "Attribut de groupe",
-                            message: "Veuillez noter que l'attribut <1>{{attribut }}</1> sera considéré " +
-                                "comme <1>attribut de groupe</1> par défaut car vous n'avez pas ajouté de " +
-                                "mappage d'attribut personnalisé pour l'attribut des rôles de connexion.",
+                            mappedRolesAbsentMessage: "Avec votre configuration actuelle, <1> l'attribut de groupe </1> n'est pas configuré. " +
+                                "Vous pouvez sélectionner un attribut dans la liste déroulante.",
+                            mappedRolesPresentMessage: "Veuillez noter que <1> {{ mappedRolesClaim }} </1> " +
+                                "volontéêtre considéré comme l'attribut de groupe par défaut <1> </1> avec la configuration actuelle. " +
+                                "Vous pouvez sélectionner un attribut dans la liste déroulante.",
+                            message: "Veuillez noter que <1>{{ attribute }}</1> {{ suffix }} sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté d'attribut personnalisé " +
+                                "cartographie.",
                             placeHolder: "Sélectionnez l'attribut",
+                            roleMappingDisabledMessage: "<1>Mappage d'attributs personnalisés</1>est désactivé dans " +
+                                "votre configuration.Cela pourrait affecter certains flux dans le " +
+                                "application.Procéder avec prudence.",
                             validation: {
                                 empty: "Veuillez sélectionner un attribut pour les groupes"
                             }
@@ -3874,7 +3882,7 @@ export const console: ConsoleNS = {
                         addWizard: {
                             title: "Émetteur de jeton de confiance",
                             subtitle: "Enregistrez un émetteur de jeton de confiance pour échanger son jeton contre " +
-                                "un jeton émis par Asgardeo"
+                                "un jeton émis par {{productName}}"
                         },
                         forms: {
                             steps: {
@@ -3909,7 +3917,7 @@ export const console: ConsoleNS = {
                                 optionLabel: "Point de terminaison JWKS",
                                 placeholder: "Entrez l'URL de point de terminaison JWKS",
                                 label: "URL de point de terminaison JWKS",
-                                hint: "Asgardeo utilisera cette URL pour obtenir des clés pour vérifier les réponses " +
+                                hint: "{{productName}} utilisera cette URL pour obtenir des clés pour vérifier les réponses " +
                                     "signées de Votre émetteur de jeton de confiance.",
                                 validation: {
                                     notValid: "Veuillez saisir une URL valide"
@@ -3917,7 +3925,7 @@ export const console: ConsoleNS = {
                             },
                             pem: {
                                 optionLabel: "Utiliser le certificat PEM",
-                                hint: "Asgardeo utilisera ce certificat pour vérifier les réponses signées de "+
+                                hint: "{{productName}} utilisera ce certificat pour vérifier les réponses signées de "+
                                     "Votre émetteur de jeton de confiance.",
                                 uploadCertificateButtonLabel: "Télécharger le fichier de certificat",
                                 dropzoneText: "Faites glisser et déposez un fichier de certificat ici.",
@@ -4213,7 +4221,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Attribut mappé",
-                                externalAttributeColumnHeader: "Attribut IdP externe"
+                                externalAttributeColumnHeader: "Attribut de connexion externe"
                             },
                             heading: "Mappages d'attributs de connexion",
                             subheading: "Ajoutez et mappez les attributs pris en charge à partir du connexion externe.",
