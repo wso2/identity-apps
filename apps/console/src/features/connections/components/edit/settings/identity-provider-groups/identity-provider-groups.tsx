@@ -205,7 +205,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                             attribute: groupClaim
                         } }
                     >
-                        Please note that OpenID Connect attribute <strong>{ groupClaim }</strong> will be
+                        Please note that OpenID Connect attribute named <strong>{ groupClaim }</strong> will be
                         considered as the default <strong>Group Attribute</strong> as you have not added
                         a custom attribute mapping for the connection&apos;s group attribute.
                     </Trans>

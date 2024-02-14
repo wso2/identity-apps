@@ -328,7 +328,7 @@ export const extensions: Extensions = {
                 groupAttributePlaceholder: "Enter mapped attribute",
                 groupAttributeMessage1: "Please be aware that the attribute selected in the <1>Attributes tab</1> as the group attribute is used to identify groups at the Connection.",
                 groupAttributeMessage2: "For modifications to the group attribute, please visit the <1>Attributes tab</1>.",
-                groupAttributeMessageOIDC: "Please note that OpenID Connect attribute <1>{{attribute}}</1> will be considered as the default " +
+                groupAttributeMessageOIDC: "Please note that OpenID Connect attribute named <1>{{attribute}}</1> will be considered as the default " +
                     "<1>Group Attribute</1> as you have not added a custom attribute mapping for the connection's group attribute.",
                 groupAttributeMessageSAML: "Please note that <1>{{attribute}}</1> attribute will be considered as the default " +
                     "<1>Group Attribute</1> as you have not added a custom attribute mapping for the connection's group attribute.",
