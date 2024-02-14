@@ -26,6 +26,7 @@ import { addAlert } from "@wso2is/core/store";
 import {
     Heading,
     Hint,
+    Message,
     PrimaryButton,
     TransferComponent,
     TransferList,
@@ -548,86 +549,105 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             animation="slide down"
                             duration={ 1000 }
                         >
-                            <TransferComponent
-                                className="pl-2"
-                                disabled={ shareType !== ShareType.SHARE_SELECTED }
-                                selectionComponent
-                                searchPlaceholder={ t(
-                                    "console:manage.features.transferList.searchPlaceholder",
-                                    { type: "organizations" }
+                            <>
+                                { sharedWithAll && (
+                                    <Message warning className="ml-4">
+                                        <p>
+                                            {
+                                                t(
+                                                    "console:develop.features.applications.edit."
+                                                    + "sections.shareApplication"
+                                                    + ".switchToSelectiveShareFromSharingWithAllSuborgsWarning"
+                                                )
+                                            }
+                                        </p>
+                                    </Message>
                                 ) }
-                                handleUnelectedListSearch={
-                                    handleUnselectedListSearch
-                                }
-                                data-componentId="application-share-modal-organization-transfer-component"
-                            >
-                                <TransferList
-                                    disabled={
-                                        shareType !== ShareType.SHARE_SELECTED
-                                    }
-                                    isListEmpty={
-                                        !(tempOrganizationList?.length > 0)
-                                    }
-                                    handleHeaderCheckboxChange={
-                                        handleHeaderCheckboxChange
-                                    }
-                                    isHeaderCheckboxChecked={
-                                        checkedUnassignedListItems?.length ===
-                                            subOrganizationList?.length
-                                    }
-                                    listType="unselected"
-                                    listHeaders={ [
-                                        t(
-                                            "console:manage.features.transferList.list.headers.1"
-                                        ),
-                                        ""
-                                    ] }
-                                    emptyPlaceholderContent={
-                                        t("console:develop.placeholders.emptySearchResult.subtitles.0",
-                                            { query: filter }) + ". " +
-                                            t("console:develop.placeholders.emptySearchResult.subtitles.1")
-                                    }
-                                    data-testid="application-share-modal-organization-transfer-component-all-items"
-                                    emptyPlaceholderDefaultContent={ t(
-                                        "console:manage.features.transferList.list." +
-                                            "emptyPlaceholders.default"
+                                <TransferComponent
+                                    className="pl-2"
+                                    disabled={ shareType !== ShareType.SHARE_SELECTED }
+                                    selectionComponent
+                                    searchPlaceholder={ t(
+                                        "console:manage.features.transferList.searchPlaceholder",
+                                        { type: "organizations" }
                                     ) }
+                                    handleUnelectedListSearch={
+                                        handleUnselectedListSearch
+                                    }
+                                    data-componentId="application-share-modal-organization-transfer-component"
                                 >
-                                    { tempOrganizationList?.map(
-                                        (organization: OrganizationInterface, index: number) => {
-                                            const organizationName: string =
+                                    <TransferList
+                                        disabled={
+                                            shareType !== ShareType.SHARE_SELECTED
+                                        }
+                                        isListEmpty={
+                                            !(tempOrganizationList?.length > 0)
+                                        }
+                                        handleHeaderCheckboxChange={
+                                            handleHeaderCheckboxChange
+                                        }
+                                        isHeaderCheckboxChecked={
+                                            checkedUnassignedListItems?.length ===
+                                            subOrganizationList?.length
+                                        }
+                                        listType="unselected"
+                                        listHeaders={ [
+                                            t(
+                                                "console:manage.features.transferList.list.headers.1"
+                                            ),
+                                            ""
+                                        ] }
+                                        emptyPlaceholderContent={
+                                            t("console:develop.placeholders.emptySearchResult.subtitles.0",
+                                                { query: filter }) + ". " +
+                                            t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                                        }
+                                        data-testid="application-share-modal-organization-transfer-component-all-items"
+                                        emptyPlaceholderDefaultContent={ t(
+                                            "console:manage.features.transferList.list." +
+                                            "emptyPlaceholders.default"
+                                        ) }
+                                    >
+                                        { tempOrganizationList?.map(
+                                            (organization: OrganizationInterface, index: number) => {
+                                                const organizationName: string =
                                                     organization?.name;
-                                            const isChecked: boolean =
+                                                const isChecked: boolean =
                                                     checkedUnassignedListItems.findIndex(
                                                         (org: OrganizationInterface) =>
                                                             org.id === organization.id
                                                     ) !== -1;
 
-                                            return (
-                                                <TransferListItem
-                                                    disabled={
-                                                        shareType !==
+                                                return (
+                                                    <TransferListItem
+                                                        disabled={
+                                                            shareType !==
                                                             ShareType.SHARE_SELECTED
-                                                    }
-                                                    handleItemChange={ () =>
-                                                        handleUnassignedItemCheckboxChange(
-                                                            organization
-                                                        )
-                                                    }
-                                                    key={ index }
-                                                    listItem={ organizationName }
-                                                    listItemId={ organization.id }
-                                                    listItemIndex={ index }
-                                                    isItemChecked={ isChecked }
-                                                    showSecondaryActions={ false }
-                                                    data-testid="application-share-modal-organization-transfer-component
-                                                    -unselected-organizations"
-                                                />
-                                            );
-                                        }
-                                    ) }
-                                </TransferList>
-                            </TransferComponent>
+                                                        }
+                                                        handleItemChange={ () =>
+                                                            handleUnassignedItemCheckboxChange(
+                                                                organization
+                                                            )
+                                                        }
+                                                        key={ index }
+                                                        listItem={ organizationName }
+                                                        listItemId={ organization.id }
+                                                        listItemIndex={ index }
+                                                        isItemChecked={ isChecked }
+                                                        showSecondaryActions={ false }
+                                                        data-testid={ "application-share-modal-"
+                                                            + "organization-transfer-component"
+                                                            + "-unselected-organizations"
+                                                        }
+                                                    />
+                                                );
+                                            }
+                                        ) }
+                                    </TransferList>
+                                </TransferComponent>
+
+                            </>
+
                         </Transition>
                         <Divider hidden className="mb-0 mt-0" />
                         <Radio

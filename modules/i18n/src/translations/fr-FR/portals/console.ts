@@ -1301,7 +1301,10 @@ export const console: ConsoleNS = {
                                     description: "Le partage des applications s'est arrêté avec toutes les organisations avec succès",
                                     message: "Le partage d'applications s'est arrêté avec succès!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Passer du partage de l'application avec toutes les organisations à " +
+                                "le partager avec les personnes sélectionnées" +
+                                "réinitialiser les configurations applicatives des organisations déjà partagées"
                         },
                         signOnMethod: {
                             sections: {

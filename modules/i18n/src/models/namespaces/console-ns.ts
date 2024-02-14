@@ -1105,6 +1105,7 @@ export interface ConsoleNS {
                             stopSharingNotification: Notification;
                             getSharedOrganizations: Notification;
                             stopAllSharingNotification: Notification;
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;

@@ -1302,7 +1302,10 @@ export const console: ConsoleNS = {
                                     description: "Application sharing stopped with all the organizations successfully",
                                     message: "Application sharing stopped successfully!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
+                                "sharing with selected organizations will " +
+                                "reset the application configurations in all organizations."
                         },
                         signOnMethod: {
                             sections: {
