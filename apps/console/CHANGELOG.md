@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.26
+
+### Patch Changes
+
+- [#5517](https://github.com/wso2/identity-apps/pull/5517) [`237e139a42`](https://github.com/wso2/identity-apps/commit/237e139a424ff909f59036dde784e08837c5511b) Thanks [@dewniMW](https://github.com/dewniMW)! - Add identifier when displaying business APIs to uniquely identify them in the dropdown
+
 ## 2.12.25
 
 ### Patch Changes
