@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.12.24
+
+### Patch Changes
+
+- [#5518](https://github.com/wso2/identity-apps/pull/5518) [`0ee8258112`](https://github.com/wso2/identity-apps/commit/0ee8258112921250fdbff47b7e766cb7e1f583ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with dynamic form
+
+* [#5519](https://github.com/wso2/identity-apps/pull/5519) [`39a745e753`](https://github.com/wso2/identity-apps/commit/39a745e753f86fe73ee8b8d168cee5ecfd177356) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Console Settings role permission tab
+
+* Updated dependencies [[`0ee8258112`](https://github.com/wso2/identity-apps/commit/0ee8258112921250fdbff47b7e766cb7e1f583ce)]:
+  - @wso2is/dynamic-forms@2.0.36
+
 ## 2.12.23
 
 ### Patch Changes
