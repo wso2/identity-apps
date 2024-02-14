@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactNode } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import { ReactComponent as TwilioLogo } from "../../../themes/default/assets/images/twilio-logo.svg";
 import { ReactComponent as VonageLogo } from "../../../themes/default/assets/images/vonage-logo.svg";
