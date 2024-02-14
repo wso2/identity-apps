@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -65,7 +65,7 @@
         supportedLanguages.put("de", "DE");
         supportedLanguages.put("zh", "CN");
         supportedLanguages.put("ja", "JP");
-        
+
         List<String> languageSupportedCountries = new ArrayList<>();
         languageSupportedCountries.add("US");
         languageSupportedCountries.add("FR");
@@ -398,6 +398,7 @@
     String DEFAULT_RESOURCE_LOCALE = "en-US";
     String ORG_PREFERENCE_RESOURCE_TYPE = "ORG";
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
+    String RESOURCE_TYPE = "type";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
     String applicationRequestingPreferences = spAppId;
@@ -416,6 +417,7 @@
 
         if (brandingPreferenceResponse.has(PREFERENCE_KEY)) {
             brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
+            preferenceResourceType = brandingPreferenceResponse.getString(RESOURCE_TYPE);
         }
 
 %>
