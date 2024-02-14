@@ -1296,7 +1296,9 @@ export const console: ConsoleNS = {
                                     description: "යෙදුම් හුවමාරුව සියලුම සංවිධාන සමඟ සාර්ථකව කටයුතු කළේය",
                                     message: "යෙදුම් හුවමාරුව සාර්ථකව නතර විය!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "සියලුම සංවිධාන සමඟ යෙදුම බෙදාගැනීමේ සිට තෝරාගත් ඒවා සමඟ බෙදාගැනීම දක්වා මාරු කිරීම, " +
+                                "දැනටමත් බෙදාගෙන ඇති සංවිධානවල යෙදුම් වින්‍යාසයන් යළි සකසනු ඇත."
                         },
                         signOnMethod: {
                             sections: {
