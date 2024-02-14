@@ -119,11 +119,14 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ConsoleRolePermissions
                             isReadOnly={
-                                !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                                isSubOrg
+                                || isAdminRole
+                                || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }
+                            isSubOrganization={ isSubOrg }
                         />
                     </ResourceTab.Pane>
                 )

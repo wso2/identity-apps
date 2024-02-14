@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import {
     AlertInterface,
     AlertLevels,
@@ -39,6 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState } from "../../../../core/store";
 import { updateRoleDetails } from "../../../../roles/api/roles";
+import { RenderChip } from "../../../../roles/components/edit-role/edit-role-common/render-chip";
 import { Schemas } from "../../../../roles/constants/role-constants";
 import { CreateRolePermissionInterface, PatchRoleDataInterface } from "../../../../roles/models/roles";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
@@ -62,6 +68,10 @@ export interface ConsoleRolePermissionsProps extends LoadableComponentInterface,
      * Is read only.
      */
     isReadOnly?: boolean;
+    /**
+     * Whether the organization is a sub organization or not.
+     */
+    isSubOrganization?: boolean;
     /**
      * All the details about the role.
      */
@@ -90,6 +100,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         role,
         onRoleUpdate,
         tabIndex,
+        isSubOrganization,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -97,10 +108,14 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const { t } = useTranslation();
 
-    const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(true, "type eq tenant", "apiResources");
+    const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(
+        !isSubOrganization,
+        "type eq tenant",
+        "apiResources"
+    );
 
     const { data: organizationAPIResourceCollections } = useGetAPIResourceCollections(
-        true,
+        !isSubOrganization,
         "type eq organization",
         "apiResources"
     );
@@ -300,6 +315,43 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             });
     };
 
+    /**
+     * Render the read only permission list for sub organizations.
+     * Due to a limitation in the API, we have to use a separate permission list component for sub organizations.
+     *
+     * @returns Read only permission list for sub organizations.
+     */
+    const readOnlyPermissionListSubOrganization = (): ReactElement => (
+        <Autocomplete
+            readOnly
+            multiple
+            options={ role?.permissions ?? [] }
+            defaultValue={ role?.permissions ?? [] }
+            getOptionLabel={ (scope: RolePermissionInterface) => scope.display }
+            renderInput={ (params: AutocompleteRenderInputParams) => (
+                <TextField
+                    { ...params }
+                    data-componentid={ `${componentId}-textfield` }
+                />
+            ) }
+            renderTags={ (
+                value: RolePermissionInterface[],
+                getTagProps: AutocompleteRenderGetTagProps
+            ) => value.map((option: RolePermissionInterface, index: number) => (
+                <RenderChip
+                    { ...getTagProps({ index }) }
+                    key={ index }
+                    primaryText={ option.display }
+                    secondaryText={ option.value }
+                    option={ option }
+                    activeOption={ null }
+                    setActiveOption={ () => null }
+                    variant="solid"
+                />
+            )) }
+        />
+    );
+
     return (
         <EmphasizedSegment padded="very" className="console-role-permissions">
             <div className="section-heading">
@@ -314,12 +366,17 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                     }
                 </Heading>
             </div>
-            <CreateConsoleRoleWizardPermissionsForm
-                defaultExpandedIfPermissionsAreSelected
-                isReadOnly={ isReadOnly }
-                initialValues={ permissionFormInitialValues }
-                onPermissionsChange={ setPermissions }
-            />
+            { isSubOrganization
+                ? readOnlyPermissionListSubOrganization()
+                : (
+                    <CreateConsoleRoleWizardPermissionsForm
+                        defaultExpandedIfPermissionsAreSelected
+                        isReadOnly={ isReadOnly }
+                        initialValues={ permissionFormInitialValues }
+                        onPermissionsChange={ setPermissions }
+                    />
+                )
+            }
             {
                 !isReadOnly && (
                     <PrimaryButton
