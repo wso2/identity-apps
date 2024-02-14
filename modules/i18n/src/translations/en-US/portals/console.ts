@@ -4594,16 +4594,17 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         group: {
                             heading: "Group",
-                            hint: "Specifies the attribute that identifies the groups at the Connection.",
+                            hint: "Specifies the attribute that identifies the groups at the connection.",
                             label: "Group Attribute",
                             mappedRolesAbsentMessage: "With your current configuration, <1>Group Attribute</1> is not configured. " +
                                 "You can select an attribute from the dropdown.",
-                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> " +
-                                "will be considered as the default <1> Group Attribute</1> with the current configuration. " +
+                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> which is mapped to the <1>{{ rolesClaim }}</1> attribute " +
+                                "will be considered as the default <1>Group Attribute</1> with the current configuration. " +
                                 "You can select an attribute from the dropdown.",
-                            message: "Please note that <1>{{ attribute }}</1> {{ suffix }} will be considered as the default " +
-                                "<1>Group Attribute</1> as you have not added a custom attribute " +
-                                "mapping.",
+                            messageOIDC: "Please note that OpenID Connect attribute named <1>{{ attribute }}</1> will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute mapping.",
+                            messageSAML: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute mapping.",
                             placeHolder: "Select the attribute",
                             roleMappingDisabledMessage: "<1>Custom Attribute Mapping</1> is disabled in " +
                                 "your system configuration. This might affect certain flows related to " +
