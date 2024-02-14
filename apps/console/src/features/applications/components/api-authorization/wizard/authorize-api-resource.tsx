@@ -38,7 +38,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
 import { useAPIResources } from "../../../../api-resources/api";
 import { APIResourceCategories, APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
@@ -174,6 +174,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
 
                         if (isCurrentAPIResourceAlreadyAdded) {
                             filtered.push({
+                                identifier: apiResource?.identifier,
                                 key: apiResource.id,
                                 text: apiResource.name,
                                 type: apiResource.type,
@@ -425,6 +426,28 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     (option: DropdownItemProps, value: DropdownItemProps) =>
                                                         option.value === value.value
                                                 }
+                                                renderOption={ (props: any, apiResourcesListOption: any) =>
+                                                    (<div { ...props }>
+                                                        <Header.Content>
+                                                            { apiResourcesListOption.text }
+                                                            { apiResourcesListOption.type ==
+                                                            APIResourcesConstants.BUSINESS
+                                                            && (
+                                                                <Header.Subheader className="mt-1">
+                                                                    <code className="inline-code compact transparent">
+                                                                        { apiResourcesListOption?.identifier }
+                                                                    </code>
+                                                                    <Label
+                                                                        pointing="left"
+                                                                        size="mini"
+                                                                        className="client-id-label">
+                                                                        { t("extensions:develop.apiResource.table." +
+                                                                            "identifier.label") }
+                                                                    </Label>
+                                                                </Header.Subheader>
+                                                            ) }
+                                                        </Header.Content>
+                                                    </div>) }
                                                 options={ allAPIResourcesDropdownOptions
                                                     ?.filter((item: DropdownItemProps) =>
                                                         item?.type === APIResourceCategories.TENANT ||
