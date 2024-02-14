@@ -80,7 +80,7 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
                         name={ fieldProps.name }
                         label={ fieldProps.label }
                         inputType={ fieldProps.inputType }
-                        { ...fieldProps }
+                        { ...omit(fieldProps, "type") }
                     />
                 );
             case "boolean":
