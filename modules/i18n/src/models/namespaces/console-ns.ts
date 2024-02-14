@@ -2093,7 +2093,8 @@ export interface ConsoleNS {
                             hint: string;
                             mappedRolesAbsentMessage: string;
                             mappedRolesPresentMessage: string;
-                            message: string;
+                            messageOIDC: string;
+                            messageSAML: string;
                             placeHolder: string;
                             roleMappingDisabledMessage: string;
                             label: string;

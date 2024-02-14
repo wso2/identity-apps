@@ -3804,9 +3804,10 @@ export const console: ConsoleNS = {
                             mappedRolesPresentMessage: "Veuillez noter que <1> {{ mappedRolesClaim }} </1> " +
                                 "volontéêtre considéré comme l'attribut de groupe par défaut <1> </1> avec la configuration actuelle. " +
                                 "Vous pouvez sélectionner un attribut dans la liste déroulante.",
-                            message: "Veuillez noter que <1>{{ attribute }}</1> {{ suffix }} sera considéré comme la valeur par défaut " +
-                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté d'attribut personnalisé " +
-                                "cartographie.",
+                            messageOIDC: "Veuillez noter que l'attribut OpenId Connect nommé <1>{{ attribute }}</1> sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",
+                            messageSAML: "Veuillez noter que <1>{{ attribute }}</1> L'attribut sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",
                             placeHolder: "Sélectionnez l'attribut",
                             roleMappingDisabledMessage: "<1>Mappage d'attributs personnalisés</1>est désactivé dans " +
                                 "votre configuration.Cela pourrait affecter certains flux dans le " +
