@@ -207,7 +207,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                     >
                         Please note that OpenID Connect attribute named <strong>{ groupClaim }</strong> will be
                         considered as the default <strong>Group Attribute</strong> as you have not added
-                        a custom attribute mapping for the connection&apos;s group attribute.
+                        a custom attribute mapping.
                     </Trans>
                 ) : (
                     <Trans
@@ -220,7 +220,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                     >
                         Please note that <strong>{ groupClaim }</strong> attribute will be
                         considered as the default <strong>Group Attribute</strong> as you have not added
-                        a custom attribute mapping for the connection&apos;s group attribute.
+                        a custom attribute mapping.
                     </Trans>
                 ) }
                 data-componentid={ `${ componentId }-group-attribute-message` }
