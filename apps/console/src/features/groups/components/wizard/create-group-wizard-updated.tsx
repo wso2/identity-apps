@@ -108,7 +108,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const { legacyAuthzRuntime } = useAuthorization();
 
@@ -150,7 +150,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        if (isSuperOrganization() && !isRoleReadOnly) {
+        if (!isRoleReadOnly) {
             setWizardSteps(filterSteps([
                 WizardStepsFormTypes.BASIC_DETAILS,
                 WizardStepsFormTypes.ROLE_LIST
@@ -166,7 +166,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         }
 
         if (roleList?.length < 1) {
-            if (isSuperOrganization() || isFirstLevelOrganization() || !legacyAuthzRuntime) {
+            if (isFirstLevelOrganization() || !legacyAuthzRuntime) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         setRoleList(response?.data?.Resources);
@@ -538,7 +538,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         }
     };
 
-    const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization() && !isRoleReadOnly
+    const WIZARD_STEPS: WizardStepInterface[] = !isRoleReadOnly
         ? [ getBasicDetailsWizardStep(), getRoleAssignmentWizardStep() ]
         : [ getBasicDetailsWizardStep() ];
 
