@@ -160,7 +160,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
@@ -1112,15 +1112,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser: boolean =
             [ tenantAdmin, adminUsername ].includes(resolvedUsername) || authenticatedUser.includes(resolvedUsername);
 
-        const areUserRelatedEnablingConditionsSatisfied: boolean =
-            (adminUserType === AdminAccountTypes.INTERNAL && !isPrivilegedUser)
-            || !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser;
-
         return (
             <>
                 {
                     (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
-                    && areUserRelatedEnablingConditionsSatisfied ? (
+                    && !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser ? (
                             <Show
                                 when={ AccessControlConstants.USER_DELETE }
                             >
@@ -1168,7 +1164,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     {
-                                        !allowDeleteOnly && (
+                                        !allowDeleteOnly && !isUserManagedByParentOrg  && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone` }
                                                 actionTitle={ t("console:manage.features.user.editUser." +
