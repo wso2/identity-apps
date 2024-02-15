@@ -165,7 +165,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                                     (
                                                         <Label
                                                             size="mini"
-                                                            className= "info-label m-1"
+                                                            className="info-label m-1"
                                                         >
                                                             { t(APIResourceUtils.resolveApiResourceGroupDisplayName(
                                                                 apiResource?.type)) }
