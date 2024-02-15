@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.36
+
+### Patch Changes
+
+- [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
 ## 2.0.35
 
 ### Patch Changes
