@@ -1154,6 +1154,7 @@
         "isCustomClaimMappingEnabled": true,
         "isCustomClaimMappingMergeEnabled": true,
         "listAllAttributeDialects": true,
+        "enableEmailDomain": false,
         "enableIdentityClaims": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",

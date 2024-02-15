@@ -234,6 +234,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isRequestPathAuthenticationEnabled?: boolean;
     /**
+     * Enable/Disable the email domain feature.
+     */
+    enableEmailDomain?: boolean;
+    /**
      * Flag to check whether to list all the attribute dialects
      */
     listAllAttributeDialects?: boolean;
