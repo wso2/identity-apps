@@ -245,7 +245,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         if ((certificateOptionsForTemplate !== undefined
             && !certificateOptionsForTemplate.JWKS
             && !certificateOptionsForTemplate.PEM)
-            || isIDPOrganizationSSO()) {
+            || isIDPOrganizationSSO() || isIDPIproov()) {
             showCertificate = false;
         }
 
@@ -259,6 +259,19 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
                 return authenticator?.name === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME;
+            }
+        );
+    };
+
+    /**
+     * Checks if the current IDP is iProov.
+     */
+       const isIDPIproov = (): boolean => {
+        return !!editingIDP?.federatedAuthenticators?.authenticators.find(
+            (authenticator: FederatedAuthenticatorListItemInterface) => {
+                console.log(authenticator?.name);
+                console.log(authenticator?.name === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV);
+                return authenticator?.name === "IproovAuthenticator";
             }
         );
     };
@@ -296,7 +309,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
-                            && !isIDPOrganizationSSO()
+                            && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
                                     ariaLabel="idpIssuerName"
@@ -327,7 +340,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
-                            && !isIDPOrganizationSSO()
+                            && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
                                     ariaLabel="alias"

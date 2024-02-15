@@ -67,7 +67,7 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider.templates.iproov.wizardHelp." +
-                                    "preRequisites.rpDescription"
+                                    "preRequisites.appDescription"
                                 }
                             >
                                 Before you begin, create a RP application in <DocumentationLink

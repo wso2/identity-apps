@@ -48,7 +48,7 @@ import FacebookLogo from "../../../themes/default/assets/images/identity-provide
 import GithubIdPIcon from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
 import GoogleLogo from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
 import HyprLogo from "../../../themes/default/assets/images/identity-providers/hypr.svg";
-import IproovLogo from "../../../themes/default/assets/images/identity-providers/hypr.svg";
+import IproovLogo from "../../../themes/default/assets/images/identity-providers/iproov.svg";
 import KerberosLogo from "../../../themes/default/assets/images/identity-providers/kerberos.png";
 import Office365Logo from "../../../themes/default/assets/images/identity-providers/office-365.svg";
 import OrganizationSSOIcon from "../../../themes/default/assets/images/identity-providers/organization-sso.svg";

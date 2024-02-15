@@ -2362,7 +2362,7 @@ export interface ConsoleNS {
                                 heading: string;
                             };
                             preRequisites: {
-                                rpDescription: string;
+                                appDescription: string;
                                 heading: string;
                             };
                         }

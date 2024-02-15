@@ -4322,33 +4322,33 @@ export const console: ConsoleNS = {
                                 }
                             },
                             oauthUsername: {
-                                hint: "OAuth username from iProov application.",
+                                hint: "OAuth username from created identity provider in iProov.",
                                 label: "OAuth Username",
-                                placeholder: "Enter OAuth username from iProov application.",
+                                placeholder: "Enter OAuth username from created identity provider in iProov.",
                                 validations: {
                                     required: "OAuth username is a required field."
                                 }
                             },
                             oauthPassword: {
-                                hint: "OAuth password from iProov application.",
+                                hint: "OAuth password from created identity provider in iProov.",
                                 label: "OAuth Password",
-                                placeholder: "Enter OAuth password from iProov application.",
+                                placeholder: "Enter OAuth password from created identity provider in iProov.",
                                 validations: {
                                     required: "OAuth password is a required field."
                                 }
                             },
                             apiKey: {
-                                hint: "API Key from iProov application",
+                                hint: "API Key from created identity provider in iProov.",
                                 label: "API Key",
-                                placeholder: "Enter API Key from iProov application.",
+                                placeholder: "Enter API Key from created identity provider in iProov.",
                                 validations: {
                                     required: "API Key is a required field."
                                 }
                             },
                             apiSecret: {
-                                hint: "API Secret from iProov application.",
+                                hint: "API Secret from created identity provider in iProov.",
                                 label: "API Secret",
-                                placeholder: "Enter API Secret from iProov application.",
+                                placeholder: "Enter API Secret from created identity provider in iProov.",
                                 validations: {
                                     required: "API Secret is a required field."
                                 }
@@ -5645,7 +5645,7 @@ export const console: ConsoleNS = {
                                 idpDescription: "Provide a unique name for the connection."
                             },
                             preRequisites: {
-                                rpDescription: "Before you begin, create an application in the <1>iProov control center</1>, and obtain the application ID.",
+                                appDescription: "Before you begin, create an identity provider in the <1>iPortal</1>, and obtain the API key, API Secret, OAuth username and OAuth password.",
                                 heading: "Prerequisite"
                             }
                         }
