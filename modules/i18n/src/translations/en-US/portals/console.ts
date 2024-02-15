@@ -12645,7 +12645,10 @@ export const console: ConsoleNS = {
                     general: {
                         description: {
                             label: "Description",
-                            placeholder: "Enter a description"
+                            placeholder: "Enter a description",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "Description cannot contain the pattern ${***}."
+                            }
                         },
                         name: {
                             label: "Name",
@@ -12653,7 +12656,8 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
                                 alreadyExistsErrorMessage: "A user store with this name already exists.",
-                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
+                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters.",
+                                invalidInputErrorMessage: "Description cannot contain the pattern ${***}."
                             }
                         },
                         type: {

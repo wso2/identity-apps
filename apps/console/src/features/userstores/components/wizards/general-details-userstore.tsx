@@ -170,7 +170,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             placeholder={ t("console:manage.features.userstores.forms.general.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             data-testid={ `${ testId }-form-name-input` }
-                            validation={ async (value: FormValue, validation: Validation) => {
+                            validation={ async (value: string, validation: Validation) => {
                                 let userStores: UserStoreListItem[] = null;
 
                                 try {
@@ -207,6 +207,22 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                         })
                                     );
                                 }
+
+                                const regExpInvalidSymbols: RegExp = new RegExp('\\$\\{[^}]*\\}');
+
+                                let isMatch: boolean = false;
+
+                                if (regExpInvalidSymbols.test(value)) {
+                                    isMatch = true;
+                                }
+                                if (isMatch) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:manage.features.userstores.forms.general.name"
+                                        + ".validationErrorMessages.invalidInputErrorMessage")
+                                    );
+                                }
+
                             }
                             }
                         />
@@ -219,7 +235,26 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             placeholder={ t("console:manage.features.userstores.forms.general." +
                                 "description.placeholder") }
                             value={ values?.get("description")?.toString() }
-                            data-testid={ `${ testId }-form-description-textarea` }
+                            data-testid={ `${testId}-form-description-textarea` }
+                            validation={ async (value: string, validation: Validation) => {
+                                validation.isValid = true;
+                                const regExpInvalidSymbols: RegExp = new RegExp('\\$\\{[^}]*\\}');
+
+                                let isMatch: boolean = false;
+
+                                if (regExpInvalidSymbols.test(value)) {
+                                    isMatch = true;
+                                }
+                                if (isMatch) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:manage.features.userstores.forms.general.description"
+                                        + ".validationErrorMessages.invalidInputErrorMessage")
+                                    );
+                                }
+
+                            }
+                            }
                         />
                         {
                             basicProperties?.map(
