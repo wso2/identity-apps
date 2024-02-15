@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { getUserStores, testConnection } from "../../api";
-import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT } from "../../constants";
+import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT, USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants";
 import { PropertyAttribute, TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
 
 /**
@@ -208,18 +208,23 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                     );
                                 }
 
-                                const regExpInvalidSymbols: RegExp = new RegExp('\\$\\{[^}]*\\}');
+                                const regExpInvalidSymbols: RegExp = new RegExp(
+                                    USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
 
                                 let isMatch: boolean = false;
+                                let invalidStringValue: RegExpExecArray = null;
 
                                 if (regExpInvalidSymbols.test(value)) {
                                     isMatch = true;
+                                    invalidStringValue = regExpInvalidSymbols.exec(value)
+
                                 }
                                 if (isMatch) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t("console:manage.features.userstores.forms.general.name"
-                                        + ".validationErrorMessages.invalidInputErrorMessage")
+                                            + ".validationErrorMessages.invalidInputErrorMessage",
+                                            { invalidString: invalidStringValue })
                                     );
                                 }
 
@@ -238,19 +243,26 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             data-testid={ `${testId}-form-description-textarea` }
                             validation={ async (value: string, validation: Validation) => {
                                 validation.isValid = true;
-                                const regExpInvalidSymbols: RegExp = new RegExp('\\$\\{[^}]*\\}');
+
+                                const regExpInvalidSymbols: RegExp = new RegExp(
+                                    USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
 
                                 let isMatch: boolean = false;
+                                let invalidStringValue: RegExpExecArray = null;
 
                                 if (regExpInvalidSymbols.test(value)) {
                                     isMatch = true;
+                                    invalidStringValue = regExpInvalidSymbols.exec(value)
+
                                 }
+
                                 if (isMatch) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:manage.features.userstores.forms.general.description"
-                                        + ".validationErrorMessages.invalidInputErrorMessage")
-                                    );
+                                        t("console:manage.features.userstores.forms.general.description" +
+                                            ".validationErrorMessages.invalidInputErrorMessage",
+                                            { invalidString: invalidStringValue })
+                                    )
                                 }
 
                             }

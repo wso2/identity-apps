@@ -10956,7 +10956,7 @@ export const console: ConsoleNS = {
                             label: "Description",
                             placeholder: "Veuillez saisir une description",
                             validationErrorMessages: {
-                                invalidInputErrorMessage: "La description ne peut pas contenir le modèle ${***}."
+                                invalidInputErrorMessage: "La description ne peut pas contenir le modèle {{invalidString}}."
                             }
                         },
                         name: {
@@ -10964,7 +10964,8 @@ export const console: ConsoleNS = {
                             placeholder: "Veuillez saisir un nom",
                             requiredErrorMessage: "Le nom de l'annuaire est obligatoire",
                             validationErrorMessages: {
-                                invalidInputErrorMessage: "Le nom ne peut pas contenir le modèle ${***}."
+                                invalidInputErrorMessage: "Le nom du magasin d'utilisateurs ne peut pas contenir"
+                                + "le modèle {{invalidString}}."
                             }
                         },
                         type: {

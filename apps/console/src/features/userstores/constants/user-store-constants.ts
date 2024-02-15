@@ -163,6 +163,16 @@ export const USERSTORE_REGEX_PROPERTIES: UserStoreRegexPropertiesInterface = {
     UsernameRegEx: "UsernameJavaScriptRegEx"
 };
 
+interface UserStoreValidationRegexPatternInterface {
+    xssEscapeRegEx: string;
+}
+/**
+ * User store regEx patterns
+ */
+export const USERSTORE_VALIDATION_REGEX_PATTERNS: UserStoreValidationRegexPatternInterface = {
+    xssEscapeRegEx: '\\$\\{[^}]*\\}'
+};
+
 /**
  * Disabled property name.
  */
