@@ -542,7 +542,7 @@ importers:
         specifier: ^2.1.8
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.65
+        specifier: ^2.0.66
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.3
@@ -1078,7 +1078,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.0.65
+        specifier: ^2.0.66
         version: link:../modules/theme
       rimraf:
         specifier: ^3.0.2

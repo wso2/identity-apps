@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.1.26
+
+### Patch Changes
+
+- [#5530](https://github.com/wso2/identity-apps/pull/5530) [`0992b805bc`](https://github.com/wso2/identity-apps/commit/0992b805bcdf7d20c49f1d3374d0de1c62df2f7e) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Add Console Administrator role to the admin group at the server startup
+
+- Updated dependencies [[`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd)]:
+  - @wso2is/theme@2.0.66
+
 ## 2.1.25
 
 ### Patch Changes

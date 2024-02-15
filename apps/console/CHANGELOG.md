@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.12.29
+
+### Patch Changes
+
+- [#5534](https://github.com/wso2/identity-apps/pull/5534) [`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in outbound provisioning connectors in connection settings
+
+* [#5533](https://github.com/wso2/identity-apps/pull/5533) [`ecfc275b9d`](https://github.com/wso2/identity-apps/commit/ecfc275b9d10ed0a83297dbf3e5891cb551c2f9b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with not displaying roles of a group in an organization
+
+* Updated dependencies [[`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd)]:
+  - @wso2is/theme@2.0.66
+
 ## 2.12.28
 
 ### Patch Changes

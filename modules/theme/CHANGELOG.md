@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.66
+
+### Patch Changes
+
+- [#5534](https://github.com/wso2/identity-apps/pull/5534) [`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in outbound provisioning connectors in connection settings
+
 ## 2.0.65
 
 ### Patch Changes
