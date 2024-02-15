@@ -1105,6 +1105,7 @@ export interface ConsoleNS {
                             stopSharingNotification: Notification;
                             getSharedOrganizations: Notification;
                             stopAllSharingNotification: Notification;
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
@@ -2093,7 +2094,8 @@ export interface ConsoleNS {
                             hint: string;
                             mappedRolesAbsentMessage: string;
                             mappedRolesPresentMessage: string;
-                            message: string;
+                            messageOIDC: string;
+                            messageSAML: string;
                             placeHolder: string;
                             roleMappingDisabledMessage: string;
                             label: string;

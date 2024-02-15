@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -275,7 +275,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         let provider: string;
 
         // If the selected provider is Twilio or Vonage, set the provider to the respective provider.
-        // Else, set the provider to the value of the provider input value.
+        // Else, set the provider to "Custom".
         switch (selectedProvider) {
             case SMSProviderConstants.TWILIO_SMS_PROVIDER:
                 provider = SMSProviderConstants.TWILIO;
@@ -286,7 +286,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
                 break;
             default:
-                provider = values.provider;
+                provider = SMSProviderConstants.CUSTOM;
         }
         const contentType: ContentType = values.contentType ?? ContentType.JSON;
         const submittingValues: SMSProviderAPIInterface = {
@@ -415,11 +415,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         } else {
             if (!values?.providerURL) {
                 error.providerURL = t(
-                    "extensions:develop.smsProviders.form.custom.validations.required"
-                );
-            }
-            if (!values?.provider) {
-                error.provider = t(
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }

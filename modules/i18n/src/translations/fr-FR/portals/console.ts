@@ -1301,7 +1301,10 @@ export const console: ConsoleNS = {
                                     description: "Le partage des applications s'est arrêté avec toutes les organisations avec succès",
                                     message: "Le partage d'applications s'est arrêté avec succès!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Passer du partage de l'application avec toutes les organisations à " +
+                                "le partager avec les personnes sélectionnées" +
+                                "réinitialiser les configurations applicatives des organisations déjà partagées"
                         },
                         signOnMethod: {
                             sections: {
@@ -3802,11 +3805,12 @@ export const console: ConsoleNS = {
                             mappedRolesAbsentMessage: "Avec votre configuration actuelle, <1> l'attribut de groupe </1> n'est pas configuré. " +
                                 "Vous pouvez sélectionner un attribut dans la liste déroulante.",
                             mappedRolesPresentMessage: "Veuillez noter que <1> {{ mappedRolesClaim }} </1> " +
-                                "volontéêtre considéré comme l'attribut de groupe par défaut <1> </1> avec la configuration actuelle. " +
+                                "volontéêtre considéré comme l'attribut de groupe par défaut <1>{{ rolesClaim }}</1> avec la configuration actuelle. " +
                                 "Vous pouvez sélectionner un attribut dans la liste déroulante.",
-                            message: "Veuillez noter que <1>{{ attribute }}</1> {{ suffix }} sera considéré comme la valeur par défaut " +
-                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté d'attribut personnalisé " +
-                                "cartographie.",
+                            messageOIDC: "Veuillez noter que l'attribut OpenId Connect nommé <1>{{ attribute }}</1> sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",
+                            messageSAML: "Veuillez noter que <1>{{ attribute }}</1> L'attribut sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",
                             placeHolder: "Sélectionnez l'attribut",
                             roleMappingDisabledMessage: "<1>Mappage d'attributs personnalisés</1>est désactivé dans " +
                                 "votre configuration.Cela pourrait affecter certains flux dans le " +

@@ -1,5 +1,35 @@
 # @wso2is/console
 
+## 2.12.28
+
+### Patch Changes
+
+- [#5528](https://github.com/wso2/identity-apps/pull/5528) [`85623ce201`](https://github.com/wso2/identity-apps/commit/85623ce20126a1a30cefb7c084a9365093805d96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Custom SMS Provider configuration UI
+
+## 2.12.27
+
+### Patch Changes
+
+- [#5526](https://github.com/wso2/identity-apps/pull/5526) [`eae82ac975`](https://github.com/wso2/identity-apps/commit/eae82ac97542a4bd6ac385e38fabf5bd09d5cc57) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Custom SMS Provider configuration
+
+## 2.12.26
+
+### Patch Changes
+
+- [#5517](https://github.com/wso2/identity-apps/pull/5517) [`237e139a42`](https://github.com/wso2/identity-apps/commit/237e139a424ff909f59036dde784e08837c5511b) Thanks [@dewniMW](https://github.com/dewniMW)! - Add identifier when displaying business APIs to uniquely identify them in the dropdown
+
+## 2.12.25
+
+### Patch Changes
+
+- [#5524](https://github.com/wso2/identity-apps/pull/5524) [`d39283c8f0`](https://github.com/wso2/identity-apps/commit/d39283c8f0e684931e6393cba53f606e59b927ce) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add a note explaining the consequences of switching from sharing an app with all orgs to sharing an app with selected orgs
+
+* [#5521](https://github.com/wso2/identity-apps/pull/5521) [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Address text changes in the Connections role mapping UI
+
+* Updated dependencies [[`d39283c8f0`](https://github.com/wso2/identity-apps/commit/d39283c8f0e684931e6393cba53f606e59b927ce), [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced)]:
+  - @wso2is/i18n@2.0.125
+  - @wso2is/common@2.0.44
+
 ## 2.12.24
 
 ### Patch Changes

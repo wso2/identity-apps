@@ -119,6 +119,32 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
     const resolveCustomClaimMappingInfoBox = (): ReactElement => {
         // Custom attribute mapping is not enabled.
         if (!claimMappingOn) {
+            if (isOIDC) {
+                return (
+                    <Message
+                        type="info"
+                        content={
+                            (
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.authenticationProvider." +
+                                            "forms.uriAttributeSettings.group.messageOIDC"
+                                    }
+                                    tOptions={ {
+                                        attribute: ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                    } }
+                                >
+                                    Please note that OpenID Connect attribute named
+                                    <strong>{ ConnectionManagementConstants.OIDC_ROLES_CLAIM }</strong>
+                                    will be considered as the default <strong>Group Attribute</strong>
+                                    as you have not added a custom attribute mapping.
+                                </Trans>
+                            )
+                        }
+                    />
+                );
+            }
+
             return (
                 <Message
                     type="info"
@@ -127,23 +153,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             <Trans
                                 i18nKey={
                                     "console:develop.features.authenticationProvider." +
-                                        "forms.uriAttributeSettings.group.message"
+                                        "forms.uriAttributeSettings.group.messageSAML"
                                 }
                                 tOptions={ {
-                                    attribute: isOIDC
-                                        ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
-                                        : ConnectionManagementConstants.CLAIM_ROLES,
-                                    suffix: isOIDC
-                                        ? "OIDC attribute"
-                                        : "attribute"
+                                    attribute: ConnectionManagementConstants.CLAIM_ROLES
                                 } }
                             >
-                                Please note that <strong>{ isOIDC
-                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
-                                    : ConnectionManagementConstants.CLAIM_ROLES }</strong>
-                                will be considered as the default
-                                <strong> Group Attribute</strong> as you have not added a
-                                custom attribute mapping.
+                                Please note that <strong>{ ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                                attribute will be considered as the default <strong>Group Attribute</strong>
+                                as you have not added a custom attribute mapping.
                             </Trans>
                         )
                     }
@@ -176,13 +194,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                             "forms.uriAttributeSettings.group.mappedRolesPresentMessage"
                                     }
                                     tOptions={ {
-                                        mappedRolesClaim: mappedRolesClaim
+                                        mappedRolesClaim: mappedRolesClaim,
+                                        rolesClaim: ConnectionManagementConstants.CLAIM_ROLES
                                     } }
                                 >
                                     Please note that <strong>{ mappedRolesClaim }</strong>
-                                    will be considered as the default
-                                    <strong> Group Attribute</strong> with the current configuration.
-                                    You can select an attribute from the dropdown.
+                                    which is mapped to the <strong>{
+                                        ConnectionManagementConstants.CLAIM_ROLES }</strong> attribute will
+                                    be considered as the default <strong> Group Attribute</strong> with the
+                                    current configuration. You can select an attribute from the dropdown.
                                 </Trans>
                             )
                         }
@@ -211,6 +231,32 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             );
         }
 
+        if (isOIDC) {
+            return (
+                <Message
+                    type="info"
+                    content={
+                        (
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.authenticationProvider." +
+                                        "forms.uriAttributeSettings.group.messageOIDC"
+                                }
+                                tOptions={ {
+                                    attribute: ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                } }
+                            >
+                                Please note that OpenID Connect attribute named
+                                <strong>{ ConnectionManagementConstants.OIDC_ROLES_CLAIM }</strong>
+                                will be considered as the default <strong>Group Attribute</strong>
+                                as you have not added a custom attribute mapping.
+                            </Trans>
+                        )
+                    }
+                />
+            );
+        }
+
         return (
             <Message
                 type="info"
@@ -219,23 +265,15 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Trans
                             i18nKey={
                                 "console:develop.features.authenticationProvider." +
-                                    "forms.uriAttributeSettings.group.message"
+                                    "forms.uriAttributeSettings.group.messageSAML"
                             }
                             tOptions={ {
-                                attribute: isOIDC
-                                    ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
-                                    : ConnectionManagementConstants.CLAIM_ROLES,
-                                suffix: isOIDC
-                                    ? "OIDC attribute"
-                                    : "attribute"
+                                attribute: ConnectionManagementConstants.CLAIM_ROLES
                             } }
                         >
-                            Please note that <strong>{ isOIDC
-                                ? ConnectionManagementConstants.OIDC_ROLES_CLAIM
-                                : ConnectionManagementConstants.CLAIM_ROLES }</strong>
-                            will be considered as the default
-                            <strong> Group Attribute</strong> as you have not added a
-                            custom attribute mapping.
+                            Please note that <strong>{ ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                            attribute will be considered as the default <strong>Group Attribute</strong>
+                            as you have not added a custom attribute mapping.
                         </Trans>
                     )
                 }
