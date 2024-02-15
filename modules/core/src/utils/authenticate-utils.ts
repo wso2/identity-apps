@@ -55,7 +55,7 @@ export class AuthenticateUtils {
 
     /**
      * Check if the logged in user has atleast one scope.
-     * 
+     *
      * @returns `boolean` True or false.
      */
     public static hasScopes(scope: string[], allowedScopes: string): boolean {
@@ -131,12 +131,17 @@ export class AuthenticateUtils {
     * @returns `AuthenticatedUserInfo` Associated user's information
     */
     public static getSignInState(response: BasicUserInfo, tenantDomain?: string): AuthenticatedUserInfo {
-    
+
+        /**
+         * Here, 'providedUsername' contains the username value from the ID Token,
+         * whereas 'username' includes the 'sub' attribute of the ID Token.
+         */
         return {
             allowedScopes: response?.allowedScopes,
             displayName: response?.displayName,
             display_name: response?.displayName,
             email: response?.email,
+            providedUsername: response?.username,
             scope: response?.allowedScopes,
             tenantDomain: tenantDomain ? tenantDomain : AuthenticateUtils.deriveTenantDomainFromSubject(response?.sub),
             username: response?.sub

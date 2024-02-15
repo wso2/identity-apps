@@ -50,6 +50,7 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { useServerConfigs } from "../../../../server-configurations";
 import { UserManagementConstants } from "../../../../users/constants";
 import { UserListInterface } from "../../../../users/models";
@@ -158,6 +159,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const { t } = useTranslation();
 
     const { data: serverConfigs } = useServerConfigs();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const { consoleRoles } = useConsoleRoles(null, null);
 
@@ -379,8 +381,9 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                     || isPrivilegedUser
                     || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || ((getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser
-                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))));
+                    || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
+                            !isSubOrganization())
+                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName));
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
