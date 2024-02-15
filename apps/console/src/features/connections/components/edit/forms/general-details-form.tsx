@@ -269,7 +269,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const isIDPIproov = (): boolean => {
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
-                
                 return authenticator?.name === AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_NAME;
             }
         );
