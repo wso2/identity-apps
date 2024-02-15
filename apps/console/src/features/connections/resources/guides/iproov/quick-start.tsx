@@ -25,7 +25,7 @@ import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import ApplicationSelectionModal from "../../../../../extensions/components/shared/application-selection-modal";
-import { ConnectionInterface, ConnectionTemplateInterface } 
+import { ConnectionInterface, ConnectionTemplateInterface }
     from "../../../../../features/connections/models/connection";
 
 interface IproovAuthenticatorQuickStartPropsInterface extends IdentifiableComponentInterface {

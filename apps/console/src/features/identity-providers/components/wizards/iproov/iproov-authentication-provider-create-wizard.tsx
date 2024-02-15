@@ -471,5 +471,5 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
  */
 IproovAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,
-    "data-componentid": "iproov-idp",
+    "data-componentid": "iproov-idp"
 };
