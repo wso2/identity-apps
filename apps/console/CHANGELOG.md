@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.27
+
+### Patch Changes
+
+- [#5526](https://github.com/wso2/identity-apps/pull/5526) [`eae82ac975`](https://github.com/wso2/identity-apps/commit/eae82ac97542a4bd6ac385e38fabf5bd09d5cc57) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Custom SMS Provider configuration
+
 ## 2.12.26
 
 ### Patch Changes
