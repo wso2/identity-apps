@@ -22,18 +22,32 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
 import classNames from "classnames";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReactFlowProvider } from "reactflow";
+import { Dispatch } from "redux";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
+import {
+    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
+} from "../../applications/api/application";
+import {
+    ApplicationInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationSequenceType
+} from "../../applications/models/application";
+import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { AppState } from "../../core/store";
+import { OrganizationType } from "../../organizations/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -74,14 +88,21 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
     const { t } = useTranslation();
 
+    const dispatch: Dispatch = useDispatch();
+
     const {
+        applicationMetaData,
         isAdaptiveAuthAvailable,
         isAuthenticationSequenceDefault,
         isVisualEditorEnabled,
         isLegacyEditorEnabled,
         refetchApplication,
+        authenticationSequence,
         preferredAuthenticationFlowBuilderMode,
-        setPreferredAuthenticationFlowBuilderMode
+        setPreferredAuthenticationFlowBuilderMode,
+        isConditionalAuthenticationEnabled,
+        updateAuthenticationSequence,
+        isSystemApplication
     } = useAuthenticationFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
@@ -105,6 +126,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     ];
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
     const [ flowModeToSwitch, setFlowModeToSwitch ] = useState<AuthenticationFlowBuilderModesInterface>(null);
@@ -153,6 +175,76 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number): void => {
         setFlowModeToSwitch(FlowModes[newTabIndex]);
         setShowAuthenticationFlowModeSwitchDisclaimerModal(true);
+    };
+
+    /**
+     * Handles the `onUpdate` callback of the `VisualEditor`.
+     *
+     * @param newSequence - Updated sequence.
+     * @param isRevertFlow - Is triggered from revert flow.
+     */
+    const handleOnUpdate = (
+        newSequence: AuthenticationSequenceInterface,
+        isRevertFlow?: boolean
+    ): void => {
+        let payload: Partial<ApplicationInterface> = {};
+        const sequence: AuthenticationSequenceInterface = {
+            ...cloneDeep(newSequence),
+            type: isRevertFlow
+                ? AuthenticationSequenceType.DEFAULT
+                : AuthenticationSequenceType.USER_DEFINED
+        };
+
+        if (
+            !isAdaptiveAuthAvailable
+            || !isConditionalAuthenticationEnabled
+            || AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)
+        ) {
+            sequence.script = AdaptiveScriptUtils.generateScript(
+                authenticationSequence?.steps?.length + 1).join("\n"
+            );
+        }
+
+        if (orgType === OrganizationType.SUBORGANIZATION) {
+            sequence.script = "";
+        }
+
+        // Update the modified script state in the context.
+        updateAuthenticationSequence({
+            ...newSequence,
+            script: sequence.script
+        });
+
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            payload = {
+                authenticationSequence: sequence,
+                name: applicationMetaData?.name
+            };
+        } else {
+            payload = {
+                authenticationSequence: sequence
+            };
+        }
+
+        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                                ".success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                                ".success.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => refetchApplication());
     };
 
     return (
@@ -210,9 +302,25 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 <AuthenticationFlowVisualEditor
                                     onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
                                     className="visual-editor"
+                                    onUpdate={ (
+                                        sequence: AuthenticationSequenceInterface,
+                                        isRevertFlow?: boolean
+                                    ) => handleOnUpdate(sequence, isRevertFlow) }
                                 />
                             </ReactFlowProvider>
                             { isAdaptiveAuthAvailable && <ScriptBasedFlowSwitch /> }
+                            { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled && (
+                                <div className="visual-editor-update-button-container">
+                                    <PrimaryButton
+                                        variant="contained"
+                                        className="update-button"
+                                        data-componentid={ `${componentId}-update-button` }
+                                        onClick={ () => handleOnUpdate(authenticationSequence) }
+                                    >
+                                        { t("console:loginFlow.visualEditor.actions.update.label") }
+                                    </PrimaryButton>
+                                </div>
+                            ) }
                         </TabPanel>
                     </Box>
                 </div>

@@ -34,7 +34,11 @@
     }
 
     .script-based-flow-switch-accordion-details {
-        border-top: 1px solid var(--oxygen-palette-divider);
+        border: 1px solid var(--oxygen-palette-divider);
         padding-right: 0;
+        background: #f7f7f7;
+        border-radius: 8px;
+        margin-right: 10px;
+        margin-left: 10px;
     }
 }
