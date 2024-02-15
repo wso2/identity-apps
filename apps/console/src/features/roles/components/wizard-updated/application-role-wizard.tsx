@@ -21,7 +21,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Code, ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,
@@ -164,7 +164,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
         const selectedApiResources: AuthorizedAPIListItemInterface[] = subscribedAPIResourcesListData.filter(
             (permission: AuthorizedAPIListItemInterface) =>
-                permission?.id === data.value
+                permission?.id === data?.value
         );
 
         selectedApiResources.map((selectedAPIResource: AuthorizedAPIListItemInterface) => {
@@ -428,14 +428,17 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                                 <Header.Content>
                                                     { apiResourcesListOption.text }
                                                     { apiResourcesListOption.type == APIResourcesConstants.BUSINESS && (
-                                                        <Header.Subheader className="mt-1">
-                                                            <code className="inline-code compact transparent">
+                                                        <Header.Subheader>
+                                                            <Code
+                                                                className="inline-code compact transparent"
+                                                                withBackground={ false }
+                                                            >
                                                                 { apiResourcesListOption?.identifier }
-                                                            </code>
+                                                            </Code>
                                                             <Label
                                                                 pointing="left"
                                                                 size="mini"
-                                                                className = "client-id-label">
+                                                                className="client-id-label">
                                                                 { t("extensions:develop.apiResource.table." +
                                                                 "identifier.label") }
                                                             </Label>
