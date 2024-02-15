@@ -19,7 +19,6 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
-import { OrganizationType } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
@@ -39,7 +38,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ReactFlow, {
     Background,
     BackgroundVariant,
@@ -63,7 +62,6 @@ import {
 } from "../../applications/models/application";
 import { AuthenticatorManagementConstants } from "../../connections";
 import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
-import { AppState } from "../../core";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
@@ -148,9 +146,6 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     const { getLink } = useDocumentation();
 
     const infoAlertRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-
-    const orgType: OrganizationType = useSelector((state: AppState) =>
-        state?.organization?.organizationType);
 
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(0);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
