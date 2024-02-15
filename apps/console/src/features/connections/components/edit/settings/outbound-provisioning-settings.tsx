@@ -35,7 +35,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../core";
+import { AuthenticatorAccordion } from "../../../../core";
 import { RootOnlyComponent } from "../../../../organizations/components";
 import {
     getOutboundProvisioningConnector,
@@ -486,7 +486,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         title={ t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +
                                             "title") }
-                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
                                             t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +

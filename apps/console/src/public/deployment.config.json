@@ -749,7 +749,7 @@
                 }
             },
             "secretsManagement": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "feature": [
                         "console:secretsManagement"
@@ -955,6 +955,24 @@
                     ]
                 }
             },
+            "residentOutboundProvisioning": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "feature": [
+                        "console:residentOutboundProvisioning"
+                    ],
+                    "delete": [],
+                    "create": [],
+                    "read": [
+                        "internal_idp_view",
+                        "internal_application_mgt_view"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update"
+                    ]
+                }
+            },
             "userV1Roles": {
                 "disabledFeatures": [
                 ],
@@ -1096,7 +1114,10 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "hiddenAuthenticators": [],
+        "hiddenAuthenticators": [
+            "BasicAuthRequestPathAuthenticator",
+            "OAuthRequestPathAuthenticator"
+        ],
         "hiddenConnectionTemplates": [
             "hypr-idp",
             "swe-idp"
@@ -1132,7 +1153,11 @@
         "isSAASDeployment": false,
         "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
+        "isCustomClaimMappingEnabled": true,
+        "isCustomClaimMappingMergeEnabled": true,
         "listAllAttributeDialects": true,
+        "enableEmailDomain": false,
+        "enableIdentityClaims": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
@@ -1144,10 +1169,12 @@
             "My Account"
         ],
         "isXacmlConnectorEnabled": false,
+        "administratorRoleDisplayName": "Administrator",
+        "useRoleClaimAsGroupClaim": false,
         "legacyMode": {
             "apiResources": true,
             "applicationListSystemApps": false,
-            "applicationOIDCSubjectIdentifier": false,
+            "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
             "certificates": false,
@@ -1156,7 +1183,8 @@
             "rolesV1": false,
             "roleMapping": false,
             "secretsManagement": false,
-            "saasApplications": false
+            "saasApplications": false,
+            "consoleFeatureScopeCheck": true
         },
         "theme": {
             "name": "wso2is"

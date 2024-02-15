@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { RoleConstants as CommonRoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
@@ -96,6 +97,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const administratorRoleDisplayName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(featureConfig,
@@ -287,7 +290,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
-                hidden: () => isSubOrg
+                hidden: (role: RolesInterface) => isSubOrg ||
+                    (role?.displayName === CommonRoleConstants.ADMIN_ROLE ||
+                        role?.displayName === CommonRoleConstants.ADMIN_GROUP ||
+                        role?.displayName === administratorRoleDisplayName)
                     || !isFeatureEnabled(featureConfig,
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(featureConfig,

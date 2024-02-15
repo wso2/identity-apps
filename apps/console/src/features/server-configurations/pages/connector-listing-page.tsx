@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -74,29 +74,48 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const predefinedCategories: any = useMemo(() => {
-        let originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        const originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        const refinedConnectorCategories: Array<any> = [];
 
-        if (!featureConfig?.organizationDiscovery?.enabled ||
-            !UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery ||
-            !hasRequiredScopes(featureConfig?.organizationDiscovery,
-                featureConfig?.organizationDiscovery?.scopes?.read, allowedScopes)) {
-            originalConnectors = originalConnectors.filter(
-                (category: any) => category.id !== ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID
+        const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
+            && UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery
+            && hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.read,
+                allowedScopes
             );
+
+        const isResidentOutboundProvisioningEnabled: boolean = hasRequiredScopes(
+            featureConfig?.residentOutboundProvisioning,
+            featureConfig?.residentOutboundProvisioning?.scopes?.feature,
+            allowedScopes
+        );
+
+        for (const category of originalConnectors) {
+            if (!isOrganizationDiscoveryEnabled
+                    && category.id === ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID) {
+                continue;
+            }
+
+            if (!isResidentOutboundProvisioningEnabled
+                    && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
+                continue;
+            }
+
+            const filteredConnectors: Array<any> = category.connectors.
+                filter((connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+
+            refinedConnectorCategories.push({ ...category, connectors: filteredConnectors });
         }
 
-        return originalConnectors.map((category: any) => ({
-            ...category,
-            connectors: category.connectors.filter(
-                (connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id))
-        }));
-    }, []);
+        return refinedConnectorCategories;
+    }, [ featureConfig, UIConfig, allowedScopes ]);
 
     const [
         dynamicConnectorCategories,
         setDynamicConnectorCategories
     ] = useState<GovernanceConnectorCategoryInterface[]>([]);
-    const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
+    const [ connectors, setConnectors ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
     const [ isConnectorCategoryLoading, setConnectorCategoryLoading ] = useState<boolean>(true);
 
@@ -110,6 +129,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             return;
         }
 
+        setConnectorCategoryLoading(true);
         getConnectorCategories()
             .then((response: GovernanceConnectorInterface[]) => {
 
@@ -121,7 +141,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         return !isPasswordInputValidationEnabled;
                     }
 
-                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id);
+                    return !serverConfigurationConfig.connectorCategoriesToHide.includes(category.id);
                 }));
 
                 setDynamicConnectorCategories(connectorCategoryArray);
@@ -146,35 +166,79 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         "getConfigurations.genericError.message")
                     }));
                 }
+            })
+            .finally(() => {
+                setConnectorCategoryLoading(false);
             });
     }, []);
 
     useEffect(() => {
-        dynamicConnectorCategories?.forEach((connectorCategory: GovernanceConnectorCategoryInterface) => {
-            !serverConfigurationConfig.predefinedConnectorCategories.includes(connectorCategory.id)
-            && loadCategoryConnectors(connectorCategory.id);
-        });
+        resolveDynamicCategories(dynamicConnectorCategories);
     }, [ dynamicConnectorCategories ]);
 
-    const loadCategoryConnectors = (categoryId: string): void => {
-        setConnectorCategoryLoading(true);
+    /**
+     * This will get the information from dynamic categories and will be combined with the existing categories
+     *
+     * @param categories - Dynamic categories to get information from
+     */
+    const resolveDynamicCategories = async (categories: GovernanceConnectorCategoryInterface[]): Promise<void> => {
+        const dynamicConnectorCategoryArray: GovernanceConnectorCategoryInterface[] = [];
 
-        getConnectorCategory(categoryId)
+        if (categories?.length <= 0) {
+            return;
+        }
+
+        for (const category of categories) {
+            if (!serverConfigurationConfig.predefinedConnectorCategories.includes(category.id)) {
+                const connectorCategory: GovernanceConnectorCategoryInterface | null =
+                    await loadCategoryConnectors(category.id);
+
+                connectorCategory && dynamicConnectorCategoryArray.push(connectorCategory);
+            }
+        }
+
+        setConnectors((connectors: GovernanceConnectorCategoryInterface[]) => [
+            ...connectors,
+            ...dynamicConnectorCategoryArray
+        ]);
+    };
+
+    /**
+     * This will get the information from a given category
+     *
+     * @param categoryId - ID of the category
+     */
+    const loadCategoryConnectors = (categoryId: string): Promise<GovernanceConnectorCategoryInterface | null> => {
+        return getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-
                 const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
                     (connector: GovernanceConnectorInterface) =>
                         !serverConfigurationConfig.connectorsToHide.includes(connector.id));
 
+                // If there are no connectors, skip the rest of the logic.
+                if (!connectorList || connectorList.length < 1) {
+                    return null;
+                }
+
                 connectorList?.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
+                    connector.header = connector.friendlyName;
+                    connector.description = t("console:manage.features.governanceConnectors" +
+                    ".genericDescription", { name: connector.friendlyName.toLowerCase() });
+                    connector.isCustom =  true;
+                    connector.testId = `${ connector.name }-card`;
                 });
 
-                setConnectors((connectors: GovernanceConnectorWithRef[]) => [
-                    ...connectors, ...connectorList as GovernanceConnectorWithRef[]
-                ]);
+                // Group the connectors by category.
+                const connectorCategory: GovernanceConnectorCategoryInterface = {
+                    connectors: connectorList,
+                    title: response.name
+                };
+
                 !selectedConnector && setSelectorConnector(connectorList[ 0 ] as GovernanceConnectorWithRef);
+
+                return connectorCategory;
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.detail) {
@@ -208,9 +272,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         })
                     );
                 }
-            })
-            .finally(() => {
-                setConnectorCategoryLoading(false);
+
+                return null;
             });
     };
 

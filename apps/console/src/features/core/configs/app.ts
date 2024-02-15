@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,7 @@ import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../validation/configs";
 import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
-import { I18nConstants } from "../constants";
+import { I18nConstants, UIConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
 
@@ -263,6 +263,8 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
+                UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
@@ -278,6 +280,8 @@ export class Config {
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
             },
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
+            enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
+            enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
@@ -290,6 +294,8 @@ export class Config {
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,
             isCookieConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCookieConsentBannerEnabled,
+            isCustomClaimMappingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCustomClaimMappingEnabled,
+            isCustomClaimMappingMergeEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCustomClaimMappingMergeEnabled,
             isDefaultDialectEditingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDefaultDialectEditingEnabled,
             isDialectAddingEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isDialectAddingEnabled,
             isFeatureGateEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isFeatureGateEnabled,
@@ -312,7 +318,8 @@ export class Config {
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
-            theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme
+            theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
+            useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim
         };
     }
 }

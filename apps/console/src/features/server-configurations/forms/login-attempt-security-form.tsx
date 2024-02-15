@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -75,6 +75,10 @@ interface LoginAttemptSecurityFormInitialValuesInterface {
      * Lock duration increment ratio.
      */
     accountLockIncrementFactor: string;
+    /**
+     * Notify user when lock time is increased.
+     */
+    notifyUserOnAccountLockIncrement: boolean;
 }
 
 /**
@@ -93,6 +97,10 @@ export interface LoginAttemptSecurityFormErrorValidationsInterface {
      * Lock duration increment ratio field.
      */
     accountLockIncrementFactor: string;
+    /**
+     * Notify user when lock time is increased.
+     */
+    notifyUserOnAccountLockIncrement: boolean;
 }
 
 const allowedConnectorFields: string[] = [
@@ -131,9 +139,11 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<LoginAttemptSecurityFormInitialValuesInterface>(undefined);
+    const [ manageNotificationInternally, setManageNotificationInternally ] = useState<boolean>(undefined);
     const [ maxAttempts, setMaxAttempts ] = useState<string>(undefined);
     const [ lockDuration, setLockDuration ] = useState<string>(undefined);
     const [ lockIncrementRatio, setLockIncrementRatio ] = useState<string>(undefined);
+    const [ notifyUserOnAccountLockIncrement, setNotifyUserOnAccountLockIncrement ] = useState<boolean>(undefined);
     const [ accordionActiveIndex, setAccordionActiveIndex ] = useState<string | number>(undefined);
 
     /**
@@ -167,6 +177,15 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         accountLockIncrementFactor: property.value
                     };
                     setLockIncrementRatio(property.value);
+                } else if (property?.name === ServerConfigurationsConstants.NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT) {
+                    resolvedInitialValues = {
+                        ...resolvedInitialValues,
+                        notifyUserOnAccountLockIncrement: property?.value === "true"
+                    };
+                    setNotifyUserOnAccountLockIncrement(property?.value === "true");
+                } else if (property?.name ===
+                    ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT) {
+                    setManageNotificationInternally(property?.value === "true");
                 }
             }
         });
@@ -190,8 +209,13 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             "account.lock.handler.login.fail.timeout.ratio": values.accountLockIncrementFactor !== undefined
                 ? values.accountLockIncrementFactor
                 : initialConnectorValues?.accountLockIncrementFactor,
-            "account.lock.handler.notification.manageInternally": true,
-            "account.lock.handler.notification.notifyOnLockIncrement": true
+            "account.lock.handler.notification.manageInternally": isConnectorEnabled
+                ? true
+                : manageNotificationInternally,
+            "account.lock.handler.notification.notifyOnLockIncrement":
+                values?.notifyUserOnAccountLockIncrement !== undefined
+                    ? `${values?.notifyUserOnAccountLockIncrement}`
+                    : `${initialConnectorValues?.notifyUserOnAccountLockIncrement}`
         };
 
         return data;
@@ -208,7 +232,8 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
         const errors: LoginAttemptSecurityFormErrorValidationsInterface = {
             accountLockIncrementFactor: undefined,
             accountLockTime: undefined,
-            maxFailedAttempts: undefined
+            maxFailedAttempts: undefined,
+            notifyUserOnAccountLockIncrement: undefined
         };
 
         if (!values.maxFailedAttempts) {
@@ -532,6 +557,25 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 {
                     sampleInfoSection()
                 }
+                <Field.Checkbox
+                    ariaLabel="notifyUserOnAccountLockIncrement"
+                    name="notifyUserOnAccountLockIncrement"
+                    label={ t("extensions:manage.serverConfigurations.accountSecurity." +
+                    "loginAttemptSecurity.form.fields.notifyUserOnAccountLockIncrement.label") }
+                    listen={ (value: boolean) => setNotifyUserOnAccountLockIncrement(value) }
+                    checked={ notifyUserOnAccountLockIncrement }
+                    required={ false }
+                    readOnly={ readOnly }
+                    disabled={ !isConnectorEnabled }
+                    width={ 10 }
+                    data-testid={ `${testId}-notify-user-on-account-lock-time-increase` }
+                />
+                <Hint className={ "mb-5" }>
+                    {
+                        t("extensions:manage.serverConfigurations.accountSecurity." +
+                            "loginAttemptSecurity.form.fields.notifyUserOnAccountLockIncrement.hint")
+                    }
+                </Hint>
                 <Divider hidden/>
                 <Field.Button
                     form={ FORM_ID }

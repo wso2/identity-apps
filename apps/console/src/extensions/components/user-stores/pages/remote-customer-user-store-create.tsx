@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,7 @@ import {
     UserStoreProperty,
     UserstoreType
 } from "../../../../features/userstores/models/user-stores";
-import { attributeConfig, userstoresConfig } from "../../../configs";
+import { userstoresConfig } from "../../../configs";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import { AttributeMappingsComponent, GeneralUserStoreDetails } from "../components";
 import { RemoteUserStoreAccessTypes, RemoteUserStoreConstants, RemoteUserStoreTypes } from "../constants";
@@ -70,6 +70,8 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ triggerBasicDetailsSubmit, setTriggerBasicDetailsSubmit ] = useTrigger();
     const [ triggerAttributeMappingsSubmit, setTriggerAttributeMappingsSubmit ] = useTrigger();
@@ -83,7 +85,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const [ mandatoryAttributes, setMandatoryAttributes ] = useState<Claim[]>(null);
 
     useEffect(() => {
-        getLocalClaims(null, null, null, null, attributeConfig.attributes.excludeIdentityClaims);
+        getLocalClaims(null, null, null, null, !enableIdentityClaims);
     }, []);
 
     useEffect(() => {
@@ -163,7 +165,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             });
 
         });
-        // todo : Need to move this property to either `userStoreDetails.properties.Mandatory` or 
+        // todo : Need to move this property to either `userStoreDetails.properties.Mandatory` or
         // `userStoreDetails.properties.Optional`. This can be done after the necessary backend fix is complete
         userStoreProperties.push(
             {

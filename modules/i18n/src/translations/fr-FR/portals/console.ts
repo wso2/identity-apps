@@ -613,7 +613,10 @@ export const console: ConsoleNS = {
             "email-template": "Modèles de messagerie",
             "sign-up": "S'inscrire",
             "totp": "totp",
-            myaccount: "Mon compte"
+            myaccount: "Mon compte",
+            "password-recovery": "Récupération de mot de passe",
+            "password-reset": "Réinitialisation du mot de passe",
+            "password-reset-success": "Réinitialisation du mot de passe Succès"
         }
     },
     brandingCustomText: {
@@ -634,8 +637,14 @@ export const console: ConsoleNS = {
                 copyright: {
                     hint: "Texte qui apparaît au bas de l'écran de connexion. Vous pouvez utiliser le paramètre `{{currentYear}}` pour afficher automatiquement l'année en cours."
                 },
+                "privacy.policy": {
+                    hint: "Le texte de la politique de confidentialité qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
                 "site.title": {
                     hint: "Le titre du site peut apparaître dans les onglets du navigateur, les résultats des moteurs de recherche, les partages sur les réseaux sociaux, etc. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "terms.of.service": {
+                    hint: "Le texte des conditions d'utilisation qui apparaît au pied de page des écrans de connexion.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 },
                 "login.button": {
                     hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
@@ -657,6 +666,30 @@ export const console: ConsoleNS = {
                 },
                 "sign.up.heading": {
                     hint: "Le titre de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "password.recovery.body": {
+                    hint: "Le texte du corps de la boîte de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.recovery.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principale de la zone de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.recovery.heading": {
+                    hint: "L'en-tête de la boîte de récupération de mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principale de la zone de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.heading": {
+                    hint: "L'en-tête de la boîte de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.action": {
+                    hint: "Le texte qui apparaît sur le lien d'action principal de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.body": {
+                    hint: "Le texte du corps de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
+                },
+                "password.reset.success.heading": {
+                    hint: "L'en-tête de la boîte de réussite de réinitialisation du mot de passe.Si ce n'est pas défini, {{productName}} Les défauts sont utilisés."
                 }
             }
         },
@@ -1268,7 +1301,10 @@ export const console: ConsoleNS = {
                                     description: "Le partage des applications s'est arrêté avec toutes les organisations avec succès",
                                     message: "Le partage d'applications s'est arrêté avec succès!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Passer du partage de l'application avec toutes les organisations à " +
+                                "le partager avec les personnes sélectionnées" +
+                                "réinitialiser les configurations applicatives des organisations déjà partagées"
                         },
                         signOnMethod: {
                             sections: {
@@ -1706,6 +1742,10 @@ export const console: ConsoleNS = {
                             },
                             subject: {
                                 fields: {
+                                    alternateSubjectAttribute: {
+                                        hint: "Cette option permettra d'utiliser un autre attribut comme identifiant de sujet au lieu du <1>userid</1>.",
+                                        label: "Affecter l'identifiant de sujet alternatif"
+                                    },
                                     subjectAttribute: {
                                         hint: "Sélectionnez les attributs partagés que vous souhaitez utiliser " +
                                             "comme identifiant de sujet de l'utilisateur.",
@@ -3577,6 +3617,82 @@ export const console: ConsoleNS = {
                         }
                     }
                 },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "Nouvelles commissions"
+                            },
+                            addIdpWizard: {
+                                heading: "Ajouter des commissions sortantes",
+                                steps: {
+                                    details: "Détails des commissions"
+                                },
+                                subHeading: "Sélectionnez le provisoire pour fournir des utilisateurs."
+                            },
+                            emptyPlaceholder: {
+                                action: "Nouvelles commissions",
+                                subtitles: "Aucun provisionnement sortant configuré.Ajoutez un provisoire pour le voir ici.",
+                                title: "Pas de provisionneurs sortants"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connexion",
+                                        placeholder: "Sélectionner la connexion",
+                                        validations: {
+                                            empty: "Il est obligatoire de sélectionner la connexion."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "Provisioning sortant",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé tout en ajoutant la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de création"
+                                    },
+                                    success: {
+                                        description: "Ajout avec succès la configuration d'approvisionnement sortant.",
+                                        message: "La création réussie"
+                                    },
+                                    error: {
+                                        description: "La configuration de l'approvisionnement sortant existe déjà pour l'application résidente.",
+                                        message: "Erreur de création"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé lors de la suppression de la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de suppression"
+                                    },
+                                    success: {
+                                        description: "Supprimé avec succès la configuration de l'approvisionnement sortant.",
+                                        message: "Suppression réussie"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "Quelque chose a mal tourné tout en obtenant les configurations d'approvisionnement sortant.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "Quelque chose s'est mal passé lors de la mise à jour de la configuration de l'approvisionnement sortant.",
+                                        message: "Erreur de mise à jour"
+                                    },
+                                    success: {
+                                        description: "Mis à jour avec succès la configuration de l'approvisionnement sortant.",
+                                        message: "Mise à jour réussie"
+                                    }
+                                }
+                            },
+                            subHeading: "Configurer les paramètres d'approvisionnement sortant pour l'application résidente."
+                        }
+                    }
+                },
                 templates: {
                     manualSetup: {
                         heading: "Configuration manuelle",
@@ -3680,6 +3796,40 @@ export const console: ConsoleNS = {
                 }
             },
             authenticationProvider: {
+                forms: {
+                    uriAttributeSettings: {
+                        group: {
+                            heading: "Groupe",
+                            hint: "Spécifie l'attribut qui identifie les groupes au niveau de la connexion.",
+                            label: "Attribut de groupe",
+                            mappedRolesAbsentMessage: "Avec votre configuration actuelle, <1> l'attribut de groupe </1> n'est pas configuré. " +
+                                "Vous pouvez sélectionner un attribut dans la liste déroulante.",
+                            mappedRolesPresentMessage: "Veuillez noter que <1> {{ mappedRolesClaim }} </1> " +
+                                "volontéêtre considéré comme l'attribut de groupe par défaut <1>{{ rolesClaim }}</1> avec la configuration actuelle. " +
+                                "Vous pouvez sélectionner un attribut dans la liste déroulante.",
+                            messageOIDC: "Veuillez noter que l'attribut OpenId Connect nommé <1>{{ attribute }}</1> sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",
+                            messageSAML: "Veuillez noter que <1>{{ attribute }}</1> L'attribut sera considéré comme la valeur par défaut " +
+                                "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé.",
+                            placeHolder: "Sélectionnez l'attribut",
+                            roleMappingDisabledMessage: "<1>Mappage d'attributs personnalisés</1>est désactivé dans " +
+                                "votre configuration.Cela pourrait affecter certains flux dans le " +
+                                "application.Procéder avec prudence.",
+                            validation: {
+                                empty: "Veuillez sélectionner un attribut pour les groupes"
+                            }
+                        },
+                        subject: {
+                            heading: "Sujet",
+                            hint: "Spécifie l'attribut qui identifie l'utilisateur auprès du connexion",
+                            label: "Attribut du sujet",
+                            placeHolder: "Sélectionner un attribut",
+                            validation: {
+                                empty: "Veuillez sélectionner un attribut pour le sujet"
+                            }
+                        }
+                    }
+                },
                 templates: {
                     apple: {
                         wizardHelp: {
@@ -3736,7 +3886,7 @@ export const console: ConsoleNS = {
                         addWizard: {
                             title: "Émetteur de jeton de confiance",
                             subtitle: "Enregistrez un émetteur de jeton de confiance pour échanger son jeton contre " +
-                                "un jeton émis par Asgardeo"
+                                "un jeton émis par {{productName}}"
                         },
                         forms: {
                             steps: {
@@ -3771,7 +3921,7 @@ export const console: ConsoleNS = {
                                 optionLabel: "Point de terminaison JWKS",
                                 placeholder: "Entrez l'URL de point de terminaison JWKS",
                                 label: "URL de point de terminaison JWKS",
-                                hint: "Asgardeo utilisera cette URL pour obtenir des clés pour vérifier les réponses " +
+                                hint: "{{productName}} utilisera cette URL pour obtenir des clés pour vérifier les réponses " +
                                     "signées de Votre émetteur de jeton de confiance.",
                                 validation: {
                                     notValid: "Veuillez saisir une URL valide"
@@ -3779,7 +3929,7 @@ export const console: ConsoleNS = {
                             },
                             pem: {
                                 optionLabel: "Utiliser le certificat PEM",
-                                hint: "Asgardeo utilisera ce certificat pour vérifier les réponses signées de "+
+                                hint: "{{productName}} utilisera ce certificat pour vérifier les réponses signées de "+
                                     "Votre émetteur de jeton de confiance.",
                                 uploadCertificateButtonLabel: "Télécharger le fichier de certificat",
                                 dropzoneText: "Faites glisser et déposez un fichier de certificat ici.",
@@ -4075,7 +4225,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Attribut mappé",
-                                externalAttributeColumnHeader: "Attribut IdP externe"
+                                externalAttributeColumnHeader: "Attribut de connexion externe"
                             },
                             heading: "Mappages d'attributs de connexion",
                             subheading: "Ajoutez et mappez les attributs pris en charge à partir du connexion externe.",
@@ -7091,8 +7241,8 @@ export const console: ConsoleNS = {
                                 friendlyName: "Demander le mot de passe",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "Une notification de vérification sera déclenchée pendant la création d'utilisateurs.",
-                                        label: "Activer la vérification de l'e-mail utilisateur"
+                                        hint: "Un email sera envoyé à l'utilisateur pour définir le mot de passe après la création de l'utilisateur.",
+                                        label: "Activer les invitations par e-mail pour la configuration du mot de passe utilisateur"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "Le compte d'utilisateur sera verrouillé pendant la création d'utilisateurs.",
@@ -7529,6 +7679,7 @@ export const console: ConsoleNS = {
                         positiveIntegers: "Le nombre ne doit pas être inférieur à 0."
                     }
                 },
+                genericDescription: "Configurer les paramètres liés au connecteur {{nom}}.",
                 notifications: {
                     getConnector: {
                         error: {
@@ -7734,12 +7885,12 @@ export const console: ConsoleNS = {
                             required: "Le nom d'utilisateur est un champ obligatoire."
                         }
                     },
-                    roles: {
-                        label: "Les rôles",
-                        placeholder: "Sélectionnez des rôles",
-                        hint: "Attribuez des rôles à l'utilisateur invité.",
+                    groups: {
+                        label: "les groupes",
+                        placeholder: "Sélectionnez des groupes",
+                        hint: "Attribuez des groupes à l'utilisateur invité.",
                         validations: {
-                            required: "Les rôles sont un champ obligatoire."
+                            required: "Les groupes sont un champ obligatoire."
                         }
                     },
                     inviteButton: "Inviter"
@@ -9101,6 +9252,7 @@ export const console: ConsoleNS = {
                     emptyPlaceholders: {
                         emptyRoleList: {
                             action: "Nouveau {{type}}",
+                            emptyRoles: "Aucun {{type}} trouvé",
                             subtitles: {
                                 0: "Il n'y a actuellement aucun {{type}} disponible.",
                                 1: "Vous pouvez en ajouter facilement en suivant les",
@@ -9725,7 +9877,7 @@ export const console: ConsoleNS = {
                                 "Fonction de nom d'utilisateur alphanumérique.",
                             emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
                                 "l'identifiant.",
-                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez la vérification par e-mail à partir des <1>paramètres de connexion et d'enregistrement</1>.",
+                            emailVerificationDisabled: "Pour inviter les utilisateurs à définir le mot de passe, activez les invitations par e-mail pour la configuration du mot de passe utilisateur dans les <1>Paramètres de connexion et d'inscription</1>.",
                             inviteOffline: "Inviter hors ligne",
                             inviteViaEmail: "Inviter par e-mail"
                         },
@@ -10415,9 +10567,9 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Avant de continuer",
                         message: "L'option Inviter des utilisateurs est désactivée",
-                        content: "Inviter l'utilisateur à définir le mot de passe doit être activé pour ajouter " +
-                            "plusieurs utilisateurs. Veuillez activer la vérification des e-mails dans les paramètres" +
-                            " de connexion et d'inscription.",
+                        content: "Inviter l'utilisateur à définir le mot de passe doit être activé pour ajouter plusieurs utilisateurs. " +
+                            "Veuillez activer les invitations par courrier électronique pour la configuration du mot de passe utilisateur dans" +
+                            " les paramètres de connexion et d'inscription.",
                         assertionHint: "Veuillez confirmer votre action."
                     }
                 },
@@ -10743,6 +10895,7 @@ export const console: ConsoleNS = {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: "Nouvel utilisateur",
+                            emptyUsers: "Aucun utilisateur trouvé",
                             subTitle: {
                                 0: "Il n'y a actuellement aucun utilisateur disponible.",
                                 1: "Ajoutez facilement un nouvel utilisateur en",

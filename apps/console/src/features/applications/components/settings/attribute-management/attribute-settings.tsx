@@ -149,30 +149,9 @@ export const getLocalDialectURI = (): string => {
     return localDialect;
 };
 
-export const DefaultSubjectAttribute: string = "http://wso2.org/claims/username";
+export const DefaultSubjectAttribute: string = "http://wso2.org/claims/userid";
 
 export const LocalDialectURI: string = "http://wso2.org/claims";
-
-export function isIdentityClaim(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean {
-
-    const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
-
-    if (isClaimInterface(claim)) {
-        return identityRegex.test(claim.claimURI);
-    }
-
-    return identityRegex.test(claim.mappedLocalClaimURI);
-}
-
-function isClaimInterface(claim: ExtendedClaimInterface | ExtendedExternalClaimInterface):
-    claim is ExtendedClaimInterface {
-
-    if ((claim as ExtendedExternalClaimInterface).mappedLocalClaimURI == undefined) {
-        return true;
-    }
-
-    return false;
-}
 
 /**
  * Attribute settings component.
@@ -197,6 +176,9 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const enableIdentityClaims: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
@@ -456,7 +438,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const getClaims = () => {
         setIsClaimLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
+            "exclude-identity-claims": !enableIdentityClaims,
             filter: null,
             limit: null,
             offset: null,

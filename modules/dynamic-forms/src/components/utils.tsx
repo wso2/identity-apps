@@ -17,6 +17,7 @@
  */
 
 import FormHelperText, { FormHelperTextProps } from "@oxygen-ui/react/FormHelperText";
+import omit from "lodash-es/omit";
 import React, { ReactElement } from "react";
 import { FieldMetaState } from "react-final-form";
 import { DynamicField } from "./dynamic-form-field";
@@ -32,7 +33,7 @@ export interface ErrorMessageProps {
 	 */
 	meta: FieldMetaState<any>;
 	/**
-	 * Props to be passed down to the `FormHelperText` component 
+	 * Props to be passed down to the `FormHelperText` component
 	 * from `oxygen-ui-react`.
 	 */
 	formHelperTextProps?: Partial<FormHelperTextProps>;
@@ -67,16 +68,42 @@ export const showErrorOnBlur: ShowErrorFunc = ({
 }: ShowErrorProps) => !!(((submitError && !dirtySinceLastSubmit) || error) && touched);
 
 export const renderFormFields = (fields: Record<string, any>): ReactElement => {
+    return fields?.map((fieldProps) => {
 
-    return fields?.map((fieldProps, index) => (
-        <DynamicField.Input
-            key={ index }
-            name={ fieldProps.name }
-            label={ fieldProps.label }
-            type={ fieldProps.type }
-            { ...fieldProps }
-        />
-    ));
+        const inputLowerCase = fieldProps?.type?.toLowerCase();
+
+        switch (inputLowerCase) {
+            case "string":
+                return (
+                    <DynamicField.Input
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        inputType={ fieldProps.inputType }
+                        { ...omit(fieldProps, "type") }
+                    />
+                );
+            case "boolean":
+                return (
+                    <DynamicField.CheckBox
+                        ariaLabel={ fieldProps.name }
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        { ...omit(fieldProps, "type") }
+                    />
+                );
+            default:
+                return (
+                    <DynamicField.Input
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        inputType={ fieldProps.inputType }
+                        { ...fieldProps }
+                    />
+                );
+        }});
 };
 
 export const resolveFieldInitailValue = (meta: FieldMetaState<any>, name: string, values: Partial<any>): any => {

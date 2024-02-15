@@ -283,7 +283,8 @@ export class GovernanceConnectorUtils {
                         testId: "self-registration-card"
                     },
                     {
-                        description: "Allow users choose passwords in admin-initiated onboarding.",
+                        description: "Allow users to set their own passwords during admin-initiated onboarding " +
+                                    "and configure related settings",
                         header: "Invite User to Set Password",
                         id: ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
@@ -379,6 +380,22 @@ export class GovernanceConnectorUtils {
                 displayOrder: 0,
                 id: "organization-settings",
                 title: "Organization Settings"
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t(
+                            "console:develop.features.applications.resident.provisioning.outbound.subHeading"),
+                        header: I18n.instance.t(
+                            "console:develop.features.applications.resident.provisioning.outbound.heading"),
+                        id: ServerConfigurationsConstants.OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID,
+                        route: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+                        testId: "outbound-provisioning-settings-card"
+                    }
+                ],
+                displayOrder: 0,
+                id: ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID,
+                title: "Provisioning Settings"
             }
         ];
     }

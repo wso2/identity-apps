@@ -194,6 +194,16 @@ export enum SupportedAuthProtocolTypes {
 }
 
 /**
+ * Enum for the supported custom auth protocol types.
+ *
+ * @readonly
+ */
+export enum SupportedCustomAuthProtocolTypes {
+    CAS = "cas",
+    JWT_SSO = "jwt-sso-inbound-auth"
+}
+
+/**
  * Enum for the supported auth protocol names.
  *
  * @readonly
@@ -403,6 +413,7 @@ export interface CustomInboundProtocolPropertyInterface {
  *  Custom protocol meta data interface.
  */
 export interface CustomInboundProtocolMetaDataInterface {
+    configName?: string;
     displayName: string;
     properties: CustomInboundProtocolPropertyInterface[];
 }
@@ -507,6 +518,8 @@ export interface SupportedAuthProtocolTypesInterface {
     [ SupportedAuthProtocolTypes.WS_TRUST ]?: string;
     [ SupportedAuthProtocolTypes.CUSTOM ]?: string;
     [ SupportedAuthProtocolTypes.OAUTH2 ]?: string;
+    [ SupportedCustomAuthProtocolTypes.CAS ]?: string;
+    [ SupportedCustomAuthProtocolTypes.JWT_SSO ]?: string;
 }
 
 export interface SAMLConfigurationInterface {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -193,7 +193,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                         ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
                                             if (serverConfigurationConfig.connectorsToShow.includes(connector.name)
                                                 || serverConfigurationConfig.connectorsToShow.includes(
-                                                    ServerConfigurationsConstants.ALL) && 
+                                                    ServerConfigurationsConstants.ALL) &&
                                                     !serverConfigurationConfig.connectorsToHide.includes(
                                                         connector.id
                                                     ) ) {

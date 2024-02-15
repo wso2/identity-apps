@@ -57,6 +57,15 @@
         Cookie[] cookies = request.getCookies();
 
         // Map to store default supported language codes.
+        Map<String, String> supportedLanguages = new HashMap<>();
+        supportedLanguages.put("en", "US");
+        supportedLanguages.put("fr", "FR");
+        supportedLanguages.put("es", "ES");
+        supportedLanguages.put("pt", "PT");
+        supportedLanguages.put("de", "DE");
+        supportedLanguages.put("zh", "CN");
+        supportedLanguages.put("ja", "JP");        
+        
         List<String> languageSupportedCountries = new ArrayList<>();
         languageSupportedCountries.add("US");
         languageSupportedCountries.add("FR");
@@ -132,9 +141,12 @@
         } else {
             // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
             String countryCode = browserLocale.getCountry();
+            String fallbackCountryCode = supportedLanguages.get(browserLocale.getLanguage());
 
             if (StringUtils.isNotBlank(countryCode) && languageSupportedCountries.contains(countryCode)) {
                 userLocale = new Locale(browserLocale.getLanguage(), countryCode);
+            } else if (StringUtils.isNotBlank(fallbackCountryCode)){
+                userLocale = new Locale(browserLocale.getLanguage(), fallbackCountryCode);
             } else {
                 userLocale = new Locale("en","US");
             }
@@ -395,7 +407,7 @@
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
-    String applicationRequestingPreferences = spAppName;
+    String applicationRequestingPreferences = spAppId;
     String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
 
     try {

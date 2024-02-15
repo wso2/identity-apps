@@ -208,7 +208,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,
@@ -238,6 +237,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
@@ -348,13 +353,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
             return true;
-        },
-        isAuthenticatorAllowed: (name: string): boolean => {
-            return [
-                IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR,
-                IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR,
-                IdentityProviderManagementConstants.X509_AUTHENTICATOR
-            ].includes(name);
         },
         isProvisioningAttributesEnabled(authenticatorId: string): boolean {
             const excludedAuthenticators: Set<string> = new Set([

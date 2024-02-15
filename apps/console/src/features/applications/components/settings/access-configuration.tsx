@@ -72,6 +72,8 @@ import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import CustomProtocolApplicationTemplate from
+    "../../data/application-templates/templates/custom-protocol-application/custom-protocol-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -83,7 +85,8 @@ import {
     SAML2ConfigurationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolMetaTypes,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    SupportedCustomAuthProtocolTypes
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
@@ -593,7 +596,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         });
 
         if (!selectedProtocol) {
-            setSelectedProtocol(supportedProtocols[0]);
+            if (template?.templateId === CustomProtocolApplicationTemplate.id && inboundProtocols.length > 0) {
+                setSelectedProtocol(inboundProtocols[0]);
+            } else {
+                setSelectedProtocol(supportedProtocols[0]);
+            }
         }
 
         if (!supportedProtocolList) {
@@ -652,7 +659,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      */
     const resolveInboundProtocolSettingsForm = (): ReactElement => {
 
-        if (!selectedProtocol) {
+        if (!selectedProtocol || inboundProtocolList.length < 1) {
             return null;
         }
 
@@ -1159,7 +1166,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * @returns Protocol description.
      */
     const resolveProtocolDescription =(): ReactElement => {
-
         // Description for OIDC Protocol tab.
         if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
             return(
@@ -1222,6 +1228,40 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             );
         }
 
+        // Description for CAS Protocol tab.
+        if (selectedProtocol === SupportedCustomAuthProtocolTypes.CAS) {
+            return(
+                <Header as="h6" color="grey" compact>
+                    {
+                        t(
+                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            {
+                                protocol: ApplicationManagementUtils
+                                    .resolveProtocolDisplayName(SupportedCustomAuthProtocolTypes.CAS)
+                            }
+                        )
+                    }
+                </Header>
+            );
+        }
+
+        // Description for CAS Protocol tab.
+        if (selectedProtocol === SupportedCustomAuthProtocolTypes.JWT_SSO) {
+            return(
+                <Header as="h6" color="grey" compact>
+                    {
+                        t(
+                            "console:develop.features.applications.forms.inboundOIDC.description",
+                            {
+                                protocol: ApplicationManagementUtils
+                                    .resolveProtocolDisplayName(SupportedCustomAuthProtocolTypes.JWT_SSO)
+                            }
+                        )
+                    }
+                </Header>
+            );
+        }
+
         // Description for other types.
         return null;
     };
@@ -1231,7 +1271,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      */
     useEffect(() => {
 
-        const protocols: string[] = Object.values(SupportedAuthProtocolMetaTypes);
+        let protocols: string[] = Object.values(SupportedAuthProtocolMetaTypes);
+
+        if (template?.templateId === CustomProtocolApplicationTemplate.id) {
+            protocols = inboundProtocols;
+        }
 
         protocols.map((selected: string) => {
 
@@ -1308,7 +1352,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                 )
                             }
                             {
-                                !template && (
+                                (inboundProtocols?.length < 1) && (
                                     <Grid.Row>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <EmphasizedSegment

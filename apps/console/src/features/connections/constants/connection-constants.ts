@@ -85,9 +85,12 @@ export class ConnectionManagementConstants {
     public static readonly JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
     public static readonly CLAIM_CONFIG_FIELD_MAX_LENGTH: number  = 100;
     public static readonly CLAIM_CONFIG_FIELD_MIN_LENGTH: number  = 1;
-    public static readonly CLAIM_APP_ROLE: string  = "http://wso2.org/claims/groups";
     public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
     public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
+    public static readonly CLAIM_ROLES: string  = "http://wso2.org/claims/roles";
+    public static readonly OIDC_ROLES_CLAIM: string  = "roles";
+    public static readonly LOCAL_DIALECT_GROUP_CLAIM: string  = "http://wso2.org/claims/groups";
+    public static readonly STANDARD_DIALECT_GROUP_CLAIM: string  = "groups";
 
     public static readonly TRUSTED_TOKEN_TEMPLATE_ID: string = "trusted-token-issuer";
     public static readonly EXPERT_MODE_TEMPLATE_ID: string = "expert-mode-idp";
@@ -188,6 +191,7 @@ export class ConnectionManagementConstants {
     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
     public static readonly GOOGLE_PRIVATE_KEY: string = "google_prov_private_key";
+    public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
 
     /**
      * Google Scope mappings.

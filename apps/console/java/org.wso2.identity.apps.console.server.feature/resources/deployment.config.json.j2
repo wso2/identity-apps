@@ -1238,6 +1238,36 @@
                 ]
             },
             {% endif %}
+            {% if console.resident_outbound_provisioning is defined %}
+            "residentOutboundProvisioning": {
+                "enabled": {% if console.resident_outbound_provisioning.enabled is defined %} {{ console.resident_outbound_provisioning.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.resident_outbound_provisioning.scopes is defined %}
+                    {% for operation, scopes in console.resident_outbound_provisioning.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.resident_outbound_provisioning.disabled_features is defined %}
+                    {% for feature in console.resident_outbound_provisioning.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
+            {% endif %}
             {% if console.server is defined %}
             "server": {
                 "disabledFeatures": [
@@ -1668,6 +1698,12 @@
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
+        {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
+        "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},
+        {% endif %}
+        {% if authentication.endpoint.enable_merging_custom_claim_mappings_with_default is defined %}
+        "isCustomClaimMappingMergeEnabled": {{ authentication.endpoint.enable_merging_custom_claim_mappings_with_default }},
+        {% endif %}
         {% if console.ui.is_default_dialect_editing_enabled is defined %}
         "isDefaultDialectEditingEnabled": {{ console.ui.is_default_dialect_editing_enabled }},
         {% endif %}
@@ -1699,6 +1735,12 @@
         {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
+        {% if console.enable_identity_claims is defined %}
+        "enableIdentityClaims": {{ console.enable_identity_claims }},
+        {% endif %}
+        {% if tenant_mgt.enable_email_domain is defined %}
+        "enableEmailDomain": {{ tenant_mgt.enable_email_domain }},
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}
@@ -1733,6 +1775,12 @@
         {% if console.ui.isXacmlConnectorEnabled is defined %}
         "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
         {% endif %}
+        {% if federated.idp.use_idp_role_claim_as_idp_group_claim is defined %}
+        "useRoleClaimAsGroupClaim": {{ federated.idp.use_idp_role_claim_as_idp_group_claim }},
+        {% endif %}
+        {% if console.ui.administrator_role_display_name is defined %}
+        "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
+        {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
             "apiResources": false,
@@ -1747,7 +1795,8 @@
             "rolesV1": true,
             "roleMapping": true,
             "secretsManagement": true,
-            "saasApplications": true
+            "saasApplications": true,
+            "consoleFeatureScopeCheck": true
             {% else %}
             {% if console.ui.legacy_mode.items() is defined %}
             {% for key, value in console.ui.legacy_mode.items() %}

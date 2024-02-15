@@ -26,11 +26,12 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Tooltip } from "@wso2is/react-components";
+import { Popup, Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
 import { PermissionsList } from "./permissions-list";
+import { APIResourceUtils } from "../../../../api-resources/utils/api-resource-utils";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 
 interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {
@@ -148,18 +149,35 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         disablePadding
                     >
                         <ListItemText
-                            primary={ apiResource?.name }
+                            primary={ (
+                                <>
+                                    { apiResource?.name }
+                                    { apiResource?.type
+                                        && (
+                                            <Popup
+                                                inverted
+                                                position="top center"
+                                                key={ `${ apiResource.type }-popup` }
+                                                content={
+                                                    t(APIResourceUtils.resolveApiResourceGroupDescription(
+                                                        apiResource?.type)) }
+                                                trigger={
+                                                    (
+                                                        <Label
+                                                            size="mini"
+                                                            className="info-label m-1"
+                                                        >
+                                                            { t(APIResourceUtils.resolveApiResourceGroupDisplayName(
+                                                                apiResource?.type)) }
+                                                        </Label>
+                                                    )
+                                                }
+                                            />
+                                        ) }
+                                </>
+                            ) }
                             secondary={ apiResource?.identifier }
                         />
-                        { apiResource?.type
-                            && (
-                                <Label
-                                    size="mini"
-                                    className= "info-label"
-                                >
-                                    { apiResource?.type }
-                                </Label>
-                            ) }
                     </ListItem>
                 </AccordionSummary>
                 {

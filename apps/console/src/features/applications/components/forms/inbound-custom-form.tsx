@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,14 +20,15 @@ import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Button, Divider, DropdownProps, Grid } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     CertificateInterface,
@@ -66,9 +67,9 @@ interface InboundCustomFormPropsInterface extends TestableComponentInterface {
 /**
  * Inbound Custom protocol configurations form.
  *
- * @param {InboundCustomFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Inbound Custom protocol configurations form.
  */
 export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormPropsInterface> = (
     props: InboundCustomFormPropsInterface
@@ -86,7 +87,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
@@ -216,12 +217,13 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
 
             if (configs.length > 0) {
                 configs.sort(
-                    (a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                    (a: CustomInboundProtocolPropertyInterface, b: CustomInboundProtocolPropertyInterface) =>
+                        (a.displayOrder > b.displayOrder) ? 1 : -1);
             }
 
-            return configs.map((config) => {
+            return configs.map((config: CustomInboundProtocolPropertyInterface) => {
                 const initialValue: PropertyModelInterface = initialValues.properties.find(
-                    (prop) => prop.key === config.name
+                    (prop: PropertyModelInterface) => prop.key === config.name
                 );
 
                 return createInputComponent(config, initialValue);
@@ -231,13 +233,13 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
 
     /**
      * Create drop down options.
-     * @param options property to create the option.
+     * @param options - property to create the option.
      */
     const createDropDownOption = (options: string[]) => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownProps[] = [];
 
         if (options) {
-            options.map((ele) => {
+            options.map((ele: string) => {
                 allowedOptions.push({ key: options.indexOf(ele), text: ele, value: ele });
             });
         }
@@ -249,7 +251,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: Map<string, string | string[]>): any => {
         const valueProperties: SubmitFormCustomPropertiesInterface[] = [];
@@ -326,7 +328,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
 
     return (
         <Forms
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string, FormValue>) => {
                 onSubmit(updateConfiguration(values));
             } }
         >
@@ -351,7 +353,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                             name="type"
                             default={ CertificateTypeInterface.JWKS }
                             listen={
-                                (values) => {
+                                (values: Map<string, FormValue>) => {
                                     setPEMSelected(values.get("type") === "PEM");
                                 }
                             }
@@ -401,7 +403,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                                 && certificate?.value
                                             }
                                             listen={
-                                                (values) => {
+                                                (values: Map<string, FormValue>) => {
                                                     setPEMValue(
                                                         values.get("certificateValue") as string
                                                     );

@@ -89,6 +89,12 @@ const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().u
  * @returns boolean
  */
 const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimInterface): boolean => {
+    const enableIdentityClaims: boolean = window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims;
+
+    if (enableIdentityClaims) {
+        return false;
+    }
+
     const identityRegex: RegExp = new RegExp("wso2.org/claims/identity");
 
     if (isClaimInterface(claim)) {
@@ -554,7 +560,6 @@ export const applicationConfig: ApplicationConfig = {
         },
         showProvisioningSettings: true
     },
-    excludeIdentityClaims: true,
     excludeSubjectClaim: false,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
@@ -596,7 +601,7 @@ export const applicationConfig: ApplicationConfig = {
             "custom-application": []
         },
         shouldValidateCertificate: true,
-        showBackChannelLogout: false,
+        showBackChannelLogout: true,
         showCertificates: true,
         showClientSecretMessage: false,
         showFrontChannelLogout: false,
@@ -715,6 +720,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        customProtocol: true,
         m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,

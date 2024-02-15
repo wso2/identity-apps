@@ -266,7 +266,10 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.COMMON,
         PreviewScreenType.EMAIL_OTP,
         PreviewScreenType.SMS_OTP,
-        PreviewScreenType.TOTP
+        PreviewScreenType.TOTP,
+        PreviewScreenType.PASSWORD_RECOVERY,
+        PreviewScreenType.PASSWORD_RESET,
+        PreviewScreenType.PASSWORD_RESET_SUCCESS
     ];
 
     const resolvePreviewScreen = (): ReactElement => {

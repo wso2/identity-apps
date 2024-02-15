@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -318,6 +318,12 @@ export const extensions: Extensions = {
                 groupAttributeLabel: "කණ්ඩායම් ගුණාංගය",
                 groupAttributeHint: "Federated Authenticator වෙතින් වන ගුණාංගය යෙදුම් විශේෂිත භූමිකාවන්ට සිතියම්ගත කෙරේ. යෙදුම් ගුණාංගය ආපසු ලබා දීම සඳහා මෙය අර්ථ දැක්විය යුතුය.",
                 groupAttributePlaceholder: "සිතියම්ගත ගුණාංගය ඇතුළත් කරන්න",
+                groupAttributeMessage1: "<1>ගුණාංග පටිත්තෙහි</1> තෝරාගත් ගුණාංගය මෙම සම්බන්ධතාවයේ කණ්ඩායම් හඳුනා ගැනීම සඳහා කණ්ඩායම් ලක්ෂණය භාවිතා කරන බැවින්.",
+                groupAttributeMessage2: "කණ්ඩායම් ගුණාංගයට වෙනස් කිරීම සඳහා කරුණාකර <1>ගුණාංග පටිත්ත</1> වෙත පිවිසෙන්න.",
+                groupAttributeMessageOIDC: "OpenID සම්බන්ධක ගුණාංගය කරුණාකර සටහන් කරන්න <1>{{attribute}}</1> පෙරනිමිය ලෙස සලකනු ලැබේ " +
+                    "<1>කණ්ඩායම් ගුණාංගය</1> ඔබ සම්බන්ධතාවය කාණ්ඩයේ ගුණාංගය සඳහා අභිරුචි ආරෝපණ සිතියම්කරණයක් එකතු කර නොමැති බැවින්.",
+                groupAttributeMessageSAML: "කරුණාකර එය සටහන් කරන්න <1>{{attribute}}</1> උද්ධමනය පෙරනිමිය ලෙස සලකනු ලැබේ " +
+                    "<1>සමූහය ගුණාංගය</1> ඔබ සම්බන්ධතාවය කාණ්ඩයේ ගුණාංගය සඳහා අභිරුචි ආරෝපණ සිතියම්කරණයක් එකතු කර නොමැති බැවින්.",
                 notifications: {
                     fetchConfigs: {
                         error: {
@@ -453,6 +459,14 @@ export const extensions: Extensions = {
             managementAPI: {
                 header: "කළමනාකරණ API",
                 description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API (root)"
+            },
+            consoleFeature: {
+                header: "කොන්සෝල ලක්ෂණ",
+                description: "කොන්සෝලය තුළ සම්පත් කළමනාකරණය කිරීමට අවසර"
+            },
+            businessAPI: {
+                header: "ව්යාපාර API",
+                description: "පරිශීලකයා විසින් නිර්මාණය කරන ලද අභිරුචි API"
             },
             notifications: {
                 deleteAPIResource: {
@@ -2156,7 +2170,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "අන්තර්ගතයේ වර්ගය",
                         placeholder: "JSON",
-                        hint: "SMS යැවීම සඳහා භාවිතා කරන API ඉල්ලීමේ අන්තර්ගත වර්ගය."
+                        hint: "API ඉල්ලීමේ අන්තර්ගත වර්ගය. පිළිගත් අගයන් 'FORM' හෝ 'JSON' වේ"
                     },
                     headers: {
                         label: "ශීර්ෂ",
@@ -2165,8 +2179,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "ගෙවීම",
-                        placeholder: "ගෙවීම ඇතුළත් කරන්න",
-                        hint: "SMS API ඉල්ලීමේ ගෙවීම."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "API ඉල්ලීමේ ගෙවීමේ අච්චුව. උත්පාදනය කරන ලද SMS අන්තර්ගතය නියෝජනය කිරීමට {{body}} භාවිතා කරන්න. ජංගම දුරකථන අංකය නියෝජනය කිරීමට {{mobile}} භාවිතා කරන්න."
                     },
                     key: {
                         label: "SMS සපයන්නාගේ සත්‍යාපන යතුර",
@@ -3741,6 +3755,12 @@ export const extensions: Extensions = {
                                     maxLengthReached:
                                         "උපරිම අසාර්ථක උත්සාහයන් ඉලක්කම් 1 ක් හෝ 2 ක් සහිත අංකයක් විය යුතුය."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "අඛණ්ඩව අසාර්ථක වූ පිවිසුම් උත්සාහයන් හේතුවෙන් ගිණුම් අගුළු කාලය වැඩි වන විට " +
+                                    "පරිශීලකයාට දැනුම් දෙන්න.",
+                                label: "අගුළු කාලය වැඩි වන විට පරිශීලකයාට දැනුම් දෙන්න"
                             }
                         }
                     },

@@ -23,6 +23,7 @@ import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -88,8 +89,13 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const { deploymentConfig } = useDeploymentConfig();
+    const { UIConfig } = useUIConfig();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
+    // External connection resources URL from the UI config.
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
@@ -508,7 +514,10 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         disabled={ isTemplateDisabled }
                                                         disabledHint={ disabledHint }
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                        resourceDescription={ template.description }
+                                                        resourceDescription={
+                                                            template?.description
+                                                                ?.replaceAll("{{productName}}", productName)
+                                                        }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
                                                         resourceDocumentationLink={
                                                             getLink(ConnectionsManagementUtils
@@ -516,7 +525,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
-                                                                .resolveConnectionResourcePath("", template.image)
+                                                                .resolveConnectionResourcePath(
+                                                                    connectionResourcesUrl, template.image)
                                                         }
                                                         tags={ template.tags }
                                                         showActions={ true }

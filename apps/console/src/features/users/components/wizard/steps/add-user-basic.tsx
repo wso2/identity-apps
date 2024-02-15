@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -117,6 +118,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const emailRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
+
+    const { UIConfig } = useUIConfig();
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
@@ -262,7 +265,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 ? values.get("newPassword").toString()
                 : "",
             passwordOption: passwordOption,
-            userName: values.get("username")?.toString()
+            userName: UIConfig?.enableEmailDomain
+                ? values.get("email")?.toString()
+                : values.get("username")?.toString()
         };
     };
 
@@ -330,7 +335,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 <Trans
                     i18nKey="console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
                 >
-                    To invite users to set the password, enable email verification from <Link
+                    To invite users to set the password, enable email invitations for user password setup from <Link
                         onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
                             .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
                             .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
@@ -550,6 +555,298 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         );
     };
 
+    const resolveUsernamePasswordFields = (): ReactElement => {
+        // Email as username enabled.
+        if (UIConfig?.enableEmailDomain) {
+            return (
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <div ref={ emailRef } />
+                        <Field
+                            loading={ isBasicDetailsLoading }
+                            data-testid="user-mgt-add-user-form-email-input"
+                            label={ t("extensions:manage.features.user.addUser.inputLabel" +
+                                ".emailUsername") }
+                            name="email"
+                            placeholder={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs." +
+                            "email.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                    "validations.empty"
+                            ) }
+                            validation={ async (value: string, validation: Validation) => {
+                                setBasicDetailsLoading(true);
+
+                                // Check username validity against userstore regex.
+                                if (value && (
+                                    !SharedUserStoreUtils.validateInputAgainstRegEx(
+                                        value, userStoreRegex))
+                                        || !FormValidation.email(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                                    scrollToInValidField("email");
+                                    setBasicDetailsLoading(false);
+                                }
+
+                                try {
+                                    // Check for the existence of users in the userstore by the username.
+                                    // Some characters disallowed by username
+                                    // -regex cause failure in below request.
+                                    // Therefore, existence of duplicates is
+                                    // -checked only post regex validation success.
+                                    if (value && validation.isValid === true) {
+                                        const usersList: UserListInterface
+                                        = await getUsersList(null, null,
+                                            "userName eq " + value, null,
+                                            userStore);
+
+                                        if (usersList?.totalResults > 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                            scrollToInValidField("email");
+                                        }
+
+                                        setBasicDetailsLoading(false);
+                                    }
+                                } catch (error) {
+                                    // Some non ascii characters are not accepted by DBs
+                                    // with certain charsets.
+                                    // Hence, the API sends a `500` status code.
+                                    // see below issue for more context.
+                                    // https://github.com/wso2/product-is/issues/
+                                    // 10190#issuecomment-719760318
+                                    if (error?.response?.status === 500) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                        scrollToInValidField("email");
+                                    }
+
+                                    setBasicDetailsLoading(false);
+                                }
+                            } }
+                            type="email"
+                            value={ initialValues && initialValues.email }
+                            tabIndex={ 1 }
+                            maxLength={ 60 }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+
+        if (!hiddenFields.includes(HiddenFieldNames.USERNAME)
+            && !isAlphanumericUsernameEnabled()) {
+            return (
+                <Grid.Row>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <div ref={ emailRef } />
+                        <Field
+                            loading={ isBasicDetailsLoading }
+                            data-testid="user-mgt-add-user-form-email-input"
+                            label={ t("extensions:manage.features.user.addUser.inputLabel" +
+                                ".emailUsername") }
+                            name="email"
+                            placeholder={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs." +
+                            "email.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                    "validations.empty"
+                            ) }
+                            validation={ async (value: string, validation: Validation) => {
+                                setBasicDetailsLoading(true);
+
+                                // Check username validity against userstore regex.
+                                if (value && (
+                                    !SharedUserStoreUtils.validateInputAgainstRegEx(
+                                        value, userStoreRegex))
+                                        || !FormValidation.email(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                                    scrollToInValidField("email");
+                                    setBasicDetailsLoading(false);
+                                }
+
+                                try {
+                                    // Check for the existence of users in the userstore by the username.
+                                    // Some characters disallowed by username
+                                    // -regex cause failure in below request.
+                                    // Therefore, existence of duplicates is
+                                    // -checked only post regex validation success.
+                                    if (value && validation.isValid === true) {
+                                        const usersList: UserListInterface
+                                        = await getUsersList(null, null,
+                                            "userName eq " + value, null,
+                                            userStore);
+
+                                        if (usersList?.totalResults > 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                            scrollToInValidField("email");
+                                        }
+
+                                        setBasicDetailsLoading(false);
+                                    }
+                                } catch (error) {
+                                    // Some non ascii characters are not accepted by DBs
+                                    // with certain charsets.
+                                    // Hence, the API sends a `500` status code.
+                                    // see below issue for more context.
+                                    // https://github.com/wso2/product-is/issues/
+                                    // 10190#issuecomment-719760318
+                                    if (error?.response?.status === 500) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                        scrollToInValidField("email");
+                                    }
+
+                                    setBasicDetailsLoading(false);
+                                }
+                            } }
+                            type="email"
+                            value={ initialValues && initialValues.email }
+                            tabIndex={ 1 }
+                            maxLength={ 60 }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            );
+        }
+
+        return (
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <div ref={ emailRef } />
+                    <Field
+                        loading={ isBasicDetailsLoading }
+                        data-testid="user-mgt-add-user-form-username-input"
+                        label={ t("extensions:manage.features.user.addUser.inputLabel" +
+                            ".alphanumericUsername") }
+                        name="username"
+                        placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
+                            ".alphanumericUsernamePlaceholder") }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.email." +
+                            "validations.empty"
+                        ) }
+                        validation={ async (value: string, validation: Validation) => {
+                            // TODO: Fix the validation issues and re-enable the validation.
+                            // Tracker: https://github.com/wso2/product-is/issues/18010
+                            // /// Regular expression to validate having alphanumeric characters.
+                            // const regExpInvalidUsername: RegExp
+                            // = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
+
+                            // // Check username length validations.
+                            // if (value.length < Number(usernameConfig.minLength)
+                            //     || value.length > Number(usernameConfig.maxLength)) {
+                            //     validation.isValid = false;
+                            //     validation.errorMessages.push(
+                            //         USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
+                            // // Check username validity against userstore regex.
+                            // } else if (!regExpInvalidUsername.test(value)) {
+                            //     validation.isValid = false;
+                            //     validation.errorMessages.push(
+                            //         USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
+                            // }
+
+                            try {
+                                setBasicDetailsLoading(true);
+                                // Check for the existence of users in the userstore by the username.
+                                // Some characters disallowed by username
+                                // -regex cause failure in below request.
+                                // Therefore, existence of duplicates is
+                                // -checked only post regex validation success.
+                                if (value && validation.isValid === true) {
+                                    const usersList: UserListInterface
+                                    = await getUsersList(null, null,
+                                        "userName eq " + value, null,
+                                        userStore);
+
+                                    if (usersList?.totalResults > 0) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                        scrollToInValidField("email");
+                                    }
+                                }
+
+                                setBasicDetailsLoading(false);
+                            } catch (error) {
+                                // Some non ascii characters are not accepted by DBs
+                                // with certain charsets.
+                                // Hence, the API sends a `500` status code.
+                                // see below issue for more context.
+                                // https://github.com/wso2/product-is/issues/
+                                // 10190#issuecomment-719760318
+                                if (error?.response?.status === 500) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                    scrollToInValidField("email");
+                                }
+
+                                setBasicDetailsLoading(false);
+                            }
+                        } }
+                        type="text"
+                        value={ initialValues && initialValues.userName }
+                        tabIndex={ 1 }
+                        maxLength={ 60 }
+                    />
+                    { /* <Hint>
+                        { t("extensions:manage.features.user.addUser.validation.usernameHint", {
+                            maxLength: usernameConfig?.maxLength,
+                            minLength: usernameConfig?.minLength
+                        }) }
+                    </Hint> */ }
+                    <Field
+                        data-testid="user-mgt-add-user-form-alphanumeric-email-input"
+                        label={ "Email" }
+                        name="email"
+                        placeholder={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs." +
+                            "email.placeholder"
+                        ) }
+                        required={ isEmailRequired }
+                        requiredErrorMessage={ t(
+                            "console:manage.features.user.forms.addUserForm.inputs.email." +
+                            "validations.empty"
+                        ) }
+                        validation={ async (value: string, validation: Validation) => {
+                            setBasicDetailsLoading(true);
+
+                            // Check username validity against userstore regex.
+                            if (value && (
+                                !SharedUserStoreUtils.validateInputAgainstRegEx(
+                                    value, userStoreRegex))
+                                    || !FormValidation.email(value)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                                scrollToInValidField("email");
+                                setIsValidEmail(false);
+                            } else {
+                                setIsValidEmail(true);
+                            }
+                            setBasicDetailsLoading(false);
+                        } }
+                        type="email"
+                        value={ initialValues && initialValues.email }
+                        tabIndex={ 1 }
+                        maxLength={ 60 }
+                        listen={ handleEmailEmpty }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+        );
+    };
+
     return (
         <Forms
             data-testid="user-mgt-add-user-form"
@@ -604,210 +901,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     )
                 }
                 {
-                    !hiddenFields.includes(HiddenFieldNames.USERNAME)
-                    && (!isAlphanumericUsernameEnabled())
-                        ? (
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <div ref={ emailRef } />
-                                    <Field
-                                        loading={ isBasicDetailsLoading }
-                                        data-testid="user-mgt-add-user-form-email-input"
-                                        label={ t("extensions:manage.features.user.addUser.inputLabel" +
-                                            ".emailUsername") }
-                                        name="email"
-                                        placeholder={ t(
-                                            "console:manage.features.user.forms.addUserForm.inputs." +
-                                        "email.placeholder"
-                                        ) }
-                                        required={ true }
-                                        requiredErrorMessage={ t(
-                                            "console:manage.features.user.forms.addUserForm.inputs.email." +
-                                                "validations.empty"
-                                        ) }
-                                        validation={ async (value: string, validation: Validation) => {
-                                            setBasicDetailsLoading(true);
-
-                                            // Check username validity against userstore regex.
-                                            if (value && (
-                                                !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                                    value, userStoreRegex))
-                                                    || !FormValidation.email(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                                scrollToInValidField("email");
-                                                setBasicDetailsLoading(false);
-                                            }
-
-                                            try {
-                                                // Check for the existence of users in the userstore by the username.
-                                                // Some characters disallowed by username
-                                                // -regex cause failure in below request.
-                                                // Therefore, existence of duplicates is
-                                                // -checked only post regex validation success.
-                                                if (value && validation.isValid === true) {
-                                                    const usersList: UserListInterface
-                                                    = await getUsersList(null, null,
-                                                        "userName eq " + value, null,
-                                                        userStore);
-
-                                                    if (usersList?.totalResults > 0) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                                        scrollToInValidField("email");
-                                                    }
-
-                                                    setBasicDetailsLoading(false);
-                                                }
-                                            } catch (error) {
-                                                // Some non ascii characters are not accepted by DBs
-                                                // with certain charsets.
-                                                // Hence, the API sends a `500` status code.
-                                                // see below issue for more context.
-                                                // https://github.com/wso2/product-is/issues/
-                                                // 10190#issuecomment-719760318
-                                                if (error?.response?.status === 500) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push(
-                                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                                    scrollToInValidField("email");
-                                                }
-
-                                                setBasicDetailsLoading(false);
-                                            }
-                                        } }
-                                        type="email"
-                                        value={ initialValues && initialValues.email }
-                                        tabIndex={ 1 }
-                                        maxLength={ 60 }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        ) : (
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <div ref={ emailRef } />
-                                    <Field
-                                        loading={ isBasicDetailsLoading }
-                                        data-testid="user-mgt-add-user-form-username-input"
-                                        label={ t("extensions:manage.features.user.addUser.inputLabel" +
-                                            ".alphanumericUsername") }
-                                        name="username"
-                                        placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
-                                            ".alphanumericUsernamePlaceholder") }
-                                        required={ true }
-                                        requiredErrorMessage={ t(
-                                            "console:manage.features.user.forms.addUserForm.inputs.email." +
-                                            "validations.empty"
-                                        ) }
-                                        validation={ async (value: string, validation: Validation) => {
-                                            // TODO: Fix the validation issues and re-enable the validation.
-                                            // Tracker: https://github.com/wso2/product-is/issues/18010
-                                            // /// Regular expression to validate having alphanumeric characters.
-                                            // const regExpInvalidUsername: RegExp
-                                            // = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
-
-                                            // // Check username length validations.
-                                            // if (value.length < Number(usernameConfig.minLength)
-                                            //     || value.length > Number(usernameConfig.maxLength)) {
-                                            //     validation.isValid = false;
-                                            //     validation.errorMessages.push(
-                                            //         USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
-                                            // // Check username validity against userstore regex.
-                                            // } else if (!regExpInvalidUsername.test(value)) {
-                                            //     validation.isValid = false;
-                                            //     validation.errorMessages.push(
-                                            //         USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
-                                            // }
-
-                                            try {
-                                                setBasicDetailsLoading(true);
-                                                // Check for the existence of users in the userstore by the username.
-                                                // Some characters disallowed by username
-                                                // -regex cause failure in below request.
-                                                // Therefore, existence of duplicates is
-                                                // -checked only post regex validation success.
-                                                if (value && validation.isValid === true) {
-                                                    const usersList: UserListInterface
-                                                    = await getUsersList(null, null,
-                                                        "userName eq " + value, null,
-                                                        userStore);
-
-                                                    if (usersList?.totalResults > 0) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                                        scrollToInValidField("email");
-                                                    }
-                                                }
-
-                                                setBasicDetailsLoading(false);
-                                            } catch (error) {
-                                                // Some non ascii characters are not accepted by DBs
-                                                // with certain charsets.
-                                                // Hence, the API sends a `500` status code.
-                                                // see below issue for more context.
-                                                // https://github.com/wso2/product-is/issues/
-                                                // 10190#issuecomment-719760318
-                                                if (error?.response?.status === 500) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push(
-                                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                                    scrollToInValidField("email");
-                                                }
-
-                                                setBasicDetailsLoading(false);
-                                            }
-                                        } }
-                                        type="text"
-                                        value={ initialValues && initialValues.userName }
-                                        tabIndex={ 1 }
-                                        maxLength={ 60 }
-                                    />
-                                    { /* <Hint>
-                                        { t("extensions:manage.features.user.addUser.validation.usernameHint", {
-                                            maxLength: usernameConfig?.maxLength,
-                                            minLength: usernameConfig?.minLength
-                                        }) }
-                                    </Hint> */ }
-                                    <Field
-                                        data-testid="user-mgt-add-user-form-alphanumeric-email-input"
-                                        label={ "Email" }
-                                        name="email"
-                                        placeholder={ t(
-                                            "console:manage.features.user.forms.addUserForm.inputs." +
-                                            "email.placeholder"
-                                        ) }
-                                        required={ isEmailRequired }
-                                        requiredErrorMessage={ t(
-                                            "console:manage.features.user.forms.addUserForm.inputs.email." +
-                                            "validations.empty"
-                                        ) }
-                                        validation={ async (value: string, validation: Validation) => {
-                                            setBasicDetailsLoading(true);
-
-                                            // Check username validity against userstore regex.
-                                            if (value && (
-                                                !SharedUserStoreUtils.validateInputAgainstRegEx(
-                                                    value, userStoreRegex))
-                                                    || !FormValidation.email(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                                scrollToInValidField("email");
-                                                setIsValidEmail(false);
-                                            } else {
-                                                setIsValidEmail(true);
-                                            }
-                                            setBasicDetailsLoading(false);
-                                        } }
-                                        type="email"
-                                        value={ initialValues && initialValues.email }
-                                        tabIndex={ 1 }
-                                        maxLength={ 60 }
-                                        listen={ handleEmailEmpty }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        )
+                    resolveUsernamePasswordFields()
                 }
                 {
                     !hiddenFields.includes(HiddenFieldNames.FIRSTNAME) && (

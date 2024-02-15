@@ -304,7 +304,8 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
                     data-testid={ `${ componentId }-empty-search-placeholder-icon` }
-                    action={ onEmptyListPlaceholderActionClicked
+                    action={ APIResourceUtils.isAPIResourceCreateAllowed(featureConfig, allowedScopes) &&
+                        onEmptyListPlaceholderActionClicked
                         ? (
                             <PrimaryButton
                                 onClick={ () => onEmptyListPlaceholderActionClicked() }

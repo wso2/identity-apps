@@ -1,5 +1,47 @@
 # @wso2is/theme
 
+## 2.0.66
+
+### Patch Changes
+
+- [#5534](https://github.com/wso2/identity-apps/pull/5534) [`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in outbound provisioning connectors in connection settings
+
+## 2.0.65
+
+### Patch Changes
+
+- [#5512](https://github.com/wso2/identity-apps/pull/5512) [`e2e8dda0f2`](https://github.com/wso2/identity-apps/commit/e2e8dda0f2ffb9633477ee69aad6defa1047efbd) Thanks [@savindi7](https://github.com/savindi7)! - Update passkey icon.
+
+## 2.0.64
+
+### Patch Changes
+
+- [#5485](https://github.com/wso2/identity-apps/pull/5485) [`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81) Thanks [@savindi7](https://github.com/savindi7)! - Update Connection icons.
+
+## 2.0.63
+
+### Patch Changes
+
+- [#5488](https://github.com/wso2/identity-apps/pull/5488) [`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix overflow issue in workflow approvals
+
+## 2.0.62
+
+### Patch Changes
+
+- [#5454](https://github.com/wso2/identity-apps/pull/5454) [`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add support to conditionally enable downtime banner
+
+## 2.0.61
+
+### Patch Changes
+
+- [#5423](https://github.com/wso2/identity-apps/pull/5423) [`8549c61efd`](https://github.com/wso2/identity-apps/commit/8549c61efd7c90b808c7927f30fbdfa02e7be23a) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] add text customization to the password-reset-success interface
+
+## 2.0.60
+
+### Patch Changes
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
 ## 2.0.59
 
 ### Patch Changes

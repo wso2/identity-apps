@@ -18,6 +18,7 @@
     String TENANT_DOMAIN_SHORT = "t";
     String USER_TENANT_DOMAIN_SHORT = "ut";
     String SERVICE_PROVIDER_NAME_SHORT = "sp";
+    String SERVICE_PROVIDER_ID_SHORT = "spId";
 
     String identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
     String samlssoURL = "../samlsso";
@@ -33,6 +34,8 @@
     String tenantForTheming;
     String userTenant;
     String spAppName;
+    String spAppId;
+
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         tenantDomain = IdentityTenantUtil.resolveTenantDomain();
         tenantForTheming = tenantDomain;
@@ -41,6 +44,11 @@
         spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
         if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
             spAppName = (String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
+        }
+
+        spAppId = request.getParameter(SERVICE_PROVIDER_ID_SHORT);
+        if (StringUtils.isBlank(spAppId) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT))) {
+            spAppId = (String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT);
         }
 
         String tenantDomainFromURL = request.getParameter(TENANT_DOMAIN_SHORT);
@@ -93,6 +101,11 @@
         spAppName = request.getParameter(SERVICE_PROVIDER_NAME_SHORT);
         if (StringUtils.isBlank(spAppName) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT))) {
             spAppName = (String) request.getAttribute(SERVICE_PROVIDER_NAME_SHORT);
+        }
+
+        spAppId = request.getParameter(SERVICE_PROVIDER_ID_SHORT);
+        if (StringUtils.isBlank(spAppId) && StringUtils.isNotBlank((String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT))) {
+            spAppId = (String) request.getAttribute(SERVICE_PROVIDER_ID_SHORT);
         }
 
         if (StringUtils.isBlank(tenantDomain)) {

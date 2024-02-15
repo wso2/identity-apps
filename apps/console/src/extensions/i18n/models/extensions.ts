@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -243,6 +243,10 @@ export interface Extensions {
                 groupAttributeLabel: string;
                 groupAttributeHint: string;
                 groupAttributePlaceholder: string;
+                groupAttributeMessage1: string;
+                groupAttributeMessage2: string;
+                groupAttributeMessageOIDC: string;
+                groupAttributeMessageSAML: string;
                 notifications: {
                     fetchConfigs: Notification;
                 };
@@ -310,6 +314,10 @@ export interface Extensions {
                 title: string;
             };
             addApiResourceButton: string;
+            businessAPI: {
+                header: string;
+                description: string;
+            };
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: string;
@@ -324,10 +332,14 @@ export interface Extensions {
                     message: string;
                 };
             };
-            managementAPI: {
+            consoleFeature: {
                 header: string;
                 description: string;
             }
+            managementAPI: {
+                header: string;
+                description: string;
+            };
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -3170,6 +3182,7 @@ export interface Extensions {
                             accountLockTime: FormAttributes;
                             enable: FormAttributes;
                             maxFailedAttempts: FormAttributes;
+                            notifyUserOnAccountLockIncrement: FormAttributes;
                         };
                     };
                     info: string;

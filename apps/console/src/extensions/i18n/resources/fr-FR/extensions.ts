@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -327,6 +327,12 @@ export const extensions: Extensions = {
                 groupAttributeHint: "L'attribut de l'authentificateur fédéré sera mappé aux rôles spécifiques à l'application. " +
                     "Cela doit être défini pour que l'attribut d'application soit renvoyé.",
                 groupAttributePlaceholder: "Saisir l'attribut mappé",
+                groupAttributeMessage1: "Veuillez noter que l'attribut sélectionné dans l'onglet <1>Attributs</1> car l'attribut de groupe est utilisé pour identifier les groupes à la connexion.",
+                groupAttributeMessage2: "Pour des modifications de l'attribut de groupe, veuillez visiter l'onglet <1>Attributs</1>.",
+                groupAttributeMessageOIDC: "Veuillez noter cet attribut OpenID Connect <1>{{attribute}}</1> sera considéré comme la valeur par défaut " +
+                    "<1>Attribut de groupe</1> Comme vous n'avez pas ajouté de mappage d'attribut personnalisé pour l'attribut de groupe de la connexion.",
+                groupAttributeMessageSAML: "Veuillez noter que <1>{{attribute}}</1> L'attribut sera considéré comme la valeur par défaut " +
+                    "<1>Attribut de groupe</1> asVous n'avez pas ajouté de mappage d'attribut personnalisé pour l'attribut de groupe de la connexion.",
                 notifications: {
                     fetchConfigs: {
                         error: {
@@ -463,6 +469,14 @@ export const extensions: Extensions = {
             managementAPI: {
                 header: "API de gestion",
                 description: "API pour gérer les ressources de votre organisation (racine)"
+            },
+            consoleFeature: {
+                header: "Caractéristiques de la console",
+                description: "Les autorisations gèrent les ressources dans la console"
+            },
+            businessAPI: {
+                header: "API d'affaires",
+                description: "API personnalisés à créer par l'utilisateur"
             },
             notifications: {
                 deleteAPIResource: {
@@ -2218,7 +2232,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "Type de contenu",
                         placeholder: "JSON",
-                        hint: "Le type de contenu de la requête API utilisée pour l'envoi du SMS."
+                        hint: "Le type de contenu de la requête API. Les valeurs acceptées sont 'FORM' ou 'JSON'"
                     },
                     headers: {
                         label: "En-têtes",
@@ -2227,8 +2241,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "Charge utile",
-                        placeholder: "Entrez la charge utile",
-                        hint: "Charge utile de la requête API SMS."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "Le modèle de charge utile de la requête API. Utilisez {{body}} pour représenter le corps du SMS généré. Utilisez {{mobile}} pour représenter le numéro de mobile."
                     },
                     key: {
                         label: "Clé d'authentification du fournisseur SMS",
@@ -3911,6 +3925,12 @@ export const extensions: Extensions = {
                                         "Le nombre maximal de tentatives infructueuses doit être un " +
                                         "nombre à 1 ou 2 chiffres."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "Informer l'utilisateur lorsque la durée de verrouillage du compte est " +
+                                    "augmentée en raison des tentatives de connexion en échec continu.",
+                                label: "Informer l'utilisateur lorsque le temps de verrouillage est augmenté"
                             }
                         }
                     },

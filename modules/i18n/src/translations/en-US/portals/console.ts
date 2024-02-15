@@ -615,7 +615,10 @@ export const console: ConsoleNS = {
             "email-template": "Email Templates",
             "sign-up": "Sign Up",
             "totp": "TOTP",
-            myaccount: "My Account"
+            myaccount: "My Account",
+            "password-recovery": "Password Recovery",
+            "password-reset": "Password Reset",
+            "password-reset-success": "Password Reset Success"
         }
     },
     brandingCustomText: {
@@ -636,8 +639,14 @@ export const console: ConsoleNS = {
                 copyright: {
                     hint: "Text that appears at the footer of the login screens. You can use `{{currentYear}}` placeholder to automatically display the current year."
                 },
+                "privacy.policy": {
+                    hint: "The privacy policy text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
+                },
                 "site.title": {
                     hint: "The site title may appear in browser tabs, search engine results, social shares, etc. If not set, {{productName}} defaults are used."
+                },
+                "terms.of.service": {
+                    hint: "The terms of service text that appears at the footer of the login screens. If not set, {{productName}} defaults are used."
                 },
                 "login.button": {
                     hint: "The text that appears on the main action button of the login box. If not set, {{productName}} defaults are used."
@@ -659,6 +668,30 @@ export const console: ConsoleNS = {
                 },
                 "sign.up.heading": {
                     hint: "The heading of the sign up box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.body": {
+                    hint: "The body text of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.button": {
+                    hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.recovery.heading": {
+                    hint: "The heading of the password recovery box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.button": {
+                    hint: "The text that appears on the main action button of the password reset box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.heading": {
+                    hint: "The heading of the password reset box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.action": {
+                    hint: "The text that appears on the main action link of the password reset success box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.body": {
+                    hint: "The body text of the password reset success box. If not set, {{productName}} defaults are used."
+                },
+                "password.reset.success.heading": {
+                    hint: "The heading of the password reset success box. If not set, {{productName}} defaults are used."
                 }
             }
         },
@@ -1269,7 +1302,10 @@ export const console: ConsoleNS = {
                                     description: "Application sharing stopped with all the organizations successfully",
                                     message: "Application sharing stopped successfully!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
+                                "sharing with selected organizations will " +
+                                "reset the application configurations in all organizations."
                         },
                         signOnMethod: {
                             sections: {
@@ -1681,6 +1717,10 @@ export const console: ConsoleNS = {
                             },
                             subject: {
                                 fields:{
+                                    alternateSubjectAttribute: {
+                                        hint: "This option will allow to use an alternate attribute as the subject identifier instead of the <1>userid</1>.",
+                                        label: "Assign alternate subject identifier"
+                                    },
                                     subjectAttribute: {
                                         hint: "Select which of the shared attributes you want to use as the" +
                                             " subject identifier of the user",
@@ -1976,6 +2016,7 @@ export const console: ConsoleNS = {
                             },
                             generic: {
                                 label: "{{label}}",
+                                placeholder: "Enter {{name}}",
                                 validations: {
                                     empty: "Select the {{name}}"
                                 }
@@ -3600,6 +3641,82 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: "New Provisioner"
+                            },
+                            addIdpWizard: {
+                                heading: "Add Outbound Provisioner",
+                                steps: {
+                                    details: "Provisioner Details"
+                                },
+                                subHeading: "Select the provisioner to provision users."
+                            },
+                            emptyPlaceholder: {
+                                action: "New Provisioner",
+                                subtitles: "No outbound provisioners configured. Add a provisioner to view it here.",
+                                title: "No outbound provisioners"
+                            },
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: "Connection",
+                                        placeholder: "Select connection",
+                                        validations: {
+                                            empty: "It is mandatory to select connection."
+                                        }
+                                    }
+                                }
+                            },
+                            heading: "Outbound Provisioning Configuration",
+                            notifications: {
+                                create: {
+                                    genericError: {
+                                        description: "Something went wrong while adding the outbound provisioning configuration.",
+                                        message: "Creation error"
+                                    },
+                                    success: {
+                                        description: "Successfully added the outbound provisioning configuration.",
+                                        message: "Creation successful"
+                                    },
+                                    error: {
+                                        description: "Outbound provisioning configuration already exists for the resident application.",
+                                        message: "Creation error"
+                                    }
+                                },
+                                delete: {
+                                    genericError: {
+                                        description: "Something went wrong while deleting the outbound provisioning configuration.",
+                                        message: "Deletion error"
+                                    },
+                                    success: {
+                                        description: "Successfully removed the outbound provisioning configuration.",
+                                        message: "Deletion successful"
+                                    }
+                                },
+                                fetch: {
+                                    genericError: {
+                                        description: "Something went wrong while getting the outbound provisioning configurations.",
+                                        message: "Something went wrong"
+                                    }
+                                },
+                                update: {
+                                    genericError: {
+                                        description: "Something went wrong while updating the outbound provisioning configuration.",
+                                        message: "Update error"
+                                    },
+                                    success: {
+                                        description: "Successfully updated the outbound provisioning configuration.",
+                                        message: "Update successful"
+                                    }
+                                }
+                            },
+                            subHeading: "Configure outbound provisioning settings for the resident application."
+                        }
+                    }
                 }
             },
             authenticationProvider: {
@@ -3891,6 +4008,7 @@ export const console: ConsoleNS = {
                             }
                         },
                         smsOTP: {
+                            hint: "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly.",
                             expiryTime: {
                                 hint: "Please pick a value between <1>1 minute</1> & <3> 1440 minutes (1 day)</3>.",
                                 label: "SMS OTP expiry time",
@@ -4477,20 +4595,32 @@ export const console: ConsoleNS = {
                         valueName: "Identity Provider Role"
                     },
                     uriAttributeSettings: {
-                        role: {
-                            heading: "Role",
-                            hint: "Specifies the attribute that identifies the roles at the Identity Provider.",
-                            label: "Role Attribute",
-                            placeHolder: "Default Role",
+                        group: {
+                            heading: "Group",
+                            hint: "Specifies the attribute that identifies the groups at the connection.",
+                            label: "Group Attribute",
+                            mappedRolesAbsentMessage: "With your current configuration, <1>Group Attribute</1> is not configured. " +
+                                "You can select an attribute from the dropdown.",
+                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> which is mapped to the <1>{{ rolesClaim }}</1> attribute " +
+                                "will be considered as the default <1>Group Attribute</1> with the current configuration. " +
+                                "You can select an attribute from the dropdown.",
+                            messageOIDC: "Please note that OpenID Connect attribute named <1>{{ attribute }}</1> will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute mapping.",
+                            messageSAML: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute mapping.",
+                            placeHolder: "Select the attribute",
+                            roleMappingDisabledMessage: "<1>Custom Attribute Mapping</1> is disabled in " +
+                                "your system configuration. This might affect certain flows related to " +
+                                "the connection. Proceed with caution.",
                             validation: {
-                                empty: "Please select an attribute for role"
+                                empty: "Please select an attribute for groups"
                             }
                         },
                         subject: {
                             heading: "Subject",
-                            hint: "The attribute that identifies the user at the enterprise identity provider. " +
+                            hint: "The attribute that identifies the user at the enterprise connection. " +
                                 "When attributes are configured based on the authentication response of " +
-                                "this IdP connection, you can use one of them as the subject. " +
+                                "this connection, you can use one of them as the subject. " +
                                 "Otherwise, the default <1>saml2:Subject</1> in the SAML response is used " +
                                 "as the subject attribute.",
                             label: "Subject Attribute",
@@ -5217,8 +5347,7 @@ export const console: ConsoleNS = {
                     trustedTokenIssuer: {
                         addWizard: {
                             title: "Trusted token issuer",
-                            subtitle: "Register a trusted token issuer to exchange its token for an Asgardeo issued " +
-                                "token"
+                            subtitle: "Register a trusted token issuer to exchange its token for a token issued by {{productName}}"
                         },
                         forms: {
                             steps: {
@@ -5253,7 +5382,7 @@ export const console: ConsoleNS = {
                                 optionLabel: "JWKS endpoint",
                                 placeholder: "Enter JWKS endpoint URL",
                                 label: "JWKS endpoint URL",
-                                hint: "Asgardeo will use this URL to obtain keys to verify the signed responses from " +
+                                hint: "{{productName}} will use this URL to obtain keys to verify the signed responses from " +
                                     "your trusted token issuer.",
                                 validation: {
                                     notValid: "Please enter a valid URL"
@@ -5261,7 +5390,7 @@ export const console: ConsoleNS = {
                             },
                             pem: {
                                 optionLabel: "Use PEM certificate",
-                                hint: "Asgardeo will use this certificate to verify the signed responses from " +
+                                hint: "{{productName}} will use this certificate to verify the signed responses from " +
                                     "your trusted token issuer.",
                                 uploadCertificateButtonLabel: "Upload certificate file",
                                 dropzoneText: "Drag and drop a certificate file here.",
@@ -5728,7 +5857,7 @@ export const console: ConsoleNS = {
                             },
                             attributeMapTable: {
                                 mappedAttributeColumnHeader: "Mapped Attribute",
-                                externalAttributeColumnHeader: "External IdP Attribute"
+                                externalAttributeColumnHeader: "External Connection Attribute"
                             },
                             heading: "Connection Attribute Mappings",
                             subheading: "Add and map the supported attributes from external connection.",
@@ -8708,8 +8837,8 @@ export const console: ConsoleNS = {
                                 friendlyName: "Ask Password",
                                 properties: {
                                     emailVerificationEnable: {
-                                        hint: "A verification notification will be triggered during user creation.",
-                                        label: "Enable user email verification"
+                                        hint: "An email will be sent to the user to set the password after user creation.",
+                                        label: "Enable email invitations for user password setup"
                                     },
                                     emailVerificationLockOnCreation: {
                                         hint: "The user account will be locked during user creation.",
@@ -9146,6 +9275,7 @@ export const console: ConsoleNS = {
                         positiveIntegers: "The number should not be less than 0."
                     }
                 },
+                genericDescription: "Configure settings related to {{ name }} connector.",
                 notifications: {
                     getConnector: {
                         error: {
@@ -9469,23 +9599,23 @@ export const console: ConsoleNS = {
             },
             parentOrgInvitations: {
                 addUserWizard: {
-                    heading: "Invite Parent User",
+                    heading: "Invite Parent Users",
                     description: "Invite users from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
                     username: {
-                        label: "Username",
-                        placeholder: "Enter the username",
+                        label: "Usernames",
+                        placeholder: "Enter the usernames",
                         hint: "Add the username of a parent user and press enter. Repeat to include multiple users.",
                         validations: {
-                            required: "Username is a required field."
+                            required: "At least one user should be selected."
                         }
                     },
-                    roles: {
-                        label: "Roles",
-                        placeholder: "Select roles",
-                        hint: "Assign roles for the user that is being invited.",
+                    groups: {
+                        label: "Groups",
+                        placeholder: "Select groups",
+                        hint: "Assign groups for the user that is being invited.",
                         validations: {
-                            required: "Roles is a required field."
+                            required: "Groups is a required field."
                         }
                     },
                     inviteButton: "Invite"
@@ -10856,6 +10986,7 @@ export const console: ConsoleNS = {
                     emptyPlaceholders: {
                         emptyRoleList: {
                             action: "New {{type}}",
+                            emptyRoles: "No {{type}} found",
                             subtitles: {
                                 0: "There are currently no {{type}} available.",
                                 1: "You can add a new {{type}} easily by following the",
@@ -11458,7 +11589,7 @@ export const console: ConsoleNS = {
                             alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                            emailVerificationDisabled: "To invite users to set the password, enable email verification from <1>Login & Registration settings</1>.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
                             inviteOffline: "Invite offline",
                             inviteViaEmail: "Invite via email"
                         },
@@ -12109,7 +12240,7 @@ export const console: ConsoleNS = {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
                         content: "Invite User to Set Password should be enabled to add multiple users. " +
-                            "Please enable email verification from Login & Registration settings.",
+                            "Please enable email invitations for user password setup from Login & Registration settings.",
                         assertionHint: "Please confirm your action."
                     }
                 },
@@ -12433,6 +12564,7 @@ export const console: ConsoleNS = {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: "New User",
+                            emptyUsers: "No users found",
                             subTitle: {
                                 0: "There are currently no users available.",
                                 1: "You can add a new user easily by following the",

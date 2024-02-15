@@ -64,7 +64,9 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
             [ AuthenticatorManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
-            "recovery option."
+                "recovery option.",
+            [ AuthenticatorManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
+                "client certificates."
         }, authenticatorId);
     }
 

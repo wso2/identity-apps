@@ -138,6 +138,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
     const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
@@ -702,9 +703,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     }
                     <Popup
                         disabled={ !isDescTruncated }
-                        content={ connector?.description }
+                        content={ connector?.description?.replaceAll("{{productName}}", productName) }
                         trigger={ (
-                            <span>{ connector?.description }</span>
+                            <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span>
                         ) }
                     />
                 </div>
@@ -718,9 +719,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         ? (
                             <Popup
                                 disabled={ !isDescTruncated }
-                                content={ connector?.description }
+                                content={ connector?.description?.replaceAll("{{productName}}", productName) }
                                 trigger={ (
-                                    <span>{ connector?.description }</span>
+                                    <span>{ connector?.description?.replaceAll("{{productName}}", productName) }</span>
                                 ) }
                             />
                         )

@@ -309,7 +309,7 @@ export class RouteUtils {
             order: 6
         };
 
-        const pathsToCheck: string[] = [
+        const loginAndRegPathsToCheck: string[] = [
             `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
             `${AppConstants.getAdminViewBasePath()}/connector/`,
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
@@ -317,7 +317,9 @@ export class RouteUtils {
             AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
             AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
             AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
-            AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS")
+            AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
+            AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+            AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
@@ -428,7 +430,7 @@ export class RouteUtils {
             {
                 category: preferences,
                 id: "loginAndRegistration",
-                selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+                selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
             {
                 category: preferences,

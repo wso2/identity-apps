@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,7 +36,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     claimMappingOn: boolean;
     /**
      * Specifies if the IdP Attribute Mappings are available.
-     */  
+     */
     isMappingEmpty: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;
@@ -75,7 +75,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
 
     const getValidatedInitialValue = (initialValue: string) => {
         return find(
-            dropDownOptions, 
+            dropDownOptions,
             (option: DropdownOptionsInterface) => option?.value === initialValue
         ) !== undefined ? initialValue : "";
     };
@@ -91,7 +91,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Form>
                         <Form.Select
                             fluid
-                            options={ 
+                            options={
                                 dropDownOptions.concat(
                                     {
                                         key: "default_subject",
@@ -99,7 +99,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                             "uriAttributeSettings.subject." +
                                             "placeHolder"),
                                         value: ""
-                                    } as DropdownOptionsInterface 
+                                    } as DropdownOptionsInterface
                                 )
                             }
                             value={ getValidatedInitialValue(initialSubjectUri) }
@@ -127,7 +127,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         />
                     </Form>
                     <Hint>
-                        { isSaml 
+                        { isSaml
                             ? (
                                 <Trans
                                     i18nKey={
@@ -135,10 +135,10 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".uriAttributeSettings.subject.hint"
                                     }
                                 >
-                                The attribute that identifies the user at the enterprise identity provider. 
-                                When attributes are configured based on the authentication response of this 
-                                IdP connection, you can use one of them as the subject. Otherwise, the 
-                                default <Code>saml2:Subject</Code> in the SAML response is used as the 
+                                The attribute that identifies the user at the enterprise identity provider.
+                                When attributes are configured based on the authentication response of this
+                                IdP connection, you can use one of them as the subject. Otherwise, the
+                                default <Code>saml2:Subject</Code> in the SAML response is used as the
                                 subject attribute.
                                 </Trans>
                             )
@@ -149,7 +149,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         ".subject.hint"
                                     }
                                 >
-                                Specifies the attribute that identifies the user at the identity provider.
+                                Specifies the attribute that identifies the user at the Connection.
                                 </Trans>
                             )
                         }
@@ -163,7 +163,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Grid.Column>
                             <Heading as="h4">
                                 { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
-                                    "role.heading") }
+                                    "group.heading") }
                             </Heading>
                             <Form>
                                 <Form.Select
@@ -173,14 +173,14 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                             {
                                                 key: "default_subject",
                                                 text: t("console:develop.features.authenticationProvider" +
-                                                    ".forms.uriAttributeSettings.role.placeHolder"),
+                                                    ".forms.uriAttributeSettings.group.placeHolder"),
                                                 value: ""
-                                            } as DropdownOptionsInterface 
+                                            } as DropdownOptionsInterface
                                         )
                                     }
                                     value={ getValidatedInitialValue(initialRoleUri) }
                                     placeholder={ t("console:develop.features.authenticationProvider" +
-                                        ".forms.uriAttributeSettings.role.placeHolder") }
+                                        ".forms.uriAttributeSettings.group.placeHolder") }
                                     onChange={
                                         (_event: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
                                             updateRole(data.value.toString());
@@ -189,11 +189,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     search
                                     fullTextSearch={ false }
                                     label={ t("console:develop.features.authenticationProvider.forms." +
-                                        "uriAttributeSettings.role.label") }
+                                        "forms.uriAttributeSettings.group.label") }
                                     data-testid={ `${ testId }-form-element-role` }
                                     error={ roleError && {
                                         content: t("console:develop.features.authenticationProvider" +
-                                            ".forms.uriAttributeSettings.role.validation.empty"),
+                                            ".forms.uriAttributeSettings.group.validation.empty"),
                                         pointing: "above"
                                     } }
                                     readOnly={ isReadOnly }
@@ -201,7 +201,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             </Form>
                             <Hint>
                                 { t("console:develop.features.authenticationProvider." +
-                                    "forms.uriAttributeSettings.role.hint") }
+                                    "forms.uriAttributeSettings.group.hint") }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>

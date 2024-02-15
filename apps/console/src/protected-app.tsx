@@ -165,7 +165,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     ?? window.location.pathname;
                 const pathChunks: string[] = path.split("/");
 
-                const orgPrefixIndex: number = pathChunks.indexOf(window["AppUtils"].getConfig().organizationPrefix);
+                const orgPrefixIndex: number = pathChunks.indexOf(Config.getDeploymentConfig().organizationPrefix);
 
                 if (orgPrefixIndex !== -1) {
                     return pathChunks[ orgPrefixIndex + 1 ];
@@ -175,7 +175,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             };
 
             try {
-                if (getOrganizationName()) {
+                // The organization switch is not needed for organization users who directly SSO to the organization.
+                if (getOrganizationName() && signInResponse.userOrg != signInResponse.orgId) {
                     response = await switchOrganization(getOrganizationName());
                 } else {
                     response = { ...signInResponse };

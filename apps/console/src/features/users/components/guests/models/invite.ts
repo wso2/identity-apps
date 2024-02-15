@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { RolesInterface } from "@wso2is/core/models";
 import { InviteUserStatus } from "apps/console/src/extensions/components/users/models";
 import { ReactNode } from "react";
+import { GroupsInterface } from "../../../../groups";
 
 /**
   * Enum for role types.
@@ -45,6 +45,18 @@ export interface UserInviteInterface {
  * Interface to represent invite for parent org user.
  */
 export interface ParentOrgUserInviteInterface {
+    id?: string;
+    groups?: string[];
+    email?: string;
+    status?: InviteUserStatus;
+    expiredAt?: string;
+    usernames?: string[];
+}
+
+/**
+ * Interface to represent invite for administrator.
+ */
+export interface AdministratorInviteInterface {
     id?: string;
     roles?: string[];
     email?: string;
@@ -92,15 +104,15 @@ export interface UserInviteInterface {
     username?: string;
 }
 
-export interface RolesAutoCompleteOption {
+export interface GroupsAutoCompleteOption {
     key: string;
     label: ReactNode;
-    role: RolesInterface;
+    group: GroupsInterface;
 }
 
 export interface InviteParentOrgUserFormValuesInterface {
     username: string[];
-    roles: RolesAutoCompleteOption[];
+    groups: GroupsAutoCompleteOption[];
 }
 
 export enum ParentOrgUserInviteErrorCode {

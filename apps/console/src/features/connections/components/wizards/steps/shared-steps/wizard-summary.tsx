@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,17 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { AppAvatar, Heading } from "@wso2is/react-components";
+import { Heading } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface,
     ConnectionInterface,
+    FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorMetaInterface,
+    OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/connection";
 import { getPropertyMetadata } from "../../../../utils/common-pluggable-component-utils";
@@ -43,8 +47,8 @@ interface WizardSummaryProps extends TestableComponentInterface {
 /**
  * Wizard summary form component.
  *
- * @param {WizardSummaryProps} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns WizardSummary component.
  */
 export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     props: WizardSummaryProps
@@ -70,26 +74,34 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
         onSubmit(identityProvider);
     }, [ triggerSubmit ]);
 
-    const authenticatorSummary = identityProvider?.federatedAuthenticators?.authenticators?.find(
-        authenticator => authenticator.authenticatorId === identityProvider?.federatedAuthenticators?.
-            defaultAuthenticatorId);
+    const authenticatorSummary: FederatedAuthenticatorListItemInterface = identityProvider?.
+        federatedAuthenticators?.authenticators?.find(
+            (authenticator: FederatedAuthenticatorListItemInterface) =>
+                authenticator.authenticatorId === identityProvider?.federatedAuthenticators?.
+                    defaultAuthenticatorId);
 
-    const provisioningSummary = identityProvider?.provisioning?.outboundConnectors?.connectors?.find(connector =>
-        connector.connectorId === identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId);
+    const provisioningSummary: OutboundProvisioningConnectorInterface = identityProvider?.
+        provisioning?.outboundConnectors?.connectors?.find((connector: OutboundProvisioningConnectorInterface) =>
+            connector.connectorId === identityProvider?.provisioning?.outboundConnectors?.defaultConnectorId);
 
-    const getPropertySummary = (properties: any[], metaProperties: any[]) => {
+    const getPropertySummary = (properties: CommonPluggableComponentPropertyInterface[],
+        metaProperties: CommonPluggableComponentMetaPropertyInterface[]) => {
 
-        const sortedProperties = properties?.sort((a, b) => {
-            const firstOrder = metaProperties?.find(eachPropMetadata =>
-                a.key === eachPropMetadata.key)?.displayOrder;
-            const secondOrder = metaProperties?.find(eachPropMetadata =>
-                b.key === eachPropMetadata.key)?.displayOrder;
+        const sortedProperties: CommonPluggableComponentPropertyInterface[] = properties?.sort(
+            (a: CommonPluggableComponentPropertyInterface, b: CommonPluggableComponentPropertyInterface) => {
+                const firstOrder: number = metaProperties?.find((
+                    eachPropMetadata: CommonPluggableComponentMetaPropertyInterface) =>
+                    a.key === eachPropMetadata.key)?.displayOrder;
+                const secondOrder: number = metaProperties?.find((
+                    eachPropMetadata: CommonPluggableComponentMetaPropertyInterface) =>
+                    b.key === eachPropMetadata.key)?.displayOrder;
 
-            return firstOrder - secondOrder;
-        });
+                return firstOrder - secondOrder;
+            });
 
-        return sortedProperties?.map((eachProp) => {
-            const propertyMetadata = getPropertyMetadata(eachProp?.key, metaProperties);
+        return sortedProperties?.map((eachProp: CommonPluggableComponentPropertyInterface) => {
+            const propertyMetadata: CommonPluggableComponentMetaPropertyInterface =
+                getPropertyMetadata(eachProp?.key, metaProperties);
 
             if (eachProp.value !== undefined && !isEmpty(eachProp?.value.toString()) &&
                 !propertyMetadata?.isConfidential) {
@@ -118,11 +130,6 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details" data-testid={ testId }>
-                        <AppAvatar
-                            name={ identityProvider?.name }
-                            image={ identityProvider?.image }
-                            size="tiny"
-                        />
                         { identityProvider?.name && (
                             <Heading size="small" className="name">{ identityProvider.name }</Heading>
                         ) }

@@ -58,7 +58,7 @@
         ? Encode.forHtmlAttribute(request.getParameter("username"))
         : "";
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
@@ -200,7 +200,7 @@
             <div class="ui segment">
                 <%-- page content --%>
                 <h3 class="ui header m-0" data-testid="password-recovery-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "forgot.password")%>
+                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.heading")%>
                 </h3>
                 <% if (error) { %>
                 <div class="ui visible negative message" id="server-error-msg">
@@ -215,7 +215,7 @@
                         <%
                         if (StringUtils.isNotBlank(sp)) {
                         %>
-                            <input id="sp" name="sp" type="hidden" value="<%=sp%>"/>
+                            <input id="sp" name="sp" type="hidden" value="<%=Encode.forHtmlAttribute(sp)%>"/>
                         <%
                         }
                         %>
@@ -228,8 +228,8 @@
                                                     && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
 
                             %>
-                            <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
+                            <label class="mb-5 line-break" for="username">
+                                <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
                             </label>
                             <% }  %>
                             <div class="ui fluid left icon input">
@@ -263,8 +263,8 @@
                                 if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
                                                                && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
                            %>
-                           <label class="mb-5" for="username">
-                               <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
+                           <label class="mb-5 line-break" for="username">
+                               <%=i18n(recoveryResourceBundle, customText, "password.recovery.body")%>
                            </label>
                            <% } %>
                             <div class="ui fluid left icon input">
@@ -381,7 +381,7 @@
                                 <button id="recoverySubmit"
                                         class="ui primary button large fluid"
                                         type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "send.reset.link")%>
+                                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.button")%>
                                 </button>
                             <% } else if (!isNotificationBasedPasswordRecoveryEnabledByTenant
                                                    && isQuestionBasedPasswordRecoveryEnabledByTenant) { %>

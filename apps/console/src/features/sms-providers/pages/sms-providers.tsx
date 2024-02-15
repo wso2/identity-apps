@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -271,10 +271,23 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         const { selectedProvider } = smsProviderSettings;
 
         const properties: SMSProviderPropertiesInterface[] = buildProperties(values);
-        const provider: string = selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
-            SMSProviderConstants.TWILIO : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
-                SMSProviderConstants.VONAGE : selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER ?
-                    SMSProviderConstants.CUSTOM : values.provider;
+
+        let provider: string;
+
+        // If the selected provider is Twilio or Vonage, set the provider to the respective provider.
+        // Else, set the provider to "Custom".
+        switch (selectedProvider) {
+            case SMSProviderConstants.TWILIO_SMS_PROVIDER:
+                provider = SMSProviderConstants.TWILIO;
+
+                break;
+            case SMSProviderConstants.VONAGE_SMS_PROVIDER:
+                provider = SMSProviderConstants.VONAGE;
+
+                break;
+            default:
+                provider = SMSProviderConstants.CUSTOM;
+        }
         const contentType: ContentType = values.contentType ?? ContentType.JSON;
         const submittingValues: SMSProviderAPIInterface = {
             contentType: contentType,
@@ -405,8 +418,13 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }
-            if (!values?.provider) {
-                error.provider = t(
+            if (!values?.contentType) {
+                error.contentType = t(
+                    "extensions:develop.smsProviders.form.custom.validations.required"
+                );
+            }
+            if (!values?.payload) {
+                error.payload = t(
                     "extensions:develop.smsProviders.form.custom.validations.required"
                 );
             }

@@ -1,5 +1,73 @@
 # @wso2is/dynamic-forms
 
+## 2.0.36
+
+### Patch Changes
+
+- [#5518](https://github.com/wso2/identity-apps/pull/5518) [`0ee8258112`](https://github.com/wso2/identity-apps/commit/0ee8258112921250fdbff47b7e766cb7e1f583ce) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with dynamic form
+
+## 2.0.35
+
+### Patch Changes
+
+- [#5493](https://github.com/wso2/identity-apps/pull/5493) [`a857f2b241`](https://github.com/wso2/identity-apps/commit/a857f2b241ca9080cfc7ef1d814fb20fa9e7b943) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with custom connector dynamically renedering forms
+
+## 2.0.34
+
+### Patch Changes
+
+- [#5485](https://github.com/wso2/identity-apps/pull/5485) [`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81) Thanks [@savindi7](https://github.com/savindi7)! - Update Connection icons.
+
+- Updated dependencies [[`9589f58413`](https://github.com/wso2/identity-apps/commit/9589f58413652c2a61ca908659599cbfa66d1f81)]:
+  - @wso2is/react-components@2.1.8
+
+## 2.0.33
+
+### Patch Changes
+
+- [#5488](https://github.com/wso2/identity-apps/pull/5488) [`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix overflow issue in workflow approvals
+
+- Updated dependencies [[`65c62b577a`](https://github.com/wso2/identity-apps/commit/65c62b577add1783fd28c606c78a949aa2647250)]:
+  - @wso2is/react-components@2.1.7
+
+## 2.0.32
+
+### Patch Changes
+
+- [#5470](https://github.com/wso2/identity-apps/pull/5470) [`f58ad94c02`](https://github.com/wso2/identity-apps/commit/f58ad94c02ba67759480812d52e6cecc9bd3bc95) Thanks [@brionmario](https://github.com/brionmario)! - Stop minifying public assets
+
+- Updated dependencies [[`f58ad94c02`](https://github.com/wso2/identity-apps/commit/f58ad94c02ba67759480812d52e6cecc9bd3bc95)]:
+  - @wso2is/react-components@2.1.6
+
+## 2.0.31
+
+### Patch Changes
+
+- [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
+- Updated dependencies [[`b6c27667fc`](https://github.com/wso2/identity-apps/commit/b6c27667fc6e1984184b2d756918f0185a7825bf), [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209)]:
+  - @wso2is/react-components@2.1.5
+  - @wso2is/core@2.0.35
+
+## 2.0.30
+
+### Patch Changes
+
+- [#5437](https://github.com/wso2/identity-apps/pull/5437) [`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix search and filter action panel issues
+
+- Updated dependencies [[`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e)]:
+  - @wso2is/react-components@2.1.4
+
+## 2.0.29
+
+### Patch Changes
+
+- [#5401](https://github.com/wso2/identity-apps/pull/5401) [`d2fa23c476`](https://github.com/wso2/identity-apps/commit/d2fa23c4760c05ad76851b69a0f9f61f24433147) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix password visibility toggle issue
+
+- Updated dependencies [[`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af)]:
+  - @wso2is/core@2.0.33
+  - @wso2is/react-components@2.1.3
+
 ## 2.0.28
 
 ### Patch Changes

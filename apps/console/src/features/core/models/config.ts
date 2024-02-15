@@ -225,6 +225,10 @@ export interface FeatureConfigInterface {
      * WS Federation Configurations feature
      */
     wsFedConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Resident Outbound Provisioning feature
+     */
+    residentOutboundProvisioning?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -348,6 +352,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     listAllAttributeDialects?: boolean;
     /**
+     * Flag to check whether to enable the identity claims.
+     */
+    enableIdentityClaims?: boolean;
+    /**
+     * Flag to check whether email as a username feature is enabled.
+     */
+    enableEmailDomain?: boolean;
+    /**
      * Should show/hide marketing consent banner.
      */
     isMarketingConsentBannerEnabled: boolean;
@@ -363,6 +375,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
+    /**
+     * Enable/Disable the custom claim mapping feature.
+     */
+    isCustomClaimMappingEnabled?: boolean;
+    /**
+     * Enable/Disable the custom claim mapping merge feature.
+     */
+    isCustomClaimMappingMergeEnabled?: boolean;
     /**
      * Self app name.
      */
@@ -390,6 +410,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * is XACML connector enabled.
      */
     isXacmlConnectorEnabled?: boolean;
+    /**
+     * Display name of the console administrator role.
+     */
+    administratorRoleDisplayName?: string;
+    /**
+     * Whether to consider the role claim as the group claim.
+     */
+    useRoleClaimAsGroupClaim?: boolean;
 }
 
 /**

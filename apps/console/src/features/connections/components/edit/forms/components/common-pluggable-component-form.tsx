@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
+import isUndefined from "lodash-es/isUndefined";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
@@ -67,8 +68,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         dynamicValues?.properties?.map(
             (prop: CommonPluggableComponentPropertyInterface) =>
             {
-                if (prop.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
-                    setPrivateKeyValue(prop.value);
+                if (prop?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+                    setPrivateKeyValue(prop?.value);
                 }
             }
         );
@@ -77,7 +78,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                return value?.includes(key);
+                if (key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+                    return value;
+                } else {
+                    return value?.includes(key);
+                }
             }
             case CommonConstants.RADIO: {
                 return value?.includes(key);
@@ -95,7 +100,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
-
         const properties: any[] = [];
         const resolvedCustomProperties: string | string[] = showCustomProperties
             ? values.get("customProperties")
@@ -105,35 +109,56 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const propertyMetadata: CommonPluggableComponentMetaPropertyInterface = getPropertyMetadata(
                 key, metadata?.properties);
 
-            if (key !== undefined && !isEmpty(value) && key !== "customProperties") {
+            const processedValue: string = !isEmpty(key) && !isUndefined(value) &&
+                interpretValueByType(value, key, propertyMetadata?.type).toString();
+
+            if (!isEmpty(processedValue) && key !== "customProperties") {
                 properties.push({
                     key: key,
-                    value: interpretValueByType(value, key, propertyMetadata?.type)
+                    value: processedValue
                 });
             }
 
             if (
-                !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
-                && !properties.find(
-                    (item: CommonPluggableComponentMetaPropertyInterface) =>
-                        item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)){
+                (
+                    // Check whether the values has the google private key.
+                    !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
+                    // Check whether the property values list does not have the google private key-value pair.
+                    && !properties?.find(
+                        (item: CommonPluggableComponentPropertyInterface) =>
+                            (item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY))
+                    // Check whether the properties key-value pair has the value undefined.
+                    && properties?.find(
+                        (item: CommonPluggableComponentPropertyInterface) => (
+                            item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY
+                            && item?.value !== undefined
+                        )
+                    )
+                ) || (
+                    // // Check whether the properties key-value pair has an already added google private key.
+                    !properties?.find(
+                        (item: CommonPluggableComponentPropertyInterface) =>
+                            (item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY))
+                        && privateKeyValue !== undefined
+                )
+            ){
                 properties.push({
                     key: ConnectionManagementConstants.GOOGLE_PRIVATE_KEY,
                     value: privateKeyValue
                 });
             }
-
         });
 
-        const modifiedCustomProperties: any = resolvedCustomProperties?.toString()?.split(",")?.map(
-            (customProperty: string) => {
-                const keyValuePair: string[] = customProperty.split("=");
+        const modifiedCustomProperties: any = !isEmpty(resolvedCustomProperties) ?
+            resolvedCustomProperties?.toString()?.split(",")?.map(
+                (customProperty: string) => {
+                    const keyValuePair: string[] = customProperty.split("=");
 
-                return {
-                    key: keyValuePair[ 0 ],
-                    value: keyValuePair[ 1 ]
-                };
-            });
+                    return {
+                        key: keyValuePair[ 0 ],
+                        value: keyValuePair[ 1 ]
+                    };
+                }) : [];
 
         modifiedCustomProperties?.length > 0 && properties.push(...modifiedCustomProperties);
 
@@ -311,7 +336,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                                     handleParentPropertyChange)
                             }
                             {
-                                getSortedPropertyFields(metaProperty?.subProperties, true)
+                                getSortedPropertyFields(metaProperty?.subProperties, false)
                             }
                         </React.Fragment>);
                 }
@@ -361,38 +386,14 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     };
 
-    const changeUserIdInClaimCheckboxLabelBasedOnValue = (key: string, values: Map<string, FormValue>) => {
-
-        const TARGET_FORM_KEY: string = "IsUserIdInClaims";
-
-        if (key === TARGET_FORM_KEY) {
-
-            const changeLabel = (to: string): void => {
-                const props: CommonPluggableComponentMetaPropertyInterface = metadata?.properties?.find(
-                    ({ key }: { key: string }) => key === TARGET_FORM_KEY);
-
-                if (props) props.displayName = to;
-            };
-
-            const isChecked = (value: FormValue): boolean =>
-                value &&
-                (Array.isArray(value) && value.length > 0) ||
-                (typeof value === "string" && value == "true");
-
-            if (isChecked(values.get(TARGET_FORM_KEY))) {
-                changeLabel("Use NameID as the User Identifier");
-            } else {
-                changeLabel("User Identifier found among claims");
-            }
-
-        }
-
-    };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
 
         triggerAlgorithmSelectionDropdowns(key, values);
-        changeUserIdInClaimCheckboxLabelBasedOnValue(key, values);
+
+        if (!dynamicValues) {
+            return;
+        }
 
         setDynamicValues({
             ...dynamicValues,
@@ -447,7 +448,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         triggerAlgorithmSelectionDropdowns("IsLogoutReqSigned", initialFormValues);
         triggerAlgorithmSelectionDropdowns("ISAuthnReqSigned", initialFormValues);
-        changeUserIdInClaimCheckboxLabelBasedOnValue("IsUserIdInClaims", initialFormValues);
 
     }, []);
 
@@ -458,16 +458,27 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         if (!dynamicValues) {
             return;
         }
+
         const values: string[] = [];
 
         dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
+                if (isEmpty(property.key) || isEmpty(property.value)) {
+                    return;
+                }
+
+                // Check whether the property already in dynamicValues?.properties.
+                if (dynamicValues?.properties?.find(
+                    (prop: CommonPluggableComponentPropertyInterface) => prop.key === property.key)) {
+                    return;
+                }
+
+                // Check whether the property is not in the metadata.
                 if (!metadata?.properties?.find(
                     (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === property.key)) {
                     values.push(property.key + "=" + property.value);
                 }
             });
-
         setCustomProperties(values.join(", "));
     }, [ dynamicValues ]);
 

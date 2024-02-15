@@ -234,6 +234,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isRequestPathAuthenticationEnabled?: boolean;
     /**
+     * Enable/Disable the email domain feature.
+     */
+    enableEmailDomain?: boolean;
+    /**
      * Flag to check whether to list all the attribute dialects
      */
     listAllAttributeDialects?: boolean;
@@ -265,6 +269,18 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * is XACML connector enabled.
      */
     isXacmlConnectorEnabled?: boolean;
+    /**
+     * Enable/Disable the custom claim mapping feature.
+     */
+    isCustomClaimMappingEnabled?: boolean;
+    /**
+     * Enable/Disable the custom claim mapping merge feature.
+     */
+    isCustomClaimMappingMergeEnabled?: boolean;
+    /**
+     * Whether to consider the role claim as the group claim.
+     */
+    useRoleClaimAsGroupClaim?: boolean;
 }
 
 /**

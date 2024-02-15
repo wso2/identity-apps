@@ -37,21 +37,21 @@
              <!-- CookiePro Cookies Consent Notice start for asgardeo.io -->
             <script src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="<%=htmlWebpackPlugin.options.cookieproDomainScriptIdVar%>" ></script>
             <script type="text/javascript">
-            function OptanonWrapper() { 
+            function OptanonWrapper() {
                 // Get initial OnetrustActiveGroups ids
                 if(typeof OptanonWrapperCount == "undefined"){
                     otGetInitialGrps();
                 }
-            
+
                 //Delete cookies
                 otDeleteCookie(otInitialConsentedGroups);
-            
+
                 // Assign OnetrustActiveGroups to custom variable
                 function otGetInitialGrps(){
                     OptanonWrapperCount = '';
                     otInitialConsentedGroups =  OnetrustActiveGroups;
                 }
-            
+
                 function otDeleteCookie(iniOptGrpIdsListStr)
                 {
                     var otDomainGrps = JSON.parse(JSON.stringify(Optanon.GetDomainData().Groups));
@@ -70,7 +70,7 @@
                                     eraseCookie(otDomainGrps[i]['Cookies'][j]['Name']);
                                 }
                             }
-            
+
                             //Check if Hostid matches
                             if(otDomainGrps[i]['Hosts'].length != 0){
                                 for(var j=0; j < otDomainGrps[i]['Hosts'].length; j++){
@@ -83,21 +83,21 @@
                                     }
                                 }
                             }
-            
+
                         }
                     }
                     otGetInitialGrps(); //Reassign new group ids
                 }
-            
+
                 //Get inactive ids
                 function otGetInactiveId(prevGroupIdListStr, otActiveGrp){
                     prevGroupIdList = prevGroupIdListStr.split(",");
                     prevGroupIdList = prevGroupIdList.filter(Boolean);
-            
+
                     //After action OnetrustActiveGroups
                     otActiveGrp = otActiveGrp.split(",");
                     otActiveGrp = otActiveGrp.filter(Boolean);
-            
+
                     var result = [];
                     for (var i = 0; i < prevGroupIdList.length; i++){
                         if ( otActiveGrp.indexOf(prevGroupIdList[i]) <= -1 ){
@@ -106,17 +106,17 @@
                     }
                     return result;
                 }
-            
+
                 //Delete cookie
                 function eraseCookie(name) {
                     //Delete root path cookies
                     domainName = window.location.hostname;
                     document.cookie = name + '=; Max-Age=-99999999; Path=/;Domain=' + domainName;
                     document.cookie = name + '=; Max-Age=-99999999; Path=/;';
-            
+
                     //Delete LSO incase LSO being used, cna be commented out.
                     localStorage.removeItem(name);
-            
+
                     //Check for the current path of the page
                     pathArray = window.location.pathname.split('/');
                     //Loop through path hierarchy and delete potential cookies at each path.
@@ -129,10 +129,10 @@
                             //Maybe path has a trailing slash!
                             document.cookie = name + '=; Max-Age=-99999999; Path=' + currentPath + '/;Domain='+ domainName;
                             document.cookie = name + '=; Max-Age=-99999999; Path=' + currentPath + '/;';
-                            
+
                         }
                     }
-                }   
+                }
             }
             </script>
         <%= htmlWebpackPlugin.options.cookieproEnabledCheckEnd %>
@@ -168,11 +168,22 @@
         </script>
         <!-- End VWO Async SmartCode -->
 
+        <!-- Start of custom stylesheets -->
+        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <!-- End of custom stylesheets -->
+
+        <!-- Start of custom scripts added to the head -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <!-- End of custom scripts added to the head -->
     </head>
     <body>
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
         <div id="root"></div>
+
+        <!-- Start of custom scripts added to the body -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script>
+        <!-- End of custom scripts added to the body -->
     </body>
 </html>

@@ -326,6 +326,12 @@ export const extensions: Extensions = {
                 groupAttributeLabel: "Group attribute",
                 groupAttributeHint: "The attribute from the connection that will be mapped to the organization's group attribute.",
                 groupAttributePlaceholder: "Enter mapped attribute",
+                groupAttributeMessage1: "Please be aware that the attribute selected in the <1>Attributes tab</1> as the group attribute is used to identify groups at the Connection.",
+                groupAttributeMessage2: "For modifications to the group attribute, please visit the <1>Attributes tab</1>.",
+                groupAttributeMessageOIDC: "Please note that OpenID Connect attribute named <1>{{attribute}}</1> will be considered as the default " +
+                    "<1>Group Attribute</1> as you have not added a custom attribute.",
+                groupAttributeMessageSAML: "Please note that <1>{{attribute}}</1> attribute will be considered as the default " +
+                    "<1>Group Attribute</1> as you have not added a custom attribute.",
                 notifications: {
                     fetchConfigs: {
                         error: {
@@ -463,6 +469,14 @@ export const extensions: Extensions = {
             managementAPI: {
                 header: "Management APIs",
                 description: "APIs to manage resources in your organization (root)"
+            },
+            consoleFeature: {
+                header: "Console Features",
+                description: "Permissions to manage resources in the console"
+            },
+            businessAPI: {
+                header: "Business APIs",
+                description: "Custom APIs to created by the user"
             },
             notifications: {
                 deleteAPIResource: {
@@ -2186,7 +2200,7 @@ export const extensions: Extensions = {
                     contentType: {
                         label: "Content Type",
                         placeholder: "JSON",
-                        hint: "The content type of the API request. Accepted value is JSON. (Default is JSON)"
+                        hint: "The content type of the API request. Accepted values are 'FORM' or 'JSON'"
                     },
                     headers: {
                         label: "Headers",
@@ -2194,9 +2208,9 @@ export const extensions: Extensions = {
                         hint: "Comma seperated list of HTTP headers to be included in the SMS API request."
                     },
                     payload: {
-                        label: "Payload",
-                        placeholder: "Enter the payload",
-                        hint: "Static payload that will be appended after the generated payload of the SMS."
+                        label: "Payload Template",
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "The payload template of the API request. Use {{body}} to represent the generated SMS body. Use {{mobile}} to represent the mobile number."
                     },
                     key: {
                         label: "SMS Provider Auth Key",
@@ -3779,6 +3793,12 @@ export const extensions: Extensions = {
                                     range: "Max failed attempts should be between 1 & 10.",
                                     maxLengthReached: "Max failed attempts should be a number with 1 or 2 digits."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "Notify user when the account lock duration is increased due to " +
+                                    "continuous failed login attempts.",
+                                label: "Notify user when lock time is increased"
                             }
                         }
                     },

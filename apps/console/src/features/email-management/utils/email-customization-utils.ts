@@ -65,8 +65,25 @@ export class EmailCustomizationUtils {
         templateBody: string,
         predefinedThemes: BrandingPreferenceThemeInterface
     ): string {
+        let updatedTemplateBody: string = templateBody;
+        const isCustomLogoURLPresent: boolean = !!brandingConfigs?.
+            theme[brandingConfigs?.theme?.activeTheme]?.images?.logo?.imgURL;
+
+        /**
+         * If the branding preferences doesn't have a custom logo configured,
+         * modify the preview HTML to not show a broken image icon with alternative text.
+         *
+         * Ref: https://github.com/wso2/product-is/issues/18194#issuecomment-1862264745
+         * */
+        if (!isCustomLogoURLPresent) {
+            updatedTemplateBody = updatedTemplateBody.replace(
+                /alt="{{organization.logo.altText}}"/g,
+                "onerror=\"this.style.display='none'\""
+            );
+        }
+
         if (!brandingConfigs) {
-            let updatedTemplateBody: string = templateBody
+            return updatedTemplateBody
                 .replace(/{{organization.color.background}}/g, this.brandingFallBackValues.background_color)
                 .replace(/{{organization.color.primary}}/g, this.brandingFallBackValues.primary_color)
                 .replace(/{{organization.theme.background.color}}/g, this.brandingFallBackValues.light_background_color)
@@ -76,24 +93,6 @@ export class EmailCustomizationUtils {
                 .replace(/{{organization.button.font.color}}/g, this.brandingFallBackValues.button_font_color)
                 .replace(/{{organization-name}}/g, organizationName)
                 .replace(/{{organization.logo.img}}/g, this.brandingFallBackValues.light_logo_url);
-
-            const isCustomLogoURLPresent: boolean = !!brandingConfigs?.
-                theme[brandingConfigs?.theme?.activeTheme]?.images?.logo?.imgURL;
-
-            /**
-             * If the branding preferences doesn't have a custom logo configured,
-             * modify the preview HTML to not show a broken image icon with alternative text.
-             *
-             * Ref: https://github.com/wso2/product-is/issues/18194#issuecomment-1862264745
-             * */
-            if (!isCustomLogoURLPresent) {
-                updatedTemplateBody = updatedTemplateBody.replace(
-                    /alt="{{organization.logo.altText}}"/g,
-                    "onerror=\"this.style.display='none'\""
-                );
-            }
-
-            return updatedTemplateBody;
         }
 
         const {
@@ -111,7 +110,7 @@ export class EmailCustomizationUtils {
         const defaultOrgLogo: string = (theme.activeTheme === PredefinedThemes.DARK
             ? this.brandingFallBackValues.dark_logo_url : this.brandingFallBackValues.light_logo_url);
 
-        return templateBody
+        updatedTemplateBody = updatedTemplateBody
             .replace(/{{organization.color.background}}/g, currentTheme.colors.background.body.main)
             .replace(/{{organization.color.primary}}/g, currentTheme.colors.primary.main)
             .replace(
@@ -142,5 +141,7 @@ export class EmailCustomizationUtils {
                 ) ?? copyrightText
             )
             .replace(/{{organization.support.mail}}/g, supportEmail);
+
+        return updatedTemplateBody;
     }
 }

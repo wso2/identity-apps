@@ -26,10 +26,10 @@ import { UsersConstants } from "../../../../extensions/components/users/constant
 import { UserManagementConstants } from "../../constants";
 import { sendParentOrgUserInvite } from "../guests/api/invite";
 import {
+    GroupsAutoCompleteOption,
     InviteParentOrgUserFormValuesInterface,
     ParentOrgUserInvitationResult,
-    ParentOrgUserInviteInterface,
-    RolesAutoCompleteOption
+    ParentOrgUserInviteInterface
 } from "../guests/models/invite";
 import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 import { ParentInviteResponseList } from "../parent-user-invite-response-list";
@@ -122,7 +122,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
      */
     const inviteParentOrgUser = (values: InviteParentOrgUserFormValuesInterface) => {
         const invite: ParentOrgUserInviteInterface = {
-            roles: values?.roles?.map((role: RolesAutoCompleteOption) => role.role.id),
+            groups: values?.groups?.map((group: GroupsAutoCompleteOption) => group.group.id),
             usernames:  values?.username
         };
 

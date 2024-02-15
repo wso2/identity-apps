@@ -22,8 +22,8 @@ import {
     DynamicField,
     DynamicFieldInputTypes,
     DynamicForm,
-    FieldInputPropsInterface,
-    FieldInputTypes
+    FieldInputTypes,
+    renderFormFields as renderDynamicFormFields
 } from "@wso2is/dynamic-forms";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -213,7 +213,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                 return connectorScope?.displayName === scope;
             }
         );
-    
+
         if (foundScope) {
             return {
                 description: foundScope?.description,
@@ -249,7 +249,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
 
         return {
             ...originalInitialValues,
-            properties
+            properties: properties
         };
     };
 
@@ -280,28 +280,15 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
 
     /**
      * Resolve the form field values.
-     * 
+     *
      * @returns Form fields.
      */
     const renderFormFields = () => {
         if (settings) {
-            return (
-                settings?.edit?.tabs?.settings?.fields?.map(
-                    (connectorField: FieldInputPropsInterface) => {
-                        return (
-                            <DynamicField.Input
-                                key={ connectorField.name }
-                                name={ connectorField.name }
-                                label={ connectorField.label }
-                                inputType={ connectorField.inputType }
-                                { ...connectorField }
-                            />
-                        );
-                    })
-            );  
+            return renderDynamicFormFields(settings?.edit?.tabs?.settings);
         } else if (formFields) {
             const fields: DynamicInputElementsInterface[] = [];
-            
+
             for (const key in formFields) {
                 if (key === "AdditionalQueryParameters") {
                     continue;
@@ -329,7 +316,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
             }
 
             const sortedFields: DynamicInputElementsInterface[] = fields.sort(
-                (firstValue: DynamicInputElementsInterface, secondValue: DynamicInputElementsInterface) => 
+                (firstValue: DynamicInputElementsInterface, secondValue: DynamicInputElementsInterface) =>
                     firstValue.displayOrder - secondValue.displayOrder
             );
 
@@ -367,7 +354,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                 <DynamicForm
                     uncontrolledForm={ false }
                     id={ `${FORM_ID}-${originalInitialValues?.authenticatorId}` }
-                    onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) } 
+                    onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
                     initialValues={ initialValues }
                     data-testid={ `${ testId }-dynamic-form` }
                 >

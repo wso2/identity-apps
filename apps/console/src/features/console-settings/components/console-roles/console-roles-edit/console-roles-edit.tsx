@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,14 +24,15 @@ import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import ConsoleRolePermissions from "./console-role-permissions";
 import { AppState } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { BasicRoleDetails } from "../../../../roles/components/edit-role/edit-role-basic";
 import { RoleConnectedApps } from "../../../../roles/components/edit-role/edit-role-connected-apps";
 import { RoleGroupsList } from "../../../../roles/components/edit-role/edit-role-groups";
-import { UpdatedRolePermissionDetails } from "../../../../roles/components/edit-role/edit-role-permission";
 import { RoleUsersList } from "../../../../roles/components/edit-role/edit-role-users";
 import { RoleAudienceTypes } from "../../../../roles/constants/role-constants";
+import "./console-roles-edit.scss";
 
 /**
  * Captures props needed for edit role component
@@ -76,6 +77,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const featureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const administratorRoleDisplayName: string = useSelector(
+        (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
 
@@ -87,7 +90,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     useEffect(() => {
         if(roleObject) {
             setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
-                roleObject.displayName === RoleConstants.ADMIN_GROUP);
+                roleObject?.displayName === RoleConstants.ADMIN_GROUP ||
+                roleObject?.displayName === administratorRoleDisplayName);
         }
     }, [ roleObject ]);
 
@@ -104,6 +108,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
+                            enableDeleteErrorConnetedAppsModal={ false }
                         />
                     </ResourceTab.Pane>
                 )
@@ -112,11 +117,16 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UpdatedRolePermissionDetails
-                            isReadOnly={ true }
+                        <ConsoleRolePermissions
+                            isReadOnly={
+                                isSubOrg
+                                || isAdminRole
+                                || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                            }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 1 }
+                            isSubOrganization={ isSubOrg }
                         />
                     </ResourceTab.Pane>
                 )
@@ -175,7 +185,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
         <ResourceTab
             isLoading={ isLoading }
             defaultActiveIndex={ defaultActiveIndex }
-            panes={ resolveResourcePanes() } />
+            panes={ resolveResourcePanes() }
+        />
     );
 };
 

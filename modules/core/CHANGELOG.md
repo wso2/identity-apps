@@ -1,5 +1,23 @@
 # @wso2is/core
 
+## 2.0.35
+
+### Patch Changes
+
+- [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
+## 2.0.34
+
+### Patch Changes
+
+- [#5384](https://github.com/wso2/identity-apps/pull/5384) [`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Sign-in Method` -> `Login Flow`
+
+## 2.0.33
+
+### Patch Changes
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
 ## 2.0.32
 
 ### Patch Changes

@@ -383,7 +383,7 @@
 %>
 
 <%
-    String insightsAppIdentifier = Encode.forHtmlAttribute(request.getParameter("client_id"));
+    String insightsAppIdentifier = Encode.forJavaScriptBlock(request.getParameter("client_id"));
     String insightsTenantIdentifier = userTenant;
 
     if (!Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {
@@ -846,14 +846,14 @@
                                                 id="icon-<%=iconId%>"
                                                 type="button"
                                                 class="ui button"
-                                                data-testid='login-page-sign-in-with-<%=Encode.forHtmlContent(idpName)%>'
+                                                data-testid='login-page-sign-in-with-<%=Encode.forHtmlAttribute(idpName)%>'
                                                 onclick="handleNoDomain(this,
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                 >
                                                     <img
                                                         role="presentation"
-                                                        alt="sign-in-with-<%=Encode.forHtmlContent(idpName)%> icon"
+                                                        alt="sign-in-with-<%=Encode.forHtmlAttribute(idpName)%> icon"
                                                         class="ui image"
                                                         src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>

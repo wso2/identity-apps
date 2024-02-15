@@ -22,7 +22,6 @@
  *******************************/
 
 @editSegmentBackgroundColor: @athensGray;
-@editSegmentTableValueMaxWidth: 220px;
 @editSegmentMarginTop: 15px;
 
 /*******************************

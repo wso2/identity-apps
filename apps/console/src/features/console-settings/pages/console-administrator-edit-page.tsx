@@ -42,6 +42,7 @@ import { getUserDetails, updateUserInfo } from "../../users/api/users";
 import { EditUser } from "../../users/components/edit-user";
 import UserManagementProvider from "../../users/providers/user-management-provider";
 import { UserManagementUtils } from "../../users/utils/user-management-utils";
+import { ConsoleSettingsModes } from "../models/ui";
 
 /**
  * Props interface of {@link ConsoleSettingsPage}
@@ -160,7 +161,8 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
     };
 
     const handleBackButtonClick = () => {
-        history.push(AppConstants.getPaths().get("CONSOLE_SETTINGS"));
+        history.push(AppConstants.getPaths().get("CONSOLE_SETTINGS")
+            + `#tab=${ ConsoleSettingsModes.ADMINISTRATORS }`);
     };
 
     /**

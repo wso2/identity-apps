@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,6 +31,7 @@ import {
 } from "../../../../features/core";
 import { getGroupById } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
+import GroupManagementProvider from "../../../../features/groups/providers/group-management-provider";
 import { EditGroup } from "../edit-group";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
@@ -81,48 +82,46 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     return (
-        <TabPageLayout
-            isLoading={ isGroupDetailsRequestLoading }
-            title={
-                group && group?.displayName ?
-                    group?.displayName?.split("/")[1] :
-                    t("console:manage.pages.rolesEdit.title")
-            }
-            backButton={ {
-                onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "Groups" })
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            description={ (
-                <div>
-                    {
-                        <Label className="group-source-label">
-                            <GenericIcon
-                                className="mt-1 mb-0"
-                                square
-                                inline
-                                size="default"
-                                transparent
-                                icon={ getSidePanelIcons().userStore }
-                                verticalAlign="middle"
-                            />
-                            <Label.Detail className="mt-1 ml-0 mb-1">
-                                { group?.displayName?.split("/")[0] }
-                            </Label.Detail>
-                        </Label>  
-                    }
-                </div>
-            ) }
-        >
-            <EditGroup
-                isGroupDetailsRequestLoading={ isGroupDetailsRequestLoading }
-                group={ group }
-                groupId={ roleId }
-                onGroupUpdate={ onGroupUpdate }
-                featureConfig={ featureConfig }
-            />
-        </TabPageLayout>
+        <GroupManagementProvider>
+            <TabPageLayout
+                isLoading={ isGroupDetailsRequestLoading }
+                title={ group?.displayName?.split("/")[1] ?? t("console:manage.pages.rolesEdit.title") }
+                backButton={ {
+                    onClick: handleBackButtonClick,
+                    text: t("console:manage.pages.rolesEdit.backButton", { type: "Groups" })
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                description={ (
+                    <div>
+                        {
+                            <Label className="group-source-label">
+                                <GenericIcon
+                                    className="mt-1 mb-0"
+                                    square
+                                    inline
+                                    size="default"
+                                    transparent
+                                    icon={ getSidePanelIcons().userStore }
+                                    verticalAlign="middle"
+                                />
+                                <Label.Detail className="mt-1 ml-0 mb-1">
+                                    { group?.displayName?.split("/")[0] }
+                                </Label.Detail>
+                            </Label>
+                        }
+                    </div>
+                ) }
+            >
+                <EditGroup
+                    isGroupDetailsRequestLoading={ isGroupDetailsRequestLoading }
+                    group={ group }
+                    groupId={ roleId }
+                    onGroupUpdate={ onGroupUpdate }
+                    featureConfig={ featureConfig }
+                />
+            </TabPageLayout>
+        </GroupManagementProvider>
     );
 };
 

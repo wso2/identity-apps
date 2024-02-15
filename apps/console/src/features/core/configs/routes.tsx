@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1014,11 +1014,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "Dynamic Connector",
                         order: 24,
                         path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTOR_EDIT")
-                            .replace(
-                                ":categoryId",
-                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
-                            ),
+                            .get("GOVERNANCE_CONNECTOR_EDIT"),
                         protected: true,
                         showOnSidePanel: false
                     },
@@ -1702,6 +1698,20 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                component: lazy(() => import("../../provisioning/pages/outbound-provisioning-settings")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().childIcon
+                },
+                id: "outboundProvisioningSettings",
+                name: "console:develop.features.applications.resident.provisioning.outbound.heading",
+                order: 6,
+                path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
+                protected: true,
+                showOnSidePanel: false
             }
         );
 

@@ -133,6 +133,7 @@ export const common: CommonNS = {
     "personalInfo": "個人情報",
     "pin": "ピン",
     "pinned": "ピン留め",
+    "pressEnterPrompt": "<1>Enter</1> を押して選択します",
     "preview": "プレビュー",
     "previous": "前の",
     "priority": "優先度",

@@ -86,3 +86,23 @@ export enum CustomTextConfigurationModes {
      */
     TEXT_FIELDS = "TEXT_FIELDS"
 }
+
+/**
+ * Interface for the custom text preference screen meta.
+ */
+export interface CustomTextPreferenceScreenMetaInterface {
+    [key: string]: {
+        /**
+         * Is the text preference editable.
+         */
+        EDITABLE: boolean;
+        /**
+         * Screen name of the text preference.
+         */
+        SCREEN: string;
+        /**
+         * Is the text preference multi-line.
+         */
+        MULTI_LINE: boolean;
+    };
+}

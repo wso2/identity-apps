@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -432,6 +432,9 @@ export interface ConsoleNS {
             "sign-up": string;
             "totp": string;
             myaccount: string;
+            "password-recovery": string;
+            "password-reset": string;
+            "password-reset-success": string;
         }
     };
     brandingCustomText: {
@@ -452,7 +455,13 @@ export interface ConsoleNS {
                 copyright: {
                     hint: string;
                 };
+                "privacy.policy": {
+                    hint: string;
+                };
                 "site.title": {
+                    hint: string;
+                };
+                "terms.of.service": {
                     hint: string;
                 };
                 "login.button": {
@@ -474,6 +483,30 @@ export interface ConsoleNS {
                     hint: string;
                 };
                 "sign.up.heading": {
+                    hint: string;
+                };
+                "password.recovery.body": {
+                    hint: string;
+                };
+                "password.recovery.button": {
+                    hint: string;
+                };
+                "password.recovery.heading": {
+                    hint: string;
+                };
+                "password.reset.button": {
+                    hint: string;
+                };
+                "password.reset.heading": {
+                    hint: string;
+                };
+                "password.reset.success.action": {
+                    hint: string;
+                };
+                "password.reset.success.body": {
+                    hint: string;
+                };
+                "password.reset.success.heading": {
                     hint: string;
                 };
             }
@@ -1072,6 +1105,7 @@ export interface ConsoleNS {
                             stopSharingNotification: Notification;
                             getSharedOrganizations: Notification;
                             stopAllSharingNotification: Notification;
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
@@ -1101,6 +1135,7 @@ export interface ConsoleNS {
                             }
                             subject: {
                                 fields: {
+                                    alternateSubjectAttribute: FormAttributes;
                                     subjectAttribute: FormAttributes;
                                     subjectIncludeTenantDomain: FormAttributes;
                                     subjectIncludeUserDomain: FormAttributes;
@@ -1550,6 +1585,42 @@ export interface ConsoleNS {
                     emptyList: Placeholder;
                     emptyProtocolList: Placeholder;
                 };
+                resident: {
+                    provisioning: {
+                        outbound: {
+                            actions: {
+                                addIdp: string;
+                            };
+                            addIdpWizard: {
+                                heading: string;
+                                subHeading: string;
+                                steps: {
+                                    details: string;
+                                };
+                            };
+                            emptyPlaceholder: Placeholder;
+                            form: {
+                                fields: {
+                                    connection: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                };
+                            };
+                            heading: string;
+                            subHeading: string;
+                            notifications: {
+                                create: Notification;
+                                delete: Notification;
+                                fetch: Notification;
+                                update: Notification;
+                            }
+                        };
+                    };
+                }
                 templates: {
                     manualSetup: {
                         heading: string;
@@ -1633,7 +1704,7 @@ export interface ConsoleNS {
                     };
                 };
                 forms?: {
-                    advancedConfigs: {
+                    advancedConfigs?: {
                         federationHub: FormAttributes;
                         homeRealmIdentifier: FormAttributes;
                         alias: FormAttributes;
@@ -1644,7 +1715,7 @@ export interface ConsoleNS {
                             certificateJWKS: FormAttributes;
                         };
                     };
-                    attributeSettings: {
+                    attributeSettings?: {
                         attributeMapping: {
                             attributeColumnHeader: string;
                             attributeMapColumnHeader: string;
@@ -1673,7 +1744,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    authenticatorAccordion: {
+                    authenticatorAccordion?: {
                         default: {
                             0: string;
                             1: string;
@@ -1683,7 +1754,7 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    authenticatorSettings: {
+                    authenticatorSettings?: {
                         apple: {
                             additionalQueryParameters: FormAttributes;
                             callbackUrl: FormAttributes;
@@ -1750,6 +1821,7 @@ export interface ConsoleNS {
                             };
                         };
                         smsOTP: {
+                            hint: string;
                             expiryTime: {
                                 hint: string;
                                 label: string;
@@ -1957,7 +2029,7 @@ export interface ConsoleNS {
                             authContextComparisonLevel: FormAttributes;
                         }
                     },
-                    outboundConnectorAccordion: {
+                    outboundConnectorAccordion?: {
                         default: {
                             0: string;
                             1: string;
@@ -1967,21 +2039,21 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    common: {
+                    common?: {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
-                    generalDetails: {
+                    generalDetails?: {
                         name: FormAttributes;
                         issuer: FormAttributes;
                         alias: FormAttributes;
                         description: FormAttributes;
                         image: FormAttributes;
                     };
-                    jitProvisioning: {
+                    jitProvisioning?: {
                         enableJITProvisioning: FormAttributes;
                         provisioningUserStoreDomain: FormAttributes;
                         provisioningScheme: {
@@ -1996,7 +2068,7 @@ export interface ConsoleNS {
                         };
                         associateLocalUser: FormAttributes;
                     };
-                    roleMapping: {
+                    roleMapping?: {
                         heading: string;
                         keyName: string;
                         valueName: string;
@@ -2007,7 +2079,7 @@ export interface ConsoleNS {
                         };
                         hint: string;
                     };
-                    uriAttributeSettings: {
+                    uriAttributeSettings?: {
                         subject: {
                             heading: string;
                             hint: string;
@@ -2017,17 +2089,22 @@ export interface ConsoleNS {
                                 empty: string;
                             };
                         };
-                        role: {
+                        group: {
                             heading: string;
                             hint: string;
+                            mappedRolesAbsentMessage: string;
+                            mappedRolesPresentMessage: string;
+                            messageOIDC: string;
+                            messageSAML: string;
                             placeHolder: string;
+                            roleMappingDisabledMessage: string;
                             label: string;
                             validation: {
                                 empty: string;
                             };
                         };
                     };
-                    outboundProvisioningRoles: {
+                    outboundProvisioningRoles?: {
                         heading: string;
                         hint: string;
                         placeHolder: string;
@@ -2036,7 +2113,7 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
-                    certificateSection: {
+                    certificateSection?: {
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;
@@ -3960,6 +4037,7 @@ export interface ConsoleNS {
                     list: {
                         emptyResultPlaceholder: {
                             addButton: string;
+                            emptyUsers: string;
                             subTitle: {
                                 0: string;
                                 1: string;
@@ -4685,6 +4763,7 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
+                genericDescription?: string;
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;
@@ -5750,7 +5829,9 @@ export interface ConsoleNS {
                     };
                     emptyPlaceholders: {
                         search: Placeholder;
-                        emptyRoleList: Placeholder;
+                        emptyRoleList: Placeholder & {
+                            emptyRoles: string
+                        };
                     };
                     popups: {
                         delete: string;
@@ -6628,7 +6709,7 @@ export interface ConsoleNS {
                             required: string;
                         }
                     },
-                    roles: {
+                    groups: {
                         label: string;
                         placeholder: string;
                         hint: string;

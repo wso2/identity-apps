@@ -1,5 +1,128 @@
 # @wso2is/i18n
 
+## 2.0.125
+
+### Patch Changes
+
+- [#5524](https://github.com/wso2/identity-apps/pull/5524) [`d39283c8f0`](https://github.com/wso2/identity-apps/commit/d39283c8f0e684931e6393cba53f606e59b927ce) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add a note explaining the consequences of switching from sharing an app with all orgs to sharing an app with selected orgs
+
+* [#5521](https://github.com/wso2/identity-apps/pull/5521) [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Address text changes in the Connections role mapping UI
+
+## 2.0.124
+
+### Patch Changes
+
+- [#5515](https://github.com/wso2/identity-apps/pull/5515) [`a252735e1f`](https://github.com/wso2/identity-apps/commit/a252735e1f206c2c47e0d5d0011381e793cc83f4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues related to role attributes in connections
+
+## 2.0.123
+
+### Patch Changes
+
+- [#5511](https://github.com/wso2/identity-apps/pull/5511) [`101b8e535e`](https://github.com/wso2/identity-apps/commit/101b8e535e67354cb3bbb5c88f3b9d3633d596a4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve the messaging of the group attribute dropdown in connections
+
+## 2.0.122
+
+### Patch Changes
+
+- [#5498](https://github.com/wso2/identity-apps/pull/5498) [`900d253e7e`](https://github.com/wso2/identity-apps/commit/900d253e7e15fb74ee6d149ff19bb87e88c835e7) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Unify the trusted token issuer text content
+
+## 2.0.121
+
+### Patch Changes
+
+- [#5494](https://github.com/wso2/identity-apps/pull/5494) [`3377084214`](https://github.com/wso2/identity-apps/commit/33770842141e8177d3e17be382256d3ab647be51) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in selecting usernames to invite in parent org user invite modal
+
+## 2.0.120
+
+### Patch Changes
+
+- [#5483](https://github.com/wso2/identity-apps/pull/5483) [`2575c34693`](https://github.com/wso2/identity-apps/commit/2575c34693943f56dbe824f69ac2f7ba715bd721) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix grouping in dynamic governance connectors
+
+## 2.0.119
+
+### Patch Changes
+
+- [#5467](https://github.com/wso2/identity-apps/pull/5467) [`09d63db07d`](https://github.com/wso2/identity-apps/commit/09d63db07dabf8f9eb531834bf67904d7d5bba11) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add support to show group attribute in conntections attributes tab
+
+## 2.0.118
+
+### Patch Changes
+
+- [#5455](https://github.com/wso2/identity-apps/pull/5455) [`d57abf987f`](https://github.com/wso2/identity-apps/commit/d57abf987f8752ee33c964b20e38ba52c6d4fd76) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add info message to the SMS Provider
+
+* [#5447](https://github.com/wso2/identity-apps/pull/5447) [`cc77f90975`](https://github.com/wso2/identity-apps/commit/cc77f909754080d55ae375f74b29c6387df24298) Thanks [@savindi7](https://github.com/savindi7)! - Update content and validations in Ask password configs
+
+## 2.0.117
+
+### Patch Changes
+
+- [#5448](https://github.com/wso2/identity-apps/pull/5448) [`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update hasRequiredScopes method to cater organization level UI scopes
+
+- Updated dependencies [[`53a104f778`](https://github.com/wso2/identity-apps/commit/53a104f77830e39f1717b079b40bcba860fd1209)]:
+  - @wso2is/core@2.0.35
+
+## 2.0.116
+
+### Patch Changes
+
+- [#5438](https://github.com/wso2/identity-apps/pull/5438) [`c8df38c747`](https://github.com/wso2/identity-apps/commit/c8df38c747c0b802c733639642f21367279fd5c4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix subject attribute issue in OIDC applications
+
+## 2.0.115
+
+### Patch Changes
+
+- [#5432](https://github.com/wso2/identity-apps/pull/5432) [`0f81fbe7f3`](https://github.com/wso2/identity-apps/commit/0f81fbe7f39a6f787867a281ab6b50f45ab0b57f) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Replace Roles dropdown with Groups in parent user invite flow
+
+* [#5437](https://github.com/wso2/identity-apps/pull/5437) [`7a0f6170fc`](https://github.com/wso2/identity-apps/commit/7a0f6170fcd14b07fb52fa980332ae956220469e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix search and filter action panel issues
+
+## 2.0.114
+
+### Patch Changes
+
+- [#5384](https://github.com/wso2/identity-apps/pull/5384) [`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3) Thanks [@brionmario](https://github.com/brionmario)! - Rename `Sign-in Method` -> `Login Flow`
+
+- Updated dependencies [[`70bb714df1`](https://github.com/wso2/identity-apps/commit/70bb714df1684f8df5622028b6adf7a72e262ad3)]:
+  - @wso2is/core@2.0.34
+
+## 2.0.113
+
+### Patch Changes
+
+- [#5348](https://github.com/wso2/identity-apps/pull/5348) [`ddbab54578`](https://github.com/wso2/identity-apps/commit/ddbab5457853c557cd27e1bdb9af0590a4400ff4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring UI support to configure resident application's outbound provisioning
+
+## 2.0.112
+
+### Patch Changes
+
+- [#5423](https://github.com/wso2/identity-apps/pull/5423) [`8549c61efd`](https://github.com/wso2/identity-apps/commit/8549c61efd7c90b808c7927f30fbdfa02e7be23a) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] add text customization to the password-reset-success interface
+
+## 2.0.111
+
+### Patch Changes
+
+- [#5396](https://github.com/wso2/identity-apps/pull/5396) [`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add custom protocol application template
+
+- Updated dependencies [[`e2b6712595`](https://github.com/wso2/identity-apps/commit/e2b6712595cff0c1d5f4786433b854196aa3c5af)]:
+  - @wso2is/core@2.0.33
+
+## 2.0.110
+
+### Patch Changes
+
+- [#5402](https://github.com/wso2/identity-apps/pull/5402) [`dd9f034dca`](https://github.com/wso2/identity-apps/commit/dd9f034dca970f20d9851d7e791de1de81ff3e14) Thanks [@Achintha444](https://github.com/Achintha444)! - Add changeset for recovery text customization
+
+## 2.0.109
+
+### Patch Changes
+
+- [#5394](https://github.com/wso2/identity-apps/pull/5394) [`9135fd0241`](https://github.com/wso2/identity-apps/commit/9135fd024135d72a27bee084371e4e773d50d990) Thanks [@Achintha444](https://github.com/Achintha444)! - Add Recovery UI Text customization to Console
+
+## 2.0.108
+
+### Patch Changes
+
+- [#5347](https://github.com/wso2/identity-apps/pull/5347) [`cc28be662d`](https://github.com/wso2/identity-apps/commit/cc28be662d01e758f6b7df468b04186759cf2b9e) Thanks [@savindi7](https://github.com/savindi7)! - Improve button text consistency.
+
 ## 2.0.107
 
 ### Patch Changes

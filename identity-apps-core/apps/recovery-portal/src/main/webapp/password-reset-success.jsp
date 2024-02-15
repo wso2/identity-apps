@@ -75,21 +75,19 @@
         <layout:component componentName="MainSection" >
             <div class="ui green segment mt-3 attached">
                 <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-recovery-notify-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
+                    <%=i18n(recoveryResourceBundle, customText, "password.reset.success.heading")%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "follow.reset.password.email.instructions")%>
-                    <br><br>
-                    <%= IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "didnt.receive.email.not.registered.alt") + " "
-                        + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "signed.up.using.social.account.create.account.or.use.different.login")
-                    %>
+                    <span class="line-break">
+                        <%=i18n(recoveryResourceBundle, customText, "password.reset.success.body")%>
+                    </span>
                     <%
                         if(StringUtils.isNotBlank(accessUrl)) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>
                         <a href="<%= Encode.forHtml(accessUrl)%>">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                            <%=i18n(recoveryResourceBundle, customText, "password.reset.success.action")%>
                         </a>
                     <% } %>
                 </p>

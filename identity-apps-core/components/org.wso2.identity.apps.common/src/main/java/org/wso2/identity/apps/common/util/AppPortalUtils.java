@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023, WSO2 LLC. (http://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (http://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ package org.wso2.identity.apps.common.util;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.identity.api.resource.mgt.APIResourceMgtException;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.AssociatedRolesConfig;
@@ -31,7 +30,6 @@ import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.Scope;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
 import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
@@ -43,8 +41,8 @@ import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
 import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
+import org.wso2.carbon.identity.role.mgt.core.RoleConstants;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
-import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
@@ -376,19 +374,6 @@ public class AppPortalUtils {
         return null;
     }
 
-    private static List<Permission> getAllPermissions(String tenantDomain)
-        throws IdentityApplicationManagementException {
-
-        try {
-            List<Scope> scopes = AppsCommonDataHolder.getInstance().getAPIResourceManager()
-                .getSystemAPIScopes(tenantDomain);
-            return scopes.stream().map(scope -> new Permission(scope.getName())).collect(Collectors.toList());
-        } catch (APIResourceMgtException e) {
-            throw new IdentityApplicationManagementException("Error while retrieving internal scopes for tenant " +
-                "domain : " + tenantDomain, e);
-        }
-    }
-
     private static void shareApplication(String tenantDomain, int tenantId, String appId, String appName,
                                          String appOwner)
         throws IdentityApplicationManagementException {
@@ -411,6 +396,7 @@ public class AppPortalUtils {
             PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
             privilegedCarbonContext.setTenantId(tenantId);
             privilegedCarbonContext.setTenantDomain(tenantDomain);
+            privilegedCarbonContext.setUsername(appOwner);
             IdentityApplicationManagementUtil.setAllowUpdateSystemApplicationThreadLocal(true);
             AppsCommonDataHolder.getInstance().getOrgApplicationManager()
                 .shareOrganizationApplication(organizationId, appId, true,
@@ -431,9 +417,14 @@ public class AppPortalUtils {
 
         try {
             String userID = getUserId(appOwner, tenantId);
+            String adminGroupId = getAdminGroupId(tenantId);
+            List<String> groupIds = Collections.emptyList();
+            if (StringUtils.isNotEmpty(adminGroupId)) {
+                groupIds = Collections.singletonList(adminGroupId);
+            }
             AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().addRole(ADMINISTRATOR,
-                Collections.singletonList(userID), Collections.emptyList(), getAllPermissions(tenantDomain),
-                APPLICATION, appId, tenantDomain);
+                Collections.singletonList(userID), groupIds, Collections.emptyList(), APPLICATION, appId,
+                tenantDomain);
         } catch (IdentityRoleManagementException e) {
             throw new IdentityApplicationManagementException("Failed to add Administrator role for the " +
                 "console", e);
@@ -567,5 +558,26 @@ public class AppPortalUtils {
 
         return new ClaimMapping[]{emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
             profileUrlClaimMapping};
+    }
+
+    private static String getAdminGroupId(int tenantID) throws IdentityApplicationManagementException {
+
+        try {
+            RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
+            String adminGroupName = realmService.getTenantUserRealm(tenantID).getRealmConfiguration()
+                .getAdminRoleName();
+            if (adminGroupName == null) {
+                return null;
+            }
+            if (adminGroupName.startsWith(RoleConstants.INTERNAL_DOMAIN + CarbonConstants.DOMAIN_SEPARATOR)) {
+                adminGroupName = adminGroupName.replace(RoleConstants.INTERNAL_DOMAIN +
+                    CarbonConstants.DOMAIN_SEPARATOR, "");
+            }
+            return ((AbstractUserStoreManager) realmService.getTenantUserRealm(tenantID).getUserStoreManager()).
+                getGroupIdByGroupName(adminGroupName);
+        } catch (org.wso2.carbon.user.api.UserStoreException e) {
+            throw new IdentityApplicationManagementException("Fail to resolve the admin group ID of the tenant: " +
+                tenantID, e);
+        }
     }
 }

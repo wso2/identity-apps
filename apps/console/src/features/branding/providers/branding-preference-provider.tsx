@@ -40,6 +40,7 @@ import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
@@ -137,6 +138,13 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const {
         data: customTextMeta
     } = useGetCustomTextPreferenceMeta();
+
+    const {
+        data: customTextScreenMeta
+    } = useGetCustomTextPreferenceScreenMeta(
+        !!selectedScreen,
+        selectedScreen
+    );
 
     /**
      * Merge the custom text preference with the fallbacks.
@@ -349,6 +357,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 customTextFormSubscription: customTextFormSubscription ?? {
                     values: resolvedCustomText?.preference?.text
                 },
+                customTextScreenMeta,
                 getLocales: (requestingView: BrandingSubFeatures): SupportedLanguagesMeta => {
                     if (requestingView === BrandingSubFeatures.CUSTOM_TEXT) {
                         return pick(supportedI18nLanguages, customTextMeta?.locales);

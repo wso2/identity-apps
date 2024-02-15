@@ -98,11 +98,41 @@ export class APIResourceUtils {
     public static resolveApiResourceGroup = (groupName: string): string => {
         switch (groupName) {
             case APIResourceCategories.TENANT:
-                return "Management";
+                return "Management APIs";
             case APIResourceCategories.ORGANIZATION:
-                return "Organization";
+                return "Organization APIs";
             case APIResourceCategories.BUSINESS:
-                return "Business";
+                return "Business APIs";
+            default:
+                return groupName;
+        }
+    };
+
+    public static resolveApiResourceGroupDisplayName = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourceCategories.ORGANIZATION:
+                return "Organization API";
+            case APIResourceCategories.TENANT:
+                return "Management API";
+            case APIResourceCategories.CONSOLE_FEATURE:
+                return "Console Feature";
+            case APIResourceCategories.BUSINESS:
+                return "Business API";
+            default:
+                return groupName;
+        }
+    };
+
+    public static resolveApiResourceGroupDescription = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourceCategories.ORGANIZATION:
+                return "extensions:develop.apiResource.organizationAPI.description";
+            case APIResourceCategories.TENANT:
+                return "extensions:develop.apiResource.managementAPI.description";
+            case APIResourceCategories.CONSOLE_FEATURE:
+                return "extensions:develop.apiResource.consoleFeature.description";
+            case APIResourceCategories.BUSINESS:
+                return "extensions:develop.apiResource.businessAPI.description";
             default:
                 return groupName;
         }

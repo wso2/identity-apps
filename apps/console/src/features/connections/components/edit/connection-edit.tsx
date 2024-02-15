@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,11 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../../extensions";
-import { AppState, FeatureConfigInterface } from "../../../core";
+import { FeatureConfigInterface } from "../../../core/models/config";
+import { AppState } from "../../../core/store";
+import {
+    IdentityProviderManagementConstants
+} from "../../../identity-providers/constants/identity-provider-management-constants";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {
@@ -262,6 +266,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
+                isOIDC={ isOidc }
                 isSaml={ isSaml }
             />
         </ResourceTab.Pane>
@@ -344,6 +349,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
+                isOIDC={ isOidc }
                 data-componentid={ `${ testId }-groups-settings` }
             />
         </ResourceTab.Pane>
@@ -435,11 +441,15 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
          * models folder for types. identity-provider.ts
          */
         const attributesForSamlEnabled: boolean = isSaml &&
-        identityProviderConfig.editIdentityProvider.attributesSettings;
+            identityProviderConfig.editIdentityProvider.attributesSettings;
+
+        const isAttributesEnabledForOIDC: boolean = isOidc;
 
         // Evaluate whether to Show/Hide `Attributes`.
-        if ((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
-        && !isOrganizationEnterpriseAuthenticator) {
+        if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
+            && !isOrganizationEnterpriseAuthenticator
+            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
+            && (type !== IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
                 menuItem: "Attributes",

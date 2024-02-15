@@ -21,7 +21,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Code, ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,
@@ -35,10 +35,10 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
 import { Policy } from "../../../../extensions/components/application/constants";
 import { history } from "../../../../features/core";
-import { APIResourceCategories } from "../../../api-resources/constants";
+import { APIResourceCategories, APIResourcesConstants } from "../../../api-resources/constants";
 import { APIResourceInterface } from "../../../api-resources/models";
 import { APIResourceUtils } from "../../../api-resources/utils/api-resource-utils";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
@@ -127,6 +127,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
             if (isNotSelected && apiResource.policyId == Policy.ROLE) {
                 options.push({
+                    identifier: apiResource?.identifier,
                     key: apiResource?.id,
                     text: apiResource?.displayName,
                     type: apiResource?.type,
@@ -163,7 +164,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
         const selectedApiResources: AuthorizedAPIListItemInterface[] = subscribedAPIResourcesListData.filter(
             (permission: AuthorizedAPIListItemInterface) =>
-                permission?.id === data.value
+                permission?.id === data?.value
         );
 
         selectedApiResources.map((selectedAPIResource: AuthorizedAPIListItemInterface) => {
@@ -421,6 +422,31 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                     data-componentid={ `${componentId}-api` }
                                     getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
                                         apiResourcesListOption.text }
+                                    renderOption={ (props: any, apiResourcesListOption: any) =>
+                                        (
+                                            <div { ...props }>
+                                                <Header.Content>
+                                                    { apiResourcesListOption.text }
+                                                    { apiResourcesListOption.type == APIResourcesConstants.BUSINESS && (
+                                                        <Header.Subheader>
+                                                            <Code
+                                                                className="inline-code compact transparent"
+                                                                withBackground={ false }
+                                                            >
+                                                                { apiResourcesListOption?.identifier }
+                                                            </Code>
+                                                            <Label
+                                                                pointing="left"
+                                                                size="mini"
+                                                                className="client-id-label">
+                                                                { t("extensions:develop.apiResource.table." +
+                                                                "identifier.label") }
+                                                            </Label>
+                                                        </Header.Subheader>
+                                                    ) }
+                                                </Header.Content>
+                                            </div>
+                                        ) }
                                     groupBy={ (apiResourcesListOption: DropdownItemProps) =>
                                         APIResourceUtils
                                             .resolveApiResourceGroup(apiResourcesListOption?.type) }
@@ -434,7 +460,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                             item?.type === APIResourceCategories.ORGANIZATION ||
                                             item?.type === APIResourceCategories.BUSINESS
                                         ).sort((a: DropdownProps, b: DropdownProps) =>
-                                            -b?.type?.localeCompare(a?.type)
+                                            APIResourceUtils.resolveApiResourceGroup(a?.type)
+                                                ?.localeCompare(APIResourceUtils
+                                                    .resolveApiResourceGroup(b?.type))
                                         )
                                     }
                                     onChange={ onAPIResourceSelected }

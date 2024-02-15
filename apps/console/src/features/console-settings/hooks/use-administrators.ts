@@ -26,6 +26,7 @@ import useConsoleRoles from "./use-console-roles";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../core/models/users";
 import { AppState } from "../../core/store";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useUsersList } from "../../users/api/users";
 import { useGetParentOrgUserInvites } from "../../users/components/guests/api/use-get-parent-org-user-invites";
 import { InvitationsInterface } from "../../users/components/guests/models/invite";
@@ -99,6 +100,8 @@ const useAdministrators = (
 
     const modifiedLimit: number = count + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const {
         data: originalAdminUserList,
         error: adminUserListFetchError,
@@ -117,7 +120,7 @@ const useAdministrators = (
     const {
         data: invitedAdministrators,
         mutate: mutateInvitedAdministratorsListFetchRequest
-    } = useGetParentOrgUserInvites();
+    } = useGetParentOrgUserInvites(isSubOrganization());
 
     const { consoleRoles } = useConsoleRoles(null, null);
 

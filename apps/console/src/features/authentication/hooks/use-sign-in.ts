@@ -451,7 +451,8 @@ const useSignIn = (): UseSignInInterface => {
         await dispatch(
             getProfileInformation(
                 Config.getServiceResourceEndpoints().me,
-                window["AppUtils"].getConfig().clientOriginWithTenant
+                window["AppUtils"].getConfig().clientOriginWithTenant,
+                true
             )
         );
 
