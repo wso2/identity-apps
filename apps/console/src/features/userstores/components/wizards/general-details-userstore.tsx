@@ -212,19 +212,19 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
 
                                 let isMatch: boolean = false;
-                                let invalidStringValue: RegExpExecArray = null;
+                                let invalidStringValue: string = null;
 
                                 if (regExpInvalidSymbols.test(value)) {
                                     isMatch = true;
-                                    invalidStringValue = regExpInvalidSymbols.exec(value)
-
+                                    invalidStringValue = regExpInvalidSymbols.exec(value).toString();
                                 }
                                 if (isMatch) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t("console:manage.features.userstores.forms.general.name"
-                                            + ".validationErrorMessages.invalidInputErrorMessage",
-                                            { invalidString: invalidStringValue })
+                                            + ".validationErrorMessages.invalidInputErrorMessage", {
+                                            invalidString: invalidStringValue
+                                        })
                                     );
                                 }
 
@@ -240,29 +240,27 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             placeholder={ t("console:manage.features.userstores.forms.general." +
                                 "description.placeholder") }
                             value={ values?.get("description")?.toString() }
-                            data-testid={ `${testId}-form-description-textarea` }
+                            data-testid={ `${ testId }-form-description-textarea` }
                             validation={ async (value: string, validation: Validation) => {
-                                validation.isValid = true;
 
                                 const regExpInvalidSymbols: RegExp = new RegExp(
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
 
                                 let isMatch: boolean = false;
-                                let invalidStringValue: RegExpExecArray = null;
+                                let invalidStringValue: string = null;
 
                                 if (regExpInvalidSymbols.test(value)) {
                                     isMatch = true;
-                                    invalidStringValue = regExpInvalidSymbols.exec(value)
-
+                                    invalidStringValue = regExpInvalidSymbols.exec(value).toString();
                                 }
-
                                 if (isMatch) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:manage.features.userstores.forms.general.description" +
-                                            ".validationErrorMessages.invalidInputErrorMessage",
-                                            { invalidString: invalidStringValue })
-                                    )
+                                        t("console:manage.features.userstores.forms.general.description"
+                                            + ".validationErrorMessages.invalidInputErrorMessage", {
+                                            invalidString: invalidStringValue
+                                        })
+                                    );
                                 }
 
                             }
