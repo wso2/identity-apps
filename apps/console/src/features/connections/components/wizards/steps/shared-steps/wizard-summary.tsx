@@ -130,11 +130,6 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details" data-testid={ testId }>
-                        <AppAvatar
-                            name={ identityProvider?.name }
-                            image={ identityProvider?.image }
-                            size="tiny"
-                        />
                         { identityProvider?.name && (
                             <Heading size="small" className="name">{ identityProvider.name }</Heading>
                         ) }
