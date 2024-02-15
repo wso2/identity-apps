@@ -118,8 +118,8 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 name={ propertyMetadata?.key }
                 key={ propertyMetadata?.key }
                 type="checkbox"
-                required={ propertyMetadata?.isMandatory }
-                value={ eachProp?.value ? [ eachProp?.key ] : [] }
+                required={ false }
+                value={ eachProp?.value?.toString() === "true" ? [ eachProp?.key ] : [] }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={

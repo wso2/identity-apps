@@ -486,7 +486,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         title={ t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +
                                             "title") }
-                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
                                             t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +
