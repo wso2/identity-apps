@@ -240,7 +240,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },
-            isSuperOrganization && roleV1Enabled ? {
+            roleV1Enabled ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -253,8 +253,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             } : null,
-            // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-            isSuperOrganization && !roleV1Enabled ? {
+            !roleV1Enabled ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
