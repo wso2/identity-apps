@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,35 +56,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                 <Grid.Row columns={ 2 }>
                     <Grid.Column>
                         <FinalFormField
-                            key="provider"
-                            fullWidth
-                            FormControlProps={ {
-                                margin: "dense"
-                            } }
-                            ariaLabel="provider"
-                            readOnly={ isReadOnly }
-                            required={ true }
-                            data-componentid={ `${componentId}-provider` }
-                            name="provider"
-                            type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.providerName.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom" +
-                                ".providerName.placeholder") }
-                            helperText={ (<Hint compact>
-                                { t("extensions:develop.smsProviders.form.custom.providerName.hint") }
-                            </Hint>) }
-                            component={ TextFieldAdapter }
-                            maxLength={
-                                SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
-                            }
-                            minLength={
-                                SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
-                            }
-                            autoComplete="new-password"
-                        />
-                    </Grid.Column>
-                    <Grid.Column>
-                        <FinalFormField
                             key="providerURL"
                             fullWidth
                             FormControlProps={ {
@@ -114,8 +85,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             autoComplete="new-password"
                         />
                     </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
                     <Grid.Column>
                         <FinalFormField
                             key="contentType"
@@ -146,6 +115,8 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             required
                         />
                     </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
                     <Grid.Column>
                         <FinalFormField
                             key="httpMethod"
@@ -176,8 +147,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             autoComplete="new-password"
                         />
                     </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 } >
                     <Grid.Column>
                         <FinalFormField
                             key="headers"
