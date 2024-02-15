@@ -573,8 +573,14 @@ public class AppPortalUtils {
                 adminGroupName = adminGroupName.replace(RoleConstants.INTERNAL_DOMAIN +
                     CarbonConstants.DOMAIN_SEPARATOR, "");
             }
-            return ((AbstractUserStoreManager) realmService.getTenantUserRealm(tenantID).getUserStoreManager()).
-                getGroupIdByGroupName(adminGroupName);
+            try {
+                return ((AbstractUserStoreManager) realmService.getTenantUserRealm(tenantID).getUserStoreManager()).
+                    getGroupIdByGroupName(adminGroupName);
+            } catch (org.wso2.carbon.user.api.UserStoreException e) {
+                // Default admin group is not found.
+                return null;
+            }
+
         } catch (org.wso2.carbon.user.api.UserStoreException e) {
             throw new IdentityApplicationManagementException("Fail to resolve the admin group ID of the tenant: " +
                 tenantID, e);
