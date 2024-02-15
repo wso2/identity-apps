@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,8 @@ import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import ApplicationSelectionModal from "../../../../../extensions/components/shared/application-selection-modal";
-import { ConnectionInterface, ConnectionTemplateInterface } from "../../../../../features/connections/models/connection";
+import { ConnectionInterface, ConnectionTemplateInterface } 
+    from "../../../../../features/connections/models/connection";
 
 interface IproovAuthenticatorQuickStartPropsInterface extends IdentifiableComponentInterface {
     /**

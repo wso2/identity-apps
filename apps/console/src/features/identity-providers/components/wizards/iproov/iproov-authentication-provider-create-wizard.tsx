@@ -17,9 +17,10 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ContentLoader,
     DocumentationLink,
     GenericIcon,
     Heading,
@@ -28,7 +29,6 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
-import { ContentLoader } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -427,7 +427,8 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
                                             <Heading as="h6">
                                                 { subTitle }
                                                 <DocumentationLink
-                                                    link={ getLink("develop.connections.newConnection.iproov.learnMore") }
+                                                    link={ getLink(
+                                                        "develop.connections.newConnection.iproov.learnMore") }
                                                 >
                                                     { t("common:learnMore") }
                                                 </DocumentationLink>

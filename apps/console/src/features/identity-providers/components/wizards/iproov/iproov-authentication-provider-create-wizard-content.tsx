@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,13 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IproovAuthenticationProviderCreateWizardFormValuesInterface } from "./iproov-authentication-provider-create-wizard";
+import { IproovAuthenticationProviderCreateWizardFormValuesInterface }
+    from "./iproov-authentication-provider-create-wizard";
 import { useIdentityProviderList } from "../../../api";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import { IdentityProviderTemplateInterface } from "../../../models";
 import { handleGetIDPListCallError } from "../../utils";
@@ -91,7 +92,6 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
 
     const {
         data: idpList,
-        isLoading: isIdPListFetchRequestLoading,
         error: idpListFetchRequestError
     } = useIdentityProviderList();
 
@@ -144,9 +144,9 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
             apiSecret: undefined,
             baseUrl: undefined,
             enableProgressiveEnrollment: undefined,
+            name: undefined,
             oauthPassword: undefined,
-            oauthUsername: undefined,
-            name: undefined
+            oauthUsername: undefined
         };
 
         if (!values.name) {
