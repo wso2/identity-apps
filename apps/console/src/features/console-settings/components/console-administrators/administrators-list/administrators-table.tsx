@@ -404,7 +404,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @returns the label indication of your own account.
      */
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
-        if (authenticatedUser.includes(getUserNameWithoutDomain(user?.userName))) {
+        if (authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))) {
             return (
                 <Label size="small">
                     Me
