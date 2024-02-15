@@ -395,6 +395,7 @@ public class AppPortalUtils {
             PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
             privilegedCarbonContext.setTenantId(tenantId);
             privilegedCarbonContext.setTenantDomain(tenantDomain);
+            privilegedCarbonContext.setUsername(appOwner);
             IdentityApplicationManagementUtil.setAllowUpdateSystemApplicationThreadLocal(true);
             AppsCommonDataHolder.getInstance().getOrgApplicationManager()
                 .shareOrganizationApplication(organizationId, appId, true,
