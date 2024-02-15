@@ -34,8 +34,6 @@ import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
-import { GenericOrganization } from "../../../organizations/models/organizations";
-import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
 import { UserManagementConstants } from "../../../users/constants";
 import { UserBasicInterface, UserListInterface } from "../../../users/models";
@@ -100,10 +98,6 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
-
-    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isSuperOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isSuperOrganization(currentOrganization), [ currentOrganization ]);
 
     const isUserReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(usersFeatureConfig,
