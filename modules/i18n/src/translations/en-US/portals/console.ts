@@ -618,7 +618,7 @@ export const console: ConsoleNS = {
             myaccount: "My Account",
             "password-recovery": "Password Recovery",
             "password-reset": "Password Reset",
-            "password-reset-success": "Password Reset Success"
+            "password-reset-success": "Email Confirmation Sent"
         }
     },
     brandingCustomText: {
