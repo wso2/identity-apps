@@ -149,30 +149,35 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         disablePadding
                     >
                         <ListItemText
-                            primary={ apiResource?.name }
+                            primary={ (
+                                <>
+                                    { apiResource?.name }
+                                    { apiResource?.type
+                                        && (
+                                            <Popup
+                                                inverted
+                                                position="top center"
+                                                key={ `${ apiResource.type }-popup` }
+                                                content={
+                                                    t(APIResourceUtils.resolveApiResourceGroupDescription(
+                                                        apiResource?.type)) }
+                                                trigger={
+                                                    (
+                                                        <Label
+                                                            size="mini"
+                                                            className="info-label m-1"
+                                                        >
+                                                            { t(APIResourceUtils.resolveApiResourceGroupDisplayName(
+                                                                apiResource?.type)) }
+                                                        </Label>
+                                                    )
+                                                }
+                                            />
+                                        ) }
+                                </>
+                            ) }
                             secondary={ apiResource?.identifier }
                         />
-                        { apiResource?.type
-                            && (
-                                <Popup
-                                    inverted
-                                    position="top center"
-                                    key={ `${ apiResource.type }-popup` }
-                                    content={
-                                        t(APIResourceUtils.resolveApiResourceGroupDescription(apiResource?.type)) }
-                                    trigger={
-                                        (
-                                            <Label
-                                                size="mini"
-                                                className= "info-label"
-                                            >
-                                                { APIResourceUtils
-                                                    .resolveApiResourceGroupDisplayName(apiResource?.type) }
-                                            </Label>
-                                        )
-                                    }
-                                />
-                            ) }
                     </ListItem>
                 </AccordionSummary>
                 {

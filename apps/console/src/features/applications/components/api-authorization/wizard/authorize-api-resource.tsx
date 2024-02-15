@@ -24,6 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    Code,
     ContentLoader,
     DocumentationLink,
     Heading,
@@ -433,10 +434,13 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                             { apiResourcesListOption.type ==
                                                             APIResourcesConstants.BUSINESS
                                                             && (
-                                                                <Header.Subheader className="mt-1">
-                                                                    <code className="inline-code compact transparent">
+                                                                <Header.Subheader>
+                                                                    <Code
+                                                                        className="inline-code compact transparent"
+                                                                        withBackground={ false }
+                                                                    >
                                                                         { apiResourcesListOption?.identifier }
-                                                                    </code>
+                                                                    </Code>
                                                                     <Label
                                                                         pointing="left"
                                                                         size="mini"

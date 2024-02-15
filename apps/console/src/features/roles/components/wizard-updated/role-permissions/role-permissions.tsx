@@ -22,7 +22,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { Code, EmphasizedSegment } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -424,11 +424,18 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                     <Header.Content>
                                         { apiResourcesListOption.text }
                                         { apiResourcesListOption.type == APIResourcesConstants.BUSINESS && (
-                                            <Header.Subheader className="mt-1">
-                                                <code className="inline-code compact transparent">
+                                            <Header.Subheader>
+                                                <Code
+                                                    className="inline-code compact transparent"
+                                                    withBackground={ false }
+                                                >
                                                     { apiResourcesListOption?.identifier }
-                                                </code>
-                                                <Label pointing="left" size="mini" className = "client-id-label">
+                                                </Code>
+                                                <Label
+                                                    pointing="left"
+                                                    size="mini"
+                                                    className="client-id-label"
+                                                >
                                                     { t("extensions:develop.apiResource.table.identifier.label") }
                                                 </Label>
                                             </Header.Subheader>
