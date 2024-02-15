@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.25
+
+### Patch Changes
+
+- [#5531](https://github.com/wso2/identity-apps/pull/5531) [`951c1124da`](https://github.com/wso2/identity-apps/commit/951c1124da1139d302389f2dfbe43c4e9d88da55) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Set app owner in context when sharing system apps
+
 ## 2.1.24
 
 ### Patch Changes
