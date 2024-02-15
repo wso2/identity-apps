@@ -563,7 +563,8 @@ public class AppPortalUtils {
 
         try {
             RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
-            String adminGroupName = realmService.getTenantUserRealm(tenantID).getRealmConfiguration().getAdminRoleName();
+            String adminGroupName = realmService.getTenantUserRealm(tenantID).getRealmConfiguration()
+                .getAdminRoleName();
             if (adminGroupName == null) {
                 return null;
             }
