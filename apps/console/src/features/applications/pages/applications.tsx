@@ -146,8 +146,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
 
-    const { organizationType } = useGetCurrentOrganizationType();
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
