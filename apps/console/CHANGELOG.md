@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.12.30
+
+### Patch Changes
+
+- [#5542](https://github.com/wso2/identity-apps/pull/5542) [`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issues in the permission selection dropdown
+
+* [#5539](https://github.com/wso2/identity-apps/pull/5539) [`103e725ba7`](https://github.com/wso2/identity-apps/commit/103e725ba75daef8fb0612da5888f2f7531412c8) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add email as username capability to user creation wizard
+
+- [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
+* [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+* Updated dependencies [[`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685), [`103e725ba7`](https://github.com/wso2/identity-apps/commit/103e725ba75daef8fb0612da5888f2f7531412c8), [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d), [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721)]:
+  - @wso2is/theme@2.0.67
+  - @wso2is/react-components@2.1.9
+  - @wso2is/common@2.0.45
+  - @wso2is/access-control@2.0.20
+  - @wso2is/core@2.0.36
+  - @wso2is/dynamic-forms@2.0.37
+  - @wso2is/form@2.0.37
+  - @wso2is/forms@2.0.24
+  - @wso2is/i18n@2.0.126
+
 ## 2.12.29
 
 ### Patch Changes
