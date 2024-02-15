@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.28
+
+### Patch Changes
+
+- [#5544](https://github.com/wso2/identity-apps/pull/5544) [`5ef307e47d`](https://github.com/wso2/identity-apps/commit/5ef307e47d8af17654877d3b1d7c8ca58ca3f1ab) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix possible server startup issue for migrating customers
+
 ## 2.1.27
 
 ### Patch Changes
