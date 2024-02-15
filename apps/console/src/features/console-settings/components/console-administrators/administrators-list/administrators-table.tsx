@@ -170,7 +170,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state?.config?.ui?.features?.users;
     });
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
@@ -404,14 +404,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @returns the label indication of your own account.
      */
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
-        if (authenticatedUser?.split("@").length < 3) {
-            return null;
-        }
-
-        // Extracting the current username from authenticatedUser.
-        const currentUsername: string = authenticatedUser?.split("@").slice(0, 2).join("@");
-
-        if (currentUsername === getUserNameWithoutDomain(user?.userName)) {
+        if (authenticatedUser.includes(getUserNameWithoutDomain(user?.userName))) {
             return (
                 <Label size="small">
                     Me
