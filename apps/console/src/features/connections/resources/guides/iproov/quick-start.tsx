@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { VerticalStepper, VerticalStepperStepInterface} from "@wso2is/common/src";
+import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/common/src";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -24,12 +24,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "../../../../../features/connections/models/connection";
-import ApplicationSelectionModal
-from "../../../../../extensions/components/shared/application-selection-modal";
+import ApplicationSelectionModal from "../../../../../extensions/components/shared/application-selection-modal";
+import { ConnectionInterface, ConnectionTemplateInterface } from "../../../../../features/connections/models/connection";
 
 interface IproovAuthenticatorQuickStartPropsInterface extends IdentifiableComponentInterface {
     /**

@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    IproovAuthenticationProviderCreateWizardFormValuesInterface
-} from "./iproov-authentication-provider-create-wizard";
+import { IproovAuthenticationProviderCreateWizardFormValuesInterface } from "./iproov-authentication-provider-create-wizard";
 import { useIdentityProviderList } from "../../../api";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import { IdentityProviderTemplateInterface } from "../../../models";
 import { handleGetIDPListCallError } from "../../utils";
@@ -89,7 +87,7 @@ export const IproovAuthenticationProviderCreateWizardContent: FunctionComponent<
 
     const { t } = useTranslation();
 
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(undefined);
+    const [ isIdPListRequestLoading ] = useState<boolean>(undefined);
 
     const {
         data: idpList,

@@ -266,12 +266,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     /**
      * Checks if the current IDP is iProov.
      */
-       const isIDPIproov = (): boolean => {
+    const isIDPIproov = (): boolean => {
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
-                console.log(authenticator?.name);
-                console.log(authenticator?.name === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV);
-                return authenticator?.name === "IproovAuthenticator";
+                
+                return authenticator?.name === AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_NAME;
             }
         );
     };
