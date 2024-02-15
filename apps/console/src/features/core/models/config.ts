@@ -356,6 +356,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableIdentityClaims?: boolean;
     /**
+     * Flag to check whether email as a username feature is enabled.
+     */
+    enableEmailDomain?: boolean;
+    /**
      * Should show/hide marketing consent banner.
      */
     isMarketingConsentBannerEnabled: boolean;

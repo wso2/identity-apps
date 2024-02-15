@@ -1738,6 +1738,9 @@
         {% if console.enable_identity_claims is defined %}
         "enableIdentityClaims": {{ console.enable_identity_claims }},
         {% endif %}
+        {% if tenant_mgt.enable_email_domain is defined %}
+        "enableEmailDomain": {{ tenant_mgt.enable_email_domain }},
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}
