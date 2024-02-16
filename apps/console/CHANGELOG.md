@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.12.31
+
+### Patch Changes
+
+- [#5554](https://github.com/wso2/identity-apps/pull/5554) [`aee568d6eb`](https://github.com/wso2/identity-apps/commit/aee568d6ebd0b9aa7d10fccb70764aa2e3373af1) Thanks [@savindi7](https://github.com/savindi7)! - Add Regenerate button when client secret is hashed.
+
+* [#5552](https://github.com/wso2/identity-apps/pull/5552) [`0ce632384b`](https://github.com/wso2/identity-apps/commit/0ce632384bdcb4ef3b14dfaf0943965f88fd75c1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix hashed client secret display modal not working upon application creation
+
+- [#5555](https://github.com/wso2/identity-apps/pull/5555) [`16e2875650`](https://github.com/wso2/identity-apps/commit/16e28756507516486d4c2fa0de6c35e22095420e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the profile loading issue after enabling email as username
+
+* [#5549](https://github.com/wso2/identity-apps/pull/5549) [`fe281684fd`](https://github.com/wso2/identity-apps/commit/fe281684fdf5c5b3564937f65513611086e72b18) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with show icon of the password type fields
+
+- [#5535](https://github.com/wso2/identity-apps/pull/5535) [`63bc4c0c07`](https://github.com/wso2/identity-apps/commit/63bc4c0c07f030c7e387941489b1c6f6a987bf31) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix selective share component not being hidden on selecting a different option in shared access form
+
+* [#5551](https://github.com/wso2/identity-apps/pull/5551) [`efb9bd9702`](https://github.com/wso2/identity-apps/commit/efb9bd97022bd1fe544e84f9ea9ac9e3147136bd) Thanks [@brionmario](https://github.com/brionmario)! - Update connector quickstart guides
+
+* Updated dependencies [[`fe281684fd`](https://github.com/wso2/identity-apps/commit/fe281684fdf5c5b3564937f65513611086e72b18)]:
+  - @wso2is/dynamic-forms@2.0.38
+
 ## 2.12.30
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/dynamic-forms
 
+## 2.0.38
+
+### Patch Changes
+
+- [#5549](https://github.com/wso2/identity-apps/pull/5549) [`fe281684fd`](https://github.com/wso2/identity-apps/commit/fe281684fdf5c5b3564937f65513611086e72b18) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with show icon of the password type fields
+
 ## 2.0.37
 
 ### Patch Changes
