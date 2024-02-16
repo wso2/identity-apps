@@ -4356,7 +4356,7 @@ export const console: ConsoleNS = {
                             enableProgressiveEnrollment: {
                                 hint: "Enable Progressive Enrollment with iProov.",
                                 label: "Enable Progressive Enrollment"
-                            },
+                            }
                         },
                         saml: {
                             AuthRedirectUrl: {
