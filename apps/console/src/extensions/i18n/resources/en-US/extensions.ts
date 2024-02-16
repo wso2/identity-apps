@@ -3089,7 +3089,7 @@ export const extensions: Extensions = {
                     " the login flow.",
                 warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
                     " login identifiers.",
-                info: "You have selected email as the username type which makes it the primary login identifier.",
+                info: "You've chosen email as your username type, and it automatically serves as a login identifier.",
                 notification: {
                     error: {
                         description: "Error updating the alternative login identifier configuration.",

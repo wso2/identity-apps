@@ -237,8 +237,8 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 
         resolvedInitialValues = {
             ...resolvedInitialValues,
-            email: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.EMAIL_CLAIM_URI) &&
-                isAlphanumericUsername,
+            email: (isEnabled && allowedAttributes?.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)) ||
+                !isAlphanumericUsername,
             mobile: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.MOBILE_CLAIM_URI)
         };
 
@@ -432,11 +432,16 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const handleSubmit = (values: AlternativeLoginIdentifierFormInterface) => {
 
         const processedFormValues: AlternativeLoginIdentifierFormInterface = { ...values };
-        const checkedClaims: string[] = availableClaims
+        let checkedClaims: string[] = availableClaims
             .filter((claim: Claim) =>
                 processedFormValues[claim?.displayName?.toLowerCase()] !== undefined
                     ? processedFormValues[claim?.displayName?.toLowerCase()] : false)
             .map((claim: Claim) => claim?.claimURI);
+
+        // Remove the email attribute from the allowed attributes list when email username type is enabled
+        if (!isAlphanumericUsername) {
+            checkedClaims = checkedClaims.filter((item: string) => item !== ClaimManagementConstants.EMAIL_CLAIM_URI);
+        }
         const updatedConnectorData: any = getUpdatedConfigurations(checkedClaims);
 
         updateConnector(updatedConnectorData, checkedClaims);

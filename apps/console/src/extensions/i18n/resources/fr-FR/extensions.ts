@@ -3165,7 +3165,7 @@ export const extensions: Extensions = {
                 warning: "Les utilisateurs professionnels peuvent utiliser n'importe lequel des identifiants de" +
                     " connexion sélectionnés comme alternative au nom d'utilisateur dans les flux de connexion," +
                     " les flux de récupération, etc.",
-                info: "Vous avez sélectionné l'e-mail comme type de nom d'utilisateur, ce qui en fait l'identifiant de connexion principal.",
+                info: "Vous avez choisi l'e-mail comme type de nom d'utilisateur et il sert automatiquement d'identifiant de connexion.",
                 notification: {
                     error: {
                         description:"Erreur lors de la mise à jour de la configuration alternative de" +
