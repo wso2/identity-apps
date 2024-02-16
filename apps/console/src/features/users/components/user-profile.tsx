@@ -1110,7 +1110,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
         const isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser: boolean =
-            [ tenantAdmin, adminUsername ].includes(resolvedUsername) || authenticatedUser.includes(resolvedUsername);
+            [ tenantAdmin, adminUsername ]?.includes(resolvedUsername) || authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
