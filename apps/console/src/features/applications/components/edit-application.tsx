@@ -671,7 +671,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     useEffect(() => {
 
-        if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
+        if (!urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY)) {
             return;
         }
 

@@ -537,7 +537,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             let searchParams: string = "?";
             let defaultTabIndex: number = 0;
 
-            if (isClientSecretHashEnabled) {
+            if (selectedTemplate.id !== SinglePageApplicationTemplate.id && isClientSecretHashEnabled) {
                 searchParams = `${ searchParams }&${
                     ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
             }
