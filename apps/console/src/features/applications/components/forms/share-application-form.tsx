@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Collapse from "@mui/material/Collapse";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -49,8 +50,7 @@ import { Dispatch } from "redux";
 import {
     Divider,
     Grid,
-    Radio,
-    Transition
+    Radio
 } from "semantic-ui-react";
 import { AppState } from "../../../core";
 import {
@@ -544,14 +544,14 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             checked={ shareType === ShareType.SHARE_SELECTED }
                             data-componentid={ `${ componentId }-share-with-all-checkbox` }
                         />
-                        <Transition
-                            visible={ shareType === ShareType.SHARE_SELECTED }
-                            animation="slide down"
-                            duration={ 1000 }
+                        <Collapse
+                            in={ shareType === ShareType.SHARE_SELECTED }
+                            orientation="vertical"
+                            timeout="auto"
                         >
                             <>
                                 { sharedWithAll && (
-                                    <Message warning className="ml-4">
+                                    <Message warning className="ml-4 mt-3">
                                         <p>
                                             {
                                                 t(
@@ -645,10 +645,8 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                         ) }
                                     </TransferList>
                                 </TransferComponent>
-
                             </>
-
-                        </Transition>
+                        </Collapse>
                         <Divider hidden className="mb-0 mt-0" />
                         <Radio
                             label={ t(
