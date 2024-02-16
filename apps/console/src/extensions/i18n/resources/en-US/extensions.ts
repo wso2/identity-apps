@@ -2319,7 +2319,7 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectEmailOTP: {
-                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Email OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Email OTP</3> option from the Multi-factor login section to configure a basic Email OTP flow.",
                             heading: "Select <1>Email OTP</1> option"
                         }
                     }
