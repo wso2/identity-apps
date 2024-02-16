@@ -37,7 +37,6 @@ import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED, USERSTORE_VALIDATI
 import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
 
-
 /**
  * Prop types of `EditBasicDetailsUserStore` component
  */
