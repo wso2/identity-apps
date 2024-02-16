@@ -207,7 +207,7 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                     <Text>
                         <Trans
                             i18nKey={
-                                "extensions:develop.identityProviders.siwe.quickStart.steps.selectDefaultConfig " +
+                                "extensions:develop.identityProviders.siwe.quickStart.steps.selectDefaultConfig" +
                                 ".content"
                             }
                         >
