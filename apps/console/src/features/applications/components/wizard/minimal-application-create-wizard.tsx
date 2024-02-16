@@ -82,6 +82,8 @@ import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import MobileApplicationTemplate
+    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
@@ -537,7 +539,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             let searchParams: string = "?";
             let defaultTabIndex: number = 0;
 
-            if (selectedTemplate.id !== SinglePageApplicationTemplate.id && isClientSecretHashEnabled) {
+            if (selectedTemplate.id !== SinglePageApplicationTemplate.id &&
+                selectedTemplate.id !== MobileApplicationTemplate.id &&
+                isClientSecretHashEnabled) {
                 searchParams = `${ searchParams }&${
                     ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
             }
