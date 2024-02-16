@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.34
+
+### Patch Changes
+
+- [#5553](https://github.com/wso2/identity-apps/pull/5553) [`95a73bfa92`](https://github.com/wso2/identity-apps/commit/95a73bfa92564f82763ce9b9e0965202639a4ef9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Handle users without a local account
+
 ## 2.3.33
 
 ### Patch Changes
