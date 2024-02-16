@@ -10992,12 +10992,19 @@ export const console: ConsoleNS = {
                     general: {
                         description: {
                             label: "Description",
-                            placeholder: "Veuillez saisir une description"
+                            placeholder: "Veuillez saisir une description",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "La description ne peut pas contenir le modèle {{invalidString}}."
+                            }
                         },
                         name: {
                             label: "Nom",
                             placeholder: "Veuillez saisir un nom",
-                            requiredErrorMessage: "Le nom de l'annuaire est obligatoire"
+                            requiredErrorMessage: "Le nom de l'annuaire est obligatoire",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "Le nom du magasin d'utilisateurs ne peut pas contenir"
+                                + "le modèle {{invalidString}}."
+                            }
                         },
                         type: {
                             label: "Type",

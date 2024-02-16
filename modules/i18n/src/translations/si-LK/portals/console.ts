@@ -10732,14 +10732,19 @@ export const console: ConsoleNS = {
                     general: {
                         description: {
                             label: "විස්තර",
-                            placeholder: "විස්තරයක් ඇතුළත් කරන්න"
+                            placeholder: "විස්තරයක් ඇතුළත් කරන්න",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "විස්තර ක්ෂේත්‍රයේ {{invalidString}} රටාව අඩංගු විය නොහැක."
+                            }
                         },
                         name: {
                             label: "නම",
                             placeholder: "නමක් ඇතුළත් කරන්න",
                             requiredErrorMessage: "නම අත්‍යවශ්‍ය ක්ෂේත්‍රයකි",
                             validationErrorMessages: {
-                                alreadyExistsErrorMessage: "මෙම නම සහිත පරිශීලක වෙළඳසැලක් දැනටමත් පවතී."
+                                alreadyExistsErrorMessage: "මෙම නම සහිත පරිශීලක වෙළඳසැලක් දැනටමත් පවතී.",
+                                invalidInputErrorMessage: "පරිශීලක වෙළඳසැලේ නම ක්ෂේත්‍රයේ {{invalidString}} රටාව"
+                                + "අඩංගු විය නොහැක."
                             }
                         },
                         type: {
