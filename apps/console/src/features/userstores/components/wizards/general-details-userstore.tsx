@@ -234,9 +234,9 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
 
                                 const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
-                                const isMatch: boolean | string = validityResult.get("isMatch");
+                                const isMatch: string = validityResult.get("isMatch").toString();
 
-                                if (isMatch) {
+                                if (isMatch === "ture") {
                                     validation.isValid = false;
                                     const invalidString: string = validityResult.get("invalidStringValue").toString();
 
@@ -263,9 +263,9 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             validation={ async (value: string, validation: Validation) => {
                                 const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
-                                const isMatch: boolean | string = validityResult.get("isMatch");
+                                const isMatch: string = validityResult.get("isMatch").toString();
 
-                                if (isMatch) {
+                                if (isMatch === "true") {
                                     validation.isValid = false;
                                     const invalidString: string = validityResult.get("invalidStringValue").toString();
 
