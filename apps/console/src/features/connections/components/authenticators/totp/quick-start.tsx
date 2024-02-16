@@ -84,8 +84,8 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.totp.quickStart.steps.selectTOTP.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Add OTP as a second
-                            factor</strong> configure a basic TOTP flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Username & Password + TOTP
+                            </strong> option from the Multi-factor login section to configure a basic TOTP flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -93,24 +93,9 @@ const TOTPQuickStart: FunctionComponent<TOTPQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.totp.quickStart.steps.selectTOTP.heading">
-                    Select <strong>Add TOTP as a second factor</strong>
+                    Select <strong>TOTP</strong> option
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.totp.quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.totp.quickStart.steps.customizeFlow.heading")
         }
     ];
 

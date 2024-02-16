@@ -82,8 +82,9 @@ const EmailOTPQuickStart: FunctionComponent<EmailOTPQuickStartPropsInterface> = 
                             i18nKey={ "extensions:develop.identityProviders.emailOTP.quickStart.steps.selectEmailOTP" +
                             ".content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
-                            configuration</strong>.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Username & Password +
+                                Email OTP </strong> option from the Multi-factor login section to configure a
+                                basic Email OTP flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -91,7 +92,7 @@ const EmailOTPQuickStart: FunctionComponent<EmailOTPQuickStartPropsInterface> = 
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.emailOTP.quickStart.steps.selectEmailOTP.heading">
-                    Select <strong>Start with default configuration</strong>
+                    Select <strong>Email OTP</strong> option
                 </Trans>
             )
         }

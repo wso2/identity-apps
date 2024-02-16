@@ -2319,10 +2319,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectEmailOTP: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add Email OTP as a second " +
-                                "factor</3> to configure a basic Email OTP flow.",
-                            heading: "Select <1>Add Email OTP as a second factor</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Email OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
+                            heading: "Select <1>Email OTP</1> option"
                         }
                     }
                 }
@@ -2385,10 +2383,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectSMSOTP: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add SMS OTP as a second " +
-                                "factor</3> to configure a basic SMS OTP flow.",
-                            heading: "Select <1>Add SMS OTP as a second factor</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + SMS OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
+                            heading: "Select <1>SMS OTP</1> option"
                         }
                     }
                 }
@@ -2416,10 +2412,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Facebook connection.",
+                            heading: "Add a <1>Facebook</1> connection"
                         }
                     }
                 }
@@ -2447,10 +2441,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Github connection.",
+                            heading: "Add a <1>Github</1> connection"
                         }
                     }
                 }
@@ -2478,10 +2470,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add Google login</3> to " +
-                                "configure a Google login flow.",
-                            heading: "Select <1>Add Google login</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Google connection.",
+                            heading: "Add a <1>Google</1> connection"
                         }
                     }
                 }
@@ -2509,10 +2499,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Microsoft connection.",
+                            heading: "Add a <1>Microsoft</1> connection"
                         }
                     }
                 }
@@ -2548,10 +2536,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to the <1>Login Flow</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a HYPR connection.",
+                            heading: "Add a <1>HYPR</1> connection"
                         }
                     }
                 }
@@ -2622,10 +2608,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Sign In With Ethereum connection.",
+                            heading: "Add a <1>Sign In With Ethereum</1> connection"
                         }
                     },
                     subHeading: "Sign In With Ethereum is now ready to be used as a login option for your "
@@ -2709,10 +2693,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectFIDO: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add Passkey Login</3> to configure " +
-                                " a basic passkey flow.",
-                            heading: "Select <1>Add Passkey Login</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Passkey</3> option from the Passwordless login section to configure a basic Passkey flow.",
+                            heading: "Select <1>Passkey</1> option"
                         },
                         configureParameters: {
                             heading: "Configure passkey options",
@@ -2765,9 +2747,8 @@ export const extensions: Extensions = {
                         },
                         selectMagicLink: {
                             content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add Magic Link login" +
-                                "</3> to configure a basic magic-link flow.",
-                            heading: "Select <1>Add Magic Link login</1>"
+                                "Go to <1>Login Flow</1> tab and click on the <3>Magic Link</3> option from the Passwordless login section to configure a basic Magic Link flow.",
+                            heading: "Select <1>Magic Link</1> option"
                         }
                     },
                     subHeading: "Follow the instructions given below to set up magic link login in your login flow."

@@ -26,7 +26,6 @@ import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import ApplicationSelectionModal from "../../../../../extensions/components/shared/application-selection-modal";
 
 /**
@@ -86,11 +85,11 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
                 <>
                     <Text>
                         <Trans
-                            i18nKey={ "extensions:develop.identityProviders.magicLink" +
-                            ".quickStart.steps.selectMagicLink.content" }
+                            i18nKey={ "extensions:develop.identityProviders.magicLink.quickStart.steps" +
+                            ".selectMagicLink.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Magic Link login
-                            </strong> to configure a basic Magic Link flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Magic Link</strong>
+                            option from the Passwordless login section to configure a basic Magic Link flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -98,29 +97,11 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
             ),
             stepTitle: (
                 <Trans
-                    i18nKey="extensions:develop.identityProviders.magicLink
-                    .quickStart.steps.selectMagicLink.heading"
+                    i18nKey="extensions:develop.identityProviders.magicLink.quickStart.steps.selectMagicLink.heading"
                 >
-                    Select <strong>Add Magic Link login</strong>
+                    Select <strong>Magic Link</strong> option
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.magicLink
-                                .quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.magicLink" +
-                ".quickStart.steps.customizeFlow.heading")
         }
     ];
 

@@ -29,8 +29,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
-import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
+import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
+import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
+import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 import { useApplicationList } from "../../../../../features/applications/api";
 import { ApplicationList } from "../../../../../features/applications/components/application-list";
 import {
@@ -210,33 +211,20 @@ const SIWEAuthenticationProviderQuickStart: FunctionComponent<SIWEAuthentication
                                 ".content"
                             }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
-                            configuration</strong>.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Add Sign In Option</strong>
+                            button inside the login box. And select a Sign In With Ethereum connection.
                         </Trans>
                     </Text>
-                    <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep01Illustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep02Illustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep03Illustration } size="huge"/>
                 </>
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.siwe.quickStart.steps.selectDefaultConfig.heading">
-                    Select <strong>Start with default configuration</strong>
+                    Add a <strong>Sign In With Ethereum</strong> connection
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.siwe.quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.siwe.quickStart.steps.customizeFlow.heading")
         }
     ];
 
