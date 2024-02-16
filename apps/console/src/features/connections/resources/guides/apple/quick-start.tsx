@@ -111,7 +111,7 @@ const AppleAuthenticatorQuickStart: FunctionComponent<AppleAuthenticatorQuickSta
                             ".selectDefaultConfig.content" }
                         >
                             Go to <strong>Login Flow</strong> tab and click on the <strong>Add Sign In Option</strong>
-                            button inside the login box. And select a Apple connection.
+                            button inside the login box. And select an Apple connection.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowStep01Illustration } size="huge"/>
