@@ -213,7 +213,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
                                 const isMatch: string = validityResult.get("isMatch").toString();
 
-                                if (isMatch === "ture") {
+                                if (isMatch === "true") {
                                     validation.isValid = false;
                                     const invalidString: string = validityResult.get("invalidStringValue").toString();
 
