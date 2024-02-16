@@ -2287,10 +2287,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add Apple login</3>" +
-                                " to configure a Apple login flow.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Apple connection.",
+                            heading: "Add a <1>Apple</1> connection"
                         }
                     }
                 }
@@ -2659,10 +2657,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectTOTP: {
-                            content:
-                                "Go to <1>Login Flow</1> tab and click on <3>Add OTP as a second " +
-                                "factor</3> to configure a basic TOTP flow.",
-                            heading: "Select <1>Add TOTP as a second factor</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + TOTP</3> option from the Multi-factor login section to configure a basic TOTP flow.",
+                            heading: "Select <1>TOTP</1> option"
                         }
                     },
                     subHeading: "Follow the instructions given below to set up TOTP as a factor in your login flow."
