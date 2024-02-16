@@ -1168,6 +1168,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
                         && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
+                        && !isClientSecretHashEnabled
                         && (
                             <Show
                                 when={ AccessControlConstants.APPLICATION_EDIT }
