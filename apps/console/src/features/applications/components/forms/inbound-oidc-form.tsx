@@ -3714,14 +3714,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             {
                                                 isClientSecretHashEnabled
                                                     ? (
-                                                        <Message
-                                                            visible
-                                                            type="info"
-                                                            content={
-                                                                t("console:develop.features.applications.forms." +
+                                                        <>
+                                                            <Message
+                                                                visible
+                                                                type="info"
+                                                                content={
+                                                                    t("console:develop.features.applications.forms." +
                                                                     "inboundOIDC.fields.clientSecret.hashedDisclaimer")
+                                                                }
+                                                            />
+                                                            {
+                                                                !readOnly && (
+                                                                    <Button
+                                                                        color="red"
+                                                                        className="oidc-action-button"
+                                                                        onClick={ handleRegenerateButton }
+                                                                        data-testid={
+                                                                            `${ testId }-oidc-regenerate-button`
+                                                                        }
+                                                                    >
+                                                                        { t("common:regenerate") }
+                                                                    </Button>
+                                                                )
                                                             }
-                                                        />
+                                                        </>
                                                     )
                                                     : (
                                                         <div className="display-flex">
