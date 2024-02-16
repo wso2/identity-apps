@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -82,6 +82,8 @@ import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import MobileApplicationTemplate
+    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
@@ -537,7 +539,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             let searchParams: string = "?";
             let defaultTabIndex: number = 0;
 
-            if (isClientSecretHashEnabled) {
+            if (selectedTemplate.id !== SinglePageApplicationTemplate.id &&
+                selectedTemplate.id !== MobileApplicationTemplate.id &&
+                isClientSecretHashEnabled) {
                 searchParams = `${ searchParams }&${
                     ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
             }
@@ -1164,6 +1168,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
                         && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
+                        && !isClientSecretHashEnabled
                         && (
                             <Show
                                 when={ AccessControlConstants.APPLICATION_EDIT }
