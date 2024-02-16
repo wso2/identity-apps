@@ -70,6 +70,14 @@ export const setProfileInfo = (details: BasicProfileInterface): AuthAction => ({
 });
 
 /**
+ * Dispatches an action of type `SET_LOCAL_ACCOUNT_STATUS`.
+ */
+export const setLocalAccountStatus = (hasLocalAccount: boolean): AuthAction => ({
+    payload: hasLocalAccount,
+    type: authenticateActionTypes.SET_LOCAL_ACCOUNT_STATUS
+});
+
+/**
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas - SCIM2 schemas
  */
@@ -223,22 +231,29 @@ export const getProfileInformation = (
                 });
         })
         .catch((error: AxiosError & { description: string }) => {
+            if (error?.response?.status === 404) {
+                dispatch(setLocalAccountStatus(false));
+            } else {
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.description ??
+                            I18n.instance.t(
+                                "myAccount:components.profile.notifications.getUserReadOnlyStatus." +
+                                "genericError.description"
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message ??
+                            I18n.instance.t(
+                                "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
+                            )
+                    })
+                );
+            }
+        })
+        .finally(() => {
             dispatch(setProfileInfoLoader(false));
-            dispatch(
-                addAlert({
-                    description:
-                        error?.description ??
-                        I18n.instance.t(
-                            "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.description"
-                        ),
-                    level: AlertLevels.ERROR,
-                    message:
-                        error?.message ??
-                        I18n.instance.t(
-                            "myAccount:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
-                        )
-                })
-            );
         });
 };
 

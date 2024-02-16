@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { AuthStateInterface, createEmptyProfile } from "../../models";
-import { authenticateActionTypes } from "../actions/types";
+import { AuthAction, authenticateActionTypes } from "../actions/types";
 
 /**
  * Initial authenticate state.
@@ -25,6 +25,7 @@ import { authenticateActionTypes } from "../actions/types";
 const authenticateInitialState: AuthStateInterface = {
     displayName: "",
     emails: "",
+    hasLocalAccount: true,
     initialized: false,
     isAuth: false,
     location: window["AppUtils"]?.getConfig()?.routes.home,
@@ -44,7 +45,10 @@ const authenticateInitialState: AuthStateInterface = {
  * @param action - Action type
  * @returns The new state
  */
-const authenticateReducer = (state: AuthStateInterface = authenticateInitialState, action): AuthStateInterface => {
+const authenticateReducer = (
+    state: AuthStateInterface = authenticateInitialState,
+    action: AuthAction
+): AuthStateInterface => {
     switch (action.type) {
         case authenticateActionTypes.SET_SIGN_IN:
             if (action.payload) {
@@ -60,6 +64,7 @@ const authenticateReducer = (state: AuthStateInterface = authenticateInitialStat
                     username: action.payload.username
                 };
             }
+
             break;
         case authenticateActionTypes.SET_SIGN_OUT:
             return {
@@ -85,6 +90,11 @@ const authenticateReducer = (state: AuthStateInterface = authenticateInitialStat
             return {
                 ...state,
                 initialized: action.payload
+            };
+        case authenticateActionTypes.SET_LOCAL_ACCOUNT_STATUS:
+            return {
+                ...state,
+                hasLocalAccount: action.payload
             };
         default:
             return state;
