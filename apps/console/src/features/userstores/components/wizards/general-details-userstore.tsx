@@ -143,6 +143,30 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
         }
     };
 
+    /**
+     * This validates and extracts the matched string with Regex.
+     *
+     * @returns validity status and the invalid string
+     */
+    const validateInputWithRegex = (input: string, regex: string): Map<string, string | boolean> => {
+        const regExpInvalidSymbols: RegExp = new RegExp(regex);
+
+        let isMatch: boolean = false;
+        let invalidStringValue: string = null;
+
+        if (regExpInvalidSymbols.test(input)) {
+            isMatch = true;
+            invalidStringValue = regExpInvalidSymbols.exec(input).toString();
+        }
+
+        const validityResultsMap: Map<string, string | boolean> = new Map<string, string | boolean>();
+
+        validityResultsMap.set("isMatch", isMatch);
+        validityResultsMap.set("invalidStringValue", invalidStringValue);
+
+        return validityResultsMap;
+    };
+
     return (
         <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
@@ -208,26 +232,21 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                     );
                                 }
 
-                                const regExpInvalidSymbols: RegExp = new RegExp(
+                                const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
+                                const isMatch: boolean | string = validityResult.get("isMatch");
 
-                                let isMatch: boolean = false;
-                                let invalidStringValue: string = null;
-
-                                if (regExpInvalidSymbols.test(value)) {
-                                    isMatch = true;
-                                    invalidStringValue = regExpInvalidSymbols.exec(value).toString();
-                                }
                                 if (isMatch) {
                                     validation.isValid = false;
+                                    const invalidString: string = validityResult.get("invalidStringValue").toString();
+
                                     validation.errorMessages.push(
                                         t("console:manage.features.userstores.forms.general.name"
                                             + ".validationErrorMessages.invalidInputErrorMessage", {
-                                            invalidString: invalidStringValue
+                                            invalidString: invalidString
                                         })
                                     );
                                 }
-
                             }
                             }
                         />
@@ -242,27 +261,21 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             value={ values?.get("description")?.toString() }
                             data-testid={ `${ testId }-form-description-textarea` }
                             validation={ async (value: string, validation: Validation) => {
-
-                                const regExpInvalidSymbols: RegExp = new RegExp(
+                                const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
                                     USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
+                                const isMatch: boolean | string = validityResult.get("isMatch");
 
-                                let isMatch: boolean = false;
-                                let invalidStringValue: string = null;
-
-                                if (regExpInvalidSymbols.test(value)) {
-                                    isMatch = true;
-                                    invalidStringValue = regExpInvalidSymbols.exec(value).toString();
-                                }
                                 if (isMatch) {
                                     validation.isValid = false;
+                                    const invalidString: string = validityResult.get("invalidStringValue").toString();
+
                                     validation.errorMessages.push(
                                         t("console:manage.features.userstores.forms.general.description"
                                             + ".validationErrorMessages.invalidInputErrorMessage", {
-                                            invalidString: invalidStringValue
+                                            invalidString: invalidString
                                         })
                                     );
                                 }
-
                             }
                             }
                         />
