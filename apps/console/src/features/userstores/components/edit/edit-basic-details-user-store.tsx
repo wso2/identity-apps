@@ -32,8 +32,11 @@ import { SqlEditor } from "..";
 import { userstoresConfig } from "../../../../extensions";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore } from "../../api";
-import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED, USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED, USERSTORE_VALIDATION_REGEX_PATTERNS }
+    from "../../constants";
 import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models";
+import { validateInputWithRegex } from "../../utils/userstore-utils";
+
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -356,30 +359,6 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             });
     };
 
-    /**
-     * This validates and extracts the matched string with Regex.
-     *
-     * @returns validity status and the invalid string
-     */
-    const validateInputWithRegex = (input: string, regex: string): Map<string, string | boolean> => {
-        const regExpInvalidSymbols: RegExp = new RegExp(regex);
-
-        let isMatch: boolean = false;
-        let invalidStringValue: string = null;
-
-        if (regExpInvalidSymbols.test(input)) {
-            isMatch = true;
-            invalidStringValue = regExpInvalidSymbols.exec(input).toString();
-        }
-
-        const validityResultsMap: Map<string, string | boolean> = new Map<string, string | boolean>();
-
-        validityResultsMap.set("isMatch", isMatch);
-        validityResultsMap.set("invalidStringValue", invalidStringValue);
-
-        return validityResultsMap;
-    };
-
     return (
         <>
             { confirmDelete && deleteConfirmation() }
@@ -439,13 +418,15 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                         value={ userStore?.description }
                                         data-testid={ `${ testId }-form-description-textarea` }
                                         validation={ async (value: string, validation: Validation) => {
-                                            const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
-                                                USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
+                                            const validityResult: Map<string, string | boolean> =
+                                                validateInputWithRegex(value, USERSTORE_VALIDATION_REGEX_PATTERNS
+                                                    .xssEscapeRegEx);
                                             const isMatch: string = validityResult.get("isMatch").toString();
 
                                             if (isMatch === "true") {
                                                 validation.isValid = false;
-                                                const invalidString: string = validityResult.get("invalidStringValue").toString();
+                                                const invalidString: string = validityResult
+                                                    .get("invalidStringValue").toString();
 
                                                 validation.errorMessages.push(
                                                     t("console:manage.features.userstores.forms.general.description"

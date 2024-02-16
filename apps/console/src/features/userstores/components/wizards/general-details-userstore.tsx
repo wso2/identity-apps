@@ -27,6 +27,7 @@ import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { getUserStores, testConnection } from "../../api";
 import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT, USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants";
 import { PropertyAttribute, TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
+import { validateInputWithRegex } from "../../utils/userstore-utils";
 
 /**
  * Prop types of the `GeneralDetails` component
@@ -141,30 +142,6 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
         } else {
             return TestButtonColor.INITIAL;
         }
-    };
-
-    /**
-     * This validates and extracts the matched string with Regex.
-     *
-     * @returns validity status and the invalid string
-     */
-    const validateInputWithRegex = (input: string, regex: string): Map<string, string | boolean> => {
-        const regExpInvalidSymbols: RegExp = new RegExp(regex);
-
-        let isMatch: boolean = false;
-        let invalidStringValue: string = null;
-
-        if (regExpInvalidSymbols.test(input)) {
-            isMatch = true;
-            invalidStringValue = regExpInvalidSymbols.exec(input).toString();
-        }
-
-        const validityResultsMap: Map<string, string | boolean> = new Map<string, string | boolean>();
-
-        validityResultsMap.set("isMatch", isMatch);
-        validityResultsMap.set("invalidStringValue", invalidStringValue);
-
-        return validityResultsMap;
     };
 
     return (
