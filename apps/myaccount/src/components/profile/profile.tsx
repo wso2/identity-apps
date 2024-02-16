@@ -35,6 +35,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     EditAvatarModal,
     LinkButton,
+    Message,
     Popup,
     PrimaryButton,
     UserAvatar,
@@ -47,7 +48,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
+import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import {
     fetchPasswordValidationConfig,
     getUsernameConfiguration,
@@ -103,6 +104,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser: string = useSelector((state: AppState) =>
         state.authenticationInformation.profileInfo.isReadOnly);
+    const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -1308,69 +1310,85 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     : null
             }
         >
-            <List
-                divided={ true }
-                verticalAlign="middle"
-                className="main-content-inner"
-                data-testid={ `${testId}-schema-list` }
-            >
-                {
-                    profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                        if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                            || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
-                        )) {
-                            return (
-                                <>
-                                    {
-                                        showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
-                                            ? (
-                                                < MobileUpdateWizard
-                                                    data-testid={ `${testId}-mobile-update-wizard` }
-                                                    onAlertFired={ onAlertFired }
-                                                    closeWizard={ () =>
-                                                        handleCloseMobileUpdateWizard()
-                                                    }
-                                                    wizardOpen={ true }
-                                                    currentMobileNumber={ profileInfo.get(schema.name) }
-                                                    isMobileRequired={ schema.required }
-                                                />
-                                            )
-                                            : null
-                                    }
-                                    {
-                                        !isEmpty(profileInfo.get(schema.name)) ||
+            {
+                hasLocalAccount
+                    ? (
+                        <List
+                            divided={ true }
+                            verticalAlign="middle"
+                            className="main-content-inner"
+                            data-testid={ `${testId}-schema-list` }
+                        >
+                            {
+                                profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
+                                    if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
+                                        .get("LOCAL_CREDENTIAL_EXISTS")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
+                                    || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
+                                        .get("EMAILS"))
+                                    )) {
+                                        return (
+                                            <>
+                                                {
+                                                    showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
+                                                        ? (
+                                                            < MobileUpdateWizard
+                                                                data-testid={ `${testId}-mobile-update-wizard` }
+                                                                onAlertFired={ onAlertFired }
+                                                                closeWizard={ () =>
+                                                                    handleCloseMobileUpdateWizard()
+                                                                }
+                                                                wizardOpen={ true }
+                                                                currentMobileNumber={ profileInfo.get(schema.name) }
+                                                                isMobileRequired={ schema.required }
+                                                            />
+                                                        )
+                                                        : null
+                                                }
+                                                {
+                                                    !isEmpty(profileInfo.get(schema.name)) ||
                                         (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
                                             && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
-                                            ? (
-                                                <List.Item
-                                                    key={ index }
-                                                    className="inner-list-item"
-                                                    data-testid={ `${testId}-schema-list-item` }>
-                                                    { generateSchemaForm(schema) }
-                                                </List.Item>
-                                            ) : null
+                                                        ? (
+                                                            <List.Item
+                                                                key={ index }
+                                                                className="inner-list-item"
+                                                                data-testid={ `${testId}-schema-list-item` }>
+                                                                { generateSchemaForm(schema) }
+                                                            </List.Item>
+                                                        ) : null
+                                                }
+                                            </>
+                                        );
                                     }
-                                </>
-                            );
-                        }
-                    })
-                }
-            </List>
+                                })
+                            }
+                        </List>
+                    ) : (
+                        <Container className="pl-5 pr-5 pb-4">
+                            <Message
+                                type="info"
+                                content={ "Your profile cannot be managed from this portal." +
+                                    " Please contact your administrator for more details." }
+                                data-componentid={ `${testId}-read-only-profile-banner` }
+                            />
+                        </Container>
+                    )
+            }
         </SettingsSection>
     );
 };

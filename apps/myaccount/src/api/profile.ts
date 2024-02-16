@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { PatchOperationRequest, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { Config } from "../configs";
 import { AppConstants } from "../constants";
@@ -90,8 +90,8 @@ export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: HttpError) => {
-            return Promise.reject(error?.response?.data);
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
         });
 };
 
