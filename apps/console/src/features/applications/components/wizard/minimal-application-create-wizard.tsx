@@ -77,13 +77,15 @@ import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-re
 import { OrganizationType } from "../../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";
-import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
+import { createApplication, getApplicationList, getApplicationTemplateData, getOIDCData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import MobileApplicationTemplate
     from "../../data/application-templates/templates/mobile-application/mobile-application.json";
+import SAMLWebApplicationTemplate
+    from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
@@ -93,12 +95,14 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationTemplateNames,
     MainApplicationInterface,
+    OIDCDataInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
     URLFragmentTypes
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import { HashedClientSecretModal } from "../modals/hashed-client-secret-modal";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -199,7 +203,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ isAppSharingEnabled, setIsAppSharingEnabled ] = useState<boolean>(false);
-
+    const [ clientIdSecret, setClientIdSecret ] = useState<({ clientId: string, clientSecret: string })>({
+        clientId: undefined,
+        clientSecret: undefined
+    });
+    const [ showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal ] = useState<boolean>(false);
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ applicationId, setApplicationId ] = useState<string>(undefined);
 
@@ -213,12 +221,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ alert, setAlert, notification ] = useWizardAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    useEffect(() => {
-        if (applicationId) {
-            setShowAppShareModal(true);
-        }
-    }, [ applicationId ]);
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
@@ -415,7 +417,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION && protocolFormValues) {
             createApp(application);
         }
-
     }, [ protocolFormValues ]);
 
     const createApp = (application: MainApplicationInterface): void => {
@@ -450,11 +451,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 const location: string = response.headers.location;
                 const createdAppID: string = location.substring(location.lastIndexOf("/") + 1);
 
-                if (!isAppSharingEnabled) {
-                    handleAppCreationComplete(createdAppID);
-                } else {
-                    setApplicationId(createdAppID);
-                }
+                setApplicationId(createdAppID);
+                handleAppCreationComplete(createdAppID);
             })
             .catch((error: AxiosError) => {
 
@@ -536,25 +534,70 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // The created resource's id is sent as a location header.
         // If that's available, navigate to the edit page.
         if (!isEmpty(createdAppID)) {
-            let searchParams: string = "?";
-            let defaultTabIndex: number = 0;
+            const clientSecretHashingDisabledTemplates: string[] = [
+                SinglePageApplicationTemplate.id,
+                MobileApplicationTemplate.id,
+                SAMLWebApplicationTemplate.id
+            ];
 
-            if (selectedTemplate.id !== SinglePageApplicationTemplate.id &&
-                selectedTemplate.id !== MobileApplicationTemplate.id &&
-                isClientSecretHashEnabled) {
-                searchParams = `${ searchParams }&${
-                    ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
+            // Client secret hashing is enabled.
+            // Client secret hashing is not supported for SPA and Mobile applications.
+            if (isClientSecretHashEnabled && !clientSecretHashingDisabledTemplates.includes(selectedTemplate.id) &&
+                (selectedTemplate.id !== CustomApplicationTemplate.id ||
+                    customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC)){
+
+                // Handle showing of client secret modal before hashing.
+                getOIDCData(createdAppID).then((response: OIDCDataInterface) => {
+                    if (response?.clientSecret && response?.clientId) {
+                        setClientIdSecret({
+                            clientId: response.clientId,
+                            clientSecret: response.clientSecret
+                        });
+                        setShowClientSecretHashDisclaimerModal(true);
+                    }
+                }).catch((error: AxiosError) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(
+                            addAlert({
+                                description: error.response.data.description,
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "console:develop.features.applications.notifications.fetchOIDCData.error.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:develop.features.applications.notifications.fetchOIDCData" +
+                                ".genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:develop.features.applications.notifications.fetchOIDCData" +
+                                ".genericError.message"
+                            )
+                        })
+                    );
+                });
+
+                return;
             }
 
-            if (selectedTemplate.id === CustomApplicationTemplate.id) {
-                defaultTabIndex = applicationConfig.customApplication.defaultTabIndex;
+            // Client secret hashing is not enabled.
+            // Application sharing is ticked, show the application share modal.
+            if (isAppSharingEnabled) {
+                setShowAppShareModal(true);
+
+                return;
             }
 
-            history.push({
-                hash: `#${URLFragmentTypes.TAB_INDEX}${defaultTabIndex}`,
-                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
-                search: searchParams
-            });
+            // Client secret hashing is not enabled and application sharing is not ticked.
+            // Navigate to the application edit page.
+            navigateToApplicationEdit(createdAppID);
 
             return;
         }
@@ -563,9 +606,47 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
+    /**
+     * Handles the logic to visit application edit page.
+     */
+    const navigateToApplicationEdit = (appId: string): void => {
+        let defaultTabIndex: number = 0;
+
+        if (selectedTemplate.id === CustomApplicationTemplate.id) {
+            defaultTabIndex = applicationConfig.customApplication.defaultTabIndex;
+        }
+
+
+        history.push({
+            hash: `#${ URLFragmentTypes.TAB_INDEX }${ defaultTabIndex }`,
+            pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId)
+        });
+    };
+
+    /**
+     * Handles the application sharing completion.
+     * This is triggered when the application sharing is completed.
+     */
     const handleApplicationSharingCompletion = (): void => {
         setShowAppShareModal(false);
-        handleAppCreationComplete(applicationId);
+        navigateToApplicationEdit(applicationId);
+    };
+
+    /**
+     * Handles the client secret hashing completion.
+     * This is triggered when the client secret hashing is completed.
+     */
+    const handleClientSecretHashingCompletion = (): void => {
+        setShowClientSecretHashDisclaimerModal(false);
+        // If application sharing is enabled, show the application share modal.
+        if (isAppSharingEnabled) {
+            setShowAppShareModal(true);
+
+            return;
+        }
+
+        // If application sharing is not enabled, navigate to the application edit page.
+        navigateToApplicationEdit(applicationId);
     };
 
     /**
@@ -1168,7 +1249,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
                         && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
-                        && !isClientSecretHashEnabled
                         && (
                             <Show
                                 when={ AccessControlConstants.APPLICATION_EDIT }
@@ -1296,7 +1376,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 />
             ) }
             <ModalWithSidePanel
-                open={ !openLimitReachedModal && !showAppShareModal }
+                open={ !openLimitReachedModal && !showAppShareModal && !showClientSecretHashDisclaimerModal }
                 className="wizard minimal-application-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
@@ -1356,6 +1436,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     applicationId={ applicationId }
                     onClose={ () => setShowAppShareModal(false) }
                     onApplicationSharingCompleted={ handleApplicationSharingCompletion }
+                />
+            ) }
+            { showClientSecretHashDisclaimerModal && (
+                <HashedClientSecretModal
+                    applicationId={ applicationId }
+                    open={ showClientSecretHashDisclaimerModal }
+                    clientId={ clientIdSecret?.clientId }
+                    clientSecret={ clientIdSecret?.clientSecret }
+                    onPrimaryClick={ handleClientSecretHashingCompletion }
                 />
             ) }
         </>
