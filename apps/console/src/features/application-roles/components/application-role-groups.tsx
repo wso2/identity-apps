@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -81,8 +81,8 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
         error: applicationRoleGroupDataFetchRequestError
     } = useApplicationRoleMappedGroups(appId, roleId);
 
-    useEffect(() => {                        
-        if (originalApplicationRoleGroupData instanceof IdentityAppsApiException 
+    useEffect(() => {
+        if (originalApplicationRoleGroupData instanceof IdentityAppsApiException
                 || applicationRoleGroupDataFetchRequestError) {
             handleAlerts({
                 description: t(
@@ -124,11 +124,11 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
 
         if (query === "") {
             setProcessedGroupsList(originalApplicationRoleGroupData.groups);
-            
+
             return;
         }
 
-        const filteredGroupsList: ApplicationRoleGroupInterface[] = 
+        const filteredGroupsList: ApplicationRoleGroupInterface[] =
         originalApplicationRoleGroupData.groups.filter((group: ApplicationRoleGroupInterface) => {
             return group.name.toLowerCase().includes(query.toLowerCase());
         });
@@ -148,7 +148,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
         };
 
         setSubmitting(true);
-        
+
         updateApplicationRoleMappedGroups(appId, roleId, groupData)
             .then(() => {
                 handleAlerts({
@@ -274,7 +274,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
 
         return null;
     };
-        
+
     /**
      * Resolves data table columns.
      */
@@ -374,7 +374,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
     };
 
     return (
-        !isApplicationRoleGroupDataFetchRequestLoading 
+        !isApplicationRoleGroupDataFetchRequestLoading
             ? (
                 <>
                     <Grid>
@@ -386,7 +386,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                             data-componentid={ `${ componentId }-groups-list-search-input` }
                                             icon={ <Icon name="search" /> }
                                             iconPosition="left"
-                                            onChange={ (e: ChangeEvent<HTMLInputElement>) => 
+                                            onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                                                 searchGroups(e.target.value) }
                                             value={ searchQuery }
                                             placeholder={ t("extensions:console.applicationRoles.roleGroups." +
