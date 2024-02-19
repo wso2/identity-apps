@@ -1,5 +1,14 @@
 # @wso2is/common
 
+## 2.0.46
+
+### Patch Changes
+
+- [#5556](https://github.com/wso2/identity-apps/pull/5556) [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6) Thanks [@savindi7](https://github.com/savindi7)! - Update content related to Authorize API Resource modal and empty illustration.
+
+- Updated dependencies [[`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3)]:
+  - @wso2is/i18n@2.0.127
+
 ## 2.0.45
 
 ### Patch Changes

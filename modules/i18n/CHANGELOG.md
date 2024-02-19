@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.127
+
+### Patch Changes
+
+- [#5546](https://github.com/wso2/identity-apps/pull/5546) [`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3) Thanks [@Shalindri](https://github.com/Shalindri)! - Add validation for user store input fields
+
 ## 2.0.126
 
 ### Patch Changes
