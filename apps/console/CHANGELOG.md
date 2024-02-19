@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.33
+
+### Patch Changes
+
+- [#5567](https://github.com/wso2/identity-apps/pull/5567) [`3a2425663d`](https://github.com/wso2/identity-apps/commit/3a2425663d5fbf2ade4cc3b369f2d6e0f67a259b) Thanks [@dewniMW](https://github.com/dewniMW)! - Fix issue with username being enclosed with "" in invite parent user feature which fails the user addition
+
 ## 2.12.32
 
 ### Patch Changes
