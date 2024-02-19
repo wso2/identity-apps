@@ -969,7 +969,7 @@ export const extensions: Extensions = {
                                         rbac: {
                                             label: "Activer le contrôle d'accès basé sur les rôles (RBAC)",
                                             name: "Contrôle d'accès basé sur les rôles (RBAC)",
-                                            hint: "Les politiques d'autorisation du RBAC seront appliquées pour cette ressource API.L'autorisation de rôle et de rôle dans les mappages de groupe sera évaluée lors de l'appel d'autorisation."
+                                            hint: "Les politiques d'autorisation RBAC seront appliquées pour cette ressource API. Les mappages d’autorisation de rôle et de rôle vers un groupe/utilisateur seront évalués lors de l’appel d’autorisation."
                                         },
                                         consent: {
                                             label: "Activer la politique d'accès basée sur le consentement",
