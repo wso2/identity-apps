@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.12.32
+
+### Patch Changes
+
+- [#5546](https://github.com/wso2/identity-apps/pull/5546) [`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3) Thanks [@Shalindri](https://github.com/Shalindri)! - Add validation for user store input fields
+
+* [#5556](https://github.com/wso2/identity-apps/pull/5556) [`db3728341b`](https://github.com/wso2/identity-apps/commit/db3728341b30c8d1ee5581e66697e21896764194) Thanks [@savindi7](https://github.com/savindi7)! - Remove redundant config from Ask Password.
+
+- [#5556](https://github.com/wso2/identity-apps/pull/5556) [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6) Thanks [@savindi7](https://github.com/savindi7)! - Update content related to Authorize API Resource modal and empty illustration.
+
+- Updated dependencies [[`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3), [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6)]:
+  - @wso2is/i18n@2.0.127
+  - @wso2is/common@2.0.46
+
 ## 2.12.31
 
 ### Patch Changes
