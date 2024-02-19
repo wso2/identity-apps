@@ -271,6 +271,7 @@
                 id="usernameUserInput"
                 value=""
                 name="usernameUserInput"
+                data-component-id="login-page-username-input"
                 maxlength="50"
                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
                 required
