@@ -71,5 +71,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issue_number,
-              body: 'Everything is OK. Thank you for the PR ${{issue_number}}!'
+              body: `Everything is OK. Thank you for the PR #${issue_number}!`
             });
