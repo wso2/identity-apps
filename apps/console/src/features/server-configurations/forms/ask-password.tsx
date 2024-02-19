@@ -101,6 +101,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         JIT_PROVISIONING_PURPOSES_URL: "_url_listPurposeJITProvisioning"
     };
     const HIDDEN_PROPERTIES: string[] = [
+        PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME,
         PROPERTY_NAMES.EMAIL_VERIFICATION_ASK_PASSWORD_PASSWORD_GENERATOR,
         PROPERTY_NAMES.EMAIL_VERIFICATION_NOTIFICATION_INTERNALLY_MANAGE,
         PROPERTY_NAMES.EMAIL_VERIFICATION_OTP_OTPLENGTH,
@@ -247,48 +248,6 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
-            <Field.Input
-                ariaLabel="Email verification code expiry time"
-                inputType="number"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME)
-                }
-                min={
-                    GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                        .EXPIRY_TIME_MIN_VALUE
-                }
-                max={
-                    GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                        .EXPIRY_TIME_MAX_VALUE
-                }
-                width={ 12 }
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "User Onboarding",
-                    PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME,
-                    "Email verification code expiry time") }
-                required={ false }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                    "selfRegistration.form.fields.expiryTime.placeholder") }
-                maxLength={
-                    GovernanceConnectorConstants
-                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
-                }
-                labelPosition="right"
-                minLength={
-                    GovernanceConnectorConstants
-                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
-                }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                initialValue={ initialFormValues?.[
-                    PROPERTY_NAMES.EMAIL_VERIFICATION_EXPIRY_TIME ] }
-                data-componentid={ `${ testId }-link-expiry-time` }
-                data-testid={ `${testId}-link-expiry-time` }
-            >
-                <input/>
-                <Label>mins</Label>
-            </Field.Input>
             <Field.Input
                 ariaLabel="Password Setup Invitation Code Expiration Time"
                 inputType="number"
