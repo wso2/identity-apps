@@ -32,7 +32,7 @@ export const getServerConfigurationsResourceEndpoints = (
     return {
         accountDisabling: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-        }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
+        }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_DYNAMIC_CONNECTOR_ID}`,
         accountLocking: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,

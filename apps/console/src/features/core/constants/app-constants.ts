@@ -400,7 +400,8 @@ export class AppConstants {
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
-                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ]
+                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
+            [ "ACCOUNT_DISABLING", `${AppConstants.getAdminViewBasePath()}/account-disabling` ]
         ]);
 
         return paths;

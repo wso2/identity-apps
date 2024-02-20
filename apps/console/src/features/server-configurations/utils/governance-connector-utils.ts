@@ -264,6 +264,13 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
                         route: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"),
                         testId: "private-key-jwt-client-auth-card"
+                    },
+                    {
+                        description: "Enable administrators to disable user accounts.",
+                        header: "Account Disable",
+                        id: ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
+                        route: AppConstants.getPaths().get("ACCOUNT_DISABLING"),
+                        testId: "account-disable-card"
                     }
                 ],
                 displayOrder: 1,

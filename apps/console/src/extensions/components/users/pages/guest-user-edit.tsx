@@ -107,7 +107,7 @@ const GuestUserEditPage = (): ReactElement => {
         getGovernanceConnectors(ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
             .then((response: GovernanceConnectorInterface[]) => {
                 response.map((connector: GovernanceConnectorInterface) => {
-                    if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID
+                    if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_DYNAMIC_CONNECTOR_ID
                         || connector.id === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID) {
                         connector.properties.map((property: ConnectorPropertyInterface) => {
                             properties.push(property);
@@ -422,8 +422,8 @@ const GuestUserEditPage = (): ReactElement => {
                                                 }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting 
-                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                Sign up for a Gravatar account by visiting
+                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a>
                                                 or use one of the following.
                                             </Trans>
                                         ),

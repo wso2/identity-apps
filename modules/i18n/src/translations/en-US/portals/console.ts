@@ -8943,9 +8943,10 @@ export const console: ConsoleNS = {
                             },
                             accountDisableHandler: {
                                 friendlyName: "Account Disable",
+                                description: "Configure account disabling settings for the organization.",
                                 properties: {
                                     accountDisableHandlerEnable: {
-                                        hint: "Allow an administrative user to disable user accounts",
+                                        hint: "If enabled, administrators are allowed to disable user accounts.",
                                         label: "Enable account disabling"
                                     },
                                     accountDisableHandlerNotificationManageInternally: {

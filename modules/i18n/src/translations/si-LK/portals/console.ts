@@ -7178,9 +7178,10 @@ export const console: ConsoleNS = {
                             },
                             accountDisableHandler: {
                                 friendlyName: "ගිණුම අක්රීය කරන්න",
+                                description: "සංවිධානය සඳහා සැකසුම් අක්රීය කිරීමේ ගිණුමක් වින්යාස කරන්න.",
                                 properties: {
                                     accountDisableHandlerEnable: {
-                                        hint: "පරිපාලන පරිශීලකයෙකුට පරිශීලක ගිණුම් අක්රීය කිරීමට ඉඩ දෙන්න",
+                                        hint: "සක්රීය කර ඇත්නම්, පරිපාලකයින්ට පරිශීලක ගිණුම් අක්රීය කිරීමට අවසර ඇත.",
                                         label: "ගිණුම් අක්රීය කිරීම සක්රීය කරන්න"
                                     },
                                     accountDisableHandlerNotificationManageInternally: {

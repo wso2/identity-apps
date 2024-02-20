@@ -141,7 +141,7 @@ const ConsumerUserEditPage = (): ReactElement => {
         getGovernanceConnectors(ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
             .then((response: GovernanceConnectorInterface[]) => {
                 response.map((connector: GovernanceConnectorInterface) => {
-                    if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID
+                    if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_DYNAMIC_CONNECTOR_ID
                         || connector.id === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID
                         || connector.id === ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID) {
                         connector.properties.map((property: ConnectorPropertyInterface) => {

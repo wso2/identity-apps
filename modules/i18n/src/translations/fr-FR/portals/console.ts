@@ -7347,9 +7347,10 @@ export const console: ConsoleNS = {
                             },
                             accountDisableHandler: {
                                 friendlyName: "Compte désactiver",
+                                description: "Configurez les paramètres de désactivation du compte pour l'organisation.",
                                 properties: {
                                     accountDisableHandlerEnable: {
-                                        hint: "Allow an administrative user to disable user accounts",
+                                        hint: "S'ils sont activés, les administrateurs sont autorisés à désactiver les comptes d'utilisateurs.",
                                         label: "Activer la désactivation du compte"
                                     },
                                     accountDisableHandlerNotificationManageInternally: {

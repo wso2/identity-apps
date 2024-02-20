@@ -1712,6 +1712,20 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
                 protected: true,
                 showOnSidePanel: false
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.AccountManagement",
+                component: lazy(() => import("../../server-configurations/pages/account-disable-page")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().childIcon
+                },
+                id: "accountDisabling",
+                name: "console:develop.features.applications.resident.provisioning.outbound.heading",
+                order: 6,
+                path: AppConstants.getPaths().get("ACCOUNT_DISABLING"),
+                protected: true,
+                showOnSidePanel: false
             }
         );
 

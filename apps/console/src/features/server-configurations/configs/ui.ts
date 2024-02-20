@@ -120,7 +120,7 @@ export const getGovernanceConnectorIllustrations = () : GetGovernanceConnectorIl
         [ ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID ]: AccountLockConnectorIllustration,
         [ ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ]: reCaptchaConnectorIllustration,
         [ ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID ]: idleAccountSuspendConnectorIllustration,
-        [ ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID ]: AccountDisableConnectorIllustration,
+        [ ServerConfigurationsConstants.ACCOUNT_DISABLING_DYNAMIC_CONNECTOR_ID ]: AccountDisableConnectorIllustration,
         [ ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID ]: AccountRecoveryConnectorIllustration,
         [ ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID ]: PasswordResetConnectorIllustration,
         [ ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID ]: ConsentInfoConnectorIllustration,

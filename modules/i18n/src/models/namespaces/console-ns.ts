@@ -5031,6 +5031,7 @@ export interface ConsoleNS {
                             };
                             accountDisableHandler: {
                                 friendlyName: string;
+                                description: string;
                                 properties: {
                                     accountDisableHandlerEnable: {
                                         hint: string;
