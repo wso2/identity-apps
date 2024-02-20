@@ -125,6 +125,61 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
 };
 
 /**
+ * Get API resources.
+ *
+ * @param after - after.
+ * @param before - before.
+ * @param filter - filter.
+ * @param shouldFetch - whether to fetch or not.
+ * @returns `Promise<APIResourcesListInterface>`
+ * @throws `IdentityAppsApiException`
+ */
+export const getAPIResources = (
+    after?: string,
+    before?: string,
+    filter?: string
+): Promise<APIResourcesListInterface> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter
+        },
+        url: `${store.getState().config.endpoints.apiResources}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                return Promise.resolve(response.data as APIResourcesListInterface);
+            } else {
+                throw new IdentityAppsApiException(
+                    response.data.description,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
  *
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`

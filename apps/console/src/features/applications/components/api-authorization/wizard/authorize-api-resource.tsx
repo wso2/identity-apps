@@ -40,9 +40,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { useAPIResources } from "../../../../api-resources/api";
+import { getAPIResources } from "../../../../api-resources/api";
 import { APIResourceCategories, APIResourcesConstants } from "../../../../api-resources/constants";
-import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
+import {
+    APIResourceInterface,
+    APIResourcePermissionInterface,
+    APIResourcesListInterface
+} from "../../../../api-resources/models";
 import { APIResourceUtils } from "../../../../api-resources/utils/api-resource-utils";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
@@ -90,7 +94,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isAPIResourcesListLoading, setIsAPIResourcesListLoading ] = useState<boolean>(false);
-    const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
+    const [ afterValue, setAfterValue ] = useState<string>(null);
     const [ selectedAPIResource, setSelectedAPIResource ] = useState<APIResourceInterface>(null);
     const [ selectedAPIResourceRequiresAuthorization, setSelectedAPIResourceRequiresAuthorization ]
         = useState<boolean>(true);
@@ -110,17 +114,17 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
 
-    const {
-        data: currentAPIResourcesListData,
-        isLoading: iscurrentAPIResourcesListLoading,
-        error: currentAPIResourcesFetchRequestError,
-        mutate: mutatecurrentAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue);
+    // const {
+    //     data: currentAPIResourcesListData,
+    //     isLoading: iscurrentAPIResourcesListLoading,
+    //     isValidating: iscurrentAPIResourcesListValidating,
+    //     error: currentAPIResourcesFetchRequestError,
+    //     mutate: mutatecurrentAPIResourcesList
+    // } = useAPIResources(apiCallNextAfterValue);
 
     const {
         data: currentAPIResourceScopeListData,
         isLoading: isCurrentAPIResourceScopeListDataLoading,
-        error: currentAPIResourceScopeListFetchError,
         mutate: mutatecurrentAPIResourceScopeList
     } = useScopesOfAPIResources(selectedAPIResource?.id);
 
@@ -130,92 +134,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             || isCurrentAPIResourceScopeListDataLoading
             || currentAPIResourceScopeListData?.length === 0
         ));
-    },[ selectedAPIResource,currentAPIResourceScopeListData, iscurrentAPIResourcesListLoading ]);
-
-    /**
-     * The following useEffect is used to handle if any error occurs while fetching API resources.
-     */
-    useEffect(() => {
-        if (currentAPIResourcesFetchRequestError || currentAPIResourceScopeListFetchError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.message")
-            }));
-            closeWizard();
-        }
-    }, [ currentAPIResourcesFetchRequestError ]);
-
-    /**
-     * Assign all the API resources to the dropdown options if the after value is not null.
-     */
-    useEffect(() => {
-        if (!isAPIResourcesListLoading) {
-            setIsAPIResourcesListLoading(true);
-        }
-
-        let afterValue: string;
-
-        if (currentAPIResourcesListData) {
-            const filteredDropdownItemOptions: DropdownItemProps[] =
-                (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
-                    apiResource: APIResourceInterface) {
-
-                    const isCurrentAPIResourceSubscribed: boolean = subscribedAPIResourcesListData?.length === 0
-                        || !subscribedAPIResourcesListData?.some(
-                            (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
-                                subscribedAPIResource.identifier === apiResource.identifier);
-
-                    if (isCurrentAPIResourceSubscribed) {
-                        const isCurrentAPIResourceAlreadyAdded: boolean = allAPIResourcesDropdownOptions.length === 0
-                            || !allAPIResourcesDropdownOptions?.some(
-                                (dropdownOption: DropdownItemProps) => dropdownOption.key === apiResource.id);
-
-                        if (isCurrentAPIResourceAlreadyAdded) {
-                            filtered.push({
-                                identifier: apiResource?.identifier,
-                                key: apiResource.id,
-                                text: apiResource.name,
-                                type: apiResource.type,
-                                value: apiResource.id
-                            });
-                        }
-                    }
-
-                    return filtered;
-                }, []));
-
-            setAllAPIResourcesDropdownOptions([
-                ...allAPIResourcesDropdownOptions,
-                ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
-            ]);
-
-            // Add the current API resources to the all API resources list.
-            setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
-
-            // Check if there are more API resources to be fetched.
-            let isAfterValueExists: boolean = false;
-
-            currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
-                if (value.rel === APIResourcesConstants.NEXT_REL) {
-                    afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
-
-                    if (afterValue !== apiCallNextAfterValue) {
-                        setAPICallNextAfterValue(afterValue);
-                        isAfterValueExists = true;
-                    }
-                }
-            });
-
-            if (isAfterValueExists) {
-                mutatecurrentAPIResourcesList();
-            } else {
-                setIsAPIResourcesListLoading(false);
-            }
-        }
-    }, [ currentAPIResourcesListData ]);
+    },[ selectedAPIResource,currentAPIResourceScopeListData ]);
 
     /**
      * Assign scopes to the scopes dropdown options.
@@ -240,6 +159,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
      * Assign policies to the policies dropdown options.
      */
     useEffect(() => {
+        fetchAPIResources();
         setIsPolicyDropdownLoading(true);
 
         const policies: DropdownItemProps[] = [];
@@ -286,6 +206,92 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     useEffect(() => {
         setM2MApplication(templateId == ApplicationTemplateIdTypes.M2M_APPLICATION);
     }, [ templateId ]);
+
+
+    /**
+     * Fetch the API resources when the after value changes.
+     */
+    useEffect(() => {
+        if (afterValue) {
+            fetchAPIResources(afterValue);
+        }
+    }, [ afterValue ]);
+
+    /**
+     * Fetch the API resources.
+     */
+    const fetchAPIResources = (apiCallNextAfterValue: string = null) => {
+        setIsAPIResourcesListLoading(true);
+        getAPIResources(apiCallNextAfterValue).then((response: APIResourcesListInterface) => {
+            const currentAPIResourcesListData: APIResourcesListInterface = response;
+
+            const filteredDropdownItemOptions: DropdownItemProps[] =
+            (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
+                apiResource: APIResourceInterface) {
+
+                const isCurrentAPIResourceSubscribed: boolean = subscribedAPIResourcesListData?.length === 0
+                    || !subscribedAPIResourcesListData?.some(
+                        (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
+                            subscribedAPIResource.identifier === apiResource.identifier);
+
+                if (isCurrentAPIResourceSubscribed) {
+                    const isCurrentAPIResourceAlreadyAdded: boolean = allAPIResourcesDropdownOptions.length === 0
+                        || !allAPIResourcesDropdownOptions?.some(
+                            (dropdownOption: DropdownItemProps) => dropdownOption.key === apiResource.id);
+
+                    if (isCurrentAPIResourceAlreadyAdded) {
+                        filtered.push({
+                            identifier: apiResource?.identifier,
+                            key: apiResource.id,
+                            text: apiResource.name,
+                            type: apiResource.type,
+                            value: apiResource.id
+                        });
+                    }
+                }
+
+                return filtered;
+            }, []));
+
+            setAllAPIResourcesDropdownOptions([
+                ...allAPIResourcesDropdownOptions,
+                ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
+            ]);
+
+            // Add the current API resources to the all API resources list.
+            setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
+
+            // Check if there are more API resources to be fetched.
+            let isAfterValueExists: boolean = false;
+            let afterValue: string;
+
+            currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
+                if (value.rel === APIResourcesConstants.NEXT_REL) {
+                    afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
+
+                    if (afterValue !== apiCallNextAfterValue) {
+                        isAfterValueExists = true;
+                        setAfterValue(afterValue);
+                    }
+                }
+            });
+
+            if (!isAfterValueExists) {
+                setIsAPIResourcesListLoading(false);
+            }
+        })
+            .catch(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                        ".genericError.message")
+                }));
+                closeWizard();
+                setIsAPIResourcesListLoading(false);
+            });
+    };
 
     /**
      * Set the selected API resource ID.
@@ -388,7 +394,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 {
-                    iscurrentAPIResourcesListLoading || isAPIResourcesListLoading
+                    isAPIResourcesListLoading
                         ? <ContentLoader inline="centered" active />
                         : (
                             <Grid>
