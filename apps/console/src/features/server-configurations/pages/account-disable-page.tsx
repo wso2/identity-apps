@@ -177,8 +177,8 @@ export const AccountDisableConfigurePage: FunctionComponent<IdentifiableComponen
                 text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
-            contentTopMargin={ true }
-            pageHeaderMaxWidth={ true }
+            contentTopMargin
+            pageHeaderMaxWidth
         >
             <Checkbox
                 label={ isAccountDisablingEnabled ? t("common:enabled") : t("common:disabled") }
@@ -189,11 +189,10 @@ export const AccountDisableConfigurePage: FunctionComponent<IdentifiableComponen
                 toggle
             />
             {
-                <Grid className={ "mt-2" } >
+                <Grid className="mt-2" >
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 10 }>
                             <Message
-                                info
                                 content={ (
                                     <>
                                         <Icon name="info circle"/>
@@ -202,6 +201,7 @@ export const AccountDisableConfigurePage: FunctionComponent<IdentifiableComponen
                                             "properties.accountDisableHandlerEnable.hint") }
                                     </>
                                 ) }
+                                info
                             />
                         </Grid.Column>
                     </Grid.Row>
