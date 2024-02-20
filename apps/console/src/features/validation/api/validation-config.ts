@@ -26,6 +26,8 @@ import useRequest, {
     RequestResultInterface
 } from "../../../features/core/hooks/use-request";
 import { store } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ValidationManagementConstants } from "../constants/validation-config-constants";
 import { ValidationConfInterface, ValidationDataInterface, ValidationFormInterface } from "../models";
 
@@ -102,6 +104,7 @@ export const updateValidationConfigData = (
 export const useValidationConfigData = <Data = ValidationDataInterface[], Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -110,7 +113,9 @@ export const useValidationConfigData = <Data = ValidationDataInterface[], Error 
         },
         method: HttpMethods.GET,
         params: {},
-        url: store.getState().config.endpoints.validationServiceMgt
+        url: organizationType === OrganizationType.SUBORGANIZATION
+            ? store.getState().config.endpoints.validationServiceMgtSubOrg
+            : store.getState().config.endpoints.validationServiceMgt
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
