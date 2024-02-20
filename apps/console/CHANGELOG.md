@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.34
+
+### Patch Changes
+
+- [#5573](https://github.com/wso2/identity-apps/pull/5573) [`0c95086338`](https://github.com/wso2/identity-apps/commit/0c95086338866ec9b8d288ba0b644f61353d334b) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Change the placeholder template
+
 ## 2.12.33
 
 ### Patch Changes
