@@ -129,7 +129,7 @@ export class Config {
             user: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me`,
             validationMgt: `${AppUtils.getOrganizationName()
                 ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
-                : this.getDeploymentConfig()?.serverHost}}/api/server/v1/validation-rules`,
+                : this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
