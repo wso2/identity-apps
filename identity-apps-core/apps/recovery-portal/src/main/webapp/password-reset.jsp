@@ -288,9 +288,14 @@
 
                             <div class="align-right buttons">
                                 <button id="submit"
-                                        class="ui primary button"
-                                        type="submit">
-                                    <%=i18n(recoveryResourceBundle, customText, "password.reset.button")%>
+                                    class="ui primary button"
+                                    type="submit"
+                                >
+                                    <% if ("invite".equalsIgnoreCase(type)) { %>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Proceed")%>
+                                    <% } else { %>
+                                        <%=i18n(recoveryResourceBundle, customText, "password.reset.button")%>
+                                    <% } %>
                                 </button>
                             </div>
                         </form>
