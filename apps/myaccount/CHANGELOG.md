@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.37
+
+### Patch Changes
+
+- [#5579](https://github.com/wso2/identity-apps/pull/5579) [`48281a7045`](https://github.com/wso2/identity-apps/commit/48281a7045878a4010487c5bb078276e697fe7f2) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove unwanted curly braces
+
 ## 2.3.36
 
 ### Patch Changes
