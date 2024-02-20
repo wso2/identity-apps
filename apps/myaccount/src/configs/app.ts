@@ -127,7 +127,9 @@ export class Config {
                 this.getDeploymentConfig()?.serverHost
             }/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me`,
-            validationMgt: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
+            validationMgt: `${AppUtils.getOrganizationName()
+                ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
+                : this.getDeploymentConfig()?.serverHost}}/api/server/v1/validation-rules`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
