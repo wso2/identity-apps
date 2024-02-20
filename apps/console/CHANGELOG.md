@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.35
+
+### Patch Changes
+
+- [#5577](https://github.com/wso2/identity-apps/pull/5577) [`3e7598151d`](https://github.com/wso2/identity-apps/commit/3e7598151d4ffcd7826b8c8e26f7f705ba18f148) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add sub-org level validation rules
+
 ## 2.12.34
 
 ### Patch Changes
