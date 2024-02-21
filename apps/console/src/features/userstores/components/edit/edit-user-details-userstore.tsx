@@ -74,6 +74,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
         properties,
         readOnly,
         update,
+        type,
         [ "data-testid" ]: testId
     } = props;
 
@@ -254,6 +255,12 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                         (attribute: PropertyAttribute) => attribute?.name === "type"
                                     )?.value === "boolean";
 
+                                    // FIXME: Temp fix to hide the `ReadOnly` property from ReadOnly Userstores.
+                                    // This should be handled in the backend and reverted from the UI.
+                                    // Tracker: https://github.com/wso2/product-is/issues/19769#issuecomment-1957415262
+                                    const isHidden: boolean = type.typeName === "UniqueIDReadOnlyLDAPUserStoreManager"
+                                        && property.name === "ReadOnly";
+
                                     return (
                                         isPassword
                                             ? (
@@ -284,6 +291,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             }
                                                         )
                                                     }
+                                                    hidden={ isHidden }
                                                     data-testid={ `${ testId }-form-password-input-${ property.name }` }
                                                 />
                                             )
@@ -316,6 +324,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 }
                                                             )
                                                         }
+                                                        hidden={ isHidden }
                                                         data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                     />
                                                 ) :
@@ -349,6 +358,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                         }
                                                                     )
                                                                 }
+                                                                hidden={ isHidden }
                                                                 data-testid={
                                                                     `${ testId }-form-text-input-${ property.name }`
                                                                 }
@@ -382,6 +392,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     }
                                                                 )
                                                             }
+                                                            hidden={ isHidden }
                                                             data-testid={
                                                                 `${ testId }-form-text-input-${ property?.name }`
                                                             }
