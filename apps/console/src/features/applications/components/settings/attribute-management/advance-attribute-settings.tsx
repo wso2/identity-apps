@@ -521,14 +521,18 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         />
                     )
                     }
-                    <Divider />
-                    <Heading
-                        as="h4"
-                    >
-                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.linkedAccounts.heading") }
-                    </Heading>
-                    <Divider hidden/>
+                    { applicationConfig.attributeSettings.advancedAttributeSettings
+                        .isLinkedAccountsEnabled(applicationTemplateId) &&
+                        (<>
+                            <Divider />
+                            <Heading
+                                as="h4"
+                            >
+                                { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.linkedAccounts.heading") }
+                            </Heading>
+                        </>)
+                    }
                     { !applicationConfig.attributeSettings.advancedAttributeSettings.showMandateLinkedLocalAccount ?
                         (<Field.CheckboxLegacy
                             ariaLabel="Validate linked local account"
@@ -545,7 +549,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             }
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
-                            hidden={
+                            hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                                .isLinkedAccountsEnabled(applicationTemplateId) ||
                                 !applicationConfig.attributeSettings.advancedAttributeSettings
                                     .showValidateLinkedLocalAccount
                             }
@@ -567,7 +572,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             }
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
-                            hidden={
+                            hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                                .isLinkedAccountsEnabled(applicationTemplateId) ||
                                 !applicationConfig.attributeSettings.advancedAttributeSettings
                                     .showValidateLinkedLocalAccount
                             }
@@ -588,7 +594,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-mandate-linked-local-account-checkbox` }
-                        hidden={
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .isLinkedAccountsEnabled(applicationTemplateId) ||
                             !applicationConfig.attributeSettings.advancedAttributeSettings
                                 .showMandateLinkedLocalAccount
                         }

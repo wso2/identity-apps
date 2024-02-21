@@ -438,6 +438,8 @@ export class ApplicationManagementConstants {
 
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS: string = "custom-application-passive-sts";
 
+    public static readonly TRADITIONAL_WEB_APPLICATION_OIDC: string = "b9c5e11e-fc78-484b-9bec-015d247561b8";
+
     public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
     public static readonly MOBILE: string = "mobile-application";

@@ -159,6 +159,11 @@ export const applicationConfig: ApplicationConfig = {
     },
     attributeSettings: {
         advancedAttributeSettings: {
+            isLinkedAccountsEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
