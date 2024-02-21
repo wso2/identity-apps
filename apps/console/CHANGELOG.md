@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.39
+
+### Patch Changes
+
+- [#5589](https://github.com/wso2/identity-apps/pull/5589) [`f5648e20d7`](https://github.com/wso2/identity-apps/commit/f5648e20d784d43ef6d8861216b507266a71fab6) Thanks [@brionmario](https://github.com/brionmario)! - [TEMP] Temp fix to hide `ReadOnly` property
+
 ## 2.12.38
 
 ### Patch Changes
