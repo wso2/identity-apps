@@ -144,7 +144,8 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             ) || false;
         } catch (error) {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.description"),
+                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                    "description"),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
             }));
