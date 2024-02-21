@@ -85,11 +85,19 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 allowedScopes
             );
 
-        const isResidentOutboundProvisioningEnabled: boolean = hasRequiredScopes(
-            featureConfig?.residentOutboundProvisioning,
-            featureConfig?.residentOutboundProvisioning?.scopes?.feature,
-            allowedScopes
-        );
+        const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
+            && hasRequiredScopes(
+                featureConfig?.residentOutboundProvisioning,
+                featureConfig?.residentOutboundProvisioning?.scopes?.feature,
+                allowedScopes
+            );
+
+        const isAccountDisablingEnabled: boolean = featureConfig?.accountDisabling?.enabled
+            && hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.feature,
+                allowedScopes
+            );
 
         for (const category of originalConnectors) {
             if (!isOrganizationDiscoveryEnabled
@@ -102,8 +110,16 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
-            const filteredConnectors: Array<any> = category.connectors.
-                filter((connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+            const filteredConnectors: Array<any> = [];
+
+            // Filter out the account disabling connector if the feature is disabled.
+            for (const connector of category.connectors) {
+                if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID
+                    && !isAccountDisablingEnabled) {
+                    continue;
+                }
+                filteredConnectors.push(connector);
+            }
 
             refinedConnectorCategories.push({ ...category, connectors: filteredConnectors });
         }

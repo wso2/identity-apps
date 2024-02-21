@@ -955,6 +955,23 @@
                     ]
                 }
             },
+            "accountDisabling": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "create": [],
+                    "delete": [],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],
                 "enabled": true,

@@ -519,4 +519,29 @@ export class AccessControlConstants {
      * Resident Application outbound provisioning configuration read permission.
      */
     public static readonly RESIDENT_OUTBOUND_PROVISIONING_READ: string = "residentOutboundProvisioning:read";
+
+    /**
+     * Account Blocking feature permission.
+     */
+    public static readonly ACCOUNT_BLOCKING: string = "accountBlocking";
+
+    /**
+     * Account Blocking write permission.
+     */
+    public static readonly ACCOUNT_BLOCKING_WRITE: string = "accountBlocking:write";
+
+    /**
+     * Account Blocking edit permission.
+     */
+    public static readonly ACCOUNT_BLOCKING_EDIT: string = "accountBlocking:edit";
+
+    /**
+     * Account Blocking delete permission.
+     */
+    public static readonly ACCOUNT_BLOCKING_DELETE: string = "accountBlocking:delete";
+
+    /**
+     * Account Blocking read permission.
+     */
+    public static readonly ACCOUNT_BLOCKING_READ: string = "accountBlocking:read";
 }

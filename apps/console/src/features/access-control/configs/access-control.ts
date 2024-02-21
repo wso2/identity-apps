@@ -348,6 +348,32 @@ export class AccessControlUtils {
                 featureConfig?.residentOutboundProvisioning,
                 featureConfig?.residentOutboundProvisioning?.scopes?.create,
                 allowedScopes
+            ),
+
+            [ AccessControlConstants.ACCOUNT_BLOCKING ]: hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.feature,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ACCOUNT_BLOCKING_READ ]: hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.read,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ACCOUNT_BLOCKING_EDIT ]: hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.update,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ACCOUNT_BLOCKING_DELETE ]: hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.delete,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ACCOUNT_BLOCKING_WRITE ]: hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.create,
+                allowedScopes
             )
         });
     }

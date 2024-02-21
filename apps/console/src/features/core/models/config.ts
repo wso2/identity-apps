@@ -229,6 +229,10 @@ export interface FeatureConfigInterface {
      * Resident Outbound Provisioning feature
      */
     residentOutboundProvisioning?: FeatureAccessConfigInterface;
+    /**
+     * Account Blocking feature
+     */
+    accountDisabling?: FeatureAccessConfigInterface;
 }
 
 /**

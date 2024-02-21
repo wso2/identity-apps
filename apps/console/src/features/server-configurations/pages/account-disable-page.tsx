@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
@@ -24,13 +25,14 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message } from "semantic-ui-react";
-import { AppConstants, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { updateGovernanceConnector } from "../api/governance-connectors";
 import { useGetConnectorDetails } from "../api/use-get-connector-details";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
@@ -48,6 +50,22 @@ export const AccountDisableConfigurePage: FunctionComponent<IdentifiableComponen
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    /**
+     * Check if the user has the required scopes to update the configurations.
+     */
+    const isReadOnly: boolean = useMemo(
+        () =>
+            !hasRequiredScopes(
+                featureConfig?.accountDisabling,
+                featureConfig?.accountDisabling?.scopes?.update,
+                allowedScopes
+            ),
+        [ featureConfig, allowedScopes ]
+    );
 
     const [ isAccountDisablingEnabled, setIsAccountDisablingEnabled ] = useState<boolean>(false);
 
@@ -184,7 +202,7 @@ export const AccountDisableConfigurePage: FunctionComponent<IdentifiableComponen
                 label={ isAccountDisablingEnabled ? t("common:enabled") : t("common:disabled") }
                 onChange={ handleToggle }
                 checked={ isAccountDisablingEnabled }
-                readOnly={ false }
+                readOnly={ isReadOnly }
                 data-componentid={ `${ componentId }-enable-toggle` }
                 toggle
             />

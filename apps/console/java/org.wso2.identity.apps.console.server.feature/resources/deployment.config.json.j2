@@ -1238,6 +1238,35 @@
                 ]
             },
             {% endif %}
+            {% if console.account_disabling is defined %}
+            "accountDisabling": {
+                "enabled": {% if console.account_disabling.enabled is defined %} {{ console.account_disabling.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.account_disabling.scopes is defined %}
+                    {% for operation, scopes in console.account_disabling.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.account_disabling.disabled_features is defined %}
+                    {% for feature in console.account_disabling.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
             {% if console.resident_outbound_provisioning is defined %}
             "residentOutboundProvisioning": {
                 "enabled": {% if console.resident_outbound_provisioning.enabled is defined %} {{ console.resident_outbound_provisioning.enabled }},
