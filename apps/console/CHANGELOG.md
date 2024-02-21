@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.38
+
+### Patch Changes
+
+- [#5587](https://github.com/wso2/identity-apps/pull/5587) [`8756330a7d`](https://github.com/wso2/identity-apps/commit/8756330a7d04882de1ba86a1a4a25696ff119ef0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in getting started page
+
 ## 2.12.37
 
 ### Patch Changes
