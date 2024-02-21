@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.37
+
+### Patch Changes
+
+- [#5585](https://github.com/wso2/identity-apps/pull/5585) [`66950ed1b5`](https://github.com/wso2/identity-apps/commit/66950ed1b58e387d56b3d9dfc8fda2575ee8d409) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the organization discovery domain dropdown
+
 ## 2.12.36
 
 ### Patch Changes
