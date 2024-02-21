@@ -104,3 +104,16 @@ export interface OrganizationResponseInterface {
 export interface OrganizationDiscoveryCheckResponseInterface {
     available: boolean;
 }
+
+/**
+ * Enum for the AutoComplete Reason types.
+ * To-do: Move this enum to Oxygen-UI in the future.
+ */
+export enum AutoCompleteReasonType {
+    CREATE_OPTION = "createOption",
+    REMOVE_OPTION = "removeOption",
+    SELECT_OPTION = "selectOption",
+    CLEAR = "clear",
+    RESET = "reset",
+    BLUR = "blur"
+}
