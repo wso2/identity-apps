@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.36
+
+### Patch Changes
+
+- [#5583](https://github.com/wso2/identity-apps/pull/5583) [`cd98f9f07e`](https://github.com/wso2/identity-apps/commit/cd98f9f07ed0382783decdb9ff8e6d16bb483de1) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Revert "Update SMS provider payload template"
+
 ## 2.12.35
 
 ### Patch Changes
