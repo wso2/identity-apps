@@ -48,7 +48,7 @@ export const extensions: Extensions = {
                         view: "View Social Connections"
                     },
                     description:
-                        "Let your users log in to your applications with an Identity Provider of " + "their choice.",
+                        "Let your users log in to your applications with an Identity Provider of " + "their choice",
                     heading: "Add social login"
                 },
                 integrateApps: {
