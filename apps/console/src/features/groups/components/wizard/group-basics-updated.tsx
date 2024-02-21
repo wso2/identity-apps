@@ -144,9 +144,9 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             ) || false;
         } catch (error) {
             dispatch(addAlert({
-                description: t("console:manage.features.users.notifications.fetchUserStores.genericError.description"),
+                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
             }));
 
             return false;
@@ -191,9 +191,9 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             } catch (error) {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.users.notifications.fetchUserStores.genericError.description"),
+                        "console:manage.features.userstores.notifications.fetchUserstores.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }));
             }
         } else {
