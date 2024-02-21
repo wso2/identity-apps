@@ -2241,8 +2241,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "Charge utile",
-                        placeholder: "{\"content\": {{body}}, \"to\": {{send-to}} }",
-                        hint: "Le modèle de charge utile de la requête API. Utilisez {{body}} pour représenter le corps du SMS généré. Utilisez {{send-to}} pour représenter le numéro de mobile."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "Le modèle de charge utile de la requête API. Utilisez {{body}} pour représenter le corps du SMS généré. Utilisez {{mobile}} pour représenter le numéro de mobile."
                     },
                     key: {
                         label: "Clé d'authentification du fournisseur SMS",

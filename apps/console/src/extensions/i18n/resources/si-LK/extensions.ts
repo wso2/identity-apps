@@ -2179,8 +2179,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "ගෙවීම",
-                        placeholder: "{\"content\": {{body}}, \"to\": {{send-to}} }",
-                        hint: "API ඉල්ලීමේ ගෙවීමේ අච්චුව. උත්පාදනය කරන ලද SMS අන්තර්ගතය නියෝජනය කිරීමට {{body}} භාවිතා කරන්න. ජංගම දුරකථන අංකය නියෝජනය කිරීමට {{send-to}} භාවිතා කරන්න."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "API ඉල්ලීමේ ගෙවීමේ අච්චුව. උත්පාදනය කරන ලද SMS අන්තර්ගතය නියෝජනය කිරීමට {{body}} භාවිතා කරන්න. ජංගම දුරකථන අංකය නියෝජනය කිරීමට {{mobile}} භාවිතා කරන්න."
                     },
                     key: {
                         label: "SMS සපයන්නාගේ සත්‍යාපන යතුර",

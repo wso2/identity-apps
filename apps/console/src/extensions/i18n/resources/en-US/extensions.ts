@@ -2209,8 +2209,8 @@ export const extensions: Extensions = {
                     },
                     payload: {
                         label: "Payload Template",
-                        placeholder: "{\"content\": {{body}}, \"to\": {{send-to}} }",
-                        hint: "The payload template of the API request. Use {{body}} to represent the generated SMS body. Use {{send-to}} to represent the mobile number."
+                        placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                        hint: "The payload template of the API request. Use {{body}} to represent the generated SMS body. Use {{mobile}} to represent the mobile number."
                     },
                     key: {
                         label: "SMS Provider Auth Key",
