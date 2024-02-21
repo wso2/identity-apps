@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,6 +43,7 @@ import { FeatureConfigInterface } from "../../core";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {
+    AutoCompleteReasonType,
     OrganizationDiscoveryAttributeDataInterface,
     OrganizationDiscoveryCheckResponseInterface,
     OrganizationResponseInterface
@@ -207,11 +208,13 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
     };
 
     /**
-     * Function to validate the input string is a valid email domain.
+     * Function to validate the input string is a valid email domain when an option is newly added.
      *
      * @param emailDomainList - Email domains.
      */
-    const validateEmailDomain = async (emailDomainList: string[]) => {
+    const validateEmailDomainCreation = async (emailDomainList: string[]) => {
+        // Convert email domain list to a lower case array.
+        emailDomainList = emailDomainList.map((emailDomain: string) => emailDomain.toLowerCase());
 
         const isEmailDomainValid: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
 
@@ -228,7 +231,11 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         if (!isEmailDomainAvailable) {
             setIsEmailDomainAvailableError(true);
             emailDomainList.pop();
+
+            return;
         }
+
+        setEmailDomains(emailDomainList);
     };
 
     return (
@@ -285,6 +292,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 size="small"
                                 id="tags-filled"
                                 options={ optionsArray.map((option: string) => option) }
+                                isOptionEqualToValue={ () => false }
                                 value={ emailDomains }
                                 renderTags={ (value: readonly string[], getTagProps: AutocompleteRenderGetTagProps) => {
                                     return value.map((option: string, index: number) => (
@@ -332,10 +340,17 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                         />
                                     </>
                                 ) }
-                                onChange={ (_: SyntheticEvent<Element, Event>, value: string[]) => {
-                                    setEmailDomains(value);
-                                    if (value.length > 0) {
-                                        validateEmailDomain(value);
+                                onChange={ (_: SyntheticEvent<Element, Event>, value: string[], reason: string) => {
+                                    // Handle the creation of new options.
+                                    if (reason === AutoCompleteReasonType.CREATE_OPTION && value.length > 0) {
+                                        validateEmailDomainCreation(value);
+
+                                        return;
+                                    }
+
+                                    // Handle the removal of options.
+                                    if (reason === AutoCompleteReasonType.REMOVE_OPTION) {
+                                        setEmailDomains(value);
                                     }
                                 } }
                                 onInputChange={ () => {
