@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.29
+
+### Patch Changes
+
+- [#5593](https://github.com/wso2/identity-apps/pull/5593) [`a7191dcbe7`](https://github.com/wso2/identity-apps/commit/a7191dcbe7df848f85b782830a9d18f280c56e99) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add fix for cleaning URLs
+
 ## 2.1.28
 
 ### Patch Changes
