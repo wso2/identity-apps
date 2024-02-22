@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -143,7 +143,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     const validateTemplatableURLs = (value: string): string => {
         let moderatedValue: string = value?.trim();
         let errorMsg: string;
-        
+
         const placeholdersPattern: string = `${
             BrandingURLPreferenceConstants.LANGUAGE_PLACEHOLDER
         }|${
@@ -155,7 +155,11 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
         // Use a regex to replace {{lang}}, {{country}}, and {{locale}} placeholders while preserving other characters
         moderatedValue = value?.trim().replace(new RegExp(placeholdersPattern, "g"), "");
 
-        if (!FormValidation.url(moderatedValue)) {
+        // Gracefully handle scripting attempts.
+        // TODO: This should be moved to a common util or validation library.
+        const javascriptPattern: string = "javascript:";
+
+        if (moderatedValue?.includes(javascriptPattern) || !FormValidation.url(moderatedValue)) {
             errorMsg = t("extensions:develop.branding.forms.advance.links.fields.common.validations.invalid");
         }
 
