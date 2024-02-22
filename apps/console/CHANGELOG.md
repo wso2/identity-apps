@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.40
+
+### Patch Changes
+
+- [#5592](https://github.com/wso2/identity-apps/pull/5592) [`6e9a6fb7df`](https://github.com/wso2/identity-apps/commit/6e9a6fb7df97db7b5be1cf066281bd954a034e7b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce URL validation to avoid scripting attempts
+
 ## 2.12.39
 
 ### Patch Changes
