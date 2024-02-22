@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.41
+
+### Patch Changes
+
+- [#5591](https://github.com/wso2/identity-apps/pull/5591) [`2ad37492be`](https://github.com/wso2/identity-apps/commit/2ad37492be19375dfb6aec047c4a67a80160267e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the grant types which are not delivered in default pack
+
 ## 2.12.40
 
 ### Patch Changes
