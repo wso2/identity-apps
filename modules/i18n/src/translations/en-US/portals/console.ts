@@ -5829,11 +5829,14 @@ export const console: ConsoleNS = {
                                 hint: "During token exchange if there is a matching local account found," +
                                     " it will be linked implicitly"
                             },
-                            attributes: {
-                                label: "Select attributes to cross check",
-                                hint: "Select up to three attributes that will be used to cross check if" +
-                                    " there is a matching local user account",
-                                placeholder: "No attributes are selected"
+                            primaryAttribute: {
+                                label: "Primary lookup attribute",
+                                hint: "Select the primary attribute that will be used to check if" +
+                                    " there is a matching local user account"
+                            },
+                            secondaryAttribute: {
+                                label: "Secondary lookup attribute",
+                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute"
                             },
                             warning: "Ensure that the selected attributes are verified by the token issuer"
                         }

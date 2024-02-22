@@ -4197,11 +4197,15 @@ export const console: ConsoleNS = {
                                 hint: "Lors de l'échange de jetons, si un compte local correspondant est trouvé," +
                                     " il sera lié implicitement"
                             },
-                            attributes: {
-                                label: "Sélectionnez les attributs à vérifier",
-                                hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
-                                    " il existe un compte utilisateur local correspondant",
-                                placeholder: "Aucun attribut sélectionné"
+                            primaryAttribute: {
+                                label: "Attribut de recherche principal",
+                                hint: "Sélectionnez l'attribut principal qui sera utilisé pour vérifier s'il" +
+                                     " existe un compte utilisateur local correspondant"
+                            },
+                            secondaryAttribute: {
+                                label: "Attribut de recherche secondaire",
+                                hint: "L'attribut secondaire sera utilisé si un utilisateur unique n'est pas" +
+                                    " trouvé en utilisant l'attribut principal"
                             },
                             warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }

@@ -2670,9 +2670,12 @@ export interface ConsoleNS {
                                 label: string;
                                 hint: string;
                             };
-                            attributes: {
+                            primaryAttribute: {
                                 label: string;
-                                placeholder: string;
+                                hint: string;
+                            };
+                            secondaryAttribute: {
+                                label: string;
                                 hint: string;
                             };
                             warning: string;
