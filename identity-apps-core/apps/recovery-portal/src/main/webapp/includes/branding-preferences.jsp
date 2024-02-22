@@ -65,7 +65,7 @@
         supportedLanguages.put("de", "DE");
         supportedLanguages.put("zh", "CN");
         supportedLanguages.put("ja", "JP");
-        
+
         List<String> languageSupportedCountries = new ArrayList<>();
         languageSupportedCountries.add("US");
         languageSupportedCountries.add("FR");
@@ -587,34 +587,47 @@
                 if (brandingPreference.has(URLS_KEY)) {
                     if (brandingPreference.getJSONObject(URLS_KEY).has(PRIVACY_POLICY_URL_KEY)) {
                         // Only assign the `privacyPolicyURL` from response if not empty. Else use the default value.
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(URLS_KEY).getString(PRIVACY_POLICY_URL_KEY))) {
-                            privacyPolicyURL = brandingPreference.getJSONObject(URLS_KEY).getString(PRIVACY_POLICY_URL_KEY);
+                        String privacyPolicyURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(PRIVACY_POLICY_URL_KEY);
+                        if (!StringUtils.isBlank(privacyPolicyURLInput) && !privacyPolicyURLInput.toLowerCase().contains("javascript:") &&
+                            !privacyPolicyURLInput.toLowerCase().contains("data:")) {
+                                privacyPolicyURL = privacyPolicyURLInput;
                         }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(TERMS_OF_USE_URL_KEY)) {
                         // Only assign the `termsOfUseURL` from response if not empty. Else use the default value.
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(URLS_KEY).getString(TERMS_OF_USE_URL_KEY))) {
-                            termsOfUseURL = brandingPreference.getJSONObject(URLS_KEY).getString(TERMS_OF_USE_URL_KEY);
+                        String termsOfUseURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(TERMS_OF_USE_URL_KEY);
+                        if (!StringUtils.isBlank(termsOfUseURLInput) && !termsOfUseURLInput.toLowerCase().contains("javascript:") &&
+                            !termsOfUseURLInput.toLowerCase().contains("data:")) {
+                                termsOfUseURL = termsOfUseURLInput;
                         }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(COOKIE_POLICY_URL_KEY)) {
                         // Only assign the `cookiePolicyURL` from response if not empty. Else use the default value.
-                        if (!StringUtils.isBlank(brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY))) {
-                            cookiePolicyURL = brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY);
+                        String cookiePolicyURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(COOKIE_POLICY_URL_KEY);
+                        if (!StringUtils.isBlank(cookiePolicyURLInput) && !cookiePolicyURLInput.toLowerCase().contains("javascript:") &&
+                            !cookiePolicyURLInput.toLowerCase().contains("data:")) {
+                                cookiePolicyURLInput = cookiePolicyURLInput;
                         }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(SELF_SIGN_UP_URL_KEY)) {
-                        selfSignUpOverrideURL = brandingPreference.getJSONObject(URLS_KEY).getString(SELF_SIGN_UP_URL_KEY);
+                        String selfSignUpURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(SELF_SIGN_UP_URL_KEY);
+                        if (!StringUtils.isBlank(selfSignUpURLInput) && !selfSignUpURLInput.toLowerCase().contains("javascript:") &&
+                            !selfSignUpURLInput.toLowerCase().contains("data:")) {
+                            selfSignUpOverrideURL = selfSignUpURLInput;
+                        }
                     }
 
                     if (brandingPreference.getJSONObject(URLS_KEY).has(PASSWORD_RECOVERY_URL_KEY)) {
-                        passwordRecoveryOverrideURL = brandingPreference.getJSONObject(URLS_KEY).getString(PASSWORD_RECOVERY_URL_KEY);
+                        String passwordRecoveryURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(PASSWORD_RECOVERY_URL_KEY);
+                        if (!StringUtils.isBlank(passwordRecoveryURLInput) && !passwordRecoveryURLInput.toLowerCase().contains("javascript:") &&
+                            !passwordRecoveryURLInput.toLowerCase().contains("data:")) {
+                            passwordRecoveryOverrideURL = passwordRecoveryURLInput;
+                        }
                     }
                 }
-
             }
         }
 
