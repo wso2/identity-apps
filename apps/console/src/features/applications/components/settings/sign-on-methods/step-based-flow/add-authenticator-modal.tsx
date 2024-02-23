@@ -90,6 +90,7 @@ import {
 import { OrganizationType } from "../../../../../organizations/constants";
 import { getGeneralIcons } from "../../../../configs/ui";
 import { AuthenticationStepInterface } from "../../../../models";
+import { applicationConfig } from "apps/console/src/extensions";
 
 /**
  * Prop-types for the Add authenticator modal component.
@@ -181,8 +182,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const { getLink } = useDocumentation();
     const { hiddenAuthenticators } = useAuthenticationFlow();
     const { deploymentConfig } = useDeploymentConfig();
-
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const hiddenConnectionTemplates: string[] = useSelector(
         (state: AppState) => state.config?.ui?.hiddenConnectionTemplates
@@ -576,7 +575,11 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
                                             return (
                                                 <ResourceGrid.Card
-                                                    showSetupGuideButton={ !!isSAASDeployment }
+                                                    showSetupGuideButton={
+                                                        applicationConfig?.
+                                                            signInMethod?.
+                                                            showSetupGuideButtonInAuthenticatorCards
+                                                    }
                                                     navigationLink={
                                                         getLink(ConnectionsManagementUtils
                                                             .resolveConnectionDocLink(template.id))

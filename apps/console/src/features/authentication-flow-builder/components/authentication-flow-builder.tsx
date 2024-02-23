@@ -274,6 +274,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                                     <Typography sx={ { fontWeight: 500 } }>
                                                         { mode.label }
                                                     </Typography>
+                                                    {/* This should ideally be handled by the feature gate impl. */}
                                                     { isSAASDeployment && mode.extra }
                                                 </div>
                                             ) }

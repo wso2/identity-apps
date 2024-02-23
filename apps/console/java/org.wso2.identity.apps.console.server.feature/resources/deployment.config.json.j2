@@ -1725,9 +1725,6 @@
         {% if console.ui.is_left_navigation_categorized is defined %}
         "isLeftNavigationCategorized": {{ console.ui.is_left_navigation_categorized }},
         {% endif %}
-        {% if console.ui.is_saas_deployment is defined %}
-        "isSAASDeployment": {{ console.ui.saas_deployment }},
-        {% endif %}
         {% if event.default_listener.validation.enable is defined %}
         "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
         {% else %}

@@ -19,11 +19,12 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ContentLoader, Hint, LinkButton, Message, URLInput } from "@wso2is/react-components";
+import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
+import { applicationConfig } from "apps/console/src/extensions";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
@@ -124,7 +125,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     } = props;
 
     const { t } = useTranslation();
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ callBackURLFromTemplate, setCallBackURLFromTemplate ] = useState("");
@@ -588,48 +588,22 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         showLessContent={ t("common:showLess") }
                                         showMoreContent={ t("common:showMore") }
                                     />
-                                    { (callBackURLFromTemplate) && isSAASDeployment && (
-                                        <Message
-                                            type="info"
-                                            content={
-                                                (<>
-                                                    {
-                                                        <Trans
-                                                            i18nKey={ "console:develop.features." +
-                                                                "applications.forms.inboundOIDC.fields." +
-                                                                "callBackUrls.info" }
-                                                            tOptions={ {
-                                                                callBackURLFromTemplate: callBackURLFromTemplate
-                                                            } }
-                                                        >
-                                                                Don’t have an app? Try out a sample app
-                                                                using <strong>{ callBackURLFromTemplate }</strong>
-                                                                as the Authorized URL.
-                                                        </Trans>
-                                                    }
-                                                    {
-                                                        (callBackUrls === undefined || callBackUrls === "") && (
-                                                            <LinkButton
-                                                                className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ (
-                                                                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                                                                ) => {
-                                                                    e.preventDefault();
-                                                                    const host: URL = new URL(callBackURLFromTemplate);
+                                    {
+                                        applicationConfig?.quickstart?.renderCallbackUrlSelectPrompt(
+                                            callBackURLFromTemplate,
+                                            (
+                                                e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                                            ) => {
+                                                e.preventDefault();
+                                                const host: URL = new URL(callBackURLFromTemplate);
 
-                                                                    handleAddAllowOrigin(host.origin);
-                                                                    setCallBackUrls(callBackURLFromTemplate);
-                                                                } }
-                                                                data-testid={ `${ testId }-add-now-button` }
-                                                            >
-                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                            </LinkButton>
-                                                        )
-                                                    }
-                                                </>)
-                                            }
-                                        />
-                                    ) }
+                                                handleAddAllowOrigin(host.origin);
+                                                setCallBackUrls(callBackURLFromTemplate);
+                                            },
+                                            callBackUrls === undefined || callBackUrls === "",
+                                            { testId }
+                                        )
+                                    }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }

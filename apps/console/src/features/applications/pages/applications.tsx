@@ -127,7 +127,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -422,11 +421,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (!applicationConfig.advancedConfigurations.showMyAccount ||
-            UIConfig?.legacyMode?.applicationListSystemApps) {
-            return null;
-        }
-
         return (
             <EmphasizedSegment
                 className="mt-0 mb-5"
@@ -573,7 +567,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             {
                 (
-                    isSAASDeployment
+                    applicationConfig.advancedConfigurations.showMyAccount
+                    || UIConfig?.legacyMode?.applicationListSystemApps
                     || (
                         !isMyAccountApplicationDataFetchRequestLoading
                         && myAccountApplicationData?.applications?.length !== 0

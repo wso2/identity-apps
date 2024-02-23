@@ -26,6 +26,7 @@ import {
 } from "../../../features/applications/components/settings";
 import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
 import { FeatureConfigInterface } from "../../../features/core";
+import { GenericAuthenticatorInterface } from "../../../features/identity-providers/models";
 import { OIDCSDKMeta } from "../../application-templates/templates/oidc-web-application/models";
 import { SAMLSDKMeta } from "../../application-templates/templates/saml-web-application/models";
 import { SDKMetaInterface } from "../../application-templates/templates/single-page-application/models";
@@ -147,6 +148,8 @@ export interface ApplicationConfig {
                 secondFactorDisabledInFirstStep: ReactNode;
             };
         };
+        showSetupGuideButtonInAuthenticatorCards: boolean;
+        renderAuthenticatorFeatureStatusChip: (authenticator: GenericAuthenticatorInterface) => ReactElement
     };
     templates: {
         oidc: boolean;
@@ -165,6 +168,38 @@ export interface ApplicationConfig {
     excludeSubjectClaim: boolean;
     quickstart: {
         oidcWeb: OIDCSDKMeta;
+        /**
+         *
+         * @param callbackUrlFromTemplate - callback URL/ACS URL predefined in the template
+         * @param onAccept - callback function to run on clicking the "add now" button
+         * @param showTemplateConfiguredUrlAcceptButton - whether the "add now" button should be displayed or not
+         * @param metadata - any other data required for rendering the UI widget
+         * @returns a UI widget prompting the end user to select a predefined callback URL/ACS URL
+         */
+        renderCallbackUrlSelectPrompt: (
+            callbackUrlFromTemplate: string,
+            onAccept:  (
+                e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ) => void,
+            showCallbackUrlAcceptButton: boolean,
+            metadata?: any
+        )  => ReactNode,
+                /**
+         *
+         * @param acsUrlFromTemplate - Assertion Consumer Service URL predefined in the template
+         * @param onAccept - callback function to run on clicking the "add now" button
+         * @param showAcsUrlAcceptButton - whether the "add now" button should be displayed or not
+         * @param metadata - any other data required for rendering the UI widget
+         * @returns a UI widget prompting the end user to select a predefined callback URL/ACS URL
+         */
+        renderAcsUrlSelectPrompt: (
+            acsUrlFromTemplate: string,
+            onAccept:  (
+                e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ) => void,
+            showAcsUrlAcceptButton: boolean,
+            metadata?: any
+        )  => ReactNode,
         samlWeb: SAMLSDKMeta;
         spa: SDKMetaInterface
     };

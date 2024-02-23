@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -24,6 +25,7 @@ import {
     EmphasizedSegment,
     GenericIcon,
     Heading,
+    LinkButton,
     Popup,
     PrimaryButton,
     ResourceTab,
@@ -50,8 +52,10 @@ import {
     additionalSpProperty
 } from "../../features/applications/models";
 import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
+import { AuthenticatorManagementConstants } from "../../features/connections";
 import { EventPublisher, FeatureConfigInterface } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
+import { GenericAuthenticatorInterface } from "../../features/identity-providers/models";
 import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
@@ -644,6 +648,99 @@ export const applicationConfig: ApplicationConfig = {
                 }
             }
         },
+        renderAcsUrlSelectPrompt: (
+            acsUrlFromTemplate: string,
+            onAccept:  (
+                e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+            ) => void,
+            showAcsUrlAcceptButton: boolean,
+            metadata?: any
+        ) => {
+            return (
+                <Message
+                    visible
+                    type="info"
+                    content={
+                        (<>
+                            {
+                                <Trans
+                                    i18nKey={ "console:develop.features.applications.forms." +
+                                        "inboundSAML.fields.assertionURLs.info" }
+                                    tOptions={ {
+                                        assertionURLFromTemplate:
+                                            acsUrlFromTemplate
+                                    } }
+                                >
+                                        Don’t have an app? Try out a sample app
+                                        using <strong>{ acsUrlFromTemplate }</strong>
+                                        as the assertion Response URL.
+                                        (You can download and run a sample
+                                        at a later step.)
+                                </Trans>
+                            }
+                            {
+                                showAcsUrlAcceptButton && (
+                                    <LinkButton
+                                        className={ "m-1 p-1 with-no-border orange" }
+                                        onClick={ onAccept }
+                                        data-testid={ `${metadata?.testId}-add-now-button` }
+                                    >
+                                        <span style={ { fontWeight: "bold" } }>Add Now</span>
+                                    </LinkButton>
+                                )
+                            }
+                        </>)
+                    }
+                />
+            );
+        },
+        renderCallbackUrlSelectPrompt: (
+            callbackUrlFromTemplate: string,
+            onAccept:  (
+                e: React.MouseEvent<
+                    HTMLButtonElement, MouseEvent
+                >
+            ) => void,
+            showCallbackUrlAcceptButton: boolean,
+            metadata: any
+        ) => (
+            <Message
+                type="info"
+                content={
+                    (<>
+                        {
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features." +
+                                    "applications.forms.inboundOIDC.fields." +
+                                    "callBackUrls.info"
+                                }
+                                tOptions={ {
+                                    callBackURLFromTemplate: callbackUrlFromTemplate
+                                } }
+                            >
+                                Don’t have an app? Try out a sample app
+                                using <strong>{ callbackUrlFromTemplate }</strong>
+                                as the Authorized URL.
+                            </Trans>
+                        }
+                        {
+                            showCallbackUrlAcceptButton && (
+                                <LinkButton
+                                    className={ "m-1 p-1 with-no-border orange" }
+                                    onClick={ onAccept }
+                                    data-testid={ `${ metadata?.testId }-add-now-button` }
+                                >
+                                    <span style={ { fontWeight: "bold" } }>
+                                        Add Now
+                                    </span>
+                                </LinkButton>
+                            )
+                        }
+                    </>)
+                }
+            />
+        ),
         samlWeb: {
             tomcatSAMLAgent: {
                 catalog: "",
@@ -716,7 +813,31 @@ export const applicationConfig: ApplicationConfig = {
                 ),
                 secondFactorDisabledInFirstStep: null
             }
-        }
+        },
+        /**
+         * Render feature status chip.
+         *
+         * @param authenticator - Authenticator.
+         *
+         * @returns Feature status chip.
+         */
+        renderAuthenticatorFeatureStatusChip: (authenticator: GenericAuthenticatorInterface): ReactElement => {
+            if (
+                authenticator?.defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
+                    .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+            ) {
+                return (
+                    <Chip
+                        size="small"
+                        label={ I18n.instance.t("common:beta").toUpperCase() }
+                        className="oxygen-chip-beta"
+                    />
+                );
+            }
+
+            return null;
+        },
+        showSetupGuideButtonInAuthenticatorCards: false
     },
     templates:{
         custom: true,

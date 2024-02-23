@@ -449,6 +449,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             menuItem: (
                 <Menu.Item key="text">
                     { t("console:branding.tabs.text.label") }
+                    { /* This should ideally be handled by the feature gate */ }
                     { isSAASDeployment && (
                         <Chip
                             size="small"

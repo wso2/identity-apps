@@ -20,4 +20,5 @@ export interface OrganizationConfigs {
     allowNavigationInDropdown: boolean;
     showSwitcherInTenants: boolean;
     showOrganizationDropdown: boolean;
+    showRootOrganizationInBreadCrumb: boolean;
 }
