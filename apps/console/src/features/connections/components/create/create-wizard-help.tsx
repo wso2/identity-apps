@@ -142,7 +142,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                     <p key={ index }>
                                         <div
                                             dangerouslySetInnerHTML={
-                                                { __html: DOMPurify.sanitize(copyInputField.description) }
+                                                { __html: DOMPurify.sanitize(copyInputField?.description) }
                                             }
                                         />
                                         <CopyInputField
@@ -201,7 +201,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                 wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        <p dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(field.hint) } }/>
+                        <p dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(field?.hint) } }/>
                         <Divider />
                     </div>
                 ))
