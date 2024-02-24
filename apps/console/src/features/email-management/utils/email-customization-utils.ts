@@ -78,7 +78,10 @@ export class EmailCustomizationUtils {
         if (!isCustomLogoURLPresent) {
             updatedTemplateBody = updatedTemplateBody.replace(
                 /alt="{{organization.logo.altText}}"/g,
-                "onerror=\"this.style.display='none'\""
+                ""
+            ).replace(
+                /src="{{organization.logo.img}}"/g,
+                ""
             );
         }
 
