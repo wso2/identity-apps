@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.12.42
+
+### Patch Changes
+
+- [#5600](https://github.com/wso2/identity-apps/pull/5600) [`e6607f5bd3`](https://github.com/wso2/identity-apps/commit/e6607f5bd3965c22c3bc9bbd55503e28c4939efb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Sanitize the HTML content of connection templates
+
+* [#5597](https://github.com/wso2/identity-apps/pull/5597) [`0d4f3979e7`](https://github.com/wso2/identity-apps/commit/0d4f3979e705a37989475ab38a214441965cb2ac) Thanks [@brionmario](https://github.com/brionmario)! - Allow SMS OTP as a first factor
+
+- [#5599](https://github.com/wso2/identity-apps/pull/5599) [`8b2de93adb`](https://github.com/wso2/identity-apps/commit/8b2de93adb60503a36c318e4b7e9c0e3c056073d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Sanitize email template body input before rendering preview
+
 ## 2.12.41
 
 ### Patch Changes
