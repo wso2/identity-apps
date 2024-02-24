@@ -65,6 +65,7 @@
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",
+        "dompurify": "^3.0.9",
         "file-saver": "^2.0.5",
         "history": "^4.9.0",
         "html-react-parser": "^2.0.0",
