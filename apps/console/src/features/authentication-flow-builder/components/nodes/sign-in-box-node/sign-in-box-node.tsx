@@ -460,7 +460,6 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             if (
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
                     IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
                     IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
                 ].includes(option.authenticator)
@@ -542,8 +541,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                     }
                                 ) }
                                 {
-                                    (getBasicSignInOption() !== 
-                                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) 
+                                    (getBasicSignInOption() !==
+                                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR)
                                     &&
                                     (<Button
                                         fullWidth

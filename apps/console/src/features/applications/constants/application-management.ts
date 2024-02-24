@@ -348,9 +348,7 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
