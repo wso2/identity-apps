@@ -19,6 +19,7 @@
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, CopyInputField, Heading, Message } from "@wso2is/react-components";
+import DOMPurify from "dompurify";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 
@@ -131,7 +132,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.paragraphs?.map((paragraph: string, index: number) => (
                                 <p
                                     key={ index }
-                                    dangerouslySetInnerHTML={ { __html: paragraph } }
+                                    dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(paragraph) } }
                                 />
                             ))
                         }
@@ -139,7 +140,11 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.copyInputFields?.map(
                                 (copyInputField: { description: string; value: string; }, index: number) => (
                                     <p key={ index }>
-                                        <div dangerouslySetInnerHTML={ { __html: copyInputField.description } } />
+                                        <div
+                                            dangerouslySetInnerHTML={
+                                                { __html: DOMPurify.sanitize(copyInputField?.description) }
+                                            }
+                                        />
                                         <CopyInputField
                                             className="copy-input-dark spaced"
                                             value={ overrideFieldValue(copyInputField.value) }
@@ -159,7 +164,11 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.codeSnippets?.map(
                                 (codeSnippet: { description: string; value: string; }, index: number) => (
                                     <p key={ index }>
-                                        <div dangerouslySetInnerHTML={ { __html: codeSnippet.description } } />
+                                        <div
+                                            dangerouslySetInnerHTML={
+                                                { __html: DOMPurify.sanitize(codeSnippet?.description) }
+                                            }
+                                        />
                                         <Divider hidden />
                                         <CodeEditor
                                             oneLiner
@@ -192,7 +201,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                 wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        <p dangerouslySetInnerHTML={ { __html: field.hint } }/>
+                        <p dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(field?.hint) } }/>
                         <Divider />
                     </div>
                 ))
