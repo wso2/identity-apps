@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.43
+
+### Patch Changes
+
+- [#5602](https://github.com/wso2/identity-apps/pull/5602) [`e3ec0bf06e`](https://github.com/wso2/identity-apps/commit/e3ec0bf06e12d375e51bf51d7c4b9956121ee7ef) Thanks [@brionmario](https://github.com/brionmario)! - Fix RBAC bug in Group Create button
+
 ## 2.12.42
 
 ### Patch Changes
