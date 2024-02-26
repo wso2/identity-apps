@@ -235,7 +235,7 @@
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <script defer type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
         <!-- End of custom scripts added to the head -->
     </head>
     <body onload="preLoaderResolver()">
