@@ -17,8 +17,10 @@
   --%>
 
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.builder.FileBasedConfigurationBuilder" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -26,11 +28,28 @@
 <%@ include file="includes/init-url.jsp" %>
 <jsp:directive.include file="includes/layout-resolver.jsp"/>
 
+<%!
+    private static final String EXCLUDE_POLICY = "exclude";
+%>
+
 <%
     String[] missingClaimList = null;
     String appName = null;
     Boolean isFederated = false;
-    if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
+    List<String> queryParams = FileBasedConfigurationBuilder.getInstance()
+        .getAuthEndpointRedirectParams();
+    String action = FileBasedConfigurationBuilder.getInstance()
+        .getAuthEndpointRedirectParamsAction();
+    boolean missingClaimFilteringEnabled =
+        StringUtils.equals(action, EXCLUDE_POLICY) && queryParams.contains(Constants.MISSING_CLAIMS);
+    if (!missingClaimFilteringEnabled) {
+        if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
+            missingClaimList = request.getParameter(Constants.MISSING_CLAIMS).split(",");
+        }
+    } else {
+        if (request.getQueryString().contains(Constants.MISSING_CLAIMS)) {
+            request.getRequestDispatcher("error.do").forward(request, response);
+        }
         missingClaimList = request.getParameter(Constants.MISSING_CLAIMS).split(",");
     }
     if (request.getParameter(Constants.REQUEST_PARAM_SP) != null) {
