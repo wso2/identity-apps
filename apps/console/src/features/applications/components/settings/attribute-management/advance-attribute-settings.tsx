@@ -521,13 +521,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         />
                     )
                     }
-                    <Divider />
-                    <Heading
-                        as="h4"
-                    >
-                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.linkedAccounts.heading") }
-                    </Heading>
+                    { applicationConfig.attributeSettings.advancedAttributeSettings.showValidateLinkedLocalAccount
+                        && (<>
+                            <Divider />
+                            <Heading
+                                as="h4"
+                            >
+                                { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.linkedAccounts.heading") }
+                            </Heading>
+                        </>)
+                    }
                     <Divider hidden/>
                     { !applicationConfig.attributeSettings.advancedAttributeSettings.showMandateLinkedLocalAccount ?
                         (<Field.CheckboxLegacy
