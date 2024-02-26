@@ -19,17 +19,17 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { SimpleUserStoreListItemInterface } from "../../../../applications/models";
-import { store } from "../../../../core";
-import { OrganizationUtils } from "../../../../organizations/utils";
 import { getUserStoreList } from "../../../../userstores/api";
 import { updateJITProvisioningConfigs } from "../../../api/connections";
 import { JITProvisioningResponseInterface } from "../../../models/connection";
 import { JITProvisioningConfigurationsForm } from "../forms";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -64,8 +64,8 @@ interface JITProvisioningSettingsInterface extends TestableComponentInterface {
 /**
  * Component to edit just-in time provisioning details of the identity provider.
  *
- * @param {JITProvisioningSettings} props - Props injected to the component.
- * @return {ReactElement}
+ * @param JITProvisioningSettings - Props injected to the component.
+ * @returns JITProvisioningSettings component.
  */
 export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsInterface> = (
     props: JITProvisioningSettingsInterface): ReactElement => {
@@ -80,13 +80,11 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-
 
     /**
      * Handles the advanced config form submit action.
@@ -125,8 +123,8 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
             name: "PRIMARY"
         });
 
-        if (isSuperOrganization()) {
-            getUserStoreList().then((response) => {
+        if (isSuperOrganization() || isFirstLevelOrganization()) {
+            getUserStoreList().then((response: AxiosResponse) => {
                 userstore.push(...response.data);
                 setUserStore(userstore);
             }).catch(() => {
@@ -148,7 +146,6 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                         useStoreList={ userStore }
                         data-testid={ testId }
                         isReadOnly={ isReadOnly }
-                        isSubmitting={ isSubmitting }
                     />
                 </EmphasizedSegment>
             )
