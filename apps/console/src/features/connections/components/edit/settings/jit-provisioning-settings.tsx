@@ -19,13 +19,13 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { SimpleUserStoreListItemInterface } from "../../../../applications/models";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../../../userstores/api";
 import { updateJITProvisioningConfigs } from "../../../api/connections";
 import { JITProvisioningResponseInterface } from "../../../models/connection";
