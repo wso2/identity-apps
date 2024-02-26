@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.44
+
+### Patch Changes
+
+- [#5604](https://github.com/wso2/identity-apps/pull/5604) [`e362dba2a0`](https://github.com/wso2/identity-apps/commit/e362dba2a00f72b8dde2c10378098fff34309353) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make extension scripts load deferred in console and myaccount
+
 ## 2.12.43
 
 ### Patch Changes
