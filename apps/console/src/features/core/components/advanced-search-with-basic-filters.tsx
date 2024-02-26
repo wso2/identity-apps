@@ -192,25 +192,11 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             + " "
             + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + getFilterValue(values?.get(FILTER_VALUES_FIELD_IDENTIFIER) as string);
+            + values?.get(FILTER_VALUES_FIELD_IDENTIFIER);
 
         setExternalSearchQuery(query);
         onFilter(query);
         setIsFormSubmitted(true);
-    };
-
-    /**
-     * Handle filter values with multiple words (enclose in double quotes).
-     *
-     * @param value - Input filter value.
-     * @returns Formatted filter value.
-     */
-    const getFilterValue = (value: string): string => {
-        if (value.includes(" ")) {
-            return `"${value}"`;
-        }
-
-        return value;
     };
 
     /**
