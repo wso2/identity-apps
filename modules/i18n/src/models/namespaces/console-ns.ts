@@ -1128,6 +1128,7 @@ export interface ConsoleNS {
                                     description: string;
                                 }
                                 heading: string;
+                                descriptionFederated: string;
                                 fields: {
                                     validateLocalAccount: FormAttributes;
                                     mandateLocalAccount: FormAttributes;

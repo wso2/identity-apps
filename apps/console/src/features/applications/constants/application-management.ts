@@ -440,9 +440,13 @@ export class ApplicationManagementConstants {
 
     public static readonly TRADITIONAL_WEB_APPLICATION_OIDC: string = "b9c5e11e-fc78-484b-9bec-015d247561b8";
 
+    public static readonly TRADITIONAL_WEB_APPLICATION_SAML: string = "776a73da-fd8e-490b-84ff-93009f8ede85";
+
     public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
     public static readonly MOBILE: string = "mobile-application";
+
+    public static readonly SPA_APP_TEMPLATE_ID: string = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
 
     public static readonly M2M_APP_TEMPLATE_ID: string = "m2m-application";
 

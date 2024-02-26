@@ -1682,16 +1682,16 @@ export const console: ConsoleNS = {
                                     description: "Linked local account validation should be enabled to mandate a linked local account"
                                 },
                                 heading: "Linked Accounts",
+                                descriptionFederated: "Enable to retrieve user attributes of the linked local account during federated authentication.",
                                 fields: {
                                     validateLocalAccount: {
-                                        label: "Validate linked local account",
-                                        hint: "This option will decide whether the linked local user account is validated with the " +
-                                        "authenticated identity."
+                                        label: "Prioritize local account attributes",
+                                        hint: "If a linked local account exists, its attributes are returned. Otherwise, " +
+                                            "attributes of the federated identity are returned."
                                     },
                                     mandateLocalAccount: {
                                         label: "Mandate linked local account",
-                                        hint: "These options will decide how the linked local user account is validated with the " +
-                                            "authenticated identity."
+                                        hint: "Authentication will fail in token exchange grant if there is no linked local account with the federated identity."
                                     }
                                 }
                             },
