@@ -826,15 +826,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         let response: ApplicationListInterface = null;
 
         try {
-            let filter: string = "name eq ";
-
-            if (value.toString().includes(" ")) {
-                filter += `"${value.toString()}"`;
-            } else {
-                filter += value.toString();
-            }
-
-            response = await getApplicationList(null, null, filter);
+            response = await getApplicationList(null, null, "name eq " + value.toString());
             if (response?.applications?.length > 0) {
                 validation.isValid = false;
                 validation.errorMessages.push(
