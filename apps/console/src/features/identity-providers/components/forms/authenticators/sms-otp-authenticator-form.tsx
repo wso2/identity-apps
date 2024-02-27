@@ -25,6 +25,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Message } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import {
     AppConstants,
     history
@@ -168,6 +169,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
     } = props;
 
     const { t } = useTranslation();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     // This can be used when `meta` support is there.
     const [ , setFormFields ] = useState<SMSOTPAuthenticatorFormFieldsInterface>(undefined);
@@ -353,27 +355,31 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             initialValues={ initialValues }
             validate={ validateForm }
         >
-            <Message info>
-                <Icon name="info circle" />
-                <Trans
-                    i18nKey={
-                        "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
-                        ".smsOTP.hint"
-                    }
-                >
-                    Ensure that an
-                    <Link
-                        external={ false }
-                        onClick={ () => {
-                            history.push(
-                                AppConstants.getPaths().get("SMS_PROVIDER")
-                            );
-                        } }
-                    > SMS Provider
-                    </Link>
-                    &nbsp;is configured for the OTP feature to work properly.
-                </Trans>
-            </Message>
+            {
+                !isSubOrganization() && (
+                    <Message info>
+                        <Icon name="info circle" />
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                                ".smsOTP.hint"
+                            }
+                        >
+                            Ensure that an
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("SMS_PROVIDER")
+                                    );
+                                } }
+                            > SMS Provider
+                            </Link>
+                            &nbsp;is configured for the OTP feature to work properly.
+                        </Trans>
+                    </Message>
+                )
+            }
             <Field.Input
                 ariaLabel="SMS OTP expiry time"
                 inputType="number"
