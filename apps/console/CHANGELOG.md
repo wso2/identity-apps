@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.12.45
+
+### Patch Changes
+
+- [#5606](https://github.com/wso2/identity-apps/pull/5606) [`bd7752486f`](https://github.com/wso2/identity-apps/commit/bd7752486f52941d492fc93b792965d9786fa78c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix not being able to search attributes with multiple words
+
+* [#5607](https://github.com/wso2/identity-apps/pull/5607) [`c9331f52fd`](https://github.com/wso2/identity-apps/commit/c9331f52fdd52a70967bbd3ad1242f233b6bd5f4) Thanks [@savindi7](https://github.com/savindi7)! - Show userstores for JIT Provisioning for tenant users.
+
 ## 2.12.44
 
 ### Patch Changes
