@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.30
+
+### Patch Changes
+
+- [#5569](https://github.com/wso2/identity-apps/pull/5569) [`73b1f0fea8`](https://github.com/wso2/identity-apps/commit/73b1f0fea84b60e39cbd356c3932bd78545ded3d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the Sign Up button issue of the consent only provisioning flow
+
 ## 2.1.29
 
 ### Patch Changes
