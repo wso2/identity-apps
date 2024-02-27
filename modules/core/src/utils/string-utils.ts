@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import DOMPurify from "dompurify";
-
 /**
  * Utility class for string operations.
  */
@@ -134,19 +132,5 @@ export class StringUtils {
      */
     public static removeDotsAndSlashesFromRelativePath(path: string): string {
         return path.replace(/\.\.\//g, "");
-    }
-
-    /**
-     * Sanitizes an HTML string.
-     *
-     * @example
-     * // returns "<p>Test</p>"
-     * sanitizeHTMLString("<script>Test</script>");
-     *
-     * @param htmlString - HTML string to be sanitized.
-     * @returns Sanitized HTML string.
-     */
-    public static sanitizeHTMLString(htmlString: string): string {
-        return DOMPurify.sanitize(htmlString);
     }
 }

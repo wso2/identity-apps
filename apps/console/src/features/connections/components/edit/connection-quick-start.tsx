@@ -19,7 +19,7 @@
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/common/src";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
+import { Encode } from "@wso2is/core/utils";
 import { GenericIcon, Heading, PageHeader } from "@wso2is/react-components";
 import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -92,7 +92,7 @@ const ConnectionQuickStart: FC<ConnectionQuickStartPropsInterface> = (
                         <>
                             <div
                                 key={ index }
-                                dangerouslySetInnerHTML={ { __html: StringUtils.sanitizeHTMLString(step?.content) } }
+                                dangerouslySetInnerHTML={ { __html: Encode.forHtml(step?.content) } }
                             />
                             {
                                 step.image && (

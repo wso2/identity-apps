@@ -156,10 +156,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
         // Use a regex to replace {{lang}}, {{country}}, and {{locale}} placeholders while preserving other characters
         moderatedValue = value?.trim().replace(new RegExp(placeholdersPattern, "g"), "");
 
-        const javascriptPattern: string = "javascript:";
-
-        if (moderatedValue?.includes(javascriptPattern) || !URLUtils.isURLValid(moderatedValue) ||
-            !FormValidation.url(moderatedValue)) {
+        if (URLUtils.isURLValid(moderatedValue) || !FormValidation.url(moderatedValue)) {
             errorMsg = t("extensions:develop.branding.forms.advance.links.fields.common.validations.invalid");
         }
 
