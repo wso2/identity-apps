@@ -251,7 +251,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                                         size="small"
                                                                         sx= { { marginLeft: 1 } }
                                                                         label= { t(`common:${connector.status}`)
-                                                                            .toUpperCase()}
+                                                                            .toUpperCase() }
                                                                         className = { `oxygen-chip-${ connector.status
                                                                             .toLowerCase() }` }
                                                                     />)
