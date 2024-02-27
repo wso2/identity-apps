@@ -18,8 +18,8 @@
 
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import { CodeEditor, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import DOMPurify from "dompurify";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 
@@ -132,7 +132,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.paragraphs?.map((paragraph: string, index: number) => (
                                 <p
                                     key={ index }
-                                    dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(paragraph) } }
+                                    dangerouslySetInnerHTML={ { __html: StringUtils.sanitizeHTMLString(paragraph) } }
                                 />
                             ))
                         }
@@ -142,7 +142,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                     <p key={ index }>
                                         <div
                                             dangerouslySetInnerHTML={
-                                                { __html: DOMPurify.sanitize(copyInputField?.description) }
+                                                { __html: StringUtils.sanitizeHTMLString(copyInputField?.description) }
                                             }
                                         />
                                         <CopyInputField
@@ -166,7 +166,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                     <p key={ index }>
                                         <div
                                             dangerouslySetInnerHTML={
-                                                { __html: DOMPurify.sanitize(codeSnippet?.description) }
+                                                { __html: StringUtils.sanitizeHTMLString(codeSnippet?.description) }
                                             }
                                         />
                                         <Divider hidden />
@@ -201,7 +201,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                 wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        <p dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(field?.hint) } }/>
+                        <p dangerouslySetInnerHTML={ { __html: StringUtils.sanitizeHTMLString(field?.hint) } }/>
                         <Divider />
                     </div>
                 ))
