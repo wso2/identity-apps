@@ -164,14 +164,10 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     // This can be used when `meta` support is there.
     const [ , setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(undefined);
+    const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
 
     // SMS OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPAlphanumeric, setIsOTPAlphanumeric ] = useState<boolean>();
-
-    useEffect(() => {
-        setIsReadOnly(!!isSubOrganization() || readOnly);
-    }, [ readOnly ]);
 
     /**
      * Flattens and resolved form initial values and field metadata.

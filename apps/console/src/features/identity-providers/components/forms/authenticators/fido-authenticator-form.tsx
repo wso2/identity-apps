@@ -65,11 +65,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         isPasskeyProgressiveEnrollmentEnabled,
         setIsPasskeyProgressiveEnrollmentEnabled
     ] = useState<boolean>(undefined);
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(undefined);
-
-    useEffect(() => {
-        setIsReadOnly(!!isSubOrganization() || readOnly);
-    }, [ readOnly ]);
+    const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
 
     /**
      * Flattens and resolved form initial values and field metadata.
