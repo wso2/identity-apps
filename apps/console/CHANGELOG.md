@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.46
+
+### Patch Changes
+
+- [#5614](https://github.com/wso2/identity-apps/pull/5614) [`ae732c7c78`](https://github.com/wso2/identity-apps/commit/ae732c7c780e1e11fc36e708774cc9be43d0d77c) Thanks [@savindi7](https://github.com/savindi7)! - Disable update for governance connectors in sub organizations.
+
 ## 2.12.45
 
 ### Patch Changes
