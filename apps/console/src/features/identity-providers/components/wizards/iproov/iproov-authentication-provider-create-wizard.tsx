@@ -467,7 +467,7 @@ export const IproovAuthenticationProviderCreateWizard: FunctionComponent<
     };
 
 /**
- * Default props for the HYPR Authentication Provider Create Wizard.
+ * Default props for the iProov Authentication Provider Create Wizard.
  */
 IproovAuthenticationProviderCreateWizard.defaultProps = {
     currentStep: 1,

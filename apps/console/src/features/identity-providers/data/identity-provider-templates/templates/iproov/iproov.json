@@ -114,7 +114,7 @@
                             "isMandatory": true,
                             "isConfidential": false,
                             "options": [],
-                            "defaultValue": "",
+                            "defaultValue": true,
                             "subProperties": []
                         }
                     ]
