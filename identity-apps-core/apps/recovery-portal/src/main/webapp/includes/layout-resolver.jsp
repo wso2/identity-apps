@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@
     * Convert the application name by replacing spaces with underscores.
     *
     * This serves as a temporary solution for implementing a custom layout for applications with
-    * names containing spaces. It is recommended to remove this workaround and implement a more 
+    * names containing spaces. It is recommended to remove this workaround and implement a more
     * robust solution in the future.
     * Tracked by - https://github.com/wso2-enterprise/asgardeo-product/issues/19824
     *
@@ -80,27 +80,15 @@
                     if (!StringUtils.isBlank(brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY))){
                         String temp = brandingPreference.getJSONObject(LAYOUT_KEY).getString(ACTIVE_LAYOUT_KEY);
                         if (StringUtils.equals(temp, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-                            String tempLayout = "";
-                            String tempLayoutFileRelativePath = "";
-                            String tempBaseURL = "";
-
                             // App-wise and tenant-wise custom layout resolving logic.
                             if (StringUtils.equals(preferenceResourceType, APP_PREFERENCE_RESOURCE_TYPE)) {
-                                tempLayout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
-                                tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
-                                tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences);
-                            }
-
-                            if (config.getServletContext().getResource(tempLayoutFileRelativePath) == null || StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
-                                tempLayout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences;
-                                tempLayoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
-                                tempBaseURL = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences);
-                            }
-
-                            if (config.getServletContext().getResource(tempLayoutFileRelativePath) != null) {
-                                layout = tempLayout;
-                                layoutFileRelativePath = tempLayoutFileRelativePath;
-                                layoutData.put("BASE_URL", tempBaseURL);
+                                layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences);
+                                layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/body.ser";
+                                layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences));
+                            } else if (StringUtils.equals(preferenceResourceType, ORG_PREFERENCE_RESOURCE_TYPE)) {
+                                layout = temp + CUSTOM_LAYOUT_NAME_SEPERATOR + tenantRequestingPreferences;
+                                layoutFileRelativePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/body.ser";
+                                layoutData.put("BASE_URL", layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences));
                             }
                         } else {
                             // Pre-added layouts
