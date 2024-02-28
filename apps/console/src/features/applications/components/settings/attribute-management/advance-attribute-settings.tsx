@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
@@ -39,7 +39,7 @@ import {
     SubjectTypes
 } from "../../../models";
 
-interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
+interface AdvanceAttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     claimConfigurations: ClaimConfigurationInterface;
     dropDownOptions: any;
     setSubmissionValues: any;
@@ -88,7 +88,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         technology,
         onlyOIDCConfigured,
         oidcInitialValues,
-        ["data-testid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -385,7 +385,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             <Checkbox
                                 ariaLabel={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
-                                data-componentid={ `${ testId }-reassign-subject-attribute-checkbox` }
+                                data-componentid={ `${ componentId }-reassign-subject-attribute-checkbox` }
                                 checked={ showSubjectAttribute }
                                 label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
@@ -417,7 +417,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         options={ dropDownOptions }
                         hidden={ resolveSubjectAttributeHiddenStatus() }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-attribute-dropdown` }
+                        data-testid={ `${ componentId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
                         enableReinitialize={ true }
                         hint={ resolveSubjectAttributeHint() }
@@ -430,7 +430,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ false }
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
+                        data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
                         hidden={ resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -447,7 +447,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ false }
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
+                        data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
                         hidden={ resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -550,7 +550,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 : []
                         }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
+                        data-testid={ `${ componentId }-validate-linked-local-account-checkbox` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
                             .isLinkedAccountsEnabled(applicationTemplateId) ||
                             !applicationConfig.attributeSettings.advancedAttributeSettings
@@ -579,7 +579,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                         : []
                                 }
                                 readOnly={ readOnly }
-                                data-testid={ `${ testId }-mandate-linked-local-account-checkbox` }
+                                data-testid={ `${ componentId }-mandate-linked-local-account-checkbox` }
                                 hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
                                 "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
                             />
@@ -610,7 +610,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialRole?.claim?.uri }
                         options={ dropDownOptions }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-role-attribute-dropdown` }
+                        data-testid={ `${ componentId }-role-attribute-dropdown` }
                         hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
                         hint={
@@ -628,7 +628,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ false }
                         value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-role-checkbox` }
+                        data-testid={ `${ componentId }-role-checkbox` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showIncludeUserstoreDomainRole ||
                             !UIConfig?.legacyMode?.roleMapping }
@@ -646,5 +646,5 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
  * Default props for the application advanced attribute settings component.
  */
 AdvanceAttributeSettings.defaultProps = {
-    "data-testid": "application-advanced-attribute-settings-form"
+    "data-componentid": "application-advanced-attribute-settings-form"
 };

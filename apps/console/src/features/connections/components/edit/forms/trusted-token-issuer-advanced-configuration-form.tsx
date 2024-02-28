@@ -17,17 +17,17 @@
  */
 
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Claim } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
-import { DropdownOptionsInterface } from "apps/console/src/features/applications/components/settings";
-import { getExternalClaims } from "apps/console/src/features/claims/api";
-import { ClaimManagementConstants } from "apps/console/src/features/claims/constants";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
-import { Claim } from "modules/core/src/models";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { IdentityAppsApiException } from "../../../../../../../../modules/core/dist/types/exceptions";
+import { DropdownOptionsInterface } from "../../../../applications/components/settings";
+import { getExternalClaims } from "../../../../claims/api";
+import { ClaimManagementConstants } from "../../../../claims/constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";
