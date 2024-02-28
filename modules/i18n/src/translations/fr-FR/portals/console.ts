@@ -1708,15 +1708,16 @@ export const console: ConsoleNS = {
                                     description: "La validation du compte local lié doit être activée pour mandater un compte local lié"
                                 },
                                 heading: "Comptes liés",
+                                descriptionFederated: "Activez la récupération des attributs utilisateur du compte local lié lors de l'authentification fédérée.",
                                 fields: {
                                     validateLocalAccount: {
-                                        label: "Valider le compte local lié",
-                                        hint: "Cette option décidera si le compte d'utilisateur local lié est validé avec l'identité authentifiée."
+                                        label: "Prioriser les attributs du compte local",
+                                        hint: "Si un compte local lié existe, ses attributs sont renvoyés. Sinon, " +
+                                        "les attributs de l'identité fédérée sont renvoyés."
                                     },
                                     mandateLocalAccount: {
                                         label: "Mandater le compte local lié",
-                                        hint: "Ces options détermineront comment le compte utilisateur local lié est validé avec " +
-                                            "l'identité authentifiée."
+                                        hint: "L'authentification échouera lors de l'octroi d'échange de jetons s'il n'existe aucun compte local lié à l'identité fédérée."
                                     }
                                 }
                             },
@@ -4197,11 +4198,15 @@ export const console: ConsoleNS = {
                                 hint: "Lors de l'échange de jetons, si un compte local correspondant est trouvé," +
                                     " il sera lié implicitement"
                             },
-                            attributes: {
-                                label: "Sélectionnez les attributs à vérifier",
-                                hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
-                                    " il existe un compte utilisateur local correspondant",
-                                placeholder: "Aucun attribut sélectionné"
+                            primaryAttribute: {
+                                label: "Attribut de recherche principal",
+                                hint: "Sélectionnez l'attribut principal qui sera utilisé pour vérifier s'il" +
+                                     " existe un compte utilisateur local correspondant"
+                            },
+                            secondaryAttribute: {
+                                label: "Attribut de recherche secondaire",
+                                hint: "L'attribut secondaire sera utilisé si un utilisateur unique n'est pas" +
+                                    " trouvé en utilisant l'attribut principal"
                             },
                             warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }

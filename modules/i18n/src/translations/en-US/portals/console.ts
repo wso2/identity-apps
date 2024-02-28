@@ -1682,16 +1682,16 @@ export const console: ConsoleNS = {
                                     description: "Linked local account validation should be enabled to mandate a linked local account"
                                 },
                                 heading: "Linked Accounts",
+                                descriptionFederated: "Enable to retrieve user attributes of the linked local account during federated authentication.",
                                 fields: {
                                     validateLocalAccount: {
-                                        label: "Validate linked local account",
-                                        hint: "This option will decide whether the linked local user account is validated with the " +
-                                        "authenticated identity."
+                                        label: "Prioritize local account attributes",
+                                        hint: "If a linked local account exists, its attributes are returned. Otherwise, " +
+                                            "attributes of the federated identity are returned."
                                     },
                                     mandateLocalAccount: {
                                         label: "Mandate linked local account",
-                                        hint: "These options will decide how the linked local user account is validated with the " +
-                                            "authenticated identity."
+                                        hint: "Authentication will fail in token exchange grant if there is no linked local account with the federated identity."
                                     }
                                 }
                             },
@@ -5829,11 +5829,14 @@ export const console: ConsoleNS = {
                                 hint: "During token exchange if there is a matching local account found," +
                                     " it will be linked implicitly"
                             },
-                            attributes: {
-                                label: "Select attributes to cross check",
-                                hint: "Select up to three attributes that will be used to cross check if" +
-                                    " there is a matching local user account",
-                                placeholder: "No attributes are selected"
+                            primaryAttribute: {
+                                label: "Primary lookup attribute",
+                                hint: "Select the primary attribute that will be used to check if" +
+                                    " there is a matching local user account"
+                            },
+                            secondaryAttribute: {
+                                label: "Secondary lookup attribute",
+                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute"
                             },
                             warning: "Ensure that the selected attributes are verified by the token issuer"
                         }

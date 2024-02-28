@@ -1128,6 +1128,7 @@ export interface ConsoleNS {
                                     description: string;
                                 }
                                 heading: string;
+                                descriptionFederated: string;
                                 fields: {
                                     validateLocalAccount: FormAttributes;
                                     mandateLocalAccount: FormAttributes;
@@ -2670,9 +2671,12 @@ export interface ConsoleNS {
                                 label: string;
                                 hint: string;
                             };
-                            attributes: {
+                            primaryAttribute: {
                                 label: string;
-                                placeholder: string;
+                                hint: string;
+                            };
+                            secondaryAttribute: {
+                                label: string;
                                 hint: string;
                             };
                             warning: string;
