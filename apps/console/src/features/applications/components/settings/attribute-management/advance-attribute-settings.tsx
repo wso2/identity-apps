@@ -528,12 +528,12 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 { t("console:develop.features.applications.forms.advancedAttributeSettings." +
                                     "sections.linkedAccounts.heading") }
                             </Heading>
+                            <Heading as="h6" color="grey">
+                                { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.linkedAccounts.descriptionFederated") }
+                            </Heading>
                         </>)
                     }
-                    <Heading as="h6" color="grey">
-                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.linkedAccounts.descriptionFederated") }
-                    </Heading>
                     <Field.CheckboxLegacy
                         listen={ validateLinkedAccountCheckboxHandler }
                         disabled= { mandateLinkedLocalAccount }
