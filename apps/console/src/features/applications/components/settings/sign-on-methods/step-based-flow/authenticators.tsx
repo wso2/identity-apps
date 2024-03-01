@@ -119,8 +119,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         "with-labels": showLabels
     });
 
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
-
     /**
      * Updates the internal selected authenticators state when the prop changes.
      */
@@ -361,31 +359,6 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
     };
 
-    /**
-     * Render feature status chip.
-     *
-     * @param authenticator - Authenticator.
-     *
-     * @returns Feature status chip.
-     */
-    const renderFeatureStatusChip = (authenticator: GenericAuthenticatorInterface): ReactElement => {
-        if (
-            isSAASDeployment &&
-          authenticator?.defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
-              .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
-        ) {
-            return (
-                <Chip
-                    size="small"
-                    label={ t("common:beta").toUpperCase() }
-                    className="oxygen-chip-beta"
-                />
-            );
-        }
-
-        return null;
-    };
-
     return (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
@@ -419,7 +392,11 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
-                                featureStatus={ renderFeatureStatusChip(authenticator) }
+                                featureStatus={
+                                    applicationConfig
+                                        ?.signInMethod
+                                        ?.renderAuthenticatorFeatureStatusChip(authenticator)
+                                }
                                 image={
                                     authenticator.idp === AuthenticatorCategories.LOCAL ||
                                     authenticator

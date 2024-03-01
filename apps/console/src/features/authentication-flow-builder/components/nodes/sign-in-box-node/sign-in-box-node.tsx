@@ -302,7 +302,13 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                     </IconButton>
                 </Tooltip>
                 <Button
-                    startIcon={ <img className="oxygen-sign-in-option-image" src={ authenticator.image } /> }
+                    startIcon={ (
+                        <img
+                            alt={ authenticator.displayName }
+                            className="oxygen-sign-in-option-image"
+                            src={ authenticator.image }
+                        />
+                    ) }
                     variant="contained"
                     className="oxygen-sign-in-option"
                     type="button"

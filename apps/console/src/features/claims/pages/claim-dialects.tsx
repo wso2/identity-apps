@@ -84,8 +84,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         (state: AppState) => state.config.ui.listAllAttributeDialects
     );
 
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
-
     /**
      * Fetches all the dialects.
      *
@@ -328,104 +326,112 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Item>
                                             </List>
                                         </EmphasizedSegment>
-                                        { !isSAASDeployment &&
-                                        featureConfig?.server?.enabled &&
-                                        hasRequiredScopes(
-                                            featureConfig?.server,
-                                            featureConfig?.server?.scopes?.read,
-                                            allowedScopes
-                                        ) && (
-                                            <EmphasizedSegment
-                                                onClick={ () => {
-                                                    history.push(AppConstants.getPaths()
-                                                        .get("CLAIM_VERIFICATION_SETTINGS"));
-                                                } }
-                                                className="clickable"
-                                                data-testid={ `${ testId }-attribute-verification-settings-container` }
-                                            >
-                                                <List>
-                                                    <List.Item>
-                                                        <Grid>
-                                                            <Grid.Row columns={ 2 }>
-                                                                <Grid.Column width={ 12 }>
-                                                                    <GenericIcon
-                                                                        verticalAlign="middle"
-                                                                        fill="primary"
-                                                                        transparent
-                                                                        icon={ getSidePanelIcons().gears }
-                                                                        spaced="right"
-                                                                        size="mini"
-                                                                        floated="left"
-                                                                    />
-                                                                    <List.Header>
-                                                                        { t(
-                                                                            "console:manage.features." +
+                                        {
+                                            featureConfig?.server?.enabled &&
+                                            hasRequiredScopes(
+                                                featureConfig?.server,
+                                                featureConfig?.server?.scopes?.read,
+                                                allowedScopes
+                                            ) && (
+                                                <EmphasizedSegment
+                                                    onClick={ () => {
+                                                        history.push(AppConstants.getPaths()
+                                                            .get("CLAIM_VERIFICATION_SETTINGS"));
+                                                    } }
+                                                    className="clickable"
+                                                    data-testid={
+                                                        `${ testId }-attribute-verification-settings-container`
+                                                    }
+                                                >
+                                                    <List>
+                                                        <List.Item>
+                                                            <Grid>
+                                                                <Grid.Row columns={ 2 }>
+                                                                    <Grid.Column width={ 12 }>
+                                                                        <GenericIcon
+                                                                            verticalAlign="middle"
+                                                                            fill="primary"
+                                                                            transparent
+                                                                            icon={ getSidePanelIcons().gears }
+                                                                            spaced="right"
+                                                                            size="mini"
+                                                                            floated="left"
+                                                                        />
+                                                                        <List.Header>
+                                                                            { t(
+                                                                                "console:manage.features." +
                                                                             "governanceConnectors." +
                                                                             "connectorCategories." +
                                                                             "otherSettings.connectors." +
                                                                             "userClaimUpdate." +
                                                                             "friendlyName"
-                                                                        ) }
-                                                                    </List.Header>
-                                                                    <List.Description
-                                                                        data-testid={
-                                                                            `${ testId }-attribute-verification` +
+                                                                            ) }
+                                                                        </List.Header>
+                                                                        <List.Description
+                                                                            data-testid={
+                                                                                `${ testId }-attribute-verification` +
                                                                             "-settings"
-                                                                        }
-                                                                    >
-                                                                        { t(
-                                                                            "console:manage.features." +
+                                                                            }
+                                                                        >
+                                                                            { t(
+                                                                                "console:manage.features." +
                                                                             "governanceConnectors." +
                                                                             "connectorSubHeading",
-                                                                            { name: t(
-                                                                                "console:manage.features." +
+                                                                                { name: t(
+                                                                                    "console:manage.features." +
                                                                                 "governanceConnectors." +
                                                                                 "connectorCategories." +
                                                                                 "otherSettings.connectors." +
                                                                                 "userClaimUpdate.friendlyName"
+                                                                                ) }
                                                                             ) }
-                                                                        ) }
-                                                                    </List.Description>
-                                                                </Grid.Column>
-                                                                <Grid.Column
-                                                                    width={ 4 }
-                                                                    verticalAlign="middle"
-                                                                    textAlign="right"
-                                                                    data-testid={
-                                                                        `${ testId }-attribute-verification-` +
+                                                                        </List.Description>
+                                                                    </Grid.Column>
+                                                                    <Grid.Column
+                                                                        width={ 4 }
+                                                                        verticalAlign="middle"
+                                                                        textAlign="right"
+                                                                        data-testid={
+                                                                            `${ testId }-attribute-verification-` +
                                                                         "settings-edit-icon"
-                                                                    }
-                                                                >
-                                                                    <Popup
-                                                                        content={
-                                                                            hasRequiredScopes(
-                                                                                featureConfig?.attributeDialects,
-                                                                                featureConfig?.attributeDialects?.
-                                                                                    scopes?.create,
-                                                                                allowedScopes
-                                                                            ) ?
-                                                                                t("common:configure") :
-                                                                                t("common:view")
                                                                         }
-                                                                        trigger={
-                                                                            hasRequiredScopes(
-                                                                                featureConfig?.attributeDialects,
-                                                                                featureConfig?.attributeDialects?.
-                                                                                    scopes?.create,
-                                                                                allowedScopes
-                                                                            ) ?
-                                                                                <Icon color="grey" name="pencil" /> :
-                                                                                <Icon color="grey" name="eye" />
-                                                                        }
-                                                                        inverted
-                                                                    />
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                        </Grid>
-                                                    </List.Item>
-                                                </List>
-                                            </EmphasizedSegment>
-                                        ) }
+                                                                    >
+                                                                        <Popup
+                                                                            content={
+                                                                                hasRequiredScopes(
+                                                                                    featureConfig?.attributeDialects,
+                                                                                    featureConfig?.attributeDialects?.
+                                                                                        scopes?.create,
+                                                                                    allowedScopes
+                                                                                ) ?
+                                                                                    t("common:configure") :
+                                                                                    t("common:view")
+                                                                            }
+                                                                            trigger={
+                                                                                hasRequiredScopes(
+                                                                                    featureConfig?.attributeDialects,
+                                                                                    featureConfig?.attributeDialects?.
+                                                                                        scopes?.create,
+                                                                                    allowedScopes
+                                                                                ) ?
+                                                                                    (<Icon
+                                                                                        color="grey"
+                                                                                        name="pencil"
+                                                                                    />) :
+                                                                                    (<Icon
+                                                                                        color="grey"
+                                                                                        name="eye"
+                                                                                    />)
+                                                                            }
+                                                                            inverted
+                                                                        />
+                                                                    </Grid.Column>
+                                                                </Grid.Row>
+                                                            </Grid>
+                                                        </List.Item>
+                                                    </List>
+                                                </EmphasizedSegment>
+                                            ) }
                                     </>
                                 )
                         )

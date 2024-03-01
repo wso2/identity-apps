@@ -23,8 +23,6 @@ import {
     ContentLoader,
     FilePicker,
     Hint,
-    LinkButton,
-    Message,
     PickerResult,
     URLInput,
     XMLFileStrategy
@@ -32,10 +30,10 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
-import { commonConfig } from "../../../../extensions";
+import { applicationConfig, commonConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../core";
 import { SAMLConfigModes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
@@ -129,7 +127,6 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
     const [ emptyFileError, setEmptyFileError ] = useState(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     useEffect(() => {
         setConfigureMode(SAMLConfigModes.MANUAL);
@@ -474,52 +471,19 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     showMoreContent={ t("common:showMore") }
                                 />
                                 {
-                                    (assertionConsumerURLFromTemplate) && isSAASDeployment && (
-                                        <Message
-                                            visible
-                                            type="info"
-                                            content={
-                                                (<>
-                                                    {
-                                                        <Trans
-                                                            i18nKey={ "console:develop.features.applications.forms." +
-                                                            "inboundSAML.fields.assertionURLs.info" }
-                                                            tOptions={ {
-                                                                assertionURLFromTemplate:
-                                                                assertionConsumerURLFromTemplate
-                                                            } }
-                                                        >
-                                                            Don’t have an app? Try out a sample app
-                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong>
-                                                            as the assertion Response URL.
-                                                            (You can download and run a sample
-                                                            at a later step.)
-                                                        </Trans>
-                                                    }
-                                                    {
-                                                        (assertionConsumerUrls === undefined ||
-                                                            assertionConsumerUrls === "") && (
-                                                            <LinkButton
-                                                                className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={
-                                                                    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                                                                    ) => {
-                                                                        e.preventDefault();
-                                                                        setAssertionConsumerUrls(
-                                                                            assertionConsumerURLFromTemplate);
-                                                                        setIssuer(issuerFromTemplate);
-                                                                        setHasAssertionConsumerUrls(true);
-                                                                    }
-                                                                }
-                                                                data-testid={ `${testId}-add-now-button` }
-                                                            >
-                                                                <span style={ { fontWeight: "bold" } }>Add Now</span>
-                                                            </LinkButton>
-                                                        )
-                                                    }
-                                                </>)
-                                            }
-                                        />
+                                    applicationConfig?.quickstart?.renderAcsUrlSelectPrompt(
+                                        assertionConsumerURLFromTemplate,
+                                        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                                        ) => {
+                                            e.preventDefault();
+                                            setAssertionConsumerUrls(
+                                                assertionConsumerURLFromTemplate);
+                                            setIssuer(issuerFromTemplate);
+                                            setHasAssertionConsumerUrls(true);
+                                        },
+                                        assertionConsumerUrls === undefined ||
+                                        assertionConsumerUrls === "",
+                                        { testId }
                                     )
                                 }
                             </Grid.Column>
