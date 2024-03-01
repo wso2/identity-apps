@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.32
+
+### Patch Changes
+
+- [#5522](https://github.com/wso2/identity-apps/pull/5522) [`2d5cf5fb07`](https://github.com/wso2/identity-apps/commit/2d5cf5fb072bc53a3f7ebd09b2044c6eb430a705) Thanks [@Avarjana](https://github.com/Avarjana)! - Update layout resolving logic for external URL
+
+* [#5622](https://github.com/wso2/identity-apps/pull/5622) [`f8f0b2f577`](https://github.com/wso2/identity-apps/commit/f8f0b2f5777bd9ba8e0caeb3fd3be68ba92935bd) Thanks [@Avarjana](https://github.com/Avarjana)! - Add URL check for custom stylesheet.
+
 ## 2.1.31
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.12.47
+
+### Patch Changes
+
+- [#5536](https://github.com/wso2/identity-apps/pull/5536) [`5ddfdeab10`](https://github.com/wso2/identity-apps/commit/5ddfdeab10302dbaa648a1d933f287d392131878) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Hide the myaccount url for legacy auth runtime sub orgs
+
+* [#5621](https://github.com/wso2/identity-apps/pull/5621) [`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to SMS provider page
+
+- [#5620](https://github.com/wso2/identity-apps/pull/5620) [`a08df1b611`](https://github.com/wso2/identity-apps/commit/a08df1b611ecbbd8291e9ec6ec7147865c6c2d67) Thanks [@sandushi](https://github.com/sandushi)! - Add beta label to alternative login idnetifiers
+
+- Updated dependencies [[`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4)]:
+  - @wso2is/i18n@2.0.128
+
 ## 2.12.46
 
 ### Patch Changes
