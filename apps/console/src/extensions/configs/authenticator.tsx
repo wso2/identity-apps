@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import React from "react";
 import { AuthenticatorConfig } from "./models";
-import { ChoreoButton } from "../components/shared/button/choreo-navigation-button";
 
 export const authenticatorConfig : AuthenticatorConfig = {
-    externalResourceButton: <ChoreoButton />,
+    externalResourceButton: null,
     overriddenAuthenticatorIds: {
         SMS_OTP_AUTHENTICATOR_ID: "c21zLW90cC1hdXRoZW50aWNhdG9y"
     },

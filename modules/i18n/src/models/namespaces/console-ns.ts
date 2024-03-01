@@ -1128,6 +1128,7 @@ export interface ConsoleNS {
                                     description: string;
                                 }
                                 heading: string;
+                                descriptionFederated: string;
                                 fields: {
                                     validateLocalAccount: FormAttributes;
                                     mandateLocalAccount: FormAttributes;
@@ -2670,9 +2671,12 @@ export interface ConsoleNS {
                                 label: string;
                                 hint: string;
                             };
-                            attributes: {
+                            primaryAttribute: {
                                 label: string;
-                                placeholder: string;
+                                hint: string;
+                            };
+                            secondaryAttribute: {
+                                label: string;
                                 hint: string;
                             };
                             warning: string;
@@ -6907,6 +6911,154 @@ export interface ConsoleNS {
                     }
                 };
                 compareToLastPeriodMessage: string;
+            };
+            smsProviders: {
+                heading: string;
+                subHeading: string;
+                description: string;
+                info: string;
+                updateButton: string;
+                sendTestSMSButton: string;
+                goBack: string
+                confirmationModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
+                dangerZoneGroup: {
+                    header: string;
+                    revertConfig: {
+                        heading: string;
+                        subHeading: string;
+                        actionTitle: string;
+                    }
+                };
+                form: {
+                    twilio: {
+                        subHeading: string;
+                        accountSID: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        authToken: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        sender: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        validations: {
+                            required: string;
+                        };
+                    },
+                    vonage: {
+                        subHeading: string;
+                        accountSID: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        authToken: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        sender: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        validations: {
+                            required: string;
+                        };
+                    },
+                    custom: {
+                        subHeading: string;
+                        providerName: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        providerUrl: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        },
+                        httpMethod: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        contentType: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        headers: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        payload: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
+                        key: {
+                            label: string,
+                            placeholder: string,
+                            hint: string
+                        },
+                        secret: {
+                            label: string,
+                            placeholder: string,
+                            hint: string
+                        },
+                        sender: {
+                            label: string,
+                            placeholder: string,
+                            hint: string
+                        }
+                        validations: {
+                            required: string;
+                            methodInvalid: string;
+                            contentTypeInvalid: string;
+                        };
+                    }
+                }
+                notifications: {
+                    getConfiguration: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    deleteConfiguration: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateConfiguration: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    }
+                };
             };
         };
         notifications: {
