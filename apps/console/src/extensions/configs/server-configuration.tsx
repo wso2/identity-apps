@@ -68,7 +68,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
         "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
         "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
