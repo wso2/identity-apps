@@ -351,6 +351,10 @@ const useSignIn = (): UseSignInInterface => {
             }
 
             sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+        } else {
+            logoutUrl = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
+            logoutRedirectUrl =
+                window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
         }
 
         getDecodedIDToken()
@@ -410,7 +414,7 @@ const useSignIn = (): UseSignInInterface => {
                     endpoints: {
                         authorizationEndpoint: authorizationEndpoint,
                         checkSessionIframe: oidcSessionIframeEndpoint,
-                        endSessionEndpoint: logoutUrl.split("?")[0],
+                        endSessionEndpoint: logoutUrl?.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
                     signOutRedirectURL: logoutRedirectUrl
