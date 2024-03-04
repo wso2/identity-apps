@@ -1,0 +1,45 @@
+/*
+ * <%--
+ *   ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *   ~
+ *   ~ WSO2 LLC. licenses this file to you under the Apache License,
+ *   ~ Version 2.0 (the "License"); you may not use this file except
+ *   ~ in compliance with the License.
+ *   ~ You may obtain a copy of the License at
+ *   ~
+ *   ~    http://www.apache.org/licenses/LICENSE-2.0
+ *   ~
+ *   ~ Unless required by applicable law or agreed to in writing,
+ *   ~ software distributed under the License is distributed on an
+ *   ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *   ~ KIND, either express or implied.  See the License for the
+ *   ~ specific language governing permissions and limitations
+ *   ~ under the License.
+ * --%>
+ */
+
+:root {
+    --language-selector-background-color: #FFFFFF;
+    --language-selector-text-color: #000000;
+    --language-selector-border-color: #E86D1F;
+}
+
+#language-selector-dropdown {
+    color: var(--language-selector-text-color);
+    background-color: transparent;
+    border: none;
+    width: 250px !important;
+    z-index: 999;
+}
+
+.language-selector-dropdown.active {
+    border: 1px solid var(--language-selector-border-color) !important;
+}
+
+.language-selector-dropdown > .menu {
+    border-color: var(--language-selector-border-color) !important;
+}
+
+.language-selector-dropdown > .menu > .message {
+    display: none !important;
+}

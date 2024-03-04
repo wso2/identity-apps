@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2020-2024, WSO2 LLC. (http://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -17,13 +17,102 @@
 --%>
 
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ include file="localize.jsp" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
 
-<!-- footer -->
-<footer class="footer" style="text-align: center">
-    <div class="container-fluid">
-        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%> | &copy;
-            <script>document.write(new Date().getFullYear());</script>
-        </p>
+<%-- Include tenant context --%>
+<jsp:directive.include file="../tenant-resolve.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Cookie Consent Banner --%>
+<%
+    if (config.getServletContext().getResource("extensions/cookie-consent-banner.jsp") != null) {
+%>
+        <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
+<%
+    } else {
+%>
+        <jsp:include page="/includes/cookie-consent-banner.jsp"/>
+<%
+    }
+%>
+
+<%-- footer --%>
+<footer class="footer">
+    <div class="ui container fluid">
+        <div class="ui text stackable menu">
+            <div class="left menu">
+                <a class="item no-hover" id="copyright">
+                    <%
+                        String copyright = i18n(resourceBundle, customText, "copyright", __DEPRECATED__copyrightText);
+                        if (StringUtils.isNotBlank(copyright)) {
+                    %>
+                        <span class="copyright-text line-break"><%= copyright %></span>
+                    <% } %>
+                    <%
+                        if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
+                    %>
+                        <div class="powered-by-logo-divider">|</div>
+                    <% } %>
+                    <%
+                        if (!shouldRemoveDefaultBranding) {
+                    %>
+                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(productLogoURL)) {%>
+                            <div class="powered-by-logo-divider">|</div>
+                            <%=IdentityManagementEndpointUtil.i18n(resourceBundle, "powered.by")%>
+                            <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
+                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
+                            </div>
+                        <% } %>
+                    <% } %>
+                </a>
+            </div>
+            <div class="right menu">
+            <%
+                if (!StringUtils.isBlank(privacyPolicyURL)) {
+            %>
+                <a
+                    id="privacy-policy"
+                    class="item"
+                    href="<%= i18nLink(userLocale, privacyPolicyURL) %>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="login-page-privacy-policy-link"
+                >
+                    <%=i18n(resourceBundle, customText, "privacy.policy")%>
+                </a>
+            <% } %>
+            <%
+                if (!StringUtils.isBlank(termsOfUseURL)) {
+            %>
+                <a
+                    id="terms-of-service"
+                    class="item"
+                    href="<%= i18nLink(userLocale, termsOfUseURL) %>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="login-page-privacy-policy-link"
+                >
+                    <%=i18n(resourceBundle, customText, "terms.of.service")%>
+                </a>
+            <% } %>
+
+            <%
+                File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
+                if (languageSwitcherFile.exists()) {
+            %>
+                <jsp:include page="../extensions/language-switcher.jsp"/>
+            <% } else { %>
+                <jsp:include page="language-switcher.jsp"/>
+            <% } %>
+            </div>
+        </div>
     </div>
 </footer>
