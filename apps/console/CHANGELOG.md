@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.12.48
+
+### Patch Changes
+
+- [#5537](https://github.com/wso2/identity-apps/pull/5537) [`80e65dcd30`](https://github.com/wso2/identity-apps/commit/80e65dcd302c9eff72f3b8af8ebb53c167040411) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] change the text "Password reset success" to "Email Confirmation Sent"
+
+* [#5632](https://github.com/wso2/identity-apps/pull/5632) [`70131fa20b`](https://github.com/wso2/identity-apps/commit/70131fa20b42253d74bab6113e5b10eea021cece) Thanks [@Avarjana](https://github.com/Avarjana)! - Disable custom username feature.
+
+- [#5582](https://github.com/wso2/identity-apps/pull/5582) [`0e38763ec4`](https://github.com/wso2/identity-apps/commit/0e38763ec4724b848e74c95de70bb0acd78cea50) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] Userstores error messages not displayed properly
+
+- Updated dependencies [[`80e65dcd30`](https://github.com/wso2/identity-apps/commit/80e65dcd302c9eff72f3b8af8ebb53c167040411)]:
+  - @wso2is/i18n@2.0.129
+
 ## 2.12.47
 
 ### Patch Changes
