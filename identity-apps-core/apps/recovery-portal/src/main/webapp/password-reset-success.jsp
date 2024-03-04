@@ -86,7 +86,7 @@
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>
-                        <a href="<%= Encode.forJavaScriptBlock(callback)%>">
+                        <a href="<%= Encode.forJavaScriptBlock(accessUrl)%>">
                             <%=i18n(recoveryResourceBundle, customText, "password.reset.success.action")%>
                         </a>
                     <% } %>
