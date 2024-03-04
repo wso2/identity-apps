@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.3.40
+
+### Patch Changes
+
+- [#5537](https://github.com/wso2/identity-apps/pull/5537) [`80e65dcd30`](https://github.com/wso2/identity-apps/commit/80e65dcd302c9eff72f3b8af8ebb53c167040411) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] change the text "Password reset success" to "Email Confirmation Sent"
+
+- Updated dependencies [[`80e65dcd30`](https://github.com/wso2/identity-apps/commit/80e65dcd302c9eff72f3b8af8ebb53c167040411)]:
+  - @wso2is/i18n@2.0.129
+
 ## 2.3.39
 
 ### Patch Changes

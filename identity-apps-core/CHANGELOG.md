@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.33
+
+### Patch Changes
+
+- [#5572](https://github.com/wso2/identity-apps/pull/5572) [`bb89a69bb6`](https://github.com/wso2/identity-apps/commit/bb89a69bb606bab596dfcabb3b8359b679d28084) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] The Continue button text change is affecting the Set Password section as well
+
 ## 2.1.32
 
 ### Patch Changes
