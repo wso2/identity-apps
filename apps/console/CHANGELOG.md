@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.12.49
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+* [#5633](https://github.com/wso2/identity-apps/pull/5633) [`75c6b548ca`](https://github.com/wso2/identity-apps/commit/75c6b548ca5dabfcfec00fbc183242ad4e5855fc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve self registration enable status update UX
+
+- [#5635](https://github.com/wso2/identity-apps/pull/5635) [`a3b5256a8f`](https://github.com/wso2/identity-apps/commit/a3b5256a8f517dc971674ac3d6c57b899637af26) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add info message to SMS OTP connection page
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/access-control@2.0.21
+  - @wso2is/dynamic-forms@2.0.39
+  - @wso2is/common@2.0.47
+  - @wso2is/forms@2.0.25
+  - @wso2is/core@2.0.37
+  - @wso2is/form@2.0.38
+  - @wso2is/i18n@2.0.130
+
 ## 2.12.48
 
 ### Patch Changes
