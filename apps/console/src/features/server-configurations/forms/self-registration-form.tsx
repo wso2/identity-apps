@@ -540,7 +540,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 checked={ enableAccountConfirmation }
                 required={ false }
                 readOnly={ readOnly }
-                disabled={ !isConnectorEnabled || (isAlphanumericUsernameEnabled && !emailRequired) }
+                disabled={ !isConnectorEnabled || (isAlphanumericUsernameEnabled && !emailRequired) || isSubmitting }
                 width={ 16 }
                 data-testid={ `${testId}-notify-account-confirmation` }
                 hint={ enableAccountConfirmation && t ("extensions:manage.serverConfigurations.userOnboarding" +
@@ -590,7 +590,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                             .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                     }
                     readOnly={ readOnly }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || isSubmitting }
                     data-testid={ `${testId}-link-expiry-time` }
                 >
                     <input/>
@@ -607,7 +607,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     required={ false }
                     listen={ (value: boolean) => handleAccountActivateImmediately(value) }
                     readOnly={ readOnly }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || isSubmitting }
                     data-testid={ `${testId}-account-activate-immediately` }
                     message={
                         {
@@ -647,7 +647,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 defaultValue={ initialFormValues?.[
                     "SelfRegistration.NotifyAccountConfirmation" ] === "true" }
                 readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
+                disabled={ !isConnectorEnabled || isSubmitting }
                 width={ 16 }
                 data-componentid={ `${ testId }-enable-notification-sign-up-confirmation` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
