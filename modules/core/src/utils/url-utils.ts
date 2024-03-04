@@ -130,15 +130,8 @@ export class URLUtils {
     }
 
     public static isURLValid(url: string, checkForSanity?: boolean): boolean {
-        // List of invalid keywords that cannot be present in a URL.
-        const invalidKeywords: string[] = [ "javascript:" ];
-
         // Check if the URL is valid and doesn't contain probable XSS attacks.
         if (checkForSanity) {
-            if (invalidKeywords.some((keyword:string) => url?.includes(keyword))) {
-                return false;
-            }
-
             const sanitizedURL: string = sanitizeUrl(url);
 
             // @braintree/sanitize-url returns `about:blank` for invalid URLs.
