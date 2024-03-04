@@ -624,7 +624,7 @@ export const console: ConsoleNS = {
             myaccount: "මගේ ගිණුම",
             "password-recovery": "මුරපද ප්රතිසාධනය",
             "password-reset": "මුරපද යළි පිහිටුවීම",
-            "password-reset-success": "මුරපදය නැවත සකස් කිරීම සාර්ථකත්වය"
+            "password-reset-success": "මුරපදය යළි පිහිටුවීමේ සබැඳිය යවන ලදි"
         }
     },
     brandingCustomText: {
