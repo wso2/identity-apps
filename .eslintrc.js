@@ -328,6 +328,7 @@ module.exports = {
                 return: "parens"
             }
         ],
+        "react/no-danger": 2,
         "react/no-children-prop": 0,
         "react/prop-types": 1,
         semi: 1,
