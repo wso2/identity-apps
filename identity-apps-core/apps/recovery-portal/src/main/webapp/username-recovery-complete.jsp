@@ -84,7 +84,7 @@
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>
-                        <a href="<%= Encode.forHtml(callback)%>">
+                        <a href="<%= Encode.forJavaScriptBlock(callback)%>">
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
                         </a>
                     <% } %>
