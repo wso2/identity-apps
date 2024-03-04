@@ -167,6 +167,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                 (codeSnippet: { description: string; value: string; }, index: number) => (
                                     <p key={ index }>
                                         <div
+                                            // eslint-disable-next-line react/no-danger
                                             dangerouslySetInnerHTML={
                                                 { __html: Encode.forHtml(codeSnippet?.description) }
                                             }
@@ -203,6 +204,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                 wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
+                        { /* eslint-disable-next-line react/no-danger */ }
                         <p dangerouslySetInnerHTML={ { __html: Encode.forHtml(field?.hint) } }/>
                         <Divider />
                     </div>
