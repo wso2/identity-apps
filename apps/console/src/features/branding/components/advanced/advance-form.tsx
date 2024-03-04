@@ -18,6 +18,7 @@
 
 import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -155,11 +156,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
         // Use a regex to replace {{lang}}, {{country}}, and {{locale}} placeholders while preserving other characters
         moderatedValue = value?.trim().replace(new RegExp(placeholdersPattern, "g"), "");
 
-        // Gracefully handle scripting attempts.
-        // TODO: This should be moved to a common util or validation library.
-        const javascriptPattern: string = "javascript:";
-
-        if (moderatedValue?.includes(javascriptPattern) || !FormValidation.url(moderatedValue)) {
+        if (!URLUtils.isURLValid(moderatedValue, true) || !FormValidation.url(moderatedValue)) {
             errorMsg = t("extensions:develop.branding.forms.advance.links.fields.common.validations.invalid");
         }
 

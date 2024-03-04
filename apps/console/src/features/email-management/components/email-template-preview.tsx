@@ -17,8 +17,8 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Encode } from "@wso2is/core/utils";
 import { Iframe } from "@wso2is/react-components";
-import DOMPurify from "dompurify";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -123,7 +123,8 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
                 className="email-template-preview-iframe"
             >
                 <div
-                    dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(emailTemplateBody) } }
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={ { __html: Encode.forHtml(emailTemplateBody) } }
                     data-componentid={ `${ testId }-iframe-body-div` }
                 />
             </Iframe>

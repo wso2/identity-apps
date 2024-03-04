@@ -18,8 +18,8 @@
 
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { Encode } from "@wso2is/core/utils";
 import { CodeEditor, CopyInputField, Heading, Message } from "@wso2is/react-components";
-import DOMPurify from "dompurify";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Divider } from "semantic-ui-react";
 
@@ -132,7 +132,8 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.paragraphs?.map((paragraph: string, index: number) => (
                                 <p
                                     key={ index }
-                                    dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(paragraph) } }
+                                    // eslint-disable-next-line react/no-danger
+                                    dangerouslySetInnerHTML={ { __html: Encode.forHtml(paragraph) } }
                                 />
                             ))
                         }
@@ -141,8 +142,9 @@ CreateConnectionWizardHelpPropsInterface> = (
                                 (copyInputField: { description: string; value: string; }, index: number) => (
                                     <p key={ index }>
                                         <div
+                                            // eslint-disable-next-line react/no-danger
                                             dangerouslySetInnerHTML={
-                                                { __html: DOMPurify.sanitize(copyInputField?.description) }
+                                                { __html: Encode.forHtml(copyInputField?.description) }
                                             }
                                         />
                                         <CopyInputField
@@ -165,8 +167,9 @@ CreateConnectionWizardHelpPropsInterface> = (
                                 (codeSnippet: { description: string; value: string; }, index: number) => (
                                     <p key={ index }>
                                         <div
+                                            // eslint-disable-next-line react/no-danger
                                             dangerouslySetInnerHTML={
-                                                { __html: DOMPurify.sanitize(codeSnippet?.description) }
+                                                { __html: Encode.forHtml(codeSnippet?.description) }
                                             }
                                         />
                                         <Divider hidden />
@@ -201,7 +204,8 @@ CreateConnectionWizardHelpPropsInterface> = (
                 wizardHelp?.fields?.map((field: { fieldName: string, hint: string }, index: number) => (
                     <div key={ index }>
                         <Heading as="h5">{ field.fieldName }</Heading>
-                        <p dangerouslySetInnerHTML={ { __html: DOMPurify.sanitize(field?.hint) } }/>
+                        { /* eslint-disable-next-line react/no-danger */ }
+                        <p dangerouslySetInnerHTML={ { __html: Encode.forHtml(field?.hint) } }/>
                         <Divider />
                     </div>
                 ))
