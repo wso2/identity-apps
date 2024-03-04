@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.3.41
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+* [#5560](https://github.com/wso2/identity-apps/pull/5560) [`4b6e6194e3`](https://github.com/wso2/identity-apps/commit/4b6e6194e3ce8bad6e1601349a72bdeafa4c268b) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix logout issue in tenanted myaccount
+
+* Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/access-control@2.0.21
+  - @wso2is/forms@2.0.25
+  - @wso2is/core@2.0.37
+  - @wso2is/i18n@2.0.130
+
 ## 2.3.40
 
 ### Patch Changes
