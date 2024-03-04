@@ -92,6 +92,7 @@ const ConnectionQuickStart: FC<ConnectionQuickStartPropsInterface> = (
                         <>
                             <div
                                 key={ index }
+                                // eslint-disable-next-line react/no-danger
                                 dangerouslySetInnerHTML={ { __html: Encode.forHtml(step?.content) } }
                             />
                             {

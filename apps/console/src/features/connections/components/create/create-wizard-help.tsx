@@ -132,6 +132,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                             wizardHelp.message.paragraphs?.map((paragraph: string, index: number) => (
                                 <p
                                     key={ index }
+                                    // eslint-disable-next-line react/no-danger
                                     dangerouslySetInnerHTML={ { __html: Encode.forHtml(paragraph) } }
                                 />
                             ))
@@ -141,6 +142,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                 (copyInputField: { description: string; value: string; }, index: number) => (
                                     <p key={ index }>
                                         <div
+                                            // eslint-disable-next-line react/no-danger
                                             dangerouslySetInnerHTML={
                                                 { __html: Encode.forHtml(copyInputField?.description) }
                                             }

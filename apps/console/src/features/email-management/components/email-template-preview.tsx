@@ -123,6 +123,7 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
                 className="email-template-preview-iframe"
             >
                 <div
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={ { __html: Encode.forHtml(emailTemplateBody) } }
                     data-componentid={ `${ testId }-iframe-body-div` }
                 />
