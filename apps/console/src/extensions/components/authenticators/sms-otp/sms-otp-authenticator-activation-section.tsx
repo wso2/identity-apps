@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,11 +20,16 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Link, Message } from "@wso2is/react-components";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, CheckboxProps } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Icon } from "semantic-ui-react";
+import {
+    AppConstants,
+    history
+} from "../../../../features/core";
 import { addSMSPublisher, deleteSMSPublisher, useSMSNotificationSenders } from "../../identity-providers/api";
 import { SMSOTPConstants } from "../../identity-providers/constants";
 
@@ -48,6 +53,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
     const { t } = useTranslation();
     const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<boolean>(false);
     const dispatch: Dispatch = useDispatch();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         data: notificationSendersList,
@@ -135,20 +141,31 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
 
     return (
         <>
-            <Message
-                type={ "info" }
-            >
-                <Trans
-                    i18nKey={
-                        "extensions:develop.identityProviders.smsOTP.settings.enableRequiredNote.message"
-                    }
-                >
-                    Asgardeo publishes events to Choreo to enable SMS OTP, where Choreo webhooks will be used to
-                    integrate with multiple services to publish OTP Notifications. Follow the
-                    <Link link="https://wso2.com/asgardeo/docs/guides/authentication/mfa/add-smsotp-login/">
-                    Add SMS OTP Guide</Link> to configure Choreo webhooks for Asgardeo publish events.
-                </Trans>
-            </Message>
+            {
+                !isSubOrganization() && (
+                    <Message info>
+                        <Icon name="info circle" />
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                                ".smsOTP.hint"
+                            }
+                        >
+                            Ensure that an
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("SMS_PROVIDER")
+                                    );
+                                } }
+                            > SMS Provider
+                            </Link>
+                            &nbsp;is configured for the OTP feature to work properly.
+                        </Trans>
+                    </Message>
+                )
+            }
             <Checkbox
                 toggle
                 label={ (!isEnableSMSOTP
