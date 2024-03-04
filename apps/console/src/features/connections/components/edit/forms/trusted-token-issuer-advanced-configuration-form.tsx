@@ -16,20 +16,23 @@
  * under the License.
  */
 
-import { AlertLevels, ClaimDialect, ExternalClaim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Claim } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Code, Hint, Message, Text } from "@wso2is/react-components";
-import { getDialects, getExternalClaims } from "apps/console/src/features/claims/api";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
-import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { Hint, Message } from "@wso2is/react-components";
+import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Header } from "semantic-ui-react";
+import { IdentityAppsApiException } from "../../../../../../../../modules/core/dist/types/exceptions";
+import { DropdownOptionsInterface } from "../../../../applications/components/settings";
+import { getExternalClaims } from "../../../../claims/api";
+import { ClaimManagementConstants } from "../../../../claims/constants";
+import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
+import { SubjectAttributeListItem } from "../settings";
 
 const FORM_ID: string = "idp-implicit-association-form";
-const OIDC_DIALECT_URI: string = "http://wso2.org/oidc/claim";
 
 interface TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -62,9 +65,13 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const [ implicitAssociationEnabled, setImplicitAssociationEnabled ] = useState<boolean>(config.isEnabled);
-    const [ claimList, setClaimList ] = useState<DropdownItemProps[]>([]);
-    const [ selectedClaims, setSelectedClaims ] = useState<string[]>(config.lookupAttribute);
-    const [ isClaimListRequestLoading, setClaimListRequestLoading ] = useState<boolean>(false);
+    const [ filteredClaimList, setFilteredClaimList ] = useState<DropdownOptionsInterface[]>([]);
+    const [ primaryClaimList, setPrimaryClaimList ] = useState<DropdownOptionsInterface[]>([]);
+    const [ secondaryClaimList, setSecondaryClaimList ] = useState<DropdownOptionsInterface[]>([]);
+    const [ primaryLookupAttribute, setPrimaryLookupAttribute ] =
+        useState<string>(config.lookupAttribute.length > 0 ? config.lookupAttribute[0] : "");
+    const [ secondaryLookupAttribute, setSecondaryLookupAttribute ] =
+        useState<string>(config.lookupAttribute.length > 1 ? config.lookupAttribute[1] : "");
 
     /**
      * This function process the form values and returns the request body of the API call to update the
@@ -73,23 +80,14 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
      * @param values - Form values.
      */
     const updateConfiguration = (values: ImplicitAssociaionConfigInterface): any => {
+        const selectedClaims: string[] = [];
 
-        if (selectedClaims.length > 5) {
-            dispatch(
-                addAlert({
-                    description:
-                        t(
-                            "console:manage.features.claims.dialects.notifications." +
-                            "fetchADialect.genericError.description"
-                        ),
-                    level: AlertLevels.WARNING,
-                    message:
-                        t(
-                            "console:manage.features.claims.dialects.notifications." +
-                            "fetchADialect.genericError.message"
-                        )
-                })
-            );
+        if ( primaryLookupAttribute.length > 0 ) {
+            selectedClaims.push(primaryLookupAttribute);
+        }
+
+        if ( secondaryLookupAttribute.length > 0 ) {
+            selectedClaims.push(secondaryLookupAttribute);
         }
 
         return {
@@ -98,74 +96,44 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
         };
     };
 
-    const handleAttributesDropdownChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        const claims: string[] = data.value as string[];
+    useEffect(() => {
+        // Remove the selected primary lookup attribute from the secondary lookup attribute list.
+        const secondaryAttributes: DropdownOptionsInterface[] =
+            filteredClaimList.filter((claim: DropdownOptionsInterface) => {
+                return claim.value !== primaryLookupAttribute;
+            });
 
-        setSelectedClaims(data.options.filter((option: DropdownItemProps) => {
-            if (claims.includes(option.value.toString())) {
-                return option;
-            }
-        }).map((option: DropdownItemProps) => option.value.toString()));
-    };
+        // Remove the selected secondary lookup attribute from the primary lookup attribute list.
+        const primaryAttributes: DropdownOptionsInterface[] =
+            filteredClaimList.filter((claim: DropdownOptionsInterface) => {
+                return claim.value !== secondaryLookupAttribute;
+            });
+
+        setSecondaryClaimList(secondaryAttributes);
+        setPrimaryClaimList(primaryAttributes);
+
+    }, [ primaryLookupAttribute, secondaryLookupAttribute, filteredClaimList ]);
 
     useEffect(() => {
+        const filteredAttributes: DropdownOptionsInterface[] = [];
 
-        let oidcDialectId: string;
-
-        setClaimListRequestLoading(true);
-        getDialects(null)
-            .then((response: ClaimDialect[]) => {
-                response.forEach((dialect: ClaimDialect) => {
-                    if (dialect.dialectURI === OIDC_DIALECT_URI) {
-                        oidcDialectId = dialect.id;
+        getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"))
+            .then(( response: Claim[] ) => {
+                response.forEach((claim: Claim) => {
+                    if (ConnectionManagementConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
+                        filteredAttributes.push({
+                            key: claim.id,
+                            text: <SubjectAttributeListItem
+                                key={ claim.id }
+                                displayName={ claim.displayName }
+                                claimURI={ claim.claimURI }
+                                value={ claim.claimURI }
+                            />,
+                            value: claim.claimURI
+                        });
                     }
                 });
-
-                if (oidcDialectId) {
-                    getExternalClaims(oidcDialectId)
-                        .then(( response: ExternalClaim[] ) => {
-                            setClaimList(response.map((claim: ExternalClaim) => {
-                                return {
-                                    content: (
-                                        <Header
-                                            as="h6"
-                                            className="header-with-icon"
-                                        >
-                                            <Header.Content>
-                                                { claim.claimURI }
-                                                <Header.Subheader>
-                                                    <Code withBackground>{ claim.mappedLocalClaimURI }</Code>
-                                                </Header.Subheader>
-                                            </Header.Content>
-                                        </Header>
-                                    ),
-                                    key: claim.id,
-                                    text: claim.claimURI,
-                                    value: claim.mappedLocalClaimURI
-                                };
-                            }));
-                            setClaimListRequestLoading(false);
-                        })
-                        .catch((error: IdentityAppsApiException) => {
-                            dispatch(
-                                addAlert({
-                                    description:
-                                        error?.response?.data?.description ||
-                                        t(
-                                            "console:manage.features.claims.dialects.notifications." +
-                                            "fetchADialect.genericError.description"
-                                        ),
-                                    level: AlertLevels.ERROR,
-                                    message:
-                                        error?.message ||
-                                        t(
-                                            "console:manage.features.claims.dialects.notifications." +
-                                            "fetchADialect.genericError.message"
-                                        )
-                                })
-                            );
-                        });
-                }
+                setFilteredClaimList(filteredAttributes);
             })
             .catch((error: IdentityAppsApiException) => {
                 dispatch(
@@ -188,6 +156,14 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
             });
     }, []);
 
+    const primaryAttributeChangeListener = (fieldValue: string): void => {
+        setPrimaryLookupAttribute(fieldValue);
+    };
+
+    const secondaryAttributeChangeListener = (fieldValue: string): void => {
+        setSecondaryLookupAttribute(fieldValue);
+    };
+
     return (
         <Form
             id={ FORM_ID }
@@ -209,36 +185,44 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 data-testid={ `${ componentId }-enable-checkbox` }
                 defaultValue={ config.isEnabled }
             />
-            <div className="ml-6">
-                <Text
-                    size={ 13 }
-                    muted={ !implicitAssociationEnabled }
-                >
+            <Field.Dropdown
+                disabled={ !implicitAssociationEnabled }
+                ariaLabel="Primary Lookup Attribute"
+                name="primaryLookupAttribute"
+                label={
+                    t("console:develop.features.idp.forms.advancedConfigs." +
+                        "implicitAssociation.primaryAttribute.label")
+                }
+                required={ true }
+                value={ primaryLookupAttribute }
+                options={ primaryClaimList }
+                data-componentid={ `${componentId}-primary-lookup-attribute` }
+                listen={ primaryAttributeChangeListener }
+                enableReinitialize={ true }
+                hint={ (<Hint disabled={ !implicitAssociationEnabled }>
                     { t("console:develop.features.idp.forms.advancedConfigs." +
-                        "implicitAssociation.attributes.label") }
-                </Text>
-                <Dropdown
-                    className="mb-3"
-                    data-componentid={ `${componentId}-attributes` }
-                    placeholder={ t("console:develop.features.idp.forms.advancedConfigs." +
-                        "implicitAssociation.attributes.placeholder") }
-                    fluid
-                    multiple
-                    search
-                    selection
-                    required={ false }
-                    value={ selectedClaims }
-                    onChange={ handleAttributesDropdownChange }
-                    loading={ isClaimListRequestLoading }
-                    options={ claimList }
-                    disabled={ !implicitAssociationEnabled }
-                    error={ implicitAssociationEnabled && (selectedClaims.length > 3 || selectedClaims.length === 0) }
-                />
-                <Hint disabled={ !implicitAssociationEnabled }>
+                    "implicitAssociation.primaryAttribute.hint") }
+                </Hint>) }
+            />
+            <Field.Dropdown
+                disabled={ !implicitAssociationEnabled || primaryLookupAttribute?.length === 0 }
+                ariaLabel="Secondary Lookup Attribute"
+                name="secondaryLookupAttribute"
+                label={
+                    t("console:develop.features.idp.forms.advancedConfigs." +
+                        "implicitAssociation.secondaryAttribute.label")
+                }
+                required={ false }
+                value={ secondaryLookupAttribute }
+                options={ secondaryClaimList }
+                data-componentid={ `${componentId}-secondary-lookup-attribute` }
+                listen={ secondaryAttributeChangeListener }
+                enableReinitialize={ true }
+                hint={ (<Hint disabled={ !implicitAssociationEnabled }>
                     { t("console:develop.features.idp.forms.advancedConfigs." +
-                        "implicitAssociation.attributes.hint") }
-                </Hint>
-            </div>
+                    "implicitAssociation.secondaryAttribute.hint") }
+                </Hint>) }
+            />
             <Message
                 type="warning"
                 content={ t("console:develop.features.idp.forms.advancedConfigs." +
@@ -253,7 +237,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 name="update-button"
                 hidden={ false }
                 loading={ isSubmitting }
-                disabled={ implicitAssociationEnabled && (selectedClaims.length === 0 || selectedClaims.length > 3) }
+                disabled={ implicitAssociationEnabled && primaryLookupAttribute?.length === 0 }
                 data-componentid={ `${componentId}-submit-button` }
                 label={   t("common:update")  }
             />

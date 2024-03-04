@@ -624,7 +624,7 @@ export const console: ConsoleNS = {
             myaccount: "මගේ ගිණුම",
             "password-recovery": "මුරපද ප්රතිසාධනය",
             "password-reset": "මුරපද යළි පිහිටුවීම",
-            "password-reset-success": "මුරපදය නැවත සකස් කිරීම සාර්ථකත්වය"
+            "password-reset-success": "මුරපදය යළි පිහිටුවීමේ සබැඳිය යවන ලදි"
         }
     },
     brandingCustomText: {
@@ -1677,14 +1677,16 @@ export const console: ConsoleNS = {
                                     description: "සම්බන්ධිත දේශීය ගිණුමක් අනිවාර්ය කිරීම සඳහා සම්බන්ධිත දේශීය ගිණුම් වලංගු කිරීම සක්‍රීය කළ යුතුය"
                                 },
                                 heading: "සම්බන්ධිත ගිණුම්",
+                                descriptionFederated: "ෆෙඩරේටඩ් සත්‍යාපනය අතරතුර සබැඳි දේශීය ගිණුමේ පරිශීලක ගුණාංග ලබා ගැනීමට සබල කරන්න.",
                                 fields: {
                                     validateLocalAccount: {
-                                        label: "සම්බන්ධිත දේශීය ගිණුම වලංගු කරන්න",
-                                        hint: "මෙම විකල්පය සම්බන්ධිත දේශීය පරිශීලක ගිණුම සත්‍යාපනය කළ අනන්‍යතාවය සමඟ වලංගු වේද යන්න තීරණය කරයි."
+                                        label: "දේශීය ගිණුම් ගුණාංගවලට ප්‍රමුඛත්වය දෙන්න",
+                                        hint: "සම්බන්ධිත දේශීය ගිණුමක් තිබේ නම්, එහි ගුණාංග ආපසු ලබා දෙනු ලැබේ. එසේ නොමැතිනම්, " +
+                                        "ෆෙඩරේටඩ් අනන්‍යතාවයේ ගුණාංග ආපසු ලබා දෙනු ලැබේ."
                                     },
                                     mandateLocalAccount: {
                                         label: "සම්බන්ධිත දේශීය ගිණුම අනිවාර්ය කරන්න",
-                                        hint: "මෙම විකල්ප සම්බන්ධිත පරිශීලක ගිණුම පරීක්ෂා කරන්නේ කෙසේද යන්න තීරණය කරයි"
+                                        hint: "ෆෙඩරේටඩ් අනන්‍යතාවය සමඟ සම්බන්ධිත දේශීය ගිණුමක් නොමැති නම් ටෝකන් හුවමාරු ප්‍රදානයේදී සත්‍යාපනය අසාර්ථක වනු ඇත."
                                     }
                                 }
                             },
@@ -4089,10 +4091,14 @@ export const console: ConsoleNS = {
                                 hint: "ටෝකන් හුවමාරුව අතරතුර ගැළපෙන ගිණුමක් හමු වුවහොත්," +
                                     " එය ව්යංගයෙන් සම්බන්ධ වනු ඇත"
                             },
-                            attributes: {
-                                label: "පරීක්ෂාව සඳහා ගුණාංග තෝරන්න",
-                                hint: "හරස් පරීක්‍ෂා කිරීම සඳහා ගුණාංග තුනක් දක්වා තෝරන්න",
-                                placeholder: "ගුණාංග කිසිවක් තෝරා නැත"
+                            primaryAttribute: {
+                                label: "මූලික සෙවීම් ගුණාංගය",
+                                hint: "ගැළපෙන දේශීය පරිශීලක ගිණුමක් තිබේදැයි පරීක්ෂා කිරීමට භාවිත කරන" +
+                                    " මූලික ගුණාංගය තෝරන්න"
+                            },
+                            secondaryAttribute: {
+                                label: "ද්විතියික සෙවීම් ගුණාංගය",
+                                hint: "ප්‍රාථමික උපලක්ෂණයෙන් අනන්‍ය පරිශීලකයෙකු හමු නොවන්නේ නම් ද්විතියික උපලක්ෂණ භාවිතා කරනු ඇත"
                             },
                             warning: "තෝරාගත් උපලක්ෂණ ටෝකන් නිකුත් කරන්නා විසින් සත්‍යාපනය කර ඇති බව සහතික කර ගන්න"
                         }
@@ -11055,6 +11061,154 @@ export const console: ConsoleNS = {
                     }
                 },
                 compareToLastPeriodMessage: "පසුගිය කාල පරිච්ඡේදය සමඟ සසඳන්න"
+            },
+            smsProviders: {
+                heading: "අභිරුචි කෙටි පණිවුඩ සපයන්නා",
+                subHeading: "ඔබගේ පරිශීලකයින්ට SMS යැවීමට අභිරුචි SMS සපයන්නෙකු වින්‍යාස කරන්න.",
+                description: "ඔබගේ SMS සපයන්නාට අනුව SMS සපයන්නාගේ සැකසුම් වින්‍යාස කරන්න.",
+                info: "ඔබට <1>SMS සැකිලි</1> භාවිතයෙන් SMS අන්තර්ගතය අභිරුචිකරණය කළ හැක.",
+                updateButton: "යාවත්කාලීන කරන්න",
+                sendTestSMSButton: "පරීක්ෂණ SMS යවන්න",
+                goBack: "ඊමේල් සහ කෙටි පණිවුඩ වෙත ආපසු යන්න",
+                confirmationModal: {
+                    assertionHint: "කරුණාකර ඔබගේ ක්‍රියාව තහවුරු කරන්න.",
+                    content: "ඔබ මෙම වින්‍යාසය මකා දැමුවහොත්, ඔබට SMS නොලැබෙනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                    header: "ඔයාට විශ්වාස ද?",
+                    message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර SMS සපයන්නාගේ වින්‍යාසයන් ස්ථිරවම මකනු ඇත."
+                },
+                dangerZoneGroup: {
+                    header: "අවදානම් කලාපය",
+                    revertConfig: {
+                        heading: "සැකසුම් මකන්න",
+                        subHeading: "මෙම ක්‍රියාව sms සපයන්නාගේ වින්‍යාසයන් මකනු ඇත. මකා දැමූ පසු, ඔබට SMS නොලැබේ.",
+                        actionTitle: "මකන්න"
+                    }
+                },
+                form: {
+                    twilio: {
+                        subHeading: "Twilio සැකසුම්",
+                        accountSID: {
+                            label: "Twilio ගිණුම් SID",
+                            placeholder: "Twilio ගිණුමේ SID ඇතුලත් කරන්න",
+                            hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Twilio ගිණුම් තන්තු හඳුනාගැනීම"
+                        },
+                        authToken: {
+                            label: "Twilio Auth ටෝකනය",
+                            placeholder: "Twilio auth ටෝකනය ඇතුළු කරන්න",
+                            hint: "Twilio auth සේවාදායකය විසින් ජනනය කරන ලද ප්‍රවේශ ටෝකනය."
+                        },
+                        sender: {
+                            label: "යවන්නා",
+                            placeholder: "යවන්නාගේ දුරකථන අංකය ඇතුළත් කරන්න",
+                            hint: "යවන්නාගේ දුරකථන අංකය."
+                        },
+                        validations: {
+                            required: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක"
+                        }
+                    },
+                    vonage: {
+                        subHeading: "Vonage සැකසුම්",
+                        accountSID: {
+                            label: "Vonage API යතුර",
+                            placeholder: "Vonage API යතුර ඇතුලත් කරන්න",
+                            hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Vonage API යතුර."
+                        },
+                        authToken: {
+                            label: "Vonage API රහස",
+                            placeholder: "Vonage API රහස ඇතුලත් කරන්න",
+                            hint: "Vonage auth සේවාදායකය විසින් ජනනය කරන ලද API රහස."
+                        },
+                        sender: {
+                            label: "යවන්නා",
+                            placeholder: "යවන්නාගේ දුරකථන අංකය ඇතුළත් කරන්න",
+                            hint: "යවන්නාගේ දුරකථන අංකය."
+                        },
+                        validations: {
+                            required: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක"
+                        }
+                    },
+                    custom: {
+                        subHeading: "අභිරුචි සැකසුම්",
+                        providerName: {
+                            label: "SMS සපයන්නාගේ නම",
+                            placeholder: "SMS සපයන්නාගේ නම ඇතුළත් කරන්න",
+                            hint: "SMS සපයන්නාගේ නම."
+                        },
+                        providerUrl: {
+                            label: "SMS සපයන්නාගේ URL",
+                            placeholder: "SMS සපයන්නාගේ URL එක ඇතුලත් කරන්න",
+                            hint: "SMS සපයන්නාගේ URL එක."
+                        },
+                        httpMethod: {
+                            label: "HTTP ක්‍රමයHTTP ක්‍රමය",
+                            placeholder: "POST",
+                            hint: "SMS යැවීම සඳහා භාවිතා කරන API ඉල්ලීමේ HTTP ක්‍රමය."
+                        },
+                        contentType: {
+                            label: "අන්තර්ගතයේ වර්ගය",
+                            placeholder: "JSON",
+                            hint: "API ඉල්ලීමේ අන්තර්ගත වර්ගය. පිළිගත් අගයන් 'FORM' හෝ 'JSON' වේ"
+                        },
+                        headers: {
+                            label: "ශීර්ෂ",
+                            placeholder: "http ශීර්ෂ ඇතුළත් කරන්න",
+                            hint: "Send SMS API ඉල්ලීමට ඇතුළත් කළ යුතු HTTP ශීර්ෂයන්."
+                        },
+                        payload: {
+                            label: "ගෙවීම",
+                            placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                            hint: "API ඉල්ලීමේ ගෙවීමේ අච්චුව. උත්පාදනය කරන ලද SMS අන්තර්ගතය නියෝජනය කිරීමට {{body}} භාවිතා කරන්න. ජංගම දුරකථන අංකය නියෝජනය කිරීමට {{mobile}} භාවිතා කරන්න."
+                        },
+                        key: {
+                            label: "SMS සපයන්නාගේ සත්‍යාපන යතුර",
+                            placeholder: "SMS සපයන්නා auth යතුර ඇතුළත් කරන්න",
+                            hint: "SMS සපයන්නාගේ සත්‍යාපන යතුර."
+                        },
+                        secret: {
+                            label: "SMS සපයන්නාගේ සත්‍යාපන රහස",
+                            placeholder: "SMS සපයන්නාගේ සත්‍යාපන රහස ඇතුලත් කරන්න",
+                            hint: "SMS සපයන්නාගේ සත්‍යාපන රහස."
+                        },
+                        sender: {
+                            label: "යවන්නා",
+                            placeholder: "යවන්නා ඇතුළු කරන්න",
+                            hint: "SMS යවන්නා."
+                        },
+                        validations: {
+                            required: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක",
+                            methodInvalid: "HTTP ක්‍රමය වලංගු නැත",
+                            contentTypeInvalid: "අන්තර්ගත වර්ගය වලංගු නොවේ"
+                        }
+                    }
+                },
+                notifications: {
+                    getConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error retrieving the sms provider configurations."
+                        }
+                    },
+                    deleteConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error deleting the sms provider configurations."
+                        },
+                        success: {
+                            message: "Revert Successful",
+                            description: "Successfully reverted the sms provider configurations."
+                        }
+                    },
+                    updateConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error updating the sms provider configurations."
+                        },
+                        success: {
+                            message: "Update Successful",
+                            description: "Successfully updated the sms provider configurations."
+                        }
+                    }
+                }
             }
         },
         notifications: {

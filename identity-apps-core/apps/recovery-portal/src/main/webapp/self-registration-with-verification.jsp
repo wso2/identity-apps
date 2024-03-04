@@ -882,6 +882,7 @@
         var registrationDataKey = "registrationData";
         var $registerForm = $("#register");
         var passwordField = $("#passwordUserInput");
+        var passwordValidationBlock = $("#password-validation-block");
         var validPassword = false;
         var passwordConfig = <%=passwordConfig%>;
         var lowerCaseLetters = /[a-z]/g;
@@ -891,53 +892,55 @@
         var consecutiveChr = /([^])\1+/g;
         var errorMessage = getErrorMessage();
 
-        if (passwordConfig.minLength> 0 || passwordConfig.maxLength > 0) {
-            document.getElementById("length").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>' +
-                " " + (passwordConfig.minLength ?? 8) +
-                " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +
-                    " " + (passwordConfig.maxLength ?? 30) + " " +
-            '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters")%>';
-            $("#length-block").css("display", "block");
-        }
-        if (passwordConfig.minNumber > 0) {
-            document.getElementById("number").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                + " " + passwordConfig.minNumber + " "
-                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "numbers")%>';
-            $("#number-block").css("display", "block");
-        }
-        if ((passwordConfig.minUpperCase > 0) || passwordConfig.minLowerCase > 0) {
-            let cases = [];
-            if (passwordConfig.minUpperCase > 0) {
-                cases.push(passwordConfig.minUpperCase + " "
-                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "uppercase")%>');
+        if (passwordValidationBlock.length > 0) {
+            if (passwordConfig.minLength> 0 || passwordConfig.maxLength > 0) {
+                document.getElementById("length").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>' +
+                    " " + (passwordConfig.minLength ?? 8) +
+                    " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +
+                        " " + (passwordConfig.maxLength ?? 30) + " " +
+                '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters")%>';
+                $("#length-block").css("display", "block");
             }
-            if (passwordConfig.minLowerCase > 0) {
-                cases.push(passwordConfig.minLowerCase + " "
-                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lowercase")%>');
+            if (passwordConfig.minNumber > 0) {
+                document.getElementById("number").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + passwordConfig.minNumber + " "
+                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "numbers")%>';
+                $("#number-block").css("display", "block");
             }
-            document.getElementById("case").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                + " " + (cases.length > 1
-                    ? cases.join(" " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +  " ")
-                    : cases[0]) + " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "character.s")%>';
-            $("#case-block").css("display", "block");
-        }
-        if (passwordConfig.minSpecialChr > 0) {
-            document.getElementById("special-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                + " " + passwordConfig.minSpecialChr + " "
-                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "special.characters")%>';
-            $("#special-chr-block").css("display", "block");
-        }
-        if (passwordConfig.minUniqueChr > 0) {
-            document.getElementById("unique-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
-                + " " + passwordConfig.minUniqueChr + " "
-                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "unique.characters")%>';
-            $("#unique-chr-block").css("display", "block");
-        }
-        if (passwordConfig.maxConsecutiveChr > 0) {
-            document.getElementById("repeated-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.more.than")%>'
-                + " " + passwordConfig.maxConsecutiveChr + " "
-                + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "repeated.characters")%>';
-            $("#repeated-chr-block").css("display", "block");
+            if ((passwordConfig.minUpperCase > 0) || passwordConfig.minLowerCase > 0) {
+                let cases = [];
+                if (passwordConfig.minUpperCase > 0) {
+                    cases.push(passwordConfig.minUpperCase + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "uppercase")%>');
+                }
+                if (passwordConfig.minLowerCase > 0) {
+                    cases.push(passwordConfig.minLowerCase + " "
+                        + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lowercase")%>');
+                }
+                document.getElementById("case").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + (cases.length > 1
+                        ? cases.join(" " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>' +  " ")
+                        : cases[0]) + " " + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "character.s")%>';
+                $("#case-block").css("display", "block");
+            }
+            if (passwordConfig.minSpecialChr > 0) {
+                document.getElementById("special-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + passwordConfig.minSpecialChr + " "
+                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "special.characters")%>';
+                $("#special-chr-block").css("display", "block");
+            }
+            if (passwordConfig.minUniqueChr > 0) {
+                document.getElementById("unique-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "at.least")%>'
+                    + " " + passwordConfig.minUniqueChr + " "
+                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "unique.characters")%>';
+                $("#unique-chr-block").css("display", "block");
+            }
+            if (passwordConfig.maxConsecutiveChr > 0) {
+                document.getElementById("repeated-chr").innerHTML = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "no.more.than")%>'
+                    + " " + passwordConfig.maxConsecutiveChr + " "
+                    + '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "repeated.characters")%>';
+                $("#repeated-chr-block").css("display", "block");
+            }
         }
 
         // Reloads the page if the page is loaded by going back in history.
@@ -1105,7 +1108,10 @@
                     }
                 }
 
-                var mobileNumber = document.getElementById("mobileNumber").value;
+                var mobileNumber = document.getElementById("mobileNumber");
+                if (mobileNumber !== null) {
+                    mobileNumber = mobileNumber.value;
+                }
                 if (mobileNumber != null && mobileNumber.trim() !== ""){
                     const mobilePattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})?[-. )]*(\d{3})?[-. ]*(\d{4,6})(?: *x(\d+))?\s*$/;
                     if (!mobilePattern.test(mobileNumber)) {
@@ -1117,7 +1123,10 @@
                     }
                 }
 
-                var birthOfDate = document.getElementById("birthOfDate").value;
+                var birthOfDate = document.getElementById("birthOfDate");
+                if (birthOfDate !== null) {
+                    birthOfDate = birthOfDate.value;
+                }
                 if (birthOfDate != null && birthOfDate.trim() !== ""){
                     const dobPattern = /^\d{4}-\d{2}-\d{2}$/;
                     if (!dobPattern.test(birthOfDate)) {
@@ -1673,6 +1682,10 @@
             var server_error_msg = $("#server-error-msg");
             var password_error_msg_text = $("#password-error-msg-text");
 
+            if (passwordField.length <= 0) {
+                return true;
+            }
+
             if (server_error_msg.text() !== null && server_error_msg.text().trim() !== ""  ) {
                 password_error_msg.hide();
                 passwordField.removeClass("error");
@@ -1899,6 +1912,10 @@
 
         function validatePassword() {
             var valid = true;
+
+            if (passwordField.length <= 0) {
+                return valid;
+            }
 
             if ((!passwordConfig.minLength || passwordField.val().length >= passwordConfig.minLength) &&
                 (!passwordConfig.maxLength || passwordField.val().length <= passwordConfig.maxLength)) {

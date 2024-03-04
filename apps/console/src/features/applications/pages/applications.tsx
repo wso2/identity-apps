@@ -56,6 +56,7 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -145,7 +146,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -422,8 +423,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (!applicationConfig.advancedConfigurations.showMyAccount ||
-            UIConfig?.legacyMode?.applicationListSystemApps) {
+        if (
+            !applicationConfig.advancedConfigurations.showMyAccount
+            || UIConfig?.legacyMode?.applicationListSystemApps
+            // Disable the myaccount navigation box for suborgs in legacyauthz runtime.
+            || (isLegacyAuthzRuntime() && isSubOrganization())
+        ) {
             return null;
         }
 

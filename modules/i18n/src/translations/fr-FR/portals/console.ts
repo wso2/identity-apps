@@ -616,7 +616,7 @@ export const console: ConsoleNS = {
             myaccount: "Mon compte",
             "password-recovery": "Récupération de mot de passe",
             "password-reset": "Réinitialisation du mot de passe",
-            "password-reset-success": "Réinitialisation du mot de passe Succès"
+            "password-reset-success": "Lien de réinitialisation du mot de passe envoyé"
         }
     },
     brandingCustomText: {
@@ -1708,15 +1708,16 @@ export const console: ConsoleNS = {
                                     description: "La validation du compte local lié doit être activée pour mandater un compte local lié"
                                 },
                                 heading: "Comptes liés",
+                                descriptionFederated: "Activez la récupération des attributs utilisateur du compte local lié lors de l'authentification fédérée.",
                                 fields: {
                                     validateLocalAccount: {
-                                        label: "Valider le compte local lié",
-                                        hint: "Cette option décidera si le compte d'utilisateur local lié est validé avec l'identité authentifiée."
+                                        label: "Prioriser les attributs du compte local",
+                                        hint: "Si un compte local lié existe, ses attributs sont renvoyés. Sinon, " +
+                                        "les attributs de l'identité fédérée sont renvoyés."
                                     },
                                     mandateLocalAccount: {
                                         label: "Mandater le compte local lié",
-                                        hint: "Ces options détermineront comment le compte utilisateur local lié est validé avec " +
-                                            "l'identité authentifiée."
+                                        hint: "L'authentification échouera lors de l'octroi d'échange de jetons s'il n'existe aucun compte local lié à l'identité fédérée."
                                     }
                                 }
                             },
@@ -4197,11 +4198,15 @@ export const console: ConsoleNS = {
                                 hint: "Lors de l'échange de jetons, si un compte local correspondant est trouvé," +
                                     " il sera lié implicitement"
                             },
-                            attributes: {
-                                label: "Sélectionnez les attributs à vérifier",
-                                hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
-                                    " il existe un compte utilisateur local correspondant",
-                                placeholder: "Aucun attribut sélectionné"
+                            primaryAttribute: {
+                                label: "Attribut de recherche principal",
+                                hint: "Sélectionnez l'attribut principal qui sera utilisé pour vérifier s'il" +
+                                     " existe un compte utilisateur local correspondant"
+                            },
+                            secondaryAttribute: {
+                                label: "Attribut de recherche secondaire",
+                                hint: "L'attribut secondaire sera utilisé si un utilisateur unique n'est pas" +
+                                    " trouvé en utilisant l'attribut principal"
                             },
                             warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }
@@ -11317,6 +11322,155 @@ export const console: ConsoleNS = {
                     }
                 },
                 compareToLastPeriodMessage: "Comparer à la dernière période"
+            },
+            smsProviders: {
+                heading: "Fournisseur de SMS personnalisé",
+                subHeading: "Configurez un fournisseur SMS personnalisé pour envoyer des SMS à vos utilisateurs.",
+                description: "Configurez les paramètres du fournisseur SMS en fonction de votre fournisseur SMS.",
+                info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
+                updateButton: "Mise à jour",
+                sendTestSMSButton: "Envoyer un SMS test",
+                goBack: "Revenir à E-mail et SMS",
+                confirmationModal: {
+                    assertionHint: "Veuillez confirmer votre action.",
+                    content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
+                        "Veuillez procéder avec prudence.",
+                    header: "Es-tu sûr?",
+                    message: "Cette action est irréversible et supprimera définitivement les configurations du fournisseur SMS."
+                },
+                dangerZoneGroup: {
+                    header: "Zone dangereuse",
+                    revertConfig: {
+                        heading: "Supprimer les configurations",
+                        subHeading: "Cette action supprimera les configurations du fournisseur de SMS. Une fois supprimé, vous ne recevrez plus de SMS.",
+                        actionTitle: "Supprimer"
+                    }
+                },
+                form: {
+                    twilio: {
+                        subHeading: "Paramètres Twilio",
+                        accountSID: {
+                            label: "SID du compte Twilio",
+                            placeholder: "Entrez le SID du compte Twilio",
+                            hint: "Identifiant de chaîne de compte Twilio qui fait office de nom d'utilisateur pour le compte"
+                        },
+                        authToken: {
+                            label: "Jeton d'authentification Twilio",
+                            placeholder: "Entrez le jeton d'authentification Twilio",
+                            hint: "Le jeton d'accès généré par le serveur d'authentification Twilio."
+                        },
+                        sender: {
+                            label: "Expéditrice",
+                            placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                            hint: "Numéro de téléphone de l'expéditeur."
+                        },
+                        validations: {
+                            required: "Ce champ ne peut pas être vide"
+                        }
+                    },
+                    vonage: {
+                        subHeading: "Paramètres Vonage",
+                        accountSID: {
+                            label: "Clé API Vonage",
+                            placeholder: "Entrez la clé API Vonage",
+                            hint: "Clé API Vonage qui fait office de nom d'utilisateur pour le compte."
+                        },
+                        authToken: {
+                            label: "Secret de l'API Vonage",
+                            placeholder: "Entrez le secret de l'API Vonage",
+                            hint: "Le secret API généré par le serveur d'authentification Vonage."
+                        },
+                        sender: {
+                            label: "Expéditrice",
+                            placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                            hint: "Numéro de téléphone de l'expéditeur."
+                        },
+                        validations: {
+                            required: "Ce champ ne peut pas être vide"
+                        }
+                    },
+                    custom: {
+                        subHeading: "Paramètres personnalisés",
+                        providerName: {
+                            label: "Nom du fournisseur SMS",
+                            placeholder: "Entrez le nom du fournisseur SMS",
+                            hint: "Le nom du fournisseur SMS."
+                        },
+                        providerUrl: {
+                            label: "URL du fournisseur SMS",
+                            placeholder: "Entrez l'URL du fournisseur de SMS",
+                            hint: "L'URL du fournisseur SMS."
+                        },
+                        httpMethod: {
+                            label: "Méthode HTTP",
+                            placeholder: "POST",
+                            hint: "La méthode HTTP de la requête API utilisée pour l'envoi du SMS."
+                        },
+                        contentType: {
+                            label: "Type de contenu",
+                            placeholder: "JSON",
+                            hint: "Le type de contenu de la requête API. Les valeurs acceptées sont 'FORM' ou 'JSON'"
+                        },
+                        headers: {
+                            label: "En-têtes",
+                            placeholder: "Saisir les en-têtes",
+                            hint: "En-têtes à inclure dans la requête API d'envoi de SMS."
+                        },
+                        payload: {
+                            label: "Charge utile",
+                            placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                            hint: "Le modèle de charge utile de la requête API. Utilisez {{body}} pour représenter le corps du SMS généré. Utilisez {{mobile}} pour représenter le numéro de mobile."
+                        },
+                        key: {
+                            label: "Clé d'authentification du fournisseur SMS",
+                            placeholder: "Entrez la clé d'authentification du fournisseur SMS",
+                            hint: "La clé d'authentification du fournisseur SMS."
+                        },
+                        secret: {
+                            label: "Secret d'authentification du fournisseur SMS",
+                            placeholder: "Entrez le secret d'authentification du fournisseur SMS",
+                            hint: "Le secret d'authentification du fournisseur SMS."
+                        },
+                        sender: {
+                            label: "Expéditrice",
+                            placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                            hint: "Numéro de téléphone de l'expéditeur."
+                        },
+                        validations: {
+                            required: "Ce champ ne peut pas être vide",
+                            methodInvalid: "La méthode HTTP n'est pas valide",
+                            contentTypeInvalid: "Le type de contenu n'est pas valide"
+                        }
+                    }
+                },
+                notifications: {
+                    getConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error retrieving the sms provider configurations."
+                        }
+                    },
+                    deleteConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error deleting the sms provider configurations."
+                        },
+                        success: {
+                            message: "Revert Successful",
+                            description: "Successfully reverted the sms provider configurations."
+                        }
+                    },
+                    updateConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error updating the sms provider configurations."
+                        },
+                        success: {
+                            message: "Update Successful",
+                            description: "Successfully updated the sms provider configurations."
+                        }
+                    }
+                }
             }
         },
         notifications: {

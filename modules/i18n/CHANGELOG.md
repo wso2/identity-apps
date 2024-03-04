@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.128
+
+### Patch Changes
+
+- [#5621](https://github.com/wso2/identity-apps/pull/5621) [`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to SMS provider page
+
 ## 2.0.127
 
 ### Patch Changes

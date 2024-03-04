@@ -312,10 +312,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             return isReadWriteUserStore;
         }).catch(() => {
             dispatch(addAlert({
-                description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
             }));
 
             return false;

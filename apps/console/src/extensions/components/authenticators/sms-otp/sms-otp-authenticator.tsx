@@ -33,6 +33,7 @@ import { AppState } from "../../../../features/core/store";
 import {
     SMSOTPAuthenticatorForm
 } from "../../../../features/identity-providers/components/forms/authenticators/sms-otp-authenticator-form";
+import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 
 interface SmsOTPAuthenticatorInterface extends IdentifiableComponentInterface {
     /**
@@ -84,6 +85,7 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const isChoreoEnabledAsSMSProvider: boolean = useMemo(() => {
         const disabledFeatures: string[] = featureConfig?.smsProviders?.disabledFeatures;
@@ -91,8 +93,12 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         return !disabledFeatures?.includes("choreoAsSMSProvider");
     }, [ featureConfig ]);
 
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(isChoreoEnabledAsSMSProvider || !hasRequiredScopes(
-        featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes));
+    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(
+        isChoreoEnabledAsSMSProvider ||
+        !hasRequiredScopes(
+            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes) ||
+        isSubOrganization()
+    );
 
     return (
         <>

@@ -1,5 +1,32 @@
 # @wso2is/console
 
+## 2.12.47
+
+### Patch Changes
+
+- [#5536](https://github.com/wso2/identity-apps/pull/5536) [`5ddfdeab10`](https://github.com/wso2/identity-apps/commit/5ddfdeab10302dbaa648a1d933f287d392131878) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Hide the myaccount url for legacy auth runtime sub orgs
+
+* [#5621](https://github.com/wso2/identity-apps/pull/5621) [`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to SMS provider page
+
+- [#5620](https://github.com/wso2/identity-apps/pull/5620) [`a08df1b611`](https://github.com/wso2/identity-apps/commit/a08df1b611ecbbd8291e9ec6ec7147865c6c2d67) Thanks [@sandushi](https://github.com/sandushi)! - Add beta label to alternative login idnetifiers
+
+- Updated dependencies [[`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4)]:
+  - @wso2is/i18n@2.0.128
+
+## 2.12.46
+
+### Patch Changes
+
+- [#5614](https://github.com/wso2/identity-apps/pull/5614) [`ae732c7c78`](https://github.com/wso2/identity-apps/commit/ae732c7c780e1e11fc36e708774cc9be43d0d77c) Thanks [@savindi7](https://github.com/savindi7)! - Disable update for governance connectors in sub organizations.
+
+## 2.12.45
+
+### Patch Changes
+
+- [#5606](https://github.com/wso2/identity-apps/pull/5606) [`bd7752486f`](https://github.com/wso2/identity-apps/commit/bd7752486f52941d492fc93b792965d9786fa78c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix not being able to search attributes with multiple words
+
+* [#5607](https://github.com/wso2/identity-apps/pull/5607) [`c9331f52fd`](https://github.com/wso2/identity-apps/commit/c9331f52fdd52a70967bbd3ad1242f233b6bd5f4) Thanks [@savindi7](https://github.com/savindi7)! - Show userstores for JIT Provisioning for tenant users.
+
 ## 2.12.44
 
 ### Patch Changes

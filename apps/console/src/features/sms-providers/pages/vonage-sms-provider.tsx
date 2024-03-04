@@ -49,7 +49,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
-                        <h2>{ t("extensions:develop.smsProviders.form.vonage.subHeading") }</h2>
+                        <h2>{ t("console:manage.features.smsProviders.form.vonage.subHeading") }</h2>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
@@ -66,11 +66,11 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-vonage-key` }
                             name="vonageKey"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.vonage.accountSID.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.vonage.accountSID.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
+                                    { t("console:manage.features.smsProviders.form.vonage.accountSID.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -93,11 +93,11 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             name="vonageSecret"
                             inputType="password"
                             type="password"
-                            label={ t("extensions:develop.smsProviders.form.vonage.authToken.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.vonage.authToken.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.vonage.authToken.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.vonage.authToken.hint") }
+                                    { t("console:manage.features.smsProviders.form.vonage.authToken.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -121,11 +121,11 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-vonage-sender` }
                             name="vonageSender"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.vonage.sender.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.vonage.sender.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.vonage.sender.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.vonage.sender.hint") }
+                                    { t("console:manage.features.smsProviders.form.vonage.sender.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }

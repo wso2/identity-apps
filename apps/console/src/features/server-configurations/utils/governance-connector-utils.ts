@@ -196,6 +196,7 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
                             .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+                        status: "beta",
                         testId: "alternative-login-identifier-card"
                     },
                     {
