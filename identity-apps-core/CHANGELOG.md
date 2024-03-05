@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.34
+
+### Patch Changes
+
+- [#5613](https://github.com/wso2/identity-apps/pull/5613) [`c83cb57abe`](https://github.com/wso2/identity-apps/commit/c83cb57abef3d9069df4dcf0615a37a1b14318cc) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the redundancy in the signup flow UI
+
 ## 2.1.33
 
 ### Patch Changes
