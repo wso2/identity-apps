@@ -350,6 +350,7 @@ const useSignIn = (): UseSignInInterface => {
                 );
             }
         }
+
         sessionStorage.setItem(LOGOUT_URL, logoutUrl);
 
         getDecodedIDToken()
