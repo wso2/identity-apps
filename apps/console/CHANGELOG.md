@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.50
+
+### Patch Changes
+
+- [#5637](https://github.com/wso2/identity-apps/pull/5637) [`d2f9bc1718`](https://github.com/wso2/identity-apps/commit/d2f9bc1718e4c193804e2448604b75995b114886) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Reverts #5635 and remove the cloud offering specific info message
+
 ## 2.12.49
 
 ### Patch Changes
