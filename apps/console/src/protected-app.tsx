@@ -83,6 +83,7 @@ import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import useRoutes from "./features/core/hooks/use-routes";
 import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
+import useOrganizations from "./features/organizations/hooks/use-organizations";
 import {
     GovernanceCategoryForOrgsInterface,
     useGovernanceConnectorCategories
@@ -109,6 +110,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { onSignIn } = useSignIn();
 
     const { switchOrganization } = useOrganizationSwitch();
+
+    const { isOrganizationSwitchRequestLoading } = useOrganizations();
 
     const { filterRoutes } = useRoutes();
 
@@ -382,7 +385,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
                 <I18nextProvider i18n={ I18n.instance }>
                     <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
-                        { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                        { renderApp && routesFiltered && !isOrganizationSwitchRequestLoading ? <App /> : <PreLoader /> }
                     </SubscriptionProvider>
                 </I18nextProvider>
             </GovernanceConnectorProvider>

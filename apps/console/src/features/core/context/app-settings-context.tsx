@@ -45,7 +45,11 @@ export interface AppSettingsContextProps {
  * Context object for managing the Application local settings.
  */
 const AppSettingsContext: Context<AppSettingsContextProps> =
-  createContext<null | AppSettingsContextProps>(null);
+  createContext<null | AppSettingsContextProps>({
+      getLocalStorageSetting: (_key: string) => null,
+      removeLocalStorageSetting: (_key: string) => null,
+      setLocalStorageSetting: (_key: string, _value: string) => null
+  });
 
 /**
  * Display name for the AppSettingsContext.
