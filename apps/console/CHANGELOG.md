@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.51
+
+### Patch Changes
+
+- [#5643](https://github.com/wso2/identity-apps/pull/5643) [`ac1177e164`](https://github.com/wso2/identity-apps/commit/ac1177e164c8acc75b895675540ffff97da90674) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n string in sub-organization edit organization role page placeholder
+
 ## 2.12.50
 
 ### Patch Changes
