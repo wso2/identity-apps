@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.3.42
+
+### Patch Changes
+
+- [#5640](https://github.com/wso2/identity-apps/pull/5640) [`e226fb015d`](https://github.com/wso2/identity-apps/commit/e226fb015df7530769c15e56d600fac98fdc8dde) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix my account logout issue
+
 ## 2.3.41
 
 ### Patch Changes
