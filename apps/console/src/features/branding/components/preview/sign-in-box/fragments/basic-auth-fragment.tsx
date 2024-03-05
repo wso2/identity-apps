@@ -81,6 +81,7 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
                                 name="usernameUserInput"
                                 placeholder="Enter your username"
                                 data-testid="login-page-username-input"
+                                data-componentid="login-page-password-input"
                             />
                             <i aria-hidden="true" className="envelope outline icon"></i>
                             <input id="username" name="username" type="hidden" />
@@ -97,6 +98,7 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
                                 autoComplete="off"
                                 placeholder="Enter your password"
                                 data-testid="login-page-password-input"
+                                data-componentid="login-page-password-input"
                             />
                             <i aria-hidden="true" className="lock icon"></i>
                             <i

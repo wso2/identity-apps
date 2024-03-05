@@ -515,7 +515,7 @@
                     autocomplete="off"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.password")%>"
                     data-testid="login-page-password-input"
-                    data-component-id="login-page-password-input"
+                    data-componentid="login-page-password-input"
                     aria-required="true"
                 >
                 <i aria-hidden="true" class="lock icon"></i>
