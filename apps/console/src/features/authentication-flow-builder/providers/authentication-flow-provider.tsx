@@ -297,7 +297,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         authenticator: GenericAuthenticatorInterface,
         options: AuthenticatorInterface[]
     ): boolean => {
-        let isDuplicate: boolean = options.some((option: AuthenticatorInterface) => {
+        let isDuplicate: boolean = options?.some((option: AuthenticatorInterface) => {
             return option.authenticator === authenticator?.defaultAuthenticator?.name;
         });
 
@@ -308,7 +308,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         // If the added option is EIDP, even-though the authenticator is same,
         // we need to check if it's the same IDP. If it is, then mark as duplicate.
         if (isDuplicate && isEIDP) {
-            isDuplicate = options.some((option: AuthenticatorInterface) => {
+            isDuplicate = options?.some((option: AuthenticatorInterface) => {
                 return option.idp === authenticator?.idp;
             });
         }
@@ -355,7 +355,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
 
         const steps: AuthenticationStepInterface[] = [ ...authenticationSequence?.steps ];
 
-        const isValid: boolean = validateStepAddition(authenticator, steps[stepIndex].options);
+        const isValid: boolean = validateStepAddition(authenticator, steps[stepIndex]?.options);
 
         if (ApplicationManagementConstants.HANDLER_AUTHENTICATORS.includes(authenticatorId)) {
             // TODO: setShowHandlerDisclaimerModal(true);
@@ -417,7 +417,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 item.authenticatorId === authenticator.defaultAuthenticator.authenticatorId
         );
 
-        steps[stepIndex].options.push({
+        steps[stepIndex]?.options?.push({
             authenticator: defaultAuthenticator.name,
             idp: authenticator.idp
         });
