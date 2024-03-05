@@ -349,13 +349,9 @@ const useSignIn = (): UseSignInInterface => {
                     window["AppUtils"].getConfig().superTenantProxy
                 );
             }
-
-            sessionStorage.setItem(LOGOUT_URL, logoutUrl);
-        } else {
-            logoutUrl = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
-            logoutRedirectUrl =
-                window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
         }
+
+        sessionStorage.setItem(LOGOUT_URL, logoutUrl);
 
         getDecodedIDToken()
             .then(() => {
