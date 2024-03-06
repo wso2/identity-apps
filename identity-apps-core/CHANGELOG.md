@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.36
+
+### Patch Changes
+
+- [#5652](https://github.com/wso2/identity-apps/pull/5652) [`1531929614`](https://github.com/wso2/identity-apps/commit/1531929614c0225d57e6266a1092e93dcd574784) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Change user selfregistration email regex pattern to allow special charactors
+
 ## 2.1.35
 
 ### Patch Changes
