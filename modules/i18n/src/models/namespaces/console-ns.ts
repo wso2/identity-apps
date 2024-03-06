@@ -4719,7 +4719,13 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                         placeHolders: {
-                            emptyListPlaceholder: Placeholder;
+                            emptyListPlaceholder: {
+                                title: string;
+                                subtitles: string | {
+                                [key: number]: string
+                             }
+                             }
+                             ;
                         };
                     };
                 };
@@ -4733,14 +4739,82 @@ export interface ConsoleNS {
                     storeOptions: string;
                 };
                 notifications: {
-                    deleteGroup: Notification;
-                    updateGroup: Notification;
-                    createGroup: Notification;
-                    createPermission: Notification;
-                    fetchGroups: Notification;
+                    deleteGroup: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    updateGroup: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    createGroup: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    createPermission: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    fetchGroups: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
                 };
                 placeholders: {
-                    groupsError: Placeholder;
+                    groupsError: {
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
                 };
             };
             header: {
