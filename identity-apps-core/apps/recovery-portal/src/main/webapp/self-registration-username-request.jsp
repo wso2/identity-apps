@@ -2039,7 +2039,7 @@
 
                     return false;
             } else {
-                var usernamePattern = /^([\u00C0-\u00FFa-zA-Z0-9_\+\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,10})$/;
+                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+\\=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+\\=^_.{|}~\-&]){0,63}(?=[\u00C0-\u00FFa-zA-Z0-9_]).\@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
                 if (!usernamePattern.test(usernameUserInput.value.trim()) && (emailRequired || !isAlphanumericUsernameEnabled())) {
                     username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Please.enter.valid.email")%>")
                     username_error_msg.show();
