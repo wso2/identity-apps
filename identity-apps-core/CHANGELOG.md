@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.35
+
+### Patch Changes
+
+- [#5634](https://github.com/wso2/identity-apps/pull/5634) [`04f4631064`](https://github.com/wso2/identity-apps/commit/04f463106429f4792f0f85304d6f917de2d39800) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Refactor the x509 certificate authentication portal
+
 ## 2.1.34
 
 ### Patch Changes
