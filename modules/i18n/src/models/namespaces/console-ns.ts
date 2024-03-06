@@ -4421,7 +4421,6 @@ export interface ConsoleNS {
                         genericMessage?: string;
                      }
                      }
-                     v;
                     updatePendingApprovals: {
                         error?: {
                         message: string;
