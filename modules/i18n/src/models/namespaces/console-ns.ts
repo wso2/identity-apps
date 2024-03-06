@@ -4751,9 +4751,51 @@ export interface ConsoleNS {
             };
             governanceConnectors: {
                 notifications: {
-                    getConnectorCategories: Notification;
-                    getConnector: Notification;
-                    updateConnector: Notification;
+                    getConnectorCategories: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    getConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    updateConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
                 };
                 form: {
                     errors: {
