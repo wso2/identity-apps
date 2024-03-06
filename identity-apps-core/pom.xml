@@ -53,6 +53,7 @@
         <module>features/org.wso2.identity.apps.common.server.feature</module>
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
+        <module>features/org.wso2.identity.apps.x509certificate.portal.server.feature</module>
     </modules>
 
     <repositories>
@@ -224,6 +225,12 @@
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>recovery-portal</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>x509-certificate-authentication-portal</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
@@ -542,6 +549,12 @@
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.x509certificate.portal.server.feature</artifactId>
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
