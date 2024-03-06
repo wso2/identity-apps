@@ -4334,77 +4334,13 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    fetchApprovalDetails: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    fetchPendingApprovals: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                    updatePendingApprovals: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
+                    fetchApprovalDetails: Notification;
+                    fetchPendingApprovals: Notification;
+                    updatePendingApprovals: Notification;
                 };
                 placeholders: {
-                    emptyApprovalList: {
-                        action?: string;
-                        title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
-                     }
-                     ;
-                    emptyApprovalFilter: {
-                        action?: string;
-                        title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
-                     }
-                     ;
+                    emptyApprovalList: Placeholder;
+                    emptyApprovalFilter: Placeholder;
                     emptySearchResults: Placeholder;
                 };
             };
