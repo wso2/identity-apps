@@ -3772,141 +3772,114 @@ export interface ConsoleNS {
                 subTitle?: string;
                 notifications: {
                     fetchOrganization: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     deleteOrganization: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     deleteOrganizationWithSubOrganizationError: string;
                     disableOrganization: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     disableOrganizationWithSubOrganizationError: string;
                     enableOrganization: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     updateOrganization: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     updateOrganizationAttributes: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
                             genericMessage?: string;
                         };
                     };
                     addOrganization: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        success?: {
+                        success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     getOrganizationList: {
-                        error?: {
+                        error: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
-                        genericError?: {
+                        genericError: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
-                        };
-                        success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
                         };
                     };
                 };
@@ -3920,7 +3893,7 @@ export interface ConsoleNS {
                 };
                 placeholders: {
                     emptyList: {
-                        action?: string;
+                        action: string;
                         title: string;
                         subtitles: string | {
                             [key: number]: string;
@@ -3936,151 +3909,34 @@ export interface ConsoleNS {
                     },
                     fields: {
                         id: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            ariaLabel: string;
                         };
                         name: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            placeholder: string;
+                            ariaLabel: string;
                         };
                         description: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            placeholder: string;
+                            ariaLabel: string;
                         };
                         domain: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            ariaLabel: string;
                         };
                         type: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
                             ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
                         };
                         created: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
                             ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
                         };
                         lastModified: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
                             ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
                         };
                     },
                     dangerZone: {
@@ -4111,66 +3967,17 @@ export interface ConsoleNS {
                     addOrganization: {
                         name: {
                             [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            placeholder: string;
                         };
                         description: {
-                            [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            placeholder: string;
                         };
                         domainName: {
                             [key: string]: any;
-                            description?: string;
-                            errorMessage?: string;
-                            actions?: {
-                                [key: string]: string;
-                            };
-                            hint?: string;
                             label: string | Record<string, unknown>;
-                            placeholder?: string;
-                            ariaLabel?: string;
-                            validations?: {
-                                empty?: string;
-                                duplicate?: string;
-                                invalid?: string;
-                                required?: string;
-                                maxLengthReached?: string;
-                                range?: string;
-                                reserved?: string;
-                            };
+                            placeholder: string;
                         };
                         type: string;
                         structural: string;
@@ -4198,26 +4005,11 @@ export interface ConsoleNS {
                     switchButton: string;
                     notifications: {
                         switchOrganization: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            genericError: {
+                                message: string;
+                                description: string;
                          }
-                         ;
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
                          }
-                         ;
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                         ;
-                         }
-                         ;
                     }
                 }
                 view: {
