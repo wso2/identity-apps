@@ -81,6 +81,10 @@ export interface BrandingPreferenceContextProps {
      */
     i18n: (key: string, fallback: string) => string;
     /**
+     * Fetching state of the custom text preference.
+     */
+    isCustomTextPreferenceFetching: boolean;
+    /**
      * Sets the subscription for the custom text form.
      * @param subscription - Subscription to be set.
      */
