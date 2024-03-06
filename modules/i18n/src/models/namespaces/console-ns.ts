@@ -5577,7 +5577,7 @@ export interface ConsoleNS {
                 },
                 placeholders: {
                     emptyList: {
-                        action?: string;
+                        action: string;
                         title: string;
                         subtitles: string | {
                             [key: number]: string;
