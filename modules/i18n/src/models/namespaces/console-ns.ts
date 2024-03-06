@@ -979,6 +979,7 @@ export interface ConsoleNS {
                                             };
                                             sessionExecutorDisabledInFirstStep: string;
                                             sessionExecutorDisabledInMultiOptionStep: string;
+                                            identifierCheckboxDisabled: string;
                                         };
                                     };
                                 };
@@ -1011,6 +1012,9 @@ export interface ConsoleNS {
                                             apple: {
                                                 description: string;
                                                 heading: string;
+                                            },
+                                            backupCode: {
+                                                tooltipText: string;
                                             },
                                             defaultConfig: {
                                                 description: string;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
 import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
@@ -152,36 +152,35 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
     const classes: string = classNames("authentication-step-container timeline-body", className);
 
-    const [ showSubjectIdentifierCheckBox, setShowSubjectIdentifierCheckbox ] = useState<boolean>(false);
-    const [ showBackupCodesEnableCheckBox, setShowBackupCodesEnableCheckBox ] = useState<boolean>(false);
     const [ backupCodeIndex, setBackupCodeIndex ] = useState<number>(null);
 
     const { isConditionalAuthenticationEnabled } = useAuthenticationFlow();
 
-    useEffect(() => {
-        let isBackupCodeSupportedAuthenticator: boolean = false;
-
-        step.options.map((option: AuthenticatorInterface) => {
-            if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+    /**
+     * Filter the authenticators that are not supported for the subject identifier.
+     */
+    const subjectIdentifierUnsupportedAuthenticators: AuthenticatorInterface[] = useMemo(() => {
+        return step.options.filter((option: AuthenticatorInterface) => {
+            return [
+                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
-                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR ]
-                .includes(option.authenticator)) {
-                setShowSubjectIdentifierCheckbox(false);
-            } else {
-                setShowSubjectIdentifierCheckbox(true);
-            }
+                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
+            ].includes(option.authenticator);
+        });
+    }, [ JSON.stringify(step.options) ]);
 
-            // if the authenticator is TOTP, Email OTP, SMS OTP or Backup Code,
-            // show the backup codes enable checkbox.
-            if([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+    /**
+     * Filter the authenticators that are supported for the backup code enable checkbox.
+     */
+    const backupCodeSupportedAuthenticators: AuthenticatorInterface[] = useMemo(() => {
+        return step.options.filter((option: AuthenticatorInterface) => {
+            return [
+                IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
                 IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ]
-                .includes(option.authenticator)) {
-                isBackupCodeSupportedAuthenticator = true;
-            }
+                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+            ].includes(option.authenticator);
         });
-        setShowBackupCodesEnableCheckBox(isBackupCodeSupportedAuthenticator);
     }, [ JSON.stringify(step.options) ]);
 
     const isSubjectIdentifierChecked: boolean = useMemo(
@@ -221,6 +220,14 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         // else remove the backup code authenticator from the step.
         if(!isBackupCodesEnabled) {
             updateAuthenticationStep(stepIndex, IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID);
+            // If the current step is set as the subject step or attribute step, reset the subject and attribute step.
+            // With backup code authenticator, the step cannot be set as the subject or attribute step.
+            if (subjectStepId === stepIndex + 1) {
+                onSubjectCheckboxChange(0);
+            }
+            if (attributeStepId === stepIndex + 1) {
+                onAttributeCheckboxChange(0);
+            }
         } else {
             onStepOptionDelete(stepIndex, backupCodeIndex);
         }
@@ -347,11 +354,11 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         size="micro"
                                         spaced="right"
                                         floated="left"
-                                        icon={ 
-                                            authenticator.idp === AuthenticatorCategories.LOCAL || 
-                                            authenticator.defaultAuthenticator?.authenticatorId === 
+                                        icon={
+                                            authenticator.idp === AuthenticatorCategories.LOCAL ||
+                                            authenticator.defaultAuthenticator?.authenticatorId ===
                                             AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
-                                                ? authenticator.image 
+                                                ? authenticator.image
                                                 : ConnectionsManagementUtils
                                                     .resolveConnectionResourcePath(
                                                         connectionResourcesUrl, authenticator.image)
@@ -401,6 +408,76 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                 </Popup>
             );
         }
+    };
+
+    /**
+     * Get the tooltip content for the disabled subject identifier checkbox.
+     */
+    const getDisabledSubjectIdentifierTooltip = (): ReactElement => {
+        if (isSubjectStepCheckboxDisabledOnIDF()) {
+            return t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                ".landing.flowBuilder.types.idf.tooltipText");
+        }
+
+        return (
+            <>
+                <p>
+                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.identifierCheckboxDisabled") }
+                </p>
+                <ul>
+                    {
+                        subjectIdentifierUnsupportedAuthenticators.map((authenticator: AuthenticatorInterface) => {
+                            const authenticatorInfo: GenericAuthenticatorInterface = authenticators.find(
+                                (item: GenericAuthenticatorInterface) =>
+                                    item.defaultAuthenticator.name === authenticator.authenticator
+                            );
+
+                            return (
+                                <li key={ authenticator.authenticator }>
+                                    { authenticatorInfo?.displayName }
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </>
+        );
+    };
+
+    /**
+     * Get the tooltip content for the disabled attribute identifier checkbox.
+     */
+    const getDisabledAttributeIdentifierTooltip = (): ReactElement => {
+        if (isSubjectStepCheckboxDisabledOnIDF()) {
+            return t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                ".landing.flowBuilder.types.idf.tooltipText");
+        }
+
+        return (
+            <>
+                <p>
+                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                        "authenticationFlow.sections.stepBased.identifierCheckboxDisabled") }
+                </p>
+                <ul>
+                    {
+                        subjectIdentifierUnsupportedAuthenticators.map((authenticator: AuthenticatorInterface) => {
+                            const authenticatorInfo: GenericAuthenticatorInterface = authenticators.find(
+                                (item: GenericAuthenticatorInterface) =>
+                                    item.defaultAuthenticator.name === authenticator.authenticator
+                            );
+
+                            return (
+                                <li key={ authenticator.authenticator }>
+                                    { authenticatorInfo?.displayName }
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </>
+        );
     };
 
     return (
@@ -502,106 +579,86 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         && (step.options && step.options instanceof Array && step.options.length > 0))
                         && (
                             <div className="checkboxes-extension">
-                                { showSubjectIdentifierCheckBox ? (
-                                    <>
-                                        {
-                                            isSubjectStepCheckboxDisabledOnIDF() ? (
-                                                <Tooltip
-                                                    trigger={ (
-                                                        <Checkbox
-                                                            label={ t(
-                                                                "console:develop.features.applications.edit.sections" +
-                                                                ".signOnMethod.sections.authenticationFlow.sections" +
-                                                                ".stepBased.forms.fields.subjectIdentifierFrom.label"
-                                                            ) }
-                                                            checked={ isSubjectIdentifierChecked }
-                                                            data-componentid={
-                                                                `${ componentId }-subject-step-checkbox`
-                                                            }
-                                                            onChange={
-                                                                (): void => onSubjectCheckboxChange(stepIndex + 1)
-                                                            }
-                                                            readOnly={ true }
-                                                        />
-                                                    ) }
-                                                    content={ t(
-                                                        "console:develop.features.applications.edit.sections" +
-                                                        ".signOnMethod.sections.landing.flowBuilder.types.idf" +
-                                                        ".tooltipText"
-                                                    ) }
-                                                    data-componentid={ `${ componentId }-subject-step-tooltip` }
-                                                    basic
-                                                >
-                                                </Tooltip>
-                                            ) : (
-                                                <Checkbox
-                                                    label={ t(
-                                                        "console:develop.features.applications.edit.sections" +
+                                { (
+                                    <Tooltip
+                                        disabled={ !isAttributeStepCheckboxDisabledOnIDF()
+                                                    && subjectIdentifierUnsupportedAuthenticators.length === 0 }
+                                        trigger={ (
+                                            <Checkbox
+                                                label={ t(
+                                                    "console:develop.features.applications.edit.sections" +
                                                         ".signOnMethod.sections.authenticationFlow.sections" +
                                                         ".stepBased.forms.fields.subjectIdentifierFrom.label"
-                                                    ) }
-                                                    checked={ isSubjectIdentifierChecked }
-                                                    data-componentid={ `${ componentId }-subject-step-checkbox` }
-                                                    onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
-                                                    readOnly={ isSubjectIdentifierChecked }
-                                                />
-                                            )
-                                        }
-                                        {
-                                            isAttributeStepCheckboxDisabledOnIDF() ? (
-                                                <Tooltip
-                                                    trigger={ (
-                                                        <Checkbox
-                                                            label={ t(
-                                                                "console:develop.features.applications.edit.sections" +
-                                                                ".signOnMethod.sections.authenticationFlow.sections" +
-                                                                ".stepBased.forms.fields.attributesFrom.label"
-                                                            ) }
-                                                            checked={ isAttributeIdentifierChecked }
-                                                            data-componentid={
-                                                                `${ componentId }-attribute-step-checkbox`
-                                                            }
-                                                            onChange={
-                                                                (): void => onAttributeCheckboxChange(stepIndex + 1)
-                                                            }
-                                                            readOnly={ true }
-                                                        />
-                                                    ) }
-                                                    content={ t(
-                                                        "console:develop.features.applications.edit.sections" +
-                                                        ".signOnMethod.sections.landing.flowBuilder.types.idf" +
-                                                        ".tooltipText"
-                                                    ) }
-                                                    data-componentid={ `${ componentId }-attribute-step-tooltip` }
-                                                    basic
-                                                >
-                                                </Tooltip>
-                                            ) : (
+                                                ) }
+                                                checked={ isSubjectIdentifierChecked }
+                                                data-componentid={ `${ componentId }-subject-step-checkbox` }
+                                                onChange={ (): void => onSubjectCheckboxChange(stepIndex + 1) }
+                                                readOnly={
+                                                    isSubjectStepCheckboxDisabledOnIDF()
+                                                    || subjectIdentifierUnsupportedAuthenticators.length > 0
+                                                    || isSubjectIdentifierChecked
+                                                }
+                                            />
+                                        ) }
+                                        content={ getDisabledSubjectIdentifierTooltip() }
+                                        data-componentid={ `${ componentId }-subject-step-tooltip` }
+                                        basic={ false }
+                                        position="bottom left"
+                                    />
+                                ) }
+                                { (
+                                    <Tooltip
+                                        disabled={ !isAttributeStepCheckboxDisabledOnIDF()
+                                            && subjectIdentifierUnsupportedAuthenticators.length === 0 }
+                                        trigger={ (
+                                            <Checkbox
+                                                label={ t(
+                                                    "console:develop.features.applications.edit.sections" +
+                                                        ".signOnMethod.sections.authenticationFlow.sections" +
+                                                        ".stepBased.forms.fields.attributesFrom.label"
+                                                ) }
+                                                checked={ isAttributeIdentifierChecked }
+                                                data-componentid={ `${ componentId }-attribute-step-checkbox` }
+                                                onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
+                                                readOnly={
+                                                    isAttributeStepCheckboxDisabledOnIDF()
+                                                        || subjectIdentifierUnsupportedAuthenticators.length > 0
+                                                        || isAttributeIdentifierChecked
+                                                }
+                                            />
+                                        ) }
+                                        content={ getDisabledAttributeIdentifierTooltip() }
+                                        data-componentid={ `${ componentId }-attribute-step-tooltip` }
+                                        basic={ false }
+                                        position="bottom left"
+                                    />
+                                ) }
+                                { backupCodeSupportedAuthenticators.length > 0
+                                    && (
+                                        <Tooltip
+                                            disabled={ stepIndex > 0 }
+                                            trigger={ (
                                                 <Checkbox
                                                     label={ t(
                                                         "console:develop.features.applications.edit.sections" +
                                                         ".signOnMethod.sections.authenticationFlow.sections" +
-                                                        ".stepBased.forms.fields.attributesFrom.label"
+                                                        ".stepBased.forms.fields.enableBackupCodes.label"
                                                     ) }
-                                                    checked={ isAttributeIdentifierChecked }
-                                                    data-componentid={ `${ componentId }-attribute-step-checkbox` }
-                                                    onChange={ (): void => onAttributeCheckboxChange(stepIndex + 1) }
-                                                    readOnly={ isAttributeIdentifierChecked }
+                                                    checked={ isBackupCodesEnabled }
+                                                    onChange={ (): void => onChangeBackupCodesCheckbox() }
+                                                    disabled={ stepIndex === 0 }
                                                 />
-                                            )
-                                        }
-                                    </> ) : null
-                                }
-                                { showBackupCodesEnableCheckBox ? (
-                                    <Checkbox
-                                        label={ t(
-                                            "console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.authenticationFlow.sections" +
-                                            ".stepBased.forms.fields.enableBackupCodes.label"
-                                        ) }
-                                        checked={ isBackupCodesEnabled }
-                                        onChange={ (): void => onChangeBackupCodesCheckbox() }
-                                    /> ) : null
+                                            ) }
+                                            content={ t(
+                                                "console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                                ".backupCodesDisabledInFirstStep"
+                                            ) }
+                                            data-componentid={ `${ componentId }-attribute-step-tooltip` }
+                                            basic={ false }
+                                            position="bottom left"
+                                        />
+                                    )
                                 }
                             </div>
                         )
