@@ -2629,10 +2629,30 @@ export interface ConsoleNS {
                     addCertificate: string;
                 };
                 confirmations: {
-                    deleteIDP: Confirmation;
-                    deleteIDPWithConnectedApps: Confirmation;
-                    deleteAuthenticator: Confirmation;
-                    deleteConnector: Confirmation;
+                    deleteIDP: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    deleteIDPWithConnectedApps: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    deleteAuthenticator: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    deleteConnector: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 connectedApps: {
                     action: string;
@@ -2648,23 +2668,56 @@ export interface ConsoleNS {
                     genericError: {
                         description: string;
                         message: string;
-                    }
+                    };
                 };
                 dangerZoneGroup: {
                     header: string;
-                    disableIDP: DangerZone;
-                    deleteIDP: DangerZone;
+                    disableIDP: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                        subheader2?: string;
+                    };
+                    deleteIDP: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
                 forms: {
                     advancedConfigs: {
-                        federationHub: FormAttributes;
-                        homeRealmIdentifier: FormAttributes;
-                        alias: FormAttributes;
+                        federationHub: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                        };
+                        homeRealmIdentifier: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                        };
+                        alias: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                        };
                         certificateType: {
                             label: string;
                             hint: string;
-                            certificatePEM: FormAttributes;
-                            certificateJWKS: FormAttributes;
+                            certificatePEM: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            certificateJWKS: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
                         };
                         implicitAssociation: {
                             enable: {
@@ -2718,9 +2771,9 @@ export interface ConsoleNS {
                                 header: string;
                                 placeholder: {
                                     title: string;
-                                    subtitle: string
-                                }
-                            }
+                                    subtitle: string;
+                                };
+                            };
                         };
                         attributeProvisioning: {
                             attributeColumnHeader: {
@@ -2771,13 +2824,37 @@ export interface ConsoleNS {
                         internetResolvableErrorMessage: string;
                     };
                     generalDetails: {
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        image: FormAttributes;
+                        name: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                duplicate: string;
+                                maxLengthReached: string;
+                            };
+                        };
+                        description: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                            placeholder: string;
+                        };
+                        image: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                            placeholder: string;
+                        };
                     };
                     jitProvisioning: {
-                        enableJITProvisioning: FormAttributes;
-                        provisioningUserStoreDomain: FormAttributes;
+                        enableJITProvisioning: {
+                            [key: string]: any;
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                        };
+                        provisioningUserStoreDomain: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                        };
                         provisioningScheme: {
                             hint: string;
                             label: string;
@@ -2831,7 +2908,14 @@ export interface ConsoleNS {
                     };
                     outboundProvisioningTitle: string;
                 };
-                helpPanel: HelpPanelInterface;
+                helpPanel: {
+                    tabs: {
+                        [key: string]: {
+                            content: any;
+                            heading: string;
+                        };
+                    };
+                };
                 templates: {
                     manualSetup: {
                         heading: string;
@@ -2868,60 +2952,522 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addFederatedAuthenticator: Notification;
-                    addIDP: Notification;
-                    apiLimitReachedError: Notification;
+                    addFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     changeCertType: {
                         pem: {
-                           description: string;
-                           message: string;
+                            description: string;
+                            message: string;
                         };
                         jwks: {
                             description: string;
                             message: string;
                         };
                     };
-                    deleteCertificate: Notification;
-                    deleteIDP: Notification;
-                    disableAuthenticator: Notification;
-                    disableOutboundProvisioningConnector: Notification;
-                    duplicateCertificateUpload: Notification;
-                    getIDP: Notification;
-                    getIDPList: Notification;
-                    getIDPTemplate: Notification;
-                    getIDPTemplateList: Notification;
-                    getFederatedAuthenticator: Notification;
-                    getFederatedAuthenticatorsList: Notification;
-                    getFederatedAuthenticatorMetadata: Notification;
-                    getOutboundProvisioningConnector: Notification;
-                    getOutboundProvisioningConnectorsList: Notification;
-                    getOutboundProvisioningConnectorMetadata: Notification;
-                    getAllLocalClaims: Notification;
-                    getRolesList: Notification;
-                    submitAttributeSettings: Notification;
+                    deleteCertificate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    duplicateCertificateUpload: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPTemplateList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticatorsList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticatorMetadata: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnectorsList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnectorMetadata: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getAllLocalClaims: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getRolesList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    submitAttributeSettings: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles:
+                                | string
+                                | {
+                                      [key: number]: string;
+                                  };
+                        };
                         heading: string;
                     };
-                    deleteDefaultAuthenticator: Notification;
-                    deleteDefaultConnector: Notification;
-                    updateClaimsConfigs: Notification;
-                    updateFederatedAuthenticator: Notification;
-                    updateFederatedAuthenticators: Notification;
-                    updateIDP: Notification;
-                    updateIDPCertificate: Notification;
-                    updateIDPRoleMappings: Notification;
-                    updateJITProvisioning: Notification;
-                    updateOutboundProvisioningConnectors: Notification;
-                    updateOutboundProvisioningConnector: Notification;
+                    deleteDefaultAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                    };
+                    deleteDefaultConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                    };
+                    updateClaimsConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateFederatedAuthenticators: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDPCertificate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDPRoleMappings: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateJITProvisioning: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioningConnectors: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 placeHolders: {
-                    emptyCertificateList: Placeholder;
-                    emptyIDPList: Placeholder;
-                    emptyIDPSearchResults: Placeholder;
-                    emptyAuthenticatorList: Placeholder;
-                    emptyConnectorList: Placeholder;
-                    noAttributes: Placeholder;
+                    emptyCertificateList: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyIDPList: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyIDPSearchResults: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyAuthenticatorList: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyConnectorList: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    noAttributes: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
                 };
                 wizards: {
                     addAuthenticator: {
@@ -2985,7 +3531,6 @@ export interface ConsoleNS {
                         next: string;
                         finish: string;
                         previous: string;
-
                     };
                 };
             };
