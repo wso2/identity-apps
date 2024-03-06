@@ -3771,16 +3771,144 @@ export interface ConsoleNS {
                 title: string;
                 subTitle?: string;
                 notifications: {
-                    fetchOrganization: Notification;
-                    deleteOrganization: Notification;
+                    fetchOrganization: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
+                    deleteOrganization: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
                     deleteOrganizationWithSubOrganizationError: string;
-                    disableOrganization: Notification;
+                    disableOrganization: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
                     disableOrganizationWithSubOrganizationError: string;
-                    enableOrganization: Notification;
-                    updateOrganization: Notification;
-                    updateOrganizationAttributes: Notification;
-                    addOrganization: Notification;
-                    getOrganizationList: Notification;
+                    enableOrganization: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
+                    updateOrganization: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
+                    updateOrganizationAttributes: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
+                    addOrganization: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
+                    getOrganizationList: {
+                        error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                    };
                 };
                 confirmations: {
                     deleteOrganization: {
@@ -3791,7 +3919,13 @@ export interface ConsoleNS {
                     };
                 };
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action?: string;
+                        title: string;
+                        subtitles: string | {
+                            [key: number]: string;
+                        };
+                    };
                 };
                 edit: {
                     description: string;
@@ -3801,13 +3935,153 @@ export interface ConsoleNS {
                         attributes: string;
                     },
                     fields: {
-                        id: FormAttributes;
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        domain: FormAttributes;
-                        type: FormAttributes;
-                        created: FormAttributes;
-                        lastModified: FormAttributes;
+                        id: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        name: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        description: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        domain: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        type: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        created: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        lastModified: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
                     },
                     dangerZone: {
                         title: string;
@@ -3835,9 +4109,69 @@ export interface ConsoleNS {
                 };
                 forms: {
                     addOrganization: {
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        domainName: FormAttributes;
+                        name: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        description: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
+                        domainName: {
+                            [key: string]: any;
+                            description?: string;
+                            errorMessage?: string;
+                            actions?: {
+                                [key: string]: string;
+                            };
+                            hint?: string;
+                            label: string | Record<string, unknown>;
+                            placeholder?: string;
+                            ariaLabel?: string;
+                            validations?: {
+                                empty?: string;
+                                duplicate?: string;
+                                invalid?: string;
+                                required?: string;
+                                maxLengthReached?: string;
+                                range?: string;
+                                reserved?: string;
+                            };
+                        };
                         type: string;
                         structural: string;
                         tenant: string;
@@ -3863,7 +4197,27 @@ export interface ConsoleNS {
                     switchLabel: string;
                     switchButton: string;
                     notifications: {
-                        switchOrganization: Notification;
+                        switchOrganization: {
+                            error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         ;
+                            genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         ;
+                            success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         ;
+                         }
+                         ;
                     }
                 }
                 view: {
@@ -3924,7 +4278,13 @@ export interface ConsoleNS {
                         };
                     };
                     placeholders: {
-                        undefinedUser: Placeholder;
+                        undefinedUser: {
+                            action?: string;
+                            title: string;
+                            subtitles: string | {
+                            [key: number]: string;
+                         }
+                         }
                     };
                 };
                 userSessions: {
@@ -3948,16 +4308,98 @@ export interface ConsoleNS {
                         };
                     };
                     dangerZones: {
-                        terminate: DangerZone;
+                        terminate: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            subheader2?: string;
+                            buttonHint?: string;
+                            buttonDisableHint?: string;
+                        }
                     };
                     notifications: {
-                        getUserSessions: Notification;
-                        terminateAllUserSessions: Notification;
-                        terminateUserSession: Notification;
-                        getAdminUser: Notification;
+                        getUserSessions: {
+                            error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         }
+                         ;
+                        terminateAllUserSessions: {
+                            error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         }
+                         ;
+                        terminateUserSession: {
+                            error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         }
+                         ;
+                        getAdminUser: {
+                            error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         }
+                         ;
                     };
                     placeholders: {
-                        emptyListPlaceholder: Placeholder;
+                        emptyListPlaceholder: {
+                            action?: string;
+                            title: string;
+                            subtitles: string | {
+                            [key: number]: string
+                         }
+                         }
+                         ;
                     };
                 };
                 advancedSearch: {
@@ -4010,32 +4452,209 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addUser: Notification;
-                    addUserPendingApproval: Notification;
+                    addUser: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    addUserPendingApproval: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
                     bulkImportUser: {
                         validation: {
-                            emptyRowError: NotificationItem;
-                            columnMismatchError: NotificationItem;
-                            emptyHeaderError: NotificationItem;
-                            missingRequiredHeaderError: NotificationItem;
-                            blockedHeaderError: NotificationItem;
-                            duplicateHeaderError: NotificationItem;
-                            invalidHeaderError: NotificationItem;
-                            emptyDataField: NotificationItem;
-                            invalidRole: NotificationItem;
-                            invalidGroup: NotificationItem;
+                            emptyRowError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            columnMismatchError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            emptyHeaderError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            missingRequiredHeaderError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            blockedHeaderError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            duplicateHeaderError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            invalidHeaderError: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            emptyDataField: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            invalidRole: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
+                            invalidGroup: {
+                                message: string;
+                                description: string;
+                                genericMessage?: string;
+                            };
                         },
-                        submit: Notification;
-                        timeOut: NotificationItem;
+                        submit: {
+                            error?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            genericError?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                            success?: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                         }
+                         }
+                         ;
+                        timeOut: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
                     }
-                    deleteUser: Notification;
-                    fetchUsers: Notification;
-                    getAdminRole: Notification;
-                    revokeAdmin: Notification;
+                    deleteUser: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    fetchUsers: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    getAdminRole: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    revokeAdmin: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
                 };
                 placeholders: {
-                    emptyList: Placeholder;
-                    userstoreError: Placeholder;
+                    emptyList: {
+                        action?: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
+                    userstoreError: {
+                        action?: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
                 };
                 usersList: {
                     list: {
@@ -4103,9 +4722,60 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    fetchApprovalDetails: Notification;
-                    fetchPendingApprovals: Notification;
-                    updatePendingApprovals: Notification;
+                    fetchApprovalDetails: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    fetchPendingApprovals: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    updatePendingApprovals: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
                 };
                 placeholders: {
                     emptyApprovalList: Placeholder;
