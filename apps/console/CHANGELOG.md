@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.12.52
+
+### Patch Changes
+
+- [#5608](https://github.com/wso2/identity-apps/pull/5608) [`645ed98844`](https://github.com/wso2/identity-apps/commit/645ed98844530068209e8965850583e43db18c03) Thanks [@sandushi](https://github.com/sandushi)! - Add beta labelto alternative login identifiers section
+
+* [#5641](https://github.com/wso2/identity-apps/pull/5641) [`97232cc034`](https://github.com/wso2/identity-apps/commit/97232cc034ac45f91fbfe5d7816505e11e06a54a) Thanks [@brionmario](https://github.com/brionmario)! - Fix composer update issues
+
+- [#4294](https://github.com/wso2/identity-apps/pull/4294) [`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf) Thanks [@brionmario](https://github.com/brionmario)! - @asgardeo/console:
+
+  - Set JWKS Endpoint URL as optional field.
+  - Add support to remove the JWKS Endpoint URL value.
+
+  @wso2is/form:
+
+  - Allow to run function validations when input field has no value.
+
+* [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+- [#5646](https://github.com/wso2/identity-apps/pull/5646) [`f77e5ef3ae`](https://github.com/wso2/identity-apps/commit/f77e5ef3ae0827b3a13a12b01e5b6d1ffb33536e) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] Branding text customization initial loading issue
+
+- Updated dependencies [[`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf), [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0)]:
+  - @wso2is/form@2.0.39
+  - @wso2is/common@2.0.48
+  - @wso2is/forms@2.0.26
+
 ## 2.12.51
 
 ### Patch Changes

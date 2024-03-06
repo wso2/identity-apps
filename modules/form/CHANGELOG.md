@@ -1,5 +1,18 @@
 # @wso2is/form
 
+## 2.0.39
+
+### Patch Changes
+
+- [#4294](https://github.com/wso2/identity-apps/pull/4294) [`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf) Thanks [@brionmario](https://github.com/brionmario)! - @asgardeo/console:
+
+  - Set JWKS Endpoint URL as optional field.
+  - Add support to remove the JWKS Endpoint URL value.
+
+  @wso2is/form:
+
+  - Allow to run function validations when input field has no value.
+
 ## 2.0.38
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.3.43
+
+### Patch Changes
+
+- [#5650](https://github.com/wso2/identity-apps/pull/5650) [`191f5f3588`](https://github.com/wso2/identity-apps/commit/191f5f3588f540bcda403aea8b8669fd4b618682) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix my account logout url issue
+
+* [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+* Updated dependencies [[`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0)]:
+  - @wso2is/forms@2.0.26
+
 ## 2.3.42
 
 ### Patch Changes

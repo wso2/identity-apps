@@ -1,5 +1,11 @@
 # @wso2is/forms
 
+## 2.0.26
+
+### Patch Changes
+
+- [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
 ## 2.0.25
 
 ### Patch Changes
