@@ -137,7 +137,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
             setExistingSMSProviders(existingSMSProviderNames);
         }
-    },[ isSMSProviderConfigFetchRequestLoading ]);
+    },[ isSMSProviderConfigFetchRequestLoading, originalSMSProviderConfig ]);
 
     useEffect(() => {
         if (!originalSMSProviderConfig) {
