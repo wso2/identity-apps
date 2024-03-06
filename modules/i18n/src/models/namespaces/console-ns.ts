@@ -4650,7 +4650,12 @@ export interface ConsoleNS {
                     viewTemplate: string;
                 };
                 confirmations: {
-                    deleteTemplate: Confirmation;
+                    deleteTemplate: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 editor: {
                     tabs: {
@@ -4667,15 +4672,98 @@ export interface ConsoleNS {
                     name: string;
                 };
                 notifications: {
-                    deleteTemplate: Notification;
-                    createTemplate: Notification;
-                    getTemplateDetails: Notification;
-                    getTemplates: Notification;
-                    iframeUnsupported: Notification;
-                    updateTemplate: Notification;
+                    deleteTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    createTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    getTemplateDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    getTemplates: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    iframeUnsupported: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    updateTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
                 };
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
                 };
                 viewTemplate: {
                     heading: string;
