@@ -65,13 +65,8 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
                         value:string;
                     }[] = notificationSender.properties ? notificationSender.properties : [];
 
-                    if (notificationSender.name === "SMSPublisher" &&
-                        (channelValues.filter((prop : { key:string, value:string }) =>
-                            prop.key === "channel.type" && prop.value === "choreo")
-                            .length > 0)
-                    ) {
+                    if (notificationSender.name === "SMSPublisher") {
                         enableSMSOTP = true;
-
                         break;
                     }
                 }

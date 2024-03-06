@@ -102,18 +102,12 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
 
     return (
         <>
-            {
-                isChoreoEnabledAsSMSProvider && (
-                    <>
-                        <SmsOtpAuthenticatorActivationSection
-                            onActivate={
-                                (isActivated: boolean) => setIsReadOnly(isChoreoEnabledAsSMSProvider && !isActivated)
-                            }
-                        />
-                        <Divider hidden />
-                    </>
-                )
-            }
+            <SmsOtpAuthenticatorActivationSection
+                onActivate={
+                    (isActivated: boolean) => setIsReadOnly(isChoreoEnabledAsSMSProvider && !isActivated)
+                }
+            />
+            <Divider hidden />
             <SMSOTPAuthenticatorForm
                 initialValues={ initialValues }
                 metadata={ metadata }
