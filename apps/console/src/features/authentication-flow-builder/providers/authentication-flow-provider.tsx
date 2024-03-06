@@ -56,6 +56,7 @@ import { OrganizationType } from "../../organizations/constants";
 import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants/editor-constants";
 import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";
+import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
 
 /**
@@ -160,13 +161,6 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             });
         }
     }, []);
-
-    /**
-     * When `application` state changes, update the `authenticationSequence`.
-     */
-    useEffect(() => {
-        setAuthenticationSequence(application?.authenticationSequence);
-    }, [ application ]);
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -750,6 +744,16 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         }));
     }, []);
 
+    /**
+     * Handles the change of the active flow mode.
+     *
+     * @param mode - Active flow mode.
+     */
+    const onActiveFlowModeChange = (_: AuthenticationFlowBuilderModes): void => {
+        // When the flow mode changes, assign any changes that happened to the authentication sequence from other modes.
+        setAuthenticationSequence(application?.authenticationSequence);
+    };
+
     return (
         <AuthenticationFlowContext.Provider
             value={ {
@@ -768,6 +772,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 isSystemApplication,
                 isValidAuthenticationFlow,
                 isVisualEditorEnabled,
+                onActiveFlowModeChange,
                 onConditionalAuthenticationToggle: (enabled: boolean) => setIsConditionalAuthenticationEnabled(enabled),
                 refetchApplication: () => onUpdate(application.id),
                 refetchAuthenticators: onAuthenticatorsRefetch,

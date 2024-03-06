@@ -102,7 +102,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         setPreferredAuthenticationFlowBuilderMode,
         isConditionalAuthenticationEnabled,
         updateAuthenticationSequence,
-        isSystemApplication
+        isSystemApplication,
+        onActiveFlowModeChange
     } = useAuthenticationFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
@@ -146,8 +147,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         if (isVisualEditorEnabled && !readOnly) {
             setActiveFlowMode(FlowModes[1]);
+            onActiveFlowModeChange(FlowModes[1]?.mode);
         } else {
             setActiveFlowMode(FlowModes[0]);
+            onActiveFlowModeChange(FlowModes[0]?.mode);
         }
     }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
 
@@ -164,6 +167,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         );
 
         setActiveFlowMode(activeMode);
+        onActiveFlowModeChange(activeMode?.mode);
     }, [ preferredAuthenticationFlowBuilderMode ]);
 
     /**
