@@ -4607,12 +4607,23 @@ export interface ConsoleNS {
                     newType: string;
                 };
                 confirmations: {
-                    deleteTemplateType: Confirmation;
+                    deleteTemplateType: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 forms: {
                     addTemplateType: {
                         fields: {
-                            type: FormAttributes;
+                            type: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                 };
@@ -4621,14 +4632,84 @@ export interface ConsoleNS {
                     name: string;
                 };
                 notifications: {
-                    deleteTemplateType: Notification;
-                    getTemplateTypes: Notification;
-                    updateTemplateType: Notification;
-                    createTemplateType: Notification;
+                    deleteTemplateType: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    getTemplateTypes: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    updateTemplateType: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
+                    createTemplateType: {
+                        error: {
+                            message: string;
+                            description: string;
+                     }
+                        genericError: {
+                            message: string;
+                            description: string;
+                     }
+                        success: {
+                            message: string;
+                            description: string;
+                     }
+                     }
+                     ;
                 };
                 placeholders: {
-                    emptySearch: Placeholder;
-                    emptyList: Placeholder;
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
                 };
                 wizards: {
                     addTemplateType: {
