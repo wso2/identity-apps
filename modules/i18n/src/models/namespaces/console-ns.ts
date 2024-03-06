@@ -3584,7 +3584,27 @@ export interface ConsoleNS {
         features: {
             businessGroups: {
                 fields: {
-                    groupName: FormAttributes;
+                    groupName: {
+                        [key: string]: any;
+                        description?: string;
+                        errorMessage?: string;
+                        actions?: {
+                            [key: string]: string;
+                        };
+                        hint?: string;
+                        label: string | Record<string, unknown>;
+                        placeholder?: string;
+                        ariaLabel?: string;
+                        validations?: {
+                            empty?: string;
+                            duplicate?: string;
+                            invalid?: string;
+                            required?: string;
+                            maxLengthReached?: string;
+                            range?: string;
+                            reserved?: string;
+                        };
+                    };
                 };
             };
             organizationDiscovery: {
