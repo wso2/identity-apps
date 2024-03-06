@@ -781,35 +781,135 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 confirmations: {
-                    addSocialLogin: Popup;
-                    changeProtocol: Confirmation;
-                    deleteApplication: Confirmation;
-                    deleteChoreoApplication: Confirmation;
-                    deleteOutboundProvisioningIDP: Confirmation;
-                    deleteProtocol: Confirmation;
-                    handlerAuthenticatorAddition: Confirmation;
-                    backupCodeAuthenticatorDelete: Confirmation;
-                    lowOIDCExpiryTimes: Confirmation;
-                    regenerateSecret: Confirmation;
-                    reactivateSPA: Confirmation;
-                    reactivateOIDC: Confirmation;
-                    removeApplicationUserAttribute: Popup;
-                    removeApplicationUserAttributeMapping: Popup;
-                    revokeApplication: Confirmation;
+                    addSocialLogin: {
+                        content: string;
+                        header: string;
+                        subHeader: string;
+                    };
+                    changeProtocol: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteApplication: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteChoreoApplication: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteOutboundProvisioningIDP: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteProtocol: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    handlerAuthenticatorAddition: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    backupCodeAuthenticatorDelete: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    lowOIDCExpiryTimes: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    regenerateSecret: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    reactivateSPA: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    reactivateOIDC: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    removeApplicationUserAttribute: {
+                        content: string;
+                        header: string;
+                        subHeader: string;
+                    };
+                    removeApplicationUserAttributeMapping: {
+                        content: string;
+                        header: string;
+                        subHeader: string;
+                    };
+                    revokeApplication: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
                     clientSecretHashDisclaimer: {
-                        modal: Confirmation;
+                        modal: {
+                            header: string;
+                            message: string;
+                            content: string;
+                            assertionHint: string;
+                        };
                         forms: {
-                           clientIdSecretForm: {
-                               clientId: FormAttributes;
-                               clientSecret: FormAttributes;
-                           };
+                            clientIdSecretForm: {
+                                clientId: {
+                                    [key: string]: any;
+                                    label: string | Record<string, unknown>;
+                                    placeholder: string;
+                                    validations: {
+                                        empty: string;
+                                    };
+                                };
+                                clientSecret: {
+                                    [key: string]: any;
+                                    label: string | Record<string, unknown>;
+                                    placeholder: string;
+                                    validations: {
+                                        empty: string;
+                                    };
+                                };
+                            };
                         };
                     };
-                    certificateDelete: Confirmation & Record<string, string>;
+                    certificateDelete: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    } & Record<string, string>;
                 };
                 dangerZoneGroup: {
                     header: string;
-                    deleteApplication: DangerZone;
+                    deleteApplication: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
                 edit: {
                     sections: {
@@ -820,12 +920,26 @@ export interface ConsoleNS {
                                 steps: {
                                     protocolSelection: {
                                         manualSetup: {
-                                            emptyPlaceholder: Placeholder;
+                                            emptyPlaceholder: {
+                                                title: string;
+                                                subtitles:
+                                                    | string
+                                                    | {
+                                                          [key: number]: string;
+                                                      };
+                                            };
                                             heading: string;
                                             subHeading: string;
                                         };
                                         quickSetup: {
-                                            emptyPlaceholder: Placeholder;
+                                            emptyPlaceholder: {
+                                                title: string;
+                                                subtitles:
+                                                    | string
+                                                    | {
+                                                          [key: number]: string;
+                                                      };
+                                            };
                                             heading: string;
                                             subHeading: string;
                                         };
@@ -836,7 +950,7 @@ export interface ConsoleNS {
                             protocolLanding: {
                                 heading: string;
                                 subHeading: string;
-                            }
+                            };
                         };
                         advanced: {
                             tabName: string;
@@ -845,8 +959,19 @@ export interface ConsoleNS {
                             forms: {
                                 fields: {
                                     dynamic: {
-                                        localRole: FormAttributes;
-                                        applicationRole: FormAttributes;
+                                        localRole: {
+                                            label: string | Record<string, unknown>;
+                                            validations: {
+                                                empty: string;
+                                            };
+                                        };
+                                        applicationRole: {
+                                            label: string | Record<string, unknown>;
+                                            validations: {
+                                                empty: string;
+                                                duplicate: string;
+                                            };
+                                        };
                                     };
                                 };
                             };
@@ -856,7 +981,14 @@ export interface ConsoleNS {
                                     subHeading: string;
                                     steps: {
                                         select: {
-                                            transfer: TransferList;
+                                            transfer: {
+                                                searchPlaceholders: {
+                                                    [key: string]: any;
+                                                };
+                                                headers: {
+                                                    [key: string]: any;
+                                                };
+                                            };
                                         };
                                     };
                                 };
@@ -866,7 +998,7 @@ export interface ConsoleNS {
                                     displayName: string;
                                     name: string;
                                     hint: string;
-                                },
+                                };
                                 selectedScopesComponentHint: string;
                                 howToUseScopesHint: string;
                                 attributeComponentHint: string;
@@ -904,21 +1036,29 @@ export interface ConsoleNS {
                                         faultyAttributeMapping: string;
                                         faultyAttributeMappingHint: string;
                                         fields: {
-                                            claim: FormAttributes;
+                                            claim: {
+                                                label: string | Record<string, unknown>;
+                                                placeholder: string;
+                                            };
                                         };
                                     };
                                     searchPlaceholder: string;
                                 };
                                 selectAll: string;
                             };
-                            attributeMappingChange: Notification;
+                            attributeMappingChange: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
                             emptySearchResults: {
                                 subtitles: {
-                                    0: string,
-                                    1: string
-                                },
+                                    0: string;
+                                    1: string;
+                                };
                                 title: string;
-                            },
+                            };
                             roleMapping: {
                                 heading: string;
                             };
@@ -1000,7 +1140,7 @@ export interface ConsoleNS {
                                                         };
                                                     };
                                                 };
-                                            },
+                                            };
                                             heading: string;
                                             hint: string;
                                             editor: {
@@ -1028,8 +1168,8 @@ export interface ConsoleNS {
                                                 tooltips: {
                                                     keyIcon: string;
                                                     plusIcon: string;
-                                                }
-                                            }
+                                                };
+                                            };
                                         };
                                         stepBased: {
                                             actions: {
@@ -1038,14 +1178,28 @@ export interface ConsoleNS {
                                                 addStep: string;
                                                 selectAuthenticator: string;
                                             };
-                                            addAuthenticatorModal: ModalInterface;
+                                            addAuthenticatorModal: {
+                                                description: string;
+                                                heading: string;
+                                                content: Record<string, unknown>;
+                                                primaryButton: string;
+                                                secondaryButton: string;
+                                            };
                                             heading: string;
                                             hint: string;
                                             forms: {
                                                 fields: {
-                                                    attributesFrom: FormAttributes;
-                                                    subjectIdentifierFrom: FormAttributes;
-                                                    enableBackupCodes: FormAttributes;
+                                                    attributesFrom: {
+                                                        label: string | Record<string, unknown>;
+                                                        placeholder: string;
+                                                    };
+                                                    subjectIdentifierFrom: {
+                                                        label: string | Record<string, unknown>;
+                                                        placeholder: string;
+                                                    };
+                                                    enableBackupCodes: {
+                                                        label: string | Record<string, unknown>;
+                                                    };
                                                 };
                                             };
                                             secondFactorDisabled: string;
@@ -1076,52 +1230,64 @@ export interface ConsoleNS {
                                         description: {
                                             0: string;
                                             1: string;
-                                        },
+                                        };
                                         heading: string;
-                                    },
+                                    };
                                     flowBuilder: {
-                                        addMissingSocialAuthenticatorModal: ModalInterface;
-                                        duplicateSocialAuthenticatorSelectionModal: ModalInterface;
+                                        addMissingSocialAuthenticatorModal: {
+                                            description: string;
+                                            heading: string;
+                                            content: Record<string, unknown>;
+                                            primaryButton: string;
+                                            secondaryButton: string;
+                                        };
+                                        duplicateSocialAuthenticatorSelectionModal: {
+                                            description: string;
+                                            heading: string;
+                                            content: Record<string, unknown>;
+                                            primaryButton: string;
+                                            secondaryButton: string;
+                                        };
                                         heading: string;
                                         headings: {
                                             default: string;
                                             socialLogin: string;
                                             multiFactorLogin: string;
                                             passwordlessLogin: string;
-                                        }
+                                        };
                                         types: {
                                             apple: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             defaultConfig: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             facebook: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             github: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             google: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             idf: {
                                                 tooltipText: string;
-                                            },
+                                            };
                                             totp: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             usernameless: {
                                                 description: string;
                                                 heading: string;
                                                 info: string;
-                                            },
+                                            };
                                             passkey: {
                                                 description: string;
                                                 heading: string;
@@ -1131,36 +1297,49 @@ export interface ConsoleNS {
                                                     passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
                                                     progressiveEnrollmentEnabledCheckbox: string;
                                                     progressiveEnrollmentDisabled: string;
-                                                }
-                                            }
+                                                };
+                                            };
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             microsoft: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             emailOTP: {
-                                                description: string,
-                                                heading: string,
-                                            },
+                                                description: string;
+                                                heading: string;
+                                            };
                                             smsOTP: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             emailOTPFirstFactor: {
                                                 description: string;
                                                 heading: string;
-                                            }
-                                        }
-                                    }
-                                },
+                                            };
+                                        };
+                                    };
+                                };
                                 requestPathAuthenticators: {
                                     title: string;
                                     subTitle: string;
                                     notifications: {
-                                        getRequestPathAuthenticators: Notification;
+                                        getRequestPathAuthenticators: {
+                                            error: {
+                                                message: string;
+                                                description: string;
+                                            };
+                                            genericError: {
+                                                message: string;
+                                                description: string;
+                                            };
+                                            success: {
+                                                message: string;
+                                                description: string;
+                                            };
+                                        };
                                     };
                                 };
                                 templateDescription: {
@@ -1183,10 +1362,42 @@ export interface ConsoleNS {
                         shareApplication: {
                             heading: string;
                             shareApplication: string;
-                            addSharingNotification: Notification;
-                            stopSharingNotification: Notification;
-                            getSharedOrganizations: Notification;
-                            stopAllSharingNotification: Notification;
+                            addSharingNotification: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            stopSharingNotification: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            getSharedOrganizations: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
                             switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
                         };
                         apiAuthorization: {
@@ -1198,7 +1409,7 @@ export interface ConsoleNS {
                                 subTitle: string;
                                 button: string;
                             };
-                        }
+                        };
                     };
                 };
                 forms: {
@@ -1208,80 +1419,235 @@ export interface ConsoleNS {
                                 errorAlert: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 heading: string;
                                 descriptionFederated: string;
                                 fields: {
-                                    validateLocalAccount: FormAttributes;
-                                    mandateLocalAccount: FormAttributes;
-                                }
-                            }
+                                    validateLocalAccount: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    mandateLocalAccount: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                };
+                            };
                             subject: {
                                 fields: {
-                                    alternateSubjectAttribute: FormAttributes;
-                                    subjectAttribute: FormAttributes;
-                                    subjectIncludeTenantDomain: FormAttributes;
-                                    subjectIncludeUserDomain: FormAttributes;
-                                    subjectUseMappedLocalSubject: FormAttributes;
-                                    subjectType: FormAttributes;
-                                    sectorIdentifierURI: FormAttributes;
+                                    alternateSubjectAttribute: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+
+                                    };
+                                    subjectAttribute: {
+                                        [key: string]: any;
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+
+                                        };
+                                    };
+                                    subjectIncludeTenantDomain: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+
+                                        };
+                                    };
+                                    subjectIncludeUserDomain: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+
+                                        };
+                                    };
+                                    subjectUseMappedLocalSubject: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+
+                                        };
+                                    };
+                                    subjectType: {
+                                        [key: string]: any;
+                                        label: string | Record<string, unknown>;
+
+                                    };
+                                    sectorIdentifierURI: {
+                                        [key: string]: any;
+
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                            required: string;
+
+                                        };
+                                    };
                                 };
                                 heading: string;
                             };
                             role: {
                                 heading: string;
                                 fields: {
-                                    roleAttribute: FormAttributes;
-                                    role: FormAttributes;
+                                    roleAttribute: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+
+                                        };
+                                    };
+                                    role: {
+
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+
+                                        };
+                                    };
                                 };
                             };
                         };
                     };
                     advancedConfig: {
                         fields: {
-                            enableAuthorization: FormAttributes;
-                            returnAuthenticatedIdpList: FormAttributes;
-                            saas: FormAttributes;
-                            skipConsentLogin: FormAttributes;
-                            skipConsentLogout: FormAttributes;
+                            enableAuthorization: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+
+                                };
+                            };
+                            returnAuthenticatedIdpList: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            saas: {
+
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+
+                                };
+                            };
+                            skipConsentLogin: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+
+                                };
+                            };
+                            skipConsentLogout: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+
+                                };
+                            };
                         };
                         sections: {
                             applicationNativeAuthentication: {
                                 heading: string;
                                 alerts: {
                                     clientAttestation: string;
-                                },
+                                };
                                 fields: {
-                                    enableAPIBasedAuthentication: FormAttributes;
-                                    enableClientAttestation: FormAttributes;
+                                    enableAPIBasedAuthentication: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+
+                                    };
+                                    enableClientAttestation: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+
+                                    };
                                     android: {
                                         heading: string;
                                         fields: {
-                                            androidPackageName: FormAttributes;
-                                            androidAttestationServiceCredentials: FormAttributes;
-                                        }
-                                    },
+                                            androidPackageName: {
+                                                hint: string;
+                                                label: string | Record<string, unknown>;
+                                                placeholder: string;
+                                                validations: {
+                                                    empty: string;
+                                                };
+                                            };
+                                            androidAttestationServiceCredentials: {
+                                                hint: string;
+                                                label: string | Record<string, unknown>;
+                                                placeholder: string;
+                                                validations: {
+                                                    empty: string;
+                                                };
+                                            };
+                                        };
+                                    };
                                     apple: {
                                         heading: string;
                                         fields: {
-                                            appleAppId: FormAttributes;
-                                        }
-                                    }
-                                }
-                            },
+                                            appleAppId: {
+                                                hint: string;
+                                                label: string | Record<string, unknown>;
+                                                placeholder: string;
+                                            };
+                                        };
+                                    };
+                                };
+                            };
                             certificate: {
                                 heading: string;
-                                hint?: {
+                                hint: {
                                     customOidc: string;
                                     customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {
-                                    jwksValue: FormAttributes;
-                                    pemValue: FormAttributes;
-                                    type: FormAttributes;
+                                    jwksValue: {
+                                        description: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    pemValue: {
+                                        description: string;
+                                        actions: {
+                                            [key: string]: string;
+                                        };
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    type: {
+                                        children: {
+                                            [key: string]: any;
+                                        };
+                                        label: string | Record<string, unknown>;
+                                    };
                                 };
-                                invalidOperationModal?: {
+                                invalidOperationModal: {
                                     header: string;
                                     message: string;
                                 };
@@ -1290,74 +1656,278 @@ export interface ConsoleNS {
                     };
                     generalDetails: {
                         fields: {
-                            name: FormAttributes;
-                            description: FormAttributes;
-                            imageUrl: FormAttributes;
-                            discoverable: FormAttributes;
-                            accessUrl: FormAttributes;
-                            isSharingEnabled: FormAttributes;
-                            isManagementApp: FormAttributes;
-                            isFapiApp: FormAttributes;
+                            name: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    duplicate?: string;
+                                    reserved: string;
+                                };
+                            };
+                            description: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                            };
+                            imageUrl: {
+                                description?: string;
+                                hint?: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                };
+                            };
+                            discoverable: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            accessUrl: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                ariaLabel: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            isSharingEnabled: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            isManagementApp: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            isFapiApp: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
                         };
                         managementAppBanner: string;
-
                     };
                     inboundCustom: {
                         fields: {
-                            checkbox: FormAttributes;
-                            dropdown: FormAttributes;
-                            generic: FormAttributes;
-                            password: FormAttributes;
+                            checkbox: {
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            dropdown: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            generic: {
+                                label: string | Record<string, unknown>;
+                                placeholder?: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            password: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                     inboundOIDC: {
                         description: string;
                         documentation: string;
                         fields: {
-                            allowedOrigins: FormAttributes;
-                            callBackUrls: FormAttributes;
-                            clientID: FormAttributes;
-                            clientSecret: FormAttributes;
-                            grant: FormAttributes;
-                            public: FormAttributes;
+                            allowedOrigins: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            callBackUrls: {
+                                [key: string]: any;
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                    required: string;
+                                };
+                            };
+                            clientID: {
+                                label: string | Record<string, unknown>;
+                            };
+                            clientSecret: {
+                                [key: string]: any;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            grant: {
+                                [key: string]: any;
+                                children: {
+                                    [key: string]: any;
+                                }
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            public: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                         mobileApp: {
                             discoverableHint: string;
                             mobileAppPlaceholder: string;
-                        },
+                        };
                         dropdowns: {
                             selectOption: string;
-                        },
+                        };
                         sections: {
                             accessToken: {
                                 heading: string;
                                 hint: string;
                                 fields: {
-                                    bindingType: FormAttributes;
-                                    expiry: FormAttributes;
-                                    applicationTokenExpiry: FormAttributes;
-                                    type: FormAttributes;
-                                    revokeToken: FormAttributes;
-                                    validateBinding: FormAttributes;
-                                    audience: FormAttributes;
+                                    bindingType: {
+                                        [key: string]: any;
+                                        children: {
+                                            [key: string]: any;
+                                        }
+                                        description: string;
+                                        label: string | Record<string, unknown>;
+
+                                    };
+                                    expiry: {
+                                        [key: string]: any;
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    applicationTokenExpiry: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    type: {
+                                        [key: string]: any;
+                                        label: string | Record<string, unknown>;
+
+                                    };
+                                    revokeToken: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    validateBinding: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    audience: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            duplicate: string;
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             idToken: {
                                 heading: string;
                                 fields: {
-                                    expiry: FormAttributes;
-                                    algorithm: FormAttributes;
-                                    audience: FormAttributes;
-                                    encryption: FormAttributes;
-                                    signing: FormAttributes;
-                                    method: FormAttributes;
+                                    expiry: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    algorithm: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    audience: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            duplicate: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    encryption: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    signing: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                    };
+                                    method: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             logoutURLs: {
                                 heading: string;
                                 fields: {
-                                    back: FormAttributes;
-                                    front: FormAttributes;
+                                    back: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    front: {
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             pkce: {
@@ -1365,57 +1935,116 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint: string;
                                 fields: {
-                                    pkce: FormAttributes;
+                                    pkce: {
+                                        children: {
+                                            [key: string]: any;
+                                        }
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             clientAuthentication: {
                                 heading: string;
                                 fields: {
-                                    authenticationMethod: FormAttributes;
-                                    signingAlgorithm: FormAttributes;
-                                    subjectDN: FormAttributes;
+                                    authenticationMethod: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                    };
+                                    signingAlgorithm: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                    };
+                                    subjectDN: {
+                                        hint?: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder?: string;
+                                    };
                                 };
                             };
                             pushedAuthorization: {
                                 heading: string;
                                 fields: {
-                                    requirePushAuthorizationRequest: FormAttributes;
+                                    requirePushAuthorizationRequest: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
                                 };
                             };
                             requestObject: {
                                 heading: string;
                                 fields: {
-                                    requestObjectSigningAlg: FormAttributes;
-                                    requestObjectEncryptionAlgorithm: FormAttributes;
-                                    requestObjectEncryptionMethod: FormAttributes;
+                                    requestObjectSigningAlg: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                    };
+                                    requestObjectEncryptionAlgorithm: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                    };
+                                    requestObjectEncryptionMethod: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                    };
                                 };
                             };
                             refreshToken: {
                                 heading: string;
                                 fields: {
-                                    expiry: FormAttributes;
-                                    renew: FormAttributes;
+                                    expiry: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    renew: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             requestObjectSignature: {
                                 heading: string;
                                 description: string;
                                 fields: {
-                                    signatureValidation: FormAttributes;
+                                    signatureValidation: {
+                                        label: string | Record<string, unknown>;
+                                    };
                                 };
                             };
                             scopeValidators: {
                                 heading: string;
                                 fields: {
-                                    validator: FormAttributes;
+                                    validator: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             certificates: {
                                 disabledPopup: string;
-                            }
+                            };
                         };
                         messages: {
-                            revokeDisclaimer: Message;
+                            revokeDisclaimer: {
+                                heading: string;
+                                content: string;
+                            };
                             customInvalidMessage: string;
                         };
                     };
@@ -1423,82 +2052,271 @@ export interface ConsoleNS {
                         description: string;
                         documentation: string;
                         fields: {
-                            assertionURLs: FormAttributes;
-                            defaultAssertionURL: FormAttributes;
-                            idpEntityIdAlias: FormAttributes;
-                            issuer: FormAttributes;
-                            metaURL: FormAttributes;
-                            mode: FormAttributes;
-                            qualifier: FormAttributes;
+                            assertionURLs: {
+                                [key: string]: any;
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                    required: string;
+                                };
+                            };
+                            defaultAssertionURL: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            idpEntityIdAlias: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            issuer: {
+                                errorMessage: string;
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            metaURL: {
+                                errorMessage: string;
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            mode: {
+                                children: {
+                                    [key: string]: any;
+                                }
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            qualifier: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                         sections: {
                             assertion: {
                                 heading: string;
                                 fields: {
-                                    audience: FormAttributes;
-                                    nameIdFormat: FormAttributes;
-                                    recipients: FormAttributes;
+                                    audience: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                        };
+                                    };
+                                    nameIdFormat: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    recipients: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             attributeProfile: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
-                                    includeAttributesInResponse: FormAttributes;
-                                    serviceIndex: FormAttributes;
+                                    enable: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    includeAttributesInResponse: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    serviceIndex: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             encryption: {
                                 heading: string;
                                 fields: {
-                                    assertionEncryption: FormAttributes;
-                                    assertionEncryptionAlgorithm: FormAttributes;
-                                    keyEncryptionAlgorithm: FormAttributes;
+                                    assertionEncryption: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    assertionEncryptionAlgorithm: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    keyEncryptionAlgorithm: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             idpInitiatedSLO: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
-                                    returnToURLs: FormAttributes;
+                                    enable: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    returnToURLs: {
+                                        hint?: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             responseSigning: {
                                 heading: string;
                                 fields: {
-                                    digestAlgorithm: FormAttributes;
-                                    responseSigning: FormAttributes;
-                                    signingAlgorithm: FormAttributes;
+                                    digestAlgorithm: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    responseSigning: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    signingAlgorithm: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             requestProfile: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
+                                    enable: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             requestValidation: {
                                 heading: string;
                                 fields: {
-                                    signatureValidation: FormAttributes;
-                                    signatureValidationCertAlias: FormAttributes;
+                                    signatureValidation: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    signatureValidationCertAlias: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             sloProfile: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
-                                    logoutMethod: FormAttributes;
-                                    requestURL: FormAttributes;
-                                    responseURL: FormAttributes;
+                                    enable: {
+                                        hint?: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    logoutMethod: {
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    requestURL: {
+                                        hint?: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    responseURL: {
+                                        hint?: string;
+                                        label: string | Record<string, unknown>;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             ssoProfile: {
                                 heading: string;
                                 fields: {
-                                    artifactBinding: FormAttributes;
-                                    bindings: FormAttributes;
-                                    idpInitiatedSSO: FormAttributes;
+                                    artifactBinding: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                    };
+                                    bindings: {
+                                        hint: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    idpInitiatedSSO: {
+                                        hint?: string;
+                                        label: string | Record<string, unknown>;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             certificates: {
@@ -1506,47 +2324,131 @@ export interface ConsoleNS {
                                 certificateRemoveConfirmation: {
                                     header: string;
                                     content: string;
-                                }
-                            }
+                                };
+                            };
                         };
                     };
                     inboundSTS: {
                         fields: {
-                            realm: FormAttributes;
-                            replyTo: FormAttributes;
-                            replyToLogout: FormAttributes;
+                            realm: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            replyTo: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            replyToLogout: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
                         };
                     };
                     inboundWSTrust: {
                         fields: {
-                            audience: FormAttributes;
-                            certificateAlias: FormAttributes;
+                            audience: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            certificateAlias: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                     outboundProvisioning: {
                         fields: {
-                            blocking: FormAttributes;
-                            connector: FormAttributes;
-                            idp: FormAttributes;
-                            jit: FormAttributes;
-                            rules: FormAttributes;
+                            blocking: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            connector: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            idp: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            jit: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            rules: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+
+                            };
                         };
                     };
                     provisioningConfig: {
                         fields: {
-                            proxyMode: FormAttributes;
-                            userstoreDomain: FormAttributes;
+                            proxyMode: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
+                            userstoreDomain: {
+                                hint: string;
+                                label: string | Record<string, unknown>;
+                            };
                         };
                     };
                     spaProtocolSettingsWizard: {
                         fields: {
-                            callBackUrls: FormAttributes;
-                            name: FormAttributes;
+                            callBackUrls: {
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            name: {
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    invalid: string;
+                                };
+                            };
                             urlDeepLinkError: string;
                         };
                     };
                 };
-                helpPanel: HelpPanelInterface;
+                helpPanel: {
+                    tabs: {
+                        [key: string]: {
+                            content: any;
+                            heading: string;
+                        };
+                    };
+                };
                 list: {
                     columns: {
                         actions: string;
@@ -1560,7 +2462,7 @@ export interface ConsoleNS {
                     };
                     labels: {
                         fragment: string;
-                    }
+                    };
                 };
                 myaccount: {
                     title: string;
@@ -1600,73 +2502,529 @@ export interface ConsoleNS {
                         error: {
                             description: string;
                             message: string;
-                        },
+                        };
                         genericError: {
                             description: string;
                             message: string;
-                        },
-                    }
+                        };
+                    };
                 };
                 notifications: {
-                    addApplication: Notification;
-                    apiLimitReachedError: Notification;
-                    authenticationStepMin: Notification;
-                    authenticationStepDeleteErrorDueToSecondFactors: Notification;
-                    authenticationStepDeleteErrorDueToAppShared: Notification;
-                    deleteApplication: Notification;
-                    deleteOptionErrorDueToSecondFactorsOnRight: Notification;
-                    deleteProtocolConfig: Notification;
-                    duplicateAuthenticationStep: Notification;
-                    emptyAuthenticationStep: Notification;
-                    fetchAllowedCORSOrigins: Notification;
-                    fetchApplication: Notification;
-                    fetchMyAccountApplication: Notification;
-                    fetchApplications: Notification;
-                    fetchCustomInboundProtocols: Notification;
-                    fetchInboundProtocols: Notification;
-                    fetchProtocolMeta: Notification;
-                    fetchSAMLIDPConfigs: Notification;
-                    fetchOIDCIDPConfigs: Notification;
-                    fetchTemplate: Notification;
-                    fetchTemplates: Notification;
-                    getInboundProtocolConfig: Notification;
-                    regenerateSecret: Notification;
-                    revokeApplication: Notification;
+                    addApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    authenticationStepMin: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    authenticationStepDeleteErrorDueToSecondFactors: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteOptionErrorDueToSecondFactorsOnRight: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteProtocolConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    duplicateAuthenticationStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    emptyAuthenticationStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchAllowedCORSOrigins: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchMyAccountApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchApplications: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchCustomInboundProtocols: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchInboundProtocols: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchProtocolMeta: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchSAMLIDPConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDCIDPConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchTemplates: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getInboundProtocolConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    regenerateSecret: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    revokeApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles:
+                                | string
+                                | {
+                                      [key: number]: string;
+                                  };
+                        };
                         heading: string;
                     };
-                    updateAdvancedConfig: Notification;
-                    updateApplication: Notification;
-                    updateAuthenticationFlow: Notification;
-                    updateClaimConfig: Notification;
-                    updateInboundProtocolConfig: Notification;
-                    updateInboundProvisioningConfig: Notification;
-                    updateOutboundProvisioning: Notification;
-                    updateProtocol: Notification;
-                    fetchOIDCServiceEndpoints: Notification;
-                    secondFactorAuthenticatorToFirstStep: Notification;
-                    firstFactorAuthenticatorToSecondStep: Notification;
-                    conditionalScriptLoopingError: NotificationItem;
-                    deleteCertificateSuccess: NotificationItem;
-                    deleteCertificateGenericError: NotificationItem;
-                    updateOnlyIdentifierFirstError: NotificationItem;
-                    updateIdentifierFirstInFirstStepError: NotificationItem;
+                    updateAdvancedConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateAuthenticationFlow: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateClaimConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateInboundProtocolConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateInboundProvisioningConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioning: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateProtocol: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDCServiceEndpoints: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    conditionalScriptLoopingError: {
+                        message: string;
+                        description: string;
+                    };
+                    deleteCertificateSuccess: {
+                        message: string;
+                        description: string;
+                    };
+                    deleteCertificateGenericError: {
+                        message: string;
+                        description: string;
+                    };
+                    updateOnlyIdentifierFirstError: {
+                        message: string;
+                        description: string;
+                    };
+                    updateIdentifierFirstInFirstStepError: {
+                        message: string;
+                        description: string;
+                    };
                 };
                 popups: {
                     appStatus: {
-                        active: Popup;
-                        notConfigured: Popup;
-                        revoked: Popup;
+                        active: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                        notConfigured: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                        revoked: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
                     };
                 };
                 placeholders: {
-                    emptyAttributesList: Placeholder;
-                    emptyAuthenticatorStep: Placeholder;
-                    emptyAuthenticatorsList: Placeholder;
-                    emptyOutboundProvisioningIDPs: Placeholder;
-                    emptyList: Placeholder;
-                    emptyProtocolList: Placeholder;
+                    emptyAttributesList: {
+                        action: string;
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyAuthenticatorStep: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyAuthenticatorsList: {
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyOutboundProvisioningIDPs: {
+                        action: string;
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
+                    emptyProtocolList: {
+                        action: string;
+                        title: string;
+                        subtitles:
+                            | string
+                            | {
+                                  [key: number]: string;
+                              };
+                    };
                 };
                 resident: {
                     provisioning: {
@@ -1681,7 +3039,15 @@ export interface ConsoleNS {
                                     details: string;
                                 };
                             };
-                            emptyPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles:
+                                    | string
+                                    | {
+                                          [key: number]: string;
+                                      };
+                            };
                             form: {
                                 fields: {
                                     connection: {
@@ -1696,14 +3062,50 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                             notifications: {
-                                create: Notification;
-                                delete: Notification;
-                                fetch: Notification;
-                                update: Notification;
-                            }
+                                create: {
+                                    error: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    success: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                                delete: {
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    success: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                                fetch: {
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                                update: {
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    success: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                            };
                         };
                     };
-                }
+                };
                 templates: {
                     manualSetup: {
                         heading: string;
@@ -1719,7 +3121,10 @@ export interface ConsoleNS {
                         help: {
                             heading: string;
                             subHeading: string;
-                            template : FormAttributes;
+                            template: {
+                                [key: string]: any;
+                                label: string | Record<string, unknown>;
+                            };
                         };
                     };
                     applicationCertificateWizard: {
@@ -1729,10 +3134,10 @@ export interface ConsoleNS {
                             title: string;
                             description1: string;
                             description2: string;
-                        }
-                    }
+                        };
+                    };
                 };
-            }
+            };
             authenticationProvider: {
                 advancedSearch?: {
                     form: {
