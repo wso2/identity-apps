@@ -4070,13 +4070,7 @@ export interface ConsoleNS {
                         };
                     };
                     placeholders: {
-                        undefinedUser: {
-                            action?: string;
-                            title: string;
-                            subtitles: string | {
-                            [key: number]: string;
-                         }
-                         }
+                        undefinedUser: Placeholder;
                     };
                 };
                 userSessions: {
@@ -4100,98 +4094,16 @@ export interface ConsoleNS {
                         };
                     };
                     dangerZones: {
-                        terminate: {
-                            actionTitle: string;
-                            header: string;
-                            subheader: string;
-                            subheader2?: string;
-                            buttonHint?: string;
-                            buttonDisableHint?: string;
-                        }
+                        terminate: DangerZone;
                     };
                     notifications: {
-                        getUserSessions: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                         }
-                         ;
-                        terminateAllUserSessions: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                         }
-                         ;
-                        terminateUserSession: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                         }
-                         ;
-                        getAdminUser: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                         }
-                         ;
+                        getUserSessions: Notification;
+                        terminateAllUserSessions: Notification;
+                        terminateUserSession: Notification;
+                        getAdminUser: Notification;
                     };
                     placeholders: {
-                        emptyListPlaceholder: {
-                            action?: string;
-                            title: string;
-                            subtitles: string | {
-                            [key: number]: string
-                         }
-                         }
-                         ;
+                        emptyListPlaceholder: Placeholder;
                     };
                 };
                 advancedSearch: {
@@ -4244,209 +4156,32 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addUser: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    addUserPendingApproval: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
+                    addUser: Notification;
+                    addUserPendingApproval: Notification;
                     bulkImportUser: {
                         validation: {
-                            emptyRowError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            columnMismatchError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            emptyHeaderError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            missingRequiredHeaderError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            blockedHeaderError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            duplicateHeaderError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            invalidHeaderError: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            emptyDataField: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            invalidRole: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
-                            invalidGroup: {
-                                message: string;
-                                description: string;
-                                genericMessage?: string;
-                            };
+                            emptyRowError: NotificationItem;
+                            columnMismatchError: NotificationItem;
+                            emptyHeaderError: NotificationItem;
+                            missingRequiredHeaderError: NotificationItem;
+                            blockedHeaderError: NotificationItem;
+                            duplicateHeaderError: NotificationItem;
+                            invalidHeaderError: NotificationItem;
+                            emptyDataField: NotificationItem;
+                            invalidRole: NotificationItem;
+                            invalidGroup: NotificationItem;
                         },
-                        submit: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                         }
-                         ;
-                        timeOut: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                        };
+                        submit: Notification;
+                        timeOut: NotificationItem;
                     }
-                    deleteUser: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    fetchUsers: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    getAdminRole: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    revokeAdmin: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
+                    deleteUser: Notification;
+                    fetchUsers: Notification;
+                    getAdminRole: Notification;
+                    revokeAdmin: Notification;
                 };
                 placeholders: {
-                    emptyList: {
-                        action?: string;
-                        title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
-                     }
-                     ;
-                    userstoreError: {
-                        action?: string;
-                        title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
-                     }
-                     ;
+                    emptyList: Placeholder;
+                    userstoreError: Placeholder;
                 };
                 usersList: {
                     list: {
@@ -4514,60 +4249,9 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    fetchApprovalDetails: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    fetchPendingApprovals: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
-                    updatePendingApprovals: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
-                     }
-                     }
-                     ;
+                    fetchApprovalDetails: Notification;
+                    fetchPendingApprovals: Notification;
+                    updatePendingApprovals: Notification;
                 };
                 placeholders: {
                     emptyApprovalList: Placeholder;
