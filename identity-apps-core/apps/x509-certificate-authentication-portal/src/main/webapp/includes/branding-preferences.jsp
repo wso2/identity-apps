@@ -46,14 +46,14 @@
     * @return The user's preferred locale.
     */
     public Locale getUserLocale(HttpServletRequest request) {
-        String lang = "en_US"; // Default lang is en_US
+        String lang = "en_US"; // Default lang is en_US.
         String COOKIE_NAME = "ui_lang";
         String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
         Locale browserLocale = request.getLocale();
         Locale userLocale = browserLocale;
         String uiLocaleFromURL = request.getParameter("ui_locales");
         String localeFromCookie = null;
-        // Check cookie for the user selected language first
+        // Check cookie for the user selected language first.
         Cookie[] cookies = request.getCookies();
 
         // Map to store default supported language codes.
@@ -83,7 +83,7 @@
                 }
             }
         }
-        // Set lang from the priority order
+        // Set lang from the priority order.
         if (localeFromCookie != null) {
             lang = localeFromCookie;
             try {
@@ -100,7 +100,7 @@
 
                 userLocale = new Locale(langStr, langLocale);
             } catch (Exception e) {
-                // In case the language is defined but not in the correct format
+                // In case the language is defined but not in the correct format.
                 userLocale = browserLocale;
             }
         } else if (uiLocaleFromURL != null) {
@@ -117,7 +117,7 @@
                 }
 
                 Locale tempLocale = new Locale(langStr, langLocale);
-                // Trying to find out whether we have a resource bundle for the given locale
+                // Trying to find out whether we have a resource bundle for the given locale.
                 try {
                     ResourceBundle foundBundle = ResourceBundle.getBundle(BUNDLE, tempLocale);
                     // If so, setting the userLocale to that locale. If not, set the browser locale as user locale
@@ -128,7 +128,7 @@
                         break;
                     } else if (tempLocale.getLanguage().equals("en") && foundBundle.getLocale().getLanguage().equals("")) {
                         // When the given locale is "en," which is our fallback one, we have to handle it separately
-                        // because it returns an empty string as locale language
+                        // because it returns an empty string as locale language.
                         userLocale = tempLocale;
                         break;
                     } else {
@@ -153,6 +153,7 @@
         }
         return userLocale;
     }
+
     /**
     * Get the user's locale code in the "language-country" format based on the request, cookies, and URL parameters.
     *
@@ -166,6 +167,7 @@
         Locale locale = getUserLocale(request);
         return locale.getLanguage() + "-" + locale.getCountry();
     }
+
     /**
     * Get the user's language code based on the request, cookies, and URL parameters.
     *
@@ -179,6 +181,7 @@
         Locale locale = getUserLocale(request);
         return locale.getLanguage();
     }
+
     /**
     * Get the user's country code based on the request, cookies, and URL parameters.
     *
@@ -233,7 +236,7 @@
     boolean enableDefaultPreLoader = true;
     String[] screenNames = {"common", "login", "email-otp", "sms-otp", "email-otp", "totp"};
 
-    // Constants used to create full custom layout name
+    // Constants used to create full custom layout name.
     String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
     String CUSTOM_LAYOUT_NAME_SEPERATOR = "-";
 
@@ -279,9 +282,7 @@
     // Load the branding fallback override values file if it exists.
     if (config.getServletContext().getResource("extensions/branding-fallbacks.jsp") != null) {
 %>
-
-    <jsp:include page="/extensions/branding-fallbacks.jsp"/>
-
+        <jsp:include page="/extensions/branding-fallbacks.jsp"/>
 <%
     }
 
@@ -454,7 +455,7 @@
                         locale
                     );
 
-                    // Merge the preferences for the current screen into the customText object
+                    // Merge the preferences for the current screen into the customText object.
                     if (customTextPreferenceResponse.has(PREFERENCE_KEY)) {
                         if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY) != null && customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).has(TEXT_KEY)) {
                             if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY) != null) {
