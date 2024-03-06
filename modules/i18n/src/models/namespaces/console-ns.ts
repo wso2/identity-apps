@@ -4574,10 +4574,32 @@ export interface ConsoleNS {
                 forms: {
                     addLocale: {
                         fields: {
-                            bodyEditor: FormAttributes;
-                            locale: FormAttributes;
-                            signatureEditor: FormAttributes;
-                            subject: FormAttributes;
+                            bodyEditor: {
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            locale: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            signatureEditor: {
+                                label: string | Record<string, unknown>;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            subject: {
+                                label: string | Record<string, unknown>;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                 };
