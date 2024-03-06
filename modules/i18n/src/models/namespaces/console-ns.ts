@@ -3942,7 +3942,7 @@ export interface ConsoleNS {
                     };
                     placeholders: {
                         undefinedUser: {
-                            action?: string;
+                            action: string;
                             title: string;
                             subtitles: string | {
                             [key: number]: string
@@ -3976,88 +3976,68 @@ export interface ConsoleNS {
                             actionTitle: string;
                             header: string;
                             subheader: string;
-                            subheader2?: string;
-                            buttonHint?: string;
-                            buttonDisableHint?: string;
                         };
                     };
                     notifications: {
                         getUserSessions: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            error: {
+                                message: string;
+                                description: string;
                          }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            genericError: {
+                                message: string;
+                                description: string;
                          }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            success: {
+                                message: string;
+                                description: string;
                          }
                          }
                          ;
                         terminateAllUserSessions: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            error: {
+                                message: string;
+                                description: string;
                          }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            genericError: {
+                                message: string;
+                                description: string;
                          }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            success: {
+                                message: string;
+                                description: string;
                          }
                          }
                          ;
                         terminateUserSession: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            error: {
+                                message: string;
+                                description: string;
                          }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            genericError: {
+                                message: string;
+                                description: string;
                          }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            success: {
+                                message: string;
+                                description: string;
                          }
                          }
                          ;
                         getAdminUser: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            error: {
+                                message: string;
+                                description: string;
                          }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
-                         }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            genericError: {
+                                message: string;
+                                description: string;
                          }
                          }
                          ;
                     };
                     placeholders: {
                         emptyListPlaceholder: {
-                            action?: string;
                             title: string;
                             subtitles: string | {
                             [key: number]: string
@@ -4117,38 +4097,32 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        error: {
+                            message: string;
+                            description: string;
                      }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        genericError: {
+                            message: string;
+                            description: string;
                      }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        success: {
+                            message: string;
+                            description: string;
                      }
                      }
                      ;
                     addUserPendingApproval: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        error: {
+                            message: string;
+                            description: string;
                      }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        genericError: {
+                            message: string;
+                            description: string;
                      }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        success: {
+                            message: string;
+                            description: string;
                      }
                      }
                      ;
@@ -4157,69 +4131,56 @@ export interface ConsoleNS {
                             emptyRowError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             columnMismatchError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             emptyHeaderError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             missingRequiredHeaderError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             blockedHeaderError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             duplicateHeaderError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             invalidHeaderError: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             emptyDataField: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             invalidRole: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                             invalidGroup: {
                                 message: string;
                                 description: string;
-                                genericMessage?: string;
                             };
                         },
                         submit: {
-                            error?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            error: {
+                                message: string;
+                                description: string;
                          }
-                            genericError?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            genericError: {
+                                message: string;
+                                description: string;
                          }
-                            success?: {
-                            message: string;
-                            description: string;
-                            genericMessage?: string;
+                            success: {
+                                message: string;
+                                description: string;
                          }
                          }
                          ;
@@ -4230,81 +4191,69 @@ export interface ConsoleNS {
                         };
                     }
                     deleteUser: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        error: {
+                            message: string;
+                            description: string;
                      }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        genericError: {
+                            message: string;
+                            description: string;
                      }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        success: {
+                            message: string;
+                            description: string;
                      }
                      }
                      ;
                     fetchUsers: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        error: {
+                            message: string;
+                            description: string;
                      }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        genericError: {
+                            message: string;
+                            description: string;
                      }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        success: {
+                            message: string;
+                            description: string;
                      }
                      }
                      ;
                     getAdminRole: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        error: {
+                            message: string;
+                            description: string;
                      }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        genericError: {
+                            message: string;
+                            description: string;
                      }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        success: {
+                            message: string;
+                            description: string;
                      }
                      }
                      ;
                     revokeAdmin: {
-                        error?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        error: {
+                            message: string;
+                            description: string;
                      }
-                        genericError?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        genericError: {
+                            message: string;
+                            description: string;
                      }
-                        success?: {
-                        message: string;
-                        description: string;
-                        genericMessage?: string;
+                        success: {
+                            message: string;
+                            description: string;
                      }
                      }
                      ;
                 };
                 placeholders: {
                     emptyList: {
-                        action?: string;
+                        action: string;
                         title: string;
                         subtitles: string | {
                         [key: number]: string
@@ -4312,7 +4261,6 @@ export interface ConsoleNS {
                      }
                      ;
                     userstoreError: {
-                        action?: string;
                         title: string;
                         subtitles: string | {
                         [key: number]: string
