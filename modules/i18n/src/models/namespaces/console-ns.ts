@@ -4107,47 +4107,47 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                     }
+                        }
                         genericError: {
                             message: string;
                             description: string;
-                     }
+                        }
                         success: {
                             message: string;
                             description: string;
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                     fetchPendingApprovals: {
                         error: {
                             message: string;
                             description: string;
-                     }
+                        }
                         genericError: {
                             message: string;
                             description: string;
-                     }
+                        }
                         success: {
                             message: string;
                             description: string;
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                     updatePendingApprovals: {
                         error: {
                             message: string;
                             description: string;
-                     }
+                        }
                         genericError: {
                             message: string;
                             description: string;
-                     }
+                        }
                         success: {
                             message: string;
                             description: string;
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                 };
                 placeholders: {
                     emptyApprovalList: {
@@ -4157,9 +4157,9 @@ export interface ConsoleNS {
                             0:string,
                             1:string
                             2:string
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                     emptyApprovalFilter: {
                         action: string;
                         title: string;
@@ -4167,9 +4167,9 @@ export interface ConsoleNS {
                             0:string,
                             1:string
                             2:string
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                     emptySearchResults: {
                         action:string;
                         title: string;
@@ -4177,9 +4177,8 @@ export interface ConsoleNS {
                             0: string,
                             1:string
                             2:string
-                     }
-                     }
-                     ;
+                        }
+                    }
                 };
             };
             certificates: {
