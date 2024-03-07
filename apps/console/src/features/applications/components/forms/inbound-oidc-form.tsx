@@ -2003,6 +2003,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
+                && !featureConfig?.applications.disabledFeatures?.includes("applications.protocol.pushedAuthorization")
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
