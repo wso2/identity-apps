@@ -56,7 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../core";
 import { getSharedOrganizations } from "../../../organizations/api";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
@@ -194,6 +194,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
     const { isFAPIApplication } = initialValues;
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
@@ -1801,11 +1803,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Client Authentication*/ }
-            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
-                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
-                && !isSystemApplication
-                && !isDefaultApplication
-                && (
+            {
+                isClientAuthenticationSectionEnabled && (
                     <>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1818,19 +1817,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".clientAuthentication.heading") }
                                 </Heading>
                                 {
-                                    !isSPAApplication
-                                    && !isMobileApplication
-                                    && !isFAPIApplication
-                                    && (
-                                        selectedGrantTypes?.includes(
-                                            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-                                        || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-                                        || selectedGrantTypes?.includes(
-                                            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
-                                    )
-                                    && !isSystemApplication
-                                    && !isDefaultApplication
-                                    && (
+                                    isPublicClientFieldEnabled && (
                                         <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                 <Field
@@ -1876,34 +1863,42 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         </Grid.Row>
                                     )
                                 }
-                                <Field
-                                    ref={ tokenEndpointAuthMethod }
-                                    name="tokenEndpointAuthMethod"
-                                    label={
-                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                            ".clientAuthentication.fields.authenticationMethod.label")
-                                    }
-                                    required={ false }
-                                    type="dropdown"
-                                    disabled={ isPublicClient }
-                                    placeholder={
-                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                            ".clientAuthentication.fields.authenticationMethod.placeholder")
-                                    }
-                                    value={ selectedAuthMethod }
-                                    listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
-                                    children={ isFAPIApplication ?
-                                        getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
-                                        : getAllowedList(metadata?.tokenEndpointAuthMethod) }
-                                    readOnly={ readOnly }
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                {
+                                    isClientAuthenticationMethodFieldEnabled && (
+                                        <>
+                                            <Field
+                                                ref={ tokenEndpointAuthMethod }
+                                                name="tokenEndpointAuthMethod"
+                                                label={
+                                                    t("console:develop.features.applications.forms.inboundOIDC" +
+                                                    ".sections.clientAuthentication.fields.authenticationMethod.label")
+                                                }
+                                                required={ false }
+                                                type="dropdown"
+                                                disabled={ isPublicClient }
+                                                placeholder={
+                                                    t("console:develop.features.applications.forms.inboundOIDC" +
+                                                      ".sections.clientAuthentication.fields.authenticationMethod" +
+                                                      ".placeholder")
+                                                }
+                                                value={ selectedAuthMethod }
+                                                listen={
+                                                    (values: Map<string, FormValue>) => handleAuthMethodChange(values)
+                                                }
+                                                children={ isFAPIApplication ?
+                                                    getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
+                                                    : getAllowedList(metadata?.tokenEndpointAuthMethod) }
+                                                readOnly={ readOnly }
+                                            />
+                                            <Hint>
+                                                { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".clientAuthentication.fields.authenticationMethod.hint") }
-                                </Hint>
+                                            </Hint>
+                                        </>
+                                    ) }
+
                             </Grid.Column>
                         </Grid.Row>
-
                         { selectedAuthMethod === PRIVATE_KEY_JWT &&
                             (
                                 <Grid.Row columns={ 1 }>
@@ -3593,6 +3588,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         setIsLoading(false);
     };
+
+    const isPublicClientFieldEnabled: boolean = !isSPAApplication
+        && !isMobileApplication
+        && !isFAPIApplication
+        && (
+            selectedGrantTypes?.includes(
+                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+            || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+            || selectedGrantTypes?.includes(
+                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+        )
+        && !isSystemApplication
+        && !isDefaultApplication;
+
+    const isClientAuthenticationMethodFieldEnabled: boolean =
+        !featureConfig?.applications.disabledFeatures?.includes("applications.protocol.clientAuthenticationMethod");
+
+    const isClientAuthenticationSectionEnabled: boolean = (
+        ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+        || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
+        && !isSystemApplication
+        && !isDefaultApplication
+        && (isPublicClientFieldEnabled || isClientAuthenticationMethodFieldEnabled);
 
     return (
         !isLoading && metadata ?
