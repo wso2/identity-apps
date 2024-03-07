@@ -64,7 +64,7 @@
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                    <div class="powered-by-logo-divider">|</div>Powered by <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
+                    <div class="powered-by-logo-divider">|</div><%= i18n(recoveryResourceBundle, customText, "powered.by", "Powered by") %> <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
                         <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                     </div>
                     <% } %>
