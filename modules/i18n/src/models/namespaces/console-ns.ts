@@ -3915,15 +3915,13 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                     }
-                     ;
+                     };
                     terminateSession: {
                         assertionHint: string;
                         header: string;
                         message: string;
                         content: string;
-                     }
-                     ;
+                     };
                     addMultipleUser: {
                         assertionHint: string;
                         header: string;
@@ -3990,8 +3988,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         terminateAllUserSessions: {
                             error: {
                                 message: string;
@@ -4005,8 +4002,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         terminateUserSession: {
                             error: {
                                 message: string;
@@ -4020,8 +4016,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getAdminUser: {
                             error: {
                                 message: string;
@@ -4031,8 +4026,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                     };
                     placeholders: {
                         emptyListPlaceholder: {
@@ -4105,8 +4099,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     addUserPendingApproval: {
                         error: {
                             message: string;
@@ -4120,8 +4113,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
@@ -4178,8 +4170,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         timeOut: {
                             message: string;
                             description: string;
@@ -4198,8 +4189,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchUsers: {
                         error: {
                             message: string;
@@ -4213,8 +4203,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getAdminRole: {
                         error: {
                             message: string;
@@ -4228,8 +4217,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     revokeAdmin: {
                         error: {
                             message: string;
@@ -4243,8 +4231,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 placeholders: {
                     emptyList: {
@@ -4262,8 +4249,7 @@ export interface ConsoleNS {
                             0: string,
                             1: string,
                         }
-                    }
-                    ;
+                    };
                 };
                 usersList: {
                     list: {
