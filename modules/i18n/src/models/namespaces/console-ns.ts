@@ -6752,9 +6752,7 @@ export interface ConsoleNS {
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: string;
-                                    subtitles: string | {
-                                    [key: number]: string
-                                 }
+                                    subtitles: string;
                                  }
                                  ;
                             };
