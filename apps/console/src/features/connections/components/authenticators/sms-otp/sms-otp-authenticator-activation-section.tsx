@@ -28,6 +28,7 @@ import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { addSMSPublisher, deleteSMSPublisher, useSMSNotificationSenders } from "../../../api/connections";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 
+
 /**
  * Interface for SMS OTP Authenticator Activation Section props.
  */

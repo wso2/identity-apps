@@ -41,6 +41,7 @@ import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
 import {
     AppConstants,
     AppState,
@@ -61,7 +62,6 @@ import {
     SMSProviderSettingsState
 } from "../models";
 import "./sms-providers.scss";
-import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
 
 type SMSProviderPageInterface = IdentifiableComponentInterface;
 
@@ -134,7 +134,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
             originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
                 existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
-                
+
                 smsProvider.properties?.forEach((prop: { key: string, value: string }) => {
                     if (prop.key === "channel.type" && prop.value === "choreo") {
                         setChoreoSMSOTPProvider(true);
@@ -286,24 +286,26 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         }
 
         let handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface>;
+
         if (isChoreoSMSOTPProvider) {
             try {
                 await deleteSMSProviders();
             } catch (error: any) {
                 const errorType : string = error.code === AuthenticatorManagementConstants.ErrorMessages
-                        .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode() ? "activeSubs" :
-                        ( error.code === AuthenticatorManagementConstants.ErrorMessages
-                            .SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS.getErrorCode() ? "connectedApps"
-                            : "generic" );
-    
-                    dispatch(addAlert({
-                        description: t("extensions:develop.identityProviders.smsOTP.settings." +
+                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode() ? "activeSubs" :
+                    ( error.code === AuthenticatorManagementConstants.ErrorMessages
+                        .SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS.getErrorCode() ? "connectedApps"
+                        : "generic" );
+
+                dispatch(addAlert({
+                    description: t("extensions:develop.identityProviders.smsOTP.settings." +
                             `errorNotifications.smsPublisherDeletionError.${errorType}.description`),
-                        level: AlertLevels.ERROR,
-                        message: t("extensions:develop.identityProviders.smsOTP.settings." +
+                    level: AlertLevels.ERROR,
+                    message: t("extensions:develop.identityProviders.smsOTP.settings." +
                             `errorNotifications.smsPublisherDeletionError.${errorType}.message`)
-                    }));
-                    return;
+                }));
+
+                return;
             }
             handleSMSConfigValues = createSMSProvider(submittingValues);
         } else {
