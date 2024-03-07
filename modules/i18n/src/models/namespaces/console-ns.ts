@@ -6760,8 +6760,7 @@ export interface ConsoleNS {
                         message: string;
                         description: string;
                         }
-                    }
-                     ;
+                    };
                 };
                 confirmationModal: {
                     removeUser: {
@@ -6769,8 +6768,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                    }
-                     ;
+                    };
                 };
             };
             validation: {
