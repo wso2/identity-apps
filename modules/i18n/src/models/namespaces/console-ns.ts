@@ -3258,10 +3258,25 @@ export interface ConsoleNS {
             getProfileSchema: Notification;
         };
         pages: {
-            applicationTemplate: EditPage;
-            applications: Page;
-            applicationsEdit: EditPage;
-            authenticationProvider?: Page;
+            applicationTemplate: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+            };
+            applications: {
+                title: string;
+                subTitle: string;
+                alternateSubTitle: string;
+            };
+            applicationsEdit: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+            };
+            authenticationProvider?: {
+                title: string;
+                subTitle: string;
+            };
             authenticationProviderTemplate: {
                 title: string;
                 subTitle: string;
@@ -3277,7 +3292,10 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
-            idp: Page;
+            idp: {
+                title: string;
+                subTitle: string;
+            };
             idpTemplate: {
                 title: string;
                 subTitle: string;
@@ -3287,7 +3305,10 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
-            idvp: Page;
+            idvp: {
+                title: string;
+                subTitle: string;
+            };
             idvpTemplate: {
                 title: string;
                 subTitle: string;
@@ -3296,7 +3317,10 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
             };
-            overview: Page;
+            overview: {
+                title: string;
+                subTitle: string;
+            };
         };
         componentExtensions: {
             component: {
