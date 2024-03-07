@@ -2176,8 +2176,8 @@ export const extensions: Extensions = {
             smsOTP: {
                 settings: {
                     smsOtpEnableDisableToggle: {
-                        labelEnable: "Add default choreo SMS OTP provider",
-                        labelDisable: "Remove default choreo SMS OTP provider"
+                        labelEnable: "Enable SMS OTP",
+                        labelDisable: "Disable SMS OTP "
                     },
                     enableRequiredNote: {
                         message: "Asgardeo publishes events to Choreo to enable SMS OTP, where Choreo " +
@@ -2197,16 +2197,16 @@ export const extensions: Extensions = {
                         smsPublisherDeletionError: {
                             generic: {
                                 message: "Error Occurred",
-                                description: "Error occurred while trying to remove default choreo SMS OTP provider."
+                                description: "Error occurred while trying to disable SMS OTP."
                             },
                             activeSubs: {
                                 message: "Error Occurred",
-                                description: "Error occurred while trying to remove default choreo SMS OTP provider." +
-                                    " SMS Publisher has active subscriptions."
+                                description: "Error occurred while trying to disable SMS OTP. SMS Publisher has " +
+                                    "active subscriptions."
                             },
                             connectedApps: {
                                 message: "Error Occurred",
-                                description: "Error occurred while trying to remove default choreo SMS OTP provider. " +
+                                description: "Error occurred while trying to disable SMS OTP. " +
                                     "There are applications using this connection."
                             }
                         }
