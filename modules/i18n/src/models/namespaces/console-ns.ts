@@ -4722,8 +4722,7 @@ export interface ConsoleNS {
                             emptyListPlaceholder: {
                                 title: string;
                                 subtitles: string;
-                             }
-                             ;
+                             };
                         };
                     };
                 };
@@ -4750,8 +4749,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updateGroup: {
                         error: {
                             message: string;
@@ -4765,8 +4763,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     createGroup: {
                         error: {
                             message: string;
@@ -4780,8 +4777,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     createPermission: {
                         error: {
                             message: string;
@@ -4795,22 +4791,19 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchGroups: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 placeholders: {
                     groupsError: {
                         title: string;
                         subtitles: string [];
-                    }
-                    ;
+                    };
                 };
             };
             header: {
