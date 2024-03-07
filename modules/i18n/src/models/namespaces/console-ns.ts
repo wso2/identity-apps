@@ -6547,17 +6547,178 @@ export interface ConsoleNS {
                     error: string;
                 };
                 notifications: {
-                    fetchUserstores: Notification;
-                    fetchUserstoreTemplates: Notification;
-                    fetchUserstoreTypes: Notification;
-                    fetchUserstoreMetadata: Notification;
-                    deleteUserstore: Notification;
-                    delay: NotificationItem;
-                    updateUserstore: Notification;
-                    testConnection: Notification;
-                    addUserstore: Notification;
-                    apiLimitReachedError: Notification;
-                    updateDelay: NotificationItem;
+                    fetchUserstores: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    fetchUserstoreTemplates: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    fetchUserstoreTypes: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    fetchUserstoreMetadata: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    deleteUserstore: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    delay: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                    };
+                    updateUserstore: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    testConnection: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    addUserstore: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    apiLimitReachedError: {
+                        error?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        genericError?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                        success?: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                     }
+                     }
+                     ;
+                    updateDelay: {
+                        message: string;
+                        description: string;
+                        genericMessage?: string;
+                    };
                 };
                 confirmation: {
                     hint: string;
@@ -6592,20 +6753,62 @@ export interface ConsoleNS {
                 };
                 forms: {
                     general: {
-                        name: FormField;
-                        type: FormField;
-                        description: FormField;
+                        name: {
+                            label?: string;
+                            placeholder?: string;
+                            requiredErrorMessage?: string;
+                            validationErrorMessages?: {
+                                [ key: string ]: string;
+                            };
+                        };
+                        type: {
+                            label?: string;
+                            placeholder?: string;
+                            requiredErrorMessage?: string;
+                            validationErrorMessages?: {
+                                [ key: string ]: string;
+                            };
+                        };
+                        description: {
+                            label?: string;
+                            placeholder?: string;
+                            requiredErrorMessage?: string;
+                            validationErrorMessages?: {
+                                [ key: string ]: string;
+                            };
+                        };
                     };
                     connection: {
                         updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };
-                    custom: FormField;
+                    custom: {
+                        label?: string;
+                        placeholder?: string;
+                        requiredErrorMessage?: string;
+                        validationErrorMessages?: {
+                            [ key: string ]: string;
+                        };
+                    };
                 };
                 dangerZone: {
-                    delete: DangerZone;
-                    disable: DangerZone;
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                        subheader2?: string;
+                        buttonHint?: string;
+                        buttonDisableHint?: string;
+                    };
+                    disable: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                        subheader2?: string;
+                        buttonHint?: string;
+                        buttonDisableHint?: string;
+                    };
                 };
                 wizard: {
                     steps: {
@@ -6617,9 +6820,30 @@ export interface ConsoleNS {
                     header: string;
                 };
                 placeholders: {
-                    emptySearch: Placeholder;
-                    emptyList: Placeholder;
-                    emptyListReadOnly: Placeholder;
+                    emptySearch: {
+                        action?: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
+                    emptyList: {
+                        action?: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
+                    emptyListReadOnly: {
+                        action?: string;
+                        title: string;
+                        subtitles: string | {
+                        [key: number]: string
+                     }
+                     }
+                     ;
                 };
                 sqlEditor: {
                     reset: string;
