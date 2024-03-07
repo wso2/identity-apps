@@ -4507,7 +4507,9 @@ export interface ConsoleNS {
                             placeholder: string;
                             requiredErrorMessage: string;
                             validationErrorMessages: {
-                                [ key: string ]: string;
+                                duplicateName:string;
+                                invalidName:string;
+                                scimInvalidName:string;
                             };
                         };
                         localAttribute: {
@@ -4685,7 +4687,7 @@ export interface ConsoleNS {
                             placeholder: string;
                             requiredErrorMessage: string;
                             validationErrorMessages: {
-                                [ key: string ]: string;
+                                invalidName: string;
                             };
                         };
                         nameHint: string;
