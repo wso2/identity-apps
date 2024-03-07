@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.38
+
+### Patch Changes
+
+- [#5693](https://github.com/wso2/identity-apps/pull/5693) [`307b964dcc`](https://github.com/wso2/identity-apps/commit/307b964dccc90f1a2f94c8ee38eed51c8a7ede6e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Remove special characters from password validation"
+
 ## 2.1.37
 
 ### Patch Changes
