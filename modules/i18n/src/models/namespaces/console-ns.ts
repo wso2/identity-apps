@@ -5579,9 +5579,7 @@ export interface ConsoleNS {
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                            [key: number]: string;
-                        };
+                        subtitles: string;
                     };
                 };
                 title: string;
