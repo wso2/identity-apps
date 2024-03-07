@@ -391,8 +391,7 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor",
-                    "applications.protocol.clientAuthenticationMethod"
+                    "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
                 "scopes": {

@@ -1456,6 +1456,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return (numberValue !== Infinity && String(numberValue) === value && numberValue > 0);
     };
 
+    const isPublicClientFieldEnabled: boolean = !isSPAApplication
+        && !isMobileApplication
+        && !isFAPIApplication
+        && (
+            selectedGrantTypes?.includes(
+                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+            || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+            || selectedGrantTypes?.includes(
+                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+        )
+        && !isSystemApplication
+        && !isDefaultApplication;
+
+    const isClientAuthenticationMethodFieldEnabled: boolean =
+        !featureConfig?.applications.disabledFeatures?.includes("applications.protocol.clientAuthenticationMethod");
+
+    const isClientAuthenticationSectionEnabled: boolean = (
+        ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+        || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId
+    ) && !isSystemApplication
+      && !isDefaultApplication
+      && (isPublicClientFieldEnabled || isClientAuthenticationMethodFieldEnabled);
+
     /**
      * Renders the list of main OIDC config fields.
      *
@@ -3588,29 +3611,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         setIsLoading(false);
     };
-
-    const isPublicClientFieldEnabled: boolean = !isSPAApplication
-        && !isMobileApplication
-        && !isFAPIApplication
-        && (
-            selectedGrantTypes?.includes(
-                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-            || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-            || selectedGrantTypes?.includes(
-                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
-        )
-        && !isSystemApplication
-        && !isDefaultApplication;
-
-    const isClientAuthenticationMethodFieldEnabled: boolean =
-        !featureConfig?.applications.disabledFeatures?.includes("applications.protocol.clientAuthenticationMethod");
-
-    const isClientAuthenticationSectionEnabled: boolean = (
-        ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
-        || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
-        && !isSystemApplication
-        && !isDefaultApplication
-        && (isPublicClientFieldEnabled || isClientAuthenticationMethodFieldEnabled);
 
     return (
         !isLoading && metadata ?
