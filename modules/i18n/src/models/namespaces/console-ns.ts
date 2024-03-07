@@ -5553,20 +5553,20 @@ export interface ConsoleNS {
                         };
                         fields: {
                             accessToken: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                             };
                             enable: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                             };
                             connectivity: {
                                 [key: string]: any;
-                                label: string | Record<string, unknown>;
+                                label: string;
                             };
                             gitBranch: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -5574,27 +5574,27 @@ export interface ConsoleNS {
                             };
                             gitFolder: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
                                 };
                             };
                             gitURL: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
                                 };
                             };
                             pollingFrequency: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                             };
                             sharedKey: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                             };
                             username: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                             };
                         };
@@ -5714,9 +5714,7 @@ export interface ConsoleNS {
                     emptyListPlaceholder: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
+                        subtitles: string;
                      }
                      ;
                 };
