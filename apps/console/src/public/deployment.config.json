@@ -1114,6 +1114,11 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "governanceConnectors": {
+            "loginAttempts": {
+                "disabledFeatures": []
+            }
+        },
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",
             "OAuthRequestPathAuthenticator"
