@@ -7067,27 +7067,101 @@ export interface ConsoleNS {
             getProfileSchema: Notification;
         };
         pages: {
-            addEmailTemplate: EditPage;
-            approvalsPage: Page;
-            editTemplate: EditPage;
-            emailDomainDiscovery: Page;
-            emailLocaleAdd: EditPage;
-            emailLocaleAddWithDisplayName: EditPage;
-            emailTemplateTypes: Page;
-            emailTemplates: EditPage;
-            emailTemplatesWithDisplayName: EditPage;
-            groups: Page;
-            organizations: Page;
-            overview: Page;
-            oidcScopes: Page;
-            oidcScopesEdit: EditPage;
-            roles: Page;
-            rolesEdit: EditPage;
-            groupsEdit: EditPage;
-            serverConfigurations: Page;
-            users: Page;
-            usersEdit: EditPage;
-            invite?: Page;
+            addEmailTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            approvalsPage: {
+                title: string;
+                subTitle: string;
+            };
+            editTemplate: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailDomainDiscovery: {
+                title: string;
+                subTitle: string;
+            };
+            emailLocaleAdd: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailLocaleAddWithDisplayName: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailTemplateTypes: {
+                title: string;
+                subTitle: string;
+            };
+            emailTemplates: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            emailTemplatesWithDisplayName: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            groups: {
+                title: string;
+                subTitle: string;
+            };
+            organizations: {
+                title: string;
+                subTitle: string;
+            };
+            overview: {
+                title: string;
+                subTitle: string;
+            };
+            oidcScopes: {
+                title: string;
+                subTitle: string;
+            };
+            oidcScopesEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            roles: {
+                title: string;
+                subTitle: string;
+                alternateSubTitle: string;
+            };
+            rolesEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            groupsEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            serverConfigurations: {
+                title: string;
+                subTitle: string;
+            };
+            users: {
+                title: string;
+                subTitle: string;
+            };
+            usersEdit: {
+                title: string;
+                subTitle: string;
+                backButton: string;
+            };
+            invite?: {
+                title: string;
+                subTitle: string;
+            };
         };
         placeholders: {
             emptySearchResult: Placeholder;
