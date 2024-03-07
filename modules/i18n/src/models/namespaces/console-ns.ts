@@ -4575,26 +4575,26 @@ export interface ConsoleNS {
                     addLocale: {
                         fields: {
                             bodyEditor: {
-                                label: string | Record<string, unknown>;
+                                label: string ;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             locale: {
-                                label: string | Record<string, unknown>;
+                                label: string ;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             signatureEditor: {
-                                label: string | Record<string, unknown>;
+                                label: string ;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             subject: {
-                                label: string | Record<string, unknown>;
+                                label: string ;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
