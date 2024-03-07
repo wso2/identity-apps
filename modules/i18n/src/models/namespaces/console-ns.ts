@@ -4759,8 +4759,10 @@ export interface ConsoleNS {
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
                      }
                      }
                      ;
