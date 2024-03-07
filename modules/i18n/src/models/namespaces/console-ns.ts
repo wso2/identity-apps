@@ -5615,14 +5615,22 @@ export interface ConsoleNS {
                                 }
                             };
                             roleAudience: {
-                                [key: string]: any;
+                                values:{
+                                    organization:string;
+                                    application:string;
+                                }
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string ;
                             };
                             assignedApplication: {
-                                [key: string]: any;
+                                applicationSubTitle: {
+                                    application:string;
+                                    organization:string;
+                                    changeAudience:string;
+                                };
+                                note:string;
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -5734,8 +5742,9 @@ export interface ConsoleNS {
                         errorPlaceHolder: {
                             action: string;
                             title: string;
-                            subtitles: string | {
-                            [key: number]: string
+                            subtitles:{
+                                0: string;
+                                1:string;
                          }
                          }
                          ;
@@ -5774,16 +5783,17 @@ export interface ConsoleNS {
                             emptyPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
+                                subtitles: {
+                                    0: string
                              }
                              }
                              ;
                             errorPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
+                                subtitles: {
+                                    0: string;
+                                    1: string
                              }
                              }
                              ;
@@ -5838,16 +5848,17 @@ export interface ConsoleNS {
                             emptyPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
+                                subtitles:{
+                                    0: string
                              }
                              }
                              ;
                             errorPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
+                                subtitles: {
+                                    0: string;
+                                    1: string;
                              }
                              }
                              ;
@@ -5874,9 +5885,7 @@ export interface ConsoleNS {
                             emptyPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
-                             }
+                                subtitles: string;
                              }
                              ;
                             user: string;
@@ -5939,16 +5948,19 @@ export interface ConsoleNS {
                         search: {
                             action: string;
                             title: string;
-                            subtitles: string | {
-                            [key: number]: string
+                            subtitles: {
+                                0 : string;
+                                1 : string;
                          }
                          }
                          ;
                         emptyRoleList: {
                             action: string;
                             title: string;
-                            subtitles: string | {
-                            [key: number]: string
+                            subtitles: {
+                                0 : string;
+                                1 : string;
+                                2 : string;
                          }
                          }
                           & {
@@ -5972,10 +5984,10 @@ export interface ConsoleNS {
                 readOnlyList: {
                     emptyPlaceholders: {
                         searchAndFilter: {
-                            action?: string;
                             title: string;
                             subtitles: string | {
-                            [key: number]: string
+                             0: string
+                             1: string
                          }
                          }
                          ;
