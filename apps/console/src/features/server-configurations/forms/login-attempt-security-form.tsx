@@ -22,6 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import toInteger from "lodash-es/toInteger";
+import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, AccordionTitleProps, Divider, Icon, Label, List, Message } from "semantic-ui-react";
@@ -136,6 +137,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<LoginAttemptSecurityFormInitialValuesInterface>(undefined);
@@ -557,25 +559,39 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 {
                     sampleInfoSection()
                 }
-                <Field.Checkbox
-                    ariaLabel="notifyUserOnAccountLockIncrement"
-                    name="notifyUserOnAccountLockIncrement"
-                    label={ t("extensions:manage.serverConfigurations.accountSecurity." +
+
+                { !UIConfig?.governanceConnectors?.["loginAttempts"]
+                    ?.disabledFeatures?.includes("notifyUserOnAccountLockIncrement")
+                    && (
+                        <Field.Checkbox
+                            ariaLabel="notifyUserOnAccountLockIncrement"
+                            name="notifyUserOnAccountLockIncrement"
+                            label={ t("extensions:manage.serverConfigurations.accountSecurity." +
                     "loginAttemptSecurity.form.fields.notifyUserOnAccountLockIncrement.label") }
-                    listen={ (value: boolean) => setNotifyUserOnAccountLockIncrement(value) }
-                    checked={ notifyUserOnAccountLockIncrement }
-                    required={ false }
-                    readOnly={ readOnly }
-                    disabled={ !isConnectorEnabled }
-                    width={ 10 }
-                    data-testid={ `${testId}-notify-user-on-account-lock-time-increase` }
-                />
-                <Hint className={ "mb-5" }>
-                    {
-                        t("extensions:manage.serverConfigurations.accountSecurity." +
+                            listen={ (value: boolean) => setNotifyUserOnAccountLockIncrement(value) }
+                            checked={ notifyUserOnAccountLockIncrement }
+                            required={ false }
+                            readOnly={ readOnly }
+                            disabled={ !isConnectorEnabled }
+                            width={ 10 }
+                            data-testid={ `${testId}-notify-user-on-account-lock-time-increase` }
+                        />
+                    )
+                }
+
+                { !UIConfig?.governanceConnectors?.["loginAttempts"]
+                    ?.disabledFeatures?.includes("notifyUserOnAccountLockIncrement")
+                    && (
+                        <Hint className={ "mb-5" }>
+                            {
+                                t("extensions:manage.serverConfigurations.accountSecurity." +
                             "loginAttemptSecurity.form.fields.notifyUserOnAccountLockIncrement.hint")
-                    }
-                </Hint>
+                            }
+                        </Hint>
+                    )
+                }
+
+
                 <Divider hidden/>
                 <Field.Button
                     form={ FORM_ID }
