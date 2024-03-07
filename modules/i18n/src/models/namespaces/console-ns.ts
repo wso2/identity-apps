@@ -5672,8 +5672,7 @@ export interface ConsoleNS {
                                         message: string;
                                         description: string;
                                     }
-                                }
-                                 ;
+                                };
                             };
                         };
                     };
@@ -5746,8 +5745,7 @@ export interface ConsoleNS {
                                 0: string;
                                 1:string;
                             }
-                        }
-                         ;
+                        };
                     };
                     basics: {
                         buttons: {
@@ -5758,8 +5756,7 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                        }
-                         ;
+                        };
                         dangerZone: {
                             actionTitle: string;
                             header: string;
@@ -5849,8 +5846,7 @@ export interface ConsoleNS {
                                 subtitles:{
                                     0: string
                                 }
-                            }
-                             ;
+                            };
                             errorPlaceholder: {
                                 action: string;
                                 title: string;
@@ -5883,8 +5879,7 @@ export interface ConsoleNS {
                                 action: string;
                                 title: string;
                                 subtitles: string;
-                             }
-                             ;
+                             };
                             user: string;
                             organization: string;
                         };
@@ -5933,8 +5928,7 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                        }
-                        ;
+                        };
                         deleteItemError: {
                             header: string;
                             message: string;
@@ -6001,22 +5995,19 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchRoles: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     fetchRole: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;
