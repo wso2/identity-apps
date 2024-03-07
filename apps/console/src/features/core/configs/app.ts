@@ -117,6 +117,8 @@ export class Config {
             adminApp: window[ "AppUtils" ]?.getConfig()?.adminApp,
             allowMultipleAppProtocols: window[ "AppUtils" ]?.getConfig()?.allowMultipleAppProtocols,
             appBaseName: window[ "AppUtils" ]?.getConfig()?.appBaseWithTenant,
+            isRegionalConsole: window[ "AppUtils" ]?.getConfig()?.isRegionalConsole,
+            centralServerOrigin: window[ "AppUtils" ]?.getConfig()?.centralServerOrigin,
             appBaseNameWithoutTenant: window[ "AppUtils" ]?.getConfig()?.appBase,
             appHomePath: window[ "AppUtils" ]?.getConfig()?.routes?.home,
             appLoginPath: window[ "AppUtils" ]?.getConfig()?.routes?.login,

@@ -73,6 +73,8 @@ export type UseSignInInterface = {
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
+        isPrivilegedUser: boolean,
+        associatedTenants?: string[],
     ) => Promise<void>;
 };
 
@@ -180,16 +182,15 @@ const useSignIn = (): UseSignInInterface => {
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void
+        onAppReady: () => void,
+        isPrivilegedUser: boolean,
+        associatedTenants?: string[]
     ): Promise<void> => {
         let logoutUrl: string;
         let logoutRedirectUrl: string;
 
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const isPrivilegedUser: boolean =
-            idToken?.amr?.length > 0
-                ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                : false;
+
         const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
 
         dispatchEvent(event);
@@ -217,8 +218,10 @@ const useSignIn = (): UseSignInInterface => {
                         response,
                         transformTenantDomain(response.orgName)
                     ), {
-                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                        associatedTenants: associatedTenants !== undefined && associatedTenants.length !== 0
+                            ? associatedTenants : isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                        defaultTenant: associatedTenants !== undefined && associatedTenants.length !== 0
+                        ? tenantDomain : isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
                         fullName: fullName,
                         isPrivilegedUser: isPrivilegedUser
                     })

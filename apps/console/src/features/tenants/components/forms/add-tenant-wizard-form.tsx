@@ -62,6 +62,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
+    deploymentUuid: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";

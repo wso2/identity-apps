@@ -212,7 +212,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         window["AppUtils"].updateOrganizationName("");
                     }
                 },
-                () => null
+                () => null,
+                false
             );
 
             mutateOrganizationBreadCrumbFetchRequest();

@@ -243,6 +243,7 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of the myaccount app.
      */
     accountApp: ExternalAppConfigInterface;
+    centralServerOrigin: string;
     /**
      * Configs of the developer app.
      */
@@ -263,6 +264,7 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    isRegionalConsole? : boolean;
 }
 
 /**

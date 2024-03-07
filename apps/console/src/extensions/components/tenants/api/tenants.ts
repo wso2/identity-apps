@@ -23,11 +23,25 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../../../features/core/store";
 import { getTenantResourceEndpoints } from "../configs";
 import { TenantRequestResponse } from "../models";
+import { EnvironmentRequestResponse } from "../models";
 
 export const getDomainQueryParam = (): string => {
     const tenantDomain: string = store.getState().auth.tenantDomain;
 
     return `?domain=${ tenantDomain }`;
+};
+
+const getUsernameQueryParam = (): string => {
+    // const username: string = store.getState()?.auth?.username;
+    const userId: string = store.getState()?.environment?.loggedInUserId;
+
+    return `&userUUID=${ userId }`;
+};
+
+const getUserIdQueryParam = (): string => {
+    const userId: string = store.getState()?.environment?.loggedInUserId;
+
+    return `&userId=${ userId }`;
 };
 
 const isPrivilegedUser = (): boolean => {
@@ -48,17 +62,21 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @param tenantName - new tenant name
  */
-export const addNewTenant = (tenantName: string): Promise<AxiosResponse> => {
+export const addNewTenant = (tenantName: string, deploymentUUID: string): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
-            domain: tenantName
-        },
+                    "orgName": tenantName,
+                    "defaultEnvName": "prod",
+                    "deploymentUUIDForDefaultEnv": deploymentUUID,
+                    "isDefault": false
+                },
+
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientOrigin,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: getTenantResourceEndpoints().tenantManagementApi + getDomainQueryParam()
+        url: getTenantResourceEndpoints().tenantManagementApi + "/organization" + getDomainQueryParam()
     };
 
     return httpClient(requestConfig)
@@ -104,7 +122,8 @@ export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientOrigin
         },
         method: HttpMethods.HEAD,
-        url: getTenantResourceEndpoints().tenantManagementApi + "/" + tenantName + getDomainQueryParam()
+        url: getTenantResourceEndpoints().tenantManagementApi + "/organization/check-org" + getDomainQueryParam() +
+            "&orgName=" + tenantName + getUsernameQueryParam()
     };
 
     return httpClient(requestConfig)
@@ -121,28 +140,49 @@ export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse
  *
  * @returns - A promise that resolves with the tenant request response object.
  */
-export const getAssociatedTenants = (): Promise<TenantRequestResponse> => {
+export const getAssociatedTenants = (): Promise<EnvironmentRequestResponse []> => {
     const orgType: OrganizationType = store.getState().organization.organizationType;
 
     // If the user is a privileged user or the function is being called inside a suborganization,
     // return an empty response.
     if (isPrivilegedUser() || orgType === OrganizationType.SUBORGANIZATION) {
-        return Promise.resolve({
-            associatedTenants: [],
-            count: 0,
-            startIndex: 0,
-            totalResults: 0
-        });
+        return Promise.resolve([{
+                    orgName: "",
+                    orgUUID: "",
+                    environments: []
+                }]);
     }
 
     const requestConfig: AxiosRequestConfig = {
+        headers: {
+                    "Access-Control-Allow-Origin": store.getState().config.deployment.clientOrigin
+                },
         method: HttpMethods.GET,
-        url: getTenantResourceEndpoints().tenantAssociationApi + getDomainQueryParam()
+        // url: getTenantResourceEndpoints().tenantAssociationApi + getDomainQueryParam()
+        url: getTenantResourceEndpoints().tenantManagementApi + "/user-association/user/me" + getDomainQueryParam() + getUserIdQueryParam()
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response?.data);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Get the deployments associated with the current user.
+ */
+export const getDeployments = (): Promise<AxiosResponse> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        url: getTenantResourceEndpoints().tenantManagementApi + "/deployment" + getDomainQueryParam()
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);

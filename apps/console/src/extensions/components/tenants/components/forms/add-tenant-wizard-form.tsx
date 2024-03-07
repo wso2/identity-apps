@@ -29,14 +29,22 @@ import React, {
     ReactElement,
     SetStateAction,
     useCallback,
+    useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Segment } from "semantic-ui-react";
 import { AppState } from "../../../../../features/core/store";
-import { checkDuplicateTenants } from "../../api";
+import { addNewTenant, checkDuplicateTenants, getDeployments } from "../../api";
 import { TenantManagementConstants } from "../../constants";
+import {
+    ORGANIZATION_DESCRIPTION_MAX_LENGTH,
+    ORGANIZATION_DESCRIPTION_MIN_LENGTH
+} from "../../../../../features/organizations/constants";
+import delay from "lodash-es/delay";
+import {handleTenantSwitch} from "../../utils";
+import {DropdownOptionsInterface} from "../../../../../features/applications/components/settings";
 
 /**
  * Interface to capture add tenant wizard form props.
@@ -62,6 +70,7 @@ export interface AddTenantWizardFormErrorValidationsInterface {
  */
 export interface AddTenantWizardFormValuesInterface {
     tenantName: string;
+    deploymentUUID: string;
 }
 
 const FORM_ID: string = "add-tenant-wizard-form";
@@ -97,6 +106,10 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
     const tenantPrefix: string = useSelector((state: AppState) => {
         return state.config?.deployment?.tenantPrefix as string;
     });
+
+    const [ selectedRegion, setSelectedRegionValue ] = useState<string>();
+    const [ deployments, setDeployments ] = useState<DropdownOptionsInterface[]>();
+    const [ deploymentsLoading, setDeploymentsLoading ] = useState(false);
 
     const { t } = useTranslation();
 
@@ -152,6 +165,30 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
             setIsTenantValid(checkTenantValidity(tenantName));
         }
     };
+
+    const getDeploymentNames = (): void => {
+            const deployments: DropdownOptionsInterface[] = [];
+            getDeployments().then((response: AxiosResponse) => {
+                if (response.status == 200) {
+                    response.data.map((dep) => {
+                        if (dep.isPublic) {
+                            deployments.push({
+                                key: dep.deploymentName,
+                                text: dep.displayName,
+                                value: dep.deploymentUUID
+                            });
+                        }
+                    });
+                }
+            });
+            setDeployments(deployments);
+            setDeploymentsLoading(false);
+            setSelectedRegionValue(deployments.length && deployments[0].value);
+        };
+
+        useEffect(() => {
+            getDeploymentNames();
+        }, []);
 
     /**
      * Validate input data.
@@ -349,6 +386,21 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     width={ 16 }
                     data-testid={ `${ testId }-type-input` }
                 />
+                {!deploymentsLoading && (
+                                    <Field.Dropdown
+                                        ariaLabel="region"
+                                        inputType="default"
+                                        name="deploymentUUID"
+                                        label="Region"
+                                        required={true}
+                                        placeholder="Select a region"
+                                        value={selectedRegion}
+                                        options={deployments}
+                                        data-componentid={`${testId}-region-input`}
+                                        listen={(value: string) => setSelectedRegionValue(value)}
+                                        width={16}
+                                    />
+                                )}
             </Form>
             <Divider className="mt-1" hidden />
             { isCheckingTenantExistence ? (

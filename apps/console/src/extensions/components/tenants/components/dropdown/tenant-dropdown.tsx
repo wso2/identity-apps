@@ -55,7 +55,7 @@ import { OrganizationType } from "../../../../../features/organizations/constant
 import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
-import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
+import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface, EnvironmentInfo, EnvironmentRequestResponse } from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
 
@@ -124,19 +124,27 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     useEffect(() => {
         if (!isPrivilegedUser && saasFeatureStatus !== FeatureStatus.DISABLED) {
             getAssociatedTenants()
-                .then((response: TenantRequestResponse) => {
+                .then((response: EnvironmentRequestResponse []) => {
                     let defaultDomain: string = "";
                     const tenants: string[] = [];
+                    const associatedTenants: TenantInfo[] = [];
 
-                    response.associatedTenants.forEach((tenant: TenantInfo) => {
-                        if (tenant.default) {
-                            defaultDomain = tenant.domain;
+                    response.forEach((environmentRequestResponse: EnvironmentRequestResponse) => {
+                        environmentRequestResponse.environments.forEach((environment: EnvironmentInfo) => {
+                        if (environment.isDefault) {
+                            defaultDomain = environmentRequestResponse.orgName;
                         }
-
-                        tenants.push(tenant.domain);
+                        });
+                        tenants.push(environmentRequestResponse.orgName);
+                        associatedTenants.push({
+                                                    id: environmentRequestResponse.orgUUID,
+                                                    domain: environmentRequestResponse.orgName,
+                                                    default: defaultDomain == environmentRequestResponse.orgName,
+                                                    associationType: "member"
+                                                });
                     });
 
-                    dispatch(setTenants<TenantInfo>(response.associatedTenants));
+                    dispatch(setTenants<TenantInfo>(associatedTenants));
                     setAssociatedTenants(tenants);
                     setDefaultTenant(defaultDomain);
                 })
@@ -383,7 +391,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                         <Dropdown.Menu className="tenant-dropdown-menu" onClick={ handleDropdownClick }>
                             <Item.Group className="current-tenant" unstackable>
                                 <Item
-                                    className={ isSubOrg ? "header sub-org-header" : "header" } 
+                                    className={ isSubOrg ? "header sub-org-header" : "header" }
                                     key={ "current-tenant" }
                                 >
                                     {
@@ -434,7 +442,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                             data-inverted
                                                             data-tooltip={ isCopying
                                                                 ? t("extensions:manage.features.tenant." +
-                                                                    "header.copied") 
+                                                                    "header.copied")
                                                                 : t("extensions:manage.features.tenant." +
                                                                     "header.copyOrganizationId")
                                                             }
@@ -474,7 +482,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     disabled={ true }
                                                 >
                                                     <BuildingCircleCheckIcon fill="black" />
-                                                    { 
+                                                    {
                                                         t("extensions:manage.features.tenant." +
                                                             "header.makeDefaultOrganization")
                                                     }
@@ -490,7 +498,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     disabled={ isSetDefaultTenantInProgress }
                                                 >
                                                     <BuildingCircleCheckIcon fill="black" />
-                                                    { 
+                                                    {
                                                         t("extensions:manage.features.tenant." +
                                                             "header.makeDefaultOrganization")
                                                     }

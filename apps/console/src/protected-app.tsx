@@ -81,12 +81,17 @@ import {
 } from "./features/core";
 import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
+import { setCurrentEnvironment, setLoggedInUserId } from "./features/core/store/actions/environment";
 import useRoutes from "./features/core/hooks/use-routes";
 import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
 import {
     GovernanceCategoryForOrgsInterface,
     useGovernanceConnectorCategories
 } from "./features/server-configurations";
+import {
+    TokenConstants
+} from "@wso2is/core/constants";
+const LOGOUT_URL: string = "sign_out_url-instance_0-CONSOLE";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
@@ -101,7 +106,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const {
         on,
         signIn,
-        state: { isAuthenticated }
+        state: { isAuthenticated },
+        updateConfig,
+        getDecodedIDToken,
+        getIDToken,
+        requestCustomGrant,
     } = useAuthContext();
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -123,7 +132,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
+    const [ tenant, setTenant ] = useState<string>("");
     const {
         data: originalConnectorCategories,
         error: connectorCategoriesFetchRequestError
@@ -158,14 +167,19 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
 
         on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
-            let response: BasicUserInfo = null;
+            let response: BasicUserInfo = { ...signInResponse };
 
+            const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
+            const isPrivilegedUser: boolean =
+                idToken?.amr?.length > 0
+                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
+                    : false;
             const getOrganizationName = () => {
                 const path: string = SessionStorageUtils.getItemFromSessionStorage("auth_callback_url_console")
                     ?? window.location.pathname;
                 const pathChunks: string[] = path.split("/");
 
-                const orgPrefixIndex: number = pathChunks.indexOf(Config.getDeploymentConfig().organizationPrefix);
+                const orgPrefixIndex: number = pathChunks.indexOf(window["AppUtils"].getConfig().organizationPrefix);
 
                 if (orgPrefixIndex !== -1) {
                     return pathChunks[ orgPrefixIndex + 1 ];
@@ -173,20 +187,48 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
                 return "";
             };
-
+            let associatedTenants = []
+            if (response?.orgUserAssociations) {
+                associatedTenants = JSON.parse(response?.orgUserAssociations)?.map((association) => association?.orgName);
+            }
             try {
-                // The organization switch is not needed for organization users who directly SSO to the organization.
-                if (getOrganizationName() && signInResponse.userOrg != signInResponse.orgId) {
-                    response = await switchOrganization(getOrganizationName());
-                } else {
-                    response = { ...signInResponse };
+                response = { ...signInResponse };
+                dispatch(setLoggedInUserId(idToken?.userid));
+                console.log("logged in user id...", idToken?.userid)
+                let switchingTenant: string = ""
+                if (Config.getDeploymentConfig().isRegionalConsole) {
+                    console.log("regional switch")
+                    response = await switchRegionalConsole(response?.orgUserAssociations);
+                    switchingTenant  = CommonAuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+                    console.log("regional response", response)
                 }
-
+                console.log("switching tenant", switchingTenant)
+                if (getOrganizationName()) {
+                    await updateConfig(
+                        {
+                            endpoints: {
+                                authorizationEndpoint: Config.getDeploymentConfig().serverOrigin + "/t/" + switchingTenant + "/oauth2/authorize",
+                                checkSessionIframe: Config.getDeploymentConfig().serverOrigin + "/t/" + switchingTenant + "/oidc/checksession",
+                                tokenEndpoint: Config.getDeploymentConfig().serverOrigin + "/t/" + switchingTenant + "/oauth2/token",
+                                jwksUri: Config.getDeploymentConfig().serverOrigin + "/t/" + switchingTenant + "/oauth2/jwks",
+                                issuer: Config.getDeploymentConfig().serverOrigin + "/t/" + switchingTenant + "/oauth2/token",
+                                // issuer: "https://api.eu.asg.io/o/ee9bf9e5-f446-4d5b-b9c0-41d9fcb8d890/oauth2/token",
+                                endSessionEndpoint: Config.getDeploymentConfig().centralServerOrigin + "/t/a" + "/oidc/logout"
+                            },
+                            resourceServerURLs: [Config.getDeploymentConfig().serverOrigin]
+                        }
+                    );
+                    response = await switchOrganization(getOrganizationName());
+                    console.log("switching org response...", response)
+                }
+                console.log("found the response after the switch", response)
                 await onSignIn(
                     response,
                     () => null,
-                    (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
-                    () => setRenderApp(true)
+                    (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken, isPrivilegedUser),
+                    () => setRenderApp(true),
+                    isPrivilegedUser,
+                    associatedTenants
                 );
             } catch(e) {
                 // TODO: Handle error
@@ -204,7 +246,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         setGovernanceConnectors(originalConnectorCategories);
     }, [ originalConnectorCategories ]);
 
-    const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
+    const loginSuccessRedirect = (idToken: DecodedIDTokenPayload, isPrivilegedUser: boolean): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
         );
@@ -214,17 +256,17 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
          */
         if (commonConfig?.enableOrganizationAssociations) {
 
-            const isPrivilegedUser: boolean =
-                idToken?.amr?.length > 0
-                    ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
-                    : false;
-
             let isOrgSwitch: boolean = false;
 
             if (has(idToken, "org_id") && has(idToken, "user_org")) {
                 isOrgSwitch = (idToken?.org_id !== idToken?.user_org);
             }
-            if (has(idToken, "associated_tenants") || isPrivilegedUser || isOrgSwitch) {
+            let isRegionalSwitch: boolean = false;
+            isRegionalSwitch = idToken?.amr?.length > 0
+                ? idToken?.amr[0] === "region_switch"
+                : false;
+
+            if (has(idToken, "associated_tenants") || isPrivilegedUser || isOrgSwitch || isRegionalSwitch) {
                 // If there is an association, the user should be redirected to console landing page.
                 const location: string =
                     !AuthenticationCallbackUrl ||
@@ -243,14 +285,14 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         : AuthenticationCallbackUrl;
 
                 history.push(location);
-            } else {
-                // If there is no assocation, the user should be redirected to creation flow.
-                history.push({
-                    pathname: AppConstants.getPaths().get(
-                        "CREATE_TENANT"
-                    )
-                });
-            }
+            } // else {
+            //     // If there is no assocation, the user should be redirected to creation flow.
+            //     history.push({
+            //         pathname: AppConstants.getPaths().get(
+            //             "CREATE_TENANT"
+            //         )
+            //     });
+            // }
         } else {
             const location: string =
                 !AuthenticationCallbackUrl ||
@@ -269,6 +311,114 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             history.push(location);
         }
+    };
+
+    const switchRegionalConsole = async (orgUserAssociations: string):  Promise<BasicUserInfo> => {
+        const idTokenTemp: DecodedIDTokenPayload = await getDecodedIDToken();
+        const unDecodedIdToken: string = await getIDToken();
+        const isPrivilegedUser: boolean =
+            idTokenTemp?.amr?.length > 0
+                ? idTokenTemp?.amr[0] === "EnterpriseIDPAuthenticator"
+                : false;
+
+
+
+        let envid: string;
+        if (isPrivilegedUser) {
+            envid = JSON.parse(idTokenTemp?.login_environment)?.envUUID
+            dispatch(setCurrentEnvironment(JSON.parse(idTokenTemp?.login_environment)));
+        } else {
+            envid = JSON.parse(idTokenTemp?.org_user_associations)[0]?.environments?.[0]?.envUUID;
+        }
+        let tenantDomainName: string = "";
+        let b2bOrgId : string = "";
+        // Ge th the tenant domain name from the session storage.
+        if (sessionStorage.getItem("user_tenant")) {
+            tenantDomainName = sessionStorage.getItem("user_tenant");
+        }
+        if (!isPrivilegedUser) {
+            const associations: string = orgUserAssociations;
+            const orgData = JSON.parse(associations);
+            if (tenantDomainName != null && tenantDomainName !== "") {
+                for (const org of orgData) {
+                    const orgName: string = org.orgName;
+
+                    if (orgName == tenantDomainName) {
+                        for (const env of org.environments) {
+                            // ATM we only need to consider the prod env switch.
+                            // we need to improve this with env switcher.
+                            if (env.envName === "prod") {
+                                envid = env.envUUID;
+                                b2bOrgId = env.b2bOrgUUID;
+                                dispatch(setCurrentEnvironment(env));
+                            }
+                        }
+                    }
+                }
+            } else {
+                for (const org of orgData) {
+                    for (const env of org.environments) {
+                        if (env.isDefault) {
+                            envid = env.envUUID;
+                            dispatch(setCurrentEnvironment(env));
+                            tenantDomainName = org.orgName;
+                            b2bOrgId = env.b2bOrgUUID;
+                            break;
+                        }
+                    }
+                }
+
+            }
+            sessionStorage.setItem("associations", associations);
+        } else {
+            sessionStorage.setItem("associations", "[]");
+        }
+        let response: BasicUserInfo = null;
+        await updateConfig(
+            {
+                endpoints: {
+                    authorizationEndpoint: Config.getDeploymentConfig().serverOrigin + "/t/" + tenantDomainName + "/oauth2/authorize",
+                    checkSessionIframe: Config.getDeploymentConfig().serverOrigin + "/t/" + tenantDomainName + "/oidc/checksession",
+                    tokenEndpoint: Config.getDeploymentConfig().serverOrigin + "/t/" + tenantDomainName + "/oauth2/token",
+                    jwksUri: Config.getDeploymentConfig().serverOrigin + "/t/" + tenantDomainName + "/oauth2/jwks",
+                    issuer: Config.getDeploymentConfig().serverOrigin + "/o/" + b2bOrgId + "/oauth2/token",
+                    // issuer: "https://api.eu.asg.io/o/ee9bf9e5-f446-4d5b-b9c0-41d9fcb8d890/oauth2/token",
+                    endSessionEndpoint: Config.getDeploymentConfig().centralServerOrigin + "/t/a" + "/oidc/logout"
+                },
+                resourceServerURLs: [Config.getDeploymentConfig().serverOrigin]
+            }
+        );
+        await requestCustomGrant(
+            {
+                attachToken: false,
+                data: {
+                    client_id: "CONSOLE",
+                    grant_type: "region_switch",
+                    scope:
+                        window["AppUtils"]
+                            .getConfig()
+                            .idpConfigs?.scope.join(" ") ??
+                        TokenConstants.SYSTEM_SCOPE,
+                    environment_id: envid,
+                    token: "{{token}}",
+                    idToken: unDecodedIdToken
+                },
+                id: "regionalSwitch",
+                returnsSession: true,
+                signInRequired: true
+            },
+            async (grantResponse: BasicUserInfo) => {
+
+                response = { ...grantResponse };
+                const tenantDomain1: string =
+                    CommonAuthenticateUtils.deriveTenantDomainFromSubject(grantResponse.sub);
+                console.log("setting the tenant..", tenantDomain1)
+                setTenant(tenantDomain1);
+
+                console.log("dispatched tenant domain..", tenant)
+            }
+        );
+        return response;
     };
 
     useEffect(() => {

@@ -231,6 +231,27 @@ export const AppUtils: any = (function() {
         },
 
         /**
+                 * Get the central config object.
+                 *
+                 * @returns Central Deployment Configuration.
+                 */
+                getCentralConfig: function() {
+
+                    return {
+                        centralServerOrigin: _config.centralServerOrigin,
+                        serverOriginWithTenant: _config.centralServerOrigin + this.getTenantPath(true),
+                        clientID: (this.isSaas() || this.isSuperTenant())
+                            ? _config.clientID
+                            : _config.clientID + "_" + this.getTenantName(),
+                        idpConfigs: this.resolveIdpConfigs(_config.centralServerOrigin),
+                        session: _config.session,
+                        loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
+                        logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
+                        serverOrigin: _config.centralServerOrigin
+                    }
+                },
+
+        /**
          * Get the config object.
          *
          * @returns Deployment Configuration.
@@ -297,6 +318,7 @@ export const AppUtils: any = (function() {
                 getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
+                isRegionalConsole: _config.isRegionalConsole,
                 legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
@@ -311,6 +333,7 @@ export const AppUtils: any = (function() {
                     logout: this.constructAppPaths(_config.routePaths.logout)
                 },
                 serverOrigin: _config.serverOrigin,
+                centralServerOrigin: _config.centralServerOrigin,
                 serverOriginWithTenant: this.getServerOriginWithTenant(),
                 session: _config.session,
                 superTenant: this.getSuperTenant(),
@@ -617,13 +640,13 @@ export const AppUtils: any = (function() {
          *
          * @returns Resolved IDP configs.
          */
-        resolveIdpConfigs: function() {
+        resolveIdpConfigs: function(paramserverOrigin: string) {
             return {
                 serverOrigin: this.isSaas()
-                    ? _config.serverOrigin
-                    : _config.serverOrigin + this.getTenantPath(true),
+                    ? paramserverOrigin
+                    : paramserverOrigin + this.getTenantPath(true),
                 ..._config.idpConfigs,
-                ...this.resolveURLs()
+                ...this.resolveURLs(paramserverOrigin)
             };
         },
 
@@ -634,20 +657,20 @@ export const AppUtils: any = (function() {
          *
          * @returns Resolved URLs.
          */
-        resolveURLs: function() {
-            const getReplaceServerOrigin = () => {
+        resolveURLs: function(serverOrigin: string) {
+            const getReplaceServerOrigin = (serverOrigin: string) => {
                 if (_config.legacyAuthzRuntime) {
-                    return _config.serverOrigin;
+                    return serverOrigin;
                 }
 
-                return _config.serverOrigin + this.getTenantPath(true);
+                return serverOrigin + this.getTenantPath(true);
             };
 
             return {
                 authorizeEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.authorizeEndpointURL
                         && _config.idpConfigs.authorizeEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -659,7 +682,7 @@ export const AppUtils: any = (function() {
                 jwksEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.jwksEndpointURL
                         && _config.idpConfigs.jwksEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -668,7 +691,7 @@ export const AppUtils: any = (function() {
                 logoutEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.logoutEndpointURL
                         && _config.idpConfigs.logoutEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -677,7 +700,7 @@ export const AppUtils: any = (function() {
                 oidcSessionIFrameEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.oidcSessionIFrameEndpointURL
                         && _config.idpConfigs.oidcSessionIFrameEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -686,7 +709,7 @@ export const AppUtils: any = (function() {
                 tokenEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.tokenEndpointURL
                         && _config.idpConfigs.tokenEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -695,7 +718,7 @@ export const AppUtils: any = (function() {
                 tokenRevocationEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.tokenRevocationEndpointURL
                         && _config.idpConfigs.tokenRevocationEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
@@ -704,7 +727,7 @@ export const AppUtils: any = (function() {
                 wellKnownEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.wellKnownEndpointURL
                         && _config.idpConfigs.wellKnownEndpointURL
-                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin(serverOrigin))
                             .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
                             .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()

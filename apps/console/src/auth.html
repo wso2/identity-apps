@@ -161,9 +161,22 @@
                     ? userAccessedPath.split("utype=")[1]
                     : null;
 
-                const urlParams = new URLSearchParams(window.location.search);
+                if (userTenant) {
+                   sessionStorage.setItem("user_tenant", userTenant);
+                }
 
+                const urlParams = new URLSearchParams(window.location.search);
+                var isPrivilegedUser = false;
+                var tenantReplacement = "a";
                 var serverOrigin = startupConfig.serverUrl;
+                if (userTenant) {
+                    isPrivilegedUser = true;
+                    serverOrigin = startupConfig.serverUrl;
+                    tenantReplacement = userTenant;
+                } else {
+                    isPrivilegedUser = false;
+                    serverOrigin = "https://api.eu.asg.io";
+                }
                 var authorizationCode = urlParams.get("code");
                 var authSessionState = urlParams.get("session_state");
 
@@ -213,7 +226,7 @@
 
                     var basePath = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
                     var baseRedirectURL = "<%= htmlWebpackPlugin.options.basename%>" ? basePath + '/' + "<%= htmlWebpackPlugin.options.basename%>" : basePath;
-
+                    var loginTenant = userTenant.replace(/\/+$/, "");
                     var authConfig = {
                         signInRedirectURL: baseRedirectURL,
                         signOutRedirectURL: baseRedirectURL,
@@ -227,20 +240,24 @@
                         endpoints: {
                             authorizationEndpoint: getApiPath(
                                 userTenant
-                                    ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut=" +
+                                    ? "/" + startupConfig.tenantPrefix + "/" + loginTenant + startupConfig.pathExtension + "/oauth2/authorize" + "?ut=" +
                                         userTenant.replace(/\/+$/, "") +
                                         (utype ? "&utype=" + utype : "")
-                                    : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"
+                                    : "/" + startupConfig.tenantPrefix + "/" + loginTenant + startupConfig.pathExtension + "/oauth2/authorize"
                             ),
                             clockTolerance: 300,
-                            jwksEndpointURL: undefined,
+                            jwksEndpointURL: getApiPath(
+                                "/" + startupConfig.tenantPrefix + "/" + loginTenant + startupConfig.pathExtension + "/oauth2/jwks"
+                            ),
                             logoutEndpointURL: getApiPath(
-                                "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"
+                                "/" + startupConfig.tenantPrefix + "/" + loginTenant + startupConfig.pathExtension + "/oidc/logout"
                             ),
                             oidcSessionIFrameEndpointURL: getApiPath(
-                                "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"
+                                "/" + startupConfig.tenantPrefix + "/" + loginTenant + startupConfig.pathExtension + "/oidc/checksession"
                             ),
-                            tokenEndpointURL: undefined,
+                            tokenEndpointURL: getApiPath(
+                                "/" + startupConfig.tenantPrefix + "/" + loginTenant + startupConfig.pathExtension + "/oauth2/token"
+                            ),
                             tokenRevocationEndpointURL: undefined
                         },
                         enablePKCE: true

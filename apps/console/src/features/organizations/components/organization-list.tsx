@@ -298,7 +298,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
         try {
             response = await switchOrganization(organization.id);
-            await onSignIn(response, () => null, () => null, () => null);
+            await onSignIn(response, () => null, () => null, () => null, false);
 
             onListMutate();
             mutateOrganizationBreadCrumbFetchRequest();

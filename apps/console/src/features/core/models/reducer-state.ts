@@ -36,6 +36,7 @@ import { PortalDocumentationStructureInterface } from "./help-panel";
 import { AppViewTypes } from "./ui";
 import { OrganizationType } from "../../organizations/constants";
 import { OrganizationResponseInterface } from "../../organizations/models";
+import {EnvironmentInfo} from "../../../extensions/components/tenants/models";
 
 /**
  * Portal config reducer state interface.
@@ -76,7 +77,7 @@ export interface AccessControlReducerStateInterface {
 /**
  * Organization Reducer State Interface.
  */
-export interface OrganizationReducerStateInterface { 
+export interface OrganizationReducerStateInterface {
     superAdmin: string;
     currentOrganization: string;
     organization?: OrganizationResponseInterface;
@@ -84,6 +85,11 @@ export interface OrganizationReducerStateInterface {
     isFirstLevelOrganization: boolean;
     organizationType: OrganizationType;
     userOrganizationId: string;
+}
+
+export interface EnvironmentReducerStateInterface {
+    currentEnvironment: EnvironmentInfo;
+    loggedInUserId?: string;
 }
 
 export interface RoutesReducerStateInterface {

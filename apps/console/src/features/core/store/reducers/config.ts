@@ -54,6 +54,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appHomePath: "",
             appLoginPath: "",
             appLogoutPath: "",
+            centralServerOrigin: "",
             clientHost: "",
             clientID: "",
             clientOrigin: "",

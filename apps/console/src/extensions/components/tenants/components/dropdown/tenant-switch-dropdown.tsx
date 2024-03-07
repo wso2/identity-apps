@@ -34,7 +34,7 @@ import { OrganizationManagementConstants } from "../../../../../features/organiz
 import { OrganizationInterface } from "../../../../../features/organizations/models";
 import { ReactComponent as CrossIcon } from "../../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { getAssociatedTenants } from "../../api";
-import { TenantInfo, TenantRequestResponse } from "../../models";
+import { TenantInfo, TenantRequestResponse, EnvironmentInfo, EnvironmentRequestResponse } from "../../models";
 import { AddTenantWizard } from "../add-modal";
 
 /**
@@ -74,23 +74,33 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
     const getOrganizationList:  () => Promise<void> = useCallback(async () => {
         setIsOrganizationsLoading(true);
         getAssociatedTenants()
-            .then((response: TenantRequestResponse) => {
+            .then((response: EnvironmentRequestResponse []) => {
                 const tenants: OrganizationInterface[] = [];
+                let defaultDomain: string = "";
+                const associatedTenants: TenantInfo[] = [];
 
-                response.associatedTenants.forEach((tenant: TenantInfo) => {
-                    if (window[ "AppUtils" ].getConfig().tenant === tenant.domain) {
-                        return;
-                    }
+                response.forEach((environmentRequestResponse: EnvironmentRequestResponse) => {
+                    environmentRequestResponse.environments.forEach((environment: EnvironmentInfo) => {
+                    if (environment.isDefault) {
+                                                defaultDomain = environmentRequestResponse.orgName;
+                                            }
+                    });
 
                     tenants.push({
-                        id: tenant.id,
-                        name: tenant.domain,
-                        ref: tenant.id,
-                        status: "ACTIVE"
+                        id: environmentRequestResponse.orgUUID,
+                                                name: environmentRequestResponse.orgName,
+                                                ref: environmentRequestResponse.orgUUID,
+                                                status: "ACTIVE"
+                    });
+                    associatedTenants.push({
+                                            id: environmentRequestResponse.orgUUID,
+                                            domain: environmentRequestResponse.orgName,
+                                            default: defaultDomain == environmentRequestResponse.orgName,
+                                            associationType: "Member"
                     });
                 });
 
-                dispatch(setTenants<TenantInfo>(response.associatedTenants));
+                dispatch(setTenants<TenantInfo>(associatedTenants));
                 setAssociatedOrganizations(tenants);
                 setFilteredOrganizations(tenants);
             })

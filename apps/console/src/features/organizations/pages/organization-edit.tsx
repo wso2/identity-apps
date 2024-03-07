@@ -199,8 +199,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
         try {
             response = await switchOrganization(organization.id);
-            await onSignIn(response, () => null, () => null, () => null);
-            await mutateOrganizationBreadCrumbFetchRequest();
+            await onSignIn(response, () => null, () => null, () => null, false);
+            //await mutateOrganizationBreadCrumbFetchRequest();
 
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {

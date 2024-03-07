@@ -68,14 +68,14 @@ const RootWithConfig = (): ReactElement => {
     const [ ready, setReady ] = React.useState(false);
 
     React.useEffect(() => {
-        if (AuthenticateUtils.getInitializeConfig()?.baseUrl) {
+        if (Config.getDeploymentConfig().isRegionalConsole? AuthenticateUtils.getInitializeCentralConfig()?.baseUrl : AuthenticateUtils.getInitializeConfig()?.baseUrl) {
             setReady(true);
 
             return;
         }
 
         setReady(false);
-    }, [ AuthenticateUtils.getInitializeConfig()?.baseUrl ]);
+    }, [ Config.getDeploymentConfig().isRegionalConsole? AuthenticateUtils.getInitializeCentralConfig()?.baseUrl : AuthenticateUtils.getInitializeConfig()?.baseUrl ]);
 
     if (!ready) {
         return <PreLoader />;
@@ -88,7 +88,7 @@ const RootWithConfig = (): ReactElement => {
                     <UserPreferencesProvider<UserPreferencesInterface>>
                         <BrowserRouter>
                             <AuthProvider
-                                config={ AuthenticateUtils.getInitializeConfig() }
+                                config={ Config.getDeploymentConfig().isRegionalConsole? AuthenticateUtils.getInitializeCentralConfig() : AuthenticateUtils.getInitializeConfig() }
                                 fallback={ <PreLoader /> }
                                 getAuthParams={ getAuthParams }
                             >
