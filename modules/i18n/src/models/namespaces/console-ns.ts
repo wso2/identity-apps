@@ -5890,10 +5890,66 @@ export interface ConsoleNS {
                         heading: string;
                     };
                     notifications: {
-                        disbleAdminAdvisoryBanner: Notification;
-                        enableAdminAdvisoryBanner: Notification;
-                        getConfigurations: Notification;
-                        updateConfigurations: Notification;
+                        disbleAdminAdvisoryBanner: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                         }
+                         }
+                         ;
+                        enableAdminAdvisoryBanner: {
+                            error: {
+                                message: string;
+                                description: string;
+                             }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                             }
+                         }
+                         ;
+                        getConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                             }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                             }
+                         }
+                         ;
+                        updateConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                             }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                             }
+                         }
+                         ;
                     };
                     pageHeading: string;
                     pageSubheading: string;
@@ -5992,14 +6048,66 @@ export interface ConsoleNS {
                         message: string;
                     };
                     notifications: {
-                        getConfigurations: Notification;
-                        updateConfigurations: Notification;
-                        emptyHomeRealmIdentifiers: Notification;
+                        getConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                             }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                             }
+                         }
+                         ;
+                        updateConfigurations: {
+                            error: {
+                                message: string;
+                                description: string;
+                             }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                             }
+                         }
+                         ;
+                        emptyHomeRealmIdentifiers: {
+                            error: {
+                                message: string;
+                                description: string;
+                             }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                             }
+                         }
+                         ;
                     };
                     form: {
-                        homeRealmIdentifiers: FormAttributes;
-                        idleSessionTimeoutPeriod: FormAttributes;
-                        rememberMePeriod: FormAttributes;
+                        homeRealmIdentifiers: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                            placeholder: string;
+                        };
+                        idleSessionTimeoutPeriod: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                        };
+                        rememberMePeriod: {
+                            hint: string;
+                            label: string | Record<string, unknown>;
+                        };
                     };
                 };
             };
