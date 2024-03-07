@@ -6745,12 +6745,32 @@ export interface ConsoleNS {
                 };
                 invitedUserLabel: string;
             };
-            onboarded?: {
-                notifications?: {
-                    removeUser?: Notification;
+            onboarded: {
+                notifications: {
+                    removeUser: {
+                        error: {
+                        message: string;
+                        description: string;
+                     }
+                        genericError: {
+                        message: string;
+                        description: string;
+                     }
+                        success: {
+                        message: string;
+                        description: string;
+                     }
+                     }
+                     ;
                 };
-                confirmationModal?: {
-                    removeUser?: Confirmation;
+                confirmationModal: {
+                    removeUser: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     }
+                     ;
                 };
             };
             validation: {
