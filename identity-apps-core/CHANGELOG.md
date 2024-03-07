@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.37
+
+### Patch Changes
+
+- [#5658](https://github.com/wso2/identity-apps/pull/5658) [`68b3389feb`](https://github.com/wso2/identity-apps/commit/68b3389feb98cdeab12ee658c2572a51efa2d400) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the logic to display the login idenfier input label
+
 ## 2.1.36
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.53
+
+### Patch Changes
+
+- [#5625](https://github.com/wso2/identity-apps/pull/5625) [`0c18f7ca5e`](https://github.com/wso2/identity-apps/commit/0c18f7ca5ecca78a7c4f081fb1f04777e7e11ac0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change outbound provisioning route id
+
 ## 2.12.52
 
 ### Patch Changes
