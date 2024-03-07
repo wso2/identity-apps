@@ -3944,9 +3944,7 @@ export interface ConsoleNS {
                         undefinedUser: {
                             action: string;
                             title: string;
-                            subtitles: string | {
-                            [key: number]: string
-                         }
+                            subtitles: string
                          }
                          ;
                     };
@@ -4039,9 +4037,7 @@ export interface ConsoleNS {
                     placeholders: {
                         emptyListPlaceholder: {
                             title: string;
-                            subtitles: string | {
-                            [key: number]: string
-                         }
+                            subtitles: string
                          }
                          ;
                     };
@@ -4187,7 +4183,6 @@ export interface ConsoleNS {
                         timeOut: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     }
                     deleteUser: {
@@ -4255,15 +4250,17 @@ export interface ConsoleNS {
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles:  {
+                            0: string,
+                            1: string,
                      }
                      }
                      ;
                     userstoreError: {
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles:  {
+                            0: string,
+                            1: string,
                      }
                      }
                      ;
