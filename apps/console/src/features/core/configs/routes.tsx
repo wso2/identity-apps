@@ -1691,7 +1691,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 icon: {
                     icon: getSidePanelIcons().childIcon
                 },
-                id: "outboundProvisioningSettings",
+                id: "residentOutboundProvisioning",
                 name: "console:develop.features.applications.resident.provisioning.outbound.heading",
                 order: 6,
                 path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
