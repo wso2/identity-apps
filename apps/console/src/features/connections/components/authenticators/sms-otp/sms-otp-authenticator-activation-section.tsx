@@ -165,7 +165,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
                     : t("extensions:develop.identityProviders.smsOTP.settings.smsOtpEnableDisableToggle.labelDisable"))
                 }
                 data-componentid="sms-otp-enable-toggle"
-                checked={ isEnableSMSOTP }
+                checked={ isChoreoSMSOTPProvider && isEnableSMSOTP }
                 onChange={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
                     handleUpdateSMSPublisher(event, data);
                 } }
