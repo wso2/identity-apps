@@ -7152,8 +7152,22 @@ export interface ConsoleNS {
             };
         };
         notifications: {
-            updateConfiguration: Notification;
-            getConfiguration: Notification;
+            updateConfiguration: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            getConfiguration: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
     };
 }
