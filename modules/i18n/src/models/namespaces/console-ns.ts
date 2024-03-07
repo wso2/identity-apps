@@ -1742,30 +1742,30 @@ export interface ConsoleNS {
                     advancedConfigs?: {
                         federationHub: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                         homeRealmIdentifier: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         alias: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         certificateType: {
                             label: string;
                             hint: string;
                             certificatePEM: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             certificateJWKS: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -1817,7 +1817,7 @@ export interface ConsoleNS {
                         apple: {
                             additionalQueryParameters: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1825,7 +1825,7 @@ export interface ConsoleNS {
                             };
                             callbackUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1833,7 +1833,7 @@ export interface ConsoleNS {
                             };
                             clientId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1841,7 +1841,7 @@ export interface ConsoleNS {
                             };
                             keyId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1849,7 +1849,7 @@ export interface ConsoleNS {
                             };
                             privateKey: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
 
                                 validations: {
@@ -1858,7 +1858,7 @@ export interface ConsoleNS {
                             };
                             secretValidityPeriod: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1878,7 +1878,7 @@ export interface ConsoleNS {
                             };
                             teamId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1990,7 +1990,7 @@ export interface ConsoleNS {
                         facebook: {
                             callbackUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -1998,7 +1998,7 @@ export interface ConsoleNS {
                             };
                             clientId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2006,7 +2006,7 @@ export interface ConsoleNS {
                             };
                             clientSecret: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2059,7 +2059,7 @@ export interface ConsoleNS {
                         github: {
                             callbackUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2067,7 +2067,7 @@ export interface ConsoleNS {
                             };
                             clientId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
 
                                 validations: {
@@ -2076,7 +2076,7 @@ export interface ConsoleNS {
                             };
                             clientSecret: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2098,7 +2098,7 @@ export interface ConsoleNS {
                         google: {
                             callbackUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2106,7 +2106,7 @@ export interface ConsoleNS {
                             };
                             clientId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2114,7 +2114,7 @@ export interface ConsoleNS {
                             };
                             clientSecret: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2122,12 +2122,12 @@ export interface ConsoleNS {
                             };
                             enableGoogleOneTap: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                             };
                             AdditionalQueryParameters: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                                 validations: {
@@ -2153,7 +2153,7 @@ export interface ConsoleNS {
                         microsoft: {
                             callbackUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2161,7 +2161,7 @@ export interface ConsoleNS {
                             };
                             clientId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2169,7 +2169,7 @@ export interface ConsoleNS {
                             };
                             clientSecret: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2177,7 +2177,7 @@ export interface ConsoleNS {
                             };
                             commonAuthQueryParams: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                                 validations: {
@@ -2206,7 +2206,7 @@ export interface ConsoleNS {
                         hypr: {
                             appId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
 
                                 validations: {
@@ -2215,7 +2215,7 @@ export interface ConsoleNS {
                             };
                             apiToken: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2223,7 +2223,7 @@ export interface ConsoleNS {
                             };
                             baseUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     required: string;
@@ -2233,164 +2233,164 @@ export interface ConsoleNS {
                         saml: {
                             AuthRedirectUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             SPEntityId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             SSOUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             IdPEntityId: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             NameIDType: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             RequestMethod: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             IsSLORequestAccepted: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             IsLogoutEnabled: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
 
                                 ariaLabel: string;
                             };
                             LogoutReqUrl: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             IsAuthnRespSigned: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
 
                                 ariaLabel: string;
                             };
                             IsLogoutReqSigned: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             ISAuthnReqSigned: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             SignatureAlgorithm: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             DigestAlgorithm: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             IncludeProtocolBinding: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
 
                                 ariaLabel: string;
                             };
                             IsUserIdInClaims: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             commonAuthQueryParams: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
 
                             isAssertionSigned: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             includeCert: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             includeNameIDPolicy: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             isEnableAssertionEncryption: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
 
                             authenticationContextClass: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             customAuthenticationContextClass: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
                             attributeConsumingServiceIndex: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
 
                             isArtifactBindingEnabled: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             artifactResolveEndpointUrl: {
                                 placeholder: string;
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             isArtifactResolveReqSigned: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             isArtifactResponseSigned: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 ariaLabel: string;
                             };
                             authContextComparisonLevel: {
                                 hint: string;
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                             };
@@ -2416,7 +2416,7 @@ export interface ConsoleNS {
                     generalDetails?: {
                         name: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
@@ -2427,35 +2427,35 @@ export interface ConsoleNS {
                         };
                         issuer: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         alias: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         description: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         image: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                     };
                     jitProvisioning?: {
                         enableJITProvisioning: {
-                            [key: string]: any;
-
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
+                            disabledMessageContent: string;
+                            disabledMessageHeader: string;
                         };
                         provisioningUserStoreDomain: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                         provisioningScheme: {
                             hint: string;
@@ -2469,7 +2469,7 @@ export interface ConsoleNS {
                         };
                         associateLocalUser: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                     };
                     roleMapping?: {
@@ -2527,10 +2527,16 @@ export interface ConsoleNS {
                 };
                 helpPanel?: {
                     tabs: {
-                        [key: string]: {
-                            content: any;
+                        samples: {
+                            content: {
+                                docs: {
+                                    goBack: string;
+                                    hint: string;
+                                    title: string;
+                                }
+                            },
                             heading: string;
-                        };
+                        }
                     };
                 };
                 templates: {
@@ -3399,35 +3405,33 @@ export interface ConsoleNS {
                 placeHolders?: {
                     emptyCertificateList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     emptyIDPList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyIDPSearchResults: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     emptyAuthenticatorList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyConnectionTypeList: {
                         subtitles: {
@@ -3438,19 +3442,16 @@ export interface ConsoleNS {
                     };
                     emptyConnectorList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     noAttributes: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                        };
                     };
                 };
                 wizards?: {
