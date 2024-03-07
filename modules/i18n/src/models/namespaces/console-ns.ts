@@ -6631,7 +6631,7 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
-            invite: {
+            invite?: {
                 inviteButton: string;
                 subSelection: {
                     onBoard: string;
