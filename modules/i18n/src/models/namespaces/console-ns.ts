@@ -2579,11 +2579,7 @@ export interface ConsoleNS {
                         emptyPlaceholder: {
                             action: string;
                             title: string;
-                            subtitles:
-                                | string
-                                | {
-                                      [key: number]: string;
-                                  };
+                            subtitles: string;
                         };
                         heading: string;
                     };
@@ -2591,11 +2587,7 @@ export interface ConsoleNS {
                         emptyPlaceholder: {
                             action: string;
                             title: string;
-                            subtitles:
-                                | string
-                                | {
-                                      [key: number]: string;
-                                  };
+                            subtitles: string;
                         };
                         heading: string;
                     };
