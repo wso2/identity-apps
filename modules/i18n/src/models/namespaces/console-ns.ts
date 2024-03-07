@@ -4721,9 +4721,7 @@ export interface ConsoleNS {
                         placeHolders: {
                             emptyListPlaceholder: {
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
-                             }
+                                subtitles: string;
                              }
                              ;
                         };
@@ -4810,9 +4808,7 @@ export interface ConsoleNS {
                 placeholders: {
                     groupsError: {
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
+                        subtitles: string [];
                      }
                      ;
                 };
