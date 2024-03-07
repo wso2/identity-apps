@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import toInteger from "lodash-es/toInteger";
-import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, AccordionTitleProps, Divider, Icon, Label, List, Message } from "semantic-ui-react";
@@ -559,7 +559,6 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 {
                     sampleInfoSection()
                 }
-
                 { !UIConfig?.governanceConnectors?.["loginAttempts"]
                     ?.disabledFeatures?.includes("notifyUserOnAccountLockIncrement")
                     && (
@@ -578,7 +577,6 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         />
                     )
                 }
-
                 { !UIConfig?.governanceConnectors?.["loginAttempts"]
                     ?.disabledFeatures?.includes("notifyUserOnAccountLockIncrement")
                     && (
@@ -590,8 +588,6 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         </Hint>
                     )
                 }
-
-
                 <Divider hidden/>
                 <Field.Button
                     form={ FORM_ID }
