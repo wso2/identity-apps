@@ -28,6 +28,7 @@ import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { addSMSPublisher, deleteSMSPublisher, useSMSNotificationSenders } from "../../../api/connections";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 
+
 /**
  * Interface for SMS OTP Authenticator Activation Section props.
  */
@@ -47,6 +48,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
     const { onActivate } = props;
     const { t } = useTranslation();
     const [ isEnableSMSOTP, setEnableSMSOTP ] = useState<boolean>(false);
+    const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(true);
     const dispatch: Dispatch = useDispatch();
 
     const {
@@ -58,6 +60,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
         if (!notificationSendersListFetchRequestError) {
             if (notificationSendersList) {
                 let enableSMSOTP: boolean = false;
+                let ischoeroSMSOTP: boolean = false;
 
                 for (const notificationSender of notificationSendersList) {
                     const channelValues: {
@@ -65,16 +68,19 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
                         value:string;
                     }[] = notificationSender.properties ? notificationSender.properties : [];
 
+                    if (notificationSender.name === "SMSPublisher") {
+                        enableSMSOTP = true;
+                    }
+
                     if (notificationSender.name === "SMSPublisher" &&
                         (channelValues.filter((prop : { key:string, value:string }) =>
                             prop.key === "channel.type" && prop.value === "choreo")
                             .length > 0)
                     ) {
-                        enableSMSOTP = true;
-
-                        break;
+                        ischoeroSMSOTP = true;
                     }
                 }
+                setChoreoSMSOTPProvider(ischoeroSMSOTP);
                 setEnableSMSOTP(enableSMSOTP);
                 onActivate(enableSMSOTP);
             }
@@ -99,6 +105,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
         if (data.checked) {
             // Add SMS Publisher when enabling the feature.
             addSMSPublisher().then(() => {
+                setChoreoSMSOTPProvider(true);
                 setEnableSMSOTP(true);
                 onActivate(true);
             }).catch(() => {
@@ -113,6 +120,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
         } else {
             // Delete SMS Publisher when enabling the feature.
             deleteSMSPublisher().then(() => {
+                setChoreoSMSOTPProvider(false);
                 setEnableSMSOTP(false);
                 onActivate(false);
             }).catch((error: IdentityAppsApiException) => {
@@ -150,14 +158,15 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
                 </Trans>
             </Message>
             <Checkbox
+                disabled={ !isChoreoSMSOTPProvider && isEnableSMSOTP }
                 toggle
-                label={ (!isEnableSMSOTP
+                label={ (!(isChoreoSMSOTPProvider && isEnableSMSOTP)
                     ? t("extensions:develop.identityProviders.smsOTP.settings." +
                         "smsOtpEnableDisableToggle.labelEnable")
                     : t("extensions:develop.identityProviders.smsOTP.settings.smsOtpEnableDisableToggle.labelDisable"))
                 }
                 data-componentid="sms-otp-enable-toggle"
-                checked={ isEnableSMSOTP }
+                checked={ isChoreoSMSOTPProvider && isEnableSMSOTP }
                 onChange={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
                     handleUpdateSMSPublisher(event, data);
                 } }
