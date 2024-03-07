@@ -4283,22 +4283,19 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         fetchADialect: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         fetchExternalClaims: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         deleteDialect: {
                             genericError: {
                                 message: string;
@@ -4308,8 +4305,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         addDialect: {
                             error: {
                                 message: string;
@@ -4323,8 +4319,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         updateDialect: {
                             genericError: {
                                 message: string;
@@ -4334,15 +4329,13 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         fetchSCIMResource: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                     };
                     pageLayout: {
                         list: {
@@ -4476,8 +4469,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         updateExternalAttribute: {
                             genericError: {
                                 message: string;
@@ -4487,8 +4479,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         deleteExternalClaim: {
                             genericError: {
                                 message: string;
@@ -4498,8 +4489,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                     };
                     forms: {
                         attributeURI: {
@@ -4569,29 +4559,25 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getAClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getClaims: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getLocalDialect: {
                             genericError: {
                                     message: string;
                                     description: string;
                             }
-                        }
-                        ;
+                        };
                         addLocalClaim: {
                             genericError: {
                                 message: string;
@@ -4601,8 +4587,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         updateClaim: {
                             genericError: {
                                 message: string;
@@ -4612,8 +4597,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         deleteClaim: {
                             genericError: {
                                 message: string;
@@ -4623,8 +4607,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                     };
                     pageLayout: {
                         edit: {
