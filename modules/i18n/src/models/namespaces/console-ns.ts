@@ -7080,31 +7080,31 @@ export interface ConsoleNS {
                 error: {
                     message: string;
                     description: string;
-             }
+                }
                 genericError: {
                     message: string;
                     description: string;
-             }
+                }
                 success: {
                     message: string;
                     description: string;
-             }
-             }
+                }
+            }
              ;
             getProfileSchema: {
                 error: {
                     message: string;
                     description: string;
-             }
+                }
                 genericError: {
                     message: string;
                     description: string;
-             }
+                }
                 success: {
                     message: string;
                     description: string;
-             }
-             }
+                }
+            }
              ;
         };
         pages: {
