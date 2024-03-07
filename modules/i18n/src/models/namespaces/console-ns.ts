@@ -4685,8 +4685,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     createTemplate: {
                         error: {
                             message: string;
@@ -4700,8 +4699,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getTemplateDetails: {
                         error: {
                             message: string;
@@ -4715,8 +4713,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     getTemplates: {
                         error: {
                             message: string;
@@ -4730,15 +4727,13 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     iframeUnsupported: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updateTemplate: {
                         error: {
                             message: string;
@@ -4752,8 +4747,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 placeholders: {
                     emptyList: {
@@ -4764,8 +4758,7 @@ export interface ConsoleNS {
                             1: string;
                             2: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 viewTemplate: {
                     heading: string;
