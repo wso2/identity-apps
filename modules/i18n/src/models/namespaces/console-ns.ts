@@ -4764,8 +4764,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getConnector: {
                         error: {
                             message: string;
@@ -4779,8 +4778,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updateConnector: {
                         error: {
                             message: string;
@@ -4794,8 +4792,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 form: {
                     errors: {
