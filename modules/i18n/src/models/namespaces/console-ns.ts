@@ -6086,8 +6086,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                    }
-                     ;
+                    };
                 };
                 revokeAdmin: {
                     confirmationModal: {
@@ -6095,8 +6094,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                    }
-                     ;
+                    };
                 };
                 disableUser: {
                     confirmationModal: {
@@ -6104,8 +6102,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                    }
-                     ;
+                    };
                 };
                 editUser: {
                     dangerZoneGroup: {
@@ -6239,8 +6236,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                     }
-                     ;
+                     };
                 };
                 modals: {
                     addUserWarnModal: {
@@ -6503,8 +6499,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                         ;
+                        };
                         updateProfileInfo: {
                             error: {
                                 message: string;
@@ -6548,8 +6543,7 @@ export interface ConsoleNS {
                                 description: string;
                                 genericMessage: string;
                             }
-                        }
-                         ;
+                        };
                         disableUserAccount: {
                             error: {
                                 message: string;
@@ -6625,8 +6619,7 @@ export interface ConsoleNS {
                                 subtitles: string | {
                                 [key: number]: string
                                 }
-                            }
-                             ;
+                            };
                         }
                     };
                 };
@@ -6672,8 +6665,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                             fetchUserGroups: {
                                 error: {
                                     message: string;
@@ -6687,8 +6679,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                            ;
+                            };
                             removeUserGroups: {
                                 error: {
                                     message: string;
@@ -6702,8 +6693,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                             updateUserGroups: {
                                 error: {
                                     message: string;
@@ -6717,8 +6707,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                         };
                     };
                     roles: {
@@ -6732,8 +6721,7 @@ export interface ConsoleNS {
                                 header: string;
                                 message: string;
                                 content: string;
-                            }
-                             ;
+                            };
                             infoMessage: string;
                             roleList: {
                                 emptyListPlaceholder: {
@@ -6753,8 +6741,7 @@ export interface ConsoleNS {
                                 emptyPlaceholder: {
                                     title: string;
                                     subtitles: string;
-                                 }
-                                 ;
+                                 };
                             };
                             heading: string;
                             popups: {
@@ -6777,8 +6764,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                             fetchUserRoles: {
                                 error: {
                                     message: string;
@@ -6792,8 +6778,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                             removeUserRoles: {
                                 error: {
                                     message: string;
@@ -6807,8 +6792,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                             updateUserRoles: {
                                 error: {
                                     message: string;
@@ -6822,8 +6806,7 @@ export interface ConsoleNS {
                                     message: string;
                                     description: string;
                                 }
-                            }
-                             ;
+                            };
                         };
                         viewPermissionModal: {
                             backButton: string;
