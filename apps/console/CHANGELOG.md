@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.12.54
+
+### Patch Changes
+
+- [#5675](https://github.com/wso2/identity-apps/pull/5675) [`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally displaying governance connector related UI elements
+
+- Updated dependencies [[`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f)]:
+  - @wso2is/common@2.0.49
+
 ## 2.12.53
 
 ### Patch Changes
