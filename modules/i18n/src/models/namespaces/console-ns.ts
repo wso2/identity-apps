@@ -4016,8 +4016,8 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                         }
-                         }
+                            }
+                        }
                     }
                 }
                 view: {
