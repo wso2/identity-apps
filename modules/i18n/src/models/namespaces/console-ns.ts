@@ -4153,24 +4153,30 @@ export interface ConsoleNS {
                     emptyApprovalList: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles:  {
+                            0:string,
+                            1:string
+                            2:string
                      }
                      }
                      ;
                     emptyApprovalFilter: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles:  {
+                            0:string,
+                            1:string
+                            2:string
                      }
                      }
                      ;
                     emptySearchResults: {
-                        action: string;
+                        action:string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles:  {
+                            0: string,
+                            1:string
+                            2:string
                      }
                      }
                      ;
