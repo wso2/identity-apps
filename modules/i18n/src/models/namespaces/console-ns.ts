@@ -2599,7 +2599,10 @@ export interface ConsoleNS {
             };
             helpPanel: {
                 actions: {
-                    [key: string]: string;
+                    close: string;
+                    open: string;
+                    pin: string;
+                    unPin: string;
                 };
                 notifications: {
                     pin: {
