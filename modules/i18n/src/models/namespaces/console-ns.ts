@@ -6745,7 +6745,7 @@ export interface ConsoleNS {
                 };
                 invitedUserLabel: string;
             };
-            onboarded: {
+            onboarded?: {
                 notifications: {
                     removeUser: {
                         error: {
