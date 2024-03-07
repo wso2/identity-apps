@@ -6631,23 +6631,23 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
-            invite?: {
-                inviteButton?: string;
-                subSelection?: {
-                    onBoard?: string;
-                    invitees?: string;
+            invite: {
+                inviteButton: string;
+                subSelection: {
+                    onBoard: string;
+                    invitees: string;
                 };
-                notifications?: {
-                    deleteInvite?: Notification;
-                    resendInvite?: Notification;
-                    sendInvite?: Notification;
+                notifications: {
+                    deleteInvite: Notification;
+                    resendInvite: Notification;
+                    sendInvite: Notification;
                     updateInvite: Notification;
                 };
-                confirmationModal?: {
-                    deleteInvite?: Confirmation;
-                    resendInvite?: Confirmation;
+                confirmationModal: {
+                    deleteInvite: Confirmation;
+                    resendInvite: Confirmation;
                 };
-                placeholder?: {
+                placeholder: {
                     emptySearchResultPlaceholder: {
                         clearButton: string;
                         subTitle: {
@@ -6666,7 +6666,7 @@ export interface ConsoleNS {
                         title: string;
                     };
                 };
-                advancedSearch?: {
+                advancedSearch: {
                     form: {
                         dropdown: {
                             filterAttributeOptions: {
@@ -6688,13 +6688,13 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                form?: {
-                    sendmail?: {
+                form: {
+                    sendmail: {
                         title: string;
                         subTitle: string;
                     };
                 };
-                rolesUpdateModal?: {
+                rolesUpdateModal: {
                     header: string;
                     subHeader: string;
                     searchPlaceholder: string;
