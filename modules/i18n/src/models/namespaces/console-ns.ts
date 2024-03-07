@@ -4618,7 +4618,7 @@ export interface ConsoleNS {
                     addTemplateType: {
                         fields: {
                             type: {
-                                label: string | Record<string, unknown>;
+                                label: string ;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -4697,16 +4697,16 @@ export interface ConsoleNS {
                     emptySearch: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
-                     }
+                        subtitles: string;
                      }
                      ;
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                        [key: number]: string
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
                      }
                      }
                      ;
