@@ -2688,30 +2688,30 @@ export interface ConsoleNS {
                     advancedConfigs: {
                         federationHub: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                         homeRealmIdentifier: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder?: string;
                         };
                         alias: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder?: string;
                         };
                         certificateType: {
                             label: string;
                             hint: string;
                             certificatePEM: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             certificateJWKS: {
-                                label: string | Record<string, unknown>;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -2826,7 +2826,7 @@ export interface ConsoleNS {
                     generalDetails: {
                         name: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
@@ -2836,24 +2836,28 @@ export interface ConsoleNS {
                         };
                         description: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         image: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                     };
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            [key: string]: any;
+                            disabledMessageContent: string | {
+                                1: string;
+                                2: string;
+                            };
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
+                            disabledMessageHeader: string;
                         };
                         provisioningUserStoreDomain: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                         provisioningScheme: {
                             hint: string;
@@ -2910,10 +2914,16 @@ export interface ConsoleNS {
                 };
                 helpPanel: {
                     tabs: {
-                        [key: string]: {
-                            content: any;
+                        samples: {
+                            content: {
+                                docs: {
+                                    goBack: string;
+                                    hint: string;
+                                    title: string;
+                                }
+                            };
                             heading: string;
-                        };
+                        }
                     };
                 };
                 templates: {
@@ -3252,11 +3262,7 @@ export interface ConsoleNS {
                         emptyPlaceholder: {
                             action: string;
                             title: string;
-                            subtitles:
-                                | string
-                                | {
-                                      [key: number]: string;
-                                  };
+                            subtitles: string;
                         };
                         heading: string;
                     };
@@ -3422,51 +3428,46 @@ export interface ConsoleNS {
                 placeHolders: {
                     emptyCertificateList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     emptyIDPList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyIDPSearchResults: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     emptyAuthenticatorList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyConnectorList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                     noAttributes: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                        };
                     };
                 };
                 wizards: {
