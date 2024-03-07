@@ -5903,8 +5903,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         enableAdminAdvisoryBanner: {
                             error: {
                                 message: string;
@@ -5918,8 +5917,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getConfigurations: {
                             error: {
                                 message: string;
@@ -5933,8 +5931,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                         ;
+                        };
                         updateConfigurations: {
                             error: {
                                 message: string;
@@ -5948,8 +5945,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                         ;
+                        };
                     };
                     pageHeading: string;
                     pageSubheading: string;
@@ -6061,8 +6057,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                         }
-                         ;
+                         };
                         updateConfigurations: {
                             error: {
                                 message: string;
@@ -6076,8 +6071,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                         }
-                         ;
+                        };
                         emptyHomeRealmIdentifiers: {
                             error: {
                                 message: string;
@@ -6091,8 +6085,7 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                         }
-                         ;
+                         };
                     };
                     form: {
                         homeRealmIdentifiers: {
