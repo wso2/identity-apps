@@ -144,7 +144,7 @@ export const SmsOtpAuthenticatorActivationSection: FunctionComponent<SmsOtpAuthe
             <Checkbox
                 disabled={ !isChoreoSMSOTPProvider && isEnableSMSOTP }
                 toggle
-                label={ (!isEnableSMSOTP
+                label={ (!(isChoreoSMSOTPProvider && isEnableSMSOTP)
                     ? t("extensions:develop.identityProviders.smsOTP.settings." +
                         "smsOtpEnableDisableToggle.labelEnable")
                     : t("extensions:develop.identityProviders.smsOTP.settings.smsOtpEnableDisableToggle.labelDisable"))
