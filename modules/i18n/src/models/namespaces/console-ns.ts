@@ -4645,8 +4645,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getTemplateTypes: {
                         error: {
                             message: string;
@@ -4660,8 +4659,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updateTemplateType: {
                         error: {
                             message: string;
@@ -4675,8 +4673,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     createTemplateType: {
                         error: {
                             message: string;
@@ -4690,16 +4687,14 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 placeholders: {
                     emptySearch: {
                         action: string;
                         title: string;
                         subtitles: string;
-                    }
-                    ;
+                    };
                     emptyList: {
                         action: string;
                         title: string;
@@ -4708,8 +4703,7 @@ export interface ConsoleNS {
                             1: string;
                             2: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 wizards: {
                     addTemplateType: {
