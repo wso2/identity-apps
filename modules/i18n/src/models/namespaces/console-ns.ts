@@ -5671,8 +5671,8 @@ export interface ConsoleNS {
                                     error: {
                                         message: string;
                                         description: string;
-                                 }
-                                 }
+                                    }
+                                }
                                  ;
                             };
                         };
@@ -5745,8 +5745,8 @@ export interface ConsoleNS {
                             subtitles:{
                                 0: string;
                                 1:string;
-                         }
-                         }
+                            }
+                        }
                          ;
                     };
                     basics: {
@@ -5758,7 +5758,7 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                         }
+                        }
                          ;
                         dangerZone: {
                             actionTitle: string;
@@ -5785,18 +5785,16 @@ export interface ConsoleNS {
                                 title: string;
                                 subtitles: {
                                     0: string
-                             }
-                             }
-                             ;
+                                }
+                            };
                             errorPlaceholder: {
                                 action: string;
                                 title: string;
                                 subtitles: {
                                     0: string;
                                     1: string
-                             }
-                             }
-                             ;
+                                }
+                            };
                         };
                         notifications: {
                             error: {
@@ -5850,8 +5848,8 @@ export interface ConsoleNS {
                                 title: string;
                                 subtitles:{
                                     0: string
-                             }
-                             }
+                                }
+                            }
                              ;
                             errorPlaceholder: {
                                 action: string;
@@ -5859,9 +5857,8 @@ export interface ConsoleNS {
                                 subtitles: {
                                     0: string;
                                     1: string;
-                             }
-                             }
-                             ;
+                                }
+                            };
                         };
                         notifications: {
                             error: {
@@ -5936,8 +5933,8 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                         }
-                         ;
+                        }
+                        ;
                         deleteItemError: {
                             header: string;
                             message: string;
@@ -5951,9 +5948,8 @@ export interface ConsoleNS {
                             subtitles: {
                                 0 : string;
                                 1 : string;
-                         }
-                         }
-                         ;
+                            }
+                        };
                         emptyRoleList: {
                             action: string;
                             title: string;
@@ -5961,11 +5957,10 @@ export interface ConsoleNS {
                                 0 : string;
                                 1 : string;
                                 2 : string;
-                         }
-                         }
-                          & {
+                            }
+                        } & {
                             emptyRoles: string
-                        };
+                            };
                     };
                     popups: {
                         delete: string;
@@ -5988,9 +5983,8 @@ export interface ConsoleNS {
                             subtitles: string | {
                              0: string
                              1: string
-                         }
-                         }
-                         ;
+                            }
+                        }
                     }
                 }
                 notifications: {
@@ -5998,31 +5992,31 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                     }
+                        }
                         genericError: {
                             message: string;
                             description: string;
-                     }
+                        }
                         success: {
                             message: string;
                             description: string;
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                     fetchRoles: {
                         genericError: {
                             message: string;
                             description: string;
-                     }
-                     }
+                        }
+                    }
                      ;
                     fetchRole: {
                         genericError: {
                             message: string;
                             description: string;
-                     }
-                     }
-                     ;
+                        }
+                    }
+                    ;
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;
