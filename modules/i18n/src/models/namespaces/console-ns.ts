@@ -7148,15 +7148,13 @@ export interface ConsoleNS {
                     message: string;
                     description: string;
                 };
-            }
-            ;
+            };
             getConfiguration: {
                 error: {
                     message: string;
                     description: string;
                 };
-            }
-            ;
+            };
         };
     };
     wsFederationConfig: {
