@@ -61,6 +61,7 @@ import {
     SMSProviderSettingsState
 } from "../models";
 import "./sms-providers.scss";
+import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
 
 type SMSProviderPageInterface = IdentifiableComponentInterface;
 
@@ -124,7 +125,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         error: smsProviderConfigFetchRequestError
     } = useSMSProviders();
     const [ isLoading, setIsLoading ] = useState(true);
-
+    const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(false);
     const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
 
     useEffect(() => {
@@ -133,11 +134,17 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
             originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
                 existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
+                
+                smsProvider.properties?.forEach((prop: { key: string, value: string }) => {
+                    if (prop.key === "channel.type" && prop.value === "choreo") {
+                        setChoreoSMSOTPProvider(true);
+                    }
+                });
             });
 
             setExistingSMSProviders(existingSMSProviderNames);
         }
-    },[ isSMSProviderConfigFetchRequestLoading ]);
+    },[ isSMSProviderConfigFetchRequestLoading, originalSMSProviderConfig ]);
 
     useEffect(() => {
         if (!originalSMSProviderConfig) {
@@ -236,7 +243,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         setSmsProviderSettings({ ...smsProviderSettings, selectedProvider });
     };
 
-    const handleSubmit = (values: SMSProviderInterface) => {
+    const handleSubmit = async (values: SMSProviderInterface) => {
         setIsSubmitting(true);
         const { selectedProvider } = smsProviderSettings;
 
@@ -278,10 +285,32 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             submittingValues.providerURL = values.providerURL;
         }
 
-        const handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface> =
-            existingSMSProviders.length >= 1
+        let handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface>;
+        if (isChoreoSMSOTPProvider) {
+            try {
+                await deleteSMSProviders();
+            } catch (error: any) {
+                const errorType : string = error.code === AuthenticatorManagementConstants.ErrorMessages
+                        .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode() ? "activeSubs" :
+                        ( error.code === AuthenticatorManagementConstants.ErrorMessages
+                            .SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS.getErrorCode() ? "connectedApps"
+                            : "generic" );
+    
+                    dispatch(addAlert({
+                        description: t("extensions:develop.identityProviders.smsOTP.settings." +
+                            `errorNotifications.smsPublisherDeletionError.${errorType}.description`),
+                        level: AlertLevels.ERROR,
+                        message: t("extensions:develop.identityProviders.smsOTP.settings." +
+                            `errorNotifications.smsPublisherDeletionError.${errorType}.message`)
+                    }));
+                    return;
+            }
+            handleSMSConfigValues = createSMSProvider(submittingValues);
+        } else {
+            handleSMSConfigValues = existingSMSProviders.length >= 1
                 ? updateSMSProvider(submittingValues)
                 : createSMSProvider(submittingValues);
+        }
 
         handleSMSConfigValues.then((updatedData: SMSProviderAPIInterface) => {
             const updatedSMSProvider: SMSProviderInterface = {
