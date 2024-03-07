@@ -3308,8 +3308,20 @@ export interface ConsoleNS {
             };
         };
         placeholders: {
-            emptySearchResult: Placeholder;
-            underConstruction: Placeholder;
+            emptySearchResult: {
+                action: string;
+                title: string;
+                subtitles: string | {
+                    [key: number]: string;
+                };
+            };
+            underConstruction: {
+                action: string;
+                title: string;
+                subtitles: string | {
+                    [key: number]: string;
+                };
+            };
         };
         technologies: {
             android: string;
