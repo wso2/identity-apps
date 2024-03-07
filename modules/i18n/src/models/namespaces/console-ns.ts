@@ -6552,29 +6552,25 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     fetchUserstoreTemplates: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     fetchUserstoreTypes: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     fetchUserstoreMetadata: {
                         genericError: {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     deleteUserstore: {
                         genericError: {
                             message: string;
@@ -6584,8 +6580,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     delay: {
                         message: string;
                         description: string;
@@ -6599,8 +6594,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     testConnection: {
                         genericError: {
                             message: string;
@@ -6610,8 +6604,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     addUserstore: {
                         genericError: {
                             message: string;
@@ -6621,15 +6614,13 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     apiLimitReachedError: {
                         error: {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     updateDelay: {
                         message: string;
                         description: string;
@@ -6724,19 +6715,16 @@ export interface ConsoleNS {
                         action: string;
                         title: string;
                         subtitles: string;
-                    }
-                     ;
+                    };
                     emptyList: {
                         action: string;
                         title: string;
                         subtitles: string;
-                    }
-                     ;
+                    };
                     emptyListReadOnly: {
                         title: string;
                         subtitles: string;
-                    }
-                     ;
+                    };
                 };
                 sqlEditor: {
                     reset: string;
