@@ -25,7 +25,6 @@ import {
     FormField,
     HelpPanelActionsInterface,
     HelpPanelInterface,
-    InfoModal,
     Message,
     ModalInterface,
     Notification,
