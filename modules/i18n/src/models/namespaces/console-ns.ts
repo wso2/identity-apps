@@ -3855,7 +3855,6 @@ export interface ConsoleNS {
                         success: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                     };
                     addOrganization: {
@@ -3895,8 +3894,11 @@ export interface ConsoleNS {
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles: string | {
-                            [key: number]: string;
+                        subtitles: {
+                           0: string;
+                           1: string;
+                           2: string;
+                           3: string;
                         };
                     };
                 };
@@ -3909,34 +3911,34 @@ export interface ConsoleNS {
                     },
                     fields: {
                         id: {
-                            label: string | Record<string, unknown>;
+                            label: string;
                             ariaLabel: string;
                         };
                         name: {
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                             ariaLabel: string;
                         };
                         description: {
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                             ariaLabel: string;
                         };
                         domain: {
-                            label: string | Record<string, unknown>;
+                            label: string;
                             ariaLabel: string;
                         };
                         type: {
-                            label: string | Record<string, unknown>;
-                            ariaLabel?: string;
+                            label: string;
+                            ariaLabel: string;
                         };
                         created: {
-                            label: string | Record<string, unknown>;
-                            ariaLabel?: string;
+                            label: string;
+                            ariaLabel: string;
                         };
                         lastModified: {
-                            label: string | Record<string, unknown>;
-                            ariaLabel?: string;
+                            label: string;
+                            ariaLabel: string;
                         };
                     },
                     dangerZone: {
@@ -3966,17 +3968,23 @@ export interface ConsoleNS {
                 forms: {
                     addOrganization: {
                         name: {
-                            [key: string]: any;
-                            label: string | Record<string, unknown>;
+                            validation : {
+                                duplicate:string;
+                                empty:string;
+                            }
+                            label: string;
                             placeholder: string;
                         };
                         description: {
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         domainName: {
-                            [key: string]: any;
-                            label: string | Record<string, unknown>;
+                            validation:{
+                                duplicate:string;
+                                empty:string;
+                            }
+                            label: string;
                             placeholder: string;
                         };
                         type: string;
