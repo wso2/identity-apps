@@ -4151,36 +4151,31 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getCertificates: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getAlias: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getPublicCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         getCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         deleteCertificate: {
                             genericError: {
                                 message: string;
@@ -4190,15 +4185,13 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                         download: {
                             success: {
                                 message: string;
                                 description: string;
                             }
-                        }
-                        ;
+                        };
                     };
                     certificateModalHeader: string;
                     placeholders: {
