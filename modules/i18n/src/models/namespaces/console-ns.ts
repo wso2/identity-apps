@@ -5407,8 +5407,7 @@ export interface ConsoleNS {
                                 0: string;
                                 1: string;
                             }
-                        }
-                         ;
+                        };
                         title: string;
                         subTitle: string;
                         addClaim: string;
@@ -5454,8 +5453,7 @@ export interface ConsoleNS {
                             0: string;
                             1: string;
                         }
-                    }
-                    ;
+                    };
                     searchPlaceholder: string;
                 };
                 wizards: {
@@ -5496,8 +5494,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     addOIDCClaim: {
                         error: {
                             message: string;
@@ -5511,8 +5508,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchOIDCScopes: {
                         error: {
                             message: string;
@@ -5526,8 +5522,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchOIDCScope: {
                         error: {
                             message: string;
@@ -5541,8 +5536,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchOIDClaims: {
                         error: {
                             message: string;
@@ -5557,8 +5551,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     deleteOIDCScope: {
                         error: {
                             message: string;
@@ -5572,8 +5565,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     deleteOIDClaim: {
                         error: {
                             message: string;
@@ -5587,8 +5579,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updateOIDCScope: {
                         error: {
                             message: string;
@@ -5602,15 +5593,13 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     claimsMandatory: {
                         error: {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 placeholders: {
                     emptyList: {
@@ -5629,8 +5618,7 @@ export interface ConsoleNS {
                             0: string;
                             1: string;
                         }
-                    }
-                    ;
+                    };
                 };
             };
             overview: {
