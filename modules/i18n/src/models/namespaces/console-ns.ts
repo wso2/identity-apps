@@ -3006,19 +3006,18 @@ export interface ConsoleNS {
                 placeholders: {
                     emptyIDVPList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyIDVPTypeList: {
                         title: string;
-                        subtitles:
-                            | string
-                            | {
-                                  [key: number]: string;
-                              };
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                 };
                 confirmations: {
@@ -3186,7 +3185,7 @@ export interface ConsoleNS {
                     generalDetails: {
                         name: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
@@ -3198,7 +3197,7 @@ export interface ConsoleNS {
                         };
                         description: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                     };
