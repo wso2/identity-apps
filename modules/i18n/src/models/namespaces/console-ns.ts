@@ -3585,8 +3585,7 @@ export interface ConsoleNS {
             businessGroups: {
                 fields: {
                     groupName: {
-                        [key: string]: any;
-                        label: string | Record<string, unknown>;
+                        label: string;
                         placeholder: string;
                         validations: {
                             empty: string;
