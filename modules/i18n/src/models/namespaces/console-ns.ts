@@ -6081,22 +6081,62 @@ export interface ConsoleNS {
                     }
                 };
                 deleteUser: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     }
+                     ;
                 };
                 revokeAdmin: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     }
+                     ;
                 };
                 disableUser: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     }
+                     ;
                 };
                 editUser: {
                     dangerZoneGroup: {
                         header: string;
-                        deleteUserZone: DangerZone;
-                        disableUserZone: DangerZone;
-                        lockUserZone: DangerZone;
-                        passwordResetZone: DangerZone;
-                        deleteAdminPriviledgeZone: DangerZone;
+                        deleteUserZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            buttonDisableHint: string;
+                        };
+                        disableUserZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
+                        lockUserZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
+                        passwordResetZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            buttonHint: string;
+                        };
+                        deleteAdminPriviledgeZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
                     };
                     dateOfBirth: {
                         placeholder: {
@@ -6194,7 +6234,13 @@ export interface ConsoleNS {
                     };
                 };
                 lockUser: {
-                    confirmationModal: Confirmation;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     }
+                     ;
                 };
                 modals: {
                     addUserWarnModal: {
@@ -6269,7 +6315,11 @@ export interface ConsoleNS {
                                 failed: string;
                             };
                             alerts: {
-                                importSuccess: NotificationItem;
+                                importSuccess: {
+                                    message: string;
+                                    description: string;
+                                    genericMessage?: string;
+                                };
                                 importFailed: {
                                     message: string;
                                     userCreation: string;
@@ -6283,7 +6333,11 @@ export interface ConsoleNS {
                             };
                             manualCreation: {
                                 alerts: {
-                                    creationSuccess: NotificationItem;
+                                    creationSuccess: {
+                                        message: string;
+                                        description: string;
+                                        genericMessage?: string;
+                                    };
                                 };
                                 hint: string;
                                 emailsLabel: string;
@@ -6320,8 +6374,16 @@ export interface ConsoleNS {
                     };
                     inviteParentUserWizard: {
                         totalInvitations: string;
-                        successAlert: NotificationItem;
-                        errorAlert: NotificationItem;
+                        successAlert: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
+                        errorAlert: {
+                            message: string;
+                            description: string;
+                            genericMessage?: string;
+                        };
                         tableMessages: {
                             userNotFound: string;
                             activeInvitationExists: string;
@@ -6428,22 +6490,143 @@ export interface ConsoleNS {
                         };
                     };
                     notifications: {
-                        getProfileInfo: Notification;
-                        updateProfileInfo: Notification;
-                        lockUserAccount: Notification;
-                        unlockUserAccount: Notification;
-                        disableUserAccount: Notification;
-                        enableUserAccount: Notification;
-                        changeUserPassword: Notification;
-                        forcePasswordReset: Notification;
-                        noPasswordResetOptions: Notification;
+                        getProfileInfo: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                         }
+                         }
+                         ;
+                        updateProfileInfo: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                         }
+                         };
+                        lockUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                         }
+                         };
+                        unlockUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                         }
+                         }
+                         ;
+                        disableUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                         }
+                         };
+                        enableUserAccount: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                                genericMessage: string;
+                         }
+                         };
+                        changeUserPassword: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                         }
+                         };
+                        forcePasswordReset: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                            genericError: {
+                                message: string;
+                                description: string;
+                         }
+                            success: {
+                                message: string;
+                                description: string;
+                         }
+                         };
+                        noPasswordResetOptions: {
+                            error: {
+                                message: string;
+                                description: string;
+                         }
+                         };
                     };
                     placeholders: {
                         SCIMDisabled: {
                             heading: string;
                         };
                         userProfile: {
-                            emptyListPlaceholder: Placeholder;
+                            emptyListPlaceholder: {
+                                title: string;
+                                subtitles: string | {
+                                [key: number]: string
+                             }
+                             }
+                             ;
                         }
                     };
                 };
@@ -6476,10 +6659,66 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         notifications: {
-                            addUserGroups: Notification;
-                            fetchUserGroups: Notification;
-                            removeUserGroups: Notification;
-                            updateUserGroups: Notification;
+                            addUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
+                            fetchUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
+                            removeUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
+                            updateUserGroups: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
                         };
                     };
                     roles: {
@@ -6488,7 +6727,13 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         editRoles: {
-                            confirmationModal: Confirmation;
+                            confirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                message: string;
+                                content: string;
+                             }
+                             ;
                             infoMessage: string;
                             roleList: {
                                 emptyListPlaceholder: {
@@ -6505,7 +6750,13 @@ export interface ConsoleNS {
                                 };
                             };
                             placeholders: {
-                                emptyPlaceholder: Placeholder;
+                                emptyPlaceholder: {
+                                    title: string;
+                                    subtitles: string | {
+                                    [key: number]: string
+                                 }
+                                 }
+                                 ;
                             };
                             heading: string;
                             popups: {
@@ -6515,10 +6766,66 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         notifications: {
-                            addUserRoles: Notification;
-                            fetchUserRoles: Notification;
-                            removeUserRoles: Notification;
-                            updateUserRoles: Notification;
+                            addUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
+                            fetchUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
+                            removeUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
+                            updateUserRoles: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                             }
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                             }
+                                success: {
+                                    message: string;
+                                    description: string;
+                             }
+                             }
+                             ;
                         };
                         viewPermissionModal: {
                             backButton: string;
