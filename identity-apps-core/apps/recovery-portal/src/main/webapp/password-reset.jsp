@@ -348,7 +348,7 @@
                         "minNumber": 1,
                         "minUpperCase": 1,
                         "minLowerCase": 1,
-                        "minSpecialChr": 1
+                        "minSpecialChr": 0
                     }
                 }
 
