@@ -6097,16 +6097,16 @@ export interface ConsoleNS {
                     form: {
                         homeRealmIdentifiers: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                             placeholder: string;
                         };
                         idleSessionTimeoutPeriod: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                         rememberMePeriod: {
                             hint: string;
-                            label: string | Record<string, unknown>;
+                            label: string;
                         };
                     };
                 };
