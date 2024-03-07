@@ -7104,8 +7104,7 @@ export interface ConsoleNS {
                     message: string;
                     description: string;
                 }
-            }
-             ;
+            };
         };
         pages: {
             addEmailTemplate: EditPage;
