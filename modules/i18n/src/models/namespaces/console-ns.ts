@@ -4116,8 +4116,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     fetchPendingApprovals: {
                         error: {
                             message: string;
@@ -4131,8 +4130,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     updatePendingApprovals: {
                         error: {
                             message: string;
@@ -4146,8 +4144,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 placeholders: {
                     emptyApprovalList: {
@@ -4158,8 +4155,7 @@ export interface ConsoleNS {
                             1:string
                             2:string
                         }
-                    }
-                    ;
+                    };
                     emptyApprovalFilter: {
                         action: string;
                         title: string;
@@ -4168,8 +4164,7 @@ export interface ConsoleNS {
                             1:string
                             2:string
                         }
-                    }
-                    ;
+                    };
                     emptySearchResults: {
                         action:string;
                         title: string;
