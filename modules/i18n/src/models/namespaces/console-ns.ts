@@ -5641,8 +5641,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getConfigDeploymentDetails: {
                         error: {
                             message: string;
@@ -5656,8 +5655,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getConfigList: {
                         error: {
                             message: string;
@@ -5671,8 +5669,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     getRemoteRepoConfig: {
                         error: {
                             message: string;
@@ -5686,8 +5683,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                     triggerConfigDeployment: {
                         error: {
                             message: string;
@@ -5701,8 +5697,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                    ;
+                    };
                 };
                 pages: {
                     listing: {
@@ -5715,8 +5710,7 @@ export interface ConsoleNS {
                         action: string;
                         title: string;
                         subtitles: string;
-                    }
-                    ;
+                    };
                 };
             };
             roles: {
