@@ -7089,8 +7089,7 @@ export interface ConsoleNS {
                     message: string;
                     description: string;
                 }
-            }
-             ;
+            };
             getProfileSchema: {
                 error: {
                     message: string;
