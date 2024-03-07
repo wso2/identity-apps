@@ -6651,8 +6651,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     resendInvite: {
                         error: {
                             message: string;
@@ -6666,8 +6665,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     sendInvite: {
                         error: {
                             message: string;
@@ -6681,8 +6679,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                     updateInvite: {
                         error: {
                             message: string;
@@ -6696,8 +6693,7 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         }
-                    }
-                     ;
+                    };
                 };
                 confirmationModal: {
                     deleteInvite: {
@@ -6705,15 +6701,13 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                    }
-                     ;
+                    };
                     resendInvite: {
                         assertionHint: string;
                         header: string;
                         message: string;
                         content: string;
-                    }
-                     ;
+                    };
                 };
                 placeholder: {
                     emptySearchResultPlaceholder: {
