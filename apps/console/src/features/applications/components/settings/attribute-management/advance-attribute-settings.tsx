@@ -23,9 +23,11 @@ import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
+import { AppState } from "../../../../core";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -93,6 +95,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.applications?.disabledFeatures);
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -455,46 +460,48 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         }
                     />
                     <Divider hidden />
-                    { onlyOIDCConfigured && (
-                        <div>
-                            <Text>
-                                {
-                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                    { onlyOIDCConfigured
+                      && disabledFeatures?.includes("applications.attributes.subjectType")
+                      && (
+                          <div>
+                              <Text>
+                                  {
+                                      t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                         ".sections.subject.fields.subjectType.label")
-                                }
-                            </Text>
-                            {
-                                Object.keys(SubjectTypes)
-                                    .map((subjectTypeKey: SubjectTypes, index: number) => {
-                                        const subjectType: SubjectTypes
+                                  }
+                              </Text>
+                              {
+                                  Object.keys(SubjectTypes)
+                                      .map((subjectTypeKey: SubjectTypes, index: number) => {
+                                          const subjectType: SubjectTypes
                                             = SubjectTypes[subjectTypeKey];
 
-                                        return (
-                                            <>
-                                                <Field.Radio
-                                                    key={ index }
-                                                    ariaLabel={ `Subject type ${subjectType}` }
-                                                    name={ "subjectType" }
-                                                    value={ subjectType }
-                                                    label={ t("console:develop.features.applications.forms" +
+                                          return (
+                                              <>
+                                                  <Field.Radio
+                                                      key={ index }
+                                                      ariaLabel={ `Subject type ${subjectType}` }
+                                                      name={ "subjectType" }
+                                                      value={ subjectType }
+                                                      label={ t("console:develop.features.applications.forms" +
                                                         ".advancedAttributeSettings.sections.subject.fields" +
                                                         ".subjectType." + subjectType + ".label") }
-                                                    hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                      hint={ subjectType === SubjectTypes.PAIRWISE &&
                                                             t("console:develop.features.applications.forms" +
                                                         ".advancedAttributeSettings.sections.subject.fields" +
                                                         ".subjectType." + subjectType + ".hint") }
-                                                    checked={ selectedSubjectType === subjectType }
-                                                    listen={ () => {
-                                                        setSelectedSubjectType(subjectType);
-                                                    } }
-                                                    readOnly={ readOnly }
-                                                />
-                                            </>
-                                        );
-                                    })
-                            }
-                        </div>
-                    ) }
+                                                      checked={ selectedSubjectType === subjectType }
+                                                      listen={ () => {
+                                                          setSelectedSubjectType(subjectType);
+                                                      } }
+                                                      readOnly={ readOnly }
+                                                  />
+                                              </>
+                                          );
+                                      })
+                              }
+                          </div>
+                      ) }
                     { selectedSubjectType === SubjectTypes.PAIRWISE && (
                         <Field.Input
                             ariaLabel="Sector Identifier URI"
