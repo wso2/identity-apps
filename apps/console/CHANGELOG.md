@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.59
+
+### Patch Changes
+
+- [#5689](https://github.com/wso2/identity-apps/pull/5689) [`a480eb3529`](https://github.com/wso2/identity-apps/commit/a480eb35296df23efca1a3871a5a85a1b8fd7688) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally display client authentication section and client authentication method dropdown
+
 ## 2.12.58
 
 ### Patch Changes
