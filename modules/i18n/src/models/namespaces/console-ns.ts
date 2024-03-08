@@ -23,7 +23,6 @@ import {
     FormAttributes,
     FormField,
     HelpPanelInterface,
-    InfoModal,
     Message,
     ModalInterface,
     Notification,
@@ -7446,8 +7445,28 @@ export interface ConsoleNS {
                                     invalid: string;
                                 }
                             };
-                            roleAudience: FormAttributes;
-                            assignedApplication: FormAttributes;
+                            roleAudience: {
+                                values:{
+                                    organization:string;
+                                    application:string;
+                                }
+                                hint: string;
+                                label: string ;
+                            };
+                            assignedApplication: {
+                                applicationSubTitle: {
+                                    application:string;
+                                    organization:string;
+                                    changeAudience:string;
+                                };
+                                note:string;
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                             notes: {
                                 orgNote: string,
                                 appNote: string,
@@ -7479,7 +7498,12 @@ export interface ConsoleNS {
                                 applicationRoles: string;
                             };
                             notifications: {
-                                fetchAPIResourceError: Notification;
+                                fetchAPIResourceError: {
+                                    error: {
+                                        message: string;
+                                        description: string;
+                                    }
+                                };
                             };
                         };
                     };
@@ -7545,14 +7569,31 @@ export interface ConsoleNS {
                 };
                 edit: {
                     placeholders: {
-                        errorPlaceHolder: Placeholder;
+                        errorPlaceHolder: {
+                            action: string;
+                            title: string;
+                            subtitles:{
+                                0: string;
+                                1:string;
+                            }
+                        };
                     };
                     basics: {
                         buttons: {
                             update: string;
                         };
-                        confirmation: Confirmation;
-                        dangerZone: DangerZone;
+                        confirmation: {
+                            assertionHint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        };
+                        dangerZone: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                            buttonDisableHint: string;
+                        };
                         fields: {
                             roleName: {
                                 name: string;
@@ -7567,14 +7608,39 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                         placeholders: {
-                            emptyPlaceholder: Placeholder;
-                            errorPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string
+                                }
+                            };
+                            errorPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string;
+                                    1: string
+                                }
+                            };
                         };
                         notifications: {
-                            error: NotificationItem;
-                            success: NotificationItem;
-                            genericError: NotificationItem;
-                            fetchError: NotificationItem;
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            fetchError: {
+                                message: string;
+                                description: string;
+                            };
                         };
                         heading: string;
                         localGroupsHeading: string;
@@ -7605,17 +7671,46 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                         placeholders: {
-                            emptyPlaceholder: Placeholder;
-                            errorPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles:{
+                                    0: string
+                                }
+                            };
+                            errorPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: {
+                                    0: string;
+                                    1: string;
+                                }
+                            };
                         };
                         notifications: {
-                            error: NotificationItem;
-                            success: NotificationItem;
-                            genericError: NotificationItem;
-                            fetchError: NotificationItem;
+                            error: {
+                                message: string;
+                                description: string;
+                            };
+                            success: {
+                                message: string;
+                                description: string;
+                            };
+                            genericError: {
+                                message: string;
+                                description: string;
+                            };
+                            fetchError: {
+                                message: string;
+                                description: string;
+                            };
                         };
                         list: {
-                            emptyPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: string;
+                             };
                             user: string;
                             organization: string;
                         };
@@ -7659,14 +7754,38 @@ export interface ConsoleNS {
                         audience: string;
                     };
                     confirmations: {
-                        deleteItem: Confirmation;
-                        deleteItemError: InfoModal;
+                        deleteItem: {
+                            assertionHint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        };
+                        deleteItemError: {
+                            header: string;
+                            message: string;
+                            content: string;
+                        };
                     };
                     emptyPlaceholders: {
-                        search: Placeholder;
-                        emptyRoleList: Placeholder & {
-                            emptyRoles: string
+                        search: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0 : string;
+                                1 : string;
+                            }
                         };
+                        emptyRoleList: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0 : string;
+                                1 : string;
+                                2 : string;
+                            }
+                        } & {
+                            emptyRoles: string
+                            };
                     };
                     popups: {
                         delete: string;
@@ -7684,13 +7803,42 @@ export interface ConsoleNS {
                 };
                 readOnlyList: {
                     emptyPlaceholders: {
-                        searchAndFilter: Placeholder;
+                        searchAndFilter: {
+                            title: string;
+                            subtitles: string | {
+                             0: string
+                             1: string
+                            }
+                        }
                     }
                 }
                 notifications: {
-                    deleteRole: Notification;
-                    fetchRoles: Notification;
-                    fetchRole: Notification;
+                    deleteRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchRoles: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchRole: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;
