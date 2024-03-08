@@ -3614,19 +3614,27 @@ export interface ConsoleNS {
             suborganizations: {
                 notifications: {
                     tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
                         heading: string;
                     };
                     subOrgLevelsLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
                         heading: string;
                     };
                     duplicateOrgError: {
                         message: string;
                         description: string;
                     };
-                }
-            },
+                };
+            };
             footer: {
                 copyright: string;
             };
