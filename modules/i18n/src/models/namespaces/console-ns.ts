@@ -5933,14 +5933,77 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    fetchApprovalDetails: Notification;
-                    fetchPendingApprovals: Notification;
-                    updatePendingApprovals: Notification;
+                    fetchApprovalDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchPendingApprovals: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    updatePendingApprovals: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                 };
                 placeholders: {
-                    emptyApprovalList: Placeholder;
-                    emptyApprovalFilter: Placeholder;
-                    emptySearchResults: Placeholder;
+                    emptyApprovalList: {
+                        action: string;
+                        title: string;
+                        subtitles:  {
+                            0:string,
+                            1:string
+                            2:string
+                        }
+                    };
+                    emptyApprovalFilter: {
+                        action: string;
+                        title: string;
+                        subtitles:  {
+                            0:string,
+                            1:string
+                            2:string
+                        }
+                    };
+                    emptySearchResults: {
+                        action:string;
+                        title: string;
+                        subtitles:  {
+                            0: string,
+                            1:string
+                            2:string
+                        }
+                    }
                 };
             };
             certificates: {
