@@ -8463,22 +8463,84 @@ export interface ConsoleNS {
                 };
             };
             invite?: {
-                inviteButton?: string;
-                subSelection?: {
-                    onBoard?: string;
-                    invitees?: string;
+                inviteButton: string;
+                subSelection: {
+                    onBoard: string;
+                    invitees: string;
                 };
-                notifications?: {
-                    deleteInvite?: Notification;
-                    resendInvite?: Notification;
-                    sendInvite?: Notification;
-                    updateInvite: Notification;
+                notifications: {
+                    deleteInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    resendInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    sendInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    updateInvite: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                 };
-                confirmationModal?: {
-                    deleteInvite?: Confirmation;
-                    resendInvite?: Confirmation;
+                confirmationModal: {
+                    deleteInvite: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    resendInvite: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
-                placeholder?: {
+                placeholder: {
                     emptySearchResultPlaceholder: {
                         clearButton: string;
                         subTitle: {
@@ -8497,7 +8559,7 @@ export interface ConsoleNS {
                         title: string;
                     };
                 };
-                advancedSearch?: {
+                advancedSearch: {
                     form: {
                         dropdown: {
                             filterAttributeOptions: {
@@ -8519,13 +8581,13 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                form?: {
-                    sendmail?: {
+                form: {
+                    sendmail: {
                         title: string;
                         subTitle: string;
                     };
                 };
-                rolesUpdateModal?: {
+                rolesUpdateModal: {
                     header: string;
                     subHeader: string;
                     searchPlaceholder: string;
