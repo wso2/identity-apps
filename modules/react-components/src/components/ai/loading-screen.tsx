@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Progress, Segment, Label } from 'semantic-ui-react';
+import axios from 'axios';
+import { ReactComponent as LoadingPlaceholder } from
+    "../../../../theme/src/themes/wso2is/assets/images/branding/ai-loading-screen-placeholder.svg";
 
 export const LoadingScreen = () => {
   const [progress, setProgress] = useState(0);
@@ -15,9 +18,13 @@ export const LoadingScreen = () => {
   ];
 
   const fetchProgress = async () => {
-    const response = await fetch('https://your-api-endpoint.com/status');
-    const data = await response.json();
-    return data;
+    try {
+        const response = await axios.get('http://localhost:3000/status');
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
   };
 
   const updateProgress = (status) => {
@@ -36,7 +43,7 @@ export const LoadingScreen = () => {
       const status = await fetchProgress();
       updateProgress(status.status);
 
-      if (status.status.branding_generation_completed) {
+      if (status.branding_generation_completed) {
         setPolling(false);
       }
     }, 1000); // Poll every 1000 ms (1 second)
@@ -46,7 +53,7 @@ export const LoadingScreen = () => {
 
   return (
     <Segment>
-      <img src="path/to/your/loading-image.png" alt="Loading..." />
+      <LoadingPlaceholder/>
       <Progress percent={progress} indicating>
         <Label>{currentStep}</Label>
       </Progress>
