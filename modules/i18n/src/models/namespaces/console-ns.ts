@@ -6100,13 +6100,72 @@ export interface ConsoleNS {
                         dialectURI: string;
                     };
                     notifications: {
-                        fetchDialects: Notification;
-                        fetchADialect: Notification;
-                        fetchExternalClaims: Notification;
-                        deleteDialect: Notification;
-                        addDialect: Notification;
-                        updateDialect: Notification;
-                        fetchSCIMResource: Notification;
+                        fetchDialects: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        fetchADialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        fetchExternalClaims: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        deleteDialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        addDialect: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        updateDialect: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        fetchSCIMResource: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
                     };
                     pageLayout: {
                         list: {
@@ -6122,7 +6181,11 @@ export interface ConsoleNS {
                             updateExternalAttributes: string;
                         };
                     };
-                    dangerZone: DangerZone;
+                    dangerZone: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                     sections: {
                         manageAttributes: {
                             heading: string;
@@ -6205,15 +6268,75 @@ export interface ConsoleNS {
                         mappedClaim: string;
                     };
                     notifications: {
-                        addExternalAttribute: Notification;
-                        fetchExternalClaims: Notification;
-                        getExternalAttribute: Notification;
-                        updateExternalAttribute: Notification;
-                        deleteExternalClaim: Notification;
+                        addExternalAttribute: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        }
+                        ;
+                        fetchExternalClaims: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        }
+                        ;
+                        getExternalAttribute: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        updateExternalAttribute: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        deleteExternalClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
                     };
                     forms: {
-                        attributeURI: FormField;
-                        localAttribute: FormField;
+                        attributeURI: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                duplicateName:string;
+                                invalidName:string;
+                                scimInvalidName:string;
+                            };
+                        };
+                        localAttribute: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         submit: string;
                         warningMessage: string;
                         emptyMessage: string;
@@ -6253,13 +6376,68 @@ export interface ConsoleNS {
                         attributeURI: string;
                     };
                     notifications: {
-                        fetchLocalClaims: Notification;
-                        getAClaim: Notification;
-                        getClaims: Notification;
-                        getLocalDialect: Notification;
-                        addLocalClaim: Notification;
-                        updateClaim: Notification;
-                        deleteClaim: Notification;
+                        fetchLocalClaims: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getAClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getClaims: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getLocalDialect: {
+                            genericError: {
+                                    message: string;
+                                    description: string;
+                            }
+                        };
+                        addLocalClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        updateClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        deleteClaim: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
                     };
                     pageLayout: {
                         edit: {
@@ -6311,29 +6489,63 @@ export interface ConsoleNS {
                         content: string;
                     };
                     forms: {
-                        attributeID: FormField;
+                        attributeID: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         attributeHint: string;
-                        name: FormField;
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                invalidName: string;
+                            };
+                        };
                         nameHint: string;
-                        description: FormField;
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         descriptionHint: string;
-                        regEx: FormField;
+                        regEx: {
+                            label: string;
+                            placeholder: string;
+                        };
                         regExHint: string;
-                        supportedByDefault: FormField;
-                        displayOrder: FormField;
+                        supportedByDefault: {
+                            label: string;
+                        };
+                        displayOrder: {
+                            label: string;
+                            placeholder: string;
+                        };
                         displayOrderHint: string;
-                        required: FormField;
+                        required: {
+                            label: string;
+                        };
                         requiredHint: string;
                         requiredWarning: string;
-                        readOnly: FormField;
+                        readOnly: {
+                            label: string;
+                        };
                         readOnlyHint: string;
-                        attribute: FormField;
-                        infoMessages?: {
+                        attribute: {
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
+                        infoMessages: {
                             disabledConfigInfo: string;
                             configApplicabilityInfo: string;
                         }
                     };
-                    dangerZone: DangerZone;
+                    dangerZone: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                     mappedAttributes: {
                         hint: string;
                     };
