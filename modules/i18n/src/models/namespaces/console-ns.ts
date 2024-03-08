@@ -6404,10 +6404,32 @@ export interface ConsoleNS {
                 forms: {
                     addLocale: {
                         fields: {
-                            bodyEditor: FormAttributes;
-                            locale: FormAttributes;
-                            signatureEditor: FormAttributes;
-                            subject: FormAttributes;
+                            bodyEditor: {
+                                label: string ;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            locale: {
+                                label: string ;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            signatureEditor: {
+                                label: string ;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            subject: {
+                                label: string ;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                 };
