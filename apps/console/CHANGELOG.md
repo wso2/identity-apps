@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.12.57
+
+### Patch Changes
+
+- [#5705](https://github.com/wso2/identity-apps/pull/5705) [`9540a29be2`](https://github.com/wso2/identity-apps/commit/9540a29be286efeb32c0fed30e73f460371e2895) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with signup confirmation notification email
+
 ## 2.12.56
 
 ### Patch Changes
