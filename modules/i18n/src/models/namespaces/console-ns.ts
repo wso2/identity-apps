@@ -16,11 +16,6 @@
  * under the License.
  */
 
-import {
-    FormField,
-    Notification,
-    Placeholder
-} from "../common";
 
 /**
  * Model for the Console namespace
@@ -878,10 +873,8 @@ export interface ConsoleNS {
                                     };
                                 };
                                 clientSecret: {
-                                    hideSecret?: string;
-                                    showSecret?: string;
-                                    hide?: string;
-                                    show?: string;
+                                    hide: string;
+                                    show: string;
                                     label: string;
                                     placeholder: string;
                                     validations: {
@@ -1644,7 +1637,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 validations: {
                                     empty: string;
-                                    duplicate?: string;
+                                    duplicate: string;
                                     reserved: string;
                                 };
                             };
@@ -1653,8 +1646,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                             imageUrl: {
-                                description?: string;
-                                hint?: string;
+                                hint: string;
                                 label: string;
                                 placeholder: string;
                                 validations: {
@@ -1707,7 +1699,7 @@ export interface ConsoleNS {
                             };
                             generic: {
                                 label: string;
-                                placeholder?: string;
+                                placeholder: string;
                                 validations: {
                                     empty: string;
                                 };
@@ -1817,7 +1809,7 @@ export interface ConsoleNS {
                                         };
                                     };
                                     expiry: {
-                                        labelForSPA?: string;
+                                        labelForSPA: string;
                                         hint: string;
                                         label: string;
                                         placeholder: string;
@@ -1971,9 +1963,9 @@ export interface ConsoleNS {
                                         placeholder: string;
                                     };
                                     subjectDN: {
-                                        hint?: string;
+                                        hint: string;
                                         label: string;
-                                        placeholder?: string;
+                                        placeholder: string;
                                     };
                                 };
                             };
@@ -2219,7 +2211,7 @@ export interface ConsoleNS {
                                         };
                                     };
                                     returnToURLs: {
-                                        hint?: string;
+                                        hint: string;
                                         label: string;
                                         placeholder: string;
                                         validations: {
@@ -2283,7 +2275,7 @@ export interface ConsoleNS {
                                 heading: string;
                                 fields: {
                                     enable: {
-                                        hint?: string;
+                                        hint: string;
                                         label: string;
                                         validations: {
                                             empty: string;
@@ -2296,7 +2288,7 @@ export interface ConsoleNS {
                                         };
                                     };
                                     requestURL: {
-                                        hint?: string;
+                                        hint: string;
                                         label: string;
                                         placeholder: string;
                                         validations: {
@@ -2305,7 +2297,7 @@ export interface ConsoleNS {
                                         };
                                     };
                                     responseURL: {
-                                        hint?: string;
+                                        hint: string;
                                         label: string;
                                         placeholder: string;
                                         validations: {
@@ -2330,7 +2322,7 @@ export interface ConsoleNS {
                                         };
                                     };
                                     idpInitiatedSSO: {
-                                        hint?: string;
+                                        hint: string;
                                         label: string;
                                         validations: {
                                             empty: string;
@@ -3272,7 +3264,7 @@ export interface ConsoleNS {
                 };
             };
             authenticationProvider: {
-                advancedSearch?: {
+                advancedSearch: {
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -3288,14 +3280,14 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                buttons?: {
+                buttons: {
                     addIDP: string;
                     addAuthenticator: string;
                     addConnector: string;
                     addAttribute: string;
                     addCertificate: string;
                 };
-                confirmations?: {
+                confirmations: {
                     deleteIDP: {
                         header: string;
                         message: string;
@@ -3327,7 +3319,7 @@ export interface ConsoleNS {
                         assertionHint: string;
                     };
                 };
-                dangerZoneGroup?: {
+                dangerZoneGroup: {
                     header: string;
                     disableIDP: {
                         actionTitle: string;
@@ -3341,7 +3333,7 @@ export interface ConsoleNS {
                         subheader: string;
                     };
                 };
-                edit?: {
+                edit: {
                     common: {
                         settings: {
                             tabName: string;
@@ -3359,7 +3351,7 @@ export interface ConsoleNS {
                     };
                 };
                 forms: {
-                    advancedConfigs?: {
+                    advancedConfigs: {
                         federationHub: {
                             hint: string;
                             label: string;
@@ -3394,7 +3386,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    attributeSettings?: {
+                    attributeSettings: {
                         attributeMapping: {
                             attributeColumnHeader: string;
                             attributeMapColumnHeader: string;
@@ -3423,7 +3415,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    authenticatorAccordion?: {
+                    authenticatorAccordion: {
                         default: {
                             0: string;
                             1: string;
@@ -3433,7 +3425,7 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    authenticatorSettings?: {
+                    authenticatorSettings: {
                         apple: {
                             additionalQueryParameters: {
                                 hint: string;
@@ -4016,7 +4008,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    outboundConnectorAccordion?: {
+                    outboundConnectorAccordion: {
                         default: {
                             0: string;
                             1: string;
@@ -4026,14 +4018,14 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    common?: {
+                    common: {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
-                    generalDetails?: {
+                    generalDetails: {
                         name: {
                             hint: string;
                             label: string;
@@ -4066,7 +4058,7 @@ export interface ConsoleNS {
                             placeholder: string;
                         };
                     };
-                    jitProvisioning?: {
+                    jitProvisioning: {
                         enableJITProvisioning: {
                             hint: string;
                             label: string;
@@ -4092,7 +4084,7 @@ export interface ConsoleNS {
                             label: string;
                         };
                     };
-                    roleMapping?: {
+                    roleMapping: {
                         heading: string;
                         keyName: string;
                         valueName: string;
@@ -4128,7 +4120,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    outboundProvisioningRoles?: {
+                    outboundProvisioningRoles: {
                         heading: string;
                         hint: string;
                         placeHolder: string;
@@ -4137,7 +4129,7 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
-                    certificateSection?: {
+                    certificateSection: {
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;
@@ -4145,7 +4137,7 @@ export interface ConsoleNS {
                         noCertificateAlert: string;
                     };
                 };
-                helpPanel?: {
+                helpPanel: {
                     tabs: {
                         samples: {
                             content: {
@@ -4160,11 +4152,11 @@ export interface ConsoleNS {
                     };
                 };
                 templates: {
-                    manualSetup?: {
+                    manualSetup: {
                         heading: string;
                         subHeading: string;
                     };
-                    quickSetup?: {
+                    quickSetup: {
                         heading: string;
                         subHeading: string;
                     };
@@ -4218,7 +4210,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    facebook?: {
+                    facebook: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -4244,7 +4236,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    github?: {
+                    github: {
                         wizardHelp: {
                             heading: string;
                             subHeading: string;
@@ -4270,7 +4262,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    google?: {
+                    google: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -4308,7 +4300,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    microsoft?: {
+                    microsoft: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -4333,7 +4325,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    hypr?: {
+                    hypr: {
                         wizardHelp: {
                             apiToken: {
                                 description: string;
@@ -4365,7 +4357,7 @@ export interface ConsoleNS {
                             title: string;
                             subtitle: string;
                         };
-                        saml?: {
+                        saml: {
                             preRequisites: {
                                 configureIdp: string;
                                 configureRedirectURL: string;
@@ -4431,11 +4423,11 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                list?: {
+                list: {
                     actions: string;
                     name: string;
                 };
-                modals?: {
+                modals: {
                     addAuthenticator: {
                         title: string;
                         subTitle: string;
@@ -4456,7 +4448,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                notifications?: {
+                notifications: {
                     addFederatedAuthenticator: {
                         error: {
                             message: string;
@@ -5008,7 +5000,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                popups?: {
+                popups: {
                     appStatus: {
                         enabled: {
                             content: string;
@@ -5022,7 +5014,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                placeHolders?: {
+                placeHolders: {
                     emptyCertificateList: {
                         title: string;
                         subtitles: {
@@ -5074,7 +5066,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                wizards?: {
+                wizards: {
                     addAuthenticator: {
                         header: string;
                         steps: {
@@ -5266,7 +5258,7 @@ export interface ConsoleNS {
                         actionTitle: string;
                         header: string;
                         subheader: string;
-                        subheader2?: string;
+                        subheader2: string;
                     };
                     deleteIDP: {
                         actionTitle: string;
@@ -5283,12 +5275,10 @@ export interface ConsoleNS {
                         homeRealmIdentifier: {
                             hint: string;
                             label: string;
-                            placeholder?: string;
                         };
                         alias: {
                             hint: string;
                             label: string;
-                            placeholder?: string;
                         };
                         certificateType: {
                             label: string;
@@ -6344,7 +6334,7 @@ export interface ConsoleNS {
                         actionTitle: string;
                         header: string;
                         subheader: string;
-                        subheader2?: string;
+                        subheader2: string;
                     };
                     deleteIDVP: {
                         actionTitle: string;
@@ -6373,7 +6363,7 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
-                        authenticationProviders?: {
+                        authenticationProviders: {
                             heading: string;
                             subHeading: string;
                         };
@@ -6392,7 +6382,7 @@ export interface ConsoleNS {
                     application: string;
                     gettingStarted: string;
                     identityProviders: string;
-                    authenticationProviders?: string;
+                    authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
                 };
@@ -6400,9 +6390,9 @@ export interface ConsoleNS {
                 identityProviderEdit: string;
                 identityProviderTemplates: string;
                 identityProviders: string;
-                authenticationProviderEdit?: string;
-                authenticationProviderTemplates?: string;
-                authenticationProviders?: string;
+                authenticationProviderEdit: string;
+                authenticationProviderTemplates: string;
+                authenticationProviders: string;
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;
@@ -6416,7 +6406,7 @@ export interface ConsoleNS {
                     subtitles: string;
                 };
             };
-            secrets?: {
+            secrets: {
                 advancedSearch: {
                     form: {
                         inputs: {
@@ -6433,33 +6423,33 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                page?: {
+                page: {
                     title: string;
                     description: string;
                     primaryActionButtonText: string;
                     subFeatureBackButton: string;
                 };
-                errors?: {
+                errors: {
                     generic: {
                         message: string;
                         description: string;
                     }
                 },
-                routes?: {
+                routes: {
                     name: string;
                     category: string;
                     sidePanelChildrenNames: string[];
                 },
-                alerts?: {
-                    createdSecret?: {
+                alerts: {
+                    createdSecret: {
                         description: string;
                         message: string;
                     },
-                    updatedSecret?: {
+                    updatedSecret: {
                         description: string;
                         message: string;
                     },
-                    deleteSecret?: {
+                    deleteSecret: {
                         description: string;
                         message: string;
                     }
@@ -6474,11 +6464,11 @@ export interface ConsoleNS {
                         warningMessage: string;
                     }
                 },
-                wizards?: {
-                    addSecret?: {
-                        heading?: string;
-                        subheading?: string;
-                        form?: {
+                wizards: {
+                    addSecret: {
+                        heading: string;
+                        subheading: string;
+                        form: {
                             secretTypeField: Record<string, string>;
                             secretNameField: Record<string, string>;
                             secretValueField: Record<string, string>;
@@ -6496,7 +6486,7 @@ export interface ConsoleNS {
                         };
                     }
                 },
-                banners?: {
+                banners: {
                     secretIsHidden: {
                         title: string;
                         content: string;
@@ -6506,29 +6496,29 @@ export interface ConsoleNS {
                         content: string;
                     }
                 },
-                forms?: {
-                    editSecret?: {
+                forms: {
+                    editSecret: {
                         page: {
                             description: string;
                         },
                         secretValueField: Record<string, string>;
                         secretDescriptionField: Record<string, string>;
                     },
-                    actions?: {
+                    actions: {
                         submitButton: {
                             label: string;
                             ariaLabel: string;
                         }
                     }
                 },
-                emptyPlaceholders?: {
+                emptyPlaceholders: {
                     resourceNotFound: {
                         messages: string[];
                     },
                     emptyListOfSecrets: {
                         messages: string[];
                     },
-                    buttons?: {
+                    buttons: {
                         backToSecrets: {
                             label: string;
                             ariaLabel: string;
@@ -6601,7 +6591,7 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
             };
-            authenticationProvider?: {
+            authenticationProvider: {
                 title: string;
                 subTitle: string;
             };
@@ -7147,7 +7137,6 @@ export interface ConsoleNS {
                     };
                 };
                 title: string;
-                subTitle?: string;
                 notifications: {
                     fetchOrganization: {
                         error: {
@@ -8267,7 +8256,11 @@ export interface ConsoleNS {
                                 };
                             };
                         };
-                        dialectURI: FormField;
+                        dialectURI: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         submit: string;
                     };
                 };
@@ -9117,7 +9110,7 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
-                genericDescription?: string;
+                genericDescription: string;
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;
@@ -9712,7 +9705,12 @@ export interface ConsoleNS {
             };
             helpPanel: {
                 notifications: {
-                    pin: Notification;
+                    pin: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             oidcScopes: {
@@ -10639,9 +10637,48 @@ export interface ConsoleNS {
                             description: string;
                         }
                     };
-                    updateRole: Notification;
-                    createRole: Notification;
-                    createPermission: Notification;
+                    updateRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createPermission: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             serverConfigs: {
@@ -11194,7 +11231,6 @@ export interface ConsoleNS {
                                 importSuccess: {
                                     message: string;
                                     description: string;
-                                    genericMessage?: string;
                                 };
                                 importFailed: {
                                     message: string;
@@ -11212,7 +11248,6 @@ export interface ConsoleNS {
                                     creationSuccess: {
                                         message: string;
                                         description: string;
-                                        genericMessage?: string;
                                     };
                                 };
                                 hint: string;
@@ -11253,12 +11288,10 @@ export interface ConsoleNS {
                         successAlert: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                         errorAlert: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                         tableMessages: {
                             userNotFound: string;
@@ -11904,7 +11937,7 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
-            invite?: {
+            invite: {
                 inviteButton: string;
                 subSelection: {
                     onBoard: string;
@@ -12080,7 +12113,7 @@ export interface ConsoleNS {
                 };
                 invitedUserLabel: string;
             };
-            onboarded?: {
+            onboarded: {
                 notifications: {
                     removeUser: {
                         error: {
@@ -12550,14 +12583,28 @@ export interface ConsoleNS {
                 subTitle: string;
                 backButton: string;
             };
-            invite?: {
+            invite: {
                 title: string;
                 subTitle: string;
             };
         };
         placeholders: {
-            emptySearchResult: Placeholder;
-            underConstruction: Placeholder;
+            emptySearchResult: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            underConstruction: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
         };
     };
     saml2Config: {
