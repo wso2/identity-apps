@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 /**
  * Model for the Console namespace
  */
@@ -403,7 +402,7 @@ export interface ConsoleNS {
                     subTitle: {
                         0: string;
                         1: string;
-                    },
+                    };
                     viewAll: string;
                 };
                 copyPopupText: string;
@@ -462,7 +461,7 @@ export interface ConsoleNS {
                                 };
                                 permissionList: {
                                     label: string;
-                                }
+                                };
                                 description: {
                                     label: string;
                                     placeholder: string;
@@ -481,7 +480,7 @@ export interface ConsoleNS {
             actions: {
                 save: string;
                 resetAll: string;
-            }
+            };
         };
         tabs: {
             text: {
@@ -489,7 +488,7 @@ export interface ConsoleNS {
             };
             preview: {
                 label: string;
-            }
+            };
         };
         screens: {
             common: string;
@@ -498,12 +497,12 @@ export interface ConsoleNS {
             "email-otp": string;
             "email-template": string;
             "sign-up": string;
-            "totp": string;
+            totp: string;
             myaccount: string;
             "password-recovery": string;
             "password-reset": string;
             "password-reset-success": string;
-        }
+        };
     };
     brandingCustomText: {
         revertScreenConfirmationModal: {
@@ -577,7 +576,7 @@ export interface ConsoleNS {
                 "password.reset.success.heading": {
                     hint: string;
                 };
-            }
+            };
         };
         localeSelectDropdown: {
             label: string;
@@ -589,7 +588,7 @@ export interface ConsoleNS {
             };
             json: {
                 label: string;
-            }
+            };
         };
         notifications: {
             getPreferenceError: {
@@ -625,8 +624,8 @@ export interface ConsoleNS {
                 options: {
                     addExistingUser: string;
                     inviteNewUser: string;
-                }
-            },
+                };
+            };
             edit: {
                 backButton: string;
             };
@@ -658,10 +657,10 @@ export interface ConsoleNS {
         enabledFeatures: {
             tags: {
                 premium: {
-                    warning: string
-                }
-            }
-        }
+                    warning: string;
+                };
+            };
+        };
     };
     develop: {
         features: {
@@ -4145,10 +4144,10 @@ export interface ConsoleNS {
                                     goBack: string;
                                     hint: string;
                                     title: string;
-                                }
-                            },
+                                };
+                            };
                             heading: string;
-                        }
+                        };
                     };
                 };
                 templates: {
@@ -5427,10 +5426,12 @@ export interface ConsoleNS {
                     };
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: string | {
-                                1: string;
-                                2: string;
-                            };
+                            disabledMessageContent:
+                                | string
+                                | {
+                                      1: string;
+                                      2: string;
+                                  };
                             hint: string;
                             label: string;
                             disabledMessageHeader: string;
@@ -5500,10 +5501,10 @@ export interface ConsoleNS {
                                     goBack: string;
                                     hint: string;
                                     title: string;
-                                }
+                                };
                             };
                             heading: string;
-                        }
+                        };
                     };
                 };
                 templates: {
@@ -6433,27 +6434,27 @@ export interface ConsoleNS {
                     generic: {
                         message: string;
                         description: string;
-                    }
-                },
+                    };
+                };
                 routes: {
                     name: string;
                     category: string;
                     sidePanelChildrenNames: string[];
-                },
+                };
                 alerts: {
                     createdSecret: {
                         description: string;
                         message: string;
-                    },
+                    };
                     updatedSecret: {
                         description: string;
                         message: string;
-                    },
+                    };
                     deleteSecret: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 modals: {
                     deleteSecret: {
                         assertionHint: string;
@@ -6462,8 +6463,8 @@ export interface ConsoleNS {
                         title: string;
                         content: string;
                         warningMessage: string;
-                    }
-                },
+                    };
+                };
                 wizards: {
                     addSecret: {
                         heading: string;
@@ -6473,8 +6474,8 @@ export interface ConsoleNS {
                             secretNameField: Record<string, string>;
                             secretValueField: Record<string, string>;
                             secretDescriptionField: Record<string, string>;
-                        }
-                    },
+                        };
+                    };
                     actions: {
                         createButton: {
                             label: string;
@@ -6484,52 +6485,52 @@ export interface ConsoleNS {
                             label: string;
                             ariaLabel: string;
                         };
-                    }
-                },
+                    };
+                };
                 banners: {
                     secretIsHidden: {
                         title: string;
                         content: string;
-                    },
+                    };
                     adaptiveAuthSecretType: {
                         title: string;
                         content: string;
-                    }
-                },
+                    };
+                };
                 forms: {
                     editSecret: {
                         page: {
                             description: string;
-                        },
+                        };
                         secretValueField: Record<string, string>;
                         secretDescriptionField: Record<string, string>;
-                    },
+                    };
                     actions: {
                         submitButton: {
                             label: string;
                             ariaLabel: string;
-                        }
-                    }
-                },
+                        };
+                    };
+                };
                 emptyPlaceholders: {
                     resourceNotFound: {
                         messages: string[];
-                    },
+                    };
                     emptyListOfSecrets: {
                         messages: string[];
-                    },
+                    };
                     buttons: {
                         backToSecrets: {
                             label: string;
                             ariaLabel: string;
-                        },
+                        };
                         addSecret: {
                             label: string;
                             ariaLabel: string;
-                        }
-                    }
-                }
-            }
+                        };
+                    };
+                };
+            };
         };
         notifications: {
             endSession: {
@@ -6905,7 +6906,7 @@ export interface ConsoleNS {
                 actions: {
                     create: {
                         label: string;
-                    }
+                    };
                 };
                 emptyPlaceholder: {
                     header: string;
@@ -6979,36 +6980,36 @@ export interface ConsoleNS {
                     form: {
                         fields: {
                             emailDomains: {
-                                label : string;
+                                label: string;
                                 placeholder: string;
                                 hint: string;
                                 validations: {
                                     invalid: {
                                         0: string;
                                         1: string;
-                                    }
-                                }
-                            },
+                                    };
+                                };
+                            };
                             organizationName: {
                                 label: string;
                                 placeholder: string;
                                 emptyPlaceholder: {
                                     0: string;
                                     1: string;
-                                }
+                                };
                                 hint: string;
-                            }
-                        }
-                    },
+                            };
+                        };
+                    };
                     buttons: {
                         assign: string;
-                    }
-                },
+                    };
+                };
                 emailDomains: {
                     actions: {
                         assign: string;
                         enable: string;
-                    }
+                    };
                 };
                 edit: {
                     back: string;
@@ -7016,15 +7017,15 @@ export interface ConsoleNS {
                     form: {
                         fields: {
                             emailDomains: {
-                                label : string;
+                                label: string;
                                 placeholder: string;
                                 hint: string;
                                 validations: {
                                     invalid: {
                                         0: string;
                                         1: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                             organizationName: {
                                 label: string;
@@ -7100,7 +7101,7 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
-                },
+                };
                 placeholders: {
                     emptyList: {
                         action: string;
@@ -7262,10 +7263,10 @@ export interface ConsoleNS {
                         action: string;
                         title: string;
                         subtitles: {
-                           0: string;
-                           1: string;
-                           2: string;
-                           3: string;
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
                         };
                     };
                 };
@@ -7275,7 +7276,7 @@ export interface ConsoleNS {
                     tabTitles: {
                         overview: string;
                         attributes: string;
-                    },
+                    };
                     fields: {
                         id: {
                             label: string;
@@ -7307,7 +7308,7 @@ export interface ConsoleNS {
                             label: string;
                             ariaLabel: string;
                         };
-                    },
+                    };
                     dangerZone: {
                         title: string;
                         subHeader: string;
@@ -7315,15 +7316,15 @@ export interface ConsoleNS {
                             enableActionTitle: string;
                             disableActionTitle: string;
                             subheader: string;
-                        }
-                    },
+                        };
+                    };
                     attributes: {
                         hint: string;
                         key: string;
                         value: string;
                         keyRequiredErrorMessage: string;
                         valueRequiredErrorMessage: string;
-                    }
+                    };
                 };
                 modals: {
                     addOrganization: {
@@ -7335,10 +7336,10 @@ export interface ConsoleNS {
                 forms: {
                     addOrganization: {
                         name: {
-                            validation : {
-                                duplicate:string;
-                                empty:string;
-                            }
+                            validation: {
+                                duplicate: string;
+                                empty: string;
+                            };
                             label: string;
                             placeholder: string;
                         };
@@ -7347,10 +7348,10 @@ export interface ConsoleNS {
                             placeholder: string;
                         };
                         domainName: {
-                            validation:{
-                                duplicate:string;
-                                empty:string;
-                            }
+                            validation: {
+                                duplicate: string;
+                                empty: string;
+                            };
                             label: string;
                             placeholder: string;
                         };
@@ -7383,38 +7384,38 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
-                        }
-                    }
-                }
+                            };
+                        };
+                    };
+                };
                 view: {
                     description: string;
-                }
+                };
             };
             users: {
                 addUserType: {
                     createUser: {
                         title: string;
-                        description: string
+                        description: string;
                     };
                     inviteParentUser: {
                         title: string;
-                        description: string
+                        description: string;
                     };
                 };
                 consumerUsers: {
                     fields: {
-                       username: {
-                           label: string;
-                           placeholder: string;
-                           validations: {
-                               empty: string;
-                               invalid: string;
-                               invalidCharacters: string;
-                               regExViolation: string;
-                           };
-                       }
-                    }
+                        username: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                invalidCharacters: string;
+                                regExViolation: string;
+                            };
+                        };
+                    };
                 };
                 guestUsers: {
                     fields: {
@@ -7427,8 +7428,8 @@ export interface ConsoleNS {
                                 invalidCharacters: string;
                                 regExViolation: string;
                             };
-                        }
-                    }
+                        };
+                    };
                 };
                 confirmations: {
                     terminateAllSessions: {
@@ -7436,19 +7437,19 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                     };
+                    };
                     terminateSession: {
                         assertionHint: string;
                         header: string;
                         message: string;
                         content: string;
-                     };
+                    };
                     addMultipleUser: {
                         assertionHint: string;
                         header: string;
                         message: string;
                         content: string;
-                     }
+                    };
                 };
                 editUser: {
                     tab: {
@@ -7463,9 +7464,8 @@ export interface ConsoleNS {
                         undefinedUser: {
                             action: string;
                             title: string;
-                            subtitles: string
-                         }
-                         ;
+                            subtitles: string;
+                        };
                     };
                 };
                 userSessions: {
@@ -7500,61 +7500,60 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         terminateAllUserSessions: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         terminateUserSession: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getAdminUser: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     placeholders: {
                         emptyListPlaceholder: {
                             title: string;
-                            subtitles: string
-                        }
-                        ;
+                            subtitles: string;
+                        };
                     };
                 };
                 advancedSearch: {
@@ -7591,7 +7590,7 @@ export interface ConsoleNS {
                 addUserDropDown: {
                     addNewUser: string;
                     bulkImport: string;
-                }
+                };
                 forms: {
                     validation: {
                         formatError: string;
@@ -7611,29 +7610,29 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     addUserPendingApproval: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     bulkImportUser: {
                         validation: {
@@ -7677,99 +7676,98 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             };
-                        },
+                        };
                         submit: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                             }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         timeOut: {
                             message: string;
                             description: string;
                         };
-                    }
+                    };
                     deleteUser: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUsers: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getAdminRole: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     revokeAdmin: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles:  {
-                            0: string,
-                            1: string,
-                        }
-                    }
-                    ;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
                     userstoreError: {
                         title: string;
-                        subtitles:  {
-                            0: string,
-                            1: string,
-                        }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                 };
                 usersList: {
@@ -7826,12 +7824,12 @@ export interface ConsoleNS {
                 };
                 modals: {
                     approvalProperties: {
-                        "Claims": string,
-                        "REQUEST ID": string,
-                        "Roles": string,
-                        "User Store Domain": string,
-                        "Username": string,
-                    },
+                        Claims: string;
+                        "REQUEST ID": string;
+                        Roles: string;
+                        "User Store Domain": string;
+                        Username: string;
+                    };
                     taskDetails: {
                         header: string;
                         description: string;
@@ -7842,73 +7840,73 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchPendingApprovals: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updatePendingApprovals: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
                     emptyApprovalList: {
                         action: string;
                         title: string;
-                        subtitles:  {
-                            0:string,
-                            1:string
-                            2:string
-                        }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyApprovalFilter: {
                         action: string;
                         title: string;
-                        subtitles:  {
-                            0:string,
-                            1:string
-                            2:string
-                        }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptySearchResults: {
-                        action:string;
+                        action: string;
                         title: string;
-                        subtitles:  {
-                            0: string,
-                            1:string
-                            2:string
-                        }
-                    }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
                 };
             };
             certificates: {
@@ -7944,51 +7942,51 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getCertificates: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getAlias: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getPublicCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         download: {
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     certificateModalHeader: string;
@@ -8075,11 +8073,11 @@ export interface ConsoleNS {
                     axschema: {
                         heading: string;
                         description: string;
-                    },
+                    };
                     eidas: {
                         heading: string;
                         description: string;
-                    },
+                    };
                     oidc: {
                         heading: string;
                         description: string;
@@ -8119,67 +8117,67 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         fetchADialect: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         fetchExternalClaims: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteDialect: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         addDialect: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateDialect: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         fetchSCIMResource: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     pageLayout: {
@@ -8291,53 +8289,51 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                        }
-                        ;
+                            };
+                        };
                         fetchExternalClaims: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                        }
-                        ;
+                            };
+                        };
                         getExternalAttribute: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateExternalAttribute: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteExternalClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     forms: {
@@ -8346,9 +8342,9 @@ export interface ConsoleNS {
                             placeholder: string;
                             requiredErrorMessage: string;
                             validationErrorMessages: {
-                                duplicateName:string;
-                                invalidName:string;
-                                scimInvalidName:string;
+                                duplicateName: string;
+                                invalidName: string;
+                                scimInvalidName: string;
                             };
                         };
                         localAttribute: {
@@ -8399,63 +8395,63 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getAClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getClaims: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getLocalDialect: {
                             genericError: {
-                                    message: string;
-                                    description: string;
-                            }
+                                message: string;
+                                description: string;
+                            };
                         };
                         addLocalClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     pageLayout: {
@@ -8558,7 +8554,7 @@ export interface ConsoleNS {
                         infoMessages: {
                             disabledConfigInfo: string;
                             configApplicabilityInfo: string;
-                        }
+                        };
                     };
                     dangerZone: {
                         actionTitle: string;
@@ -8623,7 +8619,7 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    },
+                    };
                     saveChangesButton: string;
                 };
             };
@@ -8636,26 +8632,26 @@ export interface ConsoleNS {
                     addLocale: {
                         fields: {
                             bodyEditor: {
-                                label: string ;
+                                label: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             locale: {
-                                label: string ;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             signatureEditor: {
-                                label: string ;
+                                label: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             subject: {
-                                label: string ;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -8701,7 +8697,7 @@ export interface ConsoleNS {
                     addTemplateType: {
                         fields: {
                             type: {
-                                label: string ;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -8719,57 +8715,57 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getTemplateTypes: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateTemplateType: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createTemplateType: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
@@ -8785,7 +8781,7 @@ export interface ConsoleNS {
                             0: string;
                             1: string;
                             2: string;
-                        }
+                        };
                     };
                 };
                 wizards: {
@@ -8795,7 +8791,7 @@ export interface ConsoleNS {
                         steps: {
                             templateType: {
                                 heading: string;
-                            }
+                            };
                         };
                     };
                 };
@@ -8834,77 +8830,77 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createTemplate: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getTemplateDetails: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getTemplates: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     iframeUnsupported: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateTemplate: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
@@ -8915,7 +8911,7 @@ export interface ConsoleNS {
                             0: string;
                             1: string;
                             2: string;
-                        }
+                        };
                     };
                 };
                 viewTemplate: {
@@ -8963,7 +8959,7 @@ export interface ConsoleNS {
                             emptyListPlaceholder: {
                                 title: string;
                                 subtitles: string;
-                             };
+                            };
                         };
                     };
                 };
@@ -8981,69 +8977,69 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateGroup: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createGroup: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createPermission: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchGroups: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
                     groupsError: {
                         title: string;
-                        subtitles: string [];
+                        subtitles: string[];
                     };
                 };
             };
@@ -9059,43 +9055,43 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getConnector: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateConnector: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 form: {
@@ -9112,7 +9108,7 @@ export interface ConsoleNS {
                 connectorSubHeading: string;
                 genericDescription: string;
                 connectorCategories: {
-                    passwordPolicies : {
+                    passwordPolicies: {
                         name: string;
                         description: string;
                         connectors: {
@@ -9159,13 +9155,13 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    userOnboarding : {
+                    userOnboarding: {
                         name: string;
                         description: string;
                         connectors: {
                             askPassword: {
                                 friendlyName: string;
-                            },
+                            };
                             selfSignUp: {
                                 friendlyName: string;
                                 properties: {
@@ -9204,7 +9200,7 @@ export interface ConsoleNS {
                                     selfRegistrationCallbackRegex: {
                                         hint: string;
                                         label: string;
-                                    },
+                                    };
                                     urlListPurposeSelfSignUp: {
                                         hint: string;
                                         label: string;
@@ -9303,7 +9299,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    loginAttemptsSecurity : {
+                    loginAttemptsSecurity: {
                         name: string;
                         description: string;
                         connectors: {
@@ -9355,7 +9351,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    accountManagement : {
+                    accountManagement: {
                         name: string;
                         description: string;
                         connectors: {
@@ -9500,7 +9496,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    otherSettings : {
+                    otherSettings: {
                         name: string;
                         description: string;
                         connectors: {
@@ -9603,9 +9599,9 @@ export interface ConsoleNS {
                             elasticAnalyticsEngine: {
                                 friendlyName: string;
                                 warningModal: {
-                                    configure: string,
-                                    reassure: string
-                                },
+                                    configure: string;
+                                    reassure: string;
+                                };
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: string;
@@ -9672,7 +9668,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    multiFactorAuthenticators : {
+                    multiFactorAuthenticators: {
                         name: string;
                         friendlyName: string;
                         description: string;
@@ -9745,16 +9741,15 @@ export interface ConsoleNS {
                             subtitles: {
                                 0: string;
                                 1: string;
-                            }
-                        }
-                         ;
+                            };
+                        };
                         emptySearch: {
                             action: string;
                             title: string;
                             subtitles: {
                                 0: string;
                                 1: string;
-                            }
+                            };
                         };
                         title: string;
                         subTitle: string;
@@ -9800,7 +9795,7 @@ export interface ConsoleNS {
                         subtitles: {
                             0: string;
                             1: string;
-                        }
+                        };
                     };
                     searchPlaceholder: string;
                 };
@@ -9833,120 +9828,119 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     addOIDCClaim: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchOIDCScopes: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchOIDCScope: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchOIDClaims: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     deleteOIDCScope: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     deleteOIDClaim: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateOIDCScope: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     claimsMandatory: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
@@ -9962,10 +9956,10 @@ export interface ConsoleNS {
                     emptySearch: {
                         action: string;
                         title: string;
-                        subtitles:{
+                        subtitles: {
                             0: string;
                             1: string;
-                        }
+                        };
                     };
                 };
             };
@@ -10114,86 +10108,85 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
-                    }
-                    ;
+                        };
+                    };
                     deleteRepoConfig: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getConfigDeploymentDetails: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getConfigList: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getRemoteRepoConfig: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     triggerConfigDeployment: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 pages: {
@@ -10241,23 +10234,23 @@ export interface ConsoleNS {
                                     duplicateInAudience: string;
                                     empty: string;
                                     invalid: string;
-                                }
+                                };
                             };
                             roleAudience: {
-                                values:{
-                                    organization:string;
-                                    application:string;
-                                }
+                                values: {
+                                    organization: string;
+                                    application: string;
+                                };
                                 hint: string;
-                                label: string ;
+                                label: string;
                             };
                             assignedApplication: {
                                 applicationSubTitle: {
-                                    application:string;
-                                    organization:string;
-                                    changeAudience:string;
+                                    application: string;
+                                    organization: string;
+                                    changeAudience: string;
                                 };
-                                note:string;
+                                note: string;
                                 hint: string;
                                 label: string;
                                 placeholder: string;
@@ -10266,10 +10259,10 @@ export interface ConsoleNS {
                                 };
                             };
                             notes: {
-                                orgNote: string,
-                                appNote: string,
-                                cannotCreateRole: string
-                            }
+                                orgNote: string;
+                                appNote: string;
+                                cannotCreateRole: string;
+                            };
                         };
                         rolePermission: {
                             apiResource: {
@@ -10277,7 +10270,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 hint: {
                                     empty: string;
-                                }
+                                };
                             };
                             permissions: {
                                 label: string;
@@ -10286,7 +10279,7 @@ export interface ConsoleNS {
                                     noScopes: string;
                                     selectAllScopes: string;
                                     removeAPIResource: string;
-                                },
+                                };
                                 validation: {
                                     empty: string;
                                 };
@@ -10300,7 +10293,7 @@ export interface ConsoleNS {
                                     error: {
                                         message: string;
                                         description: string;
-                                    }
+                                    };
                                 };
                             };
                         };
@@ -10370,10 +10363,10 @@ export interface ConsoleNS {
                         errorPlaceHolder: {
                             action: string;
                             title: string;
-                            subtitles:{
+                            subtitles: {
                                 0: string;
-                                1:string;
-                            }
+                                1: string;
+                            };
                         };
                     };
                     basics: {
@@ -10410,16 +10403,16 @@ export interface ConsoleNS {
                                 action: string;
                                 title: string;
                                 subtitles: {
-                                    0: string
-                                }
+                                    0: string;
+                                };
                             };
                             errorPlaceholder: {
                                 action: string;
                                 title: string;
                                 subtitles: {
                                     0: string;
-                                    1: string
-                                }
+                                    1: string;
+                                };
                             };
                         };
                         notifications: {
@@ -10447,14 +10440,14 @@ export interface ConsoleNS {
                         actions: {
                             search: {
                                 placeholder: string;
-                            },
+                            };
                             assign: {
                                 placeholder: string;
-                            },
+                            };
                             remove: {
                                 label: string;
                                 placeholder: string;
-                            }
+                            };
                         };
                     };
                     menuItems: {
@@ -10472,9 +10465,9 @@ export interface ConsoleNS {
                             emptyPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles:{
-                                    0: string
-                                }
+                                subtitles: {
+                                    0: string;
+                                };
                             };
                             errorPlaceholder: {
                                 action: string;
@@ -10482,7 +10475,7 @@ export interface ConsoleNS {
                                 subtitles: {
                                     0: string;
                                     1: string;
-                                }
+                                };
                             };
                         };
                         notifications: {
@@ -10508,21 +10501,21 @@ export interface ConsoleNS {
                                 action: string;
                                 title: string;
                                 subtitles: string;
-                             };
+                            };
                             user: string;
                             organization: string;
                         };
                         actions: {
                             search: {
                                 placeholder: string;
-                            },
+                            };
                             assign: {
                                 placeholder: string;
-                            },
+                            };
                             remove: {
                                 label: string;
                                 placeholder: string;
-                            }
+                            };
                         };
                     };
                     permissions: {
@@ -10569,21 +10562,21 @@ export interface ConsoleNS {
                             action: string;
                             title: string;
                             subtitles: {
-                                0 : string;
-                                1 : string;
-                            }
+                                0: string;
+                                1: string;
+                            };
                         };
                         emptyRoleList: {
                             action: string;
                             title: string;
                             subtitles: {
-                                0 : string;
-                                1 : string;
-                                2 : string;
-                            }
-                        } & {
-                            emptyRoles: string
+                                0: string;
+                                1: string;
+                                2: string;
                             };
+                        } & {
+                            emptyRoles: string;
+                        };
                     };
                     popups: {
                         delete: string;
@@ -10603,39 +10596,41 @@ export interface ConsoleNS {
                     emptyPlaceholders: {
                         searchAndFilter: {
                             title: string;
-                            subtitles: string | {
-                             0: string
-                             1: string
-                            }
-                        }
-                    }
-                }
+                            subtitles:
+                                | string
+                                | {
+                                      0: string;
+                                      1: string;
+                                  };
+                        };
+                    };
+                };
                 notifications: {
                     deleteRole: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchRoles: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchRole: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateRole: {
                         error: {
@@ -10710,57 +10705,57 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         enableAdminAdvisoryBanner: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getConfigurations: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateConfigurations: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     pageHeading: string;
@@ -10781,47 +10776,47 @@ export interface ConsoleNS {
                                 carbonLogs: string;
                                 auditLogs: string;
                                 allLogs: string;
-                            }
-                        },
+                            };
+                        };
                         remoteURL: {
                             label: string;
-                        },
+                        };
                         advanced: {
-                            title: string,
+                            title: string;
                             connectionTimeout: {
                                 label: string;
-                            },
+                            };
                             verifyHostname: {
                                 label: string;
-                            },
+                            };
                             basicAuthConfig: {
                                 title: string;
                                 serverUsername: {
                                     label: string;
-                                },
+                                };
                                 serverPassword: {
                                     label: string;
-                                }
-                            },
+                                };
+                            };
                             sslConfig: {
                                 title: string;
                                 keystorePath: {
                                     label: string;
-                                },
+                                };
                                 keystorePassword: {
                                     label: string;
-                                },
+                                };
                                 truststorePath: {
                                     label: string;
-                                },
+                                };
                                 truststorePassword: {
                                     label: string;
-                                },
-                            }
-                        }
+                                };
+                            };
+                        };
                     };
                     dangerZone: {
-                        button: string,
+                        button: string;
                         title: string;
                         header: string;
                         subheader: string;
@@ -10830,7 +10825,7 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                        }
+                        };
                     };
                     notification: {
                         success: {
@@ -10846,8 +10841,8 @@ export interface ConsoleNS {
                                 description: string;
                                 message: string;
                             };
-                        }
-                    }
+                        };
+                    };
                 };
                 realmConfiguration: {
                     actionTitles: {
@@ -10864,44 +10859,44 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                         };
+                            };
+                        };
                         updateConfigurations: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         emptyHomeRealmIdentifiers: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                         };
+                            };
+                        };
                     };
                     form: {
                         homeRealmIdentifiers: {
@@ -10956,7 +10951,7 @@ export interface ConsoleNS {
                 otherSettings: string;
                 overview: string;
                 passwordPolicies: string;
-                remoteFetchConfig: string
+                remoteFetchConfig: string;
                 roles: string;
                 userOnboarding: string;
                 users: string;
@@ -10995,7 +10990,7 @@ export interface ConsoleNS {
                 deleteJITUser: {
                     confirmationModal: {
                         content: string;
-                    }
+                    };
                 };
                 deleteUser: {
                     confirmationModal: {
@@ -11056,7 +11051,7 @@ export interface ConsoleNS {
                         placeholder: {
                             part1: string;
                             part2: string;
-                        }
+                        };
                     };
                 };
                 forms: {
@@ -11153,7 +11148,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                     };
+                    };
                 };
                 modals: {
                     addUserWarnModal: {
@@ -11210,7 +11205,7 @@ export interface ConsoleNS {
                                 username: string;
                                 status: string;
                                 message: string;
-                            }
+                            };
                             tableMessages: {
                                 userCreatedMessage: string;
                                 invalidDataMessage: string;
@@ -11236,7 +11231,7 @@ export interface ConsoleNS {
                                     message: string;
                                     userCreation: string;
                                     groupAssignment: string;
-                                }
+                                };
                             };
                             advanceSearch: {
                                 searchByUsername: string;
@@ -11274,14 +11269,14 @@ export interface ConsoleNS {
                         };
                         buttons: {
                             import: string;
-                        },
+                        };
                         sidePanel: {
                             manual: string;
                             fileBased: string;
                             fileFormatTitle: string;
                             fileFormatContent: string;
                             fileFormatSampleHeading: string;
-                        }
+                        };
                     };
                     inviteParentUserWizard: {
                         totalInvitations: string;
@@ -11298,8 +11293,8 @@ export interface ConsoleNS {
                             activeInvitationExists: string;
                             userEmailNotFound: string;
                             userAlreadyExist: string;
-                        }
-                    }
+                        };
+                    };
                     changePasswordModal: {
                         header: string;
                         message: string;
@@ -11403,123 +11398,123 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateProfileInfo: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         lockUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         unlockUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         disableUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         enableUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         changeUserPassword: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         forcePasswordReset: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         noPasswordResetOptions: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     placeholders: {
@@ -11529,11 +11524,13 @@ export interface ConsoleNS {
                         userProfile: {
                             emptyListPlaceholder: {
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
-                                }
+                                subtitles:
+                                    | string
+                                    | {
+                                          [key: number]: string;
+                                      };
                             };
-                        }
+                        };
                     };
                 };
                 updateUser: {
@@ -11569,57 +11566,57 @@ export interface ConsoleNS {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             fetchUserGroups: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             removeUserGroups: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             updateUserGroups: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                         };
                     };
@@ -11654,7 +11651,7 @@ export interface ConsoleNS {
                                 emptyPlaceholder: {
                                     title: string;
                                     subtitles: string;
-                                 };
+                                };
                             };
                             heading: string;
                             popups: {
@@ -11668,57 +11665,57 @@ export interface ConsoleNS {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             fetchUserRoles: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             removeUserRoles: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             updateUserRoles: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                         };
                         viewPermissionModal: {
@@ -11749,38 +11746,38 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     fetchUserstores: {
-                        genericError : {
+                        genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUserstoreTemplates: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUserstoreTypes: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUserstoreMetadata: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     deleteUserstore: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     delay: {
                         message: string;
@@ -11790,37 +11787,37 @@ export interface ConsoleNS {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     testConnection: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     addUserstore: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     apiLimitReachedError: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateDelay: {
                         message: string;
@@ -11865,7 +11862,7 @@ export interface ConsoleNS {
                             placeholder: string;
                             requiredErrorMessage: string;
                             validationErrorMessages: {
-                                [ key: string ]: string;
+                                [key: string]: string;
                             };
                         };
                         type: {
@@ -11948,57 +11945,57 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     resendInvite: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     sendInvite: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateInvite: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 confirmationModal: {
@@ -12079,20 +12076,20 @@ export interface ConsoleNS {
                         hint: string;
                         validations: {
                             required: string;
-                        }
-                    },
+                        };
+                    };
                     groups: {
                         label: string;
                         placeholder: string;
                         hint: string;
                         validations: {
                             required: string;
-                        }
-                    },
+                        };
+                    };
                     inviteButton: string;
                 };
                 tab: {
-                    usersTab: string
+                    usersTab: string;
                     invitationsTab: string;
                 };
                 searchPlaceholder: string;
@@ -12117,17 +12114,17 @@ export interface ConsoleNS {
                 notifications: {
                     removeUser: {
                         error: {
-                        message: string;
-                        description: string;
-                        }
+                            message: string;
+                            description: string;
+                        };
                         genericError: {
-                        message: string;
-                        description: string;
-                        }
+                            message: string;
+                            description: string;
+                        };
                         success: {
-                        message: string;
-                        description: string;
-                        }
+                            message: string;
+                            description: string;
+                        };
                     };
                 };
                 confirmationModal: {
@@ -12144,12 +12141,12 @@ export interface ConsoleNS {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
-                },
+                    };
+                };
                 validationError: {
                     minMaxMismatch: string;
                     uniqueChrMismatch: string;
@@ -12158,21 +12155,21 @@ export interface ConsoleNS {
                     minLimitError: string;
                     maxLimitError: string;
                     wrongCombination: string;
-                }
+                };
                 notifications: {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
+                    };
                     success: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 pageTitle: string;
                 description: string;
                 goBackToApplication: string;
@@ -12183,26 +12180,26 @@ export interface ConsoleNS {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
-                },
+                    };
+                };
                 notifications: {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
+                    };
                     success: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 pageTitle: string;
                 description: string;
                 goBackToApplication: string;
@@ -12220,15 +12217,15 @@ export interface ConsoleNS {
                 lastFetchedMessage: {
                     label: string;
                     tooltipText: string;
-                },
+                };
                 advancedFilter: {
                     filterAttribute: string;
                     filterCondition: string;
                     filterValue: string;
-                },
+                };
                 commonFilters: {
                     userId: string;
-                },
+                };
                 activityType: {
                     login: {
                         filters: {
@@ -12268,9 +12265,9 @@ export interface ConsoleNS {
                                     selfSignUp: string;
                                 };
                             };
-                        }
-                    }
-                },
+                        };
+                    };
+                };
                 graphs: {
                     activeUsers: {
                         title: string;
@@ -12279,22 +12276,22 @@ export interface ConsoleNS {
                     successLogins: {
                         title: string;
                         titleHint: string;
-                    },
+                    };
                     failedLogins: {
                         title: string;
-                    },
+                    };
                     signups: {
                         title: string;
                         titleHint: string;
-                    }
-                },
+                    };
+                };
                 notifications: {
                     fetchInsights: {
                         genericError: {
                             description: string;
                             message: string;
-                        }
-                    }
+                        };
+                    };
                 };
                 compareToLastPeriodMessage: string;
             };
@@ -12305,7 +12302,7 @@ export interface ConsoleNS {
                 info: string;
                 updateButton: string;
                 sendTestSMSButton: string;
-                goBack: string
+                goBack: string;
                 confirmationModal: {
                     header: string;
                     message: string;
@@ -12318,7 +12315,7 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                         actionTitle: string;
-                    }
+                    };
                 };
                 form: {
                     twilio: {
@@ -12341,7 +12338,7 @@ export interface ConsoleNS {
                         validations: {
                             required: string;
                         };
-                    },
+                    };
                     vonage: {
                         subHeading: string;
                         accountSID: {
@@ -12362,7 +12359,7 @@ export interface ConsoleNS {
                         validations: {
                             required: string;
                         };
-                    },
+                    };
                     custom: {
                         subHeading: string;
                         providerName: {
@@ -12374,7 +12371,7 @@ export interface ConsoleNS {
                             label: string;
                             placeholder: string;
                             hint: string;
-                        },
+                        };
                         httpMethod: {
                             label: string;
                             placeholder: string;
@@ -12396,27 +12393,27 @@ export interface ConsoleNS {
                             hint: string;
                         };
                         key: {
-                            label: string,
-                            placeholder: string,
-                            hint: string
-                        },
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
                         secret: {
-                            label: string,
-                            placeholder: string,
-                            hint: string
-                        },
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
                         sender: {
-                            label: string,
-                            placeholder: string,
-                            hint: string
-                        }
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
                         validations: {
                             required: string;
                             methodInvalid: string;
                             contentTypeInvalid: string;
                         };
-                    }
-                }
+                    };
+                };
                 notifications: {
                     getConfiguration: {
                         error: {
@@ -12443,7 +12440,7 @@ export interface ConsoleNS {
                             description: string;
                             message: string;
                         };
-                    }
+                    };
                 };
             };
         };
@@ -12466,29 +12463,29 @@ export interface ConsoleNS {
                 error: {
                     message: string;
                     description: string;
-                }
+                };
                 genericError: {
                     message: string;
                     description: string;
-                }
+                };
                 success: {
                     message: string;
                     description: string;
-                }
+                };
             };
             getProfileSchema: {
                 error: {
                     message: string;
                     description: string;
-                }
+                };
                 genericError: {
                     message: string;
                     description: string;
-                }
+                };
                 success: {
                     message: string;
                     description: string;
-                }
+                };
             };
         };
         pages: {
