@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.4.0
+
+### Minor Changes
+
+- [#5645](https://github.com/wso2/identity-apps/pull/5645) [`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove fr-FR and si-LK translations for console application
+
+### Patch Changes
+
+- [#5673](https://github.com/wso2/identity-apps/pull/5673) [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify application namespaces in i18n modules
+
+* [#5709](https://github.com/wso2/identity-apps/pull/5709) [`7eb2a141e5`](https://github.com/wso2/identity-apps/commit/7eb2a141e521755331c725fc800c4c050fb9a8fd) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix content overlapping issue in my account
+
+* Updated dependencies [[`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682), [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc)]:
+  - @wso2is/i18n@2.1.0
+
 ## 2.3.45
 
 ### Patch Changes
