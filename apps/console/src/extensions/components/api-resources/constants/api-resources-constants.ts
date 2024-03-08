@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "apps/console/src/features/core";
+import { AppConstants } from "../../../../features/core";
 
 /**
  * Class containing API resources constants.

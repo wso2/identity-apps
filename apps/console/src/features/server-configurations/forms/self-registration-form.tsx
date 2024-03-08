@@ -20,9 +20,9 @@ import { ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core
 import { Field, Form, FormFieldMessage } from "@wso2is/form";
 import { ConfirmationModal, Text } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AppState } from "apps/console/src/features/core";
-import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
-import { useValidationConfigData } from "apps/console/src/features/validation/api";
+import { AppState } from "../../core";
+import { getUsernameConfiguration } from "../../users/utils/user-management-utils";
+import { useValidationConfigData } from "../../validation/api";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

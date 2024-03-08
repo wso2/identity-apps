@@ -21,8 +21,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
-} from "apps/console/src/features/identity-providers/models/identity-provider";
-import { Divider } from "modules/react-components/node_modules/semantic-ui-react";
+} from "../../../../features/identity-providers/models/identity-provider";
+import { Divider } from "semantic-ui-react";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {

@@ -31,8 +31,8 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations, history } from "apps/console/src/features/core";
-import { RequestErrorInterface } from "apps/console/src/features/core/hooks/use-request";
+import { getEmptyPlaceholderIllustrations, history } from "../../../core";
+import { RequestErrorInterface } from "../../../core/hooks/use-request";
 import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

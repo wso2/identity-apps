@@ -21,7 +21,7 @@ import { CommonUtils } from "@wso2is/core/utils";
 import {
     DataTable, EmptyPlaceholder, LinkButton, PrimaryButton, TableActionsInterface, TableColumnInterface
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "apps/console/src/features/core";
+import { getEmptyPlaceholderIllustrations } from "../../../../../features/core";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";

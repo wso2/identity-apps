@@ -18,7 +18,7 @@
 
 import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import { IdentifiableComponentInterface } from "modules/core/src/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import React, { MouseEvent, PropsWithChildren, ReactElement, ReactNode, SVGProps } from "react";
 
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
