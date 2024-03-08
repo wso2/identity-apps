@@ -91,6 +91,7 @@
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     String policyURL = privacyPolicyURL;
+    String tenantAwareUsername = "";
 
     if (error) {
         request.setAttribute("error", true);
@@ -352,9 +353,14 @@
         selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
         // Add auto login cookie.
         if (isAutoLoginEnable && !isSelfRegistrationLockOnCreationEnabled) {
+            if (StringUtils.isNotEmpty(user.getRealm())) {
+                tenantAwareUsername = user.getRealm() + "/" + username + "@" + user.getTenantDomain();
+            } else {
+                tenantAwareUsername = username + "@" + user.getTenantDomain();
+            }
             String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
             JSONObject contentValueInJson = new JSONObject();
-            contentValueInJson.put("username", user.getUsername());
+            contentValueInJson.put("username", tenantAwareUsername);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
             contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
             if (StringUtils.isNotBlank(cookieDomain)) {
