@@ -5972,13 +5972,56 @@ export interface ConsoleNS {
                         };
                     };
                     notifications: {
-                        addCertificate: Notification;
-                        getCertificates: Notification;
-                        getAlias: Notification;
-                        getPublicCertificate: Notification;
-                        getCertificate: Notification;
-                        deleteCertificate: Notification;
-                        download: Notification;
+                        addCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getCertificates: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getAlias: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getPublicCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        deleteCertificate: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        download: {
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
                     };
                     certificateModalHeader: string;
                     placeholders: {
@@ -6031,7 +6074,11 @@ export interface ConsoleNS {
                         pastePlaceholder: string;
                     };
                     forms: {
-                        alias: FormField;
+                        alias: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                     };
                     errorEmpty: string;
                     errorCertificate: string;
