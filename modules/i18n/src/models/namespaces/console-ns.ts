@@ -16,21 +16,6 @@
  * under the License.
  */
 
-import {
-    Confirmation,
-    DangerZone,
-    FormAttributes,
-    FormField,
-    HelpPanelInterface,
-    Message,
-    ModalInterface,
-    Notification,
-    NotificationItem,
-    Placeholder,
-    Popup,
-    TransferList
-} from "../common";
-
 /**
  * Model for the Console namespace
  */
@@ -417,7 +402,7 @@ export interface ConsoleNS {
                     subTitle: {
                         0: string;
                         1: string;
-                    },
+                    };
                     viewAll: string;
                 };
                 copyPopupText: string;
@@ -476,7 +461,7 @@ export interface ConsoleNS {
                                 };
                                 permissionList: {
                                     label: string;
-                                }
+                                };
                                 description: {
                                     label: string;
                                     placeholder: string;
@@ -495,7 +480,7 @@ export interface ConsoleNS {
             actions: {
                 save: string;
                 resetAll: string;
-            }
+            };
         };
         tabs: {
             text: {
@@ -503,7 +488,7 @@ export interface ConsoleNS {
             };
             preview: {
                 label: string;
-            }
+            };
         };
         screens: {
             common: string;
@@ -512,12 +497,12 @@ export interface ConsoleNS {
             "email-otp": string;
             "email-template": string;
             "sign-up": string;
-            "totp": string;
+            totp: string;
             myaccount: string;
             "password-recovery": string;
             "password-reset": string;
             "password-reset-success": string;
-        }
+        };
     };
     brandingCustomText: {
         revertScreenConfirmationModal: {
@@ -591,7 +576,7 @@ export interface ConsoleNS {
                 "password.reset.success.heading": {
                     hint: string;
                 };
-            }
+            };
         };
         localeSelectDropdown: {
             label: string;
@@ -603,7 +588,7 @@ export interface ConsoleNS {
             };
             json: {
                 label: string;
-            }
+            };
         };
         notifications: {
             getPreferenceError: {
@@ -639,8 +624,8 @@ export interface ConsoleNS {
                 options: {
                     addExistingUser: string;
                     inviteNewUser: string;
-                }
-            },
+                };
+            };
             edit: {
                 backButton: string;
             };
@@ -672,10 +657,10 @@ export interface ConsoleNS {
         enabledFeatures: {
             tags: {
                 premium: {
-                    warning: string
-                }
-            }
-        }
+                    warning: string;
+                };
+            };
+        };
     };
     develop: {
         features: {
@@ -781,35 +766,137 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 confirmations: {
-                    addSocialLogin: Popup;
-                    changeProtocol: Confirmation;
-                    deleteApplication: Confirmation;
-                    deleteChoreoApplication: Confirmation;
-                    deleteOutboundProvisioningIDP: Confirmation;
-                    deleteProtocol: Confirmation;
-                    handlerAuthenticatorAddition: Confirmation;
-                    backupCodeAuthenticatorDelete: Confirmation;
-                    lowOIDCExpiryTimes: Confirmation;
-                    regenerateSecret: Confirmation;
-                    reactivateSPA: Confirmation;
-                    reactivateOIDC: Confirmation;
-                    removeApplicationUserAttribute: Popup;
-                    removeApplicationUserAttributeMapping: Popup;
-                    revokeApplication: Confirmation;
+                    addSocialLogin: {
+                        content: string;
+                        header: string;
+                        subHeader: string;
+                    };
+                    changeProtocol: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteApplication: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteChoreoApplication: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteOutboundProvisioningIDP: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    deleteProtocol: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    handlerAuthenticatorAddition: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    backupCodeAuthenticatorDelete: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    lowOIDCExpiryTimes: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    regenerateSecret: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    reactivateSPA: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    reactivateOIDC: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
+                    removeApplicationUserAttribute: {
+                        content: string;
+                        header: string;
+                        subHeader: string;
+                    };
+                    removeApplicationUserAttributeMapping: {
+                        content: string;
+                        header: string;
+                        subHeader: string;
+                    };
+                    revokeApplication: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
                     clientSecretHashDisclaimer: {
-                        modal: Confirmation;
+                        modal: {
+                            header: string;
+                            message: string;
+                            content: string;
+                            assertionHint: string;
+                        };
                         forms: {
-                           clientIdSecretForm: {
-                               clientId: FormAttributes;
-                               clientSecret: FormAttributes;
-                           };
+                            clientIdSecretForm: {
+                                clientId: {
+                                    hide: string;
+                                    show: string;
+                                    label: string;
+                                    placeholder: string;
+                                    validations: {
+                                        empty: string;
+                                    };
+                                };
+                                clientSecret: {
+                                    hide: string;
+                                    show: string;
+                                    label: string;
+                                    placeholder: string;
+                                    validations: {
+                                        empty: string;
+                                    };
+                                };
+                            };
                         };
                     };
-                    certificateDelete: Confirmation & Record<string, string>;
+                    certificateDelete: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    } & Record<string, string>;
                 };
                 dangerZoneGroup: {
                     header: string;
-                    deleteApplication: DangerZone;
+                    deleteApplication: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
                 edit: {
                     sections: {
@@ -820,12 +907,18 @@ export interface ConsoleNS {
                                 steps: {
                                     protocolSelection: {
                                         manualSetup: {
-                                            emptyPlaceholder: Placeholder;
+                                            emptyPlaceholder: {
+                                                title: string;
+                                                subtitles: string;
+                                            };
                                             heading: string;
                                             subHeading: string;
                                         };
                                         quickSetup: {
-                                            emptyPlaceholder: Placeholder;
+                                            emptyPlaceholder: {
+                                                title: string;
+                                                subtitles: string;
+                                            };
                                             heading: string;
                                             subHeading: string;
                                         };
@@ -836,7 +929,7 @@ export interface ConsoleNS {
                             protocolLanding: {
                                 heading: string;
                                 subHeading: string;
-                            }
+                            };
                         };
                         advanced: {
                             tabName: string;
@@ -845,8 +938,19 @@ export interface ConsoleNS {
                             forms: {
                                 fields: {
                                     dynamic: {
-                                        localRole: FormAttributes;
-                                        applicationRole: FormAttributes;
+                                        localRole: {
+                                            label: string;
+                                            validations: {
+                                                empty: string;
+                                            };
+                                        };
+                                        applicationRole: {
+                                            label: string;
+                                            validations: {
+                                                empty: string;
+                                                duplicate: string;
+                                            };
+                                        };
                                     };
                                 };
                             };
@@ -856,7 +960,15 @@ export interface ConsoleNS {
                                     subHeading: string;
                                     steps: {
                                         select: {
-                                            transfer: TransferList;
+                                            transfer: {
+                                                searchPlaceholders: {
+                                                    attribute: string;
+                                                    role: string;
+                                                };
+                                                headers: {
+                                                    attribute: string;
+                                                };
+                                            };
                                         };
                                     };
                                 };
@@ -866,7 +978,7 @@ export interface ConsoleNS {
                                     displayName: string;
                                     name: string;
                                     hint: string;
-                                },
+                                };
                                 selectedScopesComponentHint: string;
                                 howToUseScopesHint: string;
                                 attributeComponentHint: string;
@@ -904,21 +1016,29 @@ export interface ConsoleNS {
                                         faultyAttributeMapping: string;
                                         faultyAttributeMappingHint: string;
                                         fields: {
-                                            claim: FormAttributes;
+                                            claim: {
+                                                label: string;
+                                                placeholder: string;
+                                            };
                                         };
                                     };
                                     searchPlaceholder: string;
                                 };
                                 selectAll: string;
                             };
-                            attributeMappingChange: Notification;
+                            attributeMappingChange: {
+                                error: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
                             emptySearchResults: {
                                 subtitles: {
-                                    0: string,
-                                    1: string
-                                },
+                                    0: string;
+                                    1: string;
+                                };
                                 title: string;
-                            },
+                            };
                             roleMapping: {
                                 heading: string;
                             };
@@ -1000,7 +1120,7 @@ export interface ConsoleNS {
                                                         };
                                                     };
                                                 };
-                                            },
+                                            };
                                             heading: string;
                                             hint: string;
                                             editor: {
@@ -1028,8 +1148,8 @@ export interface ConsoleNS {
                                                 tooltips: {
                                                     keyIcon: string;
                                                     plusIcon: string;
-                                                }
-                                            }
+                                                };
+                                            };
                                         };
                                         stepBased: {
                                             actions: {
@@ -1038,14 +1158,28 @@ export interface ConsoleNS {
                                                 addStep: string;
                                                 selectAuthenticator: string;
                                             };
-                                            addAuthenticatorModal: ModalInterface;
+                                            addAuthenticatorModal: {
+                                                description: string;
+                                                heading: string;
+                                                content: Record<string, unknown>;
+                                                primaryButton: string;
+                                                secondaryButton: string;
+                                            };
                                             heading: string;
                                             hint: string;
                                             forms: {
                                                 fields: {
-                                                    attributesFrom: FormAttributes;
-                                                    subjectIdentifierFrom: FormAttributes;
-                                                    enableBackupCodes: FormAttributes;
+                                                    attributesFrom: {
+                                                        label: string;
+                                                        placeholder: string;
+                                                    };
+                                                    subjectIdentifierFrom: {
+                                                        label: string;
+                                                        placeholder: string;
+                                                    };
+                                                    enableBackupCodes: {
+                                                        label: string;
+                                                    };
                                                 };
                                             };
                                             secondFactorDisabled: string;
@@ -1076,52 +1210,64 @@ export interface ConsoleNS {
                                         description: {
                                             0: string;
                                             1: string;
-                                        },
+                                        };
                                         heading: string;
-                                    },
+                                    };
                                     flowBuilder: {
-                                        addMissingSocialAuthenticatorModal: ModalInterface;
-                                        duplicateSocialAuthenticatorSelectionModal: ModalInterface;
+                                        addMissingSocialAuthenticatorModal: {
+                                            description: string;
+                                            heading: string;
+                                            content: Record<string, unknown>;
+                                            primaryButton: string;
+                                            secondaryButton: string;
+                                        };
+                                        duplicateSocialAuthenticatorSelectionModal: {
+                                            description: string;
+                                            heading: string;
+                                            content: Record<string, unknown>;
+                                            primaryButton: string;
+                                            secondaryButton: string;
+                                        };
                                         heading: string;
                                         headings: {
                                             default: string;
                                             socialLogin: string;
                                             multiFactorLogin: string;
                                             passwordlessLogin: string;
-                                        }
+                                        };
                                         types: {
                                             apple: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             defaultConfig: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             facebook: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             github: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             google: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             idf: {
                                                 tooltipText: string;
-                                            },
+                                            };
                                             totp: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             usernameless: {
                                                 description: string;
                                                 heading: string;
                                                 info: string;
-                                            },
+                                            };
                                             passkey: {
                                                 description: string;
                                                 heading: string;
@@ -1131,36 +1277,49 @@ export interface ConsoleNS {
                                                     passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
                                                     progressiveEnrollmentEnabledCheckbox: string;
                                                     progressiveEnrollmentDisabled: string;
-                                                }
-                                            }
+                                                };
+                                            };
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             microsoft: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             emailOTP: {
-                                                description: string,
-                                                heading: string,
-                                            },
+                                                description: string;
+                                                heading: string;
+                                            };
                                             smsOTP: {
                                                 description: string;
                                                 heading: string;
-                                            },
+                                            };
                                             emailOTPFirstFactor: {
                                                 description: string;
                                                 heading: string;
-                                            }
-                                        }
-                                    }
-                                },
+                                            };
+                                        };
+                                    };
+                                };
                                 requestPathAuthenticators: {
                                     title: string;
                                     subTitle: string;
                                     notifications: {
-                                        getRequestPathAuthenticators: Notification;
+                                        getRequestPathAuthenticators: {
+                                            error: {
+                                                message: string;
+                                                description: string;
+                                            };
+                                            genericError: {
+                                                message: string;
+                                                description: string;
+                                            };
+                                            success: {
+                                                message: string;
+                                                description: string;
+                                            };
+                                        };
                                     };
                                 };
                                 templateDescription: {
@@ -1183,10 +1342,42 @@ export interface ConsoleNS {
                         shareApplication: {
                             heading: string;
                             shareApplication: string;
-                            addSharingNotification: Notification;
-                            stopSharingNotification: Notification;
-                            getSharedOrganizations: Notification;
-                            stopAllSharingNotification: Notification;
+                            addSharingNotification: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            stopSharingNotification: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            getSharedOrganizations: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    message: string;
+                                    description: string;
+                                };
+                                success: {
+                                    message: string;
+                                    description: string;
+                                };
+                            };
                             switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
                         };
                         apiAuthorization: {
@@ -1198,7 +1389,7 @@ export interface ConsoleNS {
                                 subTitle: string;
                                 button: string;
                             };
-                        }
+                        };
                     };
                 };
                 forms: {
@@ -1208,80 +1399,230 @@ export interface ConsoleNS {
                                 errorAlert: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 heading: string;
                                 descriptionFederated: string;
                                 fields: {
-                                    validateLocalAccount: FormAttributes;
-                                    mandateLocalAccount: FormAttributes;
-                                }
-                            }
+                                    validateLocalAccount: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    mandateLocalAccount: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                };
+                            };
                             subject: {
                                 fields: {
-                                    alternateSubjectAttribute: FormAttributes;
-                                    subjectAttribute: FormAttributes;
-                                    subjectIncludeTenantDomain: FormAttributes;
-                                    subjectIncludeUserDomain: FormAttributes;
-                                    subjectUseMappedLocalSubject: FormAttributes;
-                                    subjectType: FormAttributes;
-                                    sectorIdentifierURI: FormAttributes;
+                                    alternateSubjectAttribute: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    subjectAttribute: {
+                                        hintOIDC: string;
+                                        hintSAML: string;
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    subjectIncludeTenantDomain: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    subjectIncludeUserDomain: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    subjectUseMappedLocalSubject: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    subjectType: {
+                                        public: {
+                                            label: string;
+                                            hint: string;
+                                        };
+                                        pairwise: {
+                                            label: string;
+                                            hint: string;
+                                        };
+                                        label: string;
+                                    };
+                                    sectorIdentifierURI: {
+                                        multipleCallbackError: string;
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                            required: string;
+                                        };
+                                    };
                                 };
                                 heading: string;
                             };
                             role: {
                                 heading: string;
                                 fields: {
-                                    roleAttribute: FormAttributes;
-                                    role: FormAttributes;
+                                    roleAttribute: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    role: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                         };
                     };
                     advancedConfig: {
                         fields: {
-                            enableAuthorization: FormAttributes;
-                            returnAuthenticatedIdpList: FormAttributes;
-                            saas: FormAttributes;
-                            skipConsentLogin: FormAttributes;
-                            skipConsentLogout: FormAttributes;
+                            enableAuthorization: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            returnAuthenticatedIdpList: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            saas: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            skipConsentLogin: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            skipConsentLogout: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                         sections: {
                             applicationNativeAuthentication: {
                                 heading: string;
                                 alerts: {
                                     clientAttestation: string;
-                                },
+                                };
                                 fields: {
-                                    enableAPIBasedAuthentication: FormAttributes;
-                                    enableClientAttestation: FormAttributes;
+                                    enableAPIBasedAuthentication: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    enableClientAttestation: {
+                                        hint: string;
+                                        label: string;
+                                    };
                                     android: {
                                         heading: string;
                                         fields: {
-                                            androidPackageName: FormAttributes;
-                                            androidAttestationServiceCredentials: FormAttributes;
-                                        }
-                                    },
+                                            androidPackageName: {
+                                                hint: string;
+                                                label: string;
+                                                placeholder: string;
+                                                validations: {
+                                                    empty: string;
+                                                };
+                                            };
+                                            androidAttestationServiceCredentials: {
+                                                hint: string;
+                                                label: string;
+                                                placeholder: string;
+                                                validations: {
+                                                    empty: string;
+                                                };
+                                            };
+                                        };
+                                    };
                                     apple: {
                                         heading: string;
                                         fields: {
-                                            appleAppId: FormAttributes;
-                                        }
-                                    }
-                                }
-                            },
+                                            appleAppId: {
+                                                hint: string;
+                                                label: string;
+                                                placeholder: string;
+                                            };
+                                        };
+                                    };
+                                };
+                            };
                             certificate: {
                                 heading: string;
-                                hint?: {
+                                hint: {
                                     customOidc: string;
                                     customPassiveSTS: string;
                                     customSaml: string;
                                 };
                                 fields: {
-                                    jwksValue: FormAttributes;
-                                    pemValue: FormAttributes;
-                                    type: FormAttributes;
+                                    jwksValue: {
+                                        description: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    pemValue: {
+                                        description: string;
+                                        actions: {
+                                            view: string;
+                                        };
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    type: {
+                                        children: {
+                                            jwks: {
+                                                label: string;
+                                            };
+                                            pem: {
+                                                label: string;
+                                            };
+                                        };
+                                        label: string;
+                                    };
                                 };
-                                invalidOperationModal?: {
+                                invalidOperationModal: {
                                     header: string;
                                     message: string;
                                 };
@@ -1290,74 +1631,300 @@ export interface ConsoleNS {
                     };
                     generalDetails: {
                         fields: {
-                            name: FormAttributes;
-                            description: FormAttributes;
-                            imageUrl: FormAttributes;
-                            discoverable: FormAttributes;
-                            accessUrl: FormAttributes;
-                            isSharingEnabled: FormAttributes;
-                            isManagementApp: FormAttributes;
-                            isFapiApp: FormAttributes;
+                            name: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    duplicate: string;
+                                    reserved: string;
+                                };
+                            };
+                            description: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            imageUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                };
+                            };
+                            discoverable: {
+                                hint: string;
+                                label: string;
+                            };
+                            accessUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            isSharingEnabled: {
+                                hint: string;
+                                label: string;
+                            };
+                            isManagementApp: {
+                                hint: string;
+                                label: string;
+                            };
+                            isFapiApp: {
+                                hint: string;
+                                label: string;
+                            };
                         };
                         managementAppBanner: string;
-
                     };
                     inboundCustom: {
                         fields: {
-                            checkbox: FormAttributes;
-                            dropdown: FormAttributes;
-                            generic: FormAttributes;
-                            password: FormAttributes;
+                            checkbox: {
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            dropdown: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            generic: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            password: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                     inboundOIDC: {
                         description: string;
                         documentation: string;
                         fields: {
-                            allowedOrigins: FormAttributes;
-                            callBackUrls: FormAttributes;
-                            clientID: FormAttributes;
-                            clientSecret: FormAttributes;
-                            grant: FormAttributes;
-                            public: FormAttributes;
+                            allowedOrigins: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            callBackUrls: {
+                                info: string;
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                    required: string;
+                                };
+                            };
+                            clientID: {
+                                label: string;
+                            };
+                            clientSecret: {
+                                hashedDisclaimer: string;
+                                hideSecret: string;
+                                message: string;
+                                showSecret: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            grant: {
+                                children: {
+                                    client_credential: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    implicit: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    password: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                };
+                                validation: {
+                                    refreshToken: string;
+                                };
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            public: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                         mobileApp: {
                             discoverableHint: string;
                             mobileAppPlaceholder: string;
-                        },
+                        };
                         dropdowns: {
                             selectOption: string;
-                        },
+                        };
                         sections: {
                             accessToken: {
                                 heading: string;
                                 hint: string;
                                 fields: {
-                                    bindingType: FormAttributes;
-                                    expiry: FormAttributes;
-                                    applicationTokenExpiry: FormAttributes;
-                                    type: FormAttributes;
-                                    revokeToken: FormAttributes;
-                                    validateBinding: FormAttributes;
-                                    audience: FormAttributes;
+                                    bindingType: {
+                                        children: {
+                                            ssoBinding: {
+                                                label: string;
+                                            };
+                                        };
+                                        description: string;
+                                        label: string;
+                                        valueDescriptions: {
+                                            cookie: string;
+                                            none: string;
+                                            sso_session: string;
+                                        };
+                                    };
+                                    expiry: {
+                                        labelForSPA: string;
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    applicationTokenExpiry: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    type: {
+                                        label: string;
+                                        valueDescriptions: {
+                                            default: string;
+                                            jwt: string;
+                                        };
+                                    };
+                                    revokeToken: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    validateBinding: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    audience: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            duplicate: string;
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             idToken: {
                                 heading: string;
                                 fields: {
-                                    expiry: FormAttributes;
-                                    algorithm: FormAttributes;
-                                    audience: FormAttributes;
-                                    encryption: FormAttributes;
-                                    signing: FormAttributes;
-                                    method: FormAttributes;
+                                    expiry: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    algorithm: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    audience: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            duplicate: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    encryption: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    signing: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
+                                    method: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             logoutURLs: {
                                 heading: string;
                                 fields: {
-                                    back: FormAttributes;
-                                    front: FormAttributes;
+                                    back: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    front: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             pkce: {
@@ -1365,57 +1932,121 @@ export interface ConsoleNS {
                                 heading: string;
                                 hint: string;
                                 fields: {
-                                    pkce: FormAttributes;
+                                    pkce: {
+                                        children: {
+                                            mandatory: {
+                                                label: string;
+                                            };
+                                            plainAlg: {
+                                                label: string;
+                                            };
+                                        };
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             clientAuthentication: {
                                 heading: string;
                                 fields: {
-                                    authenticationMethod: FormAttributes;
-                                    signingAlgorithm: FormAttributes;
-                                    subjectDN: FormAttributes;
+                                    authenticationMethod: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
+                                    signingAlgorithm: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
+                                    subjectDN: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
                                 };
                             };
                             pushedAuthorization: {
                                 heading: string;
                                 fields: {
-                                    requirePushAuthorizationRequest: FormAttributes;
+                                    requirePushAuthorizationRequest: {
+                                        hint: string;
+                                        label: string;
+                                    };
                                 };
                             };
                             requestObject: {
                                 heading: string;
                                 fields: {
-                                    requestObjectSigningAlg: FormAttributes;
-                                    requestObjectEncryptionAlgorithm: FormAttributes;
-                                    requestObjectEncryptionMethod: FormAttributes;
+                                    requestObjectSigningAlg: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
+                                    requestObjectEncryptionAlgorithm: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
+                                    requestObjectEncryptionMethod: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                    };
                                 };
                             };
                             refreshToken: {
                                 heading: string;
                                 fields: {
-                                    expiry: FormAttributes;
-                                    renew: FormAttributes;
+                                    expiry: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    renew: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             requestObjectSignature: {
                                 heading: string;
                                 description: string;
                                 fields: {
-                                    signatureValidation: FormAttributes;
+                                    signatureValidation: {
+                                        label: string;
+                                    };
                                 };
                             };
                             scopeValidators: {
                                 heading: string;
                                 fields: {
-                                    validator: FormAttributes;
+                                    validator: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             certificates: {
                                 disabledPopup: string;
-                            }
+                            };
                         };
                         messages: {
-                            revokeDisclaimer: Message;
+                            revokeDisclaimer: {
+                                heading: string;
+                                content: string;
+                            };
                             customInvalidMessage: string;
                         };
                     };
@@ -1423,82 +2054,279 @@ export interface ConsoleNS {
                         description: string;
                         documentation: string;
                         fields: {
-                            assertionURLs: FormAttributes;
-                            defaultAssertionURL: FormAttributes;
-                            idpEntityIdAlias: FormAttributes;
-                            issuer: FormAttributes;
-                            metaURL: FormAttributes;
-                            mode: FormAttributes;
-                            qualifier: FormAttributes;
+                            assertionURLs: {
+                                info: string;
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                    required: string;
+                                };
+                            };
+                            defaultAssertionURL: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            idpEntityIdAlias: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            issuer: {
+                                errorMessage: string;
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            metaURL: {
+                                errorMessage: string;
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            mode: {
+                                children: {
+                                    manualConfig: {
+                                        label: string;
+                                    };
+                                    metadataFile: {
+                                        label: string;
+                                    };
+                                    metadataURL: {
+                                        label: string;
+                                    };
+                                };
+                                hint: string;
+                                label: string;
+                            };
+                            qualifier: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                         sections: {
                             assertion: {
                                 heading: string;
                                 fields: {
-                                    audience: FormAttributes;
-                                    nameIdFormat: FormAttributes;
-                                    recipients: FormAttributes;
+                                    audience: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                        };
+                                    };
+                                    nameIdFormat: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    recipients: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             attributeProfile: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
-                                    includeAttributesInResponse: FormAttributes;
-                                    serviceIndex: FormAttributes;
+                                    enable: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    includeAttributesInResponse: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    serviceIndex: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             encryption: {
                                 heading: string;
                                 fields: {
-                                    assertionEncryption: FormAttributes;
-                                    assertionEncryptionAlgorithm: FormAttributes;
-                                    keyEncryptionAlgorithm: FormAttributes;
+                                    assertionEncryption: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    assertionEncryptionAlgorithm: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    keyEncryptionAlgorithm: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             idpInitiatedSLO: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
-                                    returnToURLs: FormAttributes;
+                                    enable: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    returnToURLs: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             responseSigning: {
                                 heading: string;
                                 fields: {
-                                    digestAlgorithm: FormAttributes;
-                                    responseSigning: FormAttributes;
-                                    signingAlgorithm: FormAttributes;
+                                    digestAlgorithm: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    responseSigning: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    signingAlgorithm: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             requestProfile: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
+                                    enable: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             requestValidation: {
                                 heading: string;
                                 fields: {
-                                    signatureValidation: FormAttributes;
-                                    signatureValidationCertAlias: FormAttributes;
+                                    signatureValidation: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    signatureValidationCertAlias: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             sloProfile: {
                                 heading: string;
                                 fields: {
-                                    enable: FormAttributes;
-                                    logoutMethod: FormAttributes;
-                                    requestURL: FormAttributes;
-                                    responseURL: FormAttributes;
+                                    enable: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    logoutMethod: {
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    requestURL: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
+                                    responseURL: {
+                                        hint: string;
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string;
+                                            invalid: string;
+                                        };
+                                    };
                                 };
                             };
                             ssoProfile: {
                                 heading: string;
                                 fields: {
-                                    artifactBinding: FormAttributes;
-                                    bindings: FormAttributes;
-                                    idpInitiatedSSO: FormAttributes;
+                                    artifactBinding: {
+                                        hint: string;
+                                        label: string;
+                                    };
+                                    bindings: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
+                                    idpInitiatedSSO: {
+                                        hint: string;
+                                        label: string;
+                                        validations: {
+                                            empty: string;
+                                        };
+                                    };
                                 };
                             };
                             certificates: {
@@ -1506,47 +2334,232 @@ export interface ConsoleNS {
                                 certificateRemoveConfirmation: {
                                     header: string;
                                     content: string;
-                                }
-                            }
+                                };
+                            };
                         };
                     };
                     inboundSTS: {
                         fields: {
-                            realm: FormAttributes;
-                            replyTo: FormAttributes;
-                            replyToLogout: FormAttributes;
+                            realm: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            replyTo: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            replyToLogout: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
                         };
                     };
                     inboundWSTrust: {
                         fields: {
-                            audience: FormAttributes;
-                            certificateAlias: FormAttributes;
+                            audience: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            certificateAlias: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
                         };
                     };
                     outboundProvisioning: {
                         fields: {
-                            blocking: FormAttributes;
-                            connector: FormAttributes;
-                            idp: FormAttributes;
-                            jit: FormAttributes;
-                            rules: FormAttributes;
+                            blocking: {
+                                hint: string;
+                                label: string;
+                            };
+                            connector: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            idp: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            jit: {
+                                hint: string;
+                                label: string;
+                            };
+                            rules: {
+                                hint: string;
+                                label: string;
+                            };
                         };
                     };
                     provisioningConfig: {
                         fields: {
-                            proxyMode: FormAttributes;
-                            userstoreDomain: FormAttributes;
+                            proxyMode: {
+                                hint: string;
+                                label: string;
+                            };
+                            userstoreDomain: {
+                                hint: string;
+                                label: string;
+                            };
                         };
                     };
                     spaProtocolSettingsWizard: {
                         fields: {
-                            callBackUrls: FormAttributes;
-                            name: FormAttributes;
+                            callBackUrls: {
+                                label: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
+                            };
+                            name: {
+                                label: string;
+                                validations: {
+                                    invalid: string;
+                                };
+                            };
                             urlDeepLinkError: string;
                         };
                     };
                 };
-                helpPanel: HelpPanelInterface;
+                helpPanel: {
+                    tabs: {
+                        configs: {
+                            content: {
+                                subTitle: string;
+                                title: string;
+                            };
+                            heading: string;
+                        };
+                        docs: {
+                            content: null;
+                            heading: string;
+                        };
+                        samples: {
+                            content: {
+                                sample: {
+                                    configurations: {
+                                        btn: string;
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    downloadSample: {
+                                        btn: string;
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    goBack: string;
+                                    subTitle: string;
+                                    title: string;
+                                };
+                                technology: {
+                                    subTitle: string;
+                                    title: string;
+                                };
+                            };
+                            heading: string;
+                        };
+                        sdks: {
+                            content: {
+                                sdk: {
+                                    goBack: string;
+                                    subTitle: string;
+                                    title: string;
+                                };
+                            };
+                            heading: string;
+                        };
+                        start: {
+                            content: {
+                                endpoints: {
+                                    subTitle: string;
+                                    title: string;
+                                };
+                                oidcConfigurations: {
+                                    labels: {
+                                        authorize: string;
+                                        dynamicClientRegistration: string;
+                                        endSession: string;
+                                        introspection: string;
+                                        issuer: string;
+                                        jwks: string;
+                                        keystore: string;
+                                        openIdServer: string;
+                                        pushedAuthorizationRequest: string;
+                                        revoke: string;
+                                        sessionIframe: string;
+                                        token: string;
+                                        userInfo: string;
+                                        webFinger: string;
+                                        wellKnown: string;
+                                    };
+                                };
+                                samlConfigurations: {
+                                    buttons: {
+                                        certificate: string;
+                                        metadata: string;
+                                    };
+                                    labels: {
+                                        certificate: string;
+                                        issuer: string;
+                                        metadata: string;
+                                        slo: string;
+                                        sso: string;
+                                        destinationURL: string;
+                                        artifactResolutionUrl: string;
+                                    };
+                                };
+                                trySample: {
+                                    btn: string;
+                                    subTitle: string;
+                                    title: string;
+                                };
+                                useSDK: {
+                                    btns: {
+                                        withSDK: string;
+                                        withoutSDK: string;
+                                    };
+                                    subTitle: string;
+                                    title: string;
+                                };
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: string;
+                                    };
+                                };
+                            };
+                            heading: string;
+                        };
+                    };
+                };
                 list: {
                     columns: {
                         actions: string;
@@ -1560,7 +2573,7 @@ export interface ConsoleNS {
                     };
                     labels: {
                         fragment: string;
-                    }
+                    };
                 };
                 myaccount: {
                     title: string;
@@ -1600,73 +2613,511 @@ export interface ConsoleNS {
                         error: {
                             description: string;
                             message: string;
-                        },
+                        };
                         genericError: {
                             description: string;
                             message: string;
-                        },
-                    }
+                        };
+                    };
                 };
                 notifications: {
-                    addApplication: Notification;
-                    apiLimitReachedError: Notification;
-                    authenticationStepMin: Notification;
-                    authenticationStepDeleteErrorDueToSecondFactors: Notification;
-                    authenticationStepDeleteErrorDueToAppShared: Notification;
-                    deleteApplication: Notification;
-                    deleteOptionErrorDueToSecondFactorsOnRight: Notification;
-                    deleteProtocolConfig: Notification;
-                    duplicateAuthenticationStep: Notification;
-                    emptyAuthenticationStep: Notification;
-                    fetchAllowedCORSOrigins: Notification;
-                    fetchApplication: Notification;
-                    fetchMyAccountApplication: Notification;
-                    fetchApplications: Notification;
-                    fetchCustomInboundProtocols: Notification;
-                    fetchInboundProtocols: Notification;
-                    fetchProtocolMeta: Notification;
-                    fetchSAMLIDPConfigs: Notification;
-                    fetchOIDCIDPConfigs: Notification;
-                    fetchTemplate: Notification;
-                    fetchTemplates: Notification;
-                    getInboundProtocolConfig: Notification;
-                    regenerateSecret: Notification;
-                    revokeApplication: Notification;
+                    addApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    authenticationStepMin: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    authenticationStepDeleteErrorDueToSecondFactors: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteOptionErrorDueToSecondFactorsOnRight: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteProtocolConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    duplicateAuthenticationStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    emptyAuthenticationStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchAllowedCORSOrigins: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchMyAccountApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchApplications: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchCustomInboundProtocols: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchInboundProtocols: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchProtocolMeta: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchSAMLIDPConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDCIDPConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchTemplates: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getInboundProtocolConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    regenerateSecret: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    revokeApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     tierLimitReachedError: {
-                        emptyPlaceholder: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
                         heading: string;
                     };
-                    updateAdvancedConfig: Notification;
-                    updateApplication: Notification;
-                    updateAuthenticationFlow: Notification;
-                    updateClaimConfig: Notification;
-                    updateInboundProtocolConfig: Notification;
-                    updateInboundProvisioningConfig: Notification;
-                    updateOutboundProvisioning: Notification;
-                    updateProtocol: Notification;
-                    fetchOIDCServiceEndpoints: Notification;
-                    secondFactorAuthenticatorToFirstStep: Notification;
-                    firstFactorAuthenticatorToSecondStep: Notification;
-                    conditionalScriptLoopingError: NotificationItem;
-                    deleteCertificateSuccess: NotificationItem;
-                    deleteCertificateGenericError: NotificationItem;
-                    updateOnlyIdentifierFirstError: NotificationItem;
-                    updateIdentifierFirstInFirstStepError: NotificationItem;
+                    updateAdvancedConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateApplication: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateAuthenticationFlow: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateClaimConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateInboundProtocolConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateInboundProvisioningConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioning: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateProtocol: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    fetchOIDCServiceEndpoints: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    firstFactorAuthenticatorToSecondStep: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    conditionalScriptLoopingError: {
+                        message: string;
+                        description: string;
+                    };
+                    deleteCertificateSuccess: {
+                        message: string;
+                        description: string;
+                    };
+                    deleteCertificateGenericError: {
+                        message: string;
+                        description: string;
+                    };
+                    updateOnlyIdentifierFirstError: {
+                        message: string;
+                        description: string;
+                    };
+                    updateIdentifierFirstInFirstStepError: {
+                        message: string;
+                        description: string;
+                    };
                 };
                 popups: {
                     appStatus: {
-                        active: Popup;
-                        notConfigured: Popup;
-                        revoked: Popup;
+                        active: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                        notConfigured: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                        revoked: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
                     };
                 };
                 placeholders: {
-                    emptyAttributesList: Placeholder;
-                    emptyAuthenticatorStep: Placeholder;
-                    emptyAuthenticatorsList: Placeholder;
-                    emptyOutboundProvisioningIDPs: Placeholder;
-                    emptyList: Placeholder;
-                    emptyProtocolList: Placeholder;
+                    emptyAttributesList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyAuthenticatorStep: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                        };
+                    };
+                    emptyAuthenticatorsList: {
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyOutboundProvisioningIDPs: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
+                    emptyProtocolList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
                 };
                 resident: {
                     provisioning: {
@@ -1681,7 +3132,11 @@ export interface ConsoleNS {
                                     details: string;
                                 };
                             };
-                            emptyPlaceholder: Placeholder;
+                            emptyPlaceholder: {
+                                action: string;
+                                title: string;
+                                subtitles: string;
+                            };
                             form: {
                                 fields: {
                                     connection: {
@@ -1696,14 +3151,50 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                             notifications: {
-                                create: Notification;
-                                delete: Notification;
-                                fetch: Notification;
-                                update: Notification;
-                            }
+                                create: {
+                                    error: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    success: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                                delete: {
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    success: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                                fetch: {
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                                update: {
+                                    genericError: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                    success: {
+                                        message: string;
+                                        description: string;
+                                    };
+                                };
+                            };
                         };
                     };
-                }
+                };
                 templates: {
                     manualSetup: {
                         heading: string;
@@ -1719,7 +3210,45 @@ export interface ConsoleNS {
                         help: {
                             heading: string;
                             subHeading: string;
-                            template : FormAttributes;
+                            template: {
+                                common: {
+                                    authorizedRedirectURLs: {
+                                        example: string;
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    heading: {
+                                        example: string;
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    protocol: {
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                };
+                                label: string;
+                                samlWeb: {
+                                    assertionResponseURLs: {
+                                        example: string;
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    issuer: {
+                                        example: string;
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    metaFile: {
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                    metaURL: {
+                                        subTitle: string;
+                                        title: string;
+                                    };
+                                };
+                            };
                         };
                     };
                     applicationCertificateWizard: {
@@ -1729,12 +3258,12 @@ export interface ConsoleNS {
                             title: string;
                             description1: string;
                             description2: string;
-                        }
-                    }
+                        };
+                    };
                 };
-            }
+            };
             authenticationProvider: {
-                advancedSearch?: {
+                advancedSearch: {
                     form: {
                         inputs: {
                             filterAttribute: {
@@ -1750,14 +3279,14 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                buttons?: {
+                buttons: {
                     addIDP: string;
                     addAuthenticator: string;
                     addConnector: string;
                     addAttribute: string;
                     addCertificate: string;
                 };
-                confirmations?: {
+                confirmations: {
                     deleteIDP: {
                         header: string;
                         message: string;
@@ -1789,7 +3318,7 @@ export interface ConsoleNS {
                         assertionHint: string;
                     };
                 };
-                dangerZoneGroup?: {
+                dangerZoneGroup: {
                     header: string;
                     disableIDP: {
                         actionTitle: string;
@@ -1803,7 +3332,7 @@ export interface ConsoleNS {
                         subheader: string;
                     };
                 };
-                edit?: {
+                edit: {
                     common: {
                         settings: {
                             tabName: string;
@@ -1821,7 +3350,7 @@ export interface ConsoleNS {
                     };
                 };
                 forms: {
-                    advancedConfigs?: {
+                    advancedConfigs: {
                         federationHub: {
                             hint: string;
                             label: string;
@@ -1856,7 +3385,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    attributeSettings?: {
+                    attributeSettings: {
                         attributeMapping: {
                             attributeColumnHeader: string;
                             attributeMapColumnHeader: string;
@@ -1885,7 +3414,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    authenticatorAccordion?: {
+                    authenticatorAccordion: {
                         default: {
                             0: string;
                             1: string;
@@ -1895,7 +3424,7 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    authenticatorSettings?: {
+                    authenticatorSettings: {
                         apple: {
                             additionalQueryParameters: {
                                 hint: string;
@@ -2478,7 +4007,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    outboundConnectorAccordion?: {
+                    outboundConnectorAccordion: {
                         default: {
                             0: string;
                             1: string;
@@ -2488,14 +4017,14 @@ export interface ConsoleNS {
                             1: string;
                         };
                     };
-                    common?: {
+                    common: {
                         requiredErrorMessage: string;
                         invalidURLErrorMessage: string;
                         invalidQueryParamErrorMessage: string;
                         invalidScopesErrorMessage: string;
                         customProperties: string;
                     };
-                    generalDetails?: {
+                    generalDetails: {
                         name: {
                             hint: string;
                             label: string;
@@ -2528,7 +4057,7 @@ export interface ConsoleNS {
                             placeholder: string;
                         };
                     };
-                    jitProvisioning?: {
+                    jitProvisioning: {
                         enableJITProvisioning: {
                             hint: string;
                             label: string;
@@ -2554,7 +4083,7 @@ export interface ConsoleNS {
                             label: string;
                         };
                     };
-                    roleMapping?: {
+                    roleMapping: {
                         heading: string;
                         keyName: string;
                         valueName: string;
@@ -2590,7 +4119,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    outboundProvisioningRoles?: {
+                    outboundProvisioningRoles: {
                         heading: string;
                         hint: string;
                         placeHolder: string;
@@ -2599,7 +4128,7 @@ export interface ConsoleNS {
                             content: string;
                         };
                     };
-                    certificateSection?: {
+                    certificateSection: {
                         certificateEditSwitch: {
                             jwks: string;
                             pem: string;
@@ -2607,7 +4136,7 @@ export interface ConsoleNS {
                         noCertificateAlert: string;
                     };
                 };
-                helpPanel?: {
+                helpPanel: {
                     tabs: {
                         samples: {
                             content: {
@@ -2615,18 +4144,18 @@ export interface ConsoleNS {
                                     goBack: string;
                                     hint: string;
                                     title: string;
-                                }
-                            },
+                                };
+                            };
                             heading: string;
-                        }
+                        };
                     };
                 };
                 templates: {
-                    manualSetup?: {
+                    manualSetup: {
                         heading: string;
                         subHeading: string;
                     };
-                    quickSetup?: {
+                    quickSetup: {
                         heading: string;
                         subHeading: string;
                     };
@@ -2680,7 +4209,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    facebook?: {
+                    facebook: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2706,7 +4235,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    github?: {
+                    github: {
                         wizardHelp: {
                             heading: string;
                             subHeading: string;
@@ -2732,7 +4261,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    google?: {
+                    google: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2770,7 +4299,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    microsoft?: {
+                    microsoft: {
                         wizardHelp: {
                             clientId: {
                                 description: string;
@@ -2795,7 +4324,7 @@ export interface ConsoleNS {
                             subHeading: string;
                         };
                     };
-                    hypr?: {
+                    hypr: {
                         wizardHelp: {
                             apiToken: {
                                 description: string;
@@ -2827,7 +4356,7 @@ export interface ConsoleNS {
                             title: string;
                             subtitle: string;
                         };
-                        saml?: {
+                        saml: {
                             preRequisites: {
                                 configureIdp: string;
                                 configureRedirectURL: string;
@@ -2893,11 +4422,11 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                list?: {
+                list: {
                     actions: string;
                     name: string;
                 };
-                modals?: {
+                modals: {
                     addAuthenticator: {
                         title: string;
                         subTitle: string;
@@ -2918,7 +4447,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                notifications?: {
+                notifications: {
                     addFederatedAuthenticator: {
                         error: {
                             message: string;
@@ -3470,7 +4999,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                popups?: {
+                popups: {
                     appStatus: {
                         enabled: {
                             content: string;
@@ -3484,7 +5013,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                placeHolders?: {
+                placeHolders: {
                     emptyCertificateList: {
                         title: string;
                         subtitles: {
@@ -3536,7 +5065,7 @@ export interface ConsoleNS {
                         };
                     };
                 };
-                wizards?: {
+                wizards: {
                     addAuthenticator: {
                         header: string;
                         steps: {
@@ -3728,7 +5257,7 @@ export interface ConsoleNS {
                         actionTitle: string;
                         header: string;
                         subheader: string;
-                        subheader2?: string;
+                        subheader2: string;
                     };
                     deleteIDP: {
                         actionTitle: string;
@@ -3745,12 +5274,10 @@ export interface ConsoleNS {
                         homeRealmIdentifier: {
                             hint: string;
                             label: string;
-                            placeholder?: string;
                         };
                         alias: {
                             hint: string;
                             label: string;
-                            placeholder?: string;
                         };
                         certificateType: {
                             label: string;
@@ -3899,10 +5426,12 @@ export interface ConsoleNS {
                     };
                     jitProvisioning: {
                         enableJITProvisioning: {
-                            disabledMessageContent: string | {
-                                1: string;
-                                2: string;
-                            };
+                            disabledMessageContent:
+                                | string
+                                | {
+                                      1: string;
+                                      2: string;
+                                  };
                             hint: string;
                             label: string;
                             disabledMessageHeader: string;
@@ -3972,10 +5501,10 @@ export interface ConsoleNS {
                                     goBack: string;
                                     hint: string;
                                     title: string;
-                                }
+                                };
                             };
                             heading: string;
-                        }
+                        };
                     };
                 };
                 templates: {
@@ -4806,7 +6335,7 @@ export interface ConsoleNS {
                         actionTitle: string;
                         header: string;
                         subheader: string;
-                        subheader2?: string;
+                        subheader2: string;
                     };
                     deleteIDVP: {
                         actionTitle: string;
@@ -4835,7 +6364,7 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
-                        authenticationProviders?: {
+                        authenticationProviders: {
                             heading: string;
                             subHeading: string;
                         };
@@ -4854,7 +6383,7 @@ export interface ConsoleNS {
                     application: string;
                     gettingStarted: string;
                     identityProviders: string;
-                    authenticationProviders?: string;
+                    authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
                 };
@@ -4862,9 +6391,9 @@ export interface ConsoleNS {
                 identityProviderEdit: string;
                 identityProviderTemplates: string;
                 identityProviders: string;
-                authenticationProviderEdit?: string;
-                authenticationProviderTemplates?: string;
-                authenticationProviders?: string;
+                authenticationProviderEdit: string;
+                authenticationProviderTemplates: string;
+                authenticationProviders: string;
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;
@@ -4878,7 +6407,7 @@ export interface ConsoleNS {
                     subtitles: string;
                 };
             };
-            secrets?: {
+            secrets: {
                 advancedSearch: {
                     form: {
                         inputs: {
@@ -4895,37 +6424,37 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
-                page?: {
+                page: {
                     title: string;
                     description: string;
                     primaryActionButtonText: string;
                     subFeatureBackButton: string;
                 };
-                errors?: {
+                errors: {
                     generic: {
                         message: string;
                         description: string;
-                    }
-                },
-                routes?: {
+                    };
+                };
+                routes: {
                     name: string;
                     category: string;
                     sidePanelChildrenNames: string[];
-                },
-                alerts?: {
-                    createdSecret?: {
+                };
+                alerts: {
+                    createdSecret: {
                         description: string;
                         message: string;
-                    },
-                    updatedSecret?: {
+                    };
+                    updatedSecret: {
                         description: string;
                         message: string;
-                    },
-                    deleteSecret?: {
+                    };
+                    deleteSecret: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 modals: {
                     deleteSecret: {
                         assertionHint: string;
@@ -4934,19 +6463,19 @@ export interface ConsoleNS {
                         title: string;
                         content: string;
                         warningMessage: string;
-                    }
-                },
-                wizards?: {
-                    addSecret?: {
-                        heading?: string;
-                        subheading?: string;
-                        form?: {
+                    };
+                };
+                wizards: {
+                    addSecret: {
+                        heading: string;
+                        subheading: string;
+                        form: {
                             secretTypeField: Record<string, string>;
                             secretNameField: Record<string, string>;
                             secretValueField: Record<string, string>;
                             secretDescriptionField: Record<string, string>;
-                        }
-                    },
+                        };
+                    };
                     actions: {
                         createButton: {
                             label: string;
@@ -4956,52 +6485,52 @@ export interface ConsoleNS {
                             label: string;
                             ariaLabel: string;
                         };
-                    }
-                },
-                banners?: {
+                    };
+                };
+                banners: {
                     secretIsHidden: {
                         title: string;
                         content: string;
-                    },
+                    };
                     adaptiveAuthSecretType: {
                         title: string;
                         content: string;
-                    }
-                },
-                forms?: {
-                    editSecret?: {
+                    };
+                };
+                forms: {
+                    editSecret: {
                         page: {
                             description: string;
-                        },
+                        };
                         secretValueField: Record<string, string>;
                         secretDescriptionField: Record<string, string>;
-                    },
-                    actions?: {
+                    };
+                    actions: {
                         submitButton: {
                             label: string;
                             ariaLabel: string;
-                        }
-                    }
-                },
-                emptyPlaceholders?: {
+                        };
+                    };
+                };
+                emptyPlaceholders: {
                     resourceNotFound: {
                         messages: string[];
-                    },
+                    };
                     emptyListOfSecrets: {
                         messages: string[];
-                    },
-                    buttons?: {
+                    };
+                    buttons: {
                         backToSecrets: {
                             label: string;
                             ariaLabel: string;
-                        },
+                        };
                         addSecret: {
                             label: string;
                             ariaLabel: string;
-                        }
-                    }
-                }
-            }
+                        };
+                    };
+                };
+            };
         };
         notifications: {
             endSession: {
@@ -5063,7 +6592,7 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
             };
-            authenticationProvider?: {
+            authenticationProvider: {
                 title: string;
                 subTitle: string;
             };
@@ -5377,7 +6906,7 @@ export interface ConsoleNS {
                 actions: {
                     create: {
                         label: string;
-                    }
+                    };
                 };
                 emptyPlaceholder: {
                     header: string;
@@ -5451,36 +6980,36 @@ export interface ConsoleNS {
                     form: {
                         fields: {
                             emailDomains: {
-                                label : string;
+                                label: string;
                                 placeholder: string;
                                 hint: string;
                                 validations: {
                                     invalid: {
                                         0: string;
                                         1: string;
-                                    }
-                                }
-                            },
+                                    };
+                                };
+                            };
                             organizationName: {
                                 label: string;
                                 placeholder: string;
                                 emptyPlaceholder: {
                                     0: string;
                                     1: string;
-                                }
+                                };
                                 hint: string;
-                            }
-                        }
-                    },
+                            };
+                        };
+                    };
                     buttons: {
                         assign: string;
-                    }
-                },
+                    };
+                };
                 emailDomains: {
                     actions: {
                         assign: string;
                         enable: string;
-                    }
+                    };
                 };
                 edit: {
                     back: string;
@@ -5488,15 +7017,15 @@ export interface ConsoleNS {
                     form: {
                         fields: {
                             emailDomains: {
-                                label : string;
+                                label: string;
                                 placeholder: string;
                                 hint: string;
                                 validations: {
                                     invalid: {
                                         0: string;
                                         1: string;
-                                    }
-                                }
+                                    };
+                                };
                             };
                             organizationName: {
                                 label: string;
@@ -5572,7 +7101,7 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
-                },
+                };
                 placeholders: {
                     emptyList: {
                         action: string;
@@ -5609,7 +7138,6 @@ export interface ConsoleNS {
                     };
                 };
                 title: string;
-                subTitle?: string;
                 notifications: {
                     fetchOrganization: {
                         error: {
@@ -5735,10 +7263,10 @@ export interface ConsoleNS {
                         action: string;
                         title: string;
                         subtitles: {
-                           0: string;
-                           1: string;
-                           2: string;
-                           3: string;
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
                         };
                     };
                 };
@@ -5748,7 +7276,7 @@ export interface ConsoleNS {
                     tabTitles: {
                         overview: string;
                         attributes: string;
-                    },
+                    };
                     fields: {
                         id: {
                             label: string;
@@ -5780,7 +7308,7 @@ export interface ConsoleNS {
                             label: string;
                             ariaLabel: string;
                         };
-                    },
+                    };
                     dangerZone: {
                         title: string;
                         subHeader: string;
@@ -5788,15 +7316,15 @@ export interface ConsoleNS {
                             enableActionTitle: string;
                             disableActionTitle: string;
                             subheader: string;
-                        }
-                    },
+                        };
+                    };
                     attributes: {
                         hint: string;
                         key: string;
                         value: string;
                         keyRequiredErrorMessage: string;
                         valueRequiredErrorMessage: string;
-                    }
+                    };
                 };
                 modals: {
                     addOrganization: {
@@ -5808,10 +7336,10 @@ export interface ConsoleNS {
                 forms: {
                     addOrganization: {
                         name: {
-                            validation : {
-                                duplicate:string;
-                                empty:string;
-                            }
+                            validation: {
+                                duplicate: string;
+                                empty: string;
+                            };
                             label: string;
                             placeholder: string;
                         };
@@ -5820,10 +7348,10 @@ export interface ConsoleNS {
                             placeholder: string;
                         };
                         domainName: {
-                            validation:{
-                                duplicate:string;
-                                empty:string;
-                            }
+                            validation: {
+                                duplicate: string;
+                                empty: string;
+                            };
                             label: string;
                             placeholder: string;
                         };
@@ -5856,38 +7384,38 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
-                        }
-                    }
-                }
+                            };
+                        };
+                    };
+                };
                 view: {
                     description: string;
-                }
+                };
             };
             users: {
                 addUserType: {
                     createUser: {
                         title: string;
-                        description: string
+                        description: string;
                     };
                     inviteParentUser: {
                         title: string;
-                        description: string
+                        description: string;
                     };
                 };
                 consumerUsers: {
                     fields: {
-                       username: {
-                           label: string;
-                           placeholder: string;
-                           validations: {
-                               empty: string;
-                               invalid: string;
-                               invalidCharacters: string;
-                               regExViolation: string;
-                           };
-                       }
-                    }
+                        username: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                                invalidCharacters: string;
+                                regExViolation: string;
+                            };
+                        };
+                    };
                 };
                 guestUsers: {
                     fields: {
@@ -5900,8 +7428,8 @@ export interface ConsoleNS {
                                 invalidCharacters: string;
                                 regExViolation: string;
                             };
-                        }
-                    }
+                        };
+                    };
                 };
                 confirmations: {
                     terminateAllSessions: {
@@ -5909,19 +7437,19 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                     };
+                    };
                     terminateSession: {
                         assertionHint: string;
                         header: string;
                         message: string;
                         content: string;
-                     };
+                    };
                     addMultipleUser: {
                         assertionHint: string;
                         header: string;
                         message: string;
                         content: string;
-                     }
+                    };
                 };
                 editUser: {
                     tab: {
@@ -5936,9 +7464,8 @@ export interface ConsoleNS {
                         undefinedUser: {
                             action: string;
                             title: string;
-                            subtitles: string
-                         }
-                         ;
+                            subtitles: string;
+                        };
                     };
                 };
                 userSessions: {
@@ -5973,61 +7500,60 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         terminateAllUserSessions: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         terminateUserSession: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getAdminUser: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     placeholders: {
                         emptyListPlaceholder: {
                             title: string;
-                            subtitles: string
-                        }
-                        ;
+                            subtitles: string;
+                        };
                     };
                 };
                 advancedSearch: {
@@ -6064,7 +7590,7 @@ export interface ConsoleNS {
                 addUserDropDown: {
                     addNewUser: string;
                     bulkImport: string;
-                }
+                };
                 forms: {
                     validation: {
                         formatError: string;
@@ -6084,29 +7610,29 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     addUserPendingApproval: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     bulkImportUser: {
                         validation: {
@@ -6150,99 +7676,98 @@ export interface ConsoleNS {
                                 message: string;
                                 description: string;
                             };
-                        },
+                        };
                         submit: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                             }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         timeOut: {
                             message: string;
                             description: string;
                         };
-                    }
+                    };
                     deleteUser: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUsers: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getAdminRole: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     revokeAdmin: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
                     emptyList: {
                         action: string;
                         title: string;
-                        subtitles:  {
-                            0: string,
-                            1: string,
-                        }
-                    }
-                    ;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
+                    };
                     userstoreError: {
                         title: string;
-                        subtitles:  {
-                            0: string,
-                            1: string,
-                        }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        };
                     };
                 };
                 usersList: {
@@ -6299,12 +7824,12 @@ export interface ConsoleNS {
                 };
                 modals: {
                     approvalProperties: {
-                        "Claims": string,
-                        "REQUEST ID": string,
-                        "Roles": string,
-                        "User Store Domain": string,
-                        "Username": string,
-                    },
+                        Claims: string;
+                        "REQUEST ID": string;
+                        Roles: string;
+                        "User Store Domain": string;
+                        Username: string;
+                    };
                     taskDetails: {
                         header: string;
                         description: string;
@@ -6315,73 +7840,73 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchPendingApprovals: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updatePendingApprovals: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
                     emptyApprovalList: {
                         action: string;
                         title: string;
-                        subtitles:  {
-                            0:string,
-                            1:string
-                            2:string
-                        }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptyApprovalFilter: {
                         action: string;
                         title: string;
-                        subtitles:  {
-                            0:string,
-                            1:string
-                            2:string
-                        }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
                     };
                     emptySearchResults: {
-                        action:string;
+                        action: string;
                         title: string;
-                        subtitles:  {
-                            0: string,
-                            1:string
-                            2:string
-                        }
-                    }
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                    };
                 };
             };
             certificates: {
@@ -6417,51 +7942,51 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getCertificates: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getAlias: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getPublicCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteCertificate: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         download: {
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     certificateModalHeader: string;
@@ -6548,11 +8073,11 @@ export interface ConsoleNS {
                     axschema: {
                         heading: string;
                         description: string;
-                    },
+                    };
                     eidas: {
                         heading: string;
                         description: string;
-                    },
+                    };
                     oidc: {
                         heading: string;
                         description: string;
@@ -6592,67 +8117,67 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         fetchADialect: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         fetchExternalClaims: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteDialect: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         addDialect: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateDialect: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         fetchSCIMResource: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     pageLayout: {
@@ -6729,7 +8254,11 @@ export interface ConsoleNS {
                                 };
                             };
                         };
-                        dialectURI: FormField;
+                        dialectURI: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                        };
                         submit: string;
                     };
                 };
@@ -6760,53 +8289,51 @@ export interface ConsoleNS {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                        }
-                        ;
+                            };
+                        };
                         fetchExternalClaims: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                        }
-                        ;
+                            };
+                        };
                         getExternalAttribute: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateExternalAttribute: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteExternalClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     forms: {
@@ -6815,9 +8342,9 @@ export interface ConsoleNS {
                             placeholder: string;
                             requiredErrorMessage: string;
                             validationErrorMessages: {
-                                duplicateName:string;
-                                invalidName:string;
-                                scimInvalidName:string;
+                                duplicateName: string;
+                                invalidName: string;
+                                scimInvalidName: string;
                             };
                         };
                         localAttribute: {
@@ -6868,63 +8395,63 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getAClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getClaims: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getLocalDialect: {
                             genericError: {
-                                    message: string;
-                                    description: string;
-                            }
+                                message: string;
+                                description: string;
+                            };
                         };
                         addLocalClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         deleteClaim: {
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     pageLayout: {
@@ -7027,7 +8554,7 @@ export interface ConsoleNS {
                         infoMessages: {
                             disabledConfigInfo: string;
                             configApplicabilityInfo: string;
-                        }
+                        };
                     };
                     dangerZone: {
                         actionTitle: string;
@@ -7092,7 +8619,7 @@ export interface ConsoleNS {
                         content: string;
                         header: string;
                         message: string;
-                    },
+                    };
                     saveChangesButton: string;
                 };
             };
@@ -7105,26 +8632,26 @@ export interface ConsoleNS {
                     addLocale: {
                         fields: {
                             bodyEditor: {
-                                label: string ;
+                                label: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             locale: {
-                                label: string ;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             signatureEditor: {
-                                label: string ;
+                                label: string;
                                 validations: {
                                     empty: string;
                                 };
                             };
                             subject: {
-                                label: string ;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -7170,7 +8697,7 @@ export interface ConsoleNS {
                     addTemplateType: {
                         fields: {
                             type: {
-                                label: string ;
+                                label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
@@ -7188,57 +8715,57 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getTemplateTypes: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateTemplateType: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createTemplateType: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
@@ -7254,7 +8781,7 @@ export interface ConsoleNS {
                             0: string;
                             1: string;
                             2: string;
-                        }
+                        };
                     };
                 };
                 wizards: {
@@ -7264,7 +8791,7 @@ export interface ConsoleNS {
                         steps: {
                             templateType: {
                                 heading: string;
-                            }
+                            };
                         };
                     };
                 };
@@ -7303,77 +8830,77 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createTemplate: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getTemplateDetails: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getTemplates: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     iframeUnsupported: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateTemplate: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
@@ -7384,7 +8911,7 @@ export interface ConsoleNS {
                             0: string;
                             1: string;
                             2: string;
-                        }
+                        };
                     };
                 };
                 viewTemplate: {
@@ -7432,7 +8959,7 @@ export interface ConsoleNS {
                             emptyListPlaceholder: {
                                 title: string;
                                 subtitles: string;
-                             };
+                            };
                         };
                     };
                 };
@@ -7450,69 +8977,69 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateGroup: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createGroup: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     createPermission: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchGroups: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
                     groupsError: {
                         title: string;
-                        subtitles: string [];
+                        subtitles: string[];
                     };
                 };
             };
@@ -7528,43 +9055,43 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getConnector: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateConnector: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 form: {
@@ -7579,9 +9106,9 @@ export interface ConsoleNS {
                 categories: string;
                 pageSubHeading: string;
                 connectorSubHeading: string;
-                genericDescription?: string;
+                genericDescription: string;
                 connectorCategories: {
-                    passwordPolicies : {
+                    passwordPolicies: {
                         name: string;
                         description: string;
                         connectors: {
@@ -7628,13 +9155,13 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    userOnboarding : {
+                    userOnboarding: {
                         name: string;
                         description: string;
                         connectors: {
                             askPassword: {
                                 friendlyName: string;
-                            },
+                            };
                             selfSignUp: {
                                 friendlyName: string;
                                 properties: {
@@ -7673,7 +9200,7 @@ export interface ConsoleNS {
                                     selfRegistrationCallbackRegex: {
                                         hint: string;
                                         label: string;
-                                    },
+                                    };
                                     urlListPurposeSelfSignUp: {
                                         hint: string;
                                         label: string;
@@ -7772,7 +9299,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    loginAttemptsSecurity : {
+                    loginAttemptsSecurity: {
                         name: string;
                         description: string;
                         connectors: {
@@ -7824,7 +9351,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    accountManagement : {
+                    accountManagement: {
                         name: string;
                         description: string;
                         connectors: {
@@ -7969,7 +9496,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    otherSettings : {
+                    otherSettings: {
                         name: string;
                         description: string;
                         connectors: {
@@ -8072,9 +9599,9 @@ export interface ConsoleNS {
                             elasticAnalyticsEngine: {
                                 friendlyName: string;
                                 warningModal: {
-                                    configure: string,
-                                    reassure: string
-                                },
+                                    configure: string;
+                                    reassure: string;
+                                };
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: string;
@@ -8141,7 +9668,7 @@ export interface ConsoleNS {
                             };
                         };
                     };
-                    multiFactorAuthenticators : {
+                    multiFactorAuthenticators: {
                         name: string;
                         friendlyName: string;
                         description: string;
@@ -8174,7 +9701,12 @@ export interface ConsoleNS {
             };
             helpPanel: {
                 notifications: {
-                    pin: Notification;
+                    pin: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             oidcScopes: {
@@ -8209,16 +9741,15 @@ export interface ConsoleNS {
                             subtitles: {
                                 0: string;
                                 1: string;
-                            }
-                        }
-                         ;
+                            };
+                        };
                         emptySearch: {
                             action: string;
                             title: string;
                             subtitles: {
                                 0: string;
                                 1: string;
-                            }
+                            };
                         };
                         title: string;
                         subTitle: string;
@@ -8264,7 +9795,7 @@ export interface ConsoleNS {
                         subtitles: {
                             0: string;
                             1: string;
-                        }
+                        };
                     };
                     searchPlaceholder: string;
                 };
@@ -8297,120 +9828,119 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     addOIDCClaim: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchOIDCScopes: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchOIDCScope: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchOIDClaims: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     deleteOIDCScope: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     deleteOIDClaim: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateOIDCScope: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     claimsMandatory: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 placeholders: {
@@ -8426,10 +9956,10 @@ export interface ConsoleNS {
                     emptySearch: {
                         action: string;
                         title: string;
-                        subtitles:{
+                        subtitles: {
                             0: string;
                             1: string;
-                        }
+                        };
                     };
                 };
             };
@@ -8578,86 +10108,85 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
-                    }
-                    ;
+                        };
+                    };
                     deleteRepoConfig: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getConfigDeploymentDetails: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getConfigList: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     getRemoteRepoConfig: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     triggerConfigDeployment: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 pages: {
@@ -8705,23 +10234,23 @@ export interface ConsoleNS {
                                     duplicateInAudience: string;
                                     empty: string;
                                     invalid: string;
-                                }
+                                };
                             };
                             roleAudience: {
-                                values:{
-                                    organization:string;
-                                    application:string;
-                                }
+                                values: {
+                                    organization: string;
+                                    application: string;
+                                };
                                 hint: string;
-                                label: string ;
+                                label: string;
                             };
                             assignedApplication: {
                                 applicationSubTitle: {
-                                    application:string;
-                                    organization:string;
-                                    changeAudience:string;
+                                    application: string;
+                                    organization: string;
+                                    changeAudience: string;
                                 };
-                                note:string;
+                                note: string;
                                 hint: string;
                                 label: string;
                                 placeholder: string;
@@ -8730,10 +10259,10 @@ export interface ConsoleNS {
                                 };
                             };
                             notes: {
-                                orgNote: string,
-                                appNote: string,
-                                cannotCreateRole: string
-                            }
+                                orgNote: string;
+                                appNote: string;
+                                cannotCreateRole: string;
+                            };
                         };
                         rolePermission: {
                             apiResource: {
@@ -8741,7 +10270,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 hint: {
                                     empty: string;
-                                }
+                                };
                             };
                             permissions: {
                                 label: string;
@@ -8750,7 +10279,7 @@ export interface ConsoleNS {
                                     noScopes: string;
                                     selectAllScopes: string;
                                     removeAPIResource: string;
-                                },
+                                };
                                 validation: {
                                     empty: string;
                                 };
@@ -8764,7 +10293,7 @@ export interface ConsoleNS {
                                     error: {
                                         message: string;
                                         description: string;
-                                    }
+                                    };
                                 };
                             };
                         };
@@ -8834,10 +10363,10 @@ export interface ConsoleNS {
                         errorPlaceHolder: {
                             action: string;
                             title: string;
-                            subtitles:{
+                            subtitles: {
                                 0: string;
-                                1:string;
-                            }
+                                1: string;
+                            };
                         };
                     };
                     basics: {
@@ -8874,16 +10403,16 @@ export interface ConsoleNS {
                                 action: string;
                                 title: string;
                                 subtitles: {
-                                    0: string
-                                }
+                                    0: string;
+                                };
                             };
                             errorPlaceholder: {
                                 action: string;
                                 title: string;
                                 subtitles: {
                                     0: string;
-                                    1: string
-                                }
+                                    1: string;
+                                };
                             };
                         };
                         notifications: {
@@ -8911,14 +10440,14 @@ export interface ConsoleNS {
                         actions: {
                             search: {
                                 placeholder: string;
-                            },
+                            };
                             assign: {
                                 placeholder: string;
-                            },
+                            };
                             remove: {
                                 label: string;
                                 placeholder: string;
-                            }
+                            };
                         };
                     };
                     menuItems: {
@@ -8936,9 +10465,9 @@ export interface ConsoleNS {
                             emptyPlaceholder: {
                                 action: string;
                                 title: string;
-                                subtitles:{
-                                    0: string
-                                }
+                                subtitles: {
+                                    0: string;
+                                };
                             };
                             errorPlaceholder: {
                                 action: string;
@@ -8946,7 +10475,7 @@ export interface ConsoleNS {
                                 subtitles: {
                                     0: string;
                                     1: string;
-                                }
+                                };
                             };
                         };
                         notifications: {
@@ -8972,21 +10501,21 @@ export interface ConsoleNS {
                                 action: string;
                                 title: string;
                                 subtitles: string;
-                             };
+                            };
                             user: string;
                             organization: string;
                         };
                         actions: {
                             search: {
                                 placeholder: string;
-                            },
+                            };
                             assign: {
                                 placeholder: string;
-                            },
+                            };
                             remove: {
                                 label: string;
                                 placeholder: string;
-                            }
+                            };
                         };
                     };
                     permissions: {
@@ -9033,21 +10562,21 @@ export interface ConsoleNS {
                             action: string;
                             title: string;
                             subtitles: {
-                                0 : string;
-                                1 : string;
-                            }
+                                0: string;
+                                1: string;
+                            };
                         };
                         emptyRoleList: {
                             action: string;
                             title: string;
                             subtitles: {
-                                0 : string;
-                                1 : string;
-                                2 : string;
-                            }
-                        } & {
-                            emptyRoles: string
+                                0: string;
+                                1: string;
+                                2: string;
                             };
+                        } & {
+                            emptyRoles: string;
+                        };
                     };
                     popups: {
                         delete: string;
@@ -9067,43 +10596,84 @@ export interface ConsoleNS {
                     emptyPlaceholders: {
                         searchAndFilter: {
                             title: string;
-                            subtitles: string | {
-                             0: string
-                             1: string
-                            }
-                        }
-                    }
-                }
+                            subtitles:
+                                | string
+                                | {
+                                      0: string;
+                                      1: string;
+                                  };
+                        };
+                    };
+                };
                 notifications: {
                     deleteRole: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchRoles: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchRole: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
-                    updateRole: Notification;
-                    createRole: Notification;
-                    createPermission: Notification;
+                    updateRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    createPermission: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             serverConfigs: {
@@ -9135,57 +10705,57 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         enableAdminAdvisoryBanner: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         getConfigurations: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateConfigurations: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     pageHeading: string;
@@ -9206,47 +10776,47 @@ export interface ConsoleNS {
                                 carbonLogs: string;
                                 auditLogs: string;
                                 allLogs: string;
-                            }
-                        },
+                            };
+                        };
                         remoteURL: {
                             label: string;
-                        },
+                        };
                         advanced: {
-                            title: string,
+                            title: string;
                             connectionTimeout: {
                                 label: string;
-                            },
+                            };
                             verifyHostname: {
                                 label: string;
-                            },
+                            };
                             basicAuthConfig: {
                                 title: string;
                                 serverUsername: {
                                     label: string;
-                                },
+                                };
                                 serverPassword: {
                                     label: string;
-                                }
-                            },
+                                };
+                            };
                             sslConfig: {
                                 title: string;
                                 keystorePath: {
                                     label: string;
-                                },
+                                };
                                 keystorePassword: {
                                     label: string;
-                                },
+                                };
                                 truststorePath: {
                                     label: string;
-                                },
+                                };
                                 truststorePassword: {
                                     label: string;
-                                },
-                            }
-                        }
+                                };
+                            };
+                        };
                     };
                     dangerZone: {
-                        button: string,
+                        button: string;
                         title: string;
                         header: string;
                         subheader: string;
@@ -9255,7 +10825,7 @@ export interface ConsoleNS {
                             header: string;
                             message: string;
                             content: string;
-                        }
+                        };
                     };
                     notification: {
                         success: {
@@ -9271,8 +10841,8 @@ export interface ConsoleNS {
                                 description: string;
                                 message: string;
                             };
-                        }
-                    }
+                        };
+                    };
                 };
                 realmConfiguration: {
                     actionTitles: {
@@ -9289,44 +10859,44 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                         };
+                            };
+                        };
                         updateConfigurations: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         emptyHomeRealmIdentifiers: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
-                         };
+                            };
+                        };
                     };
                     form: {
                         homeRealmIdentifiers: {
@@ -9381,7 +10951,7 @@ export interface ConsoleNS {
                 otherSettings: string;
                 overview: string;
                 passwordPolicies: string;
-                remoteFetchConfig: string
+                remoteFetchConfig: string;
                 roles: string;
                 userOnboarding: string;
                 users: string;
@@ -9420,7 +10990,7 @@ export interface ConsoleNS {
                 deleteJITUser: {
                     confirmationModal: {
                         content: string;
-                    }
+                    };
                 };
                 deleteUser: {
                     confirmationModal: {
@@ -9481,7 +11051,7 @@ export interface ConsoleNS {
                         placeholder: {
                             part1: string;
                             part2: string;
-                        }
+                        };
                     };
                 };
                 forms: {
@@ -9578,7 +11148,7 @@ export interface ConsoleNS {
                         header: string;
                         message: string;
                         content: string;
-                     };
+                    };
                 };
                 modals: {
                     addUserWarnModal: {
@@ -9635,7 +11205,7 @@ export interface ConsoleNS {
                                 username: string;
                                 status: string;
                                 message: string;
-                            }
+                            };
                             tableMessages: {
                                 userCreatedMessage: string;
                                 invalidDataMessage: string;
@@ -9656,13 +11226,12 @@ export interface ConsoleNS {
                                 importSuccess: {
                                     message: string;
                                     description: string;
-                                    genericMessage?: string;
                                 };
                                 importFailed: {
                                     message: string;
                                     userCreation: string;
                                     groupAssignment: string;
-                                }
+                                };
                             };
                             advanceSearch: {
                                 searchByUsername: string;
@@ -9674,7 +11243,6 @@ export interface ConsoleNS {
                                     creationSuccess: {
                                         message: string;
                                         description: string;
-                                        genericMessage?: string;
                                     };
                                 };
                                 hint: string;
@@ -9701,34 +11269,32 @@ export interface ConsoleNS {
                         };
                         buttons: {
                             import: string;
-                        },
+                        };
                         sidePanel: {
                             manual: string;
                             fileBased: string;
                             fileFormatTitle: string;
                             fileFormatContent: string;
                             fileFormatSampleHeading: string;
-                        }
+                        };
                     };
                     inviteParentUserWizard: {
                         totalInvitations: string;
                         successAlert: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                         errorAlert: {
                             message: string;
                             description: string;
-                            genericMessage?: string;
                         };
                         tableMessages: {
                             userNotFound: string;
                             activeInvitationExists: string;
                             userEmailNotFound: string;
                             userAlreadyExist: string;
-                        }
-                    }
+                        };
+                    };
                     changePasswordModal: {
                         header: string;
                         message: string;
@@ -9832,123 +11398,123 @@ export interface ConsoleNS {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         updateProfileInfo: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         lockUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         unlockUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         disableUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         enableUserAccount: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
                                 genericMessage: string;
-                            }
+                            };
                         };
                         changeUserPassword: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         forcePasswordReset: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             genericError: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                             success: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                         noPasswordResetOptions: {
                             error: {
                                 message: string;
                                 description: string;
-                            }
+                            };
                         };
                     };
                     placeholders: {
@@ -9958,11 +11524,13 @@ export interface ConsoleNS {
                         userProfile: {
                             emptyListPlaceholder: {
                                 title: string;
-                                subtitles: string | {
-                                [key: number]: string
-                                }
+                                subtitles:
+                                    | string
+                                    | {
+                                          [key: number]: string;
+                                      };
                             };
-                        }
+                        };
                     };
                 };
                 updateUser: {
@@ -9998,57 +11566,57 @@ export interface ConsoleNS {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             fetchUserGroups: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             removeUserGroups: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             updateUserGroups: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                         };
                     };
@@ -10083,7 +11651,7 @@ export interface ConsoleNS {
                                 emptyPlaceholder: {
                                     title: string;
                                     subtitles: string;
-                                 };
+                                };
                             };
                             heading: string;
                             popups: {
@@ -10097,57 +11665,57 @@ export interface ConsoleNS {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             fetchUserRoles: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             removeUserRoles: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                             updateUserRoles: {
                                 error: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 genericError: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                                 success: {
                                     message: string;
                                     description: string;
-                                }
+                                };
                             };
                         };
                         viewPermissionModal: {
@@ -10178,38 +11746,38 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     fetchUserstores: {
-                        genericError : {
+                        genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUserstoreTemplates: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUserstoreTypes: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     fetchUserstoreMetadata: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     deleteUserstore: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     delay: {
                         message: string;
@@ -10219,37 +11787,37 @@ export interface ConsoleNS {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     testConnection: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     addUserstore: {
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     apiLimitReachedError: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateDelay: {
                         message: string;
@@ -10294,7 +11862,7 @@ export interface ConsoleNS {
                             placeholder: string;
                             requiredErrorMessage: string;
                             validationErrorMessages: {
-                                [ key: string ]: string;
+                                [key: string]: string;
                             };
                         };
                         type: {
@@ -10366,7 +11934,7 @@ export interface ConsoleNS {
                     darkMode: string;
                 };
             };
-            invite?: {
+            invite: {
                 inviteButton: string;
                 subSelection: {
                     onBoard: string;
@@ -10377,57 +11945,57 @@ export interface ConsoleNS {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     resendInvite: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     sendInvite: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                     updateInvite: {
                         error: {
                             message: string;
                             description: string;
-                        }
+                        };
                         genericError: {
                             message: string;
                             description: string;
-                        }
+                        };
                         success: {
                             message: string;
                             description: string;
-                        }
+                        };
                     };
                 };
                 confirmationModal: {
@@ -10508,20 +12076,20 @@ export interface ConsoleNS {
                         hint: string;
                         validations: {
                             required: string;
-                        }
-                    },
+                        };
+                    };
                     groups: {
                         label: string;
                         placeholder: string;
                         hint: string;
                         validations: {
                             required: string;
-                        }
-                    },
+                        };
+                    };
                     inviteButton: string;
                 };
                 tab: {
-                    usersTab: string
+                    usersTab: string;
                     invitationsTab: string;
                 };
                 searchPlaceholder: string;
@@ -10542,21 +12110,21 @@ export interface ConsoleNS {
                 };
                 invitedUserLabel: string;
             };
-            onboarded?: {
+            onboarded: {
                 notifications: {
                     removeUser: {
                         error: {
-                        message: string;
-                        description: string;
-                        }
+                            message: string;
+                            description: string;
+                        };
                         genericError: {
-                        message: string;
-                        description: string;
-                        }
+                            message: string;
+                            description: string;
+                        };
                         success: {
-                        message: string;
-                        description: string;
-                        }
+                            message: string;
+                            description: string;
+                        };
                     };
                 };
                 confirmationModal: {
@@ -10573,12 +12141,12 @@ export interface ConsoleNS {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
-                },
+                    };
+                };
                 validationError: {
                     minMaxMismatch: string;
                     uniqueChrMismatch: string;
@@ -10587,21 +12155,21 @@ export interface ConsoleNS {
                     minLimitError: string;
                     maxLimitError: string;
                     wrongCombination: string;
-                }
+                };
                 notifications: {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
+                    };
                     success: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 pageTitle: string;
                 description: string;
                 goBackToApplication: string;
@@ -10612,26 +12180,26 @@ export interface ConsoleNS {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
-                },
+                    };
+                };
                 notifications: {
                     error: {
                         description: string;
                         message: string;
-                    },
+                    };
                     genericError: {
                         description: string;
                         message: string;
-                    },
+                    };
                     success: {
                         description: string;
                         message: string;
-                    }
-                },
+                    };
+                };
                 pageTitle: string;
                 description: string;
                 goBackToApplication: string;
@@ -10649,15 +12217,15 @@ export interface ConsoleNS {
                 lastFetchedMessage: {
                     label: string;
                     tooltipText: string;
-                },
+                };
                 advancedFilter: {
                     filterAttribute: string;
                     filterCondition: string;
                     filterValue: string;
-                },
+                };
                 commonFilters: {
                     userId: string;
-                },
+                };
                 activityType: {
                     login: {
                         filters: {
@@ -10697,9 +12265,9 @@ export interface ConsoleNS {
                                     selfSignUp: string;
                                 };
                             };
-                        }
-                    }
-                },
+                        };
+                    };
+                };
                 graphs: {
                     activeUsers: {
                         title: string;
@@ -10708,22 +12276,22 @@ export interface ConsoleNS {
                     successLogins: {
                         title: string;
                         titleHint: string;
-                    },
+                    };
                     failedLogins: {
                         title: string;
-                    },
+                    };
                     signups: {
                         title: string;
                         titleHint: string;
-                    }
-                },
+                    };
+                };
                 notifications: {
                     fetchInsights: {
                         genericError: {
                             description: string;
                             message: string;
-                        }
-                    }
+                        };
+                    };
                 };
                 compareToLastPeriodMessage: string;
             };
@@ -10734,7 +12302,7 @@ export interface ConsoleNS {
                 info: string;
                 updateButton: string;
                 sendTestSMSButton: string;
-                goBack: string
+                goBack: string;
                 confirmationModal: {
                     header: string;
                     message: string;
@@ -10747,7 +12315,7 @@ export interface ConsoleNS {
                         heading: string;
                         subHeading: string;
                         actionTitle: string;
-                    }
+                    };
                 };
                 form: {
                     twilio: {
@@ -10770,7 +12338,7 @@ export interface ConsoleNS {
                         validations: {
                             required: string;
                         };
-                    },
+                    };
                     vonage: {
                         subHeading: string;
                         accountSID: {
@@ -10791,7 +12359,7 @@ export interface ConsoleNS {
                         validations: {
                             required: string;
                         };
-                    },
+                    };
                     custom: {
                         subHeading: string;
                         providerName: {
@@ -10803,7 +12371,7 @@ export interface ConsoleNS {
                             label: string;
                             placeholder: string;
                             hint: string;
-                        },
+                        };
                         httpMethod: {
                             label: string;
                             placeholder: string;
@@ -10825,27 +12393,27 @@ export interface ConsoleNS {
                             hint: string;
                         };
                         key: {
-                            label: string,
-                            placeholder: string,
-                            hint: string
-                        },
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
                         secret: {
-                            label: string,
-                            placeholder: string,
-                            hint: string
-                        },
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
                         sender: {
-                            label: string,
-                            placeholder: string,
-                            hint: string
-                        }
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                        };
                         validations: {
                             required: string;
                             methodInvalid: string;
                             contentTypeInvalid: string;
                         };
-                    }
-                }
+                    };
+                };
                 notifications: {
                     getConfiguration: {
                         error: {
@@ -10872,7 +12440,7 @@ export interface ConsoleNS {
                             description: string;
                             message: string;
                         };
-                    }
+                    };
                 };
             };
         };
@@ -10895,29 +12463,29 @@ export interface ConsoleNS {
                 error: {
                     message: string;
                     description: string;
-                }
+                };
                 genericError: {
                     message: string;
                     description: string;
-                }
+                };
                 success: {
                     message: string;
                     description: string;
-                }
+                };
             };
             getProfileSchema: {
                 error: {
                     message: string;
                     description: string;
-                }
+                };
                 genericError: {
                     message: string;
                     description: string;
-                }
+                };
                 success: {
                     message: string;
                     description: string;
-                }
+                };
             };
         };
         pages: {
@@ -11012,14 +12580,28 @@ export interface ConsoleNS {
                 subTitle: string;
                 backButton: string;
             };
-            invite?: {
+            invite: {
                 title: string;
                 subTitle: string;
             };
         };
         placeholders: {
-            emptySearchResult: Placeholder;
-            underConstruction: Placeholder;
+            emptySearchResult: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            underConstruction: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
         };
     };
     saml2Config: {
