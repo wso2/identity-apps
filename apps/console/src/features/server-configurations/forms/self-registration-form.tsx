@@ -318,6 +318,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "signUpConfirmation",
+                "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",
                 "SelfRegistration.VerificationCode.ExpiryTime",
                 "SelfRegistration.SendConfirmationOnCreation",
