@@ -28,7 +28,6 @@ import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
 import { AppState } from "../../../../core";
-import { FeatureConfigInterface } from "../../../../core/models/config";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
@@ -97,7 +96,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
 
-    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.applications?.disabledFeatures);
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -461,7 +461,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     />
                     <Divider hidden />
                     { onlyOIDCConfigured
-                      && featureConfig?.applications?.disabledFeatures?.includes("applications.attributes.subjectType")
+                      && disabledFeatures?.includes("applications.attributes.subjectType")
                       && (
                           <div>
                               <Text>

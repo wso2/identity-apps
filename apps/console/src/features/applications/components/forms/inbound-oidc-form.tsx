@@ -56,7 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getSharedOrganizations } from "../../../organizations/api";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
@@ -194,7 +194,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
 
     const { isFAPIApplication } = initialValues;
 
@@ -1470,7 +1471,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         && !isDefaultApplication;
 
     const isClientAuthenticationMethodFieldEnabled: boolean =
-        !featureConfig?.applications.disabledFeatures?.includes("applications.protocol.clientAuthenticationMethod");
+        !disabledFeatures?.includes("applications.protocol.clientAuthenticationMethod");
 
     const isClientAuthenticationSectionEnabled: boolean = (
         ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
@@ -2003,7 +2004,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
-                && !featureConfig?.applications.disabledFeatures?.includes("applications.protocol.pushedAuthorization")
+                && !disabledFeatures?.includes("applications.protocol.pushedAuthorization")
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
