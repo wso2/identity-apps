@@ -19,7 +19,6 @@
 import {
     Confirmation,
     DangerZone,
-    EditPage,
     FormAttributes,
     FormField,
     HelpPanelInterface,
@@ -27,7 +26,6 @@ import {
     ModalInterface,
     Notification,
     NotificationItem,
-    Page,
     Placeholder,
     Popup,
     TransferList
