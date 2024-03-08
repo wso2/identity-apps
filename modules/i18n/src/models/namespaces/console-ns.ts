@@ -22,7 +22,6 @@ import {
     EditPage,
     FormAttributes,
     FormField,
-    HelpPanelActionsInterface,
     HelpPanelInterface,
     InfoModal,
     Message,
@@ -3645,9 +3644,19 @@ export interface ConsoleNS {
                 };
             };
             helpPanel: {
-                actions: HelpPanelActionsInterface;
+                actions: {
+                    close: string;
+                    open: string;
+                    pin: string;
+                    unPin: string;
+                };
                 notifications: {
-                    pin: Notification;
+                    pin: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
             };
             idp: {
