@@ -5740,9 +5740,24 @@ export interface ConsoleNS {
                     }
                 };
                 confirmations: {
-                    terminateAllSessions: Confirmation;
-                    terminateSession: Confirmation;
-                    addMultipleUser: Confirmation
+                    terminateAllSessions: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     };
+                    terminateSession: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     };
+                    addMultipleUser: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                     }
                 };
                 editUser: {
                     tab: {
@@ -5754,7 +5769,12 @@ export interface ConsoleNS {
                         };
                     };
                     placeholders: {
-                        undefinedUser: Placeholder;
+                        undefinedUser: {
+                            action: string;
+                            title: string;
+                            subtitles: string
+                         }
+                         ;
                     };
                 };
                 userSessions: {
@@ -5778,16 +5798,72 @@ export interface ConsoleNS {
                         };
                     };
                     dangerZones: {
-                        terminate: DangerZone;
+                        terminate: {
+                            actionTitle: string;
+                            header: string;
+                            subheader: string;
+                        };
                     };
                     notifications: {
-                        getUserSessions: Notification;
-                        terminateAllUserSessions: Notification;
-                        terminateUserSession: Notification;
-                        getAdminUser: Notification;
+                        getUserSessions: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        terminateAllUserSessions: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        terminateUserSession: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        getAdminUser: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        };
                     };
                     placeholders: {
-                        emptyListPlaceholder: Placeholder;
+                        emptyListPlaceholder: {
+                            title: string;
+                            subtitles: string
+                        }
+                        ;
                     };
                 };
                 advancedSearch: {
@@ -5840,32 +5916,170 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addUser: Notification;
-                    addUserPendingApproval: Notification;
+                    addUser: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    addUserPendingApproval: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                     bulkImportUser: {
                         validation: {
-                            emptyRowError: NotificationItem;
-                            columnMismatchError: NotificationItem;
-                            emptyHeaderError: NotificationItem;
-                            missingRequiredHeaderError: NotificationItem;
-                            blockedHeaderError: NotificationItem;
-                            duplicateHeaderError: NotificationItem;
-                            invalidHeaderError: NotificationItem;
-                            emptyDataField: NotificationItem;
-                            invalidRole: NotificationItem;
-                            invalidGroup: NotificationItem;
+                            emptyRowError: {
+                                message: string;
+                                description: string;
+                            };
+                            columnMismatchError: {
+                                message: string;
+                                description: string;
+                            };
+                            emptyHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            missingRequiredHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            blockedHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            duplicateHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            invalidHeaderError: {
+                                message: string;
+                                description: string;
+                            };
+                            emptyDataField: {
+                                message: string;
+                                description: string;
+                            };
+                            invalidRole: {
+                                message: string;
+                                description: string;
+                            };
+                            invalidGroup: {
+                                message: string;
+                                description: string;
+                            };
                         },
-                        submit: Notification;
-                        timeOut: NotificationItem;
+                        submit: {
+                            error: {
+                                message: string;
+                                description: string;
+                            }
+                            genericError: {
+                                message: string;
+                                description: string;
+                             }
+                            success: {
+                                message: string;
+                                description: string;
+                            }
+                        };
+                        timeOut: {
+                            message: string;
+                            description: string;
+                        };
                     }
-                    deleteUser: Notification;
-                    fetchUsers: Notification;
-                    getAdminRole: Notification;
-                    revokeAdmin: Notification;
+                    deleteUser: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchUsers: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    getAdminRole: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    revokeAdmin: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                 };
                 placeholders: {
-                    emptyList: Placeholder;
-                    userstoreError: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles:  {
+                            0: string,
+                            1: string,
+                        }
+                    }
+                    ;
+                    userstoreError: {
+                        title: string;
+                        subtitles:  {
+                            0: string,
+                            1: string,
+                        }
+                    };
                 };
                 usersList: {
                     list: {
