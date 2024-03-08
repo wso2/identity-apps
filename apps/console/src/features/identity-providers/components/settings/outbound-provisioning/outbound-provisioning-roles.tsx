@@ -32,7 +32,7 @@ import { getRolesList } from "../../../../roles/api";
 import { updateIDPRoleMappings } from "../../../api";
 import { IdentityProviderRolesInterface } from "../../../models";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../utils";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;

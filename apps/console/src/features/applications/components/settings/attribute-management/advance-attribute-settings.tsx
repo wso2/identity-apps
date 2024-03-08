@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
-import useUIConfig from "modules/common/src/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";

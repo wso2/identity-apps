@@ -26,13 +26,13 @@ import {
     PageLayout,
     Text
 } from "@wso2is/react-components";
-import { updateValidationConfigData, useValidationConfigData } from "apps/console/src/features/validation/api";
+import { updateValidationConfigData, useValidationConfigData } from "../../../../features/validation/api";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
-} from "apps/console/src/features/validation/models";
+} from "../../../../features/validation/models";
 import { AxiosError } from "axios";
 import React, {
     FunctionComponent,

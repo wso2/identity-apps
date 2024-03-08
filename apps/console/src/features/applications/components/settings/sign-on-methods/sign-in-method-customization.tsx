@@ -31,7 +31,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

@@ -27,7 +27,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import Axios from "axios";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

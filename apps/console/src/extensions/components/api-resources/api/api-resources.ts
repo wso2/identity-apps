@@ -22,7 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "apps/console/src/features/core/hooks/use-request";
+} from "../../../../features/core/hooks/use-request";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../../../features/core/store";
 import { APIResourcesConstants } from "../constants";
