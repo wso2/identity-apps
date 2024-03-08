@@ -19,7 +19,6 @@
 import {
     Confirmation,
     DangerZone,
-    EditPage,
     FormAttributes,
     FormField,
     HelpPanelInterface,
@@ -27,7 +26,6 @@ import {
     ModalInterface,
     Notification,
     NotificationItem,
-    Page,
     Placeholder,
     Popup,
     TransferList
@@ -5576,7 +5574,11 @@ export interface ConsoleNS {
                     };
                 },
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
                 };
                 title: string;
             };
