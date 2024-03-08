@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.13.0
+
+### Minor Changes
+
+- [#5645](https://github.com/wso2/identity-apps/pull/5645) [`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove fr-FR and si-LK translations for console application
+
+### Patch Changes
+
+- [#5673](https://github.com/wso2/identity-apps/pull/5673) [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify application namespaces in i18n modules
+
+- Updated dependencies [[`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682), [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc)]:
+  - @wso2is/i18n@2.1.0
+
 ## 2.12.59
 
 ### Patch Changes
