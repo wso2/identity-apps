@@ -811,6 +811,19 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return false;
         }
 
+        // Validate whether the subject and attribute identifier steps are selected.
+        if (!(subjectStepId > 0) || !(attributeStepId > 0)) {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                ".invalidStepIds.description"),
+                level: AlertLevels.WARNING,
+                message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                ".invalidStepIds.message")
+            }));
+
+            return false;
+        }
+
         return true;
     };
 
@@ -978,7 +991,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             setAuthenticatorAddStep(stepIndex);
                                         } }
                                         onStepOptionDelete={ handleStepOptionDelete }
-                                        showStepMeta={ authenticationSteps.length > 1 }
                                         showStepDeleteAction={ authenticationSteps.length > 1 }
                                         step={ step }
                                         stepIndex={ stepIndex }
@@ -989,6 +1001,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         onSubjectCheckboxChange={ handleSubjectRetrievalStepChange }
                                         data-componentid={ `${ componentId }-authentication-step-${ stepIndex }` }
                                         updateAuthenticationStep={ updateAuthenticationStep }
+                                        showStepMeta
                                     />
                                 </Fragment>
                             ))

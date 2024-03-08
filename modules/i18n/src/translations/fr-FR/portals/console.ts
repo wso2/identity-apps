@@ -1494,7 +1494,8 @@ export const console: ConsoleNS = {
                                             sessionExecutorDisabledInFirstStep: "Le gestionnaire de limite de sessions actives nécessite " +
                                                 "d'avoir un authentificateur de base dans une étape préalable.",
                                             sessionExecutorDisabledInMultiOptionStep: "Le gestionnaire de limite de sessions actives " +
-                                                "ne peut pas être ajouté à une étape multi-options."
+                                                "ne peut pas être ajouté à une étape multi-options.",
+                                            identifierCheckboxDisabled: "Les authentificateurs suivants ne vérifient pas l'identité de l'utilisateur et ne peuvent donc pas être utilisés pour choisir l'identité ou les attributs de l'utilisateur."
                                         }
                                     }
                                 },
@@ -1566,6 +1567,11 @@ export const console: ConsoleNS = {
                                             apple: {
                                                 description: "Permettre aux utilisateurs de se connecter avec Apple ID.",
                                                 heading: "Ajouter une connexion Apple"
+                                            },
+                                            backupCode: {
+                                                tooltipText: "The backup code authenticator does not verify" +
+                                                    " the user's identity, and hence cannot be used to pick the" +
+                                                    " user identity or attributes."
                                             },
                                             defaultConfig: {
                                                 description: "Créez votre flux de connexion en commençant par la " +

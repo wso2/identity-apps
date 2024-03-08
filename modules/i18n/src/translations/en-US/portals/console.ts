@@ -1479,6 +1479,7 @@ export const console: ConsoleNS = {
                                                 " <1>mobile number</1> to configure <3>SMS OTP</3> with" +
                                                 " <5>{{idpName}}</5> connection."
                                             },
+                                            identifierCheckboxDisabled: "The following authenticator(s) do not verify the user's identity, and hence cannot be used to pick the user identity or attributes.",
                                             sessionExecutorDisabledInFirstStep: "Active sessions limit handler require " +
                                             "having a basic authenticator in a prior step.",
                                             sessionExecutorDisabledInMultiOptionStep: "Active sessions limit handler cannot be " +
@@ -1544,6 +1545,11 @@ export const console: ConsoleNS = {
                                             apple: {
                                                 description: "Enable users to login with Apple ID.",
                                                 heading: "Add Apple login"
+                                            },
+                                            backupCode: {
+                                                tooltipText: "The backup code authenticator does not verify" +
+                                                    " the user's identity, and hence cannot be used to pick the" +
+                                                    " user identity or attributes."
                                             },
                                             defaultConfig: {
                                                 description: "Build your login flow starting with Username & "

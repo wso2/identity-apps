@@ -1477,7 +1477,8 @@ export const console: ConsoleNS = {
                                             sessionExecutorDisabledInFirstStep: "සක්‍රීය සැසි සීමා හසුරුවන්නාට පූර්ව පියවරකදී " +
                                                 "මූලික සත්‍යාපකයක් තිබීම අවශ්‍ය වේ.",
                                             sessionExecutorDisabledInMultiOptionStep: "සක්‍රීය සැසි සීමාව හසුරුවන්නා බහු විකල්ප " +
-                                                "පියවරකට එක් කළ නොහැක."
+                                                "පියවරකට එක් කළ නොහැක.",
+                                            identifierCheckboxDisabled: "පහත දැක්වෙන සත්යාපනකරු (ය) පරිශීලකයාගේ අනන්යතාවය සත්යාපනය නොකරන්න, එබැවින් පරිශීලක අනන්යතාවය හෝ ගුණාංග තෝරා ගැනීමට භාවිතා කළ නොහැක."
                                         }
                                     }
                                 },
@@ -1539,6 +1540,11 @@ export const console: ConsoleNS = {
                                             apple: {
                                                 description: "ඇපල් සමඟ පුරනය වීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                                                 heading: "ඇපල් පිවිසුම එක් කරන්න"
+                                            },
+                                            backupCode: {
+                                                tooltipText: "The backup code authenticator does not verify" +
+                                                    " the user's identity, and hence cannot be used to pick the" +
+                                                    " user identity or attributes."
                                             },
                                             defaultConfig: {
                                                 description: "පරිශීලක නාමය සහ මුරපද පිවිසුම සමඟ ආරම්භ වී ඔබේ " +
