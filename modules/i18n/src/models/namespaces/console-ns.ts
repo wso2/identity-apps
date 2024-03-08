@@ -5125,8 +5125,22 @@ export interface ConsoleNS {
             };
         };
         placeholders: {
-            emptySearchResult: Placeholder;
-            underConstruction: Placeholder;
+            emptySearchResult: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            underConstruction: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
         };
         technologies: {
             android: string;
