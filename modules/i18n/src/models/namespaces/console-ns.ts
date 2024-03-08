@@ -8378,17 +8378,84 @@ export interface ConsoleNS {
                     error: string;
                 };
                 notifications: {
-                    fetchUserstores: Notification;
-                    fetchUserstoreTemplates: Notification;
-                    fetchUserstoreTypes: Notification;
-                    fetchUserstoreMetadata: Notification;
-                    deleteUserstore: Notification;
-                    delay: NotificationItem;
-                    updateUserstore: Notification;
-                    testConnection: Notification;
-                    addUserstore: Notification;
-                    apiLimitReachedError: Notification;
-                    updateDelay: NotificationItem;
+                    fetchUserstores: {
+                        genericError : {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchUserstoreTemplates: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchUserstoreTypes: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchUserstoreMetadata: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    deleteUserstore: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    delay: {
+                        message: string;
+                        description: string;
+                    };
+                    updateUserstore: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    testConnection: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    addUserstore: {
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    apiLimitReachedError: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    updateDelay: {
+                        message: string;
+                        description: string;
+                    };
                 };
                 confirmation: {
                     hint: string;
@@ -8423,20 +8490,47 @@ export interface ConsoleNS {
                 };
                 forms: {
                     general: {
-                        name: FormField;
-                        type: FormField;
-                        description: FormField;
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            requiredErrorMessage: string;
+                            validationErrorMessages: {
+                                [ key: string ]: string;
+                            };
+                        };
+                        type: {
+                            label: string;
+                            requiredErrorMessage: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: string;
+                            };
+                        };
                     };
                     connection: {
                         updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };
-                    custom: FormField;
+                    custom: {
+                        placeholder: string;
+                        requiredErrorMessage: string;
+                    };
                 };
                 dangerZone: {
-                    delete: DangerZone;
-                    disable: DangerZone;
+                    delete: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
+                    disable: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                    };
                 };
                 wizard: {
                     steps: {
@@ -8448,9 +8542,20 @@ export interface ConsoleNS {
                     header: string;
                 };
                 placeholders: {
-                    emptySearch: Placeholder;
-                    emptyList: Placeholder;
-                    emptyListReadOnly: Placeholder;
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
+                    emptyListReadOnly: {
+                        title: string;
+                        subtitles: string;
+                    };
                 };
                 sqlEditor: {
                     reset: string;
