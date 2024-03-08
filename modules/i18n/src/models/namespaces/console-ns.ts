@@ -5601,16 +5601,116 @@ export interface ConsoleNS {
                 title: string;
                 subTitle?: string;
                 notifications: {
-                    fetchOrganization: Notification;
-                    deleteOrganization: Notification;
+                    fetchOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     deleteOrganizationWithSubOrganizationError: string;
-                    disableOrganization: Notification;
+                    disableOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                     disableOrganizationWithSubOrganizationError: string;
-                    enableOrganization: Notification;
-                    updateOrganization: Notification;
-                    updateOrganizationAttributes: Notification;
-                    addOrganization: Notification;
-                    getOrganizationList: Notification;
+                    enableOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOrganizationAttributes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addOrganization: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOrganizationList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                    };
                 };
                 confirmations: {
                     deleteOrganization: {
@@ -5621,7 +5721,16 @@ export interface ConsoleNS {
                     };
                 };
                 placeholders: {
-                    emptyList: Placeholder;
+                    emptyList: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                           0: string;
+                           1: string;
+                           2: string;
+                           3: string;
+                        };
+                    };
                 };
                 edit: {
                     description: string;
@@ -5631,13 +5740,36 @@ export interface ConsoleNS {
                         attributes: string;
                     },
                     fields: {
-                        id: FormAttributes;
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        domain: FormAttributes;
-                        type: FormAttributes;
-                        created: FormAttributes;
-                        lastModified: FormAttributes;
+                        id: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        name: {
+                            label: string;
+                            placeholder: string;
+                            ariaLabel: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                            ariaLabel: string;
+                        };
+                        domain: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        type: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        created: {
+                            label: string;
+                            ariaLabel: string;
+                        };
+                        lastModified: {
+                            label: string;
+                            ariaLabel: string;
+                        };
                     },
                     dangerZone: {
                         title: string;
@@ -5665,9 +5797,26 @@ export interface ConsoleNS {
                 };
                 forms: {
                     addOrganization: {
-                        name: FormAttributes;
-                        description: FormAttributes;
-                        domainName: FormAttributes;
+                        name: {
+                            validation : {
+                                duplicate:string;
+                                empty:string;
+                            }
+                            label: string;
+                            placeholder: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        domainName: {
+                            validation:{
+                                duplicate:string;
+                                empty:string;
+                            }
+                            label: string;
+                            placeholder: string;
+                        };
                         type: string;
                         structural: string;
                         tenant: string;
@@ -5693,7 +5842,12 @@ export interface ConsoleNS {
                     switchLabel: string;
                     switchButton: string;
                     notifications: {
-                        switchOrganization: Notification;
+                        switchOrganization: {
+                            genericError: {
+                                message: string;
+                                description: string;
+                            }
+                        }
                     }
                 }
                 view: {
