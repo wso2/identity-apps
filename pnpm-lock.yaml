@@ -536,7 +536,7 @@ importers:
         specifier: ^2.0.26
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.131
+        specifier: ^2.0.132
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.10
@@ -864,7 +864,7 @@ importers:
         specifier: ^2.0.26
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.131
+        specifier: ^2.0.132
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.1.10
