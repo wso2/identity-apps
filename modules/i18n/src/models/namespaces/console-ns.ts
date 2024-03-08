@@ -3311,15 +3311,17 @@ export interface ConsoleNS {
             emptySearchResult: {
                 action: string;
                 title: string;
-                subtitles: string | {
-                    [key: number]: string;
+                subtitles: {
+                    0: string;
+                    1: string;
                 };
             };
             underConstruction: {
                 action: string;
                 title: string;
-                subtitles: string | {
-                    [key: number]: string;
+                subtitles: {
+                    0: string;
+                    1: string;
                 };
             };
         };
