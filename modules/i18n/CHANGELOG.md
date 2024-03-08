@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.131
+
+### Patch Changes
+
+- [#5701](https://github.com/wso2/identity-apps/pull/5701) [`85ea8bc934`](https://github.com/wso2/identity-apps/commit/85ea8bc9347fe899be2203d214082f1164b66b98) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modified common in i18n modules namespaces
+
 ## 2.0.130
 
 ### Patch Changes

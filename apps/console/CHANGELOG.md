@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.12.55
+
+### Patch Changes
+
+- [#5701](https://github.com/wso2/identity-apps/pull/5701) [`85ea8bc934`](https://github.com/wso2/identity-apps/commit/85ea8bc9347fe899be2203d214082f1164b66b98) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modified common in i18n modules namespaces
+
+* [#5700](https://github.com/wso2/identity-apps/pull/5700) [`ff750e1cf7`](https://github.com/wso2/identity-apps/commit/ff750e1cf758ba77f295ad14af2aea81e61e5b5f) Thanks [@brionmario](https://github.com/brionmario)! - Enable the conditional script on adaptive script select
+
+- [#5697](https://github.com/wso2/identity-apps/pull/5697) [`58a751d41b`](https://github.com/wso2/identity-apps/commit/58a751d41bcabe8bba348ff26dfa148c5fc25927) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - SMS OTP enable button issues fixed.
+
+- Updated dependencies [[`85ea8bc934`](https://github.com/wso2/identity-apps/commit/85ea8bc9347fe899be2203d214082f1164b66b98)]:
+  - @wso2is/i18n@2.0.131
+
 ## 2.12.54
 
 ### Patch Changes
