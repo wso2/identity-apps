@@ -4717,7 +4717,11 @@ export interface ConsoleNS {
                 remoteRepoEdit: string;
             };
             templates: {
-                emptyPlaceholder: Placeholder;
+                emptyPlaceholder: {
+                    action: string;
+                    title: string;
+                    subtitles: string;
+                };
             };
             secrets?: {
                 advancedSearch: {
