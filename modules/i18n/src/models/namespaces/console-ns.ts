@@ -17,7 +17,6 @@
  */
 
 import {
-    AppSwitchItemInterface,
     Confirmation,
     DangerZone,
     EditPage,
@@ -33,8 +32,7 @@ import {
     Page,
     Placeholder,
     Popup,
-    TransferList,
-    ValidationInterface
+    TransferList
 } from "../common";
 
 /**
@@ -93,8 +91,14 @@ export interface ConsoleNS {
         };
         header: {
             appSwitch: {
-                console: AppSwitchItemInterface;
-                myAccount: AppSwitchItemInterface;
+                console: {
+                    name: string;
+                    description: string;
+                };
+                myAccount: {
+                    name: string;
+                    description: string;
+                };
                 tooltip: string;
             };
             featureAnnouncements: {
@@ -108,15 +112,23 @@ export interface ConsoleNS {
             organizationSwitch: {
                 emptyOrgListMessage: string;
                 orgSearchPlaceholder: string;
-                breadcrumbError: NotificationItem;
+                breadcrumbError: {
+                    message: string;
+                    description: string;
+                };
             };
-        },
+        };
         modals: {
-            editAvatarModal: ModalInterface;
+            editAvatarModal: {
+                description: string;
+                heading: string;
+                content: Record<string, unknown>;
+                primaryButton: string;
+                secondaryButton: string;
+            };
             sessionTimeoutModal: {
                 description: string;
                 heading: string;
-                content?: Record<string, unknown>;
                 primaryButton: string;
                 secondaryButton: string;
                 loginAgainButton: string;
@@ -125,17 +137,85 @@ export interface ConsoleNS {
             };
         };
         notifications: {
-            invalidPEMFile: Notification;
+            invalidPEMFile: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
         placeholders: {
-            404: Placeholder;
-            accessDenied: Placeholder;
-            brokenPage: Placeholder;
-            consentDenied: Placeholder;
-            genericError: Placeholder;
-            loginError: Placeholder;
-            sessionStorageDisabled: Placeholder;
-            unauthorized: Placeholder;
+            404: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            accessDenied: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            brokenPage: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            consentDenied: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            genericError: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            loginError: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            sessionStorageDisabled: {
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            unauthorized: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
         };
         privacy: {
             about: {
@@ -289,18 +369,24 @@ export interface ConsoleNS {
             };
         };
         validations: {
-            inSecureURL: ValidationInterface;
-            unrecognizedURL: ValidationInterface;
+            inSecureURL: {
+                heading: string;
+                description: string;
+            };
+            unrecognizedURL: {
+                heading: string;
+                description: string;
+            };
         };
         sidePanel: {
             privacy: string;
             loginAndRegistration: {
-                label: string,
-                description: string,
-            },
-            userAttributesAndStores: string,
-            userManagement: string,
-            branding: string
+                label: string;
+                description: string;
+            };
+            userAttributesAndStores: string;
+            userManagement: string;
+            branding: string;
         };
     };
     apiResources: {
