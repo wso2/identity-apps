@@ -5414,7 +5414,15 @@ export interface ConsoleNS {
         features: {
             businessGroups: {
                 fields: {
-                    groupName: FormAttributes;
+                    groupName: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                            duplicate: string;
+                            invalid: string;
+                        };
+                    };
                 };
             };
             organizationDiscovery: {
