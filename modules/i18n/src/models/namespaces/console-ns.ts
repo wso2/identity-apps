@@ -7203,16 +7203,41 @@ export interface ConsoleNS {
                     addScope: string;
                 };
                 confirmationModals: {
-                    deleteScope: Confirmation;
-                    deleteClaim: Confirmation;
+                    deleteScope: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
+                    deleteClaim: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    };
                 };
                 addAttributes: {
                     description: string;
                 };
                 editScope: {
                     claimList: {
-                        emptyPlaceholder: Placeholder;
-                        emptySearch: Placeholder;
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            }
+                        }
+                         ;
+                        emptySearch: {
+                            action: string;
+                            title: string;
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            }
+                        };
                         title: string;
                         subTitle: string;
                         addClaim: string;
@@ -7251,7 +7276,14 @@ export interface ConsoleNS {
                         actions: string;
                         name: string;
                     };
-                    empty: Placeholder;
+                    empty: {
+                        action: string;
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                        }
+                    };
                     searchPlaceholder: string;
                 };
                 wizards: {
@@ -7279,15 +7311,125 @@ export interface ConsoleNS {
                     };
                 };
                 notifications: {
-                    addOIDCScope: Notification;
-                    addOIDCClaim: Notification;
-                    fetchOIDCScopes: Notification;
-                    fetchOIDCScope: Notification;
-                    fetchOIDClaims: Notification;
-                    deleteOIDCScope: Notification;
-                    deleteOIDClaim: Notification;
-                    updateOIDCScope: Notification;
-                    claimsMandatory: Notification;
+                    addOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    addOIDCClaim: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchOIDCScopes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    fetchOIDClaims: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    deleteOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    deleteOIDClaim: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    updateOIDCScope: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    claimsMandatory: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                 };
                 placeholders: {
                     emptyList: {
@@ -7299,7 +7441,14 @@ export interface ConsoleNS {
                         };
                         title: string;
                     };
-                    emptySearch: Placeholder;
+                    emptySearch: {
+                        action: string;
+                        title: string;
+                        subtitles:{
+                            0: string;
+                            1: string;
+                        }
+                    };
                 };
             };
             overview: {
