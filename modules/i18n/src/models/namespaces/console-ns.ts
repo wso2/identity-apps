@@ -7555,7 +7555,11 @@ export interface ConsoleNS {
                         details: string;
                         header: string;
                         hint: string;
-                        linkPopup: Popup;
+                        linkPopup: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
                         refetch: string;
                     };
                 };
@@ -7566,15 +7570,51 @@ export interface ConsoleNS {
                             save: string;
                         };
                         fields: {
-                            accessToken: FormAttributes;
-                            enable: FormAttributes;
-                            connectivity: FormAttributes;
-                            gitBranch: FormAttributes;
-                            gitFolder: FormAttributes;
-                            gitURL: FormAttributes;
-                            pollingFrequency: FormAttributes;
-                            sharedKey: FormAttributes;
-                            username: FormAttributes;
+                            accessToken: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            enable: {
+                                hint: string;
+                                label: string;
+                            };
+                            connectivity: {
+                                [key: string]: any;
+                                label: string;
+                            };
+                            gitBranch: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            gitFolder: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            gitURL: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            pollingFrequency: {
+                                label: string;
+                            };
+                            sharedKey: {
+                                label: string;
+                            };
+                            username: {
+                                label: string;
+                                placeholder: string;
+                            };
                         };
                         heading: {
                             subTitle: string;
@@ -7583,21 +7623,112 @@ export interface ConsoleNS {
                     };
                 };
                 modal: {
-                    appStatusModal: ModalInterface;
+                    appStatusModal: {
+                        description: string;
+                        heading: string;
+                        primaryButton: string;
+                        secondaryButton: string;
+                    };
                 };
                 notifications: {
-                    createRepoConfig: Notification;
-                    deleteRepoConfig: Notification;
-                    getConfigDeploymentDetails: Notification;
-                    getConfigList: Notification;
-                    getRemoteRepoConfig: Notification;
-                    triggerConfigDeployment: Notification;
+                    createRepoConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    }
+                    ;
+                    deleteRepoConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    getConfigDeploymentDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    getConfigList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    getRemoteRepoConfig: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
+                    triggerConfigDeployment: {
+                        error: {
+                            message: string;
+                            description: string;
+                        }
+                        genericError: {
+                            message: string;
+                            description: string;
+                        }
+                        success: {
+                            message: string;
+                            description: string;
+                        }
+                    };
                 };
                 pages: {
-                    listing: Page;
+                    listing: {
+                        title: string;
+                        subTitle: string;
+                    };
                 };
                 placeholders: {
-                    emptyListPlaceholder: Placeholder;
+                    emptyListPlaceholder: {
+                        action: string;
+                        title: string;
+                        subtitles: string;
+                    };
                 };
             };
             roles: {
