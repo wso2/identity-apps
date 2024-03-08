@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.1.39
+
+### Patch Changes
+
+- [#5702](https://github.com/wso2/identity-apps/pull/5702) [`f39ad4b76a`](https://github.com/wso2/identity-apps/commit/f39ad4b76a185a76a7560d1d34b2178f1caebaa5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n for "Powered by" string in recovery portal
+
+* [#5711](https://github.com/wso2/identity-apps/pull/5711) [`7003abe454`](https://github.com/wso2/identity-apps/commit/7003abe4546e59b53e0df1e231ea7c09e545844f) Thanks [@Yoshani](https://github.com/Yoshani)! - set tenant-aware username in alor cookie
+
 ## 2.1.38
 
 ### Patch Changes
