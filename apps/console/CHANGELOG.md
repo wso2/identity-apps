@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.12.58
+
+### Patch Changes
+
+- [#5647](https://github.com/wso2/identity-apps/pull/5647) [`e39b7f293d`](https://github.com/wso2/identity-apps/commit/e39b7f293d25ab396fc0a85fea390505f818ae3e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide SSO authenticator in external groups under application role view
+
+* [#5704](https://github.com/wso2/identity-apps/pull/5704) [`7b416cdb85`](https://github.com/wso2/identity-apps/commit/7b416cdb855d0c70d560586a313b7b02129cd46e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update add connection wizard to use documentation link from metadata API
+
 ## 2.12.57
 
 ### Patch Changes
