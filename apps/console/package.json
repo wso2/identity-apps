@@ -30,7 +30,7 @@
         "postbuild": "node scripts/post-build.js",
         "poststart": "pnpm run postbuild",
         "start": "pnpm prestart && pnpm nx run console:serve && pnpm poststart",
-        "test": "pnpm jest --passWithNoTests",
+        "test": "jest --passWithNoTests",
         "test:watch": "pnpm run test --watchAll",
         "start:profile": "pnpm run start -- --env ENABLE_BUILD_PROFILER=true",
         "start:verbose": "pnpm run start -- --env LOG_LEVEL=verbose",
