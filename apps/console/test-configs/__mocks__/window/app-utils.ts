@@ -22,8 +22,9 @@
  */
 
 interface CustomWindow extends Window {
-    AppUtils: { 
+    AppUtils: {
         getConfig: () => any;
+        getOrganizationPath: () => string;
     };
 }
 
@@ -481,6 +482,9 @@ interface CustomWindow extends Window {
                 }
             }
         };
+    },
+    getOrganizationPath: function () {
+        return "";
     }
     /* eslint-disable sort-keys, max-len */
 };
