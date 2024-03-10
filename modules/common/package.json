@@ -23,7 +23,7 @@
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
-        "test": "pnpm jest",
+        "test": "jest",
         "test:watch": "pnpm test -- --watch",
         "jest": "run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest --passWithNoTests",
