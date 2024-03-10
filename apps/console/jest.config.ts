@@ -18,11 +18,6 @@
 
 module.exports = {
     displayName: "console",
-    globals: {
-        "ts-jest": {
-            tsconfig: "<rootDir>/tsconfig.json"
-        }
-    },
     moduleDirectories: [
         "node_modules",
         "test-configs",
@@ -69,7 +64,9 @@ module.exports = {
     ],
     transform: {
         "^.+\\.(js|jsx)?$": "babel-jest",
-        "^.+\\.(ts|tsx)?$": "ts-jest"
+        "^.+\\.(ts|tsx)?$": [ "ts-jest", {
+            tsconfig: "<rootDir>/tsconfig.json"
+        } ]
     },
     transformIgnorePatterns: [
         "/node_modules/?(?!@wso2is)",
