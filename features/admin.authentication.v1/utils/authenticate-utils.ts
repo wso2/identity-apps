@@ -16,8 +16,10 @@
  * under the License.
  */
 
-import { AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
+import { AuthParams, AuthReactConfig, ResponseMode, SPAUtils, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
+import { StringUtils } from "@wso2is/core/utils";
+import axios, { AxiosResponse } from "axios";
 import UAParser from "ua-parser-js";
 import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
 
@@ -149,4 +151,24 @@ export class AuthenticateUtils {
 
         return overriddenURL + parsedOriginalURL.search;
     }
+
+    public static getAuthParams = (): Promise<AuthParams> => {
+        if (!SPAUtils.hasAuthSearchParamsInURL()
+            && Config.getDeploymentConfig()?.idpConfigs?.responseMode === ResponseMode.formPost) {
+
+            const contextPath: string = window[ "AppUtils" ].getConfig().appBase
+                ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
+                : "";
+
+            return axios.get(contextPath + "/auth").then((response: AxiosResponse ) => {
+                return Promise.resolve({
+                    authorizationCode: response?.data?.authCode,
+                    sessionState: response?.data?.sessionState,
+                    state: response?.data?.state
+                });
+            });
+        }
+
+        return;
+    };
 }

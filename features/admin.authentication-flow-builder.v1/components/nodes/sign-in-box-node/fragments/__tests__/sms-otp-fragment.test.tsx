@@ -17,7 +17,6 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
 import { render, screen } from "../../../../../../../../test-configs/utils";
