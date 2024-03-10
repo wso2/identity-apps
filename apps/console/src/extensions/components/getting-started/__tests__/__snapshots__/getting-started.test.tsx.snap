@@ -2,7 +2,6 @@
 
 exports[`Test if the Getting Started page is working as expected <GettingStartedPage /> matches snapshot 1`] = `
 <div>
-   
   <div
     class="layout page-layout getting-started-page"
     data-componentid="getting-started-page-layout"
@@ -12,29 +11,53 @@ exports[`Test if the Getting Started page is working as expected <GettingStarted
       class="layout-content"
     >
       <div
-        class="loaders content-loader"
-        data-componentid="content-loader-wrapper"
-        data-testid="content-loader-wrapper"
+        class="advance-user-view-cards-wrapper"
       >
         <div
-          class="ui active transition visible inverted dimmer"
-          data-componentid="content-loader-dimmer"
-          data-testid="content-loader-dimmer"
-          style="display: flex;"
+          class="greeting"
         >
-          <div
-            class="content"
+          <h1
+            class="ui header heading bold-500 compact ellipsis"
+            data-componentid="welcome-greeting-header"
+            data-suppress=""
+            data-testid="welcome-greeting-header"
           >
             <div
-              class="ui inverted loader"
-              data-componentid="content-loader"
-              data-testid="content-loader"
-            />
+              class="ui placeholder"
+              data-componentid="welcome-greeting-placeholder"
+              data-testid="welcome-greeting-placeholder"
+            >
+              <div
+                class="header"
+              >
+                <div
+                  class="line very long"
+                />
+              </div>
+            </div>
+          </h1>
+        </div>
+        <div
+          class="ui stackable grid"
+        >
+          <div
+            class="two column row"
+          >
+            <div
+              class="stretched ten wide computer ten wide large screen sixteen wide mobile sixteen wide tablet ten wide widescreen column"
+            >
+              <div
+                class="ui stackable grid"
+              >
+                <div
+                  class="two column row"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-   
 </div>
 `;

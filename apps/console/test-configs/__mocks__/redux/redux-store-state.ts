@@ -85,6 +85,9 @@ const ReduxStoreStateMock = {
                 structureFileType: "YAML",
                 structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
             },
+            extensions: {
+                asgardeoTryItURL: ""
+            },
             idpConfigs: {
                 serverOrigin: "https://localhost:9443",
                 enablePKCE: true,
