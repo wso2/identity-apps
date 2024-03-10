@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
+import { render, screen } from "../../../../../../test-configs/utils";
 import DoneNode, { DoneNodePropsInterface } from "../done-node";
 
 describe("DoneNode", () => {
@@ -46,7 +46,7 @@ describe("DoneNode", () => {
     it("renders the CheckIcon inside the Fab button", () => {
         render(<DoneNode { ...defaultProps } />, { allowedScopes: fullPermissions });
 
-        const checkIcon: SVGSVGElement = screen.getByTestId("done-node-check-icon");
+        const checkIcon: HTMLElement = screen.getByTestId("done-node-check-icon");
 
         expect(checkIcon).toBeInTheDocument();
     });

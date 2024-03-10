@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import "@testing-library/jest-dom";
 import MockConfigDetailsRequestResponse from "./__mocks__/mock.config-detail";
 import MockConfigListRequestResponse from "./__mocks__/mock.config-list";
 import MockConfigTriggerResponse from "./__mocks__/mock.config-trigger-response";

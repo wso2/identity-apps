@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import { Position } from "reactflow";
 import { fullPermissions } from "./__mocks__/permissions";
+import { render, screen } from "../../../../../../test-configs/utils";
 import StepAdditionEdge, { StepAdditionEdgePropsInterface } from "../step-addition-edge";
 
 describe("StepAdditionEdge", () => {
@@ -39,7 +39,7 @@ describe("StepAdditionEdge", () => {
         targetX: 200,
         targetY: 200
     };
-  
+
     it("renders the base edge", () => {
         render(<StepAdditionEdge { ...defaultProps }/>, { allowedScopes: fullPermissions });
 
