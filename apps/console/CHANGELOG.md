@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.1
+
+### Patch Changes
+
+- [#5717](https://github.com/wso2/identity-apps/pull/5717) [`c3a3d32969`](https://github.com/wso2/identity-apps/commit/c3a3d32969624cb12368f9c5a5dd348495cd75aa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable SAML artifact binding option conditionally
+
 ## 2.13.0
 
 ### Minor Changes
