@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Button } from "@oxygen-ui/react";
+import axios from 'axios';
 import { ReactComponent as AIIcon } from "../../../../theme/src/themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 import { 
     DocumentationLink
@@ -24,7 +25,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
     { onGenerateBrandingClick }: BrandingAIComponentProps
 ): ReactElement => {
     const [bannerState, setBannerState] = useState<BannerState>(BannerState.Full);
-    const [websiteUrl, setWebsiteUrl] = useState<string>("");
+    const [websiteUrl, setWebsiteUrl] = useState<string>("https://www.demoblaze.com/");
 
     const handleExpandClick = () => {
         setBannerState(BannerState.Input);
@@ -34,8 +35,21 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
         setBannerState(BannerState.Collapsed);
     };
 
-    const handleGenerateClick = () => {
+    const handleGenerateClick = async () => {
         console.log("Generating branding for:", websiteUrl);
+        onGenerateBrandingClick();
+        try {
+            const response = await axios.post('http://0.0.0.0:8080/branding/generate', {
+                website_url: websiteUrl
+            }, {
+                headers: {
+                    'trace-id': 'custom'
+                }
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -86,7 +100,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                 style={{ width: '40%' }}
                             />
                             <Button
-                                onClick={onGenerateBrandingClick}
+                                onClick={handleGenerateClick}
                                 color="secondary"
                                 variant="outlined"
                                 style={{ marginLeft: 'auto'}}
