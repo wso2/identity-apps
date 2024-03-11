@@ -25,9 +25,6 @@ import {
 import { Divider } from "semantic-ui-react";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import {
-    SmsOtpAuthenticatorActivationSection
-} from "./sms-otp-authenticator-activation-section";
 import { FeatureConfigInterface } from "../../../../features/core/models";
 import { AppState } from "../../../../features/core/store";
 import {
@@ -102,18 +99,6 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
 
     return (
         <>
-            {
-                isChoreoEnabledAsSMSProvider && (
-                    <>
-                        <SmsOtpAuthenticatorActivationSection
-                            onActivate={
-                                (isActivated: boolean) => setIsReadOnly(isChoreoEnabledAsSMSProvider && !isActivated)
-                            }
-                        />
-                        <Divider hidden />
-                    </>
-                )
-            }
             <SMSOTPAuthenticatorForm
                 initialValues={ initialValues }
                 metadata={ metadata }

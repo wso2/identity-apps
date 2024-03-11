@@ -18,11 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Divider } from "semantic-ui-react";
 import {
-    SmsOtpAuthenticatorActivationSection
-} from "./sms-otp-authenticator-activation-section";
-import { 
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
 } from "../../../models/authenticators";
@@ -78,25 +74,19 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         ...rest
     } = props;
 
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(true);
+    const isReadOnly: boolean = true;
 
     return (
-        <>
-            <SmsOtpAuthenticatorActivationSection
-                onActivate={ (isActivated: boolean) => setIsReadOnly(!isActivated) }
-            />
-            <Divider hidden />
-            <SMSOTPAuthenticatorForm
-                initialValues={ initialValues }
-                metadata={ metadata }
-                onSubmit={ onSubmit }
-                readOnly = { isReadOnly }
-                triggerSubmit={ triggerSubmit }
-                enableSubmitButton={ enableSubmitButton }
-                showCustomProperties={ showCustomProperties }
-                isSubmitting={ isSubmitting }
-                { ...rest }
-            />
-        </>
+        <SMSOTPAuthenticatorForm
+            initialValues={ initialValues }
+            metadata={ metadata }
+            onSubmit={ onSubmit }
+            readOnly = { isReadOnly }
+            triggerSubmit={ triggerSubmit }
+            enableSubmitButton={ enableSubmitButton }
+            showCustomProperties={ showCustomProperties }
+            isSubmitting={ isSubmitting }
+            { ...rest }
+        />
     );
 };
