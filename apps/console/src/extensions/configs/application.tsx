@@ -625,7 +625,7 @@ export const applicationConfig: ApplicationConfig = {
         showScopeValidators: false
     },
     inboundSAMLForm: {
-        artifactBindingAllowed:false,
+        artifactBindingAllowed: true,
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: false,
         showQueryRequestProfile: true
