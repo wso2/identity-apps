@@ -1,5 +1,11 @@
 # @wso2is/common
 
+## 2.0.50
+
+### Patch Changes
+
+- [#5721](https://github.com/wso2/identity-apps/pull/5721) [`e58b366693`](https://github.com/wso2/identity-apps/commit/e58b3666931dac0ef802aa00657c71ff2593d6cd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add missing i18n content
+
 ## 2.0.49
 
 ### Patch Changes
