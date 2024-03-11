@@ -35,6 +35,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
@@ -47,7 +48,7 @@
     String username = null;
 
     String confirmationKey = request.getParameter("confirmation");
-    String callback = request.getParameter("callback");
+    String callback = Encode.forJava(request.getParameter("callback"));
     String httpMethod = request.getMethod();
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
