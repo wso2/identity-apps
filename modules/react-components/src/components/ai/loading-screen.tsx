@@ -42,7 +42,7 @@ export const LoadingScreen = () => {
 
     const fetchProgress = async () => {
         try {
-            const response = await axios.get('http://0.0.0.0:8080/branding/status', {
+            const response = await axios.get('http://localhost:3000/status', {
                 headers: {
                     'trace-id': 'custom'
                 }
@@ -85,7 +85,7 @@ export const LoadingScreen = () => {
         const interval = setInterval(async () => {
             const fetchedStatus = await fetchProgress();
             updateProgress(fetchedStatus);
-        }, 1000);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [polling]);

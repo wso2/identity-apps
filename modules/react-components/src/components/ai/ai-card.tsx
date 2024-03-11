@@ -39,7 +39,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
         console.log("Generating branding for:", websiteUrl);
         onGenerateBrandingClick();
         try {
-            const response = await axios.post('http://0.0.0.0:8080/branding/generate', {
+            const response = await axios.post('http://localhost:3000/generate', {
                 website_url: websiteUrl
             }, {
                 headers: {
