@@ -49,7 +49,13 @@ export const LoadingScreen = () => {
             });
             return response.data.status;
         } catch (error) {
-            console.error(error);
+            if (error.response && error.response.status === 404 && error.response.data.detail === "No branding request found with the provided tracking reference.") {
+                // If the error response is 404 with the specified detail, interpret it as branding generation completed
+                setProgress(100);
+                return { branding_generation_completed: true };
+            } else {
+                console.error(error);
+            }
         }
     };
 
@@ -68,6 +74,7 @@ export const LoadingScreen = () => {
         setProgress((completedSteps / statusSequence.length) * 100);
 
         if (fetchedStatus.branding_generation_completed) {
+            setProgress(100);
             setPolling(false);
         }
     };
@@ -78,10 +85,16 @@ export const LoadingScreen = () => {
         const interval = setInterval(async () => {
             const fetchedStatus = await fetchProgress();
             updateProgress(fetchedStatus);
-        }, 2000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [polling]);
+
+    useEffect(() => {
+        if (progress === 100) {
+            setPolling(false);
+        }
+    }, [progress]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -97,10 +110,10 @@ export const LoadingScreen = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: '20px' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '75%' }}>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#29b6f6' }}>
+                        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.6)' }}>
                             Did you know?
                         </Typography>
-                        <Typography variant="body1" align="justify" sx={{ mt: 2, color: '#757575', height: '100px', overflow: 'auto' }}>
+                        <Typography variant="body1" align="justify" sx={{ mt: 2, color: '#757575', height: '150px', overflow: 'auto' }}>
                             {facts[factIndex]}
                         </Typography>
                     </Box>
