@@ -18,18 +18,17 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import {
-    CommonAuthenticatorFormInitialValuesInterface,
-    CommonAuthenticatorFormMetaInterface
-} from "../../../../features/identity-providers/models/identity-provider";
-import { Divider } from "semantic-ui-react";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { FeatureConfigInterface } from "../../../../features/core/models";
 import { AppState } from "../../../../features/core/store";
 import {
     SMSOTPAuthenticatorForm
 } from "../../../../features/identity-providers/components/forms/authenticators/sms-otp-authenticator-form";
+import {
+    CommonAuthenticatorFormInitialValuesInterface,
+    CommonAuthenticatorFormMetaInterface
+} from "../../../../features/identity-providers/models/identity-provider";
 import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 
 interface SmsOTPAuthenticatorInterface extends IdentifiableComponentInterface {
@@ -90,12 +89,11 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         return !disabledFeatures?.includes("choreoAsSMSProvider");
     }, [ featureConfig ]);
 
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(
-        isChoreoEnabledAsSMSProvider ||
-        !hasRequiredScopes(
-            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes) ||
-        isSubOrganization()
-    );
+    const isReadOnly: boolean = isChoreoEnabledAsSMSProvider
+        || !hasRequiredScopes(
+            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes
+        )
+        || isSubOrganization();
 
     return (
         <>
