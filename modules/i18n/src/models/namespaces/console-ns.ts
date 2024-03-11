@@ -10971,6 +10971,7 @@ export interface ConsoleNS {
                         groups: {
                             unselected: string;
                             selected: string;
+                            common: string;
                         };
                         roles: {
                             unselected: string;
