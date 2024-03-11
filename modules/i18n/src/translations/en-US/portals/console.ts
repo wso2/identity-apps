@@ -11391,7 +11391,8 @@ export const console: ConsoleNS = {
                         default: "There are no items in this list at the moment.",
                         groups: {
                             selected: "There are no {{type}} assigned to this group.",
-                            unselected: "There are no {{type}} available to assign to this group."
+                            unselected: "There are no {{type}} available to assign to this group.",
+                            common: "No {{type}} found"
                         },
                         roles: {
                             selected: "There are no {{type}} assigned with this role.",
