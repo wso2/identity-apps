@@ -265,7 +265,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     /**
      * Validate the authentication steps.
      *
-     * @param options - Authenticator options.
+     * @param steps - Authenticator steps.
      * @returns True or false - Is steps are valid or not.
      */
     const validateSteps = (steps: AuthenticationStepInterface[]): boolean => {
