@@ -26,10 +26,6 @@ export const LoadingScreen = () => {
         'branding_generation_completed',
     ];
 
-    useEffect(() => {
-        console.log('###### Progress' + progress);
-    },[progress]);
-
     const statusLabels = {
         render_webpage: "Rendering Webpage...",
         extract_webpage_content: "Extracting Content...",
