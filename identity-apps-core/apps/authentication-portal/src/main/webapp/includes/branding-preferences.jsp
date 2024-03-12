@@ -656,7 +656,7 @@
             }
         }
 
-        // Set power by logo URL.
+        // Set powered by logo URL.
         if (StringUtils.isEmpty(poweredByLogoURL)) {
             if (StringUtils.isEmpty(activeThemeName)) {
                 poweredByLogoURL = productLogoURL;
