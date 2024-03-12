@@ -226,9 +226,9 @@
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
     String productURL = "https://wso2.com/identity-server";
-    String productLogoURL = "libs/themes/wso2is/assets/images/branding/logo.svg";
+    String productLogoURL = "libs/themes/wso2is/assets/images/branding/logo-full.svg";
     String productLogoAlt = "WSO2 Identity Server Logo";
-    String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
+    String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-full-inverted.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset", "password-reset-success"};
 

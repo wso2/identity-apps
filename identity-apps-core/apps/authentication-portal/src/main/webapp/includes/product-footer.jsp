@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -58,18 +58,13 @@
                         <span class="copyright-text line-break"><%= copyright %></span>
                     <% } %>
                     <%
-                        if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
-                    %>
-                        <div class="powered-by-logo-divider">|</div>
-                    <% } %>
-                    <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(productLogoURL)) {%>
+                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(poweredByLogoURL)) {%>
                             <div class="powered-by-logo-divider">|</div>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "powered.by")%>
                             <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
-                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
+                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(poweredByLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                             </div>
                         <% } %>
                     <% } %>

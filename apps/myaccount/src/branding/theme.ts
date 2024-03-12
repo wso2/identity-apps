@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,12 +31,6 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
     return extendTheme({
         colorSchemes: {
             dark: {
-                brand: {
-                    logo: {
-                        main: brandingTheme?.images?.myAccountLogo?.imgURL 
-                            ?? `${process.env.PUBLIC_URL}/assets/brands/asgardeo/images/asgardeo-logo-inverted.svg`
-                    }
-                },
                 palette: {
                     customComponents: {
                         AppShell: {
@@ -69,12 +63,6 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
                 }
             },
             light: {
-                brand: {
-                    logo: {
-                        main: brandingTheme?.images?.myAccountLogo?.imgURL
-                            ?? `${process.env.PUBLIC_URL}/assets/brands/asgardeo/images/asgardeo-logo.svg`
-                    }
-                },
                 palette: {
                     customComponents: {
                         AppShell: {

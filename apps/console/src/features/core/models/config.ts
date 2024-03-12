@@ -404,6 +404,13 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenUserStores: string[];
     /**
+     * App Logos
+     */
+    appLogo: {
+        defaultLogoPath: string;
+        defaultWhiteLogoPath: string;
+    };
+    /**
      * Email templates
      */
     emailTemplates: {
