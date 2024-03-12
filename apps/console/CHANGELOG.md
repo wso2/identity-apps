@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.3
+
+### Patch Changes
+
+- [#5724](https://github.com/wso2/identity-apps/pull/5724) [`53b1905470`](https://github.com/wso2/identity-apps/commit/53b19054706fa17b07da80d347e4bba4e8872606) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix diagnostic logs loading issue
+
 ## 2.13.2
 
 ### Patch Changes
