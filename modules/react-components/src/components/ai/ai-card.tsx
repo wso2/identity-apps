@@ -17,7 +17,7 @@ enum BannerState {
 }
 
 interface BrandingAIComponentProps {
-    // You can extend this interface to include other props as needed.
+
     onGenerateBrandingClick: () => void;
 }
 
@@ -148,5 +148,5 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
 };
 
 BrandingAIComponent.defaultProps = {
-    // Define any default props here.
+
 };

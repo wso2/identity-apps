@@ -41,15 +41,26 @@ export const LoadingScreen = () => {
         branding_generation_completed: "Branding Generation Completed!",
     };
 
+    const statusProgress = {
+        render_webpage: 10,
+        extract_webpage_content: 25,
+        webpage_extraction_completed: 30,
+        generate_branding: 50,
+        color_palette: 75,
+        style_properties: 95,
+        create_branding_theme: 97,
+        branding_generation_completed: 100,
+    };
+
     const initialProgress = 5;
-    const increment = 0.5; // The increment value for each step
+    const increment = 0.5;
 
     useEffect(() => {
         const increaseProgress = () => {
             setProgress((prevProgress) => {
                 if (prevProgress < initialProgress) {
                     const updatedProgress = prevProgress + increment;
-                    setTimeout(increaseProgress, 300); // Adjust time for faster or slower progress
+                    setTimeout(increaseProgress, 300);
                     return updatedProgress;
                 }
                 return prevProgress; // Once initial progress is reached, stop increasing
@@ -74,92 +85,49 @@ export const LoadingScreen = () => {
         }
     };
 
-    // const updateProgress = (fetchedStatus) => {
-    //     let latestCompletedStep = 'Initializing...';
-    //     let completedSteps = 0;
-    
-    //     statusSequence.forEach((key) => {
-    //         if (fetchedStatus[key] || (fetchedStatus.branding_generation_status && fetchedStatus.branding_generation_status[key])) {
-    //             latestCompletedStep = statusLabels[key];
-    //             completedSteps++;
-    //         }
-    //     });
-    
-    //     const targetProgress = (completedSteps / statusSequence.length) * 100;
-    
-    //     if (fetchedStatus.branding_generation_completed) {
-    //         setProgress(100);
-    //         setCurrentStatus(statusLabels['branding_generation_completed']);
-    //         setPolling(false);
-    //     } else {
-    //         if (targetProgress > progress) {
-    //             const increment = 0.5;
-    //             const interval = setInterval(() => {
-    //                 setProgress((prevProgress) => {
-    //                     const updatedProgress = Math.min(prevProgress + increment, targetProgress);
-    //                     if (updatedProgress >= targetProgress) {
-    //                         clearInterval(interval);
-    //                     }
-    //                     return updatedProgress;
-    //                 });
-    //             }, 100); 
-    //         }
-    //         setCurrentStatus(latestCompletedStep);
-    //     }
-    // };
-
     const updateProgress = (fetchedStatus) => {
         let latestCompletedStep = 'Initializing...';
-        let completedSteps = 0;
+        let currentProgress = 0;
     
         statusSequence.forEach((key) => {
             if (fetchedStatus[key] || (fetchedStatus.branding_generation_status && fetchedStatus.branding_generation_status[key])) {
                 latestCompletedStep = statusLabels[key];
-                completedSteps++;
+                currentProgress = statusProgress[key];
             }
         });
-    
-        const targetProgress = (completedSteps / statusSequence.length) * 100;
         let interval;
-        if (targetProgress > progress) {
-            const increment = 0.5
+        if (currentProgress > progress) {
+            const increment = 0.5;
             interval = setInterval(() => {
                 setProgress((prevProgress) => {
-                    const updatedProgress = Math.min(prevProgress + increment, targetProgress);
-                    if (updatedProgress >= targetProgress) {
+                    const updatedProgress = Math.min(prevProgress + increment, currentProgress);
+                    if (updatedProgress >= currentProgress) {
                         clearInterval(interval);
                     }
                     return updatedProgress;
                 });
-            }, 100); 
+            }, 100);
+        }
+
+        if (fetchedStatus.branding_generation_completed) {
+            clearInterval(interval);
         }
         setCurrentStatus(latestCompletedStep);
-
-        if (fetchedStatus.create_branding_theme) {
-            clearInterval(interval);
-        }
     
         if (fetchedStatus.branding_generation_completed) {
-            console.log('Branding generation completed###########');
-            clearInterval(interval);
             setProgress(100);
             setCurrentStatus(statusLabels['branding_generation_completed']);
             setPolling(false);
         }
     };
     
-    
-    
-    
-    
-     
     useEffect(() => {
         if (!polling) return;
 
         const interval = setInterval(async () => {
             const fetchedStatus = await fetchProgress();
             updateProgress(fetchedStatus);
-        }, 1000);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [polling]);
