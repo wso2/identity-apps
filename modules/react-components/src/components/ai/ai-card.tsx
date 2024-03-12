@@ -39,6 +39,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
         console.log("Generating branding for:", websiteUrl);
         onGenerateBrandingClick();
         try {
+            // const response = await axios.post('http://0.0.0.0:8080/branding/generate', {
             const response = await axios.post('http://localhost:3000/generate', {
                 website_url: websiteUrl
             }, {
@@ -53,71 +54,77 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
     };
 
     return (
-        <Segment
-            style={{ 
-                background: bannerState === BannerState.Full ? 'radial-gradient(35% 100% at 0% 3.95%, rgb(255 160 0 / 27%) 0%, rgba(217, 217, 217, 0) 100%)' : 'none'
-            }}
-        >
+        <>
             {bannerState === BannerState.Full && (
-                <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center', 
-                    padding: '65px'
-                }}>
-                    <div>
-                        <Header as="h3">Transform your branding with ease, try our new Branding AI</Header>
-                        <p>Provide your website URL, and our AI will seamlessly create a branding theme that's both beautiful and brand-consistent.</p>
-                    </div>
-                    <Button onClick={handleExpandClick} color="secondary" variant="outlined">
-                        <GenericIcon
-                            icon={ AIIcon }
-                            style={{ paddingRight: '5px' }}
-                        />
-                        Try Branding AI
-                    </Button>
-                </div>
-            )}
-
-            {bannerState === BannerState.Input && (
-                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
-                    <Icon
-                        name="dropdown"
-                        onClick={handleCollapseClick}
-                        style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
-                    />
-
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px' }}>
+                <Segment
+                    basic
+                    style={{ 
+                        background: 'linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,1) 37%)',
+                        borderRadius: '8px',
+                    }}
+                >
+                    <div style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'center', 
+                        padding: '45px'
+                    }}>
                         <div>
-                            <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding using Branding AI</Header>
-                            <p>Provide your organization website URL to intuitively generate branding reflecting the essence of your brand.</p>
+                            <Header as="h3">Transform your branding with ease, try our new Branding AI</Header>
+                            <p>Provide your website URL, and our AI will seamlessly create a branding theme that's both beautiful and brand-consistent.</p>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', paddingTop: '20px', justifyContent: 'space-between', paddingRight: '20px'}}>
-                            <Input
-                                placeholder="Enter website URL"
-                                value={websiteUrl}
-                                onChange={(e) => setWebsiteUrl(e.target.value)}
-                                style={{ width: '40%' }}
+                        <Button onClick={handleExpandClick} color="secondary" variant="outlined">
+                            <GenericIcon
+                                icon={ AIIcon }
+                                style={{ paddingRight: '5px' }}
                             />
-                            <Button
-                                onClick={handleGenerateClick}
-                                color="secondary"
-                                variant="outlined"
-                                style={{ marginLeft: 'auto'}}
-                            >
-                                <GenericIcon
-                                    icon={ AIIcon }
-                                    style={{ paddingRight: '5px' }}
+                            Try Branding AI
+                        </Button>
+                    </div>
+
+                </Segment>
+            )}
+            {bannerState === BannerState.Input && (
+                <Segment>
+                    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+                        <Icon
+                            name="dropdown"
+                            onClick={handleCollapseClick}
+                            style={{ cursor: 'pointer', position: 'absolute', top: 0, right: 0 }}
+                        />
+
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px' }}>
+                            <div>
+                                <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding using Branding AI</Header>
+                                <p>Provide your organization website URL to intuitively generate branding reflecting the essence of your brand.</p>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', paddingTop: '20px', justifyContent: 'space-between', paddingRight: '20px'}}>
+                                <Input
+                                    placeholder="Enter website URL"
+                                    value={websiteUrl}
+                                    onChange={(e) => setWebsiteUrl(e.target.value)}
+                                    style={{ width: '40%' }}
                                 />
-                                Generate Branding
-                            </Button>
+                                <Button
+                                    onClick={handleGenerateClick}
+                                    color="secondary"
+                                    variant="outlined"
+                                    style={{ marginLeft: 'auto'}}
+                                >
+                                    <GenericIcon
+                                        icon={ AIIcon }
+                                        style={{ paddingRight: '5px' }}
+                                    />
+                                    Generate Branding
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </Segment>
             )}
-
             {bannerState === BannerState.Collapsed && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}}>
+                <Segment>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}}>
                     <div>
                         <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding with a single click using Branding AI</Header>
                         <p>AI-powered branding recommendations that are crafted for a unified visual approach.
@@ -142,10 +149,10 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                     Try Branding AI
                     </Button>
                 </div>
+                </Segment>
             )}
-        </Segment>
-    );
-};
+        </>
+)};
 
 BrandingAIComponent.defaultProps = {
 

@@ -69,6 +69,7 @@ export const LoadingScreen = () => {
 
     const fetchProgress = async () => {
         try {
+            // const response = await axios.get('http://0.0.0.0:8080/branding/status', { headers: { 'trace-id': 'custom' } });            
             const response = await axios.get('http://localhost:3000/status', { headers: { 'trace-id': 'custom' } });
             return response.data.status;
         } catch (error) {
