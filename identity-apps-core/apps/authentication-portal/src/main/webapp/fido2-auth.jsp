@@ -177,7 +177,7 @@
                             </div>
                             <%
                                 String multiOptionURI = Encode.forJava(request.getParameter("multiOptionURI"));
-                                if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
                                     isMultiAuthAvailable(multiOptionURI)) {
                             %>
                                 <div class="text-center mt-1">
