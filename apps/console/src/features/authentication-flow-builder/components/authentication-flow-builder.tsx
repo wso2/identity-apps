@@ -263,7 +263,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     };
 
     /**
-     * Validates if the step deletion is valid.
+     * Validate the authentication steps.
      *
      * @param options - Authenticator options.
      * @returns True or false - Is steps are valid or not.
