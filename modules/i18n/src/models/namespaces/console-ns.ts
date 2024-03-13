@@ -3841,6 +3841,52 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                        iproov: {
+                            apiKey: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            apiSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            oauthUsername: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            oauthPassword: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            baseUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            enableProgressiveEnrollment: {
+                                hint: string;
+                                label: string;
+                            };
+                        };
                         saml: {
                             AuthRedirectUrl: {
                                 hint: string;
@@ -4350,6 +4396,44 @@ export interface ConsoleNS {
                                 heading: string;
                             };
                         };
+                    };
+                    iproov: {
+                        wizardHelp: {
+                            baseUrl: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthUsername: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthPassword: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            enableProgressiveEnrollment: {
+                                description: string;
+                                heading: string;
+                            }
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                appDescription: string;
+                                heading: string;
+                            };
+                        }
                     };
                     enterprise: {
                         addWizard: {
@@ -12251,6 +12335,7 @@ export interface ConsoleNS {
                                     oidc: string;
                                     saml: string;
                                     hypr: string;
+                                    iproov: string;
                                     organizationLogin: string;
                                 };
                             };
