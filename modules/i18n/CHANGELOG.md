@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.1.1
+
+### Patch Changes
+
+- [#5725](https://github.com/wso2/identity-apps/pull/5725) [`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove Si and Fr from extensions/i18n
+
 ## 2.1.0
 
 ### Minor Changes

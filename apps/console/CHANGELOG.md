@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.13.4
+
+### Patch Changes
+
+- [#5725](https://github.com/wso2/identity-apps/pull/5725) [`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove Si and Fr from extensions/i18n
+
+* [#5727](https://github.com/wso2/identity-apps/pull/5727) [`4198698608`](https://github.com/wso2/identity-apps/commit/4198698608be248277eaf32f8db8287a616908f9) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Display warning notifications when Identifier First is added as the only 1FA
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
+- Updated dependencies [[`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d), [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa)]:
+  - @wso2is/i18n@2.1.1
+  - @wso2is/theme@2.0.68
+
 ## 2.13.3
 
 ### Patch Changes

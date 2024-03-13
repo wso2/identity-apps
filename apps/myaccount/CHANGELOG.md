@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.4.2
+
+### Patch Changes
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
+- Updated dependencies [[`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d), [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa)]:
+  - @wso2is/i18n@2.1.1
+  - @wso2is/theme@2.0.68
+
 ## 2.4.1
 
 ### Patch Changes
