@@ -1606,8 +1606,8 @@ export const console: ConsoleNS = {
                                                     "the Passkey in the <2>first step</2>, users need to add an adaptive " +
                                                     "script. Use the <4>Passkeys Progressive Enrollment</4> template in " +
                                                     "the <6>Sign-In-Method</6> tab of the application.",
-                                                    progressiveEnrollmentDisabled: "Passkey progressive enrollment is disabled. " +
-                                                    "Users must enroll their passkeys through <1>My Account</1> to use passwordless sign-in."
+                                                    progressiveEnrollmentDisabled: "<1>Passkey progressive enrollment</1> is disabled. " +
+                                                    "Users must enroll their passkeys through <2>My Account</2> to use passwordless sign-in."
                                                 }
                                             },
                                             emailOTP: {
