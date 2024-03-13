@@ -81,7 +81,7 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
     const isChoreoEnabledAsSMSProvider: boolean = useMemo(() => {
         const disabledFeatures: string[] = featureConfig?.smsProviders?.disabledFeatures;
@@ -91,7 +91,10 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
 
     const isReadOnly: boolean = isChoreoEnabledAsSMSProvider
         || !hasRequiredScopes(
-            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes
+            featureConfig?.identityProviders,
+            featureConfig?.identityProviders?.scopes?.update,
+            allowedScopes,
+            organizationType
         )
         || isSubOrganization();
 
