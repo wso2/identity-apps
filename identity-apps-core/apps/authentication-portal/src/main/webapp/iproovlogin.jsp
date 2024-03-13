@@ -1,6 +1,6 @@
 <%--
  ~
- ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  ~
  ~ This software is the property of WSO2 LLC. and its suppliers, if any.
  ~ Dissemination of any information or reproduction of any material contained
@@ -51,24 +51,24 @@
     <% } else { %>
     <jsp:include page="includes/header.jsp"/>
     <% } %>
-    <script src="https://unpkg.com/@iproov/web@latest"></script>
+    <script src="libs/iproov_5.1/iProovMe.js"></script>
     <style type="text/css">
         .iproov-segment {
             text-align: center !important;
         }
-        
+
         .iproov-lang-heading {
             display : none;
         }
-        
+
         .iproov-lang-term {
         	display : none;
         }
-        
+
         .iproov-text {
             padding: 12px 36px;
         }
-        
+
         .scan-button, .iproov-state-screen a, .iproov-state-screen button {
             background: <%= theme != null ? "(var(--asg-colors-primary-main) !important" : "linear-gradient(77.74deg, rgb(235, 79, 99) 11.16%, rgb(250, 123, 63) 99.55%) !important" %> ;
             color:  <%= theme != null ? "var(--asg-primary-button-base-text-color)" : "#fff" %> ;
@@ -79,7 +79,7 @@
             font-size: 1.14285714rem;
             padding: 12px 36px;
         }
-        
+
     </style>
 </head>
 
@@ -102,7 +102,7 @@
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "iproov.heading")%></h2>
                 <div class="ui divider hidden"></div>
                 <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
-                
+
                 <div class="segment-form iproov-segment">
                     <form class="ui large form" id="loginForm" action="<%=commonauthURL%>" method="POST">
                         <div class="ui fluid left icon input">
@@ -134,7 +134,7 @@
                         <input type="hidden" name="scenario" id="scenario" value="tmp val"/>
                     </form>
 
-                    <% 
+                    <%
                     String token = request.getParameter("verifyToken");
                     if (token == null) {
                         token = request.getParameter("enrollToken");
@@ -276,7 +276,7 @@
             if(username == '') {
                 handleError(generic_error_message);
                 return;
-            } 
+            }
             initiateAuthentication();
         }
 
