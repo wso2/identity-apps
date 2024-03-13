@@ -60,14 +60,12 @@ import {
 import {
     CHANNEL_TYPE,
     MyAccountAttributeTypes,
-    SMS_OTP_RESOURCE_KEY,
-    SMS_OTP_RESOURCE_VALUE,
-    TotpConfigAttributeTypes
+    TotpConfigAttributeTypes,
+    VALID_SMS_OTP_PROVIDERS
 } from "../constants";
 import {
     MyAccountFormInterface,
     MyAccountPortalStatusInterface,
-    NotificationSenderProperty,
     TotpConfigPortalStatusInterface
 } from "../models";
 
@@ -282,13 +280,8 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                 let enableSMSOTP: boolean = false;
 
                 for (const notificationSender of notificationSendersList) {
-                    const channelValues: NotificationSenderProperty[] =
-                        notificationSender.properties ? notificationSender.properties : [];
-
-                    const containsProperty: boolean = channelValues.filter((prop: NotificationSenderProperty) =>
-                        prop.key === SMS_OTP_RESOURCE_KEY && prop.value === SMS_OTP_RESOURCE_VALUE).length > 0;
-
-                    if (notificationSender.name === CHANNEL_TYPE && containsProperty) {
+                    if (notificationSender.name === CHANNEL_TYPE &&
+                            VALID_SMS_OTP_PROVIDERS.includes(notificationSender.provider)) {
                         enableSMSOTP = true;
 
                         break;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,5 +42,4 @@ export enum TotpConfigAttributeTypes {
 }
 
 export const CHANNEL_TYPE: string = "SMSPublisher";
-export const SMS_OTP_RESOURCE_KEY: string = "channel.type";
-export const SMS_OTP_RESOURCE_VALUE: string = "choreo";
+export const VALID_SMS_OTP_PROVIDERS: string[] = [ "choreo", "Twilio", "Custom", "Vonage" ];
