@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.5
+
+### Patch Changes
+
+- [#5722](https://github.com/wso2/identity-apps/pull/5722) [`7db97ada32`](https://github.com/wso2/identity-apps/commit/7db97ada32857e3b4bbef6a5cbe17e4ac1085af1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update SMS OTP activation section UI
+
 ## 2.13.4
 
 ### Patch Changes
