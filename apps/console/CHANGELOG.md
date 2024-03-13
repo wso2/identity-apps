@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.7
+
+### Patch Changes
+
+- [#5734](https://github.com/wso2/identity-apps/pull/5734) [`3d380c138f`](https://github.com/wso2/identity-apps/commit/3d380c138fda23f87e3b6f0d72cdb89053d5bc52) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect logic in hiding subject type input when it's disabled via deployment config
+
 ## 2.13.6
 
 ### Patch Changes
