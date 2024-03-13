@@ -506,6 +506,12 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         }
     };
 
+    const handleBrandingAIResponseData = (data) => {
+        // handle the data here
+        console.log("Branding AI Response Data");
+        console.log(data);
+    }
+
     /**
      * Handles the delete operation of branding preference via the API.
      */
@@ -683,7 +689,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                     )
                 : (
                     <>
-                    <BrandingAIComponent onGenerateBrandingClick={() => setGeneratingBranding(true) }/>
+                    <BrandingAIComponent 
+                    onGenerate={handleBrandingAIResponseData}
+                    onGenerateBrandingClick={() => setGeneratingBranding(true) }/>
                     <BrandingPreferenceTabs
                         key={ preferenceTabsComponentKey }
                         predefinedThemes={ predefinedThemes }

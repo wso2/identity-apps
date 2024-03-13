@@ -19,13 +19,16 @@ enum BannerState {
 interface BrandingAIComponentProps {
 
     onGenerateBrandingClick: () => void;
+    onGenerate: (response: any) => void;
 }
 
 export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = (
-    { onGenerateBrandingClick }: BrandingAIComponentProps
+    { onGenerateBrandingClick, onGenerate }: BrandingAIComponentProps
 ): ReactElement => {
     const [bannerState, setBannerState] = useState<BannerState>(BannerState.Full);
     const [websiteUrl, setWebsiteUrl] = useState<string>("https://www.demoblaze.com/");
+    // const [websiteUrl, setWebsiteUrl] = useState<string>("");
+
 
     const handleExpandClick = () => {
         setBannerState(BannerState.Input);
@@ -47,7 +50,8 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                     'trace-id': 'custom'
                 }
             });
-            console.log(response.data);
+            // console.log(response.data);
+            onGenerate(response.data);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -94,9 +98,24 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                         />
 
                         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px' }}>
-                            <div>
+                            {/* <div>
                                 <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding using Branding AI</Header>
                                 <p>Provide your organization website URL to intuitively generate branding reflecting the essence of your brand.</p>
+                            </div> */}
+                            <div>
+                                <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding with a single click using Branding AI</Header>
+                                <p>AI-powered branding recommendations that are crafted for a unified visual approach.
+                                <DocumentationLink 
+                                    link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
+                                    isLinkRef = { true }
+                                >
+                                    <Trans
+                                        i18nKey={ "extensions:common.learnMore" }
+                                    >
+                                        Learn More
+                                    </Trans>
+                                </DocumentationLink>
+                                </p>
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', paddingTop: '20px', justifyContent: 'space-between', paddingRight: '20px'}}>
                                 <Input
@@ -139,7 +158,6 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                             </Trans>
                         </DocumentationLink>
                         </p>
-                        
                     </div>
                     <Button onClick={() => setBannerState(BannerState.Input)} color="secondary" variant="outlined">
                     <GenericIcon
@@ -155,5 +173,5 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
 )};
 
 BrandingAIComponent.defaultProps = {
-
+    
 };
