@@ -1,13 +1,13 @@
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Button } from "@oxygen-ui/react";
+import Button from "@oxygen-ui/react/Button";
 import axios from 'axios';
-import { ReactComponent as AIIcon } from "../../../../theme/src/themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+import { ReactComponent as AIIcon } from "../../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 import { 
     DocumentationLink
 } from "@wso2is/react-components";
 import { Trans } from "react-i18next";
 import { Segment, Icon, Input, Header } from "semantic-ui-react";
-import { GenericIcon } from "../icon";
+import { GenericIcon } from "@wso2is/react-components";
 
 
 enum BannerState {
@@ -71,7 +71,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                     }}>
                         <div>
                             <Header as="h3">Transform your branding with ease, try our new Branding AI</Header>
-                            <p>Provide your website URL, and our AI will seamlessly create a branding theme that's both beautiful and brand-consistent.</p>
+                            <p>Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.</p>
                         </div>
                         <Button onClick={handleExpandClick} color="secondary" variant="outlined">
                             <GenericIcon
@@ -109,11 +109,11 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                     onClick={handleGenerateClick}
                                     color="secondary"
                                     variant="outlined"
-                                    style={{ marginLeft: 'auto'}}
+                                    style={{ marginLeft: "auto"}}
                                 >
                                     <GenericIcon
                                         icon={ AIIcon }
-                                        style={{ paddingRight: '5px' }}
+                                        style={{ paddingRight: "5px" }}
                                     />
                                     Generate Branding
                                 </Button>

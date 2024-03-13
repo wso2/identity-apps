@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Typography, LinearProgress, CircularProgress } from '@oxygen-ui/react';
-import { ReactComponent as LoadingPlaceholder } from "../../../../theme/src/themes/wso2is/assets/images/branding/ai-loading-screen-placeholder.svg";
+import Box from "@oxygen-ui/react/Box";
+import Typography from "@oxygen-ui/react/Typography";
+import LinearProgress from "@oxygen-ui/react/LinearProgress";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+// import Fade from '@mui/material/Fade';
+import { ReactComponent as LoadingPlaceholder } from "../../../themes/wso2is/assets/images/branding/ai-loading-screen-placeholder.svg";
 
 const facts = [
     "Asgardeo's advanced theming capabilities let you modify the site title, copyright information, and support email displayed on your login pages, aligning every detail with your brand identity.",
@@ -149,12 +153,16 @@ export const LoadingScreen = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: '20px' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', maxWidth: '75%' }}>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.6)' }}>
-                            Did you know?
-                        </Typography>
-                        <Typography variant="body1" align="justify" sx={{ mt: 2, color: '#757575', height: '150px', overflow: 'auto' }}>
-                            {facts[factIndex]}
-                        </Typography>
+                        {/* <Fade in={true} timeout={500}> */}
+                            <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.6)' }}>
+                                Did you know?
+                            </Typography>
+                        {/* </Fade> */}
+                        {/* <Fade in={true} timeout={500}> */}
+                            <Typography variant="body1" align="justify" sx={{ mt: 2, color: '#757575', height: '150px', overflow: 'auto' }}>
+                                {facts[factIndex]}
+                            </Typography>
+                        {/* </Fade> */}
                     </Box>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'left' }}>

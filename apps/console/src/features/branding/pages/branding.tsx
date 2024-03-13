@@ -32,9 +32,7 @@ import {
     Message,
     PageLayout,
     useDocumentation,
-    useMediaContext,
-    BrandingAIComponent,
-    LoadingScreen
+    useMediaContext
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -64,6 +62,7 @@ import {
 } from "../models";
 import BrandingPreferenceProvider from "../providers/branding-preference-provider";
 import { BrandingPreferenceUtils } from "../utils";
+import { BrandingAIComponent, LoadingScreen } from "../../ai/components";
 
 /**
  * Prop-types for the branding page component.
