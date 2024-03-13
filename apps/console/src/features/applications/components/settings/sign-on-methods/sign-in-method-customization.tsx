@@ -798,7 +798,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                     >
                                     Passkey progressive enrollment
                                     </Link>
-                                    is disabled. Users must enroll
+                                    &nbsp; is disabled. Users must enroll
                                     their passkeys through <strong>My Account</strong> to use passwordless sign-in.
                                 </Trans>
                                 <DocumentationLink
