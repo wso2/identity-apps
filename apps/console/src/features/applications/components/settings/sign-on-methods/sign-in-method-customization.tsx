@@ -24,6 +24,7 @@ import {
     DocumentationLink,
     Heading,
     Hint,
+    Link,
     LinkButton,
     Message,
     PrimaryButton,
@@ -42,7 +43,14 @@ import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "../../../../connections";
-import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    history
+} from "../../../../core";
 import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
 import {
     IdentityProviderManagementConstants
@@ -778,8 +786,20 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         "types.passkey.info.progressiveEnrollmentDisabled")
                                     }
                                 >
-                                Passkey progressive enrollment is disabled. Users must enroll
-                                their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                                    <Link
+                                        external={ false }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths().get("IDP_EDIT")
+                                                    .replace(
+                                                        ":id", AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+                                            );
+                                        } }
+                                    >
+                                    Passkey progressive enrollment
+                                    </Link>
+                                    is disabled. Users must enroll
+                                    their passkeys through <strong>My Account</strong> to use passwordless sign-in.
                                 </Trans>
                                 <DocumentationLink
                                     link={ getLink("develop.applications.editApplication.signInMethod.fido") }
