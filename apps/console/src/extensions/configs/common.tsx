@@ -27,6 +27,7 @@ export const commonConfig: CommonConfig = {
     enableDefaultBrandingPreviewSection: true,
     enableDefaultPreLoader: true,
     enableOrganizationAssociations: false,
+    extendedRoutes: [],
     footer: {
         customClassName: "console-footer"
     },

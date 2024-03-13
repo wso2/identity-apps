@@ -245,6 +245,8 @@ export interface Extensions {
                 groupAttributePlaceholder: string;
                 groupAttributeMessage1: string;
                 groupAttributeMessage2: string;
+                groupAttributeMessageOIDC: string;
+                groupAttributeMessageSAML: string;
                 notifications: {
                     fetchConfigs: Notification;
                 };
@@ -1876,154 +1878,6 @@ export interface Extensions {
             title: string;
             description: string;
         };
-        smsProviders: {
-            heading: string;
-            subHeading: string;
-            description: string;
-            info: string;
-            updateButton: string;
-            sendTestSMSButton: string;
-            goBack: string
-            confirmationModal: {
-                header: string;
-                message: string;
-                content: string;
-                assertionHint: string;
-            };
-            dangerZoneGroup: {
-                header: string;
-                revertConfig: {
-                    heading: string;
-                    subHeading: string;
-                    actionTitle: string;
-                }
-            };
-            form: {
-                twilio: {
-                    subHeading: string;
-                    accountSID: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    authToken: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    sender: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    validations: {
-                        required: string;
-                    };
-                },
-                vonage: {
-                    subHeading: string;
-                    accountSID: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    authToken: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    sender: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    validations: {
-                        required: string;
-                    };
-                },
-                custom: {
-                    subHeading: string;
-                    providerName: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    providerUrl: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    },
-                    httpMethod: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    contentType: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    headers: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    payload: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    key: {
-                        label: string,
-                        placeholder: string,
-                        hint: string
-                    },
-                    secret: {
-                        label: string,
-                        placeholder: string,
-                        hint: string
-                    },
-                    sender: {
-                        label: string,
-                        placeholder: string,
-                        hint: string
-                    }
-                    validations: {
-                        required: string;
-                        methodInvalid: string;
-                        contentTypeInvalid: string;
-                    };
-                }
-            }
-            notifications: {
-                getConfiguration: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                deleteConfiguration: {
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                updateConfiguration: {
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                }
-            };
-        };
         identityProviders: {
             apple: {
                 quickStart: {
@@ -2085,8 +1939,11 @@ export interface Extensions {
                         labelEnable: string;
                         labelDisable: string;
                     };
-                    enableRequiredNote: {
-                        message: string;
+                    choreoAsSMSProvider: {
+                        title: string;
+                        enableRequiredNote: {
+                            message: string;
+                        },
                     };
                     errorNotifications: {
                         notificationSendersRetrievalError: {

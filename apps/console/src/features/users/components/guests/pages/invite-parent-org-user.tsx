@@ -163,7 +163,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 const { inputValue } = params;
 
                                 if (inputValue !== "") {
-                                    return [ `"${inputValue}"` ];
+                                    return [ `${inputValue}` ];
                                 } else {
                                     return [];
                                 }

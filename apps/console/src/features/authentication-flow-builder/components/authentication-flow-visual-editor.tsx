@@ -19,7 +19,6 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
-import { OrganizationType } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
@@ -39,7 +38,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ReactFlow, {
     Background,
     BackgroundVariant,
@@ -57,21 +56,12 @@ import StepAdditionEdge from "./edges/step-addition-edge";
 import DoneNode from "./nodes/done-node";
 import SignInBoxNode from "./nodes/sign-in-box-node/sign-in-box-node";
 import {
-    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
-} from "../../applications/api/application";
-import {
-    ApplicationInterface,
     AuthenticationSequenceInterface,
-    AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../applications/models/application";
-import {
-    AdaptiveScriptUtils
-} from "../../applications/utils/adaptive-script-utils";
 import { AuthenticatorManagementConstants } from "../../connections";
 import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
-import { AppState } from "../../core";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
@@ -87,6 +77,12 @@ export interface AuthenticationFlowVisualEditorPropsInterface extends Identifiab
      * Callback to trigger IDP create wizard.
      */
     onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
+    /**
+     * Callback to update the authentication sequence.
+     * @param sequence - Updated sequence.
+     * @param isRevert - Flag to indicate whether the update is a revert.
+     */
+    onUpdate: (sequence: AuthenticationSequenceInterface, isRevertFlow?: boolean) => void;
 }
 
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
@@ -119,14 +115,13 @@ const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElemen
 const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisualEditorPropsInterface> = (
     props: AuthenticationFlowVisualEditorPropsInterface
 ): ReactElement => {
-    const { onIDPCreateWizardTrigger, "data-componentid": componentId, ...rest } = props;
+    const { onIDPCreateWizardTrigger, "data-componentid": componentId, onUpdate, ...rest } = props;
 
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
 
     const {
-        applicationMetaData,
         authenticators,
         authenticationSequence,
         addSignInStep,
@@ -135,13 +130,11 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         isAdaptiveAuthAvailable,
         isValidAuthenticationFlow,
         isConditionalAuthenticationEnabled,
-        refetchApplication,
         removeSignInOption,
         removeSignInStep,
         revertAuthenticationSequenceToDefault,
         updateAuthenticationSequence,
-        visualEditorFlowNodeMeta,
-        isSystemApplication
+        visualEditorFlowNodeMeta
     } = useAuthenticationFlow();
 
     const {
@@ -153,9 +146,6 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     const { getLink } = useDocumentation();
 
     const infoAlertRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-
-    const orgType: OrganizationType = useSelector((state: AppState) =>
-        state?.organization?.organizationType);
 
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(0);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
@@ -502,76 +492,6 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         }
     }, [ showInfoAlert ]);
 
-    /**
-     * Handles the `onUpdate` callback of the `VisualEditor`.
-     *
-     * @param newSequence - Updated sequence.
-     * @param isRevertFlow - Is triggered from revert flow.
-     */
-    const handleOnUpdate = (
-        newSequence: AuthenticationSequenceInterface = authenticationSequence,
-        isRevertFlow?: boolean
-    ): void => {
-        let payload: Partial<ApplicationInterface> = {};
-        const sequence: AuthenticationSequenceInterface = {
-            ...cloneDeep(newSequence),
-            type: isRevertFlow
-                ? AuthenticationSequenceType.DEFAULT
-                : AuthenticationSequenceType.USER_DEFINED
-        };
-
-        if (
-            !isAdaptiveAuthAvailable
-            || !isConditionalAuthenticationEnabled
-            || AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)
-        ) {
-            sequence.script = AdaptiveScriptUtils.generateScript(
-                authenticationSequence?.steps?.length + 1).join("\n"
-            );
-        }
-
-        if (orgType === OrganizationType.SUBORGANIZATION) {
-            sequence.script = "";
-        }
-
-        // Update the modified script state in the context.
-        updateAuthenticationSequence({
-            ...newSequence,
-            script: sequence.script
-        });
-
-        // If the updating application is a system application,
-        // we need to send the application name in the PATCH request.
-        if (isSystemApplication) {
-            payload = {
-                authenticationSequence: sequence,
-                name: applicationMetaData?.name
-            };
-        } else {
-            payload = {
-                authenticationSequence: sequence
-            };
-        }
-
-        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                                ".success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
-                                ".success.message"
-                        )
-                    })
-                );
-            })
-            .finally(() => refetchApplication());
-    };
-
     return (
         <>
             <div
@@ -611,16 +531,18 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 >
                     <Background color={ "#e1e1e1" } gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
                     <Controls />
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        className="update-button"
-                        onClick={ () => handleOnUpdate() }
-                        disabled={ !isValidAuthenticationFlow }
-                        data-componentid={ `${componentId}-update-button` }
-                    >
-                        { t("console:loginFlow.visualEditor.actions.update.label") }
-                    </Button>
+                    { (!isAdaptiveAuthAvailable || !isConditionalAuthenticationEnabled) && (
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            className="update-button"
+                            onClick={ () => onUpdate(authenticationSequence) }
+                            disabled={ !isValidAuthenticationFlow }
+                            data-componentid={ `${componentId}-update-button` }
+                        >
+                            { t("console:loginFlow.visualEditor.actions.update.label") }
+                        </Button>
+                    ) }
                 </ReactFlow>
             </div>
             { showAuthenticatorAddModal && (
@@ -636,7 +558,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 onClose={ () => setShowRevertDisclaimerModal(false) }
                 onPrimaryActionClick={ () => {
                     revertAuthenticationSequenceToDefault();
-                    handleOnUpdate(defaultAuthenticationSequence, true);
+                    onUpdate(defaultAuthenticationSequence, true);
                     setShowRevertDisclaimerModal(false);
                 } }
             />

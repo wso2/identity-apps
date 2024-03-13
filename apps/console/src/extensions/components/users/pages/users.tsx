@@ -360,20 +360,22 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.description"),
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                                "description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.message")
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                                "message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }));
 
                 setUserStoreError(true);

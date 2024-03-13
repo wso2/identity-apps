@@ -181,7 +181,6 @@ export class ApplicationManagementConstants {
     public static readonly CLIENT_CREDENTIALS_GRANT: string = "client_credentials";
     public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
     public static readonly ORGANIZATION_SWITCH_GRANT: string = "organization_switch";
-    public static readonly ORGANIZATION_SWITCH_CC_GRANT: string = "organization_switch_cc";
     public static readonly IMPLICIT_GRANT: string = "implicit";
     public static readonly PASSWORD: string = "password";
     public static readonly SAML2_BEARER: string = "urn:ietf:params:oauth:grant-type:saml2-bearer";
@@ -200,13 +199,11 @@ export class ApplicationManagementConstants {
         this.CLIENT_CREDENTIALS_GRANT,
         this.REFRESH_TOKEN_GRANT,
         this.ORGANIZATION_SWITCH_GRANT,
-        this.ORGANIZATION_SWITCH_CC_GRANT,
         this.IMPLICIT_GRANT,
         this.PASSWORD,
         this.SAML2_BEARER,
         this.JWT_BEARER,
         this.IWA_NTLM,
-        this.UMA_TICKET,
         this.DEVICE_GRANT,
         this.OAUTH2_TOKEN_EXCHANGE,
         this.ACCOUNT_SWITCH_GRANT
@@ -351,9 +348,7 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
@@ -438,9 +433,15 @@ export class ApplicationManagementConstants {
 
     public static readonly CUSTOM_APPLICATION_PASSIVE_STS: string = "custom-application-passive-sts";
 
+    public static readonly TRADITIONAL_WEB_APPLICATION_OIDC: string = "b9c5e11e-fc78-484b-9bec-015d247561b8";
+
+    public static readonly TRADITIONAL_WEB_APPLICATION_SAML: string = "776a73da-fd8e-490b-84ff-93009f8ede85";
+
     public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
     public static readonly MOBILE: string = "mobile-application";
+
+    public static readonly SPA_APP_TEMPLATE_ID: string = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
 
     public static readonly M2M_APP_TEMPLATE_ID: string = "m2m-application";
 

@@ -1,5 +1,409 @@
 # @wso2is/console
 
+## 2.13.5
+
+### Patch Changes
+
+- [#5722](https://github.com/wso2/identity-apps/pull/5722) [`7db97ada32`](https://github.com/wso2/identity-apps/commit/7db97ada32857e3b4bbef6a5cbe17e4ac1085af1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update SMS OTP activation section UI
+
+## 2.13.4
+
+### Patch Changes
+
+- [#5725](https://github.com/wso2/identity-apps/pull/5725) [`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove Si and Fr from extensions/i18n
+
+* [#5727](https://github.com/wso2/identity-apps/pull/5727) [`4198698608`](https://github.com/wso2/identity-apps/commit/4198698608be248277eaf32f8db8287a616908f9) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Display warning notifications when Identifier First is added as the only 1FA
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
+- Updated dependencies [[`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d), [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa)]:
+  - @wso2is/i18n@2.1.1
+  - @wso2is/theme@2.0.68
+
+## 2.13.3
+
+### Patch Changes
+
+- [#5724](https://github.com/wso2/identity-apps/pull/5724) [`53b1905470`](https://github.com/wso2/identity-apps/commit/53b19054706fa17b07da80d347e4bba4e8872606) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix diagnostic logs loading issue
+
+## 2.13.2
+
+### Patch Changes
+
+- [#5721](https://github.com/wso2/identity-apps/pull/5721) [`e58b366693`](https://github.com/wso2/identity-apps/commit/e58b3666931dac0ef802aa00657c71ff2593d6cd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add missing i18n content
+
+- Updated dependencies [[`e58b366693`](https://github.com/wso2/identity-apps/commit/e58b3666931dac0ef802aa00657c71ff2593d6cd)]:
+  - @wso2is/common@2.0.50
+
+## 2.13.1
+
+### Patch Changes
+
+- [#5717](https://github.com/wso2/identity-apps/pull/5717) [`c3a3d32969`](https://github.com/wso2/identity-apps/commit/c3a3d32969624cb12368f9c5a5dd348495cd75aa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable SAML artifact binding option conditionally
+
+## 2.13.0
+
+### Minor Changes
+
+- [#5645](https://github.com/wso2/identity-apps/pull/5645) [`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove fr-FR and si-LK translations for console application
+
+### Patch Changes
+
+- [#5673](https://github.com/wso2/identity-apps/pull/5673) [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify application namespaces in i18n modules
+
+- Updated dependencies [[`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682), [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc)]:
+  - @wso2is/i18n@2.1.0
+
+## 2.12.59
+
+### Patch Changes
+
+- [#5689](https://github.com/wso2/identity-apps/pull/5689) [`a480eb3529`](https://github.com/wso2/identity-apps/commit/a480eb35296df23efca1a3871a5a85a1b8fd7688) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally display client authentication section and client authentication method dropdown
+
+## 2.12.58
+
+### Patch Changes
+
+- [#5647](https://github.com/wso2/identity-apps/pull/5647) [`e39b7f293d`](https://github.com/wso2/identity-apps/commit/e39b7f293d25ab396fc0a85fea390505f818ae3e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide SSO authenticator in external groups under application role view
+
+* [#5704](https://github.com/wso2/identity-apps/pull/5704) [`7b416cdb85`](https://github.com/wso2/identity-apps/commit/7b416cdb855d0c70d560586a313b7b02129cd46e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update add connection wizard to use documentation link from metadata API
+
+## 2.12.57
+
+### Patch Changes
+
+- [#5705](https://github.com/wso2/identity-apps/pull/5705) [`9540a29be2`](https://github.com/wso2/identity-apps/commit/9540a29be286efeb32c0fed30e73f460371e2895) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with signup confirmation notification email
+
+## 2.12.56
+
+### Patch Changes
+
+- [#5695](https://github.com/wso2/identity-apps/pull/5695) [`e69c015e67`](https://github.com/wso2/identity-apps/commit/e69c015e67e481082573b4e02e54a73280f4d1eb) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified wsFederationsConfig namespaces in i18n modules
+
+* [#5665](https://github.com/wso2/identity-apps/pull/5665) [`f61777b45a`](https://github.com/wso2/identity-apps/commit/f61777b45a3990e54ae96d9c66ae18d94cccacbd) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified helpPanel namespaces in i18n modules
+
+- [#5669](https://github.com/wso2/identity-apps/pull/5669) [`c8ebea2196`](https://github.com/wso2/identity-apps/commit/c8ebea21968102a4e7003a7dba5550a82943cfe5) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified idvp namespaces in i18n modules
+
+* [#5684](https://github.com/wso2/identity-apps/pull/5684) [`a3ed68c805`](https://github.com/wso2/identity-apps/commit/a3ed68c8054f6608ea3958576a995492a0b025a3) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified placeholders namespaces in i18n modules
+
+- [#5690](https://github.com/wso2/identity-apps/pull/5690) [`508219110c`](https://github.com/wso2/identity-apps/commit/508219110c7f6843dc779180ab3bd6dafb2d856d) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified saml2configs namespaces in i18n modules
+
+* [#5668](https://github.com/wso2/identity-apps/pull/5668) [`2b4f99be20`](https://github.com/wso2/identity-apps/commit/2b4f99be20bbe669d3f5fd132155649ec3ae1ac1) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified idp namespaces in i18n modules
+
+- [#5662](https://github.com/wso2/identity-apps/pull/5662) [`5fd92df3ff`](https://github.com/wso2/identity-apps/commit/5fd92df3ff2688c9b5af02e2fa3a420cda85d5c3) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify authenticationProvider namespaces in i18n modules
+
+* [#5694](https://github.com/wso2/identity-apps/pull/5694) [`7263a458b1`](https://github.com/wso2/identity-apps/commit/7263a458b1f36eeb340669580eac64adc175f179) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified sessionmanagement namespaces in i18n modules
+
+- [#5682](https://github.com/wso2/identity-apps/pull/5682) [`faff2b22df`](https://github.com/wso2/identity-apps/commit/faff2b22dfb851944201b8db27ce4e8386bbf160) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified pages namespaces in i18n modules
+
+* [#5678](https://github.com/wso2/identity-apps/pull/5678) [`7fb7170e3e`](https://github.com/wso2/identity-apps/commit/7fb7170e3e8c161417c7aa85afff9a5dd630648e) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified notifications namespaces in i18n modules
+
+- [#5670](https://github.com/wso2/identity-apps/pull/5670) [`db353e0642`](https://github.com/wso2/identity-apps/commit/db353e06422205558b849a9c5a1bf407fb3d6917) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified templates namespaces in i18n modules
+
+* [#5664](https://github.com/wso2/identity-apps/pull/5664) [`58ddc8cc0e`](https://github.com/wso2/identity-apps/commit/58ddc8cc0e2c17173d5ec46989d709c33ddab503) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify suborganizations namespaces in i18n modules
+
+* Updated dependencies [[`e69c015e67`](https://github.com/wso2/identity-apps/commit/e69c015e67e481082573b4e02e54a73280f4d1eb), [`f61777b45a`](https://github.com/wso2/identity-apps/commit/f61777b45a3990e54ae96d9c66ae18d94cccacbd), [`c8ebea2196`](https://github.com/wso2/identity-apps/commit/c8ebea21968102a4e7003a7dba5550a82943cfe5), [`a3ed68c805`](https://github.com/wso2/identity-apps/commit/a3ed68c8054f6608ea3958576a995492a0b025a3), [`508219110c`](https://github.com/wso2/identity-apps/commit/508219110c7f6843dc779180ab3bd6dafb2d856d), [`2b4f99be20`](https://github.com/wso2/identity-apps/commit/2b4f99be20bbe669d3f5fd132155649ec3ae1ac1), [`5fd92df3ff`](https://github.com/wso2/identity-apps/commit/5fd92df3ff2688c9b5af02e2fa3a420cda85d5c3), [`7263a458b1`](https://github.com/wso2/identity-apps/commit/7263a458b1f36eeb340669580eac64adc175f179), [`faff2b22df`](https://github.com/wso2/identity-apps/commit/faff2b22dfb851944201b8db27ce4e8386bbf160), [`7fb7170e3e`](https://github.com/wso2/identity-apps/commit/7fb7170e3e8c161417c7aa85afff9a5dd630648e), [`db353e0642`](https://github.com/wso2/identity-apps/commit/db353e06422205558b849a9c5a1bf407fb3d6917), [`58ddc8cc0e`](https://github.com/wso2/identity-apps/commit/58ddc8cc0e2c17173d5ec46989d709c33ddab503)]:
+  - @wso2is/i18n@2.0.132
+
+## 2.12.55
+
+### Patch Changes
+
+- [#5701](https://github.com/wso2/identity-apps/pull/5701) [`85ea8bc934`](https://github.com/wso2/identity-apps/commit/85ea8bc9347fe899be2203d214082f1164b66b98) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modified common in i18n modules namespaces
+
+* [#5700](https://github.com/wso2/identity-apps/pull/5700) [`ff750e1cf7`](https://github.com/wso2/identity-apps/commit/ff750e1cf758ba77f295ad14af2aea81e61e5b5f) Thanks [@brionmario](https://github.com/brionmario)! - Enable the conditional script on adaptive script select
+
+- [#5697](https://github.com/wso2/identity-apps/pull/5697) [`58a751d41b`](https://github.com/wso2/identity-apps/commit/58a751d41bcabe8bba348ff26dfa148c5fc25927) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - SMS OTP enable button issues fixed.
+
+- Updated dependencies [[`85ea8bc934`](https://github.com/wso2/identity-apps/commit/85ea8bc9347fe899be2203d214082f1164b66b98)]:
+  - @wso2is/i18n@2.0.131
+
+## 2.12.54
+
+### Patch Changes
+
+- [#5675](https://github.com/wso2/identity-apps/pull/5675) [`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally displaying governance connector related UI elements
+
+- Updated dependencies [[`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f)]:
+  - @wso2is/common@2.0.49
+
+## 2.12.53
+
+### Patch Changes
+
+- [#5625](https://github.com/wso2/identity-apps/pull/5625) [`0c18f7ca5e`](https://github.com/wso2/identity-apps/commit/0c18f7ca5ecca78a7c4f081fb1f04777e7e11ac0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change outbound provisioning route id
+
+## 2.12.52
+
+### Patch Changes
+
+- [#5608](https://github.com/wso2/identity-apps/pull/5608) [`645ed98844`](https://github.com/wso2/identity-apps/commit/645ed98844530068209e8965850583e43db18c03) Thanks [@sandushi](https://github.com/sandushi)! - Add beta labelto alternative login identifiers section
+
+* [#5641](https://github.com/wso2/identity-apps/pull/5641) [`97232cc034`](https://github.com/wso2/identity-apps/commit/97232cc034ac45f91fbfe5d7816505e11e06a54a) Thanks [@brionmario](https://github.com/brionmario)! - Fix composer update issues
+
+- [#4294](https://github.com/wso2/identity-apps/pull/4294) [`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf) Thanks [@brionmario](https://github.com/brionmario)! - @asgardeo/console:
+
+  - Set JWKS Endpoint URL as optional field.
+  - Add support to remove the JWKS Endpoint URL value.
+
+  @wso2is/form:
+
+  - Allow to run function validations when input field has no value.
+
+* [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+- [#5646](https://github.com/wso2/identity-apps/pull/5646) [`f77e5ef3ae`](https://github.com/wso2/identity-apps/commit/f77e5ef3ae0827b3a13a12b01e5b6d1ffb33536e) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] Branding text customization initial loading issue
+
+- Updated dependencies [[`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf), [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0)]:
+  - @wso2is/form@2.0.39
+  - @wso2is/common@2.0.48
+  - @wso2is/forms@2.0.26
+
+## 2.12.51
+
+### Patch Changes
+
+- [#5643](https://github.com/wso2/identity-apps/pull/5643) [`ac1177e164`](https://github.com/wso2/identity-apps/commit/ac1177e164c8acc75b895675540ffff97da90674) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n string in sub-organization edit organization role page placeholder
+
+## 2.12.50
+
+### Patch Changes
+
+- [#5637](https://github.com/wso2/identity-apps/pull/5637) [`d2f9bc1718`](https://github.com/wso2/identity-apps/commit/d2f9bc1718e4c193804e2448604b75995b114886) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Reverts #5635 and remove the cloud offering specific info message
+
+## 2.12.49
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+* [#5633](https://github.com/wso2/identity-apps/pull/5633) [`75c6b548ca`](https://github.com/wso2/identity-apps/commit/75c6b548ca5dabfcfec00fbc183242ad4e5855fc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve self registration enable status update UX
+
+- [#5635](https://github.com/wso2/identity-apps/pull/5635) [`a3b5256a8f`](https://github.com/wso2/identity-apps/commit/a3b5256a8f517dc971674ac3d6c57b899637af26) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add info message to SMS OTP connection page
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/access-control@2.0.21
+  - @wso2is/dynamic-forms@2.0.39
+  - @wso2is/common@2.0.47
+  - @wso2is/forms@2.0.25
+  - @wso2is/core@2.0.37
+  - @wso2is/form@2.0.38
+  - @wso2is/i18n@2.0.130
+
+## 2.12.48
+
+### Patch Changes
+
+- [#5537](https://github.com/wso2/identity-apps/pull/5537) [`80e65dcd30`](https://github.com/wso2/identity-apps/commit/80e65dcd302c9eff72f3b8af8ebb53c167040411) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] change the text "Password reset success" to "Email Confirmation Sent"
+
+* [#5632](https://github.com/wso2/identity-apps/pull/5632) [`70131fa20b`](https://github.com/wso2/identity-apps/commit/70131fa20b42253d74bab6113e5b10eea021cece) Thanks [@Avarjana](https://github.com/Avarjana)! - Disable custom username feature.
+
+- [#5582](https://github.com/wso2/identity-apps/pull/5582) [`0e38763ec4`](https://github.com/wso2/identity-apps/commit/0e38763ec4724b848e74c95de70bb0acd78cea50) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] Userstores error messages not displayed properly
+
+- Updated dependencies [[`80e65dcd30`](https://github.com/wso2/identity-apps/commit/80e65dcd302c9eff72f3b8af8ebb53c167040411)]:
+  - @wso2is/i18n@2.0.129
+
+## 2.12.47
+
+### Patch Changes
+
+- [#5536](https://github.com/wso2/identity-apps/pull/5536) [`5ddfdeab10`](https://github.com/wso2/identity-apps/commit/5ddfdeab10302dbaa648a1d933f287d392131878) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Hide the myaccount url for legacy auth runtime sub orgs
+
+* [#5621](https://github.com/wso2/identity-apps/pull/5621) [`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to SMS provider page
+
+- [#5620](https://github.com/wso2/identity-apps/pull/5620) [`a08df1b611`](https://github.com/wso2/identity-apps/commit/a08df1b611ecbbd8291e9ec6ec7147865c6c2d67) Thanks [@sandushi](https://github.com/sandushi)! - Add beta label to alternative login idnetifiers
+
+- Updated dependencies [[`56ea2ff27a`](https://github.com/wso2/identity-apps/commit/56ea2ff27a91b919a6717e44089440415b61abc4)]:
+  - @wso2is/i18n@2.0.128
+
+## 2.12.46
+
+### Patch Changes
+
+- [#5614](https://github.com/wso2/identity-apps/pull/5614) [`ae732c7c78`](https://github.com/wso2/identity-apps/commit/ae732c7c780e1e11fc36e708774cc9be43d0d77c) Thanks [@savindi7](https://github.com/savindi7)! - Disable update for governance connectors in sub organizations.
+
+## 2.12.45
+
+### Patch Changes
+
+- [#5606](https://github.com/wso2/identity-apps/pull/5606) [`bd7752486f`](https://github.com/wso2/identity-apps/commit/bd7752486f52941d492fc93b792965d9786fa78c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix not being able to search attributes with multiple words
+
+* [#5607](https://github.com/wso2/identity-apps/pull/5607) [`c9331f52fd`](https://github.com/wso2/identity-apps/commit/c9331f52fdd52a70967bbd3ad1242f233b6bd5f4) Thanks [@savindi7](https://github.com/savindi7)! - Show userstores for JIT Provisioning for tenant users.
+
+## 2.12.44
+
+### Patch Changes
+
+- [#5604](https://github.com/wso2/identity-apps/pull/5604) [`e362dba2a0`](https://github.com/wso2/identity-apps/commit/e362dba2a00f72b8dde2c10378098fff34309353) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make extension scripts load deferred in console and myaccount
+
+## 2.12.43
+
+### Patch Changes
+
+- [#5602](https://github.com/wso2/identity-apps/pull/5602) [`e3ec0bf06e`](https://github.com/wso2/identity-apps/commit/e3ec0bf06e12d375e51bf51d7c4b9956121ee7ef) Thanks [@brionmario](https://github.com/brionmario)! - Fix RBAC bug in Group Create button
+
+## 2.12.42
+
+### Patch Changes
+
+- [#5600](https://github.com/wso2/identity-apps/pull/5600) [`e6607f5bd3`](https://github.com/wso2/identity-apps/commit/e6607f5bd3965c22c3bc9bbd55503e28c4939efb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Sanitize the HTML content of connection templates
+
+* [#5597](https://github.com/wso2/identity-apps/pull/5597) [`0d4f3979e7`](https://github.com/wso2/identity-apps/commit/0d4f3979e705a37989475ab38a214441965cb2ac) Thanks [@brionmario](https://github.com/brionmario)! - Allow SMS OTP as a first factor
+
+- [#5599](https://github.com/wso2/identity-apps/pull/5599) [`8b2de93adb`](https://github.com/wso2/identity-apps/commit/8b2de93adb60503a36c318e4b7e9c0e3c056073d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Sanitize email template body input before rendering preview
+
+## 2.12.41
+
+### Patch Changes
+
+- [#5591](https://github.com/wso2/identity-apps/pull/5591) [`2ad37492be`](https://github.com/wso2/identity-apps/commit/2ad37492be19375dfb6aec047c4a67a80160267e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the grant types which are not delivered in default pack
+
+## 2.12.40
+
+### Patch Changes
+
+- [#5592](https://github.com/wso2/identity-apps/pull/5592) [`6e9a6fb7df`](https://github.com/wso2/identity-apps/commit/6e9a6fb7df97db7b5be1cf066281bd954a034e7b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce URL validation to avoid scripting attempts
+
+## 2.12.39
+
+### Patch Changes
+
+- [#5589](https://github.com/wso2/identity-apps/pull/5589) [`f5648e20d7`](https://github.com/wso2/identity-apps/commit/f5648e20d784d43ef6d8861216b507266a71fab6) Thanks [@brionmario](https://github.com/brionmario)! - [TEMP] Temp fix to hide `ReadOnly` property
+
+## 2.12.38
+
+### Patch Changes
+
+- [#5587](https://github.com/wso2/identity-apps/pull/5587) [`8756330a7d`](https://github.com/wso2/identity-apps/commit/8756330a7d04882de1ba86a1a4a25696ff119ef0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in getting started page
+
+## 2.12.37
+
+### Patch Changes
+
+- [#5585](https://github.com/wso2/identity-apps/pull/5585) [`66950ed1b5`](https://github.com/wso2/identity-apps/commit/66950ed1b58e387d56b3d9dfc8fda2575ee8d409) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the organization discovery domain dropdown
+
+## 2.12.36
+
+### Patch Changes
+
+- [#5583](https://github.com/wso2/identity-apps/pull/5583) [`cd98f9f07e`](https://github.com/wso2/identity-apps/commit/cd98f9f07ed0382783decdb9ff8e6d16bb483de1) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Revert "Update SMS provider payload template"
+
+## 2.12.35
+
+### Patch Changes
+
+- [#5577](https://github.com/wso2/identity-apps/pull/5577) [`3e7598151d`](https://github.com/wso2/identity-apps/commit/3e7598151d4ffcd7826b8c8e26f7f705ba18f148) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add sub-org level validation rules
+
+## 2.12.34
+
+### Patch Changes
+
+- [#5573](https://github.com/wso2/identity-apps/pull/5573) [`0c95086338`](https://github.com/wso2/identity-apps/commit/0c95086338866ec9b8d288ba0b644f61353d334b) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Change the placeholder template
+
+## 2.12.33
+
+### Patch Changes
+
+- [#5567](https://github.com/wso2/identity-apps/pull/5567) [`3a2425663d`](https://github.com/wso2/identity-apps/commit/3a2425663d5fbf2ade4cc3b369f2d6e0f67a259b) Thanks [@dewniMW](https://github.com/dewniMW)! - Fix issue with username being enclosed with "" in invite parent user feature which fails the user addition
+
+## 2.12.32
+
+### Patch Changes
+
+- [#5546](https://github.com/wso2/identity-apps/pull/5546) [`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3) Thanks [@Shalindri](https://github.com/Shalindri)! - Add validation for user store input fields
+
+* [#5556](https://github.com/wso2/identity-apps/pull/5556) [`db3728341b`](https://github.com/wso2/identity-apps/commit/db3728341b30c8d1ee5581e66697e21896764194) Thanks [@savindi7](https://github.com/savindi7)! - Remove redundant config from Ask Password.
+
+- [#5556](https://github.com/wso2/identity-apps/pull/5556) [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6) Thanks [@savindi7](https://github.com/savindi7)! - Update content related to Authorize API Resource modal and empty illustration.
+
+- Updated dependencies [[`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3), [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6)]:
+  - @wso2is/i18n@2.0.127
+  - @wso2is/common@2.0.46
+
+## 2.12.31
+
+### Patch Changes
+
+- [#5554](https://github.com/wso2/identity-apps/pull/5554) [`aee568d6eb`](https://github.com/wso2/identity-apps/commit/aee568d6ebd0b9aa7d10fccb70764aa2e3373af1) Thanks [@savindi7](https://github.com/savindi7)! - Add Regenerate button when client secret is hashed.
+
+* [#5552](https://github.com/wso2/identity-apps/pull/5552) [`0ce632384b`](https://github.com/wso2/identity-apps/commit/0ce632384bdcb4ef3b14dfaf0943965f88fd75c1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix hashed client secret display modal not working upon application creation
+
+- [#5555](https://github.com/wso2/identity-apps/pull/5555) [`16e2875650`](https://github.com/wso2/identity-apps/commit/16e28756507516486d4c2fa0de6c35e22095420e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the profile loading issue after enabling email as username
+
+* [#5549](https://github.com/wso2/identity-apps/pull/5549) [`fe281684fd`](https://github.com/wso2/identity-apps/commit/fe281684fdf5c5b3564937f65513611086e72b18) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with show icon of the password type fields
+
+- [#5535](https://github.com/wso2/identity-apps/pull/5535) [`63bc4c0c07`](https://github.com/wso2/identity-apps/commit/63bc4c0c07f030c7e387941489b1c6f6a987bf31) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix selective share component not being hidden on selecting a different option in shared access form
+
+* [#5551](https://github.com/wso2/identity-apps/pull/5551) [`efb9bd9702`](https://github.com/wso2/identity-apps/commit/efb9bd97022bd1fe544e84f9ea9ac9e3147136bd) Thanks [@brionmario](https://github.com/brionmario)! - Update connector quickstart guides
+
+* Updated dependencies [[`fe281684fd`](https://github.com/wso2/identity-apps/commit/fe281684fdf5c5b3564937f65513611086e72b18)]:
+  - @wso2is/dynamic-forms@2.0.38
+
+## 2.12.30
+
+### Patch Changes
+
+- [#5542](https://github.com/wso2/identity-apps/pull/5542) [`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issues in the permission selection dropdown
+
+* [#5539](https://github.com/wso2/identity-apps/pull/5539) [`103e725ba7`](https://github.com/wso2/identity-apps/commit/103e725ba75daef8fb0612da5888f2f7531412c8) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add email as username capability to user creation wizard
+
+- [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
+* [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+* Updated dependencies [[`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685), [`103e725ba7`](https://github.com/wso2/identity-apps/commit/103e725ba75daef8fb0612da5888f2f7531412c8), [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d), [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721)]:
+  - @wso2is/theme@2.0.67
+  - @wso2is/react-components@2.1.9
+  - @wso2is/common@2.0.45
+  - @wso2is/access-control@2.0.20
+  - @wso2is/core@2.0.36
+  - @wso2is/dynamic-forms@2.0.37
+  - @wso2is/form@2.0.37
+  - @wso2is/forms@2.0.24
+  - @wso2is/i18n@2.0.126
+
+## 2.12.29
+
+### Patch Changes
+
+- [#5534](https://github.com/wso2/identity-apps/pull/5534) [`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in outbound provisioning connectors in connection settings
+
+* [#5533](https://github.com/wso2/identity-apps/pull/5533) [`ecfc275b9d`](https://github.com/wso2/identity-apps/commit/ecfc275b9d10ed0a83297dbf3e5891cb551c2f9b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with not displaying roles of a group in an organization
+
+* Updated dependencies [[`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd)]:
+  - @wso2is/theme@2.0.66
+
+## 2.12.28
+
+### Patch Changes
+
+- [#5528](https://github.com/wso2/identity-apps/pull/5528) [`85623ce201`](https://github.com/wso2/identity-apps/commit/85623ce20126a1a30cefb7c084a9365093805d96) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Custom SMS Provider configuration UI
+
+## 2.12.27
+
+### Patch Changes
+
+- [#5526](https://github.com/wso2/identity-apps/pull/5526) [`eae82ac975`](https://github.com/wso2/identity-apps/commit/eae82ac97542a4bd6ac385e38fabf5bd09d5cc57) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Custom SMS Provider configuration
+
+## 2.12.26
+
+### Patch Changes
+
+- [#5517](https://github.com/wso2/identity-apps/pull/5517) [`237e139a42`](https://github.com/wso2/identity-apps/commit/237e139a424ff909f59036dde784e08837c5511b) Thanks [@dewniMW](https://github.com/dewniMW)! - Add identifier when displaying business APIs to uniquely identify them in the dropdown
+
+## 2.12.25
+
+### Patch Changes
+
+- [#5524](https://github.com/wso2/identity-apps/pull/5524) [`d39283c8f0`](https://github.com/wso2/identity-apps/commit/d39283c8f0e684931e6393cba53f606e59b927ce) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add a note explaining the consequences of switching from sharing an app with all orgs to sharing an app with selected orgs
+
+* [#5521](https://github.com/wso2/identity-apps/pull/5521) [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Address text changes in the Connections role mapping UI
+
+* Updated dependencies [[`d39283c8f0`](https://github.com/wso2/identity-apps/commit/d39283c8f0e684931e6393cba53f606e59b927ce), [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced)]:
+  - @wso2is/i18n@2.0.125
+  - @wso2is/common@2.0.44
+
 ## 2.12.24
 
 ### Patch Changes

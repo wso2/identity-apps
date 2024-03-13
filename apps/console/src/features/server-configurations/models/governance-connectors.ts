@@ -51,6 +51,7 @@ export interface GovernanceConnectorInterface {
     isCustom?: boolean;
     route?: string;
     testId?: string;
+	status?: string;
 }
 
 export interface GovernanceConnectorCategoryInterface {

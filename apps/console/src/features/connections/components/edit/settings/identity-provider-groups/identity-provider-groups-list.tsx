@@ -365,7 +365,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             transparent
                         />
                         {
-                            (<Show when={ AccessControlConstants.SCOPE_WRITE }>
+                            (<Show when={ AccessControlConstants.GROUP_WRITE }>
                                 <PrimaryButton
                                     data-testid="user-mgt-roles-list-update-button"
                                     size="medium"

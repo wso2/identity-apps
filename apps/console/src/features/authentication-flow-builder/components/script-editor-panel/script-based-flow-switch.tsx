@@ -100,7 +100,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
     return (
         <>
             <Box className="script-based-flow-switch" data-componentid={ componentId }>
-                <Accordion expanded={ isConditionalAuthenticationEnabled }>
+                <Accordion expanded={ isConditionalAuthenticationEnabled } elevation={ 0 }>
                     <AccordionSummary disabled={ readOnly }>
                         <Grid className="script-based-flow-switch-accordion-summary">
                             <Grid

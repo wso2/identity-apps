@@ -53,6 +53,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { RealmConfigInterface } from "../../server-configurations";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
@@ -164,11 +165,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
 
     const handleUserEdit = (userId: string) => {
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
@@ -443,7 +447,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -477,7 +480,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user.userName === realmConfigs?.adminUser;
+                    || (getUserNameWithoutDomain(user?.userName) === realmConfigs?.adminUser && !isSubOrganization())
+                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName));
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

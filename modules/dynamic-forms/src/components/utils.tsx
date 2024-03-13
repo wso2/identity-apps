@@ -93,6 +93,16 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
                         { ...omit(fieldProps, "type") }
                     />
                 );
+            case "password":
+                return (
+                    <DynamicField.Input
+                        key={ fieldProps.name }
+                        name={ fieldProps.name }
+                        label={ fieldProps.label }
+                        inputType={ fieldProps.inputType ?? "password" }
+                        { ...omit(fieldProps, "type") }
+                    />
+                );
             default:
                 return (
                     <DynamicField.Input
@@ -100,7 +110,7 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
                         name={ fieldProps.name }
                         label={ fieldProps.label }
                         inputType={ fieldProps.inputType }
-                        { ...fieldProps }
+                        { ...omit(fieldProps, "type") }
                     />
                 );
         }});

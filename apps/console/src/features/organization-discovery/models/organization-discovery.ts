@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -103,4 +103,17 @@ export interface OrganizationResponseInterface {
 
 export interface OrganizationDiscoveryCheckResponseInterface {
     available: boolean;
+}
+
+/**
+ * Enum for the AutoComplete Reason types.
+ * To-do: Move this enum to Oxygen-UI in the future.
+ */
+export enum AutoCompleteReasonType {
+    CREATE_OPTION = "createOption",
+    REMOVE_OPTION = "removeOption",
+    SELECT_OPTION = "selectOption",
+    CLEAR = "clear",
+    RESET = "reset",
+    BLUR = "blur"
 }

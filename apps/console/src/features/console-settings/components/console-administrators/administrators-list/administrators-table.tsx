@@ -35,7 +35,7 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { UserManagementUtils } from "apps/console/src/extensions/components/users/utils/user-management-utils";
+import { UserManagementUtils } from "../../../../../extensions/components/users/utils/user-management-utils";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -50,6 +50,7 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { useServerConfigs } from "../../../../server-configurations";
 import { UserManagementConstants } from "../../../../users/constants";
 import { UserListInterface } from "../../../../users/models";
@@ -158,6 +159,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const { t } = useTranslation();
 
     const { data: serverConfigs } = useServerConfigs();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const { consoleRoles } = useConsoleRoles(null, null);
 
@@ -168,7 +170,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state?.config?.ui?.features?.users;
     });
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
@@ -379,8 +381,9 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                     || isPrivilegedUser
                     || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || ((getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser
-                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))));
+                    || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
+                            !isSubOrganization())
+                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName));
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
@@ -401,14 +404,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @returns the label indication of your own account.
      */
     const resolveMyselfLabel = (user: UserBasicInterface): ReactNode => {
-        if (authenticatedUser?.split("@").length < 3) {
-            return null;
-        }
-
-        // Extracting the current username from authenticatedUser.
-        const currentUsername: string = authenticatedUser?.split("@").slice(0, 2).join("@");
-
-        if (currentUsername === getUserNameWithoutDomain(user?.userName)) {
+        if (authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))) {
             return (
                 <Label size="small">
                     Me

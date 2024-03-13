@@ -1,5 +1,25 @@
 # @wso2is/theme
 
+## 2.0.68
+
+### Patch Changes
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
+## 2.0.67
+
+### Patch Changes
+
+- [#5542](https://github.com/wso2/identity-apps/pull/5542) [`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issues in the permission selection dropdown
+
+* [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+## 2.0.66
+
+### Patch Changes
+
+- [#5534](https://github.com/wso2/identity-apps/pull/5534) [`f8f2ac99d5`](https://github.com/wso2/identity-apps/commit/f8f2ac99d557074f62fe0a6415c6da1541ba6ecd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in outbound provisioning connectors in connection settings
+
 ## 2.0.65
 
 ### Patch Changes

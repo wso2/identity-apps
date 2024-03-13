@@ -22,7 +22,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { Code, EmphasizedSegment } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -33,7 +33,7 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
 import { useAPIResources } from "../../../../api-resources/api";
 import { APIResourceCategories, APIResourcesConstants } from "../../../../api-resources/constants";
@@ -162,6 +162,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id) && api.policyId == Policy.ROLE) {
                         options.push({
+                            identifier: api?.identifier,
                             key: api.id,
                             text: api.displayName,
                             type: api?.type,
@@ -183,6 +184,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
                         options.push({
+                            identifier: api?.identifier,
                             key: api.id,
                             text: api.name,
                             type: api.type,
@@ -232,6 +234,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                         if (isCurrentAPIResourceAlreadyAdded) {
                             filtered.push({
+                                identifier: apiResource?.identifier,
                                 key: apiResource.id,
                                 text: apiResource.name,
                                 type: apiResource.type,
@@ -415,6 +418,31 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         } }
                         getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
                             apiResourcesListOption.text }
+                        renderOption={ (props: any, apiResourcesListOption: any) =>
+                            (
+                                <div { ...props }>
+                                    <Header.Content>
+                                        { apiResourcesListOption.text }
+                                        { apiResourcesListOption.type == APIResourcesConstants.BUSINESS && (
+                                            <Header.Subheader>
+                                                <Code
+                                                    className="inline-code compact transparent"
+                                                    withBackground={ false }
+                                                >
+                                                    { apiResourcesListOption?.identifier }
+                                                </Code>
+                                                <Label
+                                                    pointing="left"
+                                                    size="mini"
+                                                    className="client-id-label"
+                                                >
+                                                    { t("extensions:develop.apiResource.table.identifier.label") }
+                                                </Label>
+                                            </Header.Subheader>
+                                        ) }
+                                    </Header.Content>
+                                </div>
+                            ) }
                         groupBy={ (apiResourcesListOption: DropdownItemProps) =>
                             APIResourceUtils.resolveApiResourceGroup(apiResourcesListOption?.type) }
                         isOptionEqualToValue={

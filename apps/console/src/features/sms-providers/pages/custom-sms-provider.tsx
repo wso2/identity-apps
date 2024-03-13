@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,39 +50,10 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
-                        <h2>{ t("extensions:develop.smsProviders.form.custom.subHeading") }</h2>
+                        <h2>{ t("console:manage.features.smsProviders.form.custom.subHeading") }</h2>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column>
-                        <FinalFormField
-                            key="provider"
-                            fullWidth
-                            FormControlProps={ {
-                                margin: "dense"
-                            } }
-                            ariaLabel="provider"
-                            readOnly={ isReadOnly }
-                            required={ true }
-                            data-componentid={ `${componentId}-provider` }
-                            name="provider"
-                            type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.providerName.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom" +
-                                ".providerName.placeholder") }
-                            helperText={ (<Hint compact>
-                                { t("extensions:develop.smsProviders.form.custom.providerName.hint") }
-                            </Hint>) }
-                            component={ TextFieldAdapter }
-                            maxLength={
-                                SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
-                            }
-                            minLength={
-                                SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
-                            }
-                            autoComplete="new-password"
-                        />
-                    </Grid.Column>
                     <Grid.Column>
                         <FinalFormField
                             key="providerURL"
@@ -96,11 +67,12 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-providerURL` }
                             name="providerURL"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.providerUrl.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.providerUrl.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.custom.providerUrl.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.custom." +
+                                "providerUrl.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
+                                    { t("console:manage.features.smsProviders.form.custom.providerUrl.hint") }
                                 </Hint>
                             ) }
 
@@ -114,8 +86,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             autoComplete="new-password"
                         />
                     </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 }>
                     <Grid.Column>
                         <FinalFormField
                             key="contentType"
@@ -128,11 +98,12 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-contentType` }
                             name="contentType"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.contentType.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.contentType.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.custom.contentType.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.custom." +
+                                "contentType.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.contentType.hint") }
+                                    { t("console:manage.features.smsProviders.form.custom.contentType.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -146,6 +117,8 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             required
                         />
                     </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
                     <Grid.Column>
                         <FinalFormField
                             key="httpMethod"
@@ -159,11 +132,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-httpMethod` }
                             name="httpMethod"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.httpMethod.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.httpMethod.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.custom.httpMethod.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.custom.httpMethod.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
+                                    { t("console:manage.features.smsProviders.form.custom.httpMethod.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -176,8 +149,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             autoComplete="new-password"
                         />
                     </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 2 } >
                     <Grid.Column>
                         <FinalFormField
                             key="headers"
@@ -191,11 +162,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-headers` }
                             name="headers"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.headers.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.headers.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.custom.headers.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.custom.headers.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.headers.hint") }
+                                    { t("console:manage.features.smsProviders.form.custom.headers.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -223,11 +194,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             data-componentid={ `${componentId}-payload` }
                             name="payload"
                             type="text"
-                            label={ t("extensions:develop.smsProviders.form.custom.payload.label") }
-                            placeholder={ t("extensions:develop.smsProviders.form.custom.payload.placeholder") }
+                            label={ t("console:manage.features.smsProviders.form.custom.payload.label") }
+                            placeholder={ t("console:manage.features.smsProviders.form.custom.payload.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.custom.payload.hint") }
+                                    { t("console:manage.features.smsProviders.form.custom.payload.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }

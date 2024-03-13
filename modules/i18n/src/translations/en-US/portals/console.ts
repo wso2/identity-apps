@@ -618,7 +618,7 @@ export const console: ConsoleNS = {
             myaccount: "My Account",
             "password-recovery": "Password Recovery",
             "password-reset": "Password Reset",
-            "password-reset-success": "Password Reset Success"
+            "password-reset-success": "Password Reset Link Sent"
         }
     },
     brandingCustomText: {
@@ -1302,7 +1302,10 @@ export const console: ConsoleNS = {
                                     description: "Application sharing stopped with all the organizations successfully",
                                     message: "Application sharing stopped successfully!"
                                 }
-                            }
+                            },
+                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
+                                "sharing with selected organizations will " +
+                                "reset the application configurations in all organizations."
                         },
                         signOnMethod: {
                             sections: {
@@ -1679,16 +1682,16 @@ export const console: ConsoleNS = {
                                     description: "Linked local account validation should be enabled to mandate a linked local account"
                                 },
                                 heading: "Linked Accounts",
+                                descriptionFederated: "Enable to retrieve user attributes of the linked local account during federated authentication.",
                                 fields: {
                                     validateLocalAccount: {
-                                        label: "Validate linked local account",
-                                        hint: "This option will decide whether the linked local user account is validated with the " +
-                                        "authenticated identity."
+                                        label: "Prioritize local account attributes",
+                                        hint: "If a linked local account exists, its attributes are returned. Otherwise, " +
+                                            "attributes of the federated identity are returned."
                                     },
                                     mandateLocalAccount: {
                                         label: "Mandate linked local account",
-                                        hint: "These options will decide how the linked local user account is validated with the " +
-                                            "authenticated identity."
+                                        hint: "Authentication will fail in token exchange grant if there is no linked local account with the federated identity."
                                     }
                                 }
                             },
@@ -4640,16 +4643,17 @@ export const console: ConsoleNS = {
                     uriAttributeSettings: {
                         group: {
                             heading: "Group",
-                            hint: "Specifies the attribute that identifies the groups at the Connection.",
+                            hint: "Specifies the attribute that identifies the groups at the connection.",
                             label: "Group Attribute",
                             mappedRolesAbsentMessage: "With your current configuration, <1>Group Attribute</1> is not configured. " +
                                 "You can select an attribute from the dropdown.",
-                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> " +
-                                "will be considered as the default <1> Group Attribute</1> with the current configuration. " +
+                            mappedRolesPresentMessage: "Please note that <1>{{ mappedRolesClaim }}</1> which is mapped to the <1>{{ rolesClaim }}</1> attribute " +
+                                "will be considered as the default <1>Group Attribute</1> with the current configuration. " +
                                 "You can select an attribute from the dropdown.",
-                            message: "Please note that <1>{{ attribute }}</1> {{ suffix }} will be considered as the default " +
-                                "<1>Group Attribute</1> as you have not added a custom attribute " +
-                                "mapping.",
+                            messageOIDC: "Please note that OpenID Connect attribute named <1>{{ attribute }}</1> will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute mapping.",
+                            messageSAML: "Please note that <1>{{ attribute }}</1> attribute will be considered as the default " +
+                                "<1>Group Attribute</1> as you have not added a custom attribute mapping.",
                             placeHolder: "Select the attribute",
                             roleMappingDisabledMessage: "<1>Custom Attribute Mapping</1> is disabled in " +
                                 "your system configuration. This might affect certain flows related to " +
@@ -5909,11 +5913,14 @@ export const console: ConsoleNS = {
                                 hint: "During token exchange if there is a matching local account found," +
                                     " it will be linked implicitly"
                             },
-                            attributes: {
-                                label: "Select attributes to cross check",
-                                hint: "Select up to three attributes that will be used to cross check if" +
-                                    " there is a matching local user account",
-                                placeholder: "No attributes are selected"
+                            primaryAttribute: {
+                                label: "Primary lookup attribute",
+                                hint: "Select the primary attribute that will be used to check if" +
+                                    " there is a matching local user account"
+                            },
+                            secondaryAttribute: {
+                                label: "Secondary lookup attribute",
+                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute"
                             },
                             warning: "Ensure that the selected attributes are verified by the token issuer"
                         }
@@ -11468,7 +11475,8 @@ export const console: ConsoleNS = {
                         default: "There are no items in this list at the moment.",
                         groups: {
                             selected: "There are no {{type}} assigned to this group.",
-                            unselected: "There are no {{type}} available to assign to this group."
+                            unselected: "There are no {{type}} available to assign to this group.",
+                            common: "No {{type}} found"
                         },
                         roles: {
                             selected: "There are no {{type}} assigned with this role.",
@@ -12740,7 +12748,10 @@ export const console: ConsoleNS = {
                     general: {
                         description: {
                             label: "Description",
-                            placeholder: "Enter a description"
+                            placeholder: "Enter a description",
+                            validationErrorMessages: {
+                                invalidInputErrorMessage: "Description cannot contain the pattern {{invalidString}}."
+                            }
                         },
                         name: {
                             label: "Name",
@@ -12748,7 +12759,8 @@ export const console: ConsoleNS = {
                             requiredErrorMessage: "Name is a required field",
                             validationErrorMessages: {
                                 alreadyExistsErrorMessage: "A user store with this name already exists.",
-                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters."
+                                maxCharLimitErrorMessage: "User store name cannot exceed {{maxLength}} characters.",
+                                invalidInputErrorMessage: "User store name cannot contain the pattern {{invalidString}}."
                             }
                         },
                         type: {
@@ -13061,6 +13073,156 @@ export const console: ConsoleNS = {
                     }
                 },
                 compareToLastPeriodMessage: "Compare to last period"
+            },
+            smsProviders: {
+                heading: "SMS Provider",
+                subHeading: "Configure a SMS provider to send SMS to your users.",
+                description: "Configure the SMS provider settings according to your SMS provider.",
+                info: "You can customize the SMS content using <1>SMS Templates</1>.",
+                updateButton: "Update",
+                sendTestSMSButton: "Send Test SMS",
+                goBack: "Go back to Email & SMS",
+                confirmationModal: {
+                    assertionHint: "Please confirm your action.",
+                    content: "If you delete this configuration, you will not receive SMS." +
+                        "Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the SMS provider configurations."
+                },
+                dangerZoneGroup: {
+                    header: "Danger Zone",
+                    revertConfig: {
+                        heading: "Delete Configurations",
+                        subHeading: "This action will delete sms provider configurations. " +
+                            "Once deleted, you will not receive SMS.",
+                        actionTitle: "Delete"
+                    }
+                },
+                form: {
+                    twilio: {
+                        subHeading: "Twilio Settings",
+                        accountSID: {
+                            label: "Twilio Account SID",
+                            placeholder: "Enter the Twilio account SID",
+                            hint: "Twilio account string identifier which act as username for the account"
+                        },
+                        authToken: {
+                            label: "Twilio Auth Token",
+                            placeholder: "Enter the Twilio auth token",
+                            hint: "The access token generated by the Twilio auth server "
+                        },
+                        sender: {
+                            label: "Sender",
+                            placeholder: "Enter the sender phone number",
+                            hint: "Phone number of the sender."
+                        },
+                        validations: {
+                            required: "This field cannot be empty"
+                        }
+                    },
+                    vonage: {
+                        subHeading: "Vonage Settings",
+                        accountSID: {
+                            label: "Vonage API Key",
+                            placeholder: "Enter the Vonage API key",
+                            hint: "Vonage API Key which act as username for the account."
+                        },
+                        authToken: {
+                            label: "Vonage API Secret",
+                            placeholder: "Enter the Vonage API Secret",
+                            hint: "The API Secret generated by the Vonage auth server."
+                        },
+                        sender: {
+                            label: "Sender",
+                            placeholder: "Enter the sender phone number",
+                            hint: "Phone number of the sender."
+                        },
+                        validations: {
+                            required: "This field cannot be empty"
+                        }
+                    },
+                    custom: {
+                        subHeading: "Custom Settings",
+                        providerName: {
+                            label: "SMS Provider Name",
+                            placeholder: "Enter the SMS provider name",
+                            hint: "The name of the SMS provider."
+                        },
+                        providerUrl: {
+                            label: "SMS Provider URL",
+                            placeholder: "Enter the sms provider URL",
+                            hint: "The URL of the SMS provider."
+                        },
+                        httpMethod: {
+                            label: "HTTP Method",
+                            placeholder: "POST",
+                            hint: "The HTTP method of the API request. (Default is POST)"
+                        },
+                        contentType: {
+                            label: "Content Type",
+                            placeholder: "JSON",
+                            hint: "The content type of the API request. Accepted values are 'FORM' or 'JSON'"
+                        },
+                        headers: {
+                            label: "Headers",
+                            placeholder: "authorisation: Bearer {{token}}",
+                            hint: "Comma seperated list of HTTP headers to be included in the SMS API request."
+                        },
+                        payload: {
+                            label: "Payload Template",
+                            placeholder: "{\"content\": {{body}}, \"to\": {{mobile}} }",
+                            hint: "The payload template of the API request. Use {{body}} to represent the generated SMS body. Use {{mobile}} to represent the mobile number."
+                        },
+                        key: {
+                            label: "SMS Provider Auth Key",
+                            placeholder: "Enter the SMS provider auth key",
+                            hint: "Any authentication key that needs to be send as HTTP header."
+                        },
+                        secret: {
+                            label: "SMS Provider Auth Secret",
+                            placeholder: "Enter the SMS provider auth secret",
+                            hint: "Any authentication secret that needs to be send as HTTP header."
+                        },
+                        sender: {
+                            label: "Sender",
+                            placeholder: "Enter the sender",
+                            hint: "The SMS senders identification (phone number or name)."
+                        },
+                        validations: {
+                            required: "This field cannot be empty",
+                            methodInvalid: "The HTTP method is invalid",
+                            contentTypeInvalid: "The content type is invalid"
+                        }
+                    }
+                },
+                notifications: {
+                    getConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error retrieving the sms provider configurations."
+                        }
+                    },
+                    deleteConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error deleting the sms provider configurations."
+                        },
+                        success: {
+                            message: "Revert Successful",
+                            description: "Successfully reverted the sms provider configurations."
+                        }
+                    },
+                    updateConfiguration: {
+                        error: {
+                            message: "Error Occurred",
+                            description: "Error updating the sms provider configurations."
+                        },
+                        success: {
+                            message: "Update Successful",
+                            description: "Successfully updated the sms provider configurations."
+                        }
+                    }
+                }
             }
         },
         notifications: {

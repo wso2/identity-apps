@@ -1,5 +1,74 @@
 # @wso2is/common
 
+## 2.0.50
+
+### Patch Changes
+
+- [#5721](https://github.com/wso2/identity-apps/pull/5721) [`e58b366693`](https://github.com/wso2/identity-apps/commit/e58b3666931dac0ef802aa00657c71ff2593d6cd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add missing i18n content
+
+## 2.0.49
+
+### Patch Changes
+
+- [#5675](https://github.com/wso2/identity-apps/pull/5675) [`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally displaying governance connector related UI elements
+
+## 2.0.48
+
+### Patch Changes
+
+- [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+- Updated dependencies [[`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0)]:
+  - @wso2is/forms@2.0.26
+
+## 2.0.47
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/access-control@2.0.21
+  - @wso2is/forms@2.0.25
+  - @wso2is/core@2.0.37
+  - @wso2is/i18n@2.0.130
+
+## 2.0.46
+
+### Patch Changes
+
+- [#5556](https://github.com/wso2/identity-apps/pull/5556) [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6) Thanks [@savindi7](https://github.com/savindi7)! - Update content related to Authorize API Resource modal and empty illustration.
+
+- Updated dependencies [[`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3)]:
+  - @wso2is/i18n@2.0.127
+
+## 2.0.45
+
+### Patch Changes
+
+- [#5539](https://github.com/wso2/identity-apps/pull/5539) [`103e725ba7`](https://github.com/wso2/identity-apps/commit/103e725ba75daef8fb0612da5888f2f7531412c8) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add email as username capability to user creation wizard
+
+* [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
+- [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+- Updated dependencies [[`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685), [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d), [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721)]:
+  - @wso2is/react-components@2.1.9
+  - @wso2is/access-control@2.0.20
+  - @wso2is/core@2.0.36
+  - @wso2is/forms@2.0.24
+  - @wso2is/i18n@2.0.126
+
+## 2.0.44
+
+### Patch Changes
+
+- [#5521](https://github.com/wso2/identity-apps/pull/5521) [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Address text changes in the Connections role mapping UI
+
+- Updated dependencies [[`d39283c8f0`](https://github.com/wso2/identity-apps/commit/d39283c8f0e684931e6393cba53f606e59b927ce), [`dee6342be9`](https://github.com/wso2/identity-apps/commit/dee6342be98f63a7612cb122a6043fd1cb895ced)]:
+  - @wso2is/i18n@2.0.125
+
 ## 2.0.43
 
 ### Patch Changes

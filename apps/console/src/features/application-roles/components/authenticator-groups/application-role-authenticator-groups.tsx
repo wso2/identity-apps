@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -31,6 +32,7 @@ import {
     ApplicationInterface,
     AuthenticationStepInterface
 } from "../../../applications/models";
+import { AuthenticatorManagementConstants } from "../../../connections";
 import { getAuthenticators } from "../../../identity-providers/api";
 import { AuthenticatorInterface, AuthenticatorTypes } from "../../../identity-providers/models";
 
@@ -54,7 +56,7 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
     const [ isAuthenticatorRequestLoading, setAuthenticatorRequestLoading ] = useState<boolean>(true);
     const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<AuthenticatorInterface[]>([]);
     const [ authenticatorGroups, setAuthenticatorGroups ] = useState<AuthenticatorInterface[]>([]);
-    const [ attributeStepAuthenticators, setAttributeStepAuthenticators ] = 
+    const [ attributeStepAuthenticators, setAttributeStepAuthenticators ] =
         useState<ApplicationAuthenticatorInterface[]>([]);
 
     useEffect(() => {
@@ -76,7 +78,7 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
 
         getAutheticatorGroups();
     }, [ federatedAuthenticators, attributeStepAuthenticators ]);
-        
+
     /**
      * Retrieves application details from the API.
      *
@@ -88,7 +90,7 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
                 const attributeStepId: number = response?.authenticationSequence?.attributeStepId;
-                const attributeStep: AuthenticationStepInterface 
+                const attributeStep: AuthenticationStepInterface
                 = response?.authenticationSequence?.steps?.find((step: any) => {
                     return step.id === attributeStepId;
                 });
@@ -128,7 +130,7 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
         getAuthenticators(null, AuthenticatorTypes.FEDERATED)
             .then((response: AuthenticatorInterface[]) => {
                 // Remove Organization Login federated authenticator from the list
-                const filteredFederatedAuthenticators: AuthenticatorInterface[] 
+                const filteredFederatedAuthenticators: AuthenticatorInterface[]
                 = response.filter((authenticator: AuthenticatorInterface) => {
                     return authenticator.name !== ApplicationRolesConstants.ORGANIZATION_LOGIN;
                 });
@@ -150,7 +152,7 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
                             )
                         })
                     );
-            
+
                     return;
                 }
                 dispatch(
@@ -172,11 +174,17 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
     };
 
     const getAutheticatorGroups = () => {
-        // Filter the federated autheticators that are in the attribute step
-        const filteredFederatedAuthenticators: AuthenticatorInterface[] 
+        // Filtering the federated autheticators that are in the attribute step
+        const filteredFederatedAuthenticators: AuthenticatorInterface[]
         = federatedAuthenticators.filter((federatedAuthenticator: AuthenticatorInterface) => {
             return attributeStepAuthenticators.find((attributeStepAuthenticator: ApplicationAuthenticatorInterface) => {
-                return federatedAuthenticator.name === attributeStepAuthenticator.idp;
+                // Filtering out the SSO authenticator as well, because IdP groups cannot be created in the
+                // SSO authenticator
+                return federatedAuthenticator.name === attributeStepAuthenticator.idp
+                    && (
+                        attributeStepAuthenticator.authenticator
+                            !== AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME
+                    );
             });
         });
 

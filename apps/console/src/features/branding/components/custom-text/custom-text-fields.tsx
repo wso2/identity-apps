@@ -87,6 +87,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
     const {
         customTextDefaults,
         customTextScreenMeta,
+        isCustomTextPreferenceFetching,
         updateCustomTextFormSubscription,
         selectedScreen,
         selectedLocale,
@@ -100,7 +101,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
         [ fields ]
     );
 
-    if (!fields) {
+    if (!fields || isCustomTextPreferenceFetching) {
         return (
             <Box className="branding-preference-custom-text-fields">
                 { [ ...Array(2) ].map((key: number) => (
@@ -120,7 +121,11 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
     };
 
     const renderInputAdornment = (fieldName: string): ReactElement => {
-        if (customTextDefaults[fieldName.replaceAll("_", ".")] === fields[fieldName.replaceAll("_", ".")]) {
+        const customTextDefaultsIsSameAsFields: boolean = customTextDefaults
+            ? customTextDefaults[fieldName.replaceAll("_", ".")] === fields[fieldName.replaceAll("_", ".")]
+            : false;
+
+        if (customTextDefaultsIsSameAsFields) {
             return null;
         }
 
@@ -212,7 +217,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             ) }
                                             component={ TextFieldAdapter }
                                             multiline={ customTextScreenMeta &&
-                                                customTextScreenMeta[fieldName.replaceAll("_", ".")].MULTI_LINE }
+                                                customTextScreenMeta[fieldName.replaceAll("_", ".")]?.MULTI_LINE }
                                             size="small"
                                             maxLength={
                                                 CustomTextPreferenceConstants.FORM_FIELD_CONSTRAINTS.MAX_LENGTH

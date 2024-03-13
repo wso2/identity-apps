@@ -18,7 +18,6 @@
 
 import {
     ArrowRightToBracketPencilIcon,
-    BoltIcon,
     BuildingIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
@@ -38,7 +37,7 @@ import merge from "lodash-es/merge";
 import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
-import { identityProviderConfig, userstoresConfig } from "../../../extensions";
+import { commonConfig, identityProviderConfig, userstoresConfig } from "../../../extensions";
 import {
     APIResourcesConstants as APIResourcesExtensionConstants
 }from "../../../extensions/components/api-resources/constants";
@@ -944,21 +943,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.monitor",
-                        component: lazy(() => import("../../../extensions/components/events/pages/event-edit")),
-                        exact: true,
-                        featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
-                        icon: {
-                            icon: <BoltIcon fill="black" className="icon" />
-                        },
-                        id: "eventPublishing",
-                        name: "extensions:develop.sidePanel.eventPublishing",
-                        order: 23,
-                        path: AppConstants.getPaths().get("EVENT_EDIT"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../org-insights/pages/org-insights")),
                         exact: true,
                         featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
@@ -1207,7 +1191,8 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
                         protected: true,
                         showOnSidePanel: false
-                    }
+                    },
+                    ...commonConfig.extendedRoutes
                 ]),
                 "id"
             )
@@ -1706,7 +1691,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 icon: {
                     icon: getSidePanelIcons().childIcon
                 },
-                id: "outboundProvisioningSettings",
+                id: "residentOutboundProvisioning",
                 name: "console:develop.features.applications.resident.provisioning.outbound.heading",
                 order: 6,
                 path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),

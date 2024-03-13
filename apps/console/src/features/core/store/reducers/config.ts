@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -153,6 +153,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             usersOrganization: "",
             usersSuperOrganization: "",
             validationServiceMgt: "",
+            validationServiceMgtSubOrg: "",
             wellKnown: ""
         },
         features: {
@@ -176,6 +177,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         ui: {
             announcements: [],
             appCopyright: "",
+            appLogo: {
+                defaultLogoPath: "",
+                defaultWhiteLogoPath: ""
+            },
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,

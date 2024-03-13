@@ -1,5 +1,31 @@
 # @wso2is/forms
 
+## 2.0.26
+
+### Patch Changes
+
+- [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+## 2.0.25
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/core@2.0.37
+
+## 2.0.24
+
+### Patch Changes
+
+- [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
+* [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+* Updated dependencies [[`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d)]:
+  - @wso2is/core@2.0.36
+
 ## 2.0.23
 
 ### Patch Changes

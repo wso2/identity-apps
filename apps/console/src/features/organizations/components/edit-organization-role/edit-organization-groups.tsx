@@ -690,7 +690,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                         "emptyPlaceholder.title") }
                                                 subtitle={ [
                                                     t("console:manage.features.roles.edit.groups.placeholders." +
-                                                            "emptyPlaceholder.subtitles")
+                                                            "emptyPlaceholder.subtitles.0")
                                                 ] }
                                                 action={
                                                     !isReadOnly && (

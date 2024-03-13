@@ -22,18 +22,37 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { PrimaryButton } from "@wso2is/react-components";
 import classNames from "classnames";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReactFlowProvider } from "reactflow";
+import { Dispatch } from "redux";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
+import {
+    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
+} from "../../applications/api/application";
+import {
+    ApplicationInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationSequenceType,
+    AuthenticationStepInterface,
+    AuthenticatorInterface
+} from "../../applications/models/application";
+import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { AppState } from "../../core/store";
+import {
+    IdentityProviderManagementConstants
+} from "../../identity-providers/constants/identity-provider-management-constants";
+import { OrganizationType } from "../../organizations/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -74,14 +93,22 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
     const { t } = useTranslation();
 
+    const dispatch: Dispatch = useDispatch();
+
     const {
+        applicationMetaData,
         isAdaptiveAuthAvailable,
         isAuthenticationSequenceDefault,
         isVisualEditorEnabled,
         isLegacyEditorEnabled,
         refetchApplication,
+        authenticationSequence,
         preferredAuthenticationFlowBuilderMode,
-        setPreferredAuthenticationFlowBuilderMode
+        setPreferredAuthenticationFlowBuilderMode,
+        isConditionalAuthenticationEnabled,
+        updateAuthenticationSequence,
+        isSystemApplication,
+        onActiveFlowModeChange
     } = useAuthenticationFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
@@ -105,6 +132,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     ];
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
     const [ flowModeToSwitch, setFlowModeToSwitch ] = useState<AuthenticationFlowBuilderModesInterface>(null);
@@ -124,8 +152,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         if (isVisualEditorEnabled && !readOnly) {
             setActiveFlowMode(FlowModes[1]);
+            onActiveFlowModeChange(FlowModes[1]?.mode);
         } else {
             setActiveFlowMode(FlowModes[0]);
+            onActiveFlowModeChange(FlowModes[0]?.mode);
         }
     }, [ isVisualEditorEnabled, isLegacyEditorEnabled ]);
 
@@ -142,6 +172,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         );
 
         setActiveFlowMode(activeMode);
+        onActiveFlowModeChange(activeMode?.mode);
     }, [ preferredAuthenticationFlowBuilderMode ]);
 
     /**
@@ -154,6 +185,150 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         setFlowModeToSwitch(FlowModes[newTabIndex]);
         setShowAuthenticationFlowModeSwitchDisclaimerModal(true);
     };
+
+    /**
+     * Handles the `onUpdate` callback of the `VisualEditor`.
+     *
+     * @param newSequence - Updated sequence.
+     * @param isRevertFlow - Is triggered from revert flow.
+     */
+    const handleOnUpdate = (
+        newSequence: AuthenticationSequenceInterface,
+        isRevertFlow?: boolean
+    ): void => {
+        let payload: Partial<ApplicationInterface> = {};
+        const sequence: AuthenticationSequenceInterface = {
+            ...cloneDeep(newSequence),
+            type: isRevertFlow
+                ? AuthenticationSequenceType.DEFAULT
+                : AuthenticationSequenceType.USER_DEFINED
+        };
+
+        if (
+            !isAdaptiveAuthAvailable
+            || !isConditionalAuthenticationEnabled
+            || AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)
+        ) {
+            sequence.script = AdaptiveScriptUtils.generateScript(
+                authenticationSequence?.steps?.length + 1).join("\n"
+            );
+        }
+
+        if (orgType === OrganizationType.SUBORGANIZATION) {
+            sequence.script = "";
+        }
+
+        // Update the modified script state in the context.
+        updateAuthenticationSequence({
+            ...newSequence,
+            script: sequence.script
+        });
+
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            payload = {
+                authenticationSequence: sequence,
+                name: applicationMetaData?.name
+            };
+        } else {
+            payload = {
+                authenticationSequence: sequence
+            };
+        }
+
+        const isValid: boolean = validateSteps(newSequence?.steps);
+
+        if (!isValid) {
+            return;
+        }
+
+        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                                ".success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                                ".success.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => refetchApplication());
+    };
+
+    /**
+     * Validate the authentication steps.
+     *
+     * @param steps - Authenticator steps.
+     * @returns True or false - Is steps are valid or not.
+     */
+    const validateSteps = (steps: AuthenticationStepInterface[]): boolean => {
+
+        // Don't allow identifier first being the only authenticator in the flow.
+        if ( steps.length === 1
+            && steps[ 0 ].options.length === 1
+            && steps[ 0 ].options[ 0 ].authenticator
+                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
+        // Don't allow identifier first being with another authenticator in the 1FA flow.
+        if (
+            steps.length === 1
+            && steps[0].options.length > 1
+            && handleIdentifierFirstInStep(steps[0].options)
+        ) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
+        return true;
+    };
+
+    /**
+     * Check if the options include the Identifier First as an authenticator.
+     *
+     * @param options - Authenticator options.
+     * @returns true or false - Options include Identifier First or not.
+     */
+    const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
+        options.some(
+            (option: AuthenticatorInterface) =>
+                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+        );
 
     return (
         <Box className="sign-in-method-split-view">
@@ -210,9 +385,25 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 <AuthenticationFlowVisualEditor
                                     onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
                                     className="visual-editor"
+                                    onUpdate={ (
+                                        sequence: AuthenticationSequenceInterface,
+                                        isRevertFlow?: boolean
+                                    ) => handleOnUpdate(sequence, isRevertFlow) }
                                 />
                             </ReactFlowProvider>
                             { isAdaptiveAuthAvailable && <ScriptBasedFlowSwitch /> }
+                            { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled && (
+                                <div className="visual-editor-update-button-container">
+                                    <PrimaryButton
+                                        variant="contained"
+                                        className="update-button"
+                                        data-componentid={ `${componentId}-update-button` }
+                                        onClick={ () => handleOnUpdate(authenticationSequence) }
+                                    >
+                                        { t("console:loginFlow.visualEditor.actions.update.label") }
+                                    </PrimaryButton>
+                                </div>
+                            ) }
                         </TabPanel>
                     </Box>
                 </div>

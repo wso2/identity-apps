@@ -159,6 +159,19 @@ export const applicationConfig: ApplicationConfig = {
     },
     attributeSettings: {
         advancedAttributeSettings: {
+            isLinkedAccountsEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_SAML,
+                    ApplicationManagementConstants.MOBILE,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_OIDC,
+                    ApplicationManagementConstants.SPA_APP_TEMPLATE_ID
+                ];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
@@ -612,7 +625,7 @@ export const applicationConfig: ApplicationConfig = {
         showScopeValidators: false
     },
     inboundSAMLForm: {
-        artifactBindingAllowed:false,
+        artifactBindingAllowed: true,
         showApplicationQualifier: true,
         showAttributeConsumingServiceIndex: false,
         showQueryRequestProfile: true

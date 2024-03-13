@@ -123,7 +123,6 @@ export const MetaFilePicker: FunctionComponent<MetaFilePickerPropsInterface> = (
     }, [ metaFilePickerValue ]);
 
     const handleQueryParameterAdd = () => {
-        event.preventDefault();
         if (isEmpty(metaFilePickerValue)) {
             return;
         }

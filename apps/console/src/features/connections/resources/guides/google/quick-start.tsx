@@ -30,8 +30,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
-import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
+import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
+import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
+import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 import { getApplicationList } from "../../../../../features/applications/api";
 import { ApplicationList } from "../../../../../features/applications/components/application-list";
 import { ApplicationListInterface } from "../../../../../features/applications/models";
@@ -218,35 +219,22 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                             i18nKey={ "extensions:develop.identityProviders.google.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Google login
-                            </strong> to configure a Google login flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Add Sign In Option</strong>
+                            button inside the login box. And select a Google connection.
                         </Trans>
                     </Text>
-                    <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep01Illustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep02Illustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep03Illustration } size="huge"/>
                 </>
             ),
             stepTitle: (
                 <Trans
                     i18nKey="extensions:develop.identityProviders.google.quickStart.steps.selectDefaultConfig.heading"
                 >
-                    Select <strong>Add Google login</strong>
+                    Add a <strong>Google</strong> connection
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.google.quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.google.quickStart.steps.customizeFlow.heading")
         }
     ];
 

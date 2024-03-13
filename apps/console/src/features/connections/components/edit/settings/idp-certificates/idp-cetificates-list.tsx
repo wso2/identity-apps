@@ -35,7 +35,7 @@ import {
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../../../../identity-providers/constants";
 import moment from "moment";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";

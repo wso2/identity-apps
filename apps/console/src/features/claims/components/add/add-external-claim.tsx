@@ -20,7 +20,7 @@ import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentIn
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { Code, ContentLoader, Link, Message, PrimaryButton } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

@@ -34,7 +34,7 @@ import {
     SwitcherOptionProps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../../../../identity-providers/constants";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -199,7 +199,9 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
-        const operation: string = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
+        const operation: string = editingIDP?.certificate?.jwksUri
+            ? jwksValue ? "REPLACE" : "REMOVE"
+            : "ADD";
 
         const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
             {
@@ -261,7 +263,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             onSubmit={ onJWKSFormSubmit }
         >
             <Field.Input
-                required
                 hint={ (
                     <React.Fragment>
                         A JSON Web Key (JWK) Set is a JSON object that represents a set of JWKs. The JSON
@@ -274,7 +275,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 inputType="url"
                 width={ 16 }
                 validation={ (value: string) => {
-                    if (!value || !FormValidation.url(value)) {
+                    if (value && !FormValidation.url(value)) {
                         setIsJwksValueValid(false);
 
                         return t("console:develop.features.applications.forms.inboundSAML" +
@@ -309,7 +310,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     label={ t("common:update") }
                     disabled={
                         (
-                            !jwksValue ||
                             !isJwksValueValid ||
                             jwksValue === editingIDP?.certificate?.jwksUri
                         ) ||

@@ -22,7 +22,7 @@ import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Card, Divider, Grid } from "semantic-ui-react";
+import { Card, Grid } from "semantic-ui-react";
 import { CategoryItem } from "./app-category-item";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { getApplicationTemplateIllustrations } from "../../../../features/applications/configs/ui";
@@ -202,21 +202,19 @@ export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardProp
             fluid
             data-componentid="application-integration-card"
             data-testid="application-integration-card"
-            className="basic-card no-hover context-card">
-            { /*Card Heading*/ }
-            <Card.Content extra className="no-borders mb-0 pb-0">
+            className="basic-card no-hover getting-started-card social-connections-card"
+        >
+            <Card.Content extra className="description-container">
                 <div className="card-heading mb-1">
-                    <Heading className="mb-1" as="h2">
-                        Onboard and manage apps
+                    <Heading as="h2">
+                    Onboard and manage apps
                     </Heading>
-                    <Text muted>
-                        Choose the type of application
-                    </Text>
                 </div>
+                <Text muted>
+                    Choose the type of application
+                </Text>
             </Card.Content>
-            <Divider className="0.5x" hidden/>
-            { /*Card Body*/ }
-            <Card.Content className="pt-0 px-2 no-borders">
+            <Card.Content style={ { borderTop: "none" } } className="illustration-container">
                 <Grid>
                     <Grid.Row columns={ 2 } style={ { rowGap: "13px" } }>
                         {
@@ -227,21 +225,20 @@ export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardProp
                             ))
                         }
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <CardExpandedNavigationButton
-                                data-componentid={ `${
-                                    testId
-                                }-navigate-to-application-list-button` }
-                                onClick={ onViewAllApplicationsClick }
-                                text="View all applications"
-                                icon="angle right"
-                                iconPlacement="right"
-                                className="primary-action-button"
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
                 </Grid>
+
+            </Card.Content>
+            <Card.Content extra className="action-container">
+                <CardExpandedNavigationButton
+                    data-componentid={ `${
+                        testId
+                    }-navigate-to-application-list-button` }
+                    onClick={ onViewAllApplicationsClick }
+                    text="View all applications"
+                    icon="angle right"
+                    iconPlacement="right"
+                    className="primary-action-button"
+                />
             </Card.Content>
         </Card>
     );

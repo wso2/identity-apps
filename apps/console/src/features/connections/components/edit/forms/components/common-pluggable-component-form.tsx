@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
+import isUndefined from "lodash-es/isUndefined";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
@@ -99,7 +100,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
-
         const properties: any[] = [];
         const resolvedCustomProperties: string | string[] = showCustomProperties
             ? values.get("customProperties")
@@ -109,10 +109,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const propertyMetadata: CommonPluggableComponentMetaPropertyInterface = getPropertyMetadata(
                 key, metadata?.properties);
 
-            if (key !== undefined && !isEmpty(value) && key !== "customProperties") {
+            const processedValue: string = !isEmpty(key) && !isUndefined(value) &&
+                interpretValueByType(value, key, propertyMetadata?.type).toString();
+
+            if (!isEmpty(processedValue) && key !== "customProperties") {
                 properties.push({
                     key: key,
-                    value: interpretValueByType(value, key, propertyMetadata?.type)
+                    value: processedValue
                 });
             }
 
@@ -144,18 +147,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     value: privateKeyValue
                 });
             }
-
         });
 
-        const modifiedCustomProperties: any = resolvedCustomProperties?.toString()?.split(",")?.map(
-            (customProperty: string) => {
-                const keyValuePair: string[] = customProperty.split("=");
+        const modifiedCustomProperties: any = !isEmpty(resolvedCustomProperties) ?
+            resolvedCustomProperties?.toString()?.split(",")?.map(
+                (customProperty: string) => {
+                    const keyValuePair: string[] = customProperty.split("=");
 
-                return {
-                    key: keyValuePair[ 0 ],
-                    value: keyValuePair[ 1 ]
-                };
-            });
+                    return {
+                        key: keyValuePair[ 0 ],
+                        value: keyValuePair[ 1 ]
+                    };
+                }) : [];
 
         modifiedCustomProperties?.length > 0 && properties.push(...modifiedCustomProperties);
 
@@ -333,7 +336,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                                     handleParentPropertyChange)
                             }
                             {
-                                getSortedPropertyFields(metaProperty?.subProperties, true)
+                                getSortedPropertyFields(metaProperty?.subProperties, false)
                             }
                         </React.Fragment>);
                 }
@@ -387,6 +390,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
 
         triggerAlgorithmSelectionDropdowns(key, values);
+
+        if (!dynamicValues) {
+            return;
+        }
 
         setDynamicValues({
             ...dynamicValues,
@@ -451,16 +458,27 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         if (!dynamicValues) {
             return;
         }
+
         const values: string[] = [];
 
         dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
+                if (isEmpty(property.key) || isEmpty(property.value)) {
+                    return;
+                }
+
+                // Check whether the property already in dynamicValues?.properties.
+                if (dynamicValues?.properties?.find(
+                    (prop: CommonPluggableComponentPropertyInterface) => prop.key === property.key)) {
+                    return;
+                }
+
+                // Check whether the property is not in the metadata.
                 if (!metadata?.properties?.find(
                     (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === property.key)) {
                     values.push(property.key + "=" + property.value);
                 }
             });
-
         setCustomProperties(values.join(", "));
     }, [ dynamicValues ]);
 

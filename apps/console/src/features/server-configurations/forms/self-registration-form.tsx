@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import { ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core
 import { Field, Form, FormFieldMessage } from "@wso2is/form";
 import { ConfirmationModal, Text } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AppState } from "apps/console/src/features/core";
-import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
-import { useValidationConfigData } from "apps/console/src/features/validation/api";
+import { AppState } from "../../core";
+import { getUsernameConfiguration } from "../../users/utils/user-management-utils";
+import { useValidationConfigData } from "../../validation/api";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -135,6 +135,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     const [ enableAccountConfirmation, setEnableAccountConfirmation ] = useState<boolean>(false);
     const [ enableAccountActivateImmediately, setEnableAccountActivateImmediately ] = useState<boolean>(false);
     const [ enableAutoLogin, setEnableAutoLogin ] = useState<boolean>(false);
+    const [ enableConfirmationNotification, setEnableConfirmationNotification ] = useState<boolean>(false);
     const [ isAutoLoginOptionAvailable, setAutoLoginOptionAvailable ] = useState<boolean>(true);
     const [ isFirstTimeAccountConfirmationUpdate, setFirstTimeAccountConfirmationUpdate ] = useState<boolean>(true);
     const [ showSignUpConfirmationEnableModal, setShowSignUpConfirmationEnableConfirmationModal ]
@@ -243,6 +244,13 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     };
                 }
             }
+            if (property.name === NOTIFY_ACCOUNT_CONFIRMATION) {
+                setEnableConfirmationNotification(property.value === "true");
+                resolvedInitialFormValues = {
+                    ...resolvedInitialFormValues,
+                    notifyAccountConfirmation: property.value
+                };
+            }
         });
 
         if ((get(resolvedInitialFormValues, "SelfRegistration.SendConfirmationOnCreation") === "true") ||
@@ -284,8 +292,8 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             enableAccountConfirmation == false
                 ? false
                 : true,
-            "SelfRegistration.NotifyAccountConfirmation": enableAccountConfirmation !== undefined
-                ? !!enableAccountConfirmation
+            "SelfRegistration.NotifyAccountConfirmation": values.notifyAccountConfirmation !== undefined
+                ? !!enableConfirmationNotification
                 : initialConnectorValues?.get("SelfRegistration.NotifyAccountConfirmation").value,
             "SelfRegistration.SendConfirmationOnCreation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
@@ -310,6 +318,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "signUpConfirmation",
+                "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",
                 "SelfRegistration.VerificationCode.ExpiryTime",
                 "SelfRegistration.SendConfirmationOnCreation",
@@ -540,7 +549,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 checked={ enableAccountConfirmation }
                 required={ false }
                 readOnly={ readOnly }
-                disabled={ !isConnectorEnabled || (isAlphanumericUsernameEnabled && !emailRequired) }
+                disabled={ !isConnectorEnabled || (isAlphanumericUsernameEnabled && !emailRequired) || isSubmitting }
                 width={ 16 }
                 data-testid={ `${testId}-notify-account-confirmation` }
                 hint={ enableAccountConfirmation && t ("extensions:manage.serverConfigurations.userOnboarding" +
@@ -590,7 +599,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                             .SELF_REGISTRATION_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                     }
                     readOnly={ readOnly }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || isSubmitting }
                     data-testid={ `${testId}-link-expiry-time` }
                 >
                     <input/>
@@ -607,7 +616,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     required={ false }
                     listen={ (value: boolean) => handleAccountActivateImmediately(value) }
                     readOnly={ readOnly }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || isSubmitting }
                     data-testid={ `${testId}-account-activate-immediately` }
                     message={
                         {
@@ -639,15 +648,14 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
                     "SelfRegistration.NotifyAccountConfirmation")
                 }
-                className="toggle"
+                listen={ (value: boolean) => setEnableConfirmationNotification(value) }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
                     "SelfRegistration.NotifyAccountConfirmation",
                     "Send sign up confirmation email") }
-                defaultValue={ initialFormValues?.[
-                    "SelfRegistration.NotifyAccountConfirmation" ] === "true" }
+                checked={ enableConfirmationNotification }
                 readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
+                disabled={ !isConnectorEnabled || isSubmitting }
                 width={ 16 }
                 data-componentid={ `${ testId }-enable-notification-sign-up-confirmation` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(

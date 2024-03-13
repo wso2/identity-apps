@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -161,6 +161,17 @@ export const USERSTORE_REGEX_PROPERTIES: UserStoreRegexPropertiesInterface = {
     PasswordRegEx: "PasswordJavaScriptRegEx",
     RolenameRegEx: "RolenameJavaScriptRegEx",
     UsernameRegEx: "UsernameJavaScriptRegEx"
+};
+
+interface UserStoreValidationRegexPatternInterface {
+    xssEscapeRegEx: string;
+}
+
+/**
+ * User store validation regEx patterns
+ */
+export const USERSTORE_VALIDATION_REGEX_PATTERNS: UserStoreValidationRegexPatternInterface = {
+    xssEscapeRegEx: "\\$\\{[^}]*\\}"
 };
 
 /**

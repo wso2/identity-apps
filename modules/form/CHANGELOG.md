@@ -1,5 +1,40 @@
 # @wso2is/form
 
+## 2.0.39
+
+### Patch Changes
+
+- [#4294](https://github.com/wso2/identity-apps/pull/4294) [`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf) Thanks [@brionmario](https://github.com/brionmario)! - @asgardeo/console:
+
+  - Set JWKS Endpoint URL as optional field.
+  - Add support to remove the JWKS Endpoint URL value.
+
+  @wso2is/form:
+
+  - Allow to run function validations when input field has no value.
+
+## 2.0.38
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/core@2.0.37
+
+## 2.0.37
+
+### Patch Changes
+
+- [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
+* [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+* Updated dependencies [[`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685), [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d), [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721)]:
+  - @wso2is/react-components@2.1.9
+  - @wso2is/core@2.0.36
+
 ## 2.0.36
 
 ### Patch Changes

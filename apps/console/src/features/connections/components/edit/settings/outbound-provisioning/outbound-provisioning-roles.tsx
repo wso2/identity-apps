@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,19 +20,20 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, Popup } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import filter from "lodash-es/filter";
 import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, DropdownItemProps, Form, Grid, Icon, Label } from "semantic-ui-react";
-import { OrganizationUtils } from "../../../../../organizations/utils";
+import { Dispatch } from "redux";
+import { Button, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../../../../organizations/hooks/use-get-organization-type";
 import { getRolesList } from "../../../../../roles/api";
 import { updateConnectionRoleMappings } from "../../../../api/connections";
 import { ConnectionRolesInterface } from "../../../../models/connection";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../../../utils/connection-utils";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;
@@ -57,16 +58,16 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const [ roleList, setRoleList ] = useState<RolesInterface[]>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
 
-    const handleRoleAdd = (event) => {
+    const handleRoleAdd = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         if (isEmpty(selectedRole)) {
             return;
         }
-        if (isEmpty(selectedRoles.find(role => role === selectedRole))) {
+        if (isEmpty(selectedRoles.find((role: string) => role === selectedRole))) {
             setSelectedRoles([ ...selectedRoles, selectedRole ]);
         }
         setSelectedRole("");
@@ -76,7 +77,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         if (isEmpty(removingRole)) {
             return;
         }
-        setSelectedRoles(filter(selectedRoles, role => !isEqual(removingRole, role)));
+        setSelectedRoles(filter(selectedRoles, (role: string) => !isEqual(removingRole, role)));
     };
 
     useEffect(() => {
@@ -85,17 +86,17 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         }
 
         getRolesList(null)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
 
-                    setRoleList(allRole?.Resources?.filter((role) => {
+                    setRoleList(allRole?.Resources?.filter((role: RolesInterface) => {
                         return !(role.displayName
                             .includes("Application/") || role.displayName.includes("Internal/"));
                     }));
                 }
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 handleGetRoleListError(error);
             });
         setSelectedRoles(idpRoles.outboundProvisioningRoles === undefined ? [] :
@@ -121,7 +122,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 }
             ));
             onUpdate(idpId);
-        }).catch(error => {
+        }).catch((error: AxiosError) => {
             handleUpdateIDPRoleMappingsError(error);
         }).finally(() => {
             setIsSubmitting(false);
@@ -143,7 +144,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 <Grid.Column width={ 8 }>
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
-                            options={ roleList?.map((role) => {
+                            options={ roleList?.map((role: RolesInterface) => {
                                 return {
                                     key: role.id,
                                     text: role.displayName,
@@ -155,7 +156,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 ".forms.outboundProvisioningRoles" +
                                 ".placeHolder") }
                             onChange={
-                                (event, data) => {
+                                (event: SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
                                     if (isEmpty(data?.value?.toString())) {
                                         return;
                                     }
@@ -173,9 +174,9 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 (
                                     <Show when={ AccessControlConstants.IDP_EDIT }>
                                         <Button
-                                            onClick={ (e) => handleRoleAdd(e) }
+                                            onClick={ (event: MouseEvent<HTMLButtonElement>) =>
+                                                handleRoleAdd(event) }
                                             icon="add"
-                                            type="button"
                                             disabled={ false }
                                             className="inline"
                                         />
@@ -194,7 +195,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     </Hint>
 
                     {
-                        selectedRoles && selectedRoles?.map((selectedRole, index) => {
+                        selectedRoles && selectedRoles?.map((selectedRole: string, index: number) => {
                             return (
                                 <Show key={ index } when={ AccessControlConstants.IDP_EDIT }>
                                     <Label>

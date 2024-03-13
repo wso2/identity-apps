@@ -66,6 +66,13 @@
         border-radius: var(--oxygen-shape-borderRadius);
         transition: margin-top 0.2s ease-in-out;
     }
+    
+    .visual-editor-update-button-container {
+        display: flex;
+        justify-content: flex-end;
+        padding: 16px;
+        gap: 16px;
+    }
 }
 
 .non-interactive {

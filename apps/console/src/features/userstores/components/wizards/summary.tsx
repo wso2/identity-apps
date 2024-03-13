@@ -85,6 +85,10 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
         description: string | number | ReactElement,
         key?: number
     ): ReactElement => {
+        if (!title) {
+            return null;
+        }
+
         return (
             <Grid.Row key={ key } className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

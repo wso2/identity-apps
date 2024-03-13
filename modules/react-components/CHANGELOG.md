@@ -1,5 +1,28 @@
 # @wso2is/react-components
 
+## 2.1.10
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/core@2.0.37
+
+## 2.1.9
+
+### Patch Changes
+
+- [#5542](https://github.com/wso2/identity-apps/pull/5542) [`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix alignment issues in the permission selection dropdown
+
+* [#5540](https://github.com/wso2/identity-apps/pull/5540) [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in user's danger section and user table actions
+
+- [#5543](https://github.com/wso2/identity-apps/pull/5543) [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721) Thanks [@brionmario](https://github.com/brionmario)! - Fix the visual editor update button
+
+- Updated dependencies [[`f423ee0d5d`](https://github.com/wso2/identity-apps/commit/f423ee0d5d82818e079af6a5cc5ec2d761151685), [`2450476542`](https://github.com/wso2/identity-apps/commit/24504765423f58bf611721b05799bdb2eb38308d), [`c442b2fd0f`](https://github.com/wso2/identity-apps/commit/c442b2fd0ffa18e3f4d641387d42dadd5eb29721)]:
+  - @wso2is/theme@2.0.67
+  - @wso2is/core@2.0.36
+
 ## 2.1.8
 
 ### Patch Changes
