@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.13.6
+
+### Patch Changes
+
+- [#5732](https://github.com/wso2/identity-apps/pull/5732) [`83a5a735a0`](https://github.com/wso2/identity-apps/commit/83a5a735a0f6d1e46d9e5cba51c07ad66c1ab45c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to progressive enrolment in the passkey alert
+
+- Updated dependencies [[`83a5a735a0`](https://github.com/wso2/identity-apps/commit/83a5a735a0f6d1e46d9e5cba51c07ad66c1ab45c)]:
+  - @wso2is/i18n@2.1.2
+
 ## 2.13.5
 
 ### Patch Changes
