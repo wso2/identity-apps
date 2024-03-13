@@ -17,5 +17,4 @@
  */
 
 export * from "./en-US";
-export * from "./fr-FR";
-export * from "./si-LK";
+
