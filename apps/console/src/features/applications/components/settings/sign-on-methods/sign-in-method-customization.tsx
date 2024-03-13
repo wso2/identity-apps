@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -32,7 +33,6 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
