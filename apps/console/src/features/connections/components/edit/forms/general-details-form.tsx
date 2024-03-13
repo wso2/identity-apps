@@ -26,8 +26,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions";
-import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
+import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
     ConnectionInterface,
