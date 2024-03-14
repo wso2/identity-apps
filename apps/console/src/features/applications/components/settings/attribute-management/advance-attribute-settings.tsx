@@ -385,7 +385,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
                             "sections.subject.heading") }
                     </Heading>
-                    { onlyOIDCConfigured && (
+                    { (onlyOIDCConfigured &&
+                        !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")) && (
                         <>
                             <Checkbox
                                 ariaLabel={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -436,7 +437,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={ resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
+                            || resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -453,7 +455,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
-                        hidden={ resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
+                            || resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
