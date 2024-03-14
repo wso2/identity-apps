@@ -265,7 +265,7 @@
     <%
         String myaccountUrl = application.getInitParameter("MyAccountURL");
         if (StringUtils.isEmpty(myaccountUrl)) {
-            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+            myaccountUrl = ServiceURLBuilder.create().setTenant(insightsTenantIdentifier).build().getAbsolutePublicURL();
         }
     %>
 
