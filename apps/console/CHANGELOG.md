@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.10
+
+### Patch Changes
+
+- [#5744](https://github.com/wso2/identity-apps/pull/5744) [`45111c39b4`](https://github.com/wso2/identity-apps/commit/45111c39b44672846f77e8090fe57fdba0b8c8f2) Thanks [@thiva-k](https://github.com/thiva-k)! - Stop preloading removed si, fr i18n modules
+
 ## 2.13.9
 
 ### Patch Changes

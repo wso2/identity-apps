@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.4.3
+
+### Patch Changes
+
+- [#5743](https://github.com/wso2/identity-apps/pull/5743) [`d1bf5e8dc5`](https://github.com/wso2/identity-apps/commit/d1bf5e8dc5a34ede24f9799c23429a8861908eb3) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix linked accounts associated federated IdP logos not being shown in myaccount
+
 ## 2.4.2
 
 ### Patch Changes
