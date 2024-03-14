@@ -656,6 +656,17 @@
             }
         }
 
+        // Set powered by logo URL.
+        if (StringUtils.isEmpty(poweredByLogoURL)) {
+            if (StringUtils.isEmpty(activeThemeName)) {
+                poweredByLogoURL = productLogoURL;
+            } else if (StringUtils.equalsIgnoreCase(activeThemeName, "DARK")) {
+                poweredByLogoURL = productWhiteLogoURL;
+            } else {
+                poweredByLogoURL = productLogoURL;
+            }
+        }
+
         if (StringUtils.isEmpty(logoAlt)) {
             if (StringUtils.isEmpty(activeThemeName)) {
                 logoAlt = productLogoAlt;
