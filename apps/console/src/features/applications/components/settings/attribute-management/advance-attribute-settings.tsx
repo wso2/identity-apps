@@ -376,15 +376,25 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     } }
                     triggerSubmit={ (submitFunction: FormEvent<HTMLFormElement>) => triggerSubmission(submitFunction) }
                 >
-                    <Divider />
-                    <Heading
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showSubjectAttribute }
-                        as="h4"
-                    >
-                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.subject.heading") }
-                    </Heading>
+                    { !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
+                      && !disabledFeatures?.includes("applications.attributes.subjectType")
+                      && (
+                          <>
+                              <Divider />
+                              <Heading
+                                  hidden={
+                                      !applicationConfig.attributeSettings.
+                                          advancedAttributeSettings.showSubjectAttribute
+                                  }
+                                  as="h4"
+                              >
+                                  { t(
+                                      "console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.subject.heading"
+                                  ) }
+                              </Heading>
+                          </>
+                      ) }
                     { (onlyOIDCConfigured &&
                         !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")) && (
                         <>
