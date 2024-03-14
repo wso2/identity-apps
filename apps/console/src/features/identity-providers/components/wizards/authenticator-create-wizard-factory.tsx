@@ -29,7 +29,6 @@ import { FacebookAuthenticationProviderCreateWizard } from "./facebook";
 import { GitHubAuthenticationProviderCreateWizard } from "./github";
 import { GoogleAuthenticationProviderCreateWizard } from "./google";
 import { HyprAuthenticationProviderCreateWizard } from "./hypr";
-import { IproovAuthenticationProviderCreateWizard } from "./iproov";
 import { MicrosoftAuthenticationProviderCreateWizard } from "./microsoft";
 import { OidcAuthenticationProviderCreateWizard } from "./oidc-authentication-provider-create-wizard";
 import {
@@ -439,24 +438,6 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <HyprAuthenticationProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
-                        subTitle={ selectedTemplateWithUniqueName?.description }
-                        onWizardClose={ () => {
-                            setSelectedTemplateWithUniqueName(undefined);
-                            setSelectedTemplate(undefined);
-                            setShowWizard(false);
-                            onWizardClose();
-                        } }
-                        template={ selectedTemplateWithUniqueName }
-                        data-componentid={ selectedTemplate?.templateId }
-                        { ...rest }
-                    />
-                )
-                : null;
-        case IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV:
-            return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
-                ? (
-                    <IproovAuthenticationProviderCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
