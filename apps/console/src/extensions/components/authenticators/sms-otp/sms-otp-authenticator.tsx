@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { FeatureConfigInterface } from "../../../../features/core/models";
 import { AppState } from "../../../../features/core/store";
@@ -83,14 +83,8 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
-    const isChoreoEnabledAsSMSProvider: boolean = useMemo(() => {
-        const disabledFeatures: string[] = featureConfig?.smsProviders?.disabledFeatures;
-
-        return !disabledFeatures?.includes("choreoAsSMSProvider");
-    }, [ featureConfig ]);
-
-    const isReadOnly: boolean = isChoreoEnabledAsSMSProvider
-        || !hasRequiredScopes(
+    const isReadOnly: boolean =
+        !hasRequiredScopes(
             featureConfig?.identityProviders,
             featureConfig?.identityProviders?.scopes?.update,
             allowedScopes,
