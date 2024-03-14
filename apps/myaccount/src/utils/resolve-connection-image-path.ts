@@ -43,7 +43,7 @@ const resolveConnectionImagePath = (externalStoreUrl: string, path: string): str
     if (AppConstants.getClientOrigin()) {
         const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
 
-        if (path?.includes(AppConstants.getClientOrigin())) {
+        if (path?.includes(AppConstants.getClientOrigin()) || path?.includes(AppConstants.getConsoleAppOrigin())) {
             return path;
         }
 
