@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.42
+
+### Patch Changes
+
+- [#5746](https://github.com/wso2/identity-apps/pull/5746) [`0e764a6de6`](https://github.com/wso2/identity-apps/commit/0e764a6de6c5be504f6fd6f7deb2102cc4ca4b51) Thanks [@brionmario](https://github.com/brionmario)! - Fix myaccount url to contain tenanted path
+
 ## 2.1.41
 
 ### Patch Changes
