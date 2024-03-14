@@ -76,6 +76,7 @@ export interface UserStore {
     description: string;
     className: string;
     properties: UserStoreProperty[];
+    claimAttributeMappings?: AttributeMapping[];
 }
 
 /**
@@ -201,4 +202,31 @@ export interface AttributeMappings {
 export interface AttributeMapping {
     claimURI: string;
     mappedAttribute: string;
+}
+
+export interface UserStoreItem {
+    key: number;
+    text: string;
+    value: string;
+}
+
+/**
+ * Type of a userstore property
+ */
+export interface UserStoreProperty {
+    name: string;
+    value: string;
+}
+
+/**
+ * User store details object
+ */
+export interface UserStoreDetails {
+    id?: string,
+    enabled?: boolean,
+    typeName: string;
+    typeId: string;
+    name: string;
+    className: string;
+    properties: UserStoreProperty[];
 }

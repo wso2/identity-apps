@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,16 +17,18 @@
  */
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface } from "@wso2is/core/models";
+import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { UserRoleInterface } from "../../core/models";
+import { store } from "../../core/store";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "../../validation/models";
-import { MultipleInviteMode, MultipleInvitesDisplayNames } from "../models";
+import { UserManagementConstants } from "../constants/user-management-constants";
+import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models";
 
 /**
  * Utility class for user management operations.
@@ -89,6 +91,48 @@ export class UserManagementUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Resolves the sub header of the user list item.
+     *
+     * @param user - User object.
+     * @returns Sub header of the user list item.
+     */
+    public static resolveUserListSubheader(user: UserBasicInterface): string {
+        if (UserManagementUtils.isDisplayNameEnabled(store.getState()
+            .profile.profileSchemas, user.displayName)) {
+            return user.displayName;
+        }
+
+        if (user?.name?.givenName && user?.name?.familyName) {
+            return user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "");
+        }
+
+        if (user?.name?.givenName) {
+            return user.name.givenName;
+        }
+
+        if (user?.name?.familyName) {
+            return user.name.familyName;
+        }
+    }
+
+    /**
+    * Checks if the display name attribute is enabled or not
+    *
+    * @returns boolean
+    * @param profileSchema - The schema
+    * @param displayName - displayName
+    */
+    public static isDisplayNameEnabled(profileSchema: ProfileSchemaInterface[], displayName?: string): boolean {
+        if (!displayName) {
+            return false;
+        }
+
+        return profileSchema
+            .some((schemaItem: ProfileSchemaInterface) =>
+                schemaItem.name === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("DISPLAY_NAME"));
     }
 }
 

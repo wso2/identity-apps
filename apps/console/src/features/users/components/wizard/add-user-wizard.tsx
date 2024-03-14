@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -35,20 +34,19 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, Grid, Icon, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddUserUpdated } from "./steps/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
 import { AddUserType } from "./steps/add-user-type";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UsersConstants } from "../../../../extensions/components/users/constants";
+import { userstoresConfig } from "../../../../extensions/configs";
 import { administratorConfig } from "../../../../extensions/configs/administrator";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
-import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
-import { getGroupList, updateGroupDetails } from "../../../groups/api";
-import { getAUserStore, getUserStores } from "../../../userstores/api";
+import { updateGroupDetails, useGroupList } from "../../../groups/api";
 import { useValidationConfigData } from "../../../validation/api";
 import { ValidationFormInterface } from "../../../validation/models";
 import { addUser } from "../../api";
@@ -128,6 +126,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
 
+
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
@@ -146,11 +145,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ askPasswordFromUser, setAskPasswordFromUser ] = useState<boolean>(true);
     const [ isOfflineUser, setOfflineUser ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("PRIMARY");
+    const [ selectedUserStore, setSelectedUserStore ] =
+        useState<string>(userStore ?? userstoresConfig.primaryUserstoreName);
     const [ hiddenFields, setHiddenFields ] =
         useState<(HiddenFieldNames)[]>([]);
-    const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ isUserSummaryEnabled, setUserSummaryEnabled ] = useState(true);
     const [ newUserId, setNewUserId ] = useState<string>("");
     const [ userTypeSelection, setUserTypeSelection ] = useState<string>(AdminAccountTypes.EXTERNAL);
@@ -162,33 +160,40 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         data: validationData
     } = useValidationConfigData();
 
+    // Hook to get the user groups list.
+    const {
+        data: originalGroupList,
+        error: groupListFetchRequestError
+    } = useGroupList(
+        selectedUserStore,
+        excludedAttributes,
+        null,
+        userTypeSelection === AdminAccountTypes.EXTERNAL
+    );
+
     /**
      * Fetch initial role list based on conditions
      */
     useEffect(() => {
-        getUserStoreList();
         resolveNamefieldAttributes(profileSchemas);
     }, []);
 
     /**
-     * Update selected user store when userStore changes
+     * Moderate Groups response from the API.
      */
     useEffect(() => {
-        setSelectedUserStore(userStore);
-    }, [ userStore ]);
-
-    /**
-     * Fetch group list based on selected user store or reset groups if not a user
-     */
-    useEffect(() => {
-        if (userTypeSelection === AdminAccountTypes.EXTERNAL) {
-            getGroupListForDomain(selectedUserStore);
-        } else {
-            setGroupsList([]);
-            setInitialGroupList([]);
-            setFixedGroupsList([]);
+        if (!originalGroupList) {
+            return;
         }
-    }, [ selectedUserStore, userTypeSelection ]);
+
+        const groupResources: GroupsInterface[] = originalGroupList.Resources;
+
+        if (groupResources && groupResources instanceof Array && groupResources.length > 0) {
+            setGroupsList(groupResources);
+            setInitialGroupList(groupResources);
+            setFixedGroupsList(groupResources);
+        }
+    }, [ originalGroupList ]);
 
     /**
      * Set user type in wizard state based on defaultUserTypeSelection
@@ -236,7 +241,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     useEffect(() => {
         if ( wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain) {
-            getGroupListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
+            setSelectedUserStore(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
@@ -276,134 +281,33 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     ]);
 
     /**
-     * Function to fetch and update group list for a given domain
+     * Handles the group list fetch request error.
      */
-    const getGroupListForDomain = (domain: string) => {
-        setBasicDetailsLoading(true);
-        getGroupList(domain, excludedAttributes)
-            .then((response: AxiosResponse) => {
-                if (response.data.totalResults == 0) {
-                    setGroupsList([]);
-                    setInitialGroupList([]);
-                    setFixedGroupsList([]);
-                } else {
-                    setGroupsList(response.data.Resources);
-                    setInitialGroupList(response.data.Resources);
-                    setFixedGroupsList(response.data.Resources);
-                }
-            }).catch((error: AxiosError) => {
-                setGroupsList([]);
-                setInitialGroupList([]);
-                setFixedGroupsList([]);
+    useEffect(() => {
+        if (!groupListFetchRequestError) {
+            return;
+        }
 
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ??
-                        t("console:manage.features.user.updateUser.groups.notifications" +
-                        ".fetchUserGroups.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                        ?? t("console:manage.features.user.updateUser.groups.notifications" +
-                        ".fetchUserGroups.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:manage.features.user.updateUser.groups.notifications" +
-                    ".fetchUserGroups.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.updateUser.groups.notifications" +
-                    ".fetchUserGroups.genericError.message")
-                }));
-            }).finally(() => setBasicDetailsLoading(false));
-    };
-
-    const getUserStoreList = (): void => {
-        setBasicDetailsLoading(true);
-        const userStoreArray: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
-                value: "PRIMARY"
-            }
-        ];
-
-        getUserStores(null)
-            .then((response: UserStoreDetails[]) => {
-                response?.forEach(async (item: UserStoreDetails, index: number) => {
-                    // Set read/write enabled userstores based on the type.
-                    if (await checkReadWriteUserStore(item)) {
-                        userStoreArray.push({
-                            key: index,
-                            text: item.name.toUpperCase(),
-                            value: item.name.toUpperCase()
-                        });
-                    }});
-
-                setUserStoreError(false);
-                setReadWriteUserStoresList(userStoreArray);
-            }).catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
-                        ".description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
-                }));
-
-                setUserStoreError(true);
-
-                return;
-            })
-            .finally(() => {
-                setBasicDetailsLoading(false);
-            });
-    };
-
-    /**
-     * Check the given user store is Read/Write enabled
-     *
-     * @param userStore - Userstore
-     * @returns If the given userstore is read only or not
-     */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
-        let isReadWriteUserStore: boolean = false;
-
-        return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
-            response?.properties?.some((property: UserStoreProperty) => {
-                if (property.name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY) {
-                    isReadWriteUserStore = property.value === "false";
-
-                    return true;
-                }
-            });
-
-            return isReadWriteUserStore;
-        }).catch(() => {
+        if (groupListFetchRequestError.response
+            && groupListFetchRequestError.response.data
+            && groupListFetchRequestError.response.data.description) {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
-                    "description"),
+                description: groupListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                message: t("console:manage.features.groups.notifications." +
+                    "fetchGroups.error.message")
             }));
 
-            return false;
-        });
-    };
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:manage.features.groups.notifications." +
+                "fetchGroups.genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
+        }));
+    }, [ groupListFetchRequestError ]);
 
     const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
         const hiddenAttributes: (HiddenFieldNames)[] = [];
@@ -906,30 +810,27 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const getUserBasicWizardStep = (): WizardStepInterface => {
         return {
             content: (
-                <>
-                    <AddUserUpdated
-                        triggerSubmit={ submitGeneralSettings }
-                        initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
-                        emailVerificationEnabled={ emailVerificationEnabled }
-                        onSubmit={ (values: AddUserWizardStateInterface) =>
-                            handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
-                        hiddenFields={ hiddenFields }
-                        requestedPasswordOption={ wizardState &&
-                        wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
-                        isFirstNameRequired={ isFirstNameRequired }
-                        isLastNameRequired={ isLastNameRequired }
-                        isEmailRequired={ isEmailRequired }
-                        setUserSummaryEnabled={ setUserSummaryEnabled }
-                        setAskPasswordFromUser={ setAskPasswordFromUser }
-                        setOfflineUser={ setOfflineUser }
-                        setSelectedUserStore = { setSelectedUserStore }
-                        isBasicDetailsLoading={ isBasicDetailsLoading }
-                        setBasicDetailsLoading={ setBasicDetailsLoading }
-                        validationConfig ={ validationData }
-                        isUserStoreError={ isUserStoreError }
-                        readWriteUserStoresList={ readWriteUserStoresList }
-                    />
-                </>
+                <AddUserUpdated
+                    triggerSubmit={ submitGeneralSettings }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
+                    emailVerificationEnabled={ emailVerificationEnabled }
+                    onSubmit={ (values: AddUserWizardStateInterface) =>
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                    hiddenFields={ hiddenFields }
+                    requestedPasswordOption={ wizardState &&
+                    wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
+                    isFirstNameRequired={ isFirstNameRequired }
+                    isLastNameRequired={ isLastNameRequired }
+                    isEmailRequired={ isEmailRequired }
+                    setUserSummaryEnabled={ setUserSummaryEnabled }
+                    setAskPasswordFromUser={ setAskPasswordFromUser }
+                    setOfflineUser={ setOfflineUser }
+                    selectedUserStore={ selectedUserStore }
+                    setSelectedUserStore = { setSelectedUserStore }
+                    isBasicDetailsLoading={ isBasicDetailsLoading }
+                    setBasicDetailsLoading={ setBasicDetailsLoading }
+                    validationConfig ={ validationData }
+                />
             ),
             icon: getUserWizardStepIcons().general,
             name: WizardStepsFormTypes.BASIC_DETAILS,

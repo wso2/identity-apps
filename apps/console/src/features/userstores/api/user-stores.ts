@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,28 +10,29 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { UserstoreConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core/store";
 import {
     AttributeMapping,
     PatchData,
     QueryParams,
     TestConnection,
+    UserStore,
     UserStoreAttributes,
     UserStoreListItem,
     UserStorePostData
@@ -40,24 +41,23 @@ import {
 /**
  * The error code that is returned when there is no item in the list.
  */
-const RESOURCE_NOT_FOUND_ERROR_MESSAGE = "Resource not found.";
+const RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
 
 /**
  * Initialize an axios Http client.
  *
- * @type { AxiosHttpClientInstance }
  */
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Fetches all userstores.
  *
- * @param {QueryParams} params sort, filter, limit, attributes, offset.
- *
- * @return {Promise<any>} response.
+ * @param params - sort, filter, limit, attributes, offset.
+ * @returns user stores
  */
 export const getUserStores = (params: QueryParams): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -67,14 +67,16 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
         params,
         url: store.getState().config.endpoints.userStores
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }
@@ -85,12 +87,11 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
  * Retrieve the list of user stores that are currently in the system.
  * TODO: Return `response.data` rather than `response` and stop returning any.
  *
- * @return {Promise<UserstoreListResponseInterface[] | any>}
- * @throws {IdentityAppsApiException}
+ * @returns user store list
  */
 export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | any> => {
 
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
@@ -127,11 +128,12 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
 /**
  * Hook to get the Userstores from the API.
  *
- * @param {QueryParams} params - sort, filter, limit, attributes, offset.
- * @returns {RequestResultInterface<Data, Error>}
+ * @param params - sort, filter, limit, attributes, offset.
+ * @returns user store list with SWR hook
  */
 export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorInterface>(
-    params: QueryParams
+    params: QueryParams,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -151,7 +153,42 @@ export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorIn
         isValidating,
         mutate,
         response
-    } = useRequest<Data, Error>(requestConfig);
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
+};
+
+/**
+ * Hook to get details of a userstore with a given ID
+ */
+export const useUserStore = <Data = UserStore, Error = RequestErrorInterface>(
+    id: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.userStores}/${id}`
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
 
     return {
         data,
@@ -166,10 +203,10 @@ export const useUserStores = <Data = UserStoreListItem[], Error = RequestErrorIn
 /**
  * Fetch types of userstores.
  *
- * @return {Promise<any>} response.
+ * @returns userstore types.
  */
 export const getUserstoreTypes = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -178,14 +215,16 @@ export const getUserstoreTypes = (): Promise<any> => {
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.userStores}/meta/types`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -193,13 +232,13 @@ export const getUserstoreTypes = (): Promise<any> => {
 /**
  * Gets the meta data of a type.
  *
- * @param {string} id Type ID.
- * @param {QueryParams} params limit, offset, filter, sort, attributes.
+ * @param id - Type ID.
+ * @param params - limit, offset, filter, sort, attributes.
  *
- * @return {Promise<any>} Response.
+ * @returns metadata of a userstore type
  */
 export const getAType = (id: string, params: QueryParams): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -210,14 +249,16 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
         params,
         url: `${store.getState().config.endpoints.userStores}/meta/types/${id}`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -225,12 +266,12 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
 /**
  * Gets a userstore by its id.
  *
- * @param {string} id Userstore ID.
+ * @param id - Userstore ID.
  *
- * @return {Promise<any>} response.
+ * @returns userstore details of the given userstore ID
  */
 export const getAUserStore = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -241,13 +282,14 @@ export const getAUserStore = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -255,12 +297,12 @@ export const getAUserStore = (id: string): Promise<any> => {
 /**
  * Deletes a Userstore.
  *
- * @param {string} id Userstore ID.
+ * @param id - Userstore ID.
  *
- * @return {Promise<any>} Response.
+ * @returns deleted userstore.
  */
 export const deleteUserStore = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -269,14 +311,16 @@ export const deleteUserStore = (id: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.userStores}/${id}`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -284,12 +328,12 @@ export const deleteUserStore = (id: string): Promise<any> => {
 /**
  * Patches a userstore.
  *
- * @param {string} id - Userstore ID.
- * @param {PatchData[]} data - Payload.
- * @return {Promise<any>} Response
+ * @param id - Userstore ID.
+ * @param data - Payload.
+ * @returns patched userstore details
  */
 export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             Accept: "application/json",
@@ -299,14 +343,16 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
         method: HttpMethods.PATCH,
         url: `${store.getState().config.endpoints.userStores}/${id}`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -314,12 +360,12 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
 /**
  * Adds a userstore.
  *
- * @param {UserStorePostData} data Userstore Data.
+ * @param data -  Userstore Data.
  *
- * @return {Promise<any>} Response.
+ * @returns created userstore.
  */
 export const addUserStore = (data: UserStorePostData): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             Accept: "application/json",
@@ -329,14 +375,16 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.userStores}`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -344,13 +392,13 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
 /**
  * Updates a Userstore.
  *
- * @param {string} id Userstore ID.
- * @param {UserStorePostData} data Update Data.
+ * @param id - Userstore ID.
+ * @param data - Update Data.
  *
- * @return {Promise<any>} response.
+ * @returns updated userstore.
  */
 export const updateUserStore = (id: string, data: UserStorePostData): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             Accept: "application/json",
@@ -360,14 +408,16 @@ export const updateUserStore = (id: string, data: UserStorePostData): Promise<an
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.userStores}/${id}`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -375,12 +425,12 @@ export const updateUserStore = (id: string, data: UserStorePostData): Promise<an
 /**
  * Tests a JDBC connection.
  *
- * @param {TestConnection} data Test Connection Data.
+ * @param data - Test Connection Data.
  *
- * @return {Promise<any>} Response.
+ * @returns connection status
  */
 export const testConnection = (data: TestConnection): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             Accept: "application/json",
@@ -390,14 +440,16 @@ export const testConnection = (data: TestConnection): Promise<any> => {
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.userStores}/test-connection`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -405,13 +457,13 @@ export const testConnection = (data: TestConnection): Promise<any> => {
 /**
  * Gets the user store attributes.
  *
- * @param {string} id Type ID.
- * @param {QueryParams} params limit, offset, filter, sort, attributes.
+ * @param id - Type ID.
+ * @param params - limit, offset, filter, sort, attributes.
  *
- * @return {Promise<any>} Response.
+ * @returns userstore attributes.
  */
 export const getUserStoreAttributes = (id: string, params: QueryParams): Promise<UserStoreAttributes> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -422,14 +474,16 @@ export const getUserStoreAttributes = (id: string, params: QueryParams): Promise
         params,
         url: `${store.getState().config.endpoints.userStores}/meta/types/${id}/attributes`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -437,13 +491,13 @@ export const getUserStoreAttributes = (id: string, params: QueryParams): Promise
 /**
  * Update the secondary user store attribute mappings by it's domain id.
  *
- * @param {string} userstoreId userstore ID.
- * @param {AttributeMapping[]} data attribute mappings.
+ * @param userstoreId - userstore ID.
+ * @param data - attribute mappings.
  *
- * @return {Promise<any>} Response.
+ * @returns updated userstore attribute mappings.
  */
 export const updateUserStoreAttributeMappings = (userstoreId: string, data: AttributeMapping[]): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             Accept: "application/json",
@@ -453,14 +507,16 @@ export const updateUserStoreAttributeMappings = (userstoreId: string, data: Attr
         method: HttpMethods.PATCH,
         url: `${store.getState().config.endpoints.userStores}/${userstoreId}/attribute-mappings`
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -131,6 +131,9 @@ export class UserManagementConstants {
     // ID of the form used in the invite parent organization user component.
     public static readonly INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
     public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301"
+
+    // Query param to exclude roles and groups from getUserList API call.
+    public static readonly GROUPS_AND_ROLES_ATTRIBUTE: string = "groups,roles";
 }
 
 /**
@@ -266,4 +269,15 @@ export enum WizardStepsFormTypes {
     SUMMARY = "summary",
     USER_TYPE = "UserType",
     USER_SUMMARY = "UserSummary"
+}
+
+/**
+ * Enum for invitation status types.
+ *
+ * @readonly
+ */
+export enum InvitationStatus {
+    ACCEPTED = "Accepted",
+    PENDING = "Pending",
+    EXPIRED = "Expired"
 }
