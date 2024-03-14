@@ -43,6 +43,9 @@ const resolveConnectionImagePath = (externalStoreUrl: string, path: string): str
     if (AppConstants.getClientOrigin()) {
         const basename: string = AppConstants.getAppBasename() ? `/${AppConstants.getAppBasename()}` : "";
 
+        /**
+         * Console app path check is a temporary hack to get the logos displayed.
+         */
         if (path?.includes(AppConstants.getClientOrigin()) || path?.includes(AppConstants.getConsoleAppOrigin())) {
             return path;
         }
