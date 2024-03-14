@@ -136,6 +136,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         [ "data-testid" ]: testId
     } = props;
 
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.identityProviders?.disabledFeatures);
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const { t } = useTranslation();
 
@@ -909,23 +912,25 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         />
                     </SectionRow>
 
-                    <SectionRow>
-                        <Field.Input
-                            label={ (
-                                <FormInputLabel htmlFor="CustomAuthnContextClassRef">
-                                    { t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.label`) }
-                                </FormInputLabel>
-                            ) }
-                            name="CustomAuthnContextClassRef"
-                            maxLength={ 100 }
-                            minLength={ 0 }
-                            value={ initialFormValues.customAuthnContextClassRef }
-                            inputType="default"
-                            placeholder={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.placeholder`) }
-                            ariaLabel={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.ariaLabel`) }
-                            data-testid={ `${ testId }-customAuthenticationContextClass-field` }
-                        />
-                    </SectionRow>
+                    { !disabledFeatures?.includes("identityProviders.saml.customAuthenticationContextClass") && (
+                        <SectionRow>
+                            <Field.Input
+                                label={ (
+                                    <FormInputLabel htmlFor="CustomAuthnContextClassRef">
+                                        { t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                name="CustomAuthnContextClassRef"
+                                maxLength={ 100 }
+                                minLength={ 0 }
+                                value={ initialFormValues.customAuthnContextClassRef }
+                                inputType="default"
+                                placeholder={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.placeholder`) }
+                                ariaLabel={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.ariaLabel`) }
+                                data-testid={ `${ testId }-customAuthenticationContextClass-field` }
+                            />
+                        </SectionRow>
+                    ) }
                     <SectionRow>
                         <Field.QueryParams
                             value={ formValues?.commonAuthQueryParams }
