@@ -230,6 +230,7 @@
     String productLogoAlt = "WSO2 Identity Server Logo";
     String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-full-inverted.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
+    String poweredByLogoURL = "";
     String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset", "password-reset-success"};
 
     // Constants used to create full custom layout name
