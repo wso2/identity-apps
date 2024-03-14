@@ -22,11 +22,11 @@ import Typography from "@oxygen-ui/react/Typography";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
-import { identityProviderConfig } from "../../../../../../extensions";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
     AuthenticatorSettingsFormModes,
