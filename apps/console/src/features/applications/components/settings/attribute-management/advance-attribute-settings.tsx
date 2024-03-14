@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -385,7 +385,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
                             "sections.subject.heading") }
                     </Heading>
-                    { onlyOIDCConfigured && (
+                    { (onlyOIDCConfigured &&
+                        !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")) && (
                         <>
                             <Checkbox
                                 ariaLabel={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -436,7 +437,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={ resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
+                            || resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -453,7 +455,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
-                        hidden={ resolveSubjectAttributeHiddenStatus() }
+                        hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
+                            || resolveSubjectAttributeHiddenStatus() }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
@@ -461,7 +464,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     />
                     <Divider hidden />
                     { onlyOIDCConfigured
-                      && disabledFeatures?.includes("applications.attributes.subjectType")
+                      && !disabledFeatures?.includes("applications.attributes.subjectType")
                       && (
                           <div>
                               <Text>
