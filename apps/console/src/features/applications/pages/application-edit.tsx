@@ -489,6 +489,27 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 allowedScopes);
     };
 
+    /**
+     * Resolves the application template label.
+     *
+     * @returns Template label.
+     */
+    const resolveTemplateLabel = (): ReactElement => {
+        if (application?.advancedConfigurations?.fragment) {
+            return (
+                <Label size="small">
+                    { t("console:develop.features.applications.list.labels.fragment") }
+                </Label>
+            );
+        }
+
+        if (applicationTemplate?.name) {
+            return <Label size="small">{ applicationTemplate.name }</Label>;
+        }
+
+        return null;
+    };
+
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -506,9 +527,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     tenantDomain, applicationTemplate?.name)
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
-                            { applicationTemplate?.name && (
-                                <Label size="small">{ applicationTemplate.name }</Label>
-                            ) }
+                            { resolveTemplateLabel() }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(application)
                                     && (<Label
