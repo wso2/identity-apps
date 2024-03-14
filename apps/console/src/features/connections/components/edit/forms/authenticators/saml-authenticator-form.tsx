@@ -883,34 +883,37 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
 
-                    <SectionRow>
-                        <Typography variant="body1">
-                            { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
-                        </Typography>
-                        <Autocomplete
-                            multiple
-                            className="forms-wrapped-autocomplete"
-                            disableCloseOnSelect
-                            size="small"
-                            options={ authenticationContextClassOptions }
-                            value={ selectedAuthnContextClasses }
-                            onChange={ (_event: React.SyntheticEvent, classes: DropdownChild[]) => {
-                                setSelectedAuthnContextClasses(classes);
-                            } }
-                            getOptionLabel={ (role: DropdownChild) => role?.text as string }
-                            renderInput={ (params: AutocompleteRenderInputParams) => {
-                                params.inputProps.className = "forms-wrapped-autocomplete-render-input";
+                    { !disabledFeatures?.includes("identityProviders.saml.authenticationContextClass") && (
+                        <SectionRow>
+                            <Typography variant="body1">
+                                { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
+                            </Typography>
+                            <Autocomplete
+                                multiple
+                                className="forms-wrapped-autocomplete"
+                                disableCloseOnSelect
+                                size="small"
+                                options={ authenticationContextClassOptions }
+                                value={ selectedAuthnContextClasses }
+                                onChange={ (_event: React.SyntheticEvent, classes: DropdownChild[]) => {
+                                    setSelectedAuthnContextClasses(classes);
+                                } }
+                                getOptionLabel={ (role: DropdownChild) => role?.text as string }
+                                renderInput={ (params: AutocompleteRenderInputParams) => {
+                                    params.inputProps.className = "forms-wrapped-autocomplete-render-input";
 
-                                return (
-                                    <TextField
-                                        { ...params }
-                                        size="small"
-                                        placeholder={ t(`${ I18N_TARGET_KEY }.authenticationContextClass.placeholder`) }
-                                    />
-                                );
-                            } }
-                        />
-                    </SectionRow>
+                                    return (
+                                        <TextField
+                                            { ...params }
+                                            size="small"
+                                            placeholder={
+                                                t(`${ I18N_TARGET_KEY }.authenticationContextClass.placeholder`) }
+                                        />
+                                    );
+                                } }
+                            />
+                        </SectionRow>
+                    ) }
 
                     { !disabledFeatures?.includes("identityProviders.saml.customAuthenticationContextClass") && (
                         <SectionRow>
