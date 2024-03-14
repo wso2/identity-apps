@@ -86,7 +86,7 @@ export class AppConstants {
      * @returns the console app path
      */
     public static getConsoleAppOrigin(): string {
-        return new URL(window["AppUtils"]?.getConfig().consoleApp.path).origin;
+        return new URL(window["AppUtils"]?.getConfig()?.consoleApp?.path)?.origin;
     }
 
     /**
