@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.41
+
+### Patch Changes
+
+- [#5740](https://github.com/wso2/identity-apps/pull/5740) [`a732ebab1e`](https://github.com/wso2/identity-apps/commit/a732ebab1e46ce32beb8f00454d1a6b6b2842d17) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with `poweredByLogoURL`
+
 ## 2.1.40
 
 ### Patch Changes
