@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.8
+
+### Patch Changes
+
+- [#5733](https://github.com/wso2/identity-apps/pull/5733) [`484d02a775`](https://github.com/wso2/identity-apps/commit/484d02a7758a1419025c5fa7f6b6c0066d25c315) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix SMS OTP checkbox enabling in My Account settings page
+
 ## 2.13.7
 
 ### Patch Changes
