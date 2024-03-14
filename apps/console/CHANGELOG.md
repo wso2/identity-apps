@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.13.9
+
+### Patch Changes
+
+- [#5739](https://github.com/wso2/identity-apps/pull/5739) [`17a8301c3a`](https://github.com/wso2/identity-apps/commit/17a8301c3a5deb5c42f9de6f06cd7d174b07f565) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add config to disable alternative subject identifier
+
+* [#5728](https://github.com/wso2/identity-apps/pull/5728) [`d1f9e41711`](https://github.com/wso2/identity-apps/commit/d1f9e41711daa19952a9f626e3310f14acd37531) Thanks [@brionmario](https://github.com/brionmario)! - Hide self signup URL input in branding for sub organizations
+
 ## 2.13.8
 
 ### Patch Changes
