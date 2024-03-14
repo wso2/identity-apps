@@ -298,7 +298,10 @@
                 }
             },
             "branding": {
-                "disabledFeatures": [ "branding.hostnameUrlBranding" ],
+                "disabledFeatures": [
+                    "branding.hostnameUrlBranding",
+                    "org:branding.urls.selfSignUp"
+                ],
                 "enabled": true,
                 "scopes": {
                     "feature": [
