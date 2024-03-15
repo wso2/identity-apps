@@ -22,6 +22,7 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
     Claim,
@@ -40,12 +41,8 @@ import {
     Message,
     PageLayout
 } from "@wso2is/react-components";
-import {
-    ServerConfigurationsConstants
-} from "../../../../features/server-configurations/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { IdentityAppsError } from "@wso2is/core/errors";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -74,6 +71,9 @@ import {
     getConnectorDetails,
     updateGovernanceConnector
 } from "../../../../features/server-configurations/api";
+import {
+    ServerConfigurationsConstants
+} from "../../../../features/server-configurations/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
