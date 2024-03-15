@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
