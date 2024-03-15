@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.16
+
+### Patch Changes
+
+- [#5762](https://github.com/wso2/identity-apps/pull/5762) [`12e3c2c635`](https://github.com/wso2/identity-apps/commit/12e3c2c635b47e13c490f75a863bb96a2dc669bc) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Improve logic to hide API native auth in applications
+
 ## 2.13.15
 
 ### Patch Changes

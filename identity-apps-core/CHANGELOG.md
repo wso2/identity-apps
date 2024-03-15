@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.44
+
+### Patch Changes
+
+- [#5759](https://github.com/wso2/identity-apps/pull/5759) [`64ab95f637`](https://github.com/wso2/identity-apps/commit/64ab95f637be508639ca88316ad6cbde5d29a906) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Remove \ from self-registration email regex
+
 ## 2.1.43
 
 ### Patch Changes
