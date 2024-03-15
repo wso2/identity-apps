@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.15
+
+### Patch Changes
+
+- [#5550](https://github.com/wso2/identity-apps/pull/5550) [`f33bd0d9b6`](https://github.com/wso2/identity-apps/commit/f33bd0d9b613b60e21c5cd90b39fe24a8a85064d) Thanks [@sandushi](https://github.com/sandushi)! - Improve the alternative login identifier UI
+
 ## 2.13.14
 
 ### Patch Changes
