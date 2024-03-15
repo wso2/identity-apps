@@ -262,10 +262,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={
-                    !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes") &&
-                    (isSaml || identityProviderConfig.utils.isProvisioningAttributesEnabled(
-                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
-                    ))
+                    !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes")
+                    && (
+                        isSaml
+                        || identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                            identityProvider.federatedAuthenticators.defaultAuthenticatorId)
+                    )
                 }
                 isReadOnly={ isReadOnly }
                 loader={ Loader }
