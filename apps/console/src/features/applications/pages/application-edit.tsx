@@ -324,8 +324,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * {@link ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC} to it.
          * Additionally @see InboundFormFactory.
          */
-        if (!application?.templateId) {
+        if (!application?.advancedConfigurations?.fragment && !application?.templateId) {
             if (application?.inboundProtocols?.length > 0) {
+                // FIXME: `application` object is directly mutated here causing unpredictable side effects.
+                // Tracker: https://github.com/wso2/product-is/issues/20016
                 application.templateId = InboundProtocolDefaultFallbackTemplates.get(
                     application.inboundProtocols[ 0 /*We pick the first*/ ].type
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
