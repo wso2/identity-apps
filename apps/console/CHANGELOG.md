@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.13.12
+
+### Patch Changes
+
+- [#5225](https://github.com/wso2/identity-apps/pull/5225) [`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786) Thanks [@lashinijay](https://github.com/lashinijay)! - UI implementations required to onbaord iProov authenticator.
+
+- Updated dependencies [[`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786)]:
+  - @wso2is/theme@2.0.69
+  - @wso2is/i18n@2.1.3
+
 ## 2.13.11
 
 ### Patch Changes
