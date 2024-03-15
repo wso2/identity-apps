@@ -64,7 +64,7 @@ import {
     SearchRoleInterface
 } from "../../roles/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
-import { getUserDetails, updateUserInfo } from "../api";
+import { updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
@@ -181,10 +181,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         accountLock: "false",
         forcePasswordReset: "false"
     });
-    const [ forcePasswordTriggered, setForcePasswordTriggered ] = useState<boolean>(false);
-    const [ accountLocked, setAccountLock ] = useState<boolean>(false);
-    const [ accountDisabled, setAccountDisable ] = useState<boolean>(false);
-    const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -193,6 +189,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
+    const accountLocked: boolean = user[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]?.accountLocked === "true";
+    const accountDisabled: boolean = user[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]?.accountDisabled === "true";
+    const oneTimePassword: string = user[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]?.oneTimePassword;
 
     useEffect(() => {
 
@@ -228,41 +227,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    useEffect(() => {
-        if (user?.id === undefined) {
-            return;
-        }
-
-        const attributes: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
-
-        getUserDetails(user?.id, attributes)
-            .then((response: ProfileInfoInterface) => {
-                setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
-            });
-    }, [ forcePasswordTriggered ]);
-
-    useEffect(() => {
-        if (user?.id === undefined) {
-            return;
-        }
-
-        const attributes: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED") + "," +
-            UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_DISABLED") + "," +
-            UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
-
-        getUserDetails(user?.id, attributes)
-            .then((response: ProfileInfoInterface) => {
-                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked ?? false);
-                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled ?? false);
-                setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
-            });
-    }, [ user ]);
-
     /**
-     *  This will load the countries to the dropdown.
+     *  .
      */
     useEffect(() => {
+        // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
+        // This will load authenticated user's association type to the current organization.
+        setAssociationType(getAssociationType(authUserTenants, currentOrganization));
+
         if (adminUserType === AdminAccountTypes.INTERNAL && userConfig?.enableAdminPrivilegeRevokeOption) {
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
@@ -270,11 +243,28 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     }, []);
 
     /**
-     * This will load authenticated user's association type to the current organization.
+     * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        setAssociationType(getAssociationType(authUserTenants, currentOrganization));
-    }, []);
+        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+            .filter((item: ProfileSchemaInterface) =>
+                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
+            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
+                if (!a.displayOrder) {
+                    return -1;
+                } else if (!b.displayOrder) {
+                    return 1;
+                } else {
+                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+                }
+            });
+
+        setProfileSchema(sortedSchemas);
+    }, [ profileSchemas ]);
+
+    useEffect(() => {
+        mapUserToSchema(profileSchema, user);
+    }, [ profileSchema, user ]);
 
     /**
      * This will add role attribute to countries search input to prevent autofill suggestions.
@@ -466,30 +456,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             setProfileInfo(tempProfileInfo);
         }
     };
-
-    /**
-     * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
-     */
-    useEffect(() => {
-        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter((item: ProfileSchemaInterface) =>
-                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                if (!a.displayOrder) {
-                    return -1;
-                } else if (!b.displayOrder) {
-                    return 1;
-                } else {
-                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
-                }
-            });
-
-        setProfileSchema(sortedSchemas);
-    }, [ profileSchemas ]);
-
-    useEffect(() => {
-        mapUserToSchema(profileSchema, user);
-    }, [ profileSchema, user ]);
 
     /**
      * This function handles deletion of the user.
@@ -1127,19 +1093,27 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         (
                                             !isReadOnly &&
                                             !isReadOnlyUserStore &&
-                                            user.userName !== adminUsername &&
-                                            !isUserManagedByParentOrg
+                                            !isUserManagedByParentOrg &&
+                                            user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ AccessControlConstants.USER_EDIT }>
                                                     <DangerZone
-                                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                                        data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("console:manage.features.user.editUser." +
-                                                    "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                            ".dangerZoneGrouppasswordResetZone.actionTitle") }
                                                         header={ t("console:manage.features.user.editUser." +
-                                                        "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("console:manage.features.user.editUser" +
-                                                    ".dangerZoneGroup.passwordResetZone.subheader") }
-                                                        onActionClick={ () => setOpenChangePasswordModal(true) }
+                                                            "dangerZoneGroup.passwordResetZone.header") }
+                                                        subheader={ t("console:manage.features.user.editUser." +
+                                                            "dangerZoneGroup.passwordResetZone.subheader") }
+                                                        onActionClick={ (): void => {
+                                                            setOpenChangePasswordModal(true);
+                                                        } }
+                                                        isButtonDisabled={ accountLocked
+                                                            ? accountLocked
+                                                            : user[ ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]?.
+                                                                accountLocked === "true" }
+                                                        buttonDisableHint={ t("console:manage.features.user.editUser." +
+                                                            "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
                                                 </Show>
                                             ) : null
@@ -1757,7 +1731,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     )
                 }
                 <ChangePasswordComponent
-                    handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
+                    handleForcePasswordResetTrigger={ null }
                     connectorProperties={ connectorProperties }
                     handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
                     openChangePasswordModal={ openChangePasswordModal }

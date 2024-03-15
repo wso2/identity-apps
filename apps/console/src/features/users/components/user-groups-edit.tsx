@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import {
     ProfileInfoInterface,
     RolesMemberInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -34,12 +35,14 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ChangeEvent, FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Button,
     Divider,
@@ -50,8 +53,9 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
+import { userstoresConfig } from "../../../extensions/configs/userstores";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../core";
-import { getGroupList } from "../../groups/api";
+import { useGroupList } from "../../groups/api";
 import { GroupsInterface, GroupsMemberInterface } from "../../groups/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../roles/constants";
 
@@ -87,17 +91,38 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
     const { t } = useTranslation();
 
+    const dispatch: Dispatch = useDispatch();
+
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<any>([]);
     const [ selectedGroupsList, setSelectedGroupList ] = useState([]);
     const [ initialGroupList, setInitialGroupList ] = useState([]);
-    const [ primaryGroups, setPrimaryGroups ] = useState(undefined);
     const [ primaryGroupsList, setPrimaryGroupsList ] = useState<Map<string, string>>(undefined);
     const [ isSelectAllGroupsChecked, setIsSelectAllGroupsChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
-    const [ isPrimaryGroupsLoading, setPrimaryGroupsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ existingGroupList, setExistingGroupList ] = useState([]);
+
+    const domain: string = user?.userName?.split("/").length > 1
+        ? user?.userName?.split[0]
+        : userstoresConfig.primaryUserstoreName;
+
+    const {
+        data: originalGroupsList,
+        error: groupsListFetchRequestError,
+        isLoading: isGroupsListFetchRequestLoading,
+        isValidating: isGroupsListFetchRequestValidating
+    } = useGroupList(domain);
+
+    const primaryGroups: GroupsInterface[] = useMemo(() => {
+        if (originalGroupsList?.Resources) {
+            return originalGroupsList.Resources;
+        }
+    }, [ originalGroupsList ]);
+
+    const isLoading: boolean = useMemo(() => {
+        return isGroupsListFetchRequestLoading || isGroupsListFetchRequestValidating;
+    }, [ isGroupsListFetchRequestLoading, isGroupsListFetchRequestValidating ]);
 
     useEffect(() => {
         if (!(user)) {
@@ -106,6 +131,34 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         mapUserGroups();
         setAssignedGroups(user.groups);
     }, []);
+
+    /**
+     * Show error if group list fetch request failed.
+     */
+    useEffect(() => {
+        if (groupsListFetchRequestError) {
+            if (groupsListFetchRequestError.response && groupsListFetchRequestError.response.data &&
+                groupsListFetchRequestError.response.data.description) {
+                dispatch(
+                    addAlert({
+                        description: groupsListFetchRequestError.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
+                    })
+                );
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t("console:manage.features.roles.edit.groups.notifications.fetchError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
+                })
+            );
+        }
+    }, [ groupsListFetchRequestError ]);
 
     /**
      * The following useEffect will be triggered when the
@@ -126,22 +179,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         setInitialLists();
     }, [ user.groups && primaryGroups ]);
 
-    useEffect(() => {
-        let domain: string = "Primary";
-        const domainName: string[] = user?.userName?.split("/");
-
-        if (domainName.length > 1) {
-            domain = domainName[0];
-        }
-        setPrimaryGroupsLoading(true);
-        getGroupList(domain)
-            .then((response: AxiosResponse) => {
-                setPrimaryGroups(response.data.Resources);
-            })
-            .finally(() => {
-                setPrimaryGroupsLoading(false);
-            });
-    }, []);
 
     const mapUserGroups = () => {
         const groupsMap: Map<string, string>  = new Map<string, string> ();
@@ -421,7 +458,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
-                { !isPrimaryGroupsLoading ? (
+                { !isLoading ? (
                     <TransferComponent
                         selectionComponent
                         searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
@@ -640,6 +677,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 <PrimaryButton
                                                     data-testid="user-mgt-empty-groups-list-assign-group-button"
                                                     onClick={ handleOpenAddNewGroupModal }
+                                                    loading={ isLoading }
+                                                    disabled={ isLoading }
                                                 >
                                                     <Icon name="plus"/>
                                                     Assign Group

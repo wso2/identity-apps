@@ -78,7 +78,7 @@ interface ChangePasswordPropsInterface extends TestableComponentInterface {
     /**
      * Handles force password reset trigger.
      */
-    handleForcePasswordResetTrigger: () => void;
+    handleForcePasswordResetTrigger?: () => void;
 }
 
 /**
@@ -219,7 +219,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 {
                     "op": "add",
                     "value": {
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
                             "forcePasswordReset": true
                         }
                     }
@@ -240,7 +240,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                     "console:manage.features.user.profile.notifications.forcePasswordReset.success.message"
                 )
             });
-            handleForcePasswordResetTrigger();
+            handleForcePasswordResetTrigger && handleForcePasswordResetTrigger();
             handleModalClose();
             handleCloseChangePasswordModal();
             handleUserUpdate(user.id);

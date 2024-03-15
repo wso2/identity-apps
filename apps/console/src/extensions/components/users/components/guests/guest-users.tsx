@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, Message, Text, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -23,15 +24,15 @@ import { useSelector } from "react-redux";
 import { Dropdown, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { GuestUsersList } from "./guest-users-list";
 import { OnboardedGuestUsersList } from "./onboarded-guest-user-list";
-import { 
-    AdvancedSearchWithBasicFilters, 
-    AppState, 
-    FeatureConfigInterface, 
-    UIConstants, 
-    UserListInterface 
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    UserListInterface
 } from "../../../../../features/core";
+import { UserInviteInterface } from "../../../../../features/users/models";
 import { PRIMARY_USERSTORE } from "../../../../../features/userstores/constants/user-store-constants";
-import { UserInviteInterface } from "../../../admin-developer/models";
 import { UsersConstants } from "../../constants";
 import { InvitationStatus } from "../../models";
 
@@ -301,7 +302,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
             return (
                 <>
                     <Text className="message-info-text">
-                        <> 
+                        <>
                             { t("extensions:manage.users.descriptions.guestUser") }
                             <DocumentationLink
                                 link={ getLink("manage.users.collaboratorAccounts.learnMore") }
@@ -370,7 +371,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                                 ".placeholder")
                         }
                         placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                        defaultSearchAttribute={ (invitationStatusOption === InvitationStatus.ACCEPTED) 
+                        defaultSearchAttribute={ (invitationStatusOption === InvitationStatus.ACCEPTED)
                             ? "userName": "email" }
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -481,7 +482,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                         onEmptyListPlaceholderActionClick={ onEmptyListPlaceholderActionClick }
                         onboardedGuestUserList={ onboardedGuestUserList }
                         onSearchQueryClear={ handleSearchQueryClear }
-                        guestUsersList={ 
+                        guestUsersList={
                             finalGuestList?.filter((
                                 invitation: UserInviteInterface
                             ) => invitation.status === InvitationStatus.EXPIRED.toUpperCase())
