@@ -42,10 +42,10 @@ import {
 } from "@wso2is/react-components";
 import {
     ServerConfigurationsConstants
-} from "apps/console/src/features/server-configurations/constants";
+} from "../../../../features/server-configurations/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { IdentityAppsError } from "modules/core/dist/types/errors";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import React, {
     FunctionComponent,
     ReactElement,

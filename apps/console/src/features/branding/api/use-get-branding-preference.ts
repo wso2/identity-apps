@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { HttpMethods } from "modules/core/src/models";
+import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
 import { I18nConstants } from "../../core/constants/i18n-constants";
 import useRequest, {

@@ -19,11 +19,12 @@
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/common/src";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Encode } from "@wso2is/core/utils";
 import { GenericIcon, Heading, PageHeader } from "@wso2is/react-components";
 import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import ApplicationSelectionModal 
+import ApplicationSelectionModal
     from "../../../../extensions/components/shared/application-selection-modal";
 import { ConnectionInterface, ConnectionTemplateInterface } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
@@ -68,7 +69,7 @@ interface ConnectionQuickStartPropsInterface extends IdentifiableComponentInterf
 const ConnectionQuickStart: FC<ConnectionQuickStartPropsInterface> = (
     props: ConnectionQuickStartPropsInterface
 ): ReactElement => {
-    
+
     const {
         quickStartContent,
         [ "data-componentid" ]: componentId
@@ -90,18 +91,19 @@ const ConnectionQuickStart: FC<ConnectionQuickStartPropsInterface> = (
                     stepContent: (
                         <>
                             <div
-                                key={ index } 
-                                dangerouslySetInnerHTML={ { __html: step.content } }
+                                key={ index }
+                                // eslint-disable-next-line react/no-danger
+                                dangerouslySetInnerHTML={ { __html: Encode.forHtml(step?.content) } }
                             />
                             {
                                 step.image && (
-                                    <GenericIcon 
-                                        inline 
-                                        transparent 
-                                        icon={ 
+                                    <GenericIcon
+                                        inline
+                                        transparent
+                                        icon={
                                             ConnectionsManagementUtils
-                                                .resolveConnectionResourcePath(connectionResourcesUrl, step.image) 
-                                        } 
+                                                .resolveConnectionResourcePath(connectionResourcesUrl, step.image)
+                                        }
                                         size="huge"
                                     />
                                 )

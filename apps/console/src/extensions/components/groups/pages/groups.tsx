@@ -194,20 +194,21 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             dispatch(addAlert({
                 description: userStoreListFetchRequestError?.response?.data?.description
                     ?? userStoreListFetchRequestError?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUserStores.error.description"),
+                        ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                        "description"),
                 level: AlertLevels.ERROR,
                 message: userStoreListFetchRequestError?.response?.data?.message
-                    ?? t("console:manage.features.users.notifications.fetchUserStores.error.message")
+                    ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+            description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
                 "description"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+            message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
         }));
     }, [ userStoreListFetchRequestError ]);
 

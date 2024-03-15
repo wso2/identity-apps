@@ -115,12 +115,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const {
         data: customText,
         error: customTextPreferenceFetchRequestError,
+        isLoading: isCustomTextPreferenceFetching,
         mutate: mutateCustomTextPreferenceFetchRequest
     } = useGetCustomTextPreferenceResolve(
         !!selectedScreen && !!selectedLocale,
         tenantDomain,
         selectedScreen,
-        selectedLocale);
+        selectedLocale
+    );
 
     const {
         data: customTextFallbackCommons
@@ -387,13 +389,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 },
                 i18n,
                 isCustomTextConfigured: customText && !isEqual(customText, customTextFallbacks),
+                isCustomTextPreferenceFetching: isCustomTextPreferenceFetching,
                 onSelectedLocaleChange: (locale: string): void => {
-                    setSelectedCustomTextLocale(locale);
                     setCustomTextFormSubscription(null);
+                    setSelectedCustomTextLocale(locale);
                 },
                 onSelectedPreviewScreenChange: (screen: PreviewScreenType): void => {
-                    setSelectedPreviewScreen(screen);
                     setCustomTextFormSubscription(null);
+                    setSelectedPreviewScreen(screen);
                 },
                 preference: brandingPreference,
                 resetAllCustomTextPreference: _deleteCustomTextPreference,

@@ -1,5 +1,48 @@
 # @wso2is/common
 
+## 2.0.50
+
+### Patch Changes
+
+- [#5721](https://github.com/wso2/identity-apps/pull/5721) [`e58b366693`](https://github.com/wso2/identity-apps/commit/e58b3666931dac0ef802aa00657c71ff2593d6cd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add missing i18n content
+
+## 2.0.49
+
+### Patch Changes
+
+- [#5675](https://github.com/wso2/identity-apps/pull/5675) [`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally displaying governance connector related UI elements
+
+## 2.0.48
+
+### Patch Changes
+
+- [#5626](https://github.com/wso2/identity-apps/pull/5626) [`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with bot detection and firefox browsers
+
+- Updated dependencies [[`17be9fce9c`](https://github.com/wso2/identity-apps/commit/17be9fce9ce703a35c50c0119e9486c8b47995b0)]:
+  - @wso2is/forms@2.0.26
+
+## 2.0.47
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/access-control@2.0.21
+  - @wso2is/forms@2.0.25
+  - @wso2is/core@2.0.37
+  - @wso2is/i18n@2.0.130
+
+## 2.0.46
+
+### Patch Changes
+
+- [#5556](https://github.com/wso2/identity-apps/pull/5556) [`156b149fea`](https://github.com/wso2/identity-apps/commit/156b149fea83b93c6981a034bb1308c4b259b0e6) Thanks [@savindi7](https://github.com/savindi7)! - Update content related to Authorize API Resource modal and empty illustration.
+
+- Updated dependencies [[`593bfb1b81`](https://github.com/wso2/identity-apps/commit/593bfb1b816e0210fb631efc3edd4542f6568df3)]:
+  - @wso2is/i18n@2.0.127
+
 ## 2.0.45
 
 ### Patch Changes

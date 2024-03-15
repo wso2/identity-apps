@@ -1,5 +1,21 @@
 # @wso2is/dynamic-forms
 
+## 2.0.39
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/core@2.0.37
+
+## 2.0.38
+
+### Patch Changes
+
+- [#5549](https://github.com/wso2/identity-apps/pull/5549) [`fe281684fd`](https://github.com/wso2/identity-apps/commit/fe281684fdf5c5b3564937f65513611086e72b18) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with show icon of the password type fields
+
 ## 2.0.37
 
 ### Patch Changes

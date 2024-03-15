@@ -33,7 +33,6 @@ import {
     Heading,
     LinkButton,
     PrimaryButton,
-    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -80,7 +79,6 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const { deploymentConfig } = useDeploymentConfig();
     const { UIConfig } = useUIConfig();
@@ -153,6 +151,22 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     useEffect(() => {
         setCurrentWizardStep(wizStep + 1);
     }, [ wizStep ]);
+
+    /**
+     * Resolve the documentation link from the metadata.
+     *
+     * @param metadataLink - Link from the metadata.
+     * @returns the resolved documentation link.
+     */
+    const getDocumentationLink = (metadataLink: string): string => {
+        let documentationLink: string = undefined;
+
+        if (metadataLink) {
+            documentationLink = deploymentConfig?.docSiteURL + metadataLink;
+        }
+
+        return documentationLink;
+    };
 
     /**
      * The following function handle the connection create API call.
@@ -578,7 +592,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                             (<Heading as="h6">
                                 { subTitle }
                                 <DocumentationLink
-                                    link={ getLink("develop.connections.newConnection.google.learnMore") }
+                                    link={ getDocumentationLink(connectionMetaData?.create?.documentation) }
                                 >
                                     { t("common:learnMore") }
                                 </DocumentationLink>

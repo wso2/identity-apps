@@ -39,7 +39,7 @@ import {
 } from "@wso2is/react-components";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, {
     Dispatch,
     FormEvent,

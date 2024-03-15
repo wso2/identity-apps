@@ -21,10 +21,10 @@ import { DropdownChild } from "@wso2is/forms";
 /**
  * Interface for the Insights data that is passed to Charts.
  */
-export interface InsightsData { 
-    resourceType: ResourceType; 
-    totalUsageForCurretPeriod: number; 
-    usageData: Array<ChartDataPoint>; 
+export interface InsightsData {
+    resourceType: ResourceType;
+    totalUsageForCurretPeriod: number;
+    usageData: Array<ChartDataPoint>;
 }
 
 /**
@@ -139,5 +139,6 @@ export enum AuthenticatorFilterValue {
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator",
     HYPR = "HYPRAuthenticator",
+    IPROOV = "IproovAuthenticator",
     ORGANIZATION_AUTHENTICATOR = "OrganizationAuthenticator"
 }

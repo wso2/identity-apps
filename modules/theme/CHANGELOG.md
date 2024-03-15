@@ -1,5 +1,17 @@
 # @wso2is/theme
 
+## 2.0.69
+
+### Patch Changes
+
+- [#5225](https://github.com/wso2/identity-apps/pull/5225) [`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786) Thanks [@lashinijay](https://github.com/lashinijay)! - UI implementations required to onbaord iProov authenticator.
+
+## 2.0.68
+
+### Patch Changes
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
 ## 2.0.67
 
 ### Patch Changes

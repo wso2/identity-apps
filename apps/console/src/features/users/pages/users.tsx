@@ -34,8 +34,8 @@ import {
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
-import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
-import { InvitationStatus } from "apps/console/src/extensions/components/users/models";
+import { UsersConstants } from "../../../extensions/components/users/constants";
+import { InvitationStatus } from "../../../extensions/components/users/models";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,

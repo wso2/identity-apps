@@ -35,7 +35,6 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import ApplicationSelectionModal from "../../../../../extensions/components/shared/application-selection-modal";
 
 /**
@@ -94,8 +93,8 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Passkey
-                            login</strong> to configure a basic FIDO flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Passkey</strong>
+                            option from the Passwordless login section to configure a basic Passkey flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -103,24 +102,9 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add Passkey login</strong>
+                    Select <strong>Passkey</strong> option
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.fido.quickStart.steps.customizeFlow.heading")
         }
     ];
 

@@ -27,8 +27,9 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
+import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
+import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
+import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 import ApplicationSelectionModal
     from "../../../../../extensions/components/shared/application-selection-modal";
 import {
@@ -109,33 +110,20 @@ const AppleAuthenticatorQuickStart: FunctionComponent<AppleAuthenticatorQuickSta
                             i18nKey={ "extensions:develop.identityProviders.apple.quickStart.steps" +
                             ".selectDefaultConfig.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Apple login
-                            </strong> to configure a Apple login flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Add Sign In Option</strong>
+                            button inside the login box. And select an Apple connection.
                         </Trans>
                     </Text>
-                    <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep01Illustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep02Illustration } size="huge"/>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep03Illustration } size="huge"/>
                 </>
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.apple.quickStart.steps.selectAppleLogin.heading">
-                    Select <strong>Add Apple login</strong>
+                    Add a <strong>Apple</strong> connection
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.apple.quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.apple.quickStart.steps.customizeFlow.heading")
         }
     ];
 

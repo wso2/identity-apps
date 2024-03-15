@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,52 +18,54 @@
 
 /**
  * Action type to handle the sign in requests
- *
- * @type {string}
  */
-const SET_SIGN_IN = "SET_SIGN_IN";
+const SET_SIGN_IN: string = "SET_SIGN_IN";
 
 /**
  * Action type to handle the sign out requests
- *
- * @type {string}
  */
-const SET_SIGN_OUT = "SET_SIGN_OUT";
+const SET_SIGN_OUT: string = "SET_SIGN_OUT";
 
 /**
  * Action type to handle the reset authentication requests
- *
- * @type {string}
  */
-const RESET_AUTHENTICATION = "RESET_AUTHENTICATION";
+const RESET_AUTHENTICATION: string = "RESET_AUTHENTICATION";
 
 /**
  * Action type to set the profile info
- *
- * @type {string}
  */
-const SET_PROFILE_INFO = "SET_PROFILE_INFO";
+const SET_PROFILE_INFO: string = "SET_PROFILE_INFO";
 
 /**
  * Action type to set the schemas
- * @type {string}
  */
-const SET_SCHEMAS = "SET_SCHEMAS";
+const SET_SCHEMAS: string = "SET_SCHEMAS";
 
 /**
  * Action type to set the initialized flag.
- * @type {string}
  */
-const SET_INITIALIZED = "SET_INITIALIZED";
+const SET_INITIALIZED: string = "SET_INITIALIZED";
+
+/**
+ * Action type to set whether the user has a local account or not.
+ */
+const SET_LOCAL_ACCOUNT_STATUS: string = "SET_LOCAL_ACCOUNT_STATUS";
 
 /**
  * Export action types
- *
- * @type {object}
  */
-export const authenticateActionTypes = {
+export const authenticateActionTypes: {
+    RESET_AUTHENTICATION: string;
+    SET_INITIALIZED: string;
+    SET_PROFILE_INFO: string;
+    SET_SCHEMAS: string;
+    SET_SIGN_IN: string;
+    SET_SIGN_OUT: string;
+    SET_LOCAL_ACCOUNT_STATUS: string;
+} = {
     RESET_AUTHENTICATION,
     SET_INITIALIZED,
+    SET_LOCAL_ACCOUNT_STATUS,
     SET_PROFILE_INFO,
     SET_SCHEMAS,
     SET_SIGN_IN,

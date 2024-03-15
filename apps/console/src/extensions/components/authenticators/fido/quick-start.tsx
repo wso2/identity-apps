@@ -35,8 +35,6 @@ import BuildLoginFlowIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/build-login-flow.png";
 import ConfigureParametersIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/configure-parameters.png";
-import CustomizeStepsIllustration from
-    "../../../../features/connections/components/authenticators/fido/assets/customize-steps.png";
 import { FeatureConfigInterface } from "../../../../features/core/models";
 import { AppState } from "../../../../features/core/store";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
@@ -106,8 +104,8 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on <strong>Add Passkey
-                            Login</strong> to configure a basic passkey flow.
+                            Go to <strong>Login Flow</strong> tab and click on the <strong>Passkey</strong>
+                            option from the Passwordless login section to configure a basic Passkey flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -115,24 +113,9 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add Passkey Login</strong>
+                    Select <strong>Passkey</strong> option
                 </Trans>
             )
-        },
-        {
-            stepContent: (
-                <>
-                    <Text>
-                        <Trans
-                            i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.customizeFlow.content"
-                        >
-                            Continue to configure the login flow as required.
-                        </Trans>
-                    </Text>
-                    <GenericIcon inline transparent icon={ CustomizeStepsIllustration } size="huge"/>
-                </>
-            ),
-            stepTitle: t("extensions:develop.identityProviders.fido.quickStart.steps.customizeFlow.heading")
         },
         {
             stepContent: (

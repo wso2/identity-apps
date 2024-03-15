@@ -35,7 +35,7 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { UserManagementUtils } from "apps/console/src/extensions/components/users/utils/user-management-utils";
+import { UserManagementUtils } from "../../../../../extensions/components/users/utils/user-management-utils";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";

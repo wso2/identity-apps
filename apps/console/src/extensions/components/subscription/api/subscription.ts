@@ -20,8 +20,8 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "apps/console/src/features/core/hooks/use-request";
-import { HttpMethods } from "modules/core/src/models";
+} from "../../../../features/core/hooks/use-request";
+import { HttpMethods } from "@wso2is/core/models";
 import { Config } from "../../../../features/core";
 import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 import { getDomainQueryParam } from "../../tenants/api/tenants";

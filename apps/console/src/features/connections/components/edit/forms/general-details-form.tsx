@@ -20,13 +20,13 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
+import { IdentityProviderManagementConstants } from "../../../../identity-providers/constants";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
@@ -245,7 +245,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         if ((certificateOptionsForTemplate !== undefined
             && !certificateOptionsForTemplate.JWKS
             && !certificateOptionsForTemplate.PEM)
-            || isIDPOrganizationSSO()) {
+            || isIDPOrganizationSSO() || isIDPIproov()) {
             showCertificate = false;
         }
 
@@ -259,6 +259,17 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
                 return authenticator?.name === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME;
+            }
+        );
+    };
+
+    /**
+     * Checks if the current IDP is iProov.
+     */
+    const isIDPIproov = (): boolean => {
+        return !!editingIDP?.federatedAuthenticators?.authenticators.find(
+            (authenticator: FederatedAuthenticatorListItemInterface) => {
+                return authenticator?.name === AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_NAME;
             }
         );
     };
@@ -296,7 +307,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
-                            && !isIDPOrganizationSSO()
+                            && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
                                     ariaLabel="idpIssuerName"
@@ -327,7 +338,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
-                            && !isIDPOrganizationSSO()
+                            && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
                                     ariaLabel="alias"

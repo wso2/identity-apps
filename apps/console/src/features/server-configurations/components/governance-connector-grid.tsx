@@ -37,10 +37,12 @@ import {
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
+import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import "./governance-connector-grid.scss";
@@ -78,6 +80,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         connectorCategories,
         dynamicConnectors
     } = props;
+
+    const { t } = useTranslation();
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
@@ -241,6 +245,17 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                         <div>
                                                             <Typography variant="h6">
                                                                 { connector.header }
+                                                                { connector.status &&
+                                                                (
+                                                                    <Chip
+                                                                        size="small"
+                                                                        sx= { { marginLeft: 1 } }
+                                                                        label= { t(`common:${connector.status}`)
+                                                                            .toUpperCase() }
+                                                                        className = { `oxygen-chip-${ connector.status
+                                                                            .toLowerCase() }` }
+                                                                    />)
+                                                                }
                                                             </Typography>
                                                         </div>
                                                     </CardContent>

@@ -25,8 +25,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { getUserStores, testConnection } from "../../api";
-import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT } from "../../constants";
+import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT, USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants";
 import { PropertyAttribute, TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
+import { validateInputWithRegex } from "../../utils/userstore-utils";
 
 /**
  * Prop types of the `GeneralDetails` component
@@ -170,7 +171,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             placeholder={ t("console:manage.features.userstores.forms.general.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             data-testid={ `${ testId }-form-name-input` }
-                            validation={ async (value: FormValue, validation: Validation) => {
+                            validation={ async (value: string, validation: Validation) => {
                                 let userStores: UserStoreListItem[] = null;
 
                                 try {
@@ -207,6 +208,22 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                         })
                                     );
                                 }
+
+                                const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
+                                    USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
+                                const isMatch: string = validityResult.get("isMatch").toString();
+
+                                if (isMatch === "true") {
+                                    validation.isValid = false;
+                                    const invalidString: string = validityResult.get("invalidStringValue").toString();
+
+                                    validation.errorMessages.push(
+                                        t("console:manage.features.userstores.forms.general.name"
+                                            + ".validationErrorMessages.invalidInputErrorMessage", {
+                                            invalidString: invalidString
+                                        })
+                                    );
+                                }
                             }
                             }
                         />
@@ -220,6 +237,24 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                 "description.placeholder") }
                             value={ values?.get("description")?.toString() }
                             data-testid={ `${ testId }-form-description-textarea` }
+                            validation={ async (value: string, validation: Validation) => {
+                                const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
+                                    USERSTORE_VALIDATION_REGEX_PATTERNS.xssEscapeRegEx);
+                                const isMatch: string = validityResult.get("isMatch").toString();
+
+                                if (isMatch === "true") {
+                                    validation.isValid = false;
+                                    const invalidString: string = validityResult.get("invalidStringValue").toString();
+
+                                    validation.errorMessages.push(
+                                        t("console:manage.features.userstores.forms.general.description"
+                                            + ".validationErrorMessages.invalidInputErrorMessage", {
+                                            invalidString: invalidString
+                                        })
+                                    );
+                                }
+                            }
+                            }
                         />
                         {
                             basicProperties?.map(

@@ -274,6 +274,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     onSubmit={ onSubmitUserDetails }
                     values={ userDetailsData }
                     properties={ properties?.user?.required }
+                    type={ type?.typeName }
                     data-testid={ `${ testId }-user-details` }
                 />
             ),

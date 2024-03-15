@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,12 +18,14 @@
 
 import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";
 import { BrandingPreferenceInterface } from "../../models";
@@ -92,6 +94,8 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
 
     const { t } = useTranslation();
 
+    const { isFirstLevelOrganization, isSuperOrganization  } = useGetCurrentOrganizationType();
+
     const [ privacyPolicyURL, setPrivacyPolicyURL ] = useState<string>(initialValues.urls.privacyPolicyURL);
     const [ termsOfUseURL, setTermsOfUseURL ] = useState<string>(initialValues.urls.termsOfUseURL);
     const [ cookiePolicyURL, setCookiePolicyURL ] = useState<string>(initialValues.urls.cookiePolicyURL);
@@ -143,7 +147,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     const validateTemplatableURLs = (value: string): string => {
         let moderatedValue: string = value?.trim();
         let errorMsg: string;
-        
+
         const placeholdersPattern: string = `${
             BrandingURLPreferenceConstants.LANGUAGE_PLACEHOLDER
         }|${
@@ -155,7 +159,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
         // Use a regex to replace {{lang}}, {{country}}, and {{locale}} placeholders while preserving other characters
         moderatedValue = value?.trim().replace(new RegExp(placeholdersPattern, "g"), "");
 
-        if (!FormValidation.url(moderatedValue)) {
+        if (!URLUtils.isURLValid(moderatedValue, true) || !FormValidation.url(moderatedValue)) {
             errorMsg = t("extensions:develop.branding.forms.advance.links.fields.common.validations.invalid");
         }
 
@@ -260,34 +264,40 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 data-testid={ `${ componentId }-cookie-policy-url` }
                 validation={ validateTemplatableURLs }
             />
-            <Field.Input
-                ariaLabel="Branding preference self signup URL"
-                inputType="url"
-                name="urls.selfSignUpURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.hint"
-                    >
+            { (isFirstLevelOrganization() || isSuperOrganization()) && (
+                <Field.Input
+                    ariaLabel="Branding preference self signup URL"
+                    inputType="url"
+                    name="urls.selfSignUpURL"
+                    label={ t("extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.label") }
+                    placeholder={
+                        t("extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.placeholder")
+                    }
+                    hint={ (
+                        <Trans
+                            i18nKey="extensions:develop.branding.forms.advance.links.fields.selfSignUpURL.hint"
+                        >
                         Link to your organization&apos;s Self Signup webpage. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
+                            <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
                         or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
                         regions or languages.
-                    </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.selfSignUpURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setSelfSignUpURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-self-signup-url` }
-                validation={ validateTemplatableURLs }
-            />
+                        </Trans>
+                    ) }
+                    required={ false }
+                    value={ initialValues.urls.selfSignUpURL }
+                    readOnly={ readOnly }
+                    maxLength={
+                        BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH
+                    }
+                    minLength={
+                        BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH
+                    }
+                    listen={ (value: string) =>  setSelfSignUpURL(value) }
+                    width={ 16 }
+                    data-testid={ `${ componentId }-self-signup-url` }
+                    validation={ validateTemplatableURLs }
+                />
+            ) }
         </Form>
     );
 });

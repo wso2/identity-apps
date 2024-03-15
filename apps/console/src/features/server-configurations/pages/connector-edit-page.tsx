@@ -172,6 +172,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
     const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
         setEnableForm(data.checked);
+        setIsSubmitting(true);
 
         const updateData: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
@@ -203,6 +204,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             })
             .catch((error: AxiosError) => {
                 handleUpdateError(error);
+            }).finally(() => {
+                setIsSubmitting(false);
             });
     };
 

@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Encode } from "@wso2is/core/utils";
 import { Iframe } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -122,7 +123,8 @@ export const EmailTemplatePreview: FunctionComponent<EmailTemplatePreviewInterfa
                 className="email-template-preview-iframe"
             >
                 <div
-                    dangerouslySetInnerHTML={ { __html: emailTemplateBody } }
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={ { __html: Encode.forHtml(emailTemplateBody) } }
                     data-componentid={ `${ testId }-iframe-body-div` }
                 />
             </Iframe>

@@ -416,7 +416,7 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <ExpertModeAuthenticationProviderCreateWizard
-                        title={ 
+                        title={
                             selectedTemplateWithUniqueName?.name === "Expert Mode"
                                 ? "Custom Connector"
                                 : selectedTemplateWithUniqueName?.name

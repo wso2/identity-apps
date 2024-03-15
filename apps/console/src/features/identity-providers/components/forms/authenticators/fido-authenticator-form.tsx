@@ -23,6 +23,7 @@ import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -32,7 +33,6 @@ import {
     FIDOAuthenticatorFormInitialValuesInterface,
     FIDOAuthenticatorFormPropsInterface
 } from "../../../models";
-
 
 const FORM_ID: string = "fido-authenticator-form";
 
@@ -58,12 +58,14 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
     const { t } = useTranslation();
 
     const { getLink } = useDocumentation();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ initialValues, setInitialValues ] = useState<FIDOAuthenticatorFormInitialValuesInterface>(undefined);
     const [
         isPasskeyProgressiveEnrollmentEnabled,
         setIsPasskeyProgressiveEnrollmentEnabled
     ] = useState<boolean>(undefined);
+    const [ isReadOnly ] = useState<boolean>(isSubOrganization() || readOnly);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -197,7 +199,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".fido2.allowProgressiveEnrollment.hint")
                 }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-progressive-enrollment` }
                 listen={ (value: boolean) => setIsPasskeyProgressiveEnrollmentEnabled(value) }
@@ -213,7 +215,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".fido2.allowUsernamelessAuthentication.hint")
                 }
-                readOnly={ readOnly }
+                readOnly={ isReadOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-usernameless-authentication` }
             />
@@ -227,7 +229,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
-                hidden={ readOnly }
+                hidden={ isReadOnly }
             />
         </Form>
     );

@@ -172,7 +172,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         adaptiveAuthTemplates,
         authenticators,
         defaultAuthenticationSequence,
-        updateAuthenticationSequence
+        updateAuthenticationSequence,
+        onConditionalAuthenticationToggle
     } = useAuthenticationFlow();
 
     const authenticatorsMeta: GenericAuthenticatorInterface[] = Object.values(
@@ -702,6 +703,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             };
         }
 
+        // Since the adaptive auth templates contains a script,
+        // need to enable the toggle. Else the script will be ignored on update.
+        onConditionalAuthenticationToggle(true);
         updateAuthenticationSequence(newSequence);
     };
 

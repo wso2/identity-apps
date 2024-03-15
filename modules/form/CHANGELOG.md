@@ -1,5 +1,28 @@
 # @wso2is/form
 
+## 2.0.39
+
+### Patch Changes
+
+- [#4294](https://github.com/wso2/identity-apps/pull/4294) [`45c1982a83`](https://github.com/wso2/identity-apps/commit/45c1982a833ed506b124d9ed18093ed1d28206bf) Thanks [@brionmario](https://github.com/brionmario)! - @asgardeo/console:
+
+  - Set JWKS Endpoint URL as optional field.
+  - Add support to remove the JWKS Endpoint URL value.
+
+  @wso2is/form:
+
+  - Allow to run function validations when input field has no value.
+
+## 2.0.38
+
+### Patch Changes
+
+- [#5611](https://github.com/wso2/identity-apps/pull/5611) [`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0) Thanks [@Achintha444](https://github.com/Achintha444)! - [improvement] improve URL validation in branding and move HTML text sanitization to `core`
+
+- Updated dependencies [[`b101792fc4`](https://github.com/wso2/identity-apps/commit/b101792fc43b6468c5a893397658d239f28739d0)]:
+  - @wso2is/react-components@2.1.10
+  - @wso2is/core@2.0.37
+
 ## 2.0.37
 
 ### Patch Changes

@@ -20,7 +20,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "apps/console/src/features/core/hooks/use-request";
+} from "../../core/hooks/use-request";
 import { AxiosRequestConfig } from "axios";
 import { store } from "../../core/store";
 import { AuthorizedPermissionListItemInterface } from "../models/api-authorization";
