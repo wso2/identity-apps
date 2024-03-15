@@ -22,11 +22,11 @@ import Typography from "@oxygen-ui/react/Typography";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
-import { identityProviderConfig } from "../../../../../../extensions";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
     AuthenticatorSettingsFormModes,
@@ -135,6 +135,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.identityProviders?.disabledFeatures);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const { t } = useTranslation();
@@ -880,52 +883,57 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
 
-                    <SectionRow>
-                        <Typography variant="body1">
-                            { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
-                        </Typography>
-                        <Autocomplete
-                            multiple
-                            className="forms-wrapped-autocomplete"
-                            disableCloseOnSelect
-                            size="small"
-                            options={ authenticationContextClassOptions }
-                            value={ selectedAuthnContextClasses }
-                            onChange={ (_event: React.SyntheticEvent, classes: DropdownChild[]) => {
-                                setSelectedAuthnContextClasses(classes);
-                            } }
-                            getOptionLabel={ (role: DropdownChild) => role?.text as string }
-                            renderInput={ (params: AutocompleteRenderInputParams) => {
-                                params.inputProps.className = "forms-wrapped-autocomplete-render-input";
+                    { !disabledFeatures?.includes("identityProviders.saml.authenticationContextClass") && (
+                        <SectionRow>
+                            <Typography variant="body1">
+                                { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
+                            </Typography>
+                            <Autocomplete
+                                multiple
+                                className="forms-wrapped-autocomplete"
+                                disableCloseOnSelect
+                                size="small"
+                                options={ authenticationContextClassOptions }
+                                value={ selectedAuthnContextClasses }
+                                onChange={ (_event: React.SyntheticEvent, classes: DropdownChild[]) => {
+                                    setSelectedAuthnContextClasses(classes);
+                                } }
+                                getOptionLabel={ (role: DropdownChild) => role?.text as string }
+                                renderInput={ (params: AutocompleteRenderInputParams) => {
+                                    params.inputProps.className = "forms-wrapped-autocomplete-render-input";
 
-                                return (
-                                    <TextField
-                                        { ...params }
-                                        size="small"
-                                        placeholder={ t(`${ I18N_TARGET_KEY }.authenticationContextClass.placeholder`) }
-                                    />
-                                );
-                            } }
-                        />
-                    </SectionRow>
+                                    return (
+                                        <TextField
+                                            { ...params }
+                                            size="small"
+                                            placeholder={
+                                                t(`${ I18N_TARGET_KEY }.authenticationContextClass.placeholder`) }
+                                        />
+                                    );
+                                } }
+                            />
+                        </SectionRow>
+                    ) }
 
-                    <SectionRow>
-                        <Field.Input
-                            label={ (
-                                <FormInputLabel htmlFor="CustomAuthnContextClassRef">
-                                    { t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.label`) }
-                                </FormInputLabel>
-                            ) }
-                            name="CustomAuthnContextClassRef"
-                            maxLength={ 100 }
-                            minLength={ 0 }
-                            value={ initialFormValues.customAuthnContextClassRef }
-                            inputType="default"
-                            placeholder={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.placeholder`) }
-                            ariaLabel={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.ariaLabel`) }
-                            data-testid={ `${ testId }-customAuthenticationContextClass-field` }
-                        />
-                    </SectionRow>
+                    { !disabledFeatures?.includes("identityProviders.saml.customAuthenticationContextClass") && (
+                        <SectionRow>
+                            <Field.Input
+                                label={ (
+                                    <FormInputLabel htmlFor="CustomAuthnContextClassRef">
+                                        { t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                name="CustomAuthnContextClassRef"
+                                maxLength={ 100 }
+                                minLength={ 0 }
+                                value={ initialFormValues.customAuthnContextClassRef }
+                                inputType="default"
+                                placeholder={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.placeholder`) }
+                                ariaLabel={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.ariaLabel`) }
+                                data-testid={ `${ testId }-customAuthenticationContextClass-field` }
+                            />
+                        </SectionRow>
+                    ) }
                     <SectionRow>
                         <Field.QueryParams
                             value={ formValues?.commonAuthQueryParams }
