@@ -215,7 +215,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 )
                             }
                             {
-                                <Grid container justifyContent="space-between">
+                                <>
                                     <Item>
                                         { image && (
                                             <GenericIcon
@@ -240,7 +240,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                             { featureStatus }
                                         </Item>
                                     ) }
-                                </Grid>
+                                </>
                             }
 
                             <div className="card-header-section">
