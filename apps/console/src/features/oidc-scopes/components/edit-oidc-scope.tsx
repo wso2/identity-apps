@@ -30,7 +30,7 @@ import {
     TableColumnInterface,
     TableDataInterface
 } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, {
     FunctionComponent,
     MutableRefObject,

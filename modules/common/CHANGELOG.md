@@ -1,5 +1,17 @@
 # @wso2is/common
 
+## 2.0.50
+
+### Patch Changes
+
+- [#5721](https://github.com/wso2/identity-apps/pull/5721) [`e58b366693`](https://github.com/wso2/identity-apps/commit/e58b3666931dac0ef802aa00657c71ff2593d6cd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add missing i18n content
+
+## 2.0.49
+
+### Patch Changes
+
+- [#5675](https://github.com/wso2/identity-apps/pull/5675) [`440500b008`](https://github.com/wso2/identity-apps/commit/440500b008c1f3ce95eef5bf9a6250b29fdabb8f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable conditionally displaying governance connector related UI elements
+
 ## 2.0.48
 
 ### Patch Changes

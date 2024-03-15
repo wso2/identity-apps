@@ -21,7 +21,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

@@ -23,7 +23,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import { PRIMARY_USERSTORE, UsersConstants } from "apps/console/src/extensions/components/users/constants/users";
+import { PRIMARY_USERSTORE, UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

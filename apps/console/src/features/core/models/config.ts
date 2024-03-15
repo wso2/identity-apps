@@ -287,6 +287,10 @@ interface ExternalAppConfigInterface {
     tenantQualifiedPath: string;
 }
 
+type GovernanceConnectorsFeatureConfig = Record<string, {
+    disabledFeatures: string[]
+}>
+
 /**
  * Portal UI config interface inheriting the common configs from core module.
  */
@@ -400,6 +404,13 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenUserStores: string[];
     /**
+     * App Logos
+     */
+    appLogo: {
+        defaultLogoPath: string;
+        defaultWhiteLogoPath: string;
+    };
+    /**
      * Email templates
      */
     emailTemplates: {
@@ -418,6 +429,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Whether to consider the role claim as the group claim.
      */
     useRoleClaimAsGroupClaim?: boolean;
+    /**
+     * Feature configs related to governance connectors.
+     */
+    governanceConnectors?: GovernanceConnectorsFeatureConfig;
 }
 
 /**

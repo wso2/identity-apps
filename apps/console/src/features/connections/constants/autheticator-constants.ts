@@ -58,6 +58,9 @@ export class AuthenticatorManagementConstants {
     public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
     public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "OrganizationAuthenticator";
 
+    // Federated Authenticators
+    public static readonly IPROOV_AUTHENTICATOR_NAME: string = "IproovAuthenticator";
+
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 

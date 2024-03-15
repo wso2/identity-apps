@@ -18,7 +18,7 @@
 
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
-import { SCIMConfigs } from "apps/console/src/extensions/configs/scim";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../../../features/core";

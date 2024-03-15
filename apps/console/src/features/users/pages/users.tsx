@@ -37,6 +37,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
+import { InvitationStatus } from "../../../extensions/components/users/models";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -90,7 +91,6 @@ import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
 import { InviteParentOrgUserWizard } from "../components/wizard/invite-parent-org-user-wizard";
 import {
-    InvitationStatus,
     UserAccountTypes,
     UserAccountTypesMain,
     UserAddOptionTypes,

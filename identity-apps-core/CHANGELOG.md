@@ -1,5 +1,55 @@
 # @wso2is/identity-apps-core
 
+## 2.1.43
+
+### Patch Changes
+
+- [#5225](https://github.com/wso2/identity-apps/pull/5225) [`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786) Thanks [@lashinijay](https://github.com/lashinijay)! - UI implementations required to onbaord iProov authenticator.
+
+- Updated dependencies [[`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786)]:
+  - @wso2is/theme@2.0.69
+
+## 2.1.42
+
+### Patch Changes
+
+- [#5746](https://github.com/wso2/identity-apps/pull/5746) [`0e764a6de6`](https://github.com/wso2/identity-apps/commit/0e764a6de6c5be504f6fd6f7deb2102cc4ca4b51) Thanks [@brionmario](https://github.com/brionmario)! - Fix myaccount url to contain tenanted path
+
+## 2.1.41
+
+### Patch Changes
+
+- [#5740](https://github.com/wso2/identity-apps/pull/5740) [`a732ebab1e`](https://github.com/wso2/identity-apps/commit/a732ebab1e46ce32beb8f00454d1a6b6b2842d17) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with `poweredByLogoURL`
+
+## 2.1.40
+
+### Patch Changes
+
+- [#5674](https://github.com/wso2/identity-apps/pull/5674) [`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unwanted assets from theme
+
+- Updated dependencies [[`193566482e`](https://github.com/wso2/identity-apps/commit/193566482eb74fdfa5a793ce046c3974a0a18caa)]:
+  - @wso2is/theme@2.0.68
+
+## 2.1.39
+
+### Patch Changes
+
+- [#5702](https://github.com/wso2/identity-apps/pull/5702) [`f39ad4b76a`](https://github.com/wso2/identity-apps/commit/f39ad4b76a185a76a7560d1d34b2178f1caebaa5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n for "Powered by" string in recovery portal
+
+* [#5711](https://github.com/wso2/identity-apps/pull/5711) [`7003abe454`](https://github.com/wso2/identity-apps/commit/7003abe4546e59b53e0df1e231ea7c09e545844f) Thanks [@Yoshani](https://github.com/Yoshani)! - set tenant-aware username in alor cookie
+
+## 2.1.38
+
+### Patch Changes
+
+- [#5693](https://github.com/wso2/identity-apps/pull/5693) [`307b964dcc`](https://github.com/wso2/identity-apps/commit/307b964dccc90f1a2f94c8ee38eed51c8a7ede6e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Remove special characters from password validation"
+
+## 2.1.37
+
+### Patch Changes
+
+- [#5658](https://github.com/wso2/identity-apps/pull/5658) [`68b3389feb`](https://github.com/wso2/identity-apps/commit/68b3389feb98cdeab12ee658c2572a51efa2d400) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the logic to display the login idenfier input label
+
 ## 2.1.36
 
 ### Patch Changes

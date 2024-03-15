@@ -19,3 +19,5 @@
 export const ELK_RISK_BASED_TEMPLATE_NAME: string = "ELK-Risk-Based";
 
 export const APPLE_LOGIN_SEQUENCE: string = "AppleSocialLoginSequence";
+
+export const FIDO_AUTHENTICATOR_ID: string = "RklET0F1dGhlbnRpY2F0b3I";

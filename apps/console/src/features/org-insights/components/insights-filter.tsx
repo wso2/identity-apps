@@ -42,7 +42,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   1,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." + 
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
                 "basic"
             ).toString(),
             value: AuthenticatorFilterValue.BASIC
@@ -158,13 +158,21 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
                 "hypr"
             ).toString(),
             value: AuthenticatorFilterValue.HYPR
+        },
+        {
+            key:   16,
+            text:  I18n.instance.t(
+                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "iproov"
+            ).toString(),
+            value: AuthenticatorFilterValue.IPROOV
         }
     ],
     "onboardingMethod": [
         {
             key:   1,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." + 
+                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." +
                 "adminInitiated"
             ).toString(),
             value: OnboardingMethodFilterValue.ADMIN_INITIATED
@@ -172,7 +180,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   2,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." + 
+                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." +
                 "userInvited"
             ).toString(),
             value: OnboardingMethodFilterValue.USER_INVITE
@@ -180,7 +188,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   3,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." + 
+                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." +
                 "selfSignUp"
             ).toString(),
             value: OnboardingMethodFilterValue.SELF_SIGN_UP
@@ -203,11 +211,11 @@ interface InsightsFilterProps extends IdentifiableComponentInterface {
 }
 
 export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
-    const { 
-        onFilteringQuerySubmitted, 
-        selectedActivityType, 
+    const {
+        onFilteringQuerySubmitted,
+        selectedActivityType,
         showResetButton,
-        ["data-componentid"]: componentId 
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -246,16 +254,16 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
             + values.get("filterValue");
 
         const displayQueryParts: string[] = query.split("+");
-            
-        const matchingAttribute: Omit<DropdownChild,"key"> = 
+
+        const matchingAttribute: Omit<DropdownChild,"key"> =
             getFilterAttributeListByActivityType(selectedActivityType)?.find(
                 (dropdownItem: DropdownChild) =>
                     dropdownItem.value === values.get("filterAttribute")
             );
 
         const matchingValue: DropdownChild = filterValueDropdownItems[values.get("filterAttribute").toString()]?.
-            find((dropdownItem: DropdownChild) => 
-                dropdownItem.value === values.get("filterValue") 
+            find((dropdownItem: DropdownChild) =>
+                dropdownItem.value === values.get("filterValue")
             );
 
         if (matchingValue) {
@@ -300,8 +308,8 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                     )
                                             )
                                         }
-                                        label={ 
-                                            t("console:common.advancedSearch.form.inputs.filterAttribute.label") 
+                                        label={
+                                            t("console:common.advancedSearch.form.inputs.filterAttribute.label")
                                         }
                                         name={ "filterAttribute" }
                                         requiredErrorMessage={
@@ -338,8 +346,8 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                             data-testid={ `${ componentId }-condition-dropdown` }
                                         />
                                         { dropdownInputRequiredAttributesForFilterValue.includes(
-                                            selectedFilterAttribute) ? 
-                                            
+                                            selectedFilterAttribute) ?
+
                                             (<Field
                                                 children={
                                                     filterValueDropdownItems[selectedFilterAttribute].map(
@@ -357,34 +365,34 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 }
                                                 name={ "filterValue" }
                                                 required={ true }
-                                                requiredErrorMessage={ 
+                                                requiredErrorMessage={
                                                     t("console:common.advancedSearch.form.inputs" +
-                                                        ".filterCondition.validations.empty") 
+                                                        ".filterCondition.validations.empty")
                                                 }
                                                 value={ selectedFilterValue }
                                                 type="dropdown"
                                                 data-testid={ `${ componentId }-value-dropdown` }
                                             />) :
                                             (<Field
-                                                label={ 
-                                                    t("console:common.advancedSearch.form.inputs.filterValue." + 
-                                                        "label") 
+                                                label={
+                                                    t("console:common.advancedSearch.form.inputs.filterValue." +
+                                                        "label")
                                                 }
                                                 name={ "filterValue" }
                                                 required
-                                                requiredErrorMessage={ 
-                                                    t("console:common.advancedSearch.form." + 
-                                                        "inputs.filterValue.validations.empty") 
+                                                requiredErrorMessage={
+                                                    t("console:common.advancedSearch.form." +
+                                                        "inputs.filterValue.validations.empty")
                                                 }
                                                 type="text"
                                                 validation={ (value: string, _validation: Validation) => {
-                                                    if ( 
-                                                        value.length > 
+                                                    if (
+                                                        value.length >
                                                         OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
                                                     ) {
                                                         _validation.isValid = false;
-                                                        _validation.errorMessages.push(t("common:maxValidation", { 
-                                                            max: OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH 
+                                                        _validation.errorMessages.push(t("common:maxValidation", {
+                                                            max: OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
                                                         }));
                                                     }
                                                 } }
@@ -392,7 +400,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 data-componentid={ `${ componentId }-value-input` }
                                             />)
                                         }
-                                            
+
                                     </Form.Group>
                                     <Divider hidden/>
                                     <Form.Group inline>

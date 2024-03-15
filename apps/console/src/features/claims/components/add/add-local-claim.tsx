@@ -23,7 +23,7 @@ import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { ClaimDialect } from "modules/core/src/models";
+import { ClaimDialect } from "@wso2is/core/src/models";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

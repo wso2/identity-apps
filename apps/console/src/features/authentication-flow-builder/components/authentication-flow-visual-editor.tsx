@@ -19,9 +19,10 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
+import { AppConstants } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
@@ -62,8 +63,10 @@ import {
 } from "../../applications/models/application";
 import { AuthenticatorManagementConstants } from "../../connections";
 import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
+import { history } from "../../core";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";
+import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import "reactflow/dist/style.css";
 import "./authentication-flow-visual-editor.scss";
@@ -456,8 +459,19 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                                 "types.passkey.info.progressiveEnrollmentDisabled")
                             }
                         >
-                        Passkey progressive enrollment is disabled. Users must enroll
-                        their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("IDP_EDIT")
+                                            .replace(":id", FIDO_AUTHENTICATOR_ID)
+                                    );
+                                } }
+                            >
+                                Passkey progressive enrollment
+                            </Link>
+                                &nbsp; is disabled. Users must enroll
+                                their passkeys through <strong>My Account</strong> to use passwordless sign-in.
                         </Trans>
                         <DocumentationLink
                             link={ getLink("develop.applications.editApplication.signInMethod.fido") }
