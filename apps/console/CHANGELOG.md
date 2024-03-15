@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.13
+
+### Patch Changes
+
+- [#5754](https://github.com/wso2/identity-apps/pull/5754) [`4d326ef44f`](https://github.com/wso2/identity-apps/commit/4d326ef44f5b84a4be80abb4d097045592d05e01) Thanks [@sandushi](https://github.com/sandushi)! - Hide the authentication context class and custom authentication class from UI
+
 ## 2.13.12
 
 ### Patch Changes
