@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.14
+
+### Patch Changes
+
+- [#5756](https://github.com/wso2/identity-apps/pull/5756) [`eeae0d9ef3`](https://github.com/wso2/identity-apps/commit/eeae0d9ef3aa4aa9e9562f3809e415a7f0180326) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add config to disable connection provisioning attributes
+
 ## 2.13.13
 
 ### Patch Changes
