@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.13.11
+
+### Patch Changes
+
+- [#5749](https://github.com/wso2/identity-apps/pull/5749) [`491818838c`](https://github.com/wso2/identity-apps/commit/491818838ca45961631edf3274279c95644c2225) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix SMS OTP configs being always readonly
+
+* [#5752](https://github.com/wso2/identity-apps/pull/5752) [`7e7fa9ab3f`](https://github.com/wso2/identity-apps/commit/7e7fa9ab3fdffecd44f41a3d487971b194f7cc06) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide subject header when all subject related configs are hidden
+
+- [#5750](https://github.com/wso2/identity-apps/pull/5750) [`1b5456ffce`](https://github.com/wso2/identity-apps/commit/1b5456ffcef7c5c71c71e37ad1c0d679357057e4) Thanks [@brionmario](https://github.com/brionmario)! - Fix incorrect template label appearing for fragment apps
+
 ## 2.13.10
 
 ### Patch Changes
