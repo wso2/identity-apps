@@ -1000,9 +1000,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     mode={ AuthenticatorSettingsFormModes.EDIT }
                     authenticator={ authenticator }
                     metadata={ authenticator.meta }
-                    showCustomProperties={
-                        authenticator.id !== ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID
-                    }
                     initialValues={ authenticator.data }
                     onSubmit={ handleAuthenticatorConfigFormSubmit }
                     type={ authenticator.meta?.authenticatorId }

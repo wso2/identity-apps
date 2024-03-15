@@ -467,12 +467,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     return;
                 }
 
-                // Check whether the property already in dynamicValues?.properties.
-                if (dynamicValues?.properties?.find(
-                    (prop: CommonPluggableComponentPropertyInterface) => prop.key === property.key)) {
-                    return;
-                }
-
                 // Check whether the property is not in the metadata.
                 if (!metadata?.properties?.find(
                     (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === property.key)) {
