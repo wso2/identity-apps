@@ -1,5 +1,14 @@
 # @wso2is/form
 
+## 2.0.40
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the responsiveness issues in the info card
+
+- Updated dependencies [[`2381bd93b8`](https://github.com/wso2/identity-apps/commit/2381bd93b883b2e491419d298796fbc35d4e7990)]:
+  - @wso2is/react-components@2.1.11
+
 ## 2.0.39
 
 ### Patch Changes
