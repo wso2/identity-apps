@@ -1716,3 +1716,8 @@
 .ui.cards.authenticators-grid > .ui.card {
     width: calc(100% / 3);
 }
+
+.justify-label {
+    display: flex;
+    justify-content: space-between;
+}

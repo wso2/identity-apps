@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
@@ -214,7 +215,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 )
                             }
                             {
-                                <>
+                                <Box className="justify-label">
                                     <Item>
                                         { image && (
                                             <GenericIcon
@@ -239,7 +240,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                             { featureStatus }
                                         </Item>
                                     ) }
-                                </>
+                                </Box>
                             }
 
                             <div className="card-header-section">
