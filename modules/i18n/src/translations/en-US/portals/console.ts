@@ -4315,6 +4315,52 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
+                        iproov: {
+                            baseUrl: {
+                                hint: "iProov base URL",
+                                label: "Base URL",
+                                placeholder: "Enter Base URL.",
+                                validations: {
+                                    required: "Base URL is a required field."
+                                }
+                            },
+                            oauthUsername: {
+                                hint: "OAuth username from created identity provider in iProov.",
+                                label: "OAuth Username",
+                                placeholder: "Enter OAuth username from created identity provider in iProov.",
+                                validations: {
+                                    required: "OAuth username is a required field."
+                                }
+                            },
+                            oauthPassword: {
+                                hint: "OAuth password from created identity provider in iProov.",
+                                label: "OAuth Password",
+                                placeholder: "Enter OAuth password from created identity provider in iProov.",
+                                validations: {
+                                    required: "OAuth password is a required field."
+                                }
+                            },
+                            apiKey: {
+                                hint: "API Key from created identity provider in iProov.",
+                                label: "API Key",
+                                placeholder: "Enter API Key from created identity provider in iProov.",
+                                validations: {
+                                    required: "API Key is a required field."
+                                }
+                            },
+                            apiSecret: {
+                                hint: "API Secret from created identity provider in iProov.",
+                                label: "API Secret",
+                                placeholder: "Enter API Secret from created identity provider in iProov.",
+                                validations: {
+                                    required: "API Secret is a required field."
+                                }
+                            },
+                            enableProgressiveEnrollment: {
+                                hint: "Enable Progressive Enrollment with iProov.",
+                                label: "Enable Progressive Enrollment"
+                            }
+                        },
                         saml: {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
@@ -5566,6 +5612,44 @@ export const console: ConsoleNS = {
                             preRequisites: {
                                 rpDescription: "Before you begin, create a relying party application in the <1>HYPR control center</1>, and obtain the application ID.",
                                 tokenDescription: "You also have to obtain an <1>API token</1> for your application created on HYPR.",
+                                heading: "Prerequisite"
+                            }
+                        }
+                    },
+                    iproov: {
+                        wizardHelp: {
+                            baseUrl: {
+                                description: "Provide the <1>base URL</1>  of your iProov server deployment.",
+                                heading: "Base URL"
+                            },
+                            oauthUsername: {
+                                description: "Provide the <1>OAuth Username</1> of the application registered in the iProov control center.",
+                                heading: "OAUTH Username"
+                            },
+                            oauthPassword: {
+                                description: "Provide the <1>OAuth Password</1> of the application registered in the iProov control center.",
+                                heading: "OAUTH Password"
+                            },
+                            apiKey: {
+                                description: "Provide the <1>API Key</1> of the application registered in the iProov control center.",
+                                heading: "API Key"
+                            },
+                            apiSecret: {
+                                description: "Provide the <1>API Secret</1> of the application registered in the iProov control center.",
+                                heading: "API Secret"
+                            },
+                            enableProgressiveEnrollment: {
+                                description: "Enable Progressive Enrollment with iProov.",
+                                heading: "Enable Progressive Enrollment"
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the connection."
+                            },
+                            preRequisites: {
+                                appDescription: "Before you begin, create an identity provider in the <1>iPortal</1>, and obtain the API key, API Secret, OAuth username and OAuth password.",
                                 heading: "Prerequisite"
                             }
                         }
@@ -12943,6 +13027,7 @@ export const console: ConsoleNS = {
                                     oidc: "OIDC IdP",
                                     saml: "SAML IdP",
                                     hypr: "HYPR",
+                                    iproov: "IPROOV",
                                     organizationLogin: "Organization Login"
                                 }
                             },

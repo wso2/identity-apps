@@ -131,6 +131,9 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
             ],
+            [ IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ],
             [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.HANDLERS
             ]
