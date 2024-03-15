@@ -852,6 +852,11 @@
             padding: 1em;
         }
 
+        .justify-label {
+            display: flex;
+            justify-content: space-between;
+        }
+
         &.sms-provider-info-card {
             .content {
                 display: flex;
@@ -1715,9 +1720,4 @@
 
 .ui.cards.authenticators-grid > .ui.card {
     width: calc(100% / 3);
-}
-
-.justify-label {
-    display: flex;
-    justify-content: space-between;
 }
