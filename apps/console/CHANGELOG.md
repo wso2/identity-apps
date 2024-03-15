@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.17
+
+### Patch Changes
+
+- [#5763](https://github.com/wso2/identity-apps/pull/5763) [`9879e1b049`](https://github.com/wso2/identity-apps/commit/9879e1b049489e5440176cc728dafdd0ea4dfefa) Thanks [@brionmario](https://github.com/brionmario)! - Fix tab getting removed in Shared apps
+
 ## 2.13.16
 
 ### Patch Changes
