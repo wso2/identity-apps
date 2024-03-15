@@ -22,6 +22,7 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
     Claim,
@@ -40,12 +41,8 @@ import {
     Message,
     PageLayout
 } from "@wso2is/react-components";
-import {
-    ServerConfigurationsConstants
-} from "../../../../features/server-configurations/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { IdentityAppsError } from "@wso2is/core/errors";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -74,6 +71,9 @@ import {
     getConnectorDetails,
     updateGovernanceConnector
 } from "../../../../features/server-configurations/api";
+import {
+    ServerConfigurationsConstants
+} from "../../../../features/server-configurations/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -237,8 +237,8 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 
         resolvedInitialValues = {
             ...resolvedInitialValues,
-            email: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.EMAIL_CLAIM_URI) &&
-                isAlphanumericUsername,
+            email: (isEnabled && allowedAttributes?.includes(ClaimManagementConstants.EMAIL_CLAIM_URI)) ||
+                !isAlphanumericUsername,
             mobile: isEnabled && allowedAttributes?.includes(ClaimManagementConstants.MOBILE_CLAIM_URI)
         };
 
@@ -432,11 +432,16 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const handleSubmit = (values: AlternativeLoginIdentifierFormInterface) => {
 
         const processedFormValues: AlternativeLoginIdentifierFormInterface = { ...values };
-        const checkedClaims: string[] = availableClaims
+        let checkedClaims: string[] = availableClaims
             .filter((claim: Claim) =>
                 processedFormValues[claim?.displayName?.toLowerCase()] !== undefined
                     ? processedFormValues[claim?.displayName?.toLowerCase()] : false)
             .map((claim: Claim) => claim?.claimURI);
+
+        // Remove the email attribute from the allowed attributes list when email username type is enabled
+        if (!isAlphanumericUsername) {
+            checkedClaims = checkedClaims.filter((item: string) => item !== ClaimManagementConstants.EMAIL_CLAIM_URI);
+        }
         const updatedConnectorData: any = getUpdatedConfigurations(checkedClaims);
 
         updateConnector(updatedConnectorData, checkedClaims);
