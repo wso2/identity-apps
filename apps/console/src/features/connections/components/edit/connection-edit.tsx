@@ -160,6 +160,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features.identityProviders?.disabledFeatures);
 
     /**
      * This is placed as a temporary fix until the dynamic tab loading is implemented.
@@ -260,8 +262,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 }
                 data-testid={ `${ testId }-attribute-settings` }
                 provisioningAttributesEnabled={
-                    isSaml || identityProviderConfig.utils.isProvisioningAttributesEnabled(
-                        identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    !disabledFeatures?.includes("identityProviders.attributes.provisioningAttributes")
+                    && (
+                        isSaml
+                        || identityProviderConfig.utils.isProvisioningAttributesEnabled(
+                            identityProvider.federatedAuthenticators.defaultAuthenticatorId)
                     )
                 }
                 isReadOnly={ isReadOnly }
