@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.70
+
+### Patch Changes
+
+- [#5758](https://github.com/wso2/identity-apps/pull/5758) [`12e1dfa241`](https://github.com/wso2/identity-apps/commit/12e1dfa241b48900b03169cd970bcb22ea0c4584) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add changeset
+
 ## 2.0.69
 
 ### Patch Changes
