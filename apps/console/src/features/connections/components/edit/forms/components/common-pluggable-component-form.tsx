@@ -150,7 +150,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         });
 
         const modifiedCustomProperties: any = !isEmpty(resolvedCustomProperties) ?
-            resolvedCustomProperties?.toString()?.split(",")?.map(
+            resolvedCustomProperties?.toString()?.split(", ")?.map(
                 (customProperty: string) => {
                     const keyValuePair: string[] = customProperty.split("=");
 
