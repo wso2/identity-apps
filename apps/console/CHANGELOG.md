@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.19
+
+### Patch Changes
+
+- [#5767](https://github.com/wso2/identity-apps/pull/5767) [`7a88bbf2e4`](https://github.com/wso2/identity-apps/commit/7a88bbf2e464f75da147fe9f01b851e3432e5df6) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix custom properties update issue in connections
+
 ## 2.13.18
 
 ### Patch Changes
