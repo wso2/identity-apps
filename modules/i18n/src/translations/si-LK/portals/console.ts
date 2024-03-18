@@ -629,37 +629,37 @@ export const console: ConsoleNS = {
         ai: {
             banner: {
                 full: {
-                    heading: "Transform your branding with ease, try our new Branding AI",
-                    subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.",
+                    heading: "ඔබේ වෙළඳ නාමකරණය පහසුවෙන් පරිවර්තනය කරන්න, අපගේ නව වෙළඳ නාම AI උත්සාහ කරන්න",
+                    subHeading: "ඔබේ වෙබ් අඩවියේ URL එක ලබා දෙන්න, එවිට අපගේ AI බාධාවකින් තොරව සුන්දර හා සන්නාමයන්ගේ තෘප්තියක් ඇති කරයි.",
                 },
                 input: {
-                    heading: "Generate branding with a single click using Branding AI",
-                    subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
-                    placeholder: "Enter website URL"
+                    heading: "වෙළඳ නාමකරණය භාවිතා කරමින් තනි ක්ලික් කිරීමකින් වෙළඳ නාමකරණය ජනනය කරන්න AI",
+                    subHeading: "එක්සත් දෘශ්ය ප්රවේශයක් සඳහා සකස් කර ඇති AI-බලයෙන් ක්රියාත්මක වන වෙළඳ නාමකරණ නිර්දේශ.",
+                    placeholder: "වෙබ් අඩවියේ URL ඇතුළත් කරන්න"
                 },
                 collapsed: {
-                    heading: "Branding AI",
-                    subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach."
+                    heading: "වෙළඳ නාමකරණය, වෙළඳ නාමකරණය භාවිතා කිරීම, වෙළඳ නාමකරණය",
+                    subHeading: "එක්සත් දෘශ්ය ප්රවේශයක් සඳහා සකස් කර ඇති AI-බලයෙන් ක්රියාත්මක වන වෙළඳ නාමකරණ නිර්දේශ."
                 }
             },
             screens: {
                 loading: {
-                    heading: "Generating your branding",
+                    heading: "ඔබේ වෙළඳ නාමය ජනනය කිරීම",
                     facts: {
-                        0: "This may take a few seconds.",
-                        1: "Please wait.",
-                        2: "Thank you for your patience."
+                        0: "අස්ගාර්ඩෝගේ උසස් තේමාවන් හැකියාවන් ඔබේ පිවිසුම් පිටුවල ප්රදර්ශනය කර ඇති අඩවි මාතෘකාව, ප්රකාශන හිමිකම් තොරතුරු සහ උප-ඊමේල් වෙනස් කිරීමට, ඔබේ වෙළඳ නාම අනන්යතාව සමඟ සෑම විස්තරයක්ම වෙනස් කිරීමට.",
+                        1: "ඔබේ රහස්යතා ප්රතිපත්තියට, සේවා කොන්දේසි සහ කුකී ප්රතිපත්තිය සමඟ සබැඳි යාවත්කාලීන කිරීමෙන් ඔබේ පිවිසුම් ද්වාරය තව දුරටත් ඔබේ පිවිසුම පුද්ගලීකරණය කළ හැකිය.ඔබේ අනුකූලතාවය දෘශ්යමාන හා ප්රවේශ විය හැකිය. ",
+                        2: "අස්ගර්ඩෝගේ වෙළඳ නාම විශේෂාංග සමඟ, ඔබේ ගනුදෙනුකරුවන්ගේ ලාංඡනය කෙලින්ම ඔබේ ආයතනය සහ ලියාපදිංචි පිටුවල ඔබේ ගනුදෙනුකරුවන්ගේ ලාංඡනය යාවත්කාලීන කළ හැකිය.",
                     },
                     states: {
-                        0: "Initializing...",
-                        1: "Rendering Webpage...",
-                        2: "Extracting Content...",
-                        3: "Content Extracted.",
-                        4: "Generating Branding...",
-                        5: "Creating Color Palette...",
-                        6: "Defining Style Properties...",
-                        7: "Creating Branding Theme...",
-                        8: "Branding Generation Completed!",
+                        0: "ආරම්භ කිරීම ...",
+                        1: "වෙබ් පිටුව විදැහුම් කිරීම ...",
+                        2: "අන්තර්ගතය උපුටා ගැනීම ...",
+                        3: "උපුටා ගත් අන්තර්ගතය.",
+                        4: "වෙළඳ නාමකරණය ජනනය කරන්න ...",
+                        5: "වර්ණ මාලාවක් නිර්මාණය කිරීම ...",
+                        6: "ශෛලියේ ගුණාංග නිර්වචනය කිරීම ...",
+                        7: "වෙළඳ නාම තේමාව නිර්මාණය කිරීම ...",
+                        8: "වෙළඳ නාම පරම්පරාව සම්පූර්ණ විය!",
                     }
                 }
             }

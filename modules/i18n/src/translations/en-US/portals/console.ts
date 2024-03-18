@@ -632,7 +632,7 @@ export const console: ConsoleNS = {
                     placeholder: "Enter website URL"
                 },
                 collapsed: {
-                    heading: "Branding AI",
+                    heading: "Generate branding using, Branding AI",
                     subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach."
                 }
             },

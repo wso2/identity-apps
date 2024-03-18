@@ -621,22 +621,22 @@ export const console: ConsoleNS = {
         ai: {
             banner: {
                 full: {
-                    heading: "Transform your branding with ease, try our new Branding AI",
-                    subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.",
+                    heading: "Transformez votre marque avec facilité, essayez notre nouvelle marque AI",
+                    subHeading: "Fournissez une URL de votre site Web, et notre IA créera de manière transparente un thème de marque qui est à la fois beau et cohérent.",
                 },
                 input: {
-                    heading: "Generate branding with a single click using Branding AI",
-                    subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
-                    placeholder: "Enter website URL"
+                    heading: "Générer la marque en un seul clic utilisant une marque AI",
+                    subHeading: "Recommandations de marque alimentées par AI qui sont conçues pour une approche visuelle unifiée.",
+                    placeholder: "Entrez l'URL du site Web"
                 },
                 collapsed: {
-                    heading: "Branding AI",
-                    subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach."
+                    heading: "Brandage AI",
+                    subHeading: "Recommandations de marque alimentées par AI qui sont conçues pour une approche visuelle unifiée."
                 }
             },
             screens: {
                 loading: {
-                    heading: "Generating your branding",
+                    heading: "Générer votre marque",
                     facts: {
                         0: "This may take a few seconds.",
                         1: "Please wait.",
