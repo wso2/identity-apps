@@ -19,6 +19,7 @@
 package org.wso2.identity.apps.common.listner;
 
 import org.wso2.carbon.identity.organization.management.service.util.OrganizationManagementUtil;
+import org.wso2.carbon.identity.organization.management.service.util.Utils;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.stratos.common.exception.StratosException;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
@@ -34,6 +35,9 @@ public class AppPortalTenantMgtListener implements TenantMgtListener {
 
         try {
             if (OrganizationManagementUtil.isOrganization(tenantInfoBean.getTenantId())) {
+                return;
+            }
+            if (Utils.getSubOrgStartLevel() > 1 && !"carbon.super".equals(tenantInfoBean.getTenantDomain())) {
                 return;
             }
             AppPortalUtils.initiatePortals(tenantInfoBean);
