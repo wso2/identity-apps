@@ -521,7 +521,45 @@ export interface ConsoleNS {
             "password-recovery": string;
             "password-reset": string;
             "password-reset-success": string;
-        }
+        };
+        ai: {
+            banner: {
+                full: {
+                    heading: string;
+                    subHeading: string;
+                };
+                input: {
+                    heading: string;
+                    subHeading: string;
+                    placeholder: string;
+                };
+                collapsed: {
+                    heading: string;
+                    subHeading: string;
+                };
+            };
+            screens: {
+                loading: {
+                    heading: string;
+                    facts: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                    states: {
+                        0: string;
+                        1: string;
+                        2: string;
+                        3: string;
+                        4: string;
+                        5: string;
+                        6: string;
+                        7: string;
+                        8: string;
+                    };
+                };
+            };
+        };
     };
     brandingCustomText: {
         revertScreenConfirmationModal: {

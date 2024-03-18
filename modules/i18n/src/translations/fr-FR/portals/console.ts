@@ -617,6 +617,44 @@ export const console: ConsoleNS = {
             "password-recovery": "Récupération de mot de passe",
             "password-reset": "Réinitialisation du mot de passe",
             "password-reset-success": "Lien de réinitialisation du mot de passe envoyé"
+        },
+        ai: {
+            banner: {
+                full: {
+                    heading: "Transform your branding with ease, try our new Branding AI",
+                    subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.",
+                },
+                input: {
+                    heading: "Generate branding with a single click using Branding AI",
+                    subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach.",
+                    placeholder: "Enter website URL"
+                },
+                collapsed: {
+                    heading: "Branding AI",
+                    subHeading: "AI-powered branding recommendations that are crafted for a unified visual approach."
+                }
+            },
+            screens: {
+                loading: {
+                    heading: "Generating your branding",
+                    facts: {
+                        0: "This may take a few seconds.",
+                        1: "Please wait.",
+                        2: "Thank you for your patience."
+                    },
+                    states: {
+                        0: "Initializing...",
+                        1: "Rendering Webpage...",
+                        2: "Extracting Content...",
+                        3: "Content Extracted.",
+                        4: "Generating Branding...",
+                        5: "Creating Color Palette...",
+                        6: "Defining Style Properties...",
+                        7: "Creating Branding Theme...",
+                        8: "Branding Generation Completed!",
+                    }
+                }
+            }
         }
     },
     brandingCustomText: {
