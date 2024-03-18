@@ -19,3 +19,4 @@
 export { default as EmailOTPPasswordlessLoginSequence } from "./email-otp-sequence.json";
 export { default as MagicLinkPasswordlessLoginSequence } from "./magic-link-sequence.json";
 export { default as FIDO2PasswordlessLoginSequence } from "./passkey-login-sequence.json";
+export { default as SmsOtpPasswordlessLoginSequence } from "./sms-otp-sequence.json";
