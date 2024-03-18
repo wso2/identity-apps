@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.21
+
+### Patch Changes
+
+- [#5774](https://github.com/wso2/identity-apps/pull/5774) [`a34dce97f1`](https://github.com/wso2/identity-apps/commit/a34dce97f1df685d97c0247ee98cdd065a5a69fc) Thanks [@savindi7](https://github.com/savindi7)! - Rearrange condition used to show user attributes in profile.
+
 ## 2.13.20
 
 ### Patch Changes
