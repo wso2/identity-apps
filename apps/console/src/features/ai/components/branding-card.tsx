@@ -28,15 +28,12 @@ import { Header, Icon, Input, Segment } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as AIIcon } from "../../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 
-
 enum BannerState {
     Full = "banner-full",
     Input = "banner-input",
     Collapsed = "banner-collapsed",
 }
-
 interface BrandingAIComponentProps {
-
     onGenerateBrandingClick: (traceId: string) => void;
     onGenerate: (response: any) => void;
 }
@@ -48,7 +45,6 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
     const { t } = useTranslation();
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.Full);
     const [ websiteUrl, setWebsiteUrl ] = useState<string>("");
-
 
     const handleExpandClick = () => {
         setBannerState(BannerState.Input);
@@ -107,7 +103,6 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                             { t("console:branding.ai.banner.full.button") }
                         </Button>
                     </div>
-
                 </Segment>
             ) }
             { bannerState === BannerState.Input && (

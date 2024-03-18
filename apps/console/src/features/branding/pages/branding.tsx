@@ -160,7 +160,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
-    const disabledFeatures = useMemo(() => {
+    const disabledFeatures: string[] = useMemo(() => {
         return featureConfig?.branding?.disabledFeatures;
     }, [ featureConfig ]);
 
