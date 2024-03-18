@@ -336,10 +336,16 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     data-componentid="sms-otp-flow-card"
                                     image={ getAuthenticatorIcons().smsOTP }
                                     imageSize="mini"
-                                    header={ "Add SMS OTP login" }
-                                    description={
-                                        "Enable users to log in using a one-time passcode sent to their mobile."
-                                    }
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.smsOTPFirstFactor.heading"
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.smsOTPFirstFactor.description"
+                                    ) }
                                     onClick={ () => {
                                         eventPublisher.publish(
                                             "application-begin-sign-in-sms-otp-password-less",

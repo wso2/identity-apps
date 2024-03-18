@@ -1299,6 +1299,10 @@ export interface ConsoleNS {
                                                 description: string;
                                                 heading: string;
                                             };
+                                            smsOTPFirstFactor: {
+                                                description: string;
+                                                heading: string;
+                                            };
                                         };
                                     };
                                 };

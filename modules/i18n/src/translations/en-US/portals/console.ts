@@ -1622,6 +1622,11 @@ export const console: ConsoleNS = {
                                                 description: "Enable users to log in using a one-time passcode "
                                                     + "sent to their email.",
                                                 heading: "Add Email OTP login"
+                                            },
+                                            smsOTPFirstFactor: {
+                                                description: "Enable users to log in using a one-time passcode "
+                                                    + "sent to their mobile.",
+                                                heading: "Add SMS OTP login"
                                             }
                                         }
                                     }
