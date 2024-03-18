@@ -503,7 +503,6 @@ export interface ConsoleNS {
             "password-reset": string;
             "password-reset-success": string;
         };
-<<<<<<< HEAD
         ai: {
             banner: {
                 full: {
@@ -542,8 +541,6 @@ export interface ConsoleNS {
                 };
             };
         };
-=======
->>>>>>> da1ee408adf64adf8bcbb79d3c947ff811f0a381
     };
     brandingCustomText: {
         revertScreenConfirmationModal: {

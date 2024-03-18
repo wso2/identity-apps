@@ -300,7 +300,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         shouldShowNotifications: boolean
     ): void => {
 
-        console.log(values);
         eventPublisher.compute(() => {
             // If a site title is updated, publish an event.
             if (isEmpty(brandingPreference.organizationDetails.siteTitle)
@@ -510,11 +509,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
 
     const handleBrandingAIResponseData = (data) => {
         setGeneratingBranding(false);
-        console.log("Branding AI Response Data");
-        console.log(data);
-
-        console.log("######Original Branding Preference###### ");
-        console.log(brandingPreference);
         const { activeTheme, ...lightTheme } = data;
         const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference), {
             activeTheme: activeTheme,
@@ -522,8 +516,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 LIGHT: lightTheme
             }
         });
-        console.log("######Merged Branding Preference###### ");
-        console.log(mergedBrandingPreference);
         setBrandingPreference(mergedBrandingPreference);
     }
 
