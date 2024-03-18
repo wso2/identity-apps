@@ -417,7 +417,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
     const isEmailAvailable = (): boolean => {
         return profileInfo.get("emails") !== undefined;
     };
-    
+
     /**
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
@@ -809,7 +809,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                         "success.genericMessage")
                                         : t("console:manage.features.user.profile.notifications.lockUserAccount." +
                                         "success.message", { name: resolveAccountName(user) })
-                                    : isEmpty(resolveAccountName(user)) 
+                                    : isEmpty(resolveAccountName(user))
                                         ? t("console:manage.features.user.profile.notifications.unlockUserAccount." +
                                         "success.genericMessage")
                                         : t("console:manage.features.user.profile.notifications.unlockUserAccount." +
@@ -821,7 +821,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                         "success.genericMessage")
                                         : t("console:manage.features.user.profile.notifications.disableUserAccount." +
                                         "success.message", { name: resolveAccountName(user) })
-                                    : isEmpty(resolveAccountName(user)) 
+                                    : isEmpty(resolveAccountName(user))
                                         ? t("console:manage.features.user.profile.notifications.enableUserAccount." +
                                         "success.genericMessage")
                                         : t("console:manage.features.user.profile.notifications.enableUserAccount." +
@@ -1300,7 +1300,7 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
             {
                 !isUserProfileLoading
                     ? (
-                        !isEmpty(profileInfo) && !isUserProfileEmpty
+                        !isEmpty(profileInfo)
                             ? (
                                 <EmphasizedSegment padded="very">
                                     <Forms
@@ -1348,7 +1348,8 @@ export const ConsumerUserProfile: FunctionComponent<ConsumerUserProfilePropsInte
                                                 )
                                             }
                                             {
-                                                profileSchema
+                                                !isUserProfileEmpty
+                                                && profileSchema
                                                 && profileSchema.map(
                                                     (schema: ProfileSchemaInterface, index: number) => {
                                                         if (!(schema.name === ProfileConstants?.
