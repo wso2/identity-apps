@@ -87,6 +87,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
+    const [traceId, setTraceId] = useState<string>("");
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
@@ -299,6 +300,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         shouldShowNotifications: boolean
     ): void => {
 
+        console.log(values);
         eventPublisher.compute(() => {
             // If a site title is updated, publish an event.
             if (isEmpty(brandingPreference.organizationDetails.siteTitle)
@@ -507,9 +509,22 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     };
 
     const handleBrandingAIResponseData = (data) => {
-        // handle the data here
+        setGeneratingBranding(false);
         console.log("Branding AI Response Data");
         console.log(data);
+
+        console.log("######Original Branding Preference###### ");
+        console.log(brandingPreference);
+        const { activeTheme, ...lightTheme } = data;
+        const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference), {
+            activeTheme: activeTheme,
+            theme: {
+                LIGHT: lightTheme
+            }
+        });
+        console.log("######Merged Branding Preference###### ");
+        console.log(mergedBrandingPreference);
+        setBrandingPreference(mergedBrandingPreference);
     }
 
     /**
@@ -684,14 +699,18 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 
                 {isGeneratingBranding ? (
                     <div>
-                        <LoadingScreen/>
+                        <LoadingScreen traceId={traceId} />
                     </div>
                     )
                 : (
                     <>
                     <BrandingAIComponent 
                     onGenerate={handleBrandingAIResponseData}
-                    onGenerateBrandingClick={() => setGeneratingBranding(true) }/>
+                    onGenerateBrandingClick={(generatedTraceId) => {
+                            setGeneratingBranding(true);
+                            setTraceId(generatedTraceId);
+                            }
+                        }/>
                     <BrandingPreferenceTabs
                         key={ preferenceTabsComponentKey }
                         predefinedThemes={ predefinedThemes }

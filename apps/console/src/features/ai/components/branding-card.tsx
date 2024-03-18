@@ -6,8 +6,10 @@ import {
     DocumentationLink
 } from "@wso2is/react-components";
 import { Trans } from "react-i18next";
+import { v4 as uuidv4 } from "uuid";
 import { Segment, Icon, Input, Header } from "semantic-ui-react";
 import { GenericIcon } from "@wso2is/react-components";
+import { useTranslation } from "react-i18next";
 
 
 enum BannerState {
@@ -18,16 +20,18 @@ enum BannerState {
 
 interface BrandingAIComponentProps {
 
-    onGenerateBrandingClick: () => void;
+    onGenerateBrandingClick: (traceId: string) => void;
     onGenerate: (response: any) => void;
 }
 
 export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = (
     { onGenerateBrandingClick, onGenerate }: BrandingAIComponentProps
 ): ReactElement => {
+
+    const { t } = useTranslation();
     const [bannerState, setBannerState] = useState<BannerState>(BannerState.Full);
-    const [websiteUrl, setWebsiteUrl] = useState<string>("https://www.demoblaze.com/");
-    // const [websiteUrl, setWebsiteUrl] = useState<string>("");
+    // const [websiteUrl, setWebsiteUrl] = useState<string>("https://www.demoblaze.com/");
+    const [websiteUrl, setWebsiteUrl] = useState<string>("");
 
 
     const handleExpandClick = () => {
@@ -40,17 +44,17 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
 
     const handleGenerateClick = async () => {
         console.log("Generating branding for:", websiteUrl);
-        onGenerateBrandingClick();
+        const traceId = uuidv4();
+        onGenerateBrandingClick(traceId);
         try {
-            // const response = await axios.post('http://0.0.0.0:8080/branding/generate', {
-            const response = await axios.post('http://localhost:3000/generate', {
+            const response = await axios.post('http://0.0.0.0:8080/branding/generate', {
+            // const response = await axios.post('http://localhost:3000/generate', {
                 website_url: websiteUrl
             }, {
                 headers: {
-                    'trace-id': 'custom'
+                    'trace-id': traceId
                 }
             });
-            // console.log(response.data);
             onGenerate(response.data);
         } catch (error) {
             console.error('Error:', error);
@@ -74,8 +78,8 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                         padding: '45px'
                     }}>
                         <div>
-                            <Header as="h3">Transform your branding with ease, try our new Branding AI</Header>
-                            <p>Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.</p>
+                            <Header as="h3">{ t("console:branding.ai.banner.full.heading") }</Header>
+                            <p>{ t("console:branding.ai.banner.full.subHeading") }</p>
                         </div>
                         <Button onClick={handleExpandClick} color="secondary" variant="outlined">
                             <GenericIcon
@@ -98,13 +102,11 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                         />
 
                         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px' }}>
-                            {/* <div>
-                                <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding using Branding AI</Header>
-                                <p>Provide your organization website URL to intuitively generate branding reflecting the essence of your brand.</p>
-                            </div> */}
                             <div>
-                                <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding with a single click using Branding AI</Header>
-                                <p>AI-powered branding recommendations that are crafted for a unified visual approach.
+                                <Header as="h3" style={{ marginBottom: '5px' }}>
+                                    { t("console:branding.ai.banner.input.heading") }
+                                </Header>
+                                <p>{ t("console:branding.ai.banner.input.subHeading") }
                                 <DocumentationLink 
                                     link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
                                     isLinkRef = { true }
@@ -119,7 +121,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', paddingTop: '20px', justifyContent: 'space-between', paddingRight: '20px'}}>
                                 <Input
-                                    placeholder="Enter website URL"
+                                    placeholder={ t("console:branding.ai.banner.input.placeholder") }
                                     value={websiteUrl}
                                     onChange={(e) => setWebsiteUrl(e.target.value)}
                                     style={{ width: '40%' }}
@@ -145,8 +147,8 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                 <Segment>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px'}}>
                     <div>
-                        <Header as="h3" style={{ marginBottom: '5px' }}>Generate branding with a single click using Branding AI</Header>
-                        <p>AI-powered branding recommendations that are crafted for a unified visual approach.
+                        <Header as="h3" style={{ marginBottom: '5px' }}>{ t("console:branding.ai.banner.input.heading") }</Header>
+                        <p>{ t("console:branding.ai.banner.collapsed.subHeading") }
                         <DocumentationLink 
                             link={ "develop.applications.editApplication.asgardeoTryitApplication.general.learnMore" }
                             isLinkRef = { true }

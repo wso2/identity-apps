@@ -4,20 +4,21 @@ import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
-// import Fade from '@mui/material/Fade';
+import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder } from "../../../themes/wso2is/assets/images/branding/ai-loading-screen-placeholder.svg";
 
-const facts = [
-    "Asgardeo's advanced theming capabilities let you modify the site title, copyright information, and support email displayed on your login pages, aligning every detail with your brand identity.",
-    "You can personalize your login portal even further with Asgardeo by updating links to your privacy policy, terms of service, and cookie policy, making your compliance visible and accessible.",
-    "With Asgardeo's branding features, you can update your organization's logo directly in the login and registration pages, ensuring a consistent brand experience for your customers across all application touchpoints.",
-];
-
-export const LoadingScreen = () => {
+export const LoadingScreen = ( {traceId} ) => {
+    const { t } = useTranslation();
     const [currentStatus, setCurrentStatus] = useState('Initializing...');
     const [progress, setProgress] = useState(0);
     const [factIndex, setFactIndex] = useState(0);
     const [polling, setPolling] = useState(true);
+
+    const facts = [
+        t("console:branding.ai.screens.loading.facts.0"),
+        t("console:branding.ai.screens.loading.facts.1"),
+        t("console:branding.ai.screens.loading.facts.2"),
+    ];
 
     const statusSequence = [
         'render_webpage',
@@ -31,14 +32,14 @@ export const LoadingScreen = () => {
     ];
 
     const statusLabels = {
-        render_webpage: "Rendering Webpage...",
-        extract_webpage_content: "Extracting Content...",
-        webpage_extraction_completed: "Content Extracted.",
-        generate_branding: "Generating Branding...",
-        color_palette: "Creating Color Palette...",
-        style_properties: "Defining Style Properties...",
-        create_branding_theme: "Creating Branding Theme...",
-        branding_generation_completed: "Branding Generation Completed!",
+        render_webpage: t("console:branding.ai.screens.loading.states.1"),
+        extract_webpage_content: t("console:branding.ai.screens.loading.states.2"),
+        webpage_extraction_completed: t("console:branding.ai.screens.loading.states.3"),
+        generate_branding: t("console:branding.ai.screens.loading.states.4"),
+        color_palette: t("console:branding.ai.screens.loading.states.5"),
+        style_properties: t("console:branding.ai.screens.loading.states.6"),
+        create_branding_theme: t("console:branding.ai.screens.loading.states.7"),
+        branding_generation_completed: t("console:branding.ai.screens.loading.states.8"),
     };
 
     const statusProgress = {
@@ -63,18 +64,18 @@ export const LoadingScreen = () => {
                     setTimeout(increaseProgress, 300);
                     return updatedProgress;
                 }
-                return prevProgress; // Once initial progress is reached, stop increasing
+                return prevProgress;
             });
         };
 
         setCurrentStatus('Initializing...');
-        increaseProgress(); // Start increasing the progress
+        increaseProgress();
     }, []);
 
     const fetchProgress = async () => {
         try {
-            // const response = await axios.get('http://0.0.0.0:8080/branding/status', { headers: { 'trace-id': 'custom' } });            
-            const response = await axios.get('http://localhost:3000/status', { headers: { 'trace-id': 'custom' } });
+            const response = await axios.get('http://0.0.0.0:8080/branding/status', { headers: { 'trace-id': traceId } });            
+            // const response = await axios.get('http://localhost:3000/status', { headers: { 'trace-id': 'custom' } });
             return response.data.status;
         } catch (error) {
             if (error.response && error.response.status === 404 && error.response.data.detail === "No branding request found with the provided tracking reference.") {
@@ -87,7 +88,7 @@ export const LoadingScreen = () => {
     };
 
     const updateProgress = (fetchedStatus) => {
-        let latestCompletedStep = 'Initializing...';
+        let latestCompletedStep = t("console:branding.ai.screens.loading.states.0");
         let currentProgress = 0;
     
         statusSequence.forEach((key) => {
@@ -128,7 +129,7 @@ export const LoadingScreen = () => {
         const interval = setInterval(async () => {
             const fetchedStatus = await fetchProgress();
             updateProgress(fetchedStatus);
-        }, 3000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, [polling]);
@@ -153,16 +154,12 @@ export const LoadingScreen = () => {
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginBottom: '20px' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 2 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', maxWidth: '75%' }}>
-                        {/* <Fade in={true} timeout={500}> */}
                             <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'rgba(0, 0, 0, 0.6)' }}>
                                 Did you know?
                             </Typography>
-                        {/* </Fade> */}
-                        {/* <Fade in={true} timeout={500}> */}
                             <Typography variant="body1" align="justify" sx={{ mt: 2, color: '#757575', height: '150px', overflow: 'auto' }}>
                                 {facts[factIndex]}
                             </Typography>
-                        {/* </Fade> */}
                     </Box>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'left' }}>
