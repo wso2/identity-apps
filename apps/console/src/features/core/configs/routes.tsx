@@ -1235,36 +1235,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 children: [
                     {
                         component: lazy(() =>
-                            import("../../../extensions/components/" + "users/pages/consumer-user-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: import("../../../extensions/assets/images/icons/user-icon.svg")
-                        },
-                        id: "customer-user-edit",
-                        name: "Customer Users Edit",
-                        path: UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../../../extensions/" + "components/users/pages/users")),
-                exact: true,
-                icon: {
-                    icon: import("../../../extensions/assets/images/icons/user-icon.svg")
-                },
-                id: "users",
-                name: "Users",
-                order: 4,
-                path: UsersConstants.getPaths().get("USERS_PATH"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() =>
                             import("../../../extensions/components/" + "users/pages/guest-user-edit")
                         ),
                         exact: true,
