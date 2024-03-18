@@ -508,15 +508,18 @@ export interface ConsoleNS {
                 full: {
                     heading: string;
                     subHeading: string;
+                    button: string;
                 };
                 input: {
                     heading: string;
                     subHeading: string;
                     placeholder: string;
+                    button: string;
                 };
                 collapsed: {
                     heading: string;
                     subHeading: string;
+                    button: string;
                 };
             };
             screens: {

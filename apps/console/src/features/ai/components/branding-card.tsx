@@ -104,7 +104,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                 icon={ AIIcon }
                                 style={ { paddingRight: "5px" } }
                             />
-                            Try Branding AI
+                            { t("console:branding.ai.banner.full.button") }
                         </Button>
                     </div>
 
@@ -170,7 +170,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                         icon={ AIIcon }
                                         style={ { paddingRight: "5px" } }
                                     />
-                                    Generate Branding
+                                    { t("console:branding.ai.banner.input.button") }
                                 </Button>
                             </div>
                         </div>
@@ -212,7 +212,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                 icon={ AIIcon }
                                 style={ { paddingRight: "5px" } }
                             />
-                    Try Branding AI
+                            { t("console:branding.ai.banner.collapsed.button") }
                         </Button>
                     </div>
                 </Segment>
