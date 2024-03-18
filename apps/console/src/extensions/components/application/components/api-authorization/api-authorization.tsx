@@ -29,7 +29,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { RequestErrorInterface } from "apps/console/src/features/core/hooks/use-request";
+import { RequestErrorInterface } from "../../../../../features/core/hooks/use-request";
 import { AxiosError } from "axios";
 import React, {
     Fragment,

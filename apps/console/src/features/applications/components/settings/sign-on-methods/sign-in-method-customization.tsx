@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -24,6 +25,7 @@ import {
     DocumentationLink,
     Heading,
     Hint,
+    Link,
     LinkButton,
     Message,
     PrimaryButton,
@@ -31,7 +33,6 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
-import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +43,14 @@ import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "../../../../connections";
-import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    history
+} from "../../../../core";
 import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
 import {
     IdentityProviderManagementConstants
@@ -778,8 +786,20 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         "types.passkey.info.progressiveEnrollmentDisabled")
                                     }
                                 >
-                                Passkey progressive enrollment is disabled. Users must enroll
-                                their passkeys through <strong>My Account</strong> to use passwordless sign-in.
+                                    <Link
+                                        external={ false }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths().get("IDP_EDIT")
+                                                    .replace(
+                                                        ":id", AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+                                            );
+                                        } }
+                                    >
+                                    Passkey progressive enrollment
+                                    </Link>
+                                    &nbsp; is disabled. Users must enroll
+                                    their passkeys through <strong>My Account</strong> to use passwordless sign-in.
                                 </Trans>
                                 <DocumentationLink
                                     link={ getLink("develop.applications.editApplication.signInMethod.fido") }

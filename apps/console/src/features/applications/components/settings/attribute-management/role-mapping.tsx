@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { DynamicField, KeyValue } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import useUIConfig from "modules/common/src/hooks/use-ui-configs";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";

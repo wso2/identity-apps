@@ -57,11 +57,6 @@
                         <span class="copyright-text line-break"><%= copyright %></span>
                     <% } %>
                     <%
-                        if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
-                    %>
-                        <div class="powered-by-logo-divider">|</div>
-                    <% } %>
-                    <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
                         <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(productLogoURL)) {%>

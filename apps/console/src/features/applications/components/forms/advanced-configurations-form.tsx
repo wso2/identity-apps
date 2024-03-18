@@ -311,10 +311,10 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             {
                 (
                     isApplicationNativeAuthenticationEnabled &&
-                    template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                    (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
                     template?.id === ApplicationManagementConstants.MOBILE ||
-                    template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb")
+                    template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"))
                 ) && (
                     <>
                         <Grid>

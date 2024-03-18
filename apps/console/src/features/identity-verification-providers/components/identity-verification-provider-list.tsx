@@ -29,7 +29,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import { hasRequiredScopes } from "modules/core/helpers";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";

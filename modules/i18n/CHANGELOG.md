@@ -1,5 +1,61 @@
 # @wso2is/i18n
 
+## 2.1.3
+
+### Patch Changes
+
+- [#5225](https://github.com/wso2/identity-apps/pull/5225) [`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786) Thanks [@lashinijay](https://github.com/lashinijay)! - UI implementations required to onbaord iProov authenticator.
+
+## 2.1.2
+
+### Patch Changes
+
+- [#5732](https://github.com/wso2/identity-apps/pull/5732) [`83a5a735a0`](https://github.com/wso2/identity-apps/commit/83a5a735a0f6d1e46d9e5cba51c07ad66c1ab45c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to progressive enrolment in the passkey alert
+
+## 2.1.1
+
+### Patch Changes
+
+- [#5725](https://github.com/wso2/identity-apps/pull/5725) [`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove Si and Fr from extensions/i18n
+
+## 2.1.0
+
+### Minor Changes
+
+- [#5645](https://github.com/wso2/identity-apps/pull/5645) [`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove fr-FR and si-LK translations for console application
+
+### Patch Changes
+
+- [#5673](https://github.com/wso2/identity-apps/pull/5673) [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify application namespaces in i18n modules
+
+## 2.0.132
+
+### Patch Changes
+
+- [#5695](https://github.com/wso2/identity-apps/pull/5695) [`e69c015e67`](https://github.com/wso2/identity-apps/commit/e69c015e67e481082573b4e02e54a73280f4d1eb) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified wsFederationsConfig namespaces in i18n modules
+
+* [#5665](https://github.com/wso2/identity-apps/pull/5665) [`f61777b45a`](https://github.com/wso2/identity-apps/commit/f61777b45a3990e54ae96d9c66ae18d94cccacbd) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified helpPanel namespaces in i18n modules
+
+- [#5669](https://github.com/wso2/identity-apps/pull/5669) [`c8ebea2196`](https://github.com/wso2/identity-apps/commit/c8ebea21968102a4e7003a7dba5550a82943cfe5) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified idvp namespaces in i18n modules
+
+* [#5684](https://github.com/wso2/identity-apps/pull/5684) [`a3ed68c805`](https://github.com/wso2/identity-apps/commit/a3ed68c8054f6608ea3958576a995492a0b025a3) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified placeholders namespaces in i18n modules
+
+- [#5690](https://github.com/wso2/identity-apps/pull/5690) [`508219110c`](https://github.com/wso2/identity-apps/commit/508219110c7f6843dc779180ab3bd6dafb2d856d) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified saml2configs namespaces in i18n modules
+
+* [#5668](https://github.com/wso2/identity-apps/pull/5668) [`2b4f99be20`](https://github.com/wso2/identity-apps/commit/2b4f99be20bbe669d3f5fd132155649ec3ae1ac1) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified idp namespaces in i18n modules
+
+- [#5662](https://github.com/wso2/identity-apps/pull/5662) [`5fd92df3ff`](https://github.com/wso2/identity-apps/commit/5fd92df3ff2688c9b5af02e2fa3a420cda85d5c3) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify authenticationProvider namespaces in i18n modules
+
+* [#5694](https://github.com/wso2/identity-apps/pull/5694) [`7263a458b1`](https://github.com/wso2/identity-apps/commit/7263a458b1f36eeb340669580eac64adc175f179) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified sessionmanagement namespaces in i18n modules
+
+- [#5682](https://github.com/wso2/identity-apps/pull/5682) [`faff2b22df`](https://github.com/wso2/identity-apps/commit/faff2b22dfb851944201b8db27ce4e8386bbf160) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified pages namespaces in i18n modules
+
+* [#5678](https://github.com/wso2/identity-apps/pull/5678) [`7fb7170e3e`](https://github.com/wso2/identity-apps/commit/7fb7170e3e8c161417c7aa85afff9a5dd630648e) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified notifications namespaces in i18n modules
+
+- [#5670](https://github.com/wso2/identity-apps/pull/5670) [`db353e0642`](https://github.com/wso2/identity-apps/commit/db353e06422205558b849a9c5a1bf407fb3d6917) Thanks [@jathushan-r](https://github.com/jathushan-r)! - modified templates namespaces in i18n modules
+
+* [#5664](https://github.com/wso2/identity-apps/pull/5664) [`58ddc8cc0e`](https://github.com/wso2/identity-apps/commit/58ddc8cc0e2c17173d5ec46989d709c33ddab503) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify suborganizations namespaces in i18n modules
+
 ## 2.0.131
 
 ### Patch Changes

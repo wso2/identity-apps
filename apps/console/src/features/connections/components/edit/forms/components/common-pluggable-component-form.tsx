@@ -150,7 +150,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         });
 
         const modifiedCustomProperties: any = !isEmpty(resolvedCustomProperties) ?
-            resolvedCustomProperties?.toString()?.split(",")?.map(
+            resolvedCustomProperties?.toString()?.split(", ")?.map(
                 (customProperty: string) => {
                     const keyValuePair: string[] = customProperty.split("=");
 
@@ -464,12 +464,6 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
                 if (isEmpty(property.key) || isEmpty(property.value)) {
-                    return;
-                }
-
-                // Check whether the property already in dynamicValues?.properties.
-                if (dynamicValues?.properties?.find(
-                    (prop: CommonPluggableComponentPropertyInterface) => prop.key === property.key)) {
                     return;
                 }
 

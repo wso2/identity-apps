@@ -29,7 +29,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { UserListInterface } from "apps/console/src/features/users/models/user";
+import { UserListInterface } from "../../../../../features/users/models/user";
 import { AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";

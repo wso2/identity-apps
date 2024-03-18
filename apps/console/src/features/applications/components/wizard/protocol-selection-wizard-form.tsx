@@ -17,7 +17,7 @@
  */
 
 import { AnimatedAvatar, AppAvatar, EmptyPlaceholder, GenericIcon } from "@wso2is/react-components";
-import { IdentifiableComponentInterface } from "modules/core/src/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import React, {
     FunctionComponent,
     MutableRefObject,

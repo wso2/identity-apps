@@ -85,8 +85,6 @@ interface CustomExtendedWindow extends Window {
                 community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",
                 feedbackEndPoint: "https://dev.portal.asgardeo.io/api/cloud/v1/feedback/",
                 helpCenterUrl: "https://dev.support.asgardeo.io/asp?id=asgardeo_support_login",
-                defaultBrandedLoginScreenLogo: "https://dev.accounts.asgardeo.io/authenticationendpoint/libs/themes/asgardio/assets/images/branding/asgardeo-logo.svg",
-                defaultBrandedLoginScreenFavicon: "https://dev.accounts.asgardeo.io/authenticationendpoint/libs/themes/asgardio/assets/images/branding/asgardeo-trifacta.svg",
                 defaultBrandedLoginScreenCopyright: "${copyright} ${year} WSO2, Inc.",
                 supportEmail: "asgardeo-help@wso2.com"
             },
