@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.46
+
+### Patch Changes
+
+- [#5769](https://github.com/wso2/identity-apps/pull/5769) [`da1ee408ad`](https://github.com/wso2/identity-apps/commit/da1ee408adf64adf8bcbb79d3c947ff811f0a381) Thanks [@lashinijay](https://github.com/lashinijay)! - Update license headers in iproovlogin.jsp
+
 ## 2.1.45
 
 ### Patch Changes
