@@ -829,6 +829,7 @@ export enum LoginFlowTypes {
     FIDO_LOGIN = "FIDO_LOGIN",
     MAGIC_LINK = "MAGIC_LINK",
     EMAIL_OTP = "EMAIL_OTP",
+    SMS_OTP = "SMS-OTP",
     DEFAULT = "DEFAULT"
 }
 

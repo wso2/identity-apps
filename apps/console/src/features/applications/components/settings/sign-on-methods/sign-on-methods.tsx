@@ -39,6 +39,7 @@ import PasskeyLoginSequenceTemplate from "./templates/passkey-login-sequence.jso
 import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
+import SmsOTPSequenceTemplate from "./templates/sms-otp-sequence.json";
 import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
 import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
 import { ConnectionsManagementUtils } from "../../../../connections/utils/connection-utils";
@@ -541,6 +542,16 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
                 ...cloneDeep(EmailOTPSequenceTemplate)
+            });
+        } else if (loginFlow === LoginFlowTypes.SMS_OTP) {
+            eventPublisher.publish(
+                "application-sign-in-method-click-add",
+                { type: "sms-otp-login" }
+            );
+
+            setModeratedAuthenticationSequence({
+                ...authenticationSequence,
+                ...cloneDeep(SmsOTPSequenceTemplate)
             });
         }
 
