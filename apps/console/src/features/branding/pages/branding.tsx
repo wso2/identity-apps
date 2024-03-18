@@ -160,6 +160,10 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
+    const disabledFeatures = useMemo(() => {
+        return featureConfig?.branding?.disabledFeatures;
+    }, [ featureConfig ]);
+
     const {
         data: originalBrandingPreference,
         isLoading: isBrandingPreferenceFetchRequestLoading,
@@ -698,13 +702,16 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 )
                     : (
                         <>
-                            <BrandingAIComponent
-                                onGenerate={ handleBrandingAIResponseData }
-                                onGenerateBrandingClick={ (generatedTraceId: string) => {
-                                    setGeneratingBranding(true);
-                                    setTraceId(generatedTraceId);
-                                }
-                                }/>
+                            {
+                                !disabledFeatures.includes("branding.ai") &&
+                                (<BrandingAIComponent
+                                    onGenerate={ handleBrandingAIResponseData }
+                                    onGenerateBrandingClick={ (generatedTraceId: string) => {
+                                        setGeneratingBranding(true);
+                                        setTraceId(generatedTraceId);
+                                    } }
+                                />)
+                            }
                             <BrandingPreferenceTabs
                                 key={ preferenceTabsComponentKey }
                                 predefinedThemes={ predefinedThemes }
