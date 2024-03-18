@@ -624,7 +624,7 @@ export const console: ConsoleNS = {
             banner: {
                 full: {
                     heading: "Transform your branding with ease, try our new Branding AI",
-                    subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent.",
+                    subHeading: "Provide your website URL, and our AI will seamlessly create a branding theme that is both beautiful and brand-consistent."
                 },
                 input: {
                     heading: "Generate branding with a single click using Branding AI",
@@ -642,7 +642,7 @@ export const console: ConsoleNS = {
                     facts: {
                         0: "Asgardeo's advanced theming capabilities let you modify the site title, copyright information, and support email displayed on your login pages, aligning every detail with your brand identity.",
                         1: "You can personalize your login portal even further with Asgardeo by updating links to your privacy policy, terms of service, and cookie policy, making your compliance visible and accessible.",
-                        2: "With Asgardeo's branding features, you can update your organization's logo directly in the login and registration pages, ensuring a consistent brand experience for your customers across all application touchpoints.",
+                        2: "With Asgardeo's branding features, you can update your organization's logo directly in the login and registration pages, ensuring a consistent brand experience for your customers across all application touchpoints."
                     },
                     states: {
                         0: "Initializing...",
@@ -653,7 +653,7 @@ export const console: ConsoleNS = {
                         5: "Creating Color Palette...",
                         6: "Defining Style Properties...",
                         7: "Creating Branding Theme...",
-                        8: "Branding Generation Completed!",
+                        8: "Branding Generation Completed!"
                     }
                 }
             }
