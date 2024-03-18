@@ -37,7 +37,6 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
-import { InvitationStatus } from "../../../extensions/components/users/models";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -52,6 +51,7 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
+import { InvitationStatus } from "../../../extensions/components/users/models";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

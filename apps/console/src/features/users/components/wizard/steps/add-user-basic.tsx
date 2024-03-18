@@ -22,25 +22,25 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
-import { getAUserStore, useUserStore, useUserStores } from "apps/console/src/features/userstores/api";
-import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "apps/console/src/features/userstores/models";
 import React, { MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
+import { UsersConstants } from "../../../../../extensions/components/users/constants";
 import { userstoresConfig } from "../../../../../extensions/configs";
 import { AppConstants } from "../../../../core/constants";
 import { history } from "../../../../core/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import {
     ServerConfigurationsConstants
 } from "../../../../server-configurations/constants/server-configurations-constants";
+import { getAUserStore, useUserStore, useUserStores } from "../../../../userstores/api";
 import {
     USERSTORE_REGEX_PROPERTIES
 } from "../../../../userstores/constants/user-store-constants";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../../../userstores/models";
 import { ValidationDataInterface, ValidationFormInterface } from "../../../../validation/models";
 import { getUsersList } from "../../../api/users";
 import {
@@ -963,7 +963,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             <Grid>
                 {
                     !hiddenFields.includes(HiddenFieldNames.USERSTORE) &&
-                        !isUserStoreError && (
+                        !isUserStoreError && (readWriteUserStoresList.length > 1) && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <div ref={ emailRef }/>

@@ -16,11 +16,11 @@
  * under the License.
  */
 import { ProfileConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React,
 {
     FunctionComponent,

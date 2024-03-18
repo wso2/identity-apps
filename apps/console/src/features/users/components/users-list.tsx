@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
