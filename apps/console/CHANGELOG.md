@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.13.22
+
+### Patch Changes
+
+- [#5773](https://github.com/wso2/identity-apps/pull/5773) [`598c5065ad`](https://github.com/wso2/identity-apps/commit/598c5065adb9412f630649ea42225c20ca13121d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add SMS OTP first factor template to the login flow editor landing page
+
+- Updated dependencies [[`a3a24504a9`](https://github.com/wso2/identity-apps/commit/a3a24504a969bb8d9a1fce5c77025cb6ecbaf2b6)]:
+  - @wso2is/i18n@2.1.4
+
 ## 2.13.21
 
 ### Patch Changes
