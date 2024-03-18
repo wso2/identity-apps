@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.4.6
+
+### Patch Changes
+
+- [#5775](https://github.com/wso2/identity-apps/pull/5775) [`ba15b1c3f2`](https://github.com/wso2/identity-apps/commit/ba15b1c3f2559394df61daf5ad9ded981f1c2059) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Temporarily disable extension scripts in console and myaccount
+
 ## 2.4.5
 
 ### Patch Changes
