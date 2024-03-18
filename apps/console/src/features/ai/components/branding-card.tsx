@@ -130,20 +130,19 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                 <Header as="h3" style={ { marginBottom: "5px" } }>
                                     { t("console:branding.ai.banner.input.heading") }
                                 </Header>
-                                <p>{ t("console:branding.ai.banner.input.subHeading") +
-                                    " " +
+                                <p>{ t("console:branding.ai.banner.input.subHeading") }
                                     <DocumentationLink
-                                        link={ "develop.applications.editApplication.asgardeoTryitApplication." +
-                                            "general.learnMore" }
+                                        link={ "develop.applications.editApplication.asgardeoTryitApplication" +
+                                    ".general.learnMore" }
                                         isLinkRef = { true }
                                     >
                                         <Trans
                                             i18nKey={ "extensions:common.learnMore" }
                                         >
-                                        Learn More
+                                            Learn More
                                         </Trans>
                                     </DocumentationLink>
-                                }</p>
+                                </p>
                             </div>
                             <div
                                 style={ {
@@ -198,7 +197,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                     <Trans
                                         i18nKey={ "extensions:common.learnMore" }
                                     >
-                                Learn More
+                                        Learn More
                                     </Trans>
                                 </DocumentationLink>
                             </p>
