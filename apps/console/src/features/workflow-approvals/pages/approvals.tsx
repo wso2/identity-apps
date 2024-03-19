@@ -149,23 +149,23 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.approvals.notifications.fetchPendingApprovals.error.description",
+                            "approvals:notifications.fetchPendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.approvals.notifications.fetchPendingApprovals.error.message"
+                            "approvals:notifications.fetchPendingApprovals.error.message"
                         )
                     }));
                 }
 
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.approvals.notifications.fetchPendingApprovals.genericError.description"
+                        "approvals:notifications.fetchPendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.approvals.notifications.fetchPendingApprovals.genericError.message"
+                        "approvals:notifications.fetchPendingApprovals.genericError.message"
                     )
                 }));
             })
@@ -263,12 +263,12 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.approvals.notifications.updatePendingApprovals.error.description",
+                            "approvals:notifications.updatePendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.approvals.notifications.updatePendingApprovals.error.message"
+                            "approvals:notifications.updatePendingApprovals.error.message"
                         )
                     }));
 
@@ -277,12 +277,12 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.approvals.notifications." +
+                        "approvals:notifications." +
                         "updatePendingApprovals.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.approvals.notifications.updatePendingApprovals.genericError.message"
+                        "approvals:notifications.updatePendingApprovals.genericError.message"
                     )
                 }));
             });

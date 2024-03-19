@@ -205,7 +205,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                             ? (
                                 <Table.Row key={ i }>
                                     <Table.Cell className="key-cell">
-                                        { t("console:manage.features.approvals.modals.approvalProperties." +
+                                        { t("approvals:modals.approvalProperties." +
                                         `${ property.key }`) }
                                     </Table.Cell>
                                     <Table.Cell collapsing className="values-cell">
@@ -294,7 +294,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             <Modal.Header>
                 <Header as="h4" image data-testid={ `${ testId }-item-heading` }>
                     <Header.Content>
-                        { t("console:manage.features.approvals.modals.taskDetails.header") }
+                        { t("approvals:modals.taskDetails.header") }
                         <Header.Subheader>
                             <Label
                                 circular
@@ -342,7 +342,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                             {
                                                 approval?.description
                                                     ? approval?.description
-                                                    : t("console:manage.features.approvals.modals." +
+                                                    : t("approvals:modals." +
                                                     "taskDetails.description")
                                             }
                                         </List.Description>
