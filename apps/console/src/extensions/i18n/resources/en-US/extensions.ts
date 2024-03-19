@@ -2176,14 +2176,16 @@ export const extensions: Extensions = {
             smsOTP: {
                 settings: {
                     smsOtpEnableDisableToggle: {
-                        labelEnable: "Enable SMS OTP",
-                        labelDisable: "Disable SMS OTP "
+                        labelEnable: "Enabled",
+                        labelDisable: "Disabled"
                     },
-                    enableRequiredNote: {
-                        message: "Asgardeo publishes events to Choreo to enable SMS OTP, where Choreo " +
-                            "webhooks will be used to integrate with multiple services to publish OTP Notifications. " +
-                            "Follow the <1>Add SMS OTP Guide</1> to configure Choreo webhooks for Asgardeo publish " +
-                            "events."
+                    choreoAsSMSProvider: {
+                        title: "Configure Choreo as SMS Provider",
+                        enableRequiredNote: {
+                            message: "Asgardeo publishes identity events to Choreo, where Chreo webhooks can be used to" +
+                            " integrate with multiple services to send SMS notifications and run custom business" +
+                            " logic. <1>Learn More</1>"
+                        }
                     },
                     errorNotifications: {
                         notificationSendersRetrievalError: {
@@ -2916,7 +2918,7 @@ export const extensions: Extensions = {
                     " the login flow.",
                 warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
                     " login identifiers.",
-                info: "You have selected email as the username type which makes it the primary login identifier.",
+                info: "You've chosen email as your username type, and it automatically serves as a login identifier.",
                 notification: {
                     error: {
                         description: "Error updating the alternative login identifier configuration.",

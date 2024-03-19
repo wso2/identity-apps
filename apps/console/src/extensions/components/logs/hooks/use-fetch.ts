@@ -25,12 +25,12 @@ import { InterfaceLogEntry, InterfaceLogsRequest } from "../models/log-models";
  * @returns error, list, loading, next, previous
  */
 function useFetch(requestPayload: InterfaceLogsRequest): any {
-    const { data, error, isLoading } = useLogs(requestPayload);
+    const { data, error, isValidating } = useLogs(requestPayload);
     const list: InterfaceLogEntry[] = data?.logs || [];
     const next: string | null = data?.nextToken || null;
     const previous: string | null = data?.previousToken || null;
 
-    return { error, list, loading: isLoading, next, previous };
+    return { error, list, loading: isValidating, next, previous };
 }
 
 export default useFetch;

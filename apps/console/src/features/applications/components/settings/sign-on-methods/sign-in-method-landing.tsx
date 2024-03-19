@@ -327,6 +327,36 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     showCardAction={ false }
                                 />
                             ) }
+                            { !hiddenOptions?.includes(LoginFlowTypes.SMS_OTP) &&
+                                !hiddenAuthenticators?.includes(
+                                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+                                ) && (
+                                <InfoCard
+                                    fluid
+                                    data-componentid="sms-otp-flow-card"
+                                    image={ getAuthenticatorIcons().smsOTP }
+                                    imageSize="mini"
+                                    header={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.smsOTPFirstFactor.heading"
+                                    ) }
+                                    description={ t(
+                                        "console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.smsOTPFirstFactor.description"
+                                    ) }
+                                    onClick={ () => {
+                                        eventPublisher.publish(
+                                            "application-begin-sign-in-sms-otp-password-less",
+                                            { "client-id": clientId }
+                                        );
+                                        onLoginFlowSelect(LoginFlowTypes.SMS_OTP);
+                                    } }
+                                    showSetupGuideButton={ false }
+                                    showCardAction={ false }
+                                />
+                            ) }
                             { (!hiddenOptions.includes(LoginFlowTypes.GOOGLE_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.FACEBOOK_LOGIN) ||
                                 !hiddenOptions.includes(LoginFlowTypes.GITHUB_LOGIN) ||

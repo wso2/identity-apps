@@ -1,5 +1,39 @@
 # @wso2is/i18n
 
+## 2.1.4
+
+### Patch Changes
+
+- [#5773](https://github.com/wso2/identity-apps/pull/5773) [`a3a24504a9`](https://github.com/wso2/identity-apps/commit/a3a24504a969bb8d9a1fce5c77025cb6ecbaf2b6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n text for sms otp first factor template card
+
+## 2.1.3
+
+### Patch Changes
+
+- [#5225](https://github.com/wso2/identity-apps/pull/5225) [`1f95aa54bd`](https://github.com/wso2/identity-apps/commit/1f95aa54bd2cdac214ad8d02767a0ff4c1966786) Thanks [@lashinijay](https://github.com/lashinijay)! - UI implementations required to onbaord iProov authenticator.
+
+## 2.1.2
+
+### Patch Changes
+
+- [#5732](https://github.com/wso2/identity-apps/pull/5732) [`83a5a735a0`](https://github.com/wso2/identity-apps/commit/83a5a735a0f6d1e46d9e5cba51c07ad66c1ab45c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to progressive enrolment in the passkey alert
+
+## 2.1.1
+
+### Patch Changes
+
+- [#5725](https://github.com/wso2/identity-apps/pull/5725) [`adb6c24caa`](https://github.com/wso2/identity-apps/commit/adb6c24caa4b95d265808170d566f1e399cbcb4d) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove Si and Fr from extensions/i18n
+
+## 2.1.0
+
+### Minor Changes
+
+- [#5645](https://github.com/wso2/identity-apps/pull/5645) [`f0a1b1953e`](https://github.com/wso2/identity-apps/commit/f0a1b1953e5351d9b5aaa42aba99168e63f46682) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove fr-FR and si-LK translations for console application
+
+### Patch Changes
+
+- [#5673](https://github.com/wso2/identity-apps/pull/5673) [`94ff2d352c`](https://github.com/wso2/identity-apps/commit/94ff2d352cdaf90f3f3bed6ef2321f73b68aa4fc) Thanks [@jathushan-r](https://github.com/jathushan-r)! - Modify application namespaces in i18n modules
+
 ## 2.0.132
 
 ### Patch Changes

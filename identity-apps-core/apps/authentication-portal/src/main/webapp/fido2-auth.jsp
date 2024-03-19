@@ -264,8 +264,10 @@
 
     <%
         String myaccountUrl = application.getInitParameter("MyAccountURL");
-        if (StringUtils.isEmpty(myaccountUrl)) {
-            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+        if (StringUtils.isNotEmpty(myaccountUrl)) {
+            myaccountUrl = myaccountUrl + "/t/" + tenantDomain;
+        } else {
+            myaccountUrl = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
         }
     %>
 

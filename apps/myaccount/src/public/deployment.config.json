@@ -44,7 +44,7 @@
         "appTitle": "My Account | WSO2 Identity Server",
         "appName": "My Account",
         "appLogoPath": "/assets/images/branding/logo.svg",
-        "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
+        "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
         "enableMFAUserWise": true,
         "disableMFAForFederatedUsers": true,
         "forceBackupCode": true,

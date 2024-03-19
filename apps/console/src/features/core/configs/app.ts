@@ -194,7 +194,7 @@ export class Config {
                 I18nConstants.EXTENSIONS_NAMESPACE,
                 "approvals"
             ],
-            preload: [ "si-LK", "fr-FR" ]
+            preload: []
         };
     }
 
@@ -270,6 +270,12 @@ export class Config {
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            appLogo: {
+                defaultLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultLogoPath
+                    ?? window[ "AppUtils" ]?.getConfig()?.ui?.appLogoPath,
+                defaultWhiteLogoPath: window[ "AppUtils" ]?.getConfig()?.ui?.appLogo?.defaultWhiteLogoPath
+                    ?? window[ "AppUtils" ]?.getConfig()?.ui?.defaultWhiteLogoPath
+            },
             appName: window[ "AppUtils" ]?.getConfig()?.ui?.appName,
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:

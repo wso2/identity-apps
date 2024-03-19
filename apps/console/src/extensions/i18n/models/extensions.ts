@@ -1939,8 +1939,11 @@ export interface Extensions {
                         labelEnable: string;
                         labelDisable: string;
                     };
-                    enableRequiredNote: {
-                        message: string;
+                    choreoAsSMSProvider: {
+                        title: string;
+                        enableRequiredNote: {
+                            message: string;
+                        },
                     };
                     errorNotifications: {
                         notificationSendersRetrievalError: {
