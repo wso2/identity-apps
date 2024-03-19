@@ -36,8 +36,10 @@ import {
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import isObject from "lodash-es/isObject";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
+import transform from "lodash-es/transform";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -511,13 +513,40 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         }
     };
 
+    /**
+     * This function removes keys from an object that have empty values.
+     * If the value is an object, it recursively removes empty keys from that object as well.
+     *
+     * @param obj - The object to remove empty keys from.
+     * @returns - The object with empty keys removed.
+     */
+    function removeEmptyKeys(obj: Record<string, any>): Record<string, any> {
+        return transform(obj, (result: Record<string, any>, value: any, key: string) => {
+            // If the value is an object, recursively remove empty keys from it.
+            if (isObject(value)) {
+                const newValue: Record<string, any> = removeEmptyKeys(value);
+
+                // If the new value is not empty, add it to the result.
+                if (!isEmpty(newValue)) {
+                    result[key] = newValue;
+                }
+            }
+            // If the value is not an object and it is not empty, add it to the result.
+            else if (!isEmpty(value)) {
+                result[key] = value;
+            }
+        });
+    }
+
     const handleBrandingAIResponseData = (data: any) => {
         setGeneratingBranding(false);
-        const { activeTheme, ...lightTheme } = data;
+        const { theme } = removeEmptyKeys(data);
+        const { activeTheme, LIGHT } = theme;
         const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference), {
             activeTheme: activeTheme,
             theme: {
-                LIGHT: lightTheme
+                ...brandingPreference.theme,
+                LIGHT: LIGHT
             }
         });
 
