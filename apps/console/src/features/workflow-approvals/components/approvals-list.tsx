@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -41,6 +42,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ApprovalTaskComponent } from "./approval-task";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs";
@@ -59,7 +61,7 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
     /**
      * Resolve the label color of the task.
      *
-     * @param status
+     * @param status - Task status.
      */
     resolveApprovalTagColor?: (
         status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
@@ -67,8 +69,8 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
     /**
      * Handles updating the status of the task.
      *
-     * @param id
-     * @param status
+     * @param id - Task ID.
+     * @param status - New status.
      */
     updateApprovalStatus?: (
         id: string,
@@ -119,8 +121,7 @@ interface ApprovalsListPropsInterface extends SBACInterface<FeatureConfigInterfa
 /**
  * Approvals list component.
  *
- * @param {ApprovalsListPropsInterface} props - Props injected to the approvals list component.
- * @return {JSX.Element}]
+ * @param props - Props injected to the approvals list component.
  */
 export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     props: ApprovalsListPropsInterface
@@ -128,7 +129,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         getApprovalsList,
@@ -162,16 +163,17 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         setApprovalTaskDetailsLoading(true);
 
         fetchPendingApprovalDetails(approval.id)
-            .then((response) => {
-                let selectedApprovalTask = response;
+            .then((response: ApprovalTaskDetails) => {
+                let selectedApprovalTask : ApprovalTaskDetails = response;
+
                 selectedApprovalTask = {
                     ...selectedApprovalTask,
-                    taskStatus: approval?.status,
-                    createdTimeInMillis: approval.createdTimeInMillis
+                    createdTimeInMillis: approval.createdTimeInMillis,
+                    taskStatus: approval?.status
                 };
                 setApproval(selectedApprovalTask);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -199,7 +201,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
     /**
      * Handler for the approval detail button click.
      *
-     * @param approval
+     * @param approval - Approval task.
      */
     const handleApprovalDetailClick = (approval: ApprovalTaskListItemInterface): void => {
         getApprovalTaskDetails(approval);
@@ -207,8 +209,6 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     /**
      * Resolve the relevant placeholder.
-     *
-     * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
         if (searchResult === 0) {
@@ -276,8 +276,6 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     /**
      * Resolves data table actions.
-     *
-     * @return {TableActionsInterface[]}
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -312,8 +310,6 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
     /**
      * Resolves data table columns.
-     *
-     * @return {TableColumnInterface[]}
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
