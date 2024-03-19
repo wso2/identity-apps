@@ -256,6 +256,9 @@ export class AppConstants {
                 "ANALYTICS",
                 `${AppConstants.getAdminViewBasePath()}/analytics/:categoryId/:connectorId`
             ],
+            [ "API_RESOURCES", `${ AppConstants.getDeveloperViewBasePath() }/api-resources` ],
+            [ "API_RESOURCES_CATEGORY", `${ AppConstants.getDeveloperViewBasePath() }/api-resources/:categoryId` ],
+            [ "API_RESOURCE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/api-resources/:categoryId/:id` ],
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
@@ -372,6 +375,7 @@ export class AppConstants {
             [ "ORGANIZATION_ROLE_UPDATE", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles/:id` ],
             [ "ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators` ],
             [ "ADMINISTRATOR_EDIT", `${AppConstants.getAdminViewBasePath()}/administrators/:id` ],
+            [ "ADMINISTRATOR_SETTINGS", `${AppConstants.getAdminViewBasePath()}/administrator-settings-edit` ],
             [ "MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account` ],
             [ "MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account` ],
             [ "VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration` ],

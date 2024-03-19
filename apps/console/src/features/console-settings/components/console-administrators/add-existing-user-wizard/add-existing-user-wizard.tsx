@@ -26,11 +26,9 @@ import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import { UserBasicInterface } from "../../../../core/models/users";
+import { UserManagementConstants } from "../../../../users/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import useConsoleRoles from "../../../hooks/use-console-roles";
@@ -80,7 +78,6 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -94,7 +91,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         null,
         null,
         null,
-        UsersConstants.GROUPS_ATTRIBUTE,
+        UserManagementConstants.GROUPS_ATTRIBUTE,
         true
     );
 
@@ -129,7 +126,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
     const handleAddExitingUser = (values: AddExistingUserWizardFormValuesInterface): void => {
         assignAdministratorRoles(
             values?.username?.user,
-            values?.roles?.map(role => role.role),
+            values?.roles?.map((role: any) => role.role),
             (error: AxiosError) => {
                 if (!error.response || error.response.status === 401) {
                     setAlert({
@@ -240,7 +237,8 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                                     placeholder="Select roles"
                                     component={ AutocompleteFieldAdapter }
                                     options={ rolesAutocompleteOptions }
-                                    renderTags={ (value: readonly any[], getTagProps: AutocompleteRenderGetTagProps) => {
+                                    renderTags={ (value: readonly any[], getTagProps:
+                                        AutocompleteRenderGetTagProps) => {
                                         return value.map((option: any, index: number) => (
                                             <Chip
                                                 key={ index }
@@ -264,7 +262,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                                 tabIndex={ 6 }
                                 data-componentid={ `${componentId}-cancel-button` }
                                 floated="left"
-                                onClick={ e => onClose(e, null) }
+                                onClick={ (e: React.MouseEvent<HTMLElement, MouseEvent>) => onClose(e, null) }
                             >
                                 <Typography variant="inherit">
                                     { t("extensions:develop.apiResource.wizard.addApiResource.cancelButton") }

@@ -20,7 +20,7 @@ import { UserstoresConfig } from "./models";
 
 export const userstoresConfig: UserstoresConfig = {
     onUserstoreEdit: () => true,
-    primaryUserstoreId: "PRIMARY",
+    primaryUserstoreId: "primary",
     primaryUserstoreName: "PRIMARY",
     shouldShowUserstore: () => {
         return false;

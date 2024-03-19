@@ -17,7 +17,6 @@
  */
 
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -34,6 +33,7 @@ import { UserRolesList } from "./user-roles-list";
 import { UserRolesV1List } from "./user-roles-v1-list";
 import { UserSessions } from "./user-sessions";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { userstoresConfig } from "../../../extensions/configs/userstores";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
@@ -114,7 +114,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
-            : UserstoreConstants.PRIMARY_USER_STORE;
+            : userstoresConfig.primaryUserstoreName;
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())

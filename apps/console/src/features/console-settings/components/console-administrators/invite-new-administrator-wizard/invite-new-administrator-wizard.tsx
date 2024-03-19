@@ -31,7 +31,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import { AppState } from "../../../../core/store";
 import { sendParentOrgUserInvite } from "../../../../users/components/guests/api/invite";
 import {
@@ -39,6 +38,7 @@ import {
     ParentOrgUserInvitationResult,
     ParentOrgUserInviteResultStatus
 } from "../../../../users/components/guests/models/invite";
+import { UserManagementConstants } from "../../../../users/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./invite-new-administrator-wizard.scss";
@@ -161,7 +161,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                         )
                     });
                 } else if (error.response.status === 403 &&
-                        error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+                        error?.response?.data?.code === UserManagementConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
                     setAlert({
                         description: t(
                             "extensions:manage.invite.notifications.sendInvite.limitReachError.description"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,8 +27,8 @@ import { Dispatch } from "redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { SharedUserStoreConstants, SharedUserStoreUtils } from "../../../../features/core";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../../../../features/groups";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../features/userstores/constants";
 import { commonConfig } from "../../../configs/common";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../users/constants";
 
 /**
  * Interface to capture group basics props.

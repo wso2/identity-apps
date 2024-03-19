@@ -198,7 +198,7 @@ export class SharedUserStoreUtils {
      * The following method will fetch the primary user store details.
      */
     public static async getPrimaryUserStore(): Promise<void | UserStoreDetails> {
-        return getPrimaryUserStore(userstoresConfig.primaryUserstoreName).then((response: any) => {
+        return getPrimaryUserStore(userstoresConfig.primaryUserstoreId).then((response: any) => {
             return response;
         }).catch(() => {
             store.dispatch(addAlert({

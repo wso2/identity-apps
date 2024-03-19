@@ -51,7 +51,6 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
-import { InvitationStatus } from "../../../extensions/components/users/models";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -96,7 +95,7 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
-import { UserListInterface } from "../models";
+import { InvitationStatus, UserListInterface } from "../models";
 
 /**
  * Props for the Users page.

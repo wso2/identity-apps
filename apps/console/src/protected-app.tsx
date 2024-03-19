@@ -147,8 +147,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, []);
 
     useEffect(() => {
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
     }, [ dispatch ]);
 
     useEffect(() => {

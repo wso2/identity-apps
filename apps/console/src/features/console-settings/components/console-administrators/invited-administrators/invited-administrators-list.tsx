@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,14 +23,12 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import { PRIMARY_USERSTORE, UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
-import { UserInviteInterface } from "../../../../../extensions/components/users/models/invite";
 import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import { UserStoreDropdownItem } from "../../../../../features/userstores/models";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
@@ -40,6 +38,9 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
 import { deleteParentOrgInvite } from "../../../../users/components/guests/api/invite";
+import { UserManagementConstants } from "../../../../users/constants";
+import { UserInviteInterface } from "../../../../users/models";
+import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
 import useAdministrators from "../../../hooks/use-administrators";
 import InviteNewAdministratorWizard from "../invite-new-administrator-wizard/invite-new-administrator-wizard";
 
@@ -116,7 +117,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         searchQuery,
         null,
         selectedUserStore,
-        UsersConstants.GROUPS_ATTRIBUTE
+        UserManagementConstants.GROUPS_ATTRIBUTE
     );
 
     const { isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();

@@ -40,7 +40,6 @@ import { AddUserGroups } from "./steps/add-user-groups";
 import { AddUserType } from "./steps/add-user-type";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userstoresConfig } from "../../../../extensions/configs";
 import { administratorConfig } from "../../../../extensions/configs/administrator";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
@@ -56,6 +55,7 @@ import {
     HiddenFieldNames,
     PasswordOptionTypes,
     UserAccountTypesMain,
+    UserManagementConstants,
     WizardStepsFormTypes
 } from "../../constants";
 import {
@@ -188,7 +188,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
         const groupResources: GroupsInterface[] = originalGroupList.Resources;
 
-        if (groupResources && groupResources instanceof Array && groupResources.length > 0) {
+        if (originalGroupList.itemsPerPage === 0) {
+            setGroupsList([]);
+            setInitialGroupList([]);
+            setFixedGroupsList([]);
+
+            return;
+        }
+
+        if (groupResources && groupResources instanceof Array) {
             setGroupsList(groupResources);
             setInitialGroupList(groupResources);
             setFixedGroupsList(groupResources);
@@ -209,7 +217,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 userType: defaultUserTypeSelection
             }
         });
-
     }, [ defaultUserTypeSelection ]);
 
     /**
@@ -644,7 +651,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         )
                     }));
                 } else if (error.response && error.response.status === 403 &&
-                    error.response.data && error.response.data.scimType === UsersConstants.ERROR_USER_LIMIT_REACHED) {
+                    error.response.data && error.response.data.scimType ===
+                        UserManagementConstants.ERROR_USER_LIMIT_REACHED) {
                     closeWizard();
                     dispatch(addAlert({
                         description: t(

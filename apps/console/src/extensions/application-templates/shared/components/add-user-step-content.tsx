@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,6 @@ import { AppConstants } from "../../../../features/core/constants";
 import { EventPublisher } from "../../../../features/core/utils";
 import { getUserDetails } from "../../../../features/users/api";
 import { AddConsumerUserWizard } from "../../../../features/users/components/wizard/add-consumer-user-wizard";
-import { UsersConstants } from "../../../components/users/constants";
 
 /**
  * Proptypes for add user step component in application sample flow.
@@ -98,14 +97,14 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
                                     "application-quick-start-click-navigate-to-user-management"
                                 );
                                 window.open(AppConstants.getClientOrigin()
-                                    + UsersConstants.getPaths().get("USERS_PATH"),
+                                    + AppConstants.getPaths().get("USERS"),
                                 "", "noopener");
                             } }
                             className="external-link link pointing primary"
                         > Manage &gt; Users <Icon name="external"/></a> and create users.
                     </Trans>
                 </Text>
-                <Button 
+                <Button
                     basic
                     primary
                     className="info add-user-step-button"

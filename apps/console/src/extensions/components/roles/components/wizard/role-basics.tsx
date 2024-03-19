@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,7 +31,7 @@ import { SharedUserStoreUtils } from "../../../../../features/core/utils";
 import { searchRoleList } from "../../../../../features/roles/api";
 import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../features/roles/models";
 import { getUserStoreList } from "../../../../../features/userstores/api";
-import { CONSUMER_USERSTORE } from "../../../users/constants";
+import { CONSUMER_USERSTORE } from "../../../../../features/userstores/constants";
 
 /**
  * Interface to capture role basics props.
@@ -199,7 +199,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     }
 
                                     let isRoleNamePatternValid: boolean = true;
-                                    
+
                                     await validateRoleNamePattern().then((regex: string) => {
                                         isRoleNamePatternValid = SharedUserStoreUtils.
                                             validateInputAgainstRegEx(value, regex);

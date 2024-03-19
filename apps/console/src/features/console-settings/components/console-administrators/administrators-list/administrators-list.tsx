@@ -24,8 +24,6 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
-import { UserStoreDropdownItem } from "../../../../userstores/models";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -43,7 +41,9 @@ import {
     history
 } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { UserManagementConstants } from "../../../../users/constants";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
+import { UserStoreDropdownItem } from "../../../../userstores/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
@@ -140,7 +140,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         searchQuery,
         null,
         selectedUserStore,
-        UsersConstants.GROUPS_ATTRIBUTE
+        UserManagementConstants.GROUPS_ATTRIBUTE
     );
 
     const [ loading, setLoading ] = useState(false);

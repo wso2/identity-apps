@@ -61,7 +61,6 @@ import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
-import { UsersConstants } from "../components/users/constants";
 
 function isClaimInterface(
     claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
@@ -529,7 +528,7 @@ export const applicationConfig: ApplicationConfig = {
                             Do not have a user account?{ " " }<a
                                 onClick={ () => {
                                     window.open(AppConstants.getClientOrigin()
-                                    + UsersConstants.getPaths().get("USERS_PATH"),
+                                    + AppConstants.getPaths().get("USERS"),
                                     "",
                                     "noopener");
                                 } }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,13 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    DocumentationLink, 
-    EmptyPlaceholder, 
-    ListLayout, 
-    PageLayout, 
-    PrimaryButton, 
-    useDocumentation 
+import {
+    DocumentationLink,
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -182,7 +182,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
     /**
      * set the after and before values needed for the `mutateAPIResourcesFetchRequest`
-     * 
+     *
      * @param afterValue - after value
      * @param beforeValue - before value
      */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -41,8 +42,8 @@ import { Header, Segment } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
 import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "../../../../features/core";
 import { GroupsMemberInterface } from "../../../../features/groups/models";
+import { UserManagementUtils } from "../../../../features/users/utils";
 import { SCIMConfigs } from "../../../configs/scim";
-import { UserManagementUtils } from "../../users/utils";
 
 /**
  * Proptypes for the application consents list component.
@@ -286,7 +287,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                     ".searchPlaceholder")
                             }
                             isLoading={ isUsersFetchRequestLoading }
-                            handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, 
+                            handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>,
                                 { value }: { value: string; }) => {
                                 handleSearchFieldChange(e, value, initialUserList, setUsersList);
                             } }
@@ -306,7 +307,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                 {
                                     usersList?.map((user: UserBasicInterface, index: number) => {
 
-                                        const header: string = UserManagementUtils.resolveUserListHeader(user);
+                                        const header: string = getUserNameWithoutDomain(user?.userName);
                                         const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
 
                                         return (

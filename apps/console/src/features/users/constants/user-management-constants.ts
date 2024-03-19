@@ -134,6 +134,16 @@ export class UserManagementConstants {
 
     // Query param to exclude roles and groups from getUserList API call.
     public static readonly GROUPS_AND_ROLES_ATTRIBUTE: string = "groups,roles";
+
+    // User creation limit reach error scimType.
+    public static readonly ERROR_USER_LIMIT_REACHED: string = "userLimitReached";
+
+    //Association type of invited admin users.
+    public static readonly GUEST_ADMIN_ASSOCIATION_TYPE: string = "GUEST";
+
+    public static readonly ERROR_COLLABORATOR_USER_LIMIT_REACHED: string = "ASG-UIM-10010";
+    // Query param to exclude groups from getUserList API call.
+    public static readonly GROUPS_ATTRIBUTE: string = "groups";
 }
 
 /**

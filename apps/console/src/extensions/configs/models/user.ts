@@ -29,4 +29,5 @@ export interface User {
     disableManagedByColumn: boolean;
     enableAdminPrivilegeRevokeOption: boolean;
     enableUsernameValidation: boolean;
+    userProfileSchema: string;
 }

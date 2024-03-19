@@ -52,7 +52,6 @@ import { ChangePasswordComponent } from "./user-change-password";
 import { SCIMConfigs, commonConfig, userConfig } from "../../../extensions";
 import { TenantInfo } from "../../../extensions/components/tenants/models";
 import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
-import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/users/constants";
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
@@ -189,9 +188,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
-    const accountLocked: boolean = user[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]?.accountLocked === "true";
-    const accountDisabled: boolean = user[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]?.accountDisabled === "true";
-    const oneTimePassword: string = user[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]?.oneTimePassword;
+    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked;
+    const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
+    const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
 
     useEffect(() => {
 
@@ -304,19 +303,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
 
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
 
                                 return;
@@ -336,15 +335,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
                                 schemaName && schemaSecondaryProperty &&
-                                    userInfo[ProfileConstants
-                                        .SCIM2_WSO2_USER_SCHEMA][schemaName] &&
-                                    userInfo[ProfileConstants
-                                        .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
+                                    userInfo[userConfig.userProfileSchema][schemaName] &&
+                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
-                                        userInfo[ProfileConstants
-                                            .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty])
+                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -388,17 +384,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
 
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                                 );
@@ -420,14 +416,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
                                 schemaName && schemaSecondaryProperty &&
-                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName] &&
-                                    userInfo[ProfileConstants
-                                        .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
+                                    userInfo[userConfig.userProfileSchema][schemaName] &&
+                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
-                                        userInfo[ProfileConstants
-                                            .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty])
+                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -684,7 +678,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -703,7 +697,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if(schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -814,7 +808,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -833,7 +827,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if(schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -953,13 +947,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * The method handles the locking and disabling of user account.
      */
-    const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
+    const handleDangerActions = (attributeName: string, attributeValue: boolean): Promise<void> => {
         let data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "replace",
                     "value": {
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [userConfig.userProfileSchema]: {
                             [attributeName]: attributeValue
                         }
                     }
@@ -989,7 +983,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         }
 
-        updateUserInfo(user.id, data)
+        return updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
                     description:
@@ -1100,7 +1094,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                     <DangerZone
                                                         data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("console:manage.features.user.editUser." +
-                                                            ".dangerZoneGrouppasswordResetZone.actionTitle") }
+                                                            "dangerZoneGroup.passwordResetZone.actionTitle") }
                                                         header={ t("console:manage.features.user.editUser." +
                                                             "dangerZoneGroup.passwordResetZone.header") }
                                                         subheader={ t("console:manage.features.user.editUser." +
@@ -1110,8 +1104,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         } }
                                                         isButtonDisabled={ accountLocked
                                                             ? accountLocked
-                                                            : user[ ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]?.
-                                                                accountLocked === "true" }
+                                                            : user[ userConfig.userProfileSchema ]?.accountLocked }
                                                         buttonDisableHint={ t("console:manage.features.user.editUser." +
                                                             "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
@@ -1163,7 +1156,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         userConfig?.enableAdminPrivilegeRevokeOption && !isPrivilegedUser &&
                                     adminUserType === AdminAccountTypes.INTERNAL &&
-                                    associationType !== GUEST_ADMIN_ASSOCIATION_TYPE &&
+                                    associationType !== UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE &&
                                     (
                                         <DangerZone
                                             data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }

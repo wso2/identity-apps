@@ -27,7 +27,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { UsersConstants } from "../../../../../extensions/components/users/constants";
 import { userstoresConfig } from "../../../../../extensions/configs";
 import { AppConstants } from "../../../../core/constants";
 import { history } from "../../../../core/helpers/history";
@@ -38,7 +37,7 @@ import {
 } from "../../../../server-configurations/constants/server-configurations-constants";
 import { getAUserStore, useUserStore, useUserStores } from "../../../../userstores/api";
 import {
-    USERSTORE_REGEX_PROPERTIES
+    USERSTORE_REGEX_PROPERTIES, UserStoreManagementConstants
 } from "../../../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../../../userstores/models";
 import { ValidationDataInterface, ValidationFormInterface } from "../../../../validation/models";
@@ -194,7 +193,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
                         const isReadOnly: boolean = response.properties.find(
                             (property: UserStoreProperty) =>
-                                property.name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
+                                property.name === UserStoreManagementConstants.
+                                    USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
 
                         if (!isDisabled && !isReadOnly) {
                             const storeOption: DropdownItemProps = {

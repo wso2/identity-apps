@@ -33,8 +33,8 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddConsumerUser, AddConsumerUserProps } from "./steps/add-consumer-user";
 import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-summary";
 import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
-import { CONSUMER_USERSTORE } from "../../../../extensions/components/users/constants/users";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
+import { userstoresConfig } from "../../../../extensions/configs/userstores";
 import { UserBasicInterface } from "../../../../features/core";
 import {
     GroupsInterface,
@@ -209,7 +209,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
     };
 
     useEffect(() => {
-        getGroupListForDomain(CONSUMER_USERSTORE);
+        getGroupListForDomain(userstoresConfig.primaryUserstoreName);
         document.addEventListener("keydown", handleEnterKeyDown);
     }, []);
 

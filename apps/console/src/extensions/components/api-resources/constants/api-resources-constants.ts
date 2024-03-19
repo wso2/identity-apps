@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,7 @@ export class APIResourcesConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     * 
+     *
      */
     private constructor() { }
 
@@ -57,7 +57,7 @@ export class APIResourcesConstants {
 
     /**
      * To check whether the given value is a valid permission identifier.
-     * 
+     *
      * @param value - permission identifier
      * @returns boolean - true if the value is a valid permission identifier
      */

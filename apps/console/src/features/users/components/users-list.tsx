@@ -239,11 +239,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const resolveAvatarUsername = ( user: UserBasicInterface ): string => {
         const usernameUUID: string = getUserNameWithoutDomain(user?.userName);
 
-        if (user.name?.givenName){
+        if (user?.name?.givenName){
             return user.name.givenName[0];
-        } else if (user.name?.familyName) {
+        } else if (user?.name?.familyName) {
             return user.name.familyName[0];
-        } else if (user.emails[0]){
+        } else if (user?.emails?.length > 0){
             return user.emails[0][0];
         } else if (!checkUUID(usernameUUID)){
             return usernameUUID[0];
@@ -447,6 +447,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
+                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? "eye"
                         : "pencil alternate";
                 },

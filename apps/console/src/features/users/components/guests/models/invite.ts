@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { InviteUserStatus } from "../../../../../extensions/components/users/models";
 import { ReactNode } from "react";
 import { GroupsInterface } from "../../../../groups";
+import { InviteUserStatus } from "../../../models/user";
 
 /**
   * Enum for role types.

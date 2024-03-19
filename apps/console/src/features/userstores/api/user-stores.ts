@@ -56,7 +56,7 @@ const httpClient: HttpClientInstance =
  * @param params - sort, filter, limit, attributes, offset.
  * @returns user stores
  */
-export const getUserStores = (params: QueryParams): Promise<any> => {
+export const getUserStores = (params: QueryParams | any): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",

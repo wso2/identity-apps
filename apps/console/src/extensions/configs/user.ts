@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
 import { deleteUser } from "../../features/users/api/users";
@@ -32,5 +33,6 @@ export const userConfig: User = {
     disableManagedByColumn: true,
     enableAdminPrivilegeRevokeOption: false,
     enableBulkImportSecondaryUserStore: true,
-    enableUsernameValidation: false
+    enableUsernameValidation: false,
+    userProfileSchema: ProfileConstants.SCIM2_ENT_USER_SCHEMA
 };
