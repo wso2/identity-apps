@@ -268,9 +268,9 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
 
                                 if (!isGroupNameValid) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("console:manage.features.businessGroups" +
-                                        ".fields.groupName.validations.invalid",
-                                    { type: "group" }));
+                                    validation.errorMessages.push(t(
+                                        "businessGroups:fields.groupName.validations.invalid",
+                                        { type: "group" }));
                                 }
 
                                 const searchData: SearchGroupInterface = {

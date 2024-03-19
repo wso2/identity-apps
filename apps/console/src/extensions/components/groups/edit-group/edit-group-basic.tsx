@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -166,7 +166,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
         setRegExLoading(false);
 
-        return new Promise((resolve: (value: string | PromiseLike<string>) => void, 
+        return new Promise((resolve: (value: string | PromiseLike<string>) => void,
             reject: (reason?: string) => void) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
@@ -275,15 +275,15 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     let isGroupNameValid: boolean = true;
 
                                                     await validateGroupNamePattern().then((regex: string) => {
-                                                        isGroupNameValid = 
+                                                        isGroupNameValid =
                                                         SharedUserStoreUtils.validateInputAgainstRegEx(value
                                                             , regex);
                                                     });
 
                                                     if (!isGroupNameValid) {
                                                         validation.isValid = false;
-                                                        validation.errorMessages.push(t("console:manage.features." +
-                                                            "businessGroups.fields.groupName." +
+                                                        validation.errorMessages.push(t(
+                                                            "businessGroups:fields.groupName." +
                                                             "validations.invalid", { type: "group" }));
                                                     }
 
@@ -322,7 +322,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             <Hint>
                                                 A name for the group.
                                                 { " " }
-                                                Can contain between 3 to 30 alphanumeric characters, dashes 
+                                                Can contain between 3 to 30 alphanumeric characters, dashes
                                                 (<Code>-</Code>),{ " " }
                                                 and underscores (<Code>_</Code>).
                                             </Hint>)
@@ -394,7 +394,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                     : `${ testId }-role-danger-zone`
                             }
                             isButtonDisabled={ isReadOnly || isUserstoreRemote }
-                            buttonDisableHint = { 
+                            buttonDisableHint = {
                                 isGroup
                                     ? t("console:manage.features.roles.edit.basics.dangerZone." +
                                         "buttonDisableHint", { type: "group" })

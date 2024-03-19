@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -130,8 +130,8 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
                                 if (!isGroupNameValid) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("console:manage.features.businessGroups" +
-                                        ".fields.groupName.validations.invalid",
+                                    validation.errorMessages.push(t("businessGroups:" +
+                                        "fields.groupName.validations.invalid",
                                     { type: "group" }));
                                 }
 

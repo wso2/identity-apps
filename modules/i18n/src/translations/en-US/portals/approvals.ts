@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApprovalsNS } from "../../../models/namespaces/approvals-ns";
+import { ApprovalsNS } from "../../../models";
 
 export const approvals:ApprovalsNS ={
     list: {
