@@ -183,7 +183,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             backButton={ {
                 "data-componentid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

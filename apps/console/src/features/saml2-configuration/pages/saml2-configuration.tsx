@@ -259,7 +259,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
             description={ t("console:saml2Config.description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ false }

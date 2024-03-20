@@ -135,7 +135,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 description: resolveConnectorUpdateSuccessMessage(),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.governanceConnectors.notifications." + "updateConnector.success.message"
+                    "governanceConnectors:notifications." + "updateConnector.success.message"
                 )
             })
         );
@@ -148,7 +148,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     description: resolveConnectorUpdateErrorMessage(error),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications.updateConnector.error.message"
+                        "governanceConnectors:notifications.updateConnector.error.message"
                     )
                 })
             );
@@ -157,12 +157,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -335,13 +335,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -351,12 +351,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -441,7 +441,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return connector?.description
                     ? connector.description
                     : connector?.friendlyName &&
-                    t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                    t("governanceConnectors:connectorSubHeading", {
                         name: connector?.friendlyName
                     });
         }
@@ -483,7 +483,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 );
             default:
                 return t(
-                    "console:manage.features.governanceConnectors.notifications.updateConnector.success.description",
+                    "governanceConnectors:notifications.updateConnector.success.description",
                     { name: connector.friendlyName }
                 );
         }
@@ -520,7 +520,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 );
             default:
                 return t(
-                    "console:manage.features.governanceConnectors.notifications.updateConnector.error.description",
+                    "governanceConnectors:notifications.updateConnector.error.description",
                     { description: error.response.data.description }
                 );
         }
@@ -642,7 +642,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             backButton={ enableBackButton && {
                 "data-testid": `${ testId }-${ connectorId }-page-back-button`,
                 onClick: () => handleBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

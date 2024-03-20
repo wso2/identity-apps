@@ -1159,7 +1159,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 <Text>
                                     <Trans
                                         i18nKey={
-                                            "console:manage.features.governanceConnectors.connectorCategories." +
+                                            "governanceConnectors:connectorCategories." +
                                             "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
                                         }
                                     >
@@ -1175,7 +1175,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 <Text>
                                     <Trans
                                         i18nKey={
-                                            "console:manage.features.governanceConnectors.connectorCategories." +
+                                            "governanceConnectors:connectorCategories." +
                                             "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
                                         }
                                     >

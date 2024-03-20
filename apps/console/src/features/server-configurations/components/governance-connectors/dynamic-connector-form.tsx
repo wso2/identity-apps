@@ -118,7 +118,7 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
         <Form onSubmit={ handleSubmit }>
             { <Grid padded={ true }>
                 { properties?.map((property: ConnectorPropertyInterface, index: number) => {
-                    const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+                    const fieldLabelKey: string = "governanceConnectors:connectorCategories." +
                         camelCase(connector?.category) + ".connectors."+camelCase(connector?.name) +
                         ".properties."+camelCase(property?.name)+".label";
                     let fieldLabel: string = property?.displayName;
@@ -127,7 +127,7 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
                         fieldLabel = t(fieldLabelKey);
                     }
 
-                    const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+                    const fieldHintKey: string = "governanceConnectors:connectorCategories." +
                         camelCase(connector?.category)+".connectors."+camelCase(connector?.name) +
                         ".properties."+camelCase(property?.name)+".hint";
                     let fieldHint: string = property?.description;
@@ -189,8 +189,8 @@ const DynamicConnectorForm = (props: DynamicConnectorFormPropsInterface) => {
                                             formValues[
                                                 GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)
                                             ]
-                                                ? t("console:manage.features.governanceConnectors.enabled")
-                                                : t("console:manage.features.governanceConnectors.disabled")
+                                                ? t("governanceConnectors:enabled")
+                                                : t("governanceConnectors:disabled")
                                         }
                                         onChange={ (event: any, newValue: boolean) => {
                                             if (
@@ -265,7 +265,7 @@ const validate = (values: Record<string, string>) => {
 
     if (allowedIdleTimeSpan < 0) {
         errors[ allowedIdleTimeSpanName ]
-            = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.positiveIntegers");
+            = I18n.instance.t("governanceConnectors:form.errors.positiveIntegers");
     }
 
     if (
@@ -281,7 +281,7 @@ const validate = (values: Record<string, string>) => {
             GovernanceConnectorUtils.encodeConnectorPropertyName(
                 ServerConfigurationsConstants.ALERT_SENDING_TIME_PERIODS_IN_DAYS
             )
-        ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
+        ] = I18n.instance.t("governanceConnectors:form.errors.format");
 
     }
 
@@ -298,7 +298,7 @@ const validate = (values: Record<string, string>) => {
             GovernanceConnectorUtils.encodeConnectorPropertyName(
                 ServerConfigurationsConstants.MULTI_ATTRIBUTE_CLAIM_LIST
             )
-        ] = I18n.instance.t("console:manage.features.governanceConnectors.form.errors.format");
+        ] = I18n.instance.t("governanceConnectors:form.errors.format");
     }
 
     return errors;

@@ -67,20 +67,20 @@ export class GovernanceConnectorUtils {
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        description: I18n.instance.t("governanceConnectors:notifications." +
                             "getConnectorCategories.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        message: I18n.instance.t("governanceConnectors:notifications." +
                             "getConfigurations.error.message")
                     }));
                 } else {
                     // Generic error message
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        description: I18n.instance.t("governanceConnectors:notifications." +
                             "getConfigurations.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        message: I18n.instance.t("governanceConnectors:notifications." +
                             "getConfigurations.genericError.message")
                     }));
                 }
@@ -402,7 +402,7 @@ export class GovernanceConnectorUtils {
     }
 
     public static resolveFieldLabel(category: string, name: string, displayName: string): string {
-        const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+        const fieldLabelKey: string = "governanceConnectors:connectorCategories." +
                 camelCase(category) + ".connectors." + camelCase(name) +
                 ".properties." + camelCase(name) + ".label";
 
@@ -416,7 +416,7 @@ export class GovernanceConnectorUtils {
     }
 
     public static resolveFieldHint(category: string, name: string, description: string): string {
-        const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+        const fieldHintKey: string = "governanceConnectors:connectorCategories." +
                 camelCase(category) + ".connectors." + camelCase(name) +
                 ".properties." + camelCase(name) + ".hint";
 

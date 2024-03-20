@@ -409,7 +409,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
         >
             { discoveryToggle() }

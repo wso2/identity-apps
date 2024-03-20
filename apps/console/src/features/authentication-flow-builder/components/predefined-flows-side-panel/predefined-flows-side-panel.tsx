@@ -403,13 +403,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error?.response?.data?.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -419,12 +419,12 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -476,7 +476,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -492,7 +492,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.error.message"
                             )
                         })
@@ -502,12 +502,12 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.message"
                             )
                         })
@@ -540,7 +540,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 <Modal.Header>
                     { connector?.friendlyName }
                     <Heading subHeading ellipsis as="h6">
-                        { t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                        { t("governanceConnectors:connectorSubHeading", {
                             name: connector?.friendlyName })
                         }
                     </Heading>

@@ -149,20 +149,20 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        description: I18n.instance.t("governanceConnectors:notifications." +
                         "getConnectorCategories.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        message: I18n.instance.t("governanceConnectors:notifications." +
                         "getConfigurations.error.message")
                     }));
                 } else {
                     // Generic error message
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        description: I18n.instance.t("governanceConnectors:notifications." +
                         "getConfigurations.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
+                        message: I18n.instance.t("governanceConnectors:notifications." +
                         "getConfigurations.genericError.message")
                     }));
                 }
@@ -245,13 +245,13 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -261,12 +261,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })

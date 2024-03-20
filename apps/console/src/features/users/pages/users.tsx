@@ -643,12 +643,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }).catch((error: AxiosError) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "getConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "getConnector.genericError.message"
                     )
                 });

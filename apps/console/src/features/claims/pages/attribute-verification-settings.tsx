@@ -143,13 +143,13 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -159,12 +159,12 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -253,7 +253,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.governanceConnectors.notifications." + "updateConnector.success.message"
+                    "governanceConnectors:notifications." + "updateConnector.success.message"
                 )
             })
         );
@@ -273,7 +273,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications.updateConnector.error.message"
+                        "governanceConnectors:notifications.updateConnector.error.message"
                     )
                 })
             );
@@ -282,12 +282,12 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -504,17 +504,17 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     return (
         <PageLayout
             title={ t(
-                "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
+                "governanceConnectors:connectorCategories.otherSettings.connectors." +
                 "userClaimUpdate.friendlyName"
             ) }
             pageTitle={ t(
-                "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
+                "governanceConnectors:connectorCategories.otherSettings.connectors." +
                 "userClaimUpdate.friendlyName"
             ) }
             description={ t(
-                "console:manage.features.governanceConnectors.connectorSubHeading",
+                "governanceConnectors:connectorSubHeading",
                 { name: t(
-                    "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
+                    "governanceConnectors:connectorCategories.otherSettings.connectors." +
                     "userClaimUpdate.friendlyName"
                 ) }
             ) }

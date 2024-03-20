@@ -97,13 +97,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.error.description",
                         { description: error.response.data.description }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." + "updateConnector.error.message"
+                        "governanceConnectors:notifications." + "updateConnector.error.message"
                     )
                 })
             );
@@ -112,12 +112,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -154,13 +154,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.description",
                             { name: resolveConnectorTitle(connector) }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -223,21 +223,21 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         }
 
         if (connector?.id === ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID) {
-            return t("console:manage.features.governanceConnectors.connectorCategories.passwordPolicies." +
+            return t("governanceConnectors:connectorCategories.passwordPolicies." +
             "connectors.passwordExpiry.friendlyName");
         }
 
         if (connector?.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
-            return t("console:manage.features.governanceConnectors.connectorCategories.userOnboarding." +
+            return t("governanceConnectors:connectorCategories.userOnboarding." +
             "connectors.askPassword.friendlyName");
         }
 
         if (connector?.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
-            return t("console:manage.features.governanceConnectors.connectorCategories.otherSettings." +
+            return t("governanceConnectors:connectorCategories.otherSettings." +
             "connectors.userClaimUpdate.friendlyName");
         }
 
-        const connectorTitleKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+        const connectorTitleKey: string = "governanceConnectors:connectorCategories." +
             camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName";
         let connectorTitle: string = connector?.friendlyName;
 
@@ -263,17 +263,17 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         let connectorName: string = connector?.friendlyName;
 
         if (connector?.id === ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID) {
-            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.passwordPolicies." +
+            connectorName = t("governanceConnectors:connectorCategories.passwordPolicies." +
             "connectors.passwordExpiry.friendlyName");
         }
 
         if (connector?.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
-            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.userOnboarding." +
+            connectorName = t("governanceConnectors:connectorCategories.userOnboarding." +
             "connectors.askPassword.friendlyName");
         }
 
         if (connector?.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
-            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.otherSettings." +
+            connectorName = t("governanceConnectors:connectorCategories.otherSettings." +
             "connectors.userClaimUpdate.friendlyName");
         }
 
@@ -281,7 +281,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             connectorName = connectorName.replace(ServerConfigurationsConstants.DEPRECATION_MATCHER, "");
         }
 
-        return t("console:manage.features.governanceConnectors.connectorSubHeading", {
+        return t("governanceConnectors:connectorSubHeading", {
             name: connectorName
         });
     };
@@ -307,13 +307,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 >
                     <Icon name="warning sign" />
                     {
-                        t("console:manage.features.governanceConnectors.connectorCategories." +
+                        t("governanceConnectors:connectorCategories." +
                             "otherSettings.connectors.analyticsEngine.messages.deprecation.heading")
                     }
                     <Text spaced="top">
                         <Trans
                             i18nKey={
-                                "console:manage.features.governanceConnectors.connectorCategories." +
+                                "governanceConnectors:connectorCategories." +
                                 "otherSettings.connectors.analyticsEngine.messages.deprecation.description"
                             }
                         >
