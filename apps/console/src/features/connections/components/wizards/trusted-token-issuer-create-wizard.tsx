@@ -218,7 +218,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const isLoopBackCall = (value: string): string =>
         !(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)
             ? undefined
-            : t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+            : t("idp:forms.common.internetResolvableErrorMessage");
 
     /**
      * Create the token issuer body.
@@ -588,13 +588,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
             { openLimitReachedModal &&
                 (
                     <TierLimitReachErrorModal
-                        actionLabel={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
+                        actionLabel={ t("idp:notifications.tierLimitReachedError." +
                             "emptyPlaceholder.action") }
                         handleModalClose={ handleLimitReachedModalClose }
-                        header={ t("console:develop.features.idp.notifications.tierLimitReachedError.heading") }
-                        description={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
+                        header={ t("idp:notifications.tierLimitReachedError.heading") }
+                        description={ t("idp:notifications.tierLimitReachedError." +
                             "emptyPlaceholder.subtitles") }
-                        message={ t("console:develop.features.idp.notifications.tierLimitReachedError." +
+                        message={ t("idp:notifications.tierLimitReachedError." +
                             "emptyPlaceholder.title") }
                         openModal={ openLimitReachedModal }
                     />

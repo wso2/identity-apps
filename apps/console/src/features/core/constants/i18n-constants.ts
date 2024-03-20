@@ -262,7 +262,8 @@ export class I18nConstants {
         [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ],
         [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ],
         [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
-        [ I18nConstants.GROUPS_NAMESPACE, "portals" ]
+        [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
+        [ "idp", "portals" ]
     ]);
 
     /**

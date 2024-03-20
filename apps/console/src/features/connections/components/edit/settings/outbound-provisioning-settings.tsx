@@ -379,7 +379,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             <Grid.Row>
                 <Grid.Column width={ 8 }>
                     <Heading as="h4">
-                        { t("console:develop.features.idp.forms.outboundProvisioningTitle") }
+                        { t("idp:forms.outboundProvisioningTitle") }
                     </Heading>
                 </Grid.Column>
             </Grid.Row>

@@ -162,12 +162,12 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
     const _placeholder = (): ReactElement => {
         return (
             <EmptyPlaceholder
-                title={ t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                title={ t("idp:forms.attributeSettings.attributeMapping." +
                         "modal.placeholder.title") }
                 subtitle={
                     [
                         <p key={ "empty-attributes-mapping" }>
-                            { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                            { t("idp:forms.attributeSettings.attributeMapping." +
                                 "modal.placeholder.subtitle") }
                         </p>
                     ]
@@ -186,7 +186,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
             size="small"
             closeOnDimmerClick={ false }>
             <Modal.Header>
-                { t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                { t("idp:forms.attributeSettings.attributeMapping." +
                     "modal.header") }
             </Modal.Header>
             <Modal.Content scrolling className="edit-attribute-mapping">
@@ -213,7 +213,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                                             <Table.HeaderCell width="7">
                                                 <strong>
                                                     {
-                                                        t("console:develop.features.idp.forms.attributeSettings." +
+                                                        t("idp:forms.attributeSettings." +
                                                             "attributeMapping.attributeMapTable." +
                                                             "externalAttributeColumnHeader")
                                                     }
@@ -222,7 +222,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                                             <Table.HeaderCell width="7">
                                                 <strong>
                                                     {
-                                                        t("console:develop.features.idp.forms.attributeSettings." +
+                                                        t("idp:forms.attributeSettings." +
                                                             "attributeMapping.attributeMapTable." +
                                                             "mappedAttributeColumnHeader")
                                                     }

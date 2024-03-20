@@ -216,9 +216,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         deleteIdentityProvider(idpId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.idp.notifications.deleteIDP.success.description"),
+                    description: t("idp:notifications.deleteIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idp.notifications.deleteIDP.success.message")
+                    message: t("idp:notifications.deleteIDP.success.message")
                 }));
             })
             .catch((error) => {
@@ -247,11 +247,11 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.title") }
+                    title={ t("idp:placeHolders.emptyIDPSearchResults.title") }
                     subtitle={ [
-                        t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.subtitles.0",
+                        t("idp:placeHolders.emptyIDPSearchResults.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:develop.features.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
+                        t("idp:placeHolders.emptyIDPSearchResults.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -268,14 +268,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
                                 <Icon name="add"/>
-                                { t("console:develop.features.idp.buttons.addIDP") }
+                                { t("idp:buttons.addIDP") }
                             </PrimaryButton>
                         </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.idp.placeHolders.emptyIDPList.subtitles.0")
+                        t("idp:placeHolders.emptyIDPList.subtitles.0")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -352,7 +352,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         </Header>
                     );
                 },
-                title: t("console:develop.features.idp.list.name")
+                title: t("idp:list.name")
             },
             {
                 allowToggleVisibility: false,
@@ -360,7 +360,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.idp.list.actions")
+                title: t("idp:list.actions")
             }
         ];
     };
@@ -450,17 +450,17 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                            { t("console:develop.features.idp.confirmations.deleteIDP.header") }
+                            { t("idp:confirmations.deleteIDP.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("console:develop.features.idp.confirmations.deleteIDP.message") }
+                            { t("idp:confirmations.deleteIDP.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                            { t("console:develop.features.idp.confirmations.deleteIDP.content") }
+                            { t("idp:confirmations.deleteIDP.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -477,17 +477,17 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.header") }
+                            { t("idp:confirmations.deleteIDPWithConnectedApps.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-delete-idp-confirmation` }
                         >
-                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.message") }
+                            { t("idp:confirmations.deleteIDPWithConnectedApps.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.idp.confirmations.deleteIDPWithConnectedApps.content") }
+                            { t("idp:confirmations.deleteIDPWithConnectedApps.content") }
                             <Divider hidden />
                             <List ordered className="ml-6">
                                 {

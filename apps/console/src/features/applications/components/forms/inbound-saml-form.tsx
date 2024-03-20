@@ -1575,7 +1575,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("console:develop.features.idp.forms.common." +
+                                                t("idp:forms.common." +
                                                         "internetResolvableErrorMessage")
                                             );
                                         }
@@ -1624,7 +1624,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("console:develop.features.idp.forms.common." +
+                                                t("idp:forms.common." +
                                                     "internetResolvableErrorMessage")
                                             );
                                         }

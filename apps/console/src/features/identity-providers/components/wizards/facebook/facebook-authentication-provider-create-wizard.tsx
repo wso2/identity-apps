@@ -429,19 +429,19 @@ export const FacebookAuthenticationProviderCreateWizard: FunctionComponent<
                 { openLimitReachedModal &&
                     (<TierLimitReachErrorModal
                         actionLabel={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
                         ) }
                         handleModalClose={ handleLimitReachedModalClose }
                         header={ t(
-                            "console:develop.features.idp.notifications.tierLimitReachedError.heading"
+                            "idp:notifications.tierLimitReachedError.heading"
                         ) }
                         description={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." +
+                            "idp:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

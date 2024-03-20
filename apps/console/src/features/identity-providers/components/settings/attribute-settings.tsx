@@ -327,10 +327,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         } else {
             dispatch(addAlert(
                 {
-                    description: t("console:develop.features.idp.notifications." +
+                    description: t("idp:notifications." +
                         "submitAttributeSettings.error.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:develop.features.idp.notifications.submitAttributeSettings.error.message")
+                    message: t("idp:notifications.submitAttributeSettings.error.message")
                 }
             ));
         }

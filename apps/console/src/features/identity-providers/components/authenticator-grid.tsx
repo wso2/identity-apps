@@ -220,9 +220,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             .catch((error: AxiosError & { description: string; message: string }) => {
                 dispatch(addAlert({
                     description: error?.description
-                        || t("console:develop.features.idp.connectedApps.genericError.description"),
+                        || t("idp:connectedApps.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:develop.features.idp.connectedApps.genericError.message")
+                    message: error?.message || t("idp:connectedApps.genericError.message")
                 }));
             })
             .finally(() => {

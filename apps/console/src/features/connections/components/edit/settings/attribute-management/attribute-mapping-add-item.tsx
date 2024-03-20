@@ -160,11 +160,11 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                             inputType="identifier"
                             maxLength={ 120 }
                             minLength={ 1 }
-                            label={ t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                            label={ t("idp:forms.attributeSettings.attributeMapping." +
                                     "externalAttributeInput.label")
                             }
                             placeholder={
-                                t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                t("idp:forms.attributeSettings.attributeMapping." +
                                     "externalAttributeInput.placeHolder")
                             }
                             ariaLabel="External IdP Attribute Mapping Value"
@@ -207,7 +207,7 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                                     // editing mode...
                                     setMappingHasError(true);
 
-                                    return t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                    return t("idp:forms.attributeSettings.attributeMapping." +
                                         "externalAttributeInput.existingErrorMessage");
                                 }
                                 // If there's no errors.
@@ -225,18 +225,18 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                             clearable
                             width={ 16 }
                             options={ getListOfAvailableAttributes() }
-                            label={ t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                            label={ t("idp:forms.attributeSettings.attributeMapping." +
                                 "attributeDropdown.label")
                             }
                             ariaLabel="Local Claim Attribute"
                             name="localClaimId"
                             placeholder={
-                                t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                t("idp:forms.attributeSettings.attributeMapping." +
                                 "attributeDropdown.placeHolder")
                             }
                             listen={ (value: string) => setSelectedLocalAttributeInputValue(value) }
                             noResultsMessage={
-                                t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                t("idp:forms.attributeSettings.attributeMapping." +
                                 "attributeDropdown.noResultsMessage")
                             }
                         />
@@ -255,7 +255,7 @@ export const AttributeMappingAddItem: FunctionComponent<AttributeMappingAddItemP
                             type="submit"
                             name="submit-button"
                             label={
-                                t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                t("idp:forms.attributeSettings.attributeMapping." +
                                     "addAttributeButtonLabel")
                             }
                             ariaLabel="Attribute Selection Form Submit Button"/>

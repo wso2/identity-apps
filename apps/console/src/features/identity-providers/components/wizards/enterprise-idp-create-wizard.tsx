@@ -245,7 +245,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
      */
     const isLoopBackCall = (value: string) => {
         return (!(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)) ?
-            undefined : t("console:develop.features.idp.forms.common." +
+            undefined : t("idp:forms.common." +
                 "internetResolvableErrorMessage");
     };
 

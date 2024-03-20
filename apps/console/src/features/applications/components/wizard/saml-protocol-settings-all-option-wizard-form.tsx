@@ -564,7 +564,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.idp.forms.common." +
+                                        t("idp:forms.common." +
                                             "internetResolvableErrorMessage")
                                     );
                                 }
