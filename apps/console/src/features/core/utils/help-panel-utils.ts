@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,7 +33,6 @@ export class HelpPanelUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -41,7 +40,6 @@ export class HelpPanelUtils {
     /**
      * Checks if the side panel is pinned.
      *
-     * @return {boolean}
      */
     public static isPanelPinned(): boolean {
 
@@ -72,7 +70,7 @@ export class HelpPanelUtils {
             return;
         }
 
-        const isPinned = userPreferences?.identityAppsSettings?.devPortal?.helpPanel?.isPinned;
+        const isPinned: boolean = userPreferences?.identityAppsSettings?.devPortal?.helpPanel?.isPinned;
 
         if (isPinned === undefined) {
             return;
@@ -85,10 +83,10 @@ export class HelpPanelUtils {
         AppUtils.setUserPreferences(newPref);
 
         store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.helpPanel.notifications.pin.success.description",
+            description: I18n.instance.t("helpPanel:notifications.pin.success.description",
                 { state: isPinned ? I18n.instance.t("common:unpinned") : I18n.instance.t("common:pinned") }),
             level: AlertLevels.INFO,
-            message: I18n.instance.t("console:develop.features.helpPanel.notifications.pin.success.message",
+            message: I18n.instance.t("helpPanel:notifications.pin.success.message",
                 { state: isPinned ? I18n.instance.t("common:unpinned") : I18n.instance.t("common:pinned") })
         }));
     }
