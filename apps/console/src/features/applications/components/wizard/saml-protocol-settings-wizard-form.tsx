@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { Grid } from "semantic-ui-react";
+import { AppState, ConfigReducerStateInterface } from "../../../core";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -61,9 +61,8 @@ interface SAMLProtocolSettingsWizardFormPropsInterface extends TestableComponent
 /**
  * SAML protocol settings wizard form component.
  *
- * @param {SAMLProtocolSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param SAMLProtocolSettingsWizardFormPropsInterface - props  Props injected to the component.
  *
- * @return {React.ReactElement}
  */
 export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSettingsWizardFormPropsInterface> = (
     props: SAMLProtocolSettingsWizardFormPropsInterface
@@ -91,9 +90,10 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 
     useEffect(() => {
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
-            const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+            const tempAssertionConsumerUrls: string = templateValues?.inboundProtocolConfiguration?.
+                saml?.manualConfiguration
                 .assertionConsumerUrls;
-            const tempIssuer = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
+            const tempIssuer : boolean = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.issuer;
 
             if (!isEmpty(tempAssertionConsumerUrls)) {
                 setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
@@ -143,17 +143,23 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @param {string} urls - Callback URLs.
-     * @return {object} Prepared values.
+     * @param string-urls  Callback URLs.
      */
     const getFormValues = (values: Map<string, FormValue>, urls?: string): any => {
-        const config = {
+        const config: {
             inboundProtocolConfiguration: {
                 saml: {
-                    manualConfiguration: { }
-                }
-            }
-        };
+                    manualConfiguration: Record<string, unknown>;
+                };
+            };
+        }
+         = {
+             inboundProtocolConfiguration: {
+                 saml: {
+                     manualConfiguration: { }
+                 }
+             }
+         };
 
         if (!fields || fields.includes("assertionConsumerURLs")) {
             config.inboundProtocolConfiguration.saml.manualConfiguration[ "assertionConsumerUrls" ] =
@@ -312,17 +318,17 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         } }
                                         showPredictions={ false }
                                         customLabel={ assertionConsumerURLsErrorLabel }
-                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderPositive={ t("urlInput:withLabel."
                                             + "positive.header") }
-                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderNegative={ t("urlInput:withLabel."
                                             + "negative.header") }
-                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentPositive={ t("urlInput:withLabel."
                                             + "positive.content", { productName: config.ui.productName }) }
-                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentNegative={ t("urlInput:withLabel."
                                             + "negative.content", { productName: config.ui.productName }) }
-                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        popupDetailedContentPositive={ t("urlInput:"
                                             + "withLabel.positive.detailedContent.0") }
-                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        popupDetailedContentNegative={ t("urlInput:"
                                             + "withLabel.negative.detailedContent.0") }
                                         insecureURLDescription={ t("console:common.validations.inSecureURL."
                                             + "description") }
@@ -334,7 +340,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                             <Message
                                                 type="info"
                                                 content={
-                                                    <>
+                                                    (<>
                                                         {
                                                             <Trans
                                                                 i18nKey={ "console:develop.features.applications." +
@@ -354,7 +360,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                                 assertionConsumerUrls === "") && (
                                                                 <LinkButton
                                                                     className={ "m-1 p-1 with-no-border orange" }
-                                                                    onClick={ (e) => {
+                                                                    // eslint-disable-next-line max-len
+                                                                    onClick={ (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                                                                         e.preventDefault();
                                                                         setAssertionConsumerUrls(
                                                                             assertionConsumerURLFromTemplate);
@@ -368,7 +375,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                                 </LinkButton>
                                                             )
                                                         }
-                                                    </>
+                                                    </>)
                                                 }
                                             />
                                         )

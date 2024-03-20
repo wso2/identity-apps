@@ -1654,17 +1654,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     customLabel={ callbackURLsErrorLabel }
                                     productName={ config.ui.productName }
                                     isCustom={ CustomApplicationTemplate?.id === template?.id }
-                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                    popupHeaderPositive={ t("urlInput:withLabel."
                                         + "positive.header") }
-                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                    popupHeaderNegative={ t("urlInput:withLabel."
                                         + "negative.header") }
-                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                    popupContentPositive={ t("urlInput:withLabel."
                                         + "positive.content", { productName: config.ui.productName }) }
-                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                    popupContentNegative={ t("urlInput:withLabel."
                                         + "negative.content", { productName: config.ui.productName }) }
-                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                    popupDetailedContentPositive={ t("urlInput:"
                                         + "withLabel.positive.detailedContent.0") }
-                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                    popupDetailedContentNegative={ t("urlInput:"
                                         + "withLabel.negative.detailedContent.0") }
                                     insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
                                     showLessContent={ t("common:showLess") }
@@ -1728,17 +1728,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     showPredictions={ false }
                                     customLabel={ allowedOriginsErrorLabel }
-                                    popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                    popupHeaderPositive={ t("urlInput:withLabel."
                                         + "positive.header") }
-                                    popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                    popupHeaderNegative={ t("urlInput:withLabel."
                                         + "negative.header") }
-                                    popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                    popupContentPositive={ t("urlInput:withLabel."
                                         + "positive.content", { productName: config.ui.productName }) }
-                                    popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                    popupContentNegative={ t("urlInput:withLabel."
                                         + "negative.content", { productName: config.ui.productName }) }
-                                    popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                    popupDetailedContentPositive={ t("urlInput:"
                                         + "withLabel.positive.detailedContent.0") }
-                                    popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                    popupDetailedContentNegative={ t("urlInput:"
                                         + "withLabel.negative.detailedContent.0") }
                                     insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
                                     showLessContent={ t("common:showLess") }
@@ -2521,17 +2521,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     submitUrl = submitFunction;
                                 } }
                                 showPredictions={ false }
-                                popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                popupHeaderPositive={ t("urlInput:withLabel."
                                     + "positive.header") }
-                                popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                popupHeaderNegative={ t("urlInput:withLabel."
                                     + "negative.header") }
-                                popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                popupContentPositive={ t("urlInput:withLabel."
                                     + "positive.content", { productName: config.ui.productName }) }
-                                popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                popupContentNegative={ t("urlInput:withLabel."
                                     + "negative.content", { productName: config.ui.productName }) }
-                                popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                popupDetailedContentPositive={ t("urlInput:"
                                     + "withLabel.positive.detailedContent.0") }
-                                popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                popupDetailedContentNegative={ t("urlInput:"
                                     + "withLabel.negative.detailedContent.0") }
                                 insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
                                 showLessContent={ t("common:showLess") }
@@ -2725,17 +2725,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     submitUrl = submitFunction;
                                 } }
                                 showPredictions={ false }
-                                popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                popupHeaderPositive={ t("urlInput:withLabel."
                                     + "positive.header") }
-                                popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                popupHeaderNegative={ t("urlInput:withLabel."
                                     + "negative.header") }
-                                popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                popupContentPositive={ t("urlInput:withLabel."
                                     + "positive.content", { productName: config.ui.productName }) }
-                                popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                popupContentNegative={ t("urlInput:withLabel."
                                     + "negative.content", { productName: config.ui.productName }) }
-                                popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                popupDetailedContentPositive={ t("urlInput:"
                                     + "withLabel.positive.detailedContent.0") }
-                                popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                popupDetailedContentNegative={ t("urlInput:"
                                     + "withLabel.negative.detailedContent.0") }
                                 insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
                                 showLessContent={ t("common:showLess") }

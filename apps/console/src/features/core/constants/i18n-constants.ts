@@ -53,7 +53,8 @@ export class I18nConstants {
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
         [ "approvals", "portals" ],
-        [ "businessGroups", "portals" ]
+        [ "businessGroups", "portals" ],
+        [ "urlInput", "portals" ]
     ]);
 
     /**

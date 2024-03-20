@@ -571,17 +571,17 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         customLabel={ callbackURLsErrorLabel }
                                         isAllowEnabled={ isAllowEnabled }
                                         addOriginByDefault={ addOriginByDefault }
-                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderPositive={ t("urlInput:withLabel."
                                             + "positive.header") }
-                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderNegative={ t("urlInput:withLabel."
                                             + "negative.header") }
-                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentPositive={ t("urlInput:withLabel."
                                             + "positive.content", { productName: config.ui.productName }) }
-                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentNegative={ t("urlInput:withLabel."
                                             + "negative.content", { productName: config.ui.productName }) }
-                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        popupDetailedContentPositive={ t("urlInput:"
                                             + "withLabel.positive.detailedContent.0") }
-                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        popupDetailedContentNegative={ t("urlInput:"
                                             + "withLabel.negative.detailedContent.0") }
                                         insecureURLDescription={ t("console:common.validations.inSecureURL."
                                             + "description") }
