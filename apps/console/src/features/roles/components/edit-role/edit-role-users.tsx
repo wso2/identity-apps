@@ -201,9 +201,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if ( userListFetchRequestError ) {
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.roles.edit.users.notifications.fetchError.description"),
+                    description: t("roles:edit.users.notifications.fetchError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.edit.users.notifications.fetchError.message")
+                    message: t("roles:edit.users.notifications.fetchError.message")
                 })
             );
         }
@@ -218,9 +218,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         return (
             <EmptyPlaceholder
                 subtitle={
-                    [ t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder.subtitles.0") ]
+                    [ t("roles:edit.users.placeholders.emptyPlaceholder.subtitles.0") ]
                 }
-                title={ t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder.title") }
+                title={ t("roles:edit.users.placeholders.emptyPlaceholder.title") }
                 image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
                 action={
@@ -230,7 +230,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                 onClick={ () => setIsPlaceholderVisible(false) }
                             >
                                 <Icon name="plus"/>
-                                { t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder" +
+                                { t("roles:edit.users.placeholders.emptyPlaceholder" +
                                         ".action") }
                             </PrimaryButton>
                         )
@@ -328,9 +328,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.roles.edit.users.notifications.success.description"),
+                        description: t("roles:edit.users.notifications.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.roles.edit.users.notifications.success.message")
+                        message: t("roles:edit.users.notifications.success.message")
                     })
                 );
                 onRoleUpdate(tabIndex);
@@ -340,19 +340,19 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                     dispatch(
                         addAlert({
                             description:
-                                t("console:manage.features.roles.edit.groups.notifications.error.description",
+                                t("roles:edit.groups.notifications.error.description",
                                     { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.edit.groups.notifications.error.message")
+                            message: t("roles:edit.groups.notifications.error.message")
                         })
                     );
                 } else {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" +
+                            description: t("roles:edit.groups.notifications.genericError" +
                                 ".description"),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.edit.groups.notifications.genericError.message")
+                            message: t("roles:edit.groups.notifications.genericError.message")
                         })
                     );
                 }
@@ -366,10 +366,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     return (
         <EmphasizedSegment padded="very" className="edit-role users">
             <Heading as="h4">
-                { t("console:manage.features.roles.edit.users.heading") }
+                { t("roles:edit.users.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("console:manage.features.roles.edit.users.subHeading") }
+                { t("roles:edit.users.subHeading") }
             </Heading>
             {
                 isPlaceholderVisible
@@ -422,7 +422,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     <TextField
                                                         { ...params }
                                                         placeholder= {
-                                                            t("console:manage.features.roles.edit.users" +
+                                                            t("roles:edit.users" +
                                                                                   ".actions.assign.placeholder") }
                                                     />
                                                 ) }

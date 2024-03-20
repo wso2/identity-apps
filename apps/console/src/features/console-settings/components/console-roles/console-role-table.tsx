@@ -124,16 +124,16 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                             data-componentid={ `${ componentId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
-                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                            { t("roles:list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("roles:list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("roles:list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("roles:list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -150,26 +150,26 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
                                 <Icon name="add"/>
-                                { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                { t("roles:list.emptyPlaceholders.emptyRoleList.action",
                                     { type: "Role" }) }
                             </PrimaryButton>
                         </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ !isSubOrg && t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
+                    title={ !isSubOrg && t("roles:list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }
                     subtitle={ isSubOrg
                         ? [
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                 { type: "roles" })
                         ]
                         : [
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                 { type: "roles" }),
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.1",
                                 { type: "role" }),
-                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.2",
                                 { type: "role" })
                         ]
                     }
@@ -214,7 +214,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.roles.list.columns.name")
+                title: t("roles:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -242,7 +242,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                 ),
                 title: (
                     <div className="pl-3">
-                        { t("console:manage.features.roles.list.columns.audience") }
+                        { t("roles:list.columns.audience") }
                     </div>
                 )
             },
@@ -272,7 +272,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                         && onRoleEdit(role),
                 popupText: (): string =>
                     hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
-                        ? t("console:manage.features.roles.list.popups.edit",
+                        ? t("roles:list.popups.edit",
                             { type: "Role" })
                         : t("common:view"),
                 renderer: "semantic-icon"
@@ -287,7 +287,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                     setCurrentDeletedRole(role);
                     setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                 },
-                popupText: (): string => t("console:manage.features.roles.list.popups.delete",
+                popupText: (): string => t("roles:list.popups.delete",
                     { type: "Role" }),
                 renderer: "semantic-icon"
             }
@@ -314,7 +314,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showRoleDeleteConfirmation }
-                        assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                        assertionHint={ t("roles:list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -326,14 +326,14 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                            { t("roles:list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                            { t("roles:list.confirmations.deleteItem.message",
                                 { type: "role" }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                            { t("roles:list.confirmations.deleteItem.content",
                                 { type: "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

@@ -239,10 +239,10 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.success" +
+                        description: t("roles:notifications.createRole.success" +
                             ".description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.roles.notifications.createRole.success.message")
+                        message: t("roles:notifications.createRole.success.message")
                     }));
 
                     onRoleCreated();
@@ -251,25 +251,25 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             .catch((error: AxiosError) => {
                 if (!error.response || error.response.status === 401) {
                     dispatch(addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.error" +
+                        description: t("roles:notifications.createRole.error" +
                             ".description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        message: t("roles:notifications.createRole.error.message")
                     }));
                 } else if (error.response && error.response.data.detail) {
                     dispatch(addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.error" +
+                        description: t("roles:notifications.createRole.error" +
                             ".description",
                         { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        message: t("roles:notifications.createRole.error.message")
                     }));
                 } else {
                     dispatch(addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.genericError" +
+                        description: t("roles:notifications.createRole.genericError" +
                             ".description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                        message: t("roles:notifications.createRole.genericError.message")
                     }));
                 }
             })
@@ -295,13 +295,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
         // Handle the case where the user has not entered a role name.
         if (!values.displayName?.toString().trim()) {
-            errors.displayName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+            errors.displayName = t("roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                 "validations.empty", { type: "Role" });
         } else {
             setRoleNameSearchQuery(`displayName eq ${values?.displayName} and audience.value eq ${audienceId}`);
             if (!isRolesListLoading || !isRolesListValidating) {
                 if (rolesList?.totalResults > 0) {
-                    errors.displayName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                    errors.displayName = t("roles:addRoleWizard.forms.roleBasicDetails." +
                         "roleName.validations.duplicate", { type: "Role" });
                 }
             }
@@ -373,7 +373,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     <Field.Dropdown
                         ariaLabel="assignedApplicationId"
                         name="assignedApplicationId"
-                        label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                        label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                             "assignedApplication.label") }
                         required={ true }
                         options={ selectedApplication }
@@ -381,9 +381,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         search
                         loading = { false }
                         data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                        hint={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                        hint={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                             "assignedApplication.note") }
-                        placeholder={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                        placeholder={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                             "assignedApplication.placeholder") }
                         onChange={ (
                             e: React.ChangeEvent<HTMLInputElement>,
@@ -471,7 +471,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                         : t("common:noResultsFound")
                                     }
                                     key="apiResource"
-                                    placeholder={ t("console:manage.features.roles.addRoleWizard." +
+                                    placeholder={ t("roles:addRoleWizard." +
                                         "forms.rolePermission.apiResource.placeholder") }
                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                         <TextField
@@ -495,7 +495,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     ? (
                         <div className="role-permission-list field">
                             <label className="form-label">
-                                { t("console:manage.features.roles.addRoleWizard.forms.rolePermission" +
+                                { t("roles:addRoleWizard.forms.rolePermission" +
                                     ".permissions.label") }
                             </label>
                             <EmphasizedSegment
@@ -518,7 +518,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                                             selectedPermission.apiResourceId === apiResource?.id
                                                     )?.scopes
                                                 }
-                                                errorMessage={ t("console:manage.features.roles.addRoleWizard." +
+                                                errorMessage={ t("roles:addRoleWizard." +
                                                     "forms.rolePermission.permissions.validation.empty") }
                                             />
                                         );

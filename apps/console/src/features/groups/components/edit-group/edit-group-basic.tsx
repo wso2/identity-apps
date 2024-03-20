@@ -236,7 +236,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                         {
                                             isGroup
                                                 ? t("console:manage.features.groups.edit.basics.fields.groupName.name")
-                                                : t("console:manage.features.roles.edit.basics.fields.groupName.name")
+                                                : t("roles:edit.basics.fields.groupName.name")
                                         }
                                     </label>
                                     <Field
@@ -247,14 +247,14 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             isGroup
                                                 ? t("console:manage.features.groups.edit.basics.fields.groupName" +
                                                 ".required")
-                                                : t("console:manage.features.roles.edit.basics.fields.groupName" +
+                                                : t("roles:edit.basics.fields.groupName" +
                                                 ".required")
                                         }
                                         placeholder={
                                             isGroup
                                                 ? t("console:manage.features.groups.edit.basics.fields.groupName." +
                                                 "placeholder")
-                                                : t("console:manage.features.roles.edit.basics.fields.groupName." +
+                                                : t("roles:edit.basics.fields.groupName." +
                                                 "placeholder")
                                         }
                                         value={ nameValue }
@@ -290,7 +290,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                             if (response.data.Resources[0]?.id !== groupId) {
                                                                 validation.isValid = false;
                                                                 validation.errorMessages.push(
-                                                                    t("console:manage.features.roles." +
+                                                                    t("roles:" +
                                                                     "addRoleWizard." +
                                                                     "forms.roleBasicDetails.roleName." +
                                                                     "validations.duplicate",
@@ -339,7 +339,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             }
                                             disabled={ isRegExLoading || isSubmitting }
                                         >
-                                            { t("console:manage.features.roles.edit.basics.buttons.update") }
+                                            { t("roles:edit.basics.buttons.update") }
                                         </Button>
                                     )
                                 }
@@ -355,23 +355,23 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                         <DangerZone
                             actionTitle={
                                 isGroup
-                                    ? t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
+                                    ? t("roles:edit.basics.dangerZone.actionTitle",
                                         { type: "Group" })
-                                    : t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
+                                    : t("roles:edit.basics.dangerZone.actionTitle",
                                         { type: "Role" })
                             }
                             header={
                                 isGroup
-                                    ? t("console:manage.features.roles.edit.basics.dangerZone.header",
+                                    ? t("roles:edit.basics.dangerZone.header",
                                         { type: "group" })
-                                    : t("console:manage.features.roles.edit.basics.dangerZone.header",
+                                    : t("roles:edit.basics.dangerZone.header",
                                         { type: "role" })
                             }
                             subheader={
                                 isGroup
-                                    ? t("console:manage.features.roles.edit.basics.dangerZone.subheader",
+                                    ? t("roles:edit.basics.dangerZone.subheader",
                                         { type: "group" })
-                                    : t("console:manage.features.roles.edit.basics.dangerZone.subheader",
+                                    : t("roles:edit.basics.dangerZone.subheader",
                                         { type: "role" })
                             }
                             onActionClick={ () => setShowDeleteConfirmationModal(!showGroupDeleteConfirmation) }
@@ -390,7 +390,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="negative"
                     open={ showGroupDeleteConfirmation }
-                    assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
+                    assertionHint={ t("roles:edit.basics.confirmation.assertionHint") }
                     assertionType="checkbox"
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
@@ -403,14 +403,14 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     }
                 >
                     <ConfirmationModal.Header>
-                        { t("console:manage.features.roles.edit.basics.confirmation.header") }
+                        { t("roles:edit.basics.confirmation.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached negative>
-                        { t("console:manage.features.roles.edit.basics.confirmation.message",
+                        { t("roles:edit.basics.confirmation.message",
                             { type: isGroup ? "group." : "role." }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("console:manage.features.roles.edit.basics.confirmation.content",
+                        { t("roles:edit.basics.confirmation.content",
                             { type: isGroup ? "group" : "role" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>)

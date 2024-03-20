@@ -148,19 +148,19 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
                                     ? (
                                         <>
-                                            { t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                            { t("roles:addRoleWizard.forms.roleBasicDetails." +
                                                 "assignedApplication.applicationSubTitle.organization") }
                                             <Link
                                                 data-componentid={ `${componentId}-link-navigate-roles` }
                                                 onClick={ () => navigateToApplicationEdit(application?.id) }
                                                 external={ false }
                                             >
-                                                { t("console:manage.features.roles.addRoleWizard.forms." +
+                                                { t("roles:addRoleWizard.forms." +
                                                     "roleBasicDetails.assignedApplication.applicationSubTitle." +
                                                     "changeAudience") }
                                             </Link>
                                         </>
-                                    ) : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                    ) : t("roles:addRoleWizard.forms.roleBasicDetails." +
                                         "assignedApplication.applicationSubTitle.application")
                             }
                         />
@@ -258,17 +258,17 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
         // Handle the case where the user has not selected an assigned application.
         if (roleAudience === RoleAudienceTypes.APPLICATION && !values.assignedApplicationId?.toString().trim()) {
-            errors.assignedApplicationId = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+            errors.assignedApplicationId = t("roles:addRoleWizard.forms.roleBasicDetails." +
                 "assignedApplication.validations.empty", { type: "Role" });
         }
 
         // Handle the case where the user has not entered a role name.
         if (!values.roleName?.toString().trim()) {
-            errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+            errors.roleName = t("roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                 "validations.empty", { type: "Role" });
         } else {
             if (!FormValidation.isValidRoleName(values.roleName?.toString().trim())) {
-                errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                errors.roleName = t("roles:addRoleWizard.forms.roleBasicDetails." +
                     "roleName.validations.invalid", { type: "Role" });
             } else {
                 // TODO: Need to debounce the function.
@@ -276,7 +276,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
                 if (!isRolesListLoading || !isRolesListValidating) {
                     if (rolesList?.totalResults > 0) {
-                        errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                        errors.roleName = t("roles:addRoleWizard.forms.roleBasicDetails." +
                             "roleName.validations.duplicateInAudience");
                     }
                 }
@@ -313,18 +313,18 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 maxLength={ RoleConstants.ROLE_NAME_MAX_LENGTH }
                 minLength={ RoleConstants.ROLE_NAME_MIN_LENGTH }
                 label={
-                    t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                    t("roles:addRoleWizard.forms.roleBasicDetails." +
                         "roleName.label",{ type: "Role" })
                 }
                 placeholder={
-                    t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                    t("roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                         "placeholder", { type: "Role" })
                 }
                 required
             />
             <div className="ui form required field">
                 <label>
-                    { t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleAudience.label") }
+                    { t("roles:addRoleWizard.forms.roleBasicDetails.roleAudience.label") }
                 </label>
                 {
                     Object.values(RoleAudienceTypes)
@@ -333,7 +333,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 key={ index }
                                 ariaLabel="roleAudience"
                                 name="roleAudience"
-                                label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                     `roleAudience.values.${audience.toLowerCase()}`) }
                                 value={ audience }
                                 defaultValue={ initialValues?.roleAudience ?? RoleConstants.DEFAULT_ROLE_AUDIENCE }
@@ -343,7 +343,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     index === Object.keys(RoleAudienceTypes).length - 1
                                         ? (
                                             <Trans
-                                                i18nKey= { "console:manage.features.roles.addRoleWizard.forms." +
+                                                i18nKey= { "roles:addRoleWizard.forms." +
                                                     "roleBasicDetails.roleAudience.hint" }>
                                                 Set the audience of the role.
                                                 <b>Note that audience of the role cannot be changed.</b>
@@ -362,9 +362,9 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                         <Alert severity="info">
                             {
                                 roleAudience === RoleAudienceTypes.ORGANIZATION
-                                    ? t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.notes" +
+                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
                                         ".orgNote")
-                                    : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.notes" +
+                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
                                         ".appNote")
                                 // TODO: need to add a learn more for this.
                             }
@@ -372,7 +372,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     ) : (
                         <Alert severity="error">
                             <Trans
-                                i18nKey= { "console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.notes" +
+                                i18nKey= { "roles:addRoleWizard.forms.roleBasicDetails.notes" +
                                     ".cannotCreateRole" }
                             >
                                 You cannot create an application-scoped role because there are currently no applications
@@ -396,7 +396,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                         <Field.Dropdown
                             ariaLabel="assignedApplicationId"
                             name="assignedApplicationId"
-                            label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                            label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                 "assignedApplication.label") }
                             options={ applicationListOptions }
                             required={ isDisplayApplicationList }
@@ -404,9 +404,9 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             search
                             loading = { isApplicationListFetchRequestLoading || assignedApplicationsSearching }
                             data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                            hint={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                            hint={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                 "assignedApplication.hint") }
-                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                            placeholder={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                 "assignedApplication.placeholder") }
                             noResultsMessage={
                                 isApplicationListFetchRequestLoading || assignedApplicationsSearching
