@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -46,6 +47,7 @@ import { X509, zulutodate } from "jsrsasign";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
 import {
@@ -157,7 +159,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     );
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const dispatch = useDispatch();
+    const dispatch : Dispatch = useDispatch();
 
     /**
      * Delete a certificate
@@ -165,18 +167,18 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      * @param certificate - Deleting certificate.
      */
     const initDelete = (certificate: Certificate): void => {
-        retrieveCertificateAlias(certificate.alias, true).then(response => {
+        retrieveCertificateAlias(certificate.alias, true).then((response : any)=> {
             setDeleteCertificatePem(response);
             setDeleteID(certificate.alias);
             setDeleteConfirm(true);
-        }).catch(error => {
+        }).catch((error : IdentityAppsError) => {
             dispatch(addAlert({
                 description: error?.description
-                    || t("console:manage.features.certificates.keystore.notifications." +
+                    || t("certificates:keystore.notifications." +
                         "getAlias.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
-                    || t("console:manage.features.certificates.keystore.notifications." +
+                    || t("certificates:keystore.notifications." +
                         "getAlias.genericError.message")
             }));
         });
@@ -214,16 +216,16 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     }, [ certificateDisplay ]);
 
     useEffect(() => {
-        retrievePublicCertificate(true).then(response => {
+        retrievePublicCertificate(true).then((response : any) => {
             setTenantCertificate(decodeCertificate(response).serialNumber);
-        }).catch(error => {
+        }).catch((error : IdentityAppsError) => {
             dispatch(addAlert({
                 description: error?.description
-                    ?? t("console:manage.features.certificates.keystore.notifications." +
+                    ?? t("certificates:keystore.notifications." +
                         "getPublicCertificate.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
-                    ?? t("console:manage.features.certificates.keystore.notifications." +
+                    ?? t("certificates:keystore.notifications." +
                         "getPublicCertificate.genericError.description")
             }));
         });
@@ -247,7 +249,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 assertionHint={
                     (<p>
                         <Trans
-                            i18nKey="console:manage.features.certificates.keystore.confirmation.hint"
+                            i18nKey="certificates:keystore.confirmation.hint"
                             i18nOptions={ { id: deleteID } }
                         >
                            Please type <strong>{ deleteID }</strong> to confirm.
@@ -255,27 +257,27 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     </p>)
                 }
                 assertionType={ isTenantCertificate ? "input" : null }
-                primaryAction={ t("console:manage.features.certificates.keystore.confirmation.primaryAction") }
+                primaryAction={ t("certificates:keystore.confirmation.primaryAction") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ closeDeleteConfirm }
                 onPrimaryActionClick={ (): void => {
                     deleteKeystoreCertificate(deleteID).then(() => {
                         dispatch(addAlert({
-                            description: t("console:manage.features.certificates.keystore.notifications." +
+                            description: t("certificates:keystore.notifications." +
                                 "deleteCertificate.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.certificates.keystore.notifications." +
+                            message: t("certificates:keystore.notifications." +
                                 "deleteCertificate.success.message")
                         }));
                         update();
-                    }).catch((error) => {
+                    }).catch((error: IdentityAppsError) => {
                         dispatch(addAlert({
                             description: error?.description
-                                ?? t("console:manage.features.certificates.keystore.notifications." +
+                                ?? t("certificates:keystore.notifications." +
                                     "deleteCertificate.genericError.description"),
                             level: AlertLevels.ERROR,
                             message: error?.message
-                                ?? t("console:manage.features.certificates.keystore.notifications." +
+                                ?? t("certificates:keystore.notifications." +
                                     "deleteCertificate.genericError.message")
                         }));
                     }).finally(() => {
@@ -288,7 +290,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-delete-confirmation-modal-header` }
                 >
-                    { t("console:manage.features.certificates.keystore.confirmation.header") }
+                    { t("certificates:keystore.confirmation.header") }
                 </ConfirmationModal.Header>
                 { isTenantCertificate
                     ? (
@@ -298,19 +300,19 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                 negative
                                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
                             >
-                                { t("console:manage.features.certificates.keystore.confirmation.message") }
+                                { t("certificates:keystore.confirmation.message") }
                             </ConfirmationModal.Message>
                             < ConfirmationModal.Content
                                 data-testid={ `${ testId }-delete-confirmation-modal-content` }
                             >
-                                { t("console:manage.features.certificates.keystore.confirmation.tenantContent") }
+                                { t("certificates:keystore.confirmation.tenantContent") }
                             </ConfirmationModal.Content>
                         </>
                     ) : (
                         < ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            { t("console:manage.features.certificates.keystore.confirmation.content") }
+                            { t("certificates:keystore.confirmation.content") }
                         </ConfirmationModal.Content>
                     )
                 }
@@ -326,25 +328,25 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      * @param pem - The PEM encoded certificate content.
      */
     const exportCertificate = (name: string, pem: string): void => {
-        const certificate = decodeCertificate(pem);
-        const hex = certificate.hex;
+        const certificate : X509 = decodeCertificate(pem);
+        const hex : string = certificate.hex;
 
-        const byteArray = new Uint8Array(hex.length / 2);
+        const byteArray : Uint8Array= new Uint8Array(hex.length / 2);
 
-        for (let x = 0; x < byteArray.length; x++) {
+        for (let x:number = 0; x < byteArray.length; x++) {
             byteArray[ x ] = parseInt(hex.substr(x * 2, 2), 16);
         }
 
-        const blob = new Blob([ byteArray ], {
+        const blob : Blob = new Blob([ byteArray ], {
             type: "application/x-x509-ca-cert"
         });
 
         saveAs(blob, name + ".cer");
 
         dispatch(addAlert({
-            description: t("console:manage.features.certificates.keystore.notifications.download.success.description"),
+            description: t("certificates:keystore.notifications.download.success.description"),
             level: AlertLevels.SUCCESS,
-            message: t("console:manage.features.certificates.keystore.notifications.download.success.message")
+            message: t("certificates:keystore.notifications.download.success.message")
         }));
     };
 
@@ -355,7 +357,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      * @returns The X509 Certificate object.
      */
     const decodeCertificate = (pem: string): X509 => {
-        const pemValue = pem?.split("\n");
+        const pemValue : string[] = pem?.split("\n");
 
         // appends -----END CERTIFICATE-----.
         pemValue?.push(CertificateManagementConstants.CERTIFICATE_END);
@@ -366,7 +368,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         // pushes -----BEGIN CERTIFICATE----- to the top.
         pemValue?.unshift(CertificateManagementConstants.CERTIFICATE_BEGIN);
 
-        const pemCert = pemValue?.join("\n");
+        const pemCert : string = pemValue?.join("\n");
 
         const cert: X509 = new X509();
 
@@ -387,14 +389,14 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         const displayCertificate: DisplayCertificate = {
             alias: certificate.alias,
             issuerDN: cert.getIssuerString().split("/").slice(1)
-                .map(attribute => {
+                .map((attribute : string) => {
                     return {
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
                     };
                 }),
             serialNumber: cert.getSerialNumberHex(),
             subjectDN: cert.getSubjectString().split("/").slice(1)
-                .map(attribute => {
+                .map((attribute : string) => {
                     return {
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
                     };
@@ -447,11 +449,11 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         data-testid={ `${ testId }-certificate` }
                         certificate={ certificateDisplay }
                         labels={ {
-                            issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
-                            subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
-                            validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
-                            validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
-                            version: t("console:manage.features.certificates.keystore.summary.version")
+                            issuerDN: t("certificates:keystore.summary.issuerDN"),
+                            subjectDN: t("certificates:keystore.summary.subjectDN"),
+                            validFrom: t("certificates:keystore.summary.validFrom"),
+                            validTill: t("certificates:keystore.summary.validTill"),
+                            version: t("certificates:keystore.summary.version")
                         } }
                     />
                 </Modal.Content>
@@ -492,14 +494,14 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     action={ (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="cloud upload" />
-                            { t("console:manage.features.certificates.keystore.placeholders.emptyList.action") }
+                            { t("certificates:keystore.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.certificates.keystore.placeholders.emptyList.title") }
+                    title={ t("certificates:keystore.placeholders.emptyList.title") }
                     subtitle={ [
-                        t("console:manage.features.certificates.keystore.placeholders.emptyList.subtitle")
+                        t("certificates:keystore.placeholders.emptyList.subtitle")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -536,14 +538,14 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             retrieveCertificateAlias(certificate.alias, true)
                 .then((response: string) => {
                     displayCertificate(certificate, response);
-                }).catch(error => {
+                }).catch((error : IdentityAppsError) => {
                     dispatch(addAlert({
                         description: error?.description
-                            ?? t("console:manage.features.certificates.keystore.notifications.getAlias." +
+                            ?? t("certificates:keystore.notifications.getAlias." +
                                 "genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            ?? t("console:manage.features.certificates.keystore.notifications.getAlias." +
+                            ?? t("certificates:keystore.notifications.getAlias." +
                                 "genericError.message")
                     }));
                 });
@@ -552,16 +554,16 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         }
 
         retrieveClientCertificate(certificate.alias, true)
-            .then((response) => {
+            .then((response : any) => {
                 displayCertificate(certificate, response);
-            }).catch(error => {
+            }).catch((error : IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
-                        ?? t("console:manage.features.certificates.keystore.notifications.getCertificate." +
+                        ?? t("certificates:keystore.notifications.getCertificate." +
                             "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        ?? t("console:manage.features.certificates.keystore.notifications.getCertificate." +
+                        ?? t("certificates:keystore.notifications.getCertificate." +
                             "genericError.message")
                 }));
             });
@@ -576,14 +578,14 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             retrieveCertificateAlias(certificate.alias, true)
                 .then((response: string) => {
                     exportCertificate(certificate.alias, response);
-                }).catch(error => {
+                }).catch((error : IdentityAppsError) => {
                     dispatch(addAlert({
                         description: error?.description
-                            ?? t("console:manage.features.certificates.keystore.notifications.getAlias." +
+                            ?? t("certificates:keystore.notifications.getAlias." +
                                 "genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            ?? t("console:manage.features.certificates.keystore.notifications.getAlias." +
+                            ?? t("certificates:keystore.notifications.getAlias." +
                                 "genericError.message")
                     }));
                 });
@@ -592,16 +594,16 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
         }
 
         retrieveClientCertificate(certificate.alias, true)
-            .then((response) => {
+            .then((response : any) => {
                 exportCertificate(certificate.alias, response);
-            }).catch(error => {
+            }).catch((error : IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
-                        ?? t("console:manage.features.certificates.keystore.notifications.getCertificate." +
+                        ?? t("certificates:keystore.notifications.getCertificate." +
                             "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        ?? t("console:manage.features.certificates.keystore.notifications.getCertificate." +
+                        ?? t("certificates:keystore.notifications.getCertificate." +
                             "genericError.message")
                 }));
             });
@@ -643,7 +645,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.certificates.keystore.list.columns.name")
+                title: t("certificates:keystore.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -651,7 +653,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.certificates.keystore.list.columns.actions")
+                title: t("certificates:keystore.list.columns.actions")
             }
         ];
     };
@@ -688,7 +690,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     );
                     // Checks whether the alias of this certificate matches the tenant domain
                     // or the authenticated user's tenant domain.
-                    const isTenant = tenantDomain === alias || authTenantDomain === alias;
+                    const isTenant : boolean = tenantDomain === alias || authTenantDomain === alias;
 
                     return !(type === KEYSTORE && hasScopes) || isSuper || isTenant;
                 },
