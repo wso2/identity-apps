@@ -81,10 +81,10 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                             updateADialect(dialect.id, dialectURI)
                                 .then(() => {
                                     dispatch(addAlert({
-                                        description: t("console:manage.features.claims.dialects.notifications" +
+                                        description: t("claims:dialects.notifications" +
                                             ".updateDialect.success.description"),
                                         level: AlertLevels.SUCCESS,
-                                        message: t("console:manage.features.claims.dialects.notifications" +
+                                        message: t("claims:dialects.notifications" +
                                             ".updateDialect.success.message")
                                     }));
                                     onUpdate(window.btoa(dialectURI).replace(/=/g, ""));
@@ -92,11 +92,11 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                 .catch((error) => {
                                     dispatch(addAlert({
                                         description: error?.description
-                                            || t("console:manage.features.claims.dialects.notifications" +
+                                            || t("claims:dialects.notifications" +
                                                 ".updateDialect.genericError.description"),
                                         level: AlertLevels.ERROR,
                                         message: error?.message
-                                            || t("console:manage.features.claims.dialects.notifications" +
+                                            || t("claims:dialects.notifications" +
                                                 ".updateDialect.genericError.message")
                                     }));
                                 })
@@ -107,7 +107,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                     >
                         <Field
                             type="text"
-                            placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder",
+                            placeholder={ t("claims:dialects.forms.dialectURI.placeholder",
                                 { type: resolveType(attributeType, true) }) }
                             value={ dialect?.dialectURI }
                             required={ true }
@@ -116,9 +116,9 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                     ? ClaimManagementConstants.DEFAULT_DIALECTS.includes(dialect?.id)
                                     : false
                             }
-                            requiredErrorMessage={ t("console:manage.features.claims.dialects." +
+                            requiredErrorMessage={ t("claims:dialects." +
                                 "forms.dialectURI.requiredErrorMessage") }
-                            label={ t("console:manage.features.claims.dialects.forms.dialectURI.label") }
+                            label={ t("claims:dialects.forms.dialectURI.label") }
                             name="dialectURI"
                             data-testid={ `${ testId }-form-dialect-uri-input` }
                         />
@@ -135,7 +135,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                             loading={ isSubmitting }
                                             disabled={ isSubmitting }
                                         >
-                                            { t("console:manage.features.claims.dialects.forms.submit") }
+                                            { t("claims:dialects.forms.submit") }
                                         </PrimaryButton>
                                     </>
                                 )

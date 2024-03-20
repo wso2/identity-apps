@@ -361,7 +361,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
             {
                 !isReadOnly && (
                     <PrimaryButton onClick={ updateOIDCScope }>
-                        { t("console:manage.features.claims.scopeMappings.saveChangesButton") }
+                        { t("claims:scopeMappings.saveChangesButton") }
                     </PrimaryButton>
                 )
             }
@@ -372,7 +372,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.claims.scopeMappings." +
+                        assertionHint={ t("claims:scopeMappings." +
                             "deletionConfirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -382,17 +382,17 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.header") }
+                            { t("claims:scopeMappings.deletionConfirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.message") }
+                            { t("claims:scopeMappings.deletionConfirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.claims.scopeMappings.deletionConfirmationModal.content") }
+                            { t("claims:scopeMappings.deletionConfirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

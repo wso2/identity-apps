@@ -162,14 +162,14 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         description:
                             error?.response?.data?.description ||
                             t(
-                                "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                                "claims:dialects.notifications.fetchDialects" +
                                 ".genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.response?.data?.message ||
                             t(
-                                "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                                "claims:dialects.notifications.fetchDialects" +
                                 ".genericError.message"
                             )
                     })
@@ -227,8 +227,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ) }
             <PageLayout
                 pageTitle="Attributes"
-                title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
-                description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
+                title={ t("claims:dialects.pageLayout.list.title") }
+                description={ t("claims:dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <GridLayout
@@ -250,7 +250,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                 ) : (
                                     <>
                                         <Header as="h4">
-                                            { t("console:manage.features.claims.dialects." +
+                                            { t("claims:dialects." +
                                         "sections.manageAttributes.heading") }
                                         </Header>
                                         <Divider hidden />
@@ -447,7 +447,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                         ) : (
                                             <Header as="h4">
                                                 { t(
-                                                    "console:manage.features.claims.dialects." +
+                                                    "claims:dialects." +
                                                     "sections.manageAttributeMappings.heading"
                                                 ) }
                                             </Header>
@@ -472,7 +472,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             >
                                                 <Icon name="add" />
                                                 {
-                                                    t("console:manage.features.claims.dialects." +
+                                                    t("claims:dialects." +
                                                     "pageLayout.list.primaryAction")
                                                 }
                                             </PrimaryButton>
@@ -521,7 +521,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." +
+                                                                    "claims:" +
                                                                     "dialects.sections." +
                                                                     "manageAttributeMappings.oidc.heading"
                                                                 ) }
@@ -609,7 +609,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." +
+                                                                    "claims:" +
                                                                     "dialects.sections." +
                                                                     "manageAttributeMappings.scim.heading"
                                                                 ) }
@@ -618,7 +618,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features.claims.attributeMappings" +
+                                                                    "claims:attributeMappings" +
                                                             ".scim.description"
                                                                 ) }
                                                             </List.Description>
@@ -889,7 +889,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         data-testid={ `${ testId }-local-dialect` }
                                                                     >
                                                                         { t(
-                                                                            "console:manage.features.claims." +
+                                                                            "claims:" +
                                                                             "attributeMappings." +
                                                                             "custom.description"
                                                                         ) }
