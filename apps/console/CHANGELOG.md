@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.23
+
+### Patch Changes
+
+- [#5783](https://github.com/wso2/identity-apps/pull/5783) [`a731a5731c`](https://github.com/wso2/identity-apps/commit/a731a5731c7b07d94005454f27e4c18b9923a7f4) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Remove legacyAuthzRuntime check when transforming tenantDomain
+
 ## 2.13.22
 
 ### Patch Changes
