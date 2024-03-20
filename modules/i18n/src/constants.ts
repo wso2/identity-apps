@@ -85,4 +85,28 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * Onboarded namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ONBOARDED_NAMESPACE: string = "onboarded";
+
+    /**
+     * Organization discovery namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string = "organizationDiscovery";
+
+    /**
+     * Organizations namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ORGANIZATIONS_NAMESPACE: string = "organizations";
 }

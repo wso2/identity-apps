@@ -57,6 +57,30 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Onboarded namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ONBOARDED_NAMESPACE: string = I18nModuleConstants.ONBOARDED_NAMESPACE;
+
+    /**
+     * Organization discovery namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string = I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
+
+    /**
+     * Organizations namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.ORGANIZATIONS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -65,7 +89,10 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.ONBOARDED_NAMESPACE, "portals" ],
+        [ I18nConstants.ORGANIZATION_DISCOVERY_NAMESPACE, "portals" ],
+        [ I18nConstants.ORGANIZATIONS_NAMESPACE, "portals" ]
     ]);
 
     /**

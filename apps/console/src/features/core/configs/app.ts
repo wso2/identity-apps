@@ -191,7 +191,10 @@ export class Config {
             ns: [
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-                I18nConstants.EXTENSIONS_NAMESPACE
+                I18nConstants.EXTENSIONS_NAMESPACE,
+                I18nConstants.ONBOARDED_NAMESPACE,
+                I18nConstants.ORGANIZATION_DISCOVERY_NAMESPACE,
+                I18nConstants.ORGANIZATIONS_NAMESPACE
             ],
             preload: []
         };
