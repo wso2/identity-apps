@@ -73,8 +73,6 @@ export interface UseOrganizationsInterface extends OrganizationsContextProps {
 const useOrganizations = (): UseOrganizationsInterface => {
     const context: OrganizationsContextProps = useContext(OrganizationsContext);
 
-    const { legacyAuthzRuntime } = useAuthorization();
-
     const { getLocalStorageSetting, setLocalStorageSetting, removeLocalStorageSetting } = useAppSettings();
 
     if (context === undefined) {
@@ -89,10 +87,8 @@ const useOrganizations = (): UseOrganizationsInterface => {
      */
     const transformTenantDomain = (tenantDomain: string): string => {
         // With the latest Authz framework, `carbon.super` is resolved as `Super`.
-        if (!legacyAuthzRuntime) {
-            if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
-                return MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
-            }
+        if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
+            return MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
         }
 
         return tenantDomain;
