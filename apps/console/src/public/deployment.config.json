@@ -297,7 +297,7 @@
             "branding": {
                 "disabledFeatures": [ 
                     "branding.hostnameUrlBranding",
-                    "branding.ai" ],
+                    "branding.ai1" ],
                 "enabled": true,
                 "scopes": {
                     "feature": [

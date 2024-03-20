@@ -96,7 +96,7 @@ export const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element =
     const fetchProgress = async () => {
         try {
             const response: AxiosResponse<any> = await axios.get(
-                "http://0.0.0.0:8080/branding/status",
+                "http://localhost:3000/status",
                 { headers: { "trace-id": traceId } }
             );
 
