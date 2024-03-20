@@ -109,9 +109,9 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
         deleteInvite(traceID)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.success.description"),
+                    description: t("invite:notifications.deleteInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.success.message")
+                    message: t("invite:notifications.deleteInvite.success.message")
                 }));
                 setUpdateInviteList(true);
 
@@ -119,20 +119,20 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
             if (error?.response?.data?.description) {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.invite.notifications.deleteInvite.error.description"),
+                        ?? t("invite:notifications.deleteInvite.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("console:manage.features.invite.notifications.deleteInvite.error.message")
+                        ?? t("invite:notifications.deleteInvite.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:manage.features.invite.notifications.deleteInvite.genericError." +
+                description: t("invite:notifications.deleteInvite.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.invite.notifications.deleteInvite.genericError.message")
+                message: t("invite:notifications.deleteInvite.genericError.message")
             }));
         });
     };
@@ -142,29 +142,29 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
         resendInvite(traceID)
             .then((response) => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.resendInvite.success.description"),
+                    description: t("invite:notifications.resendInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.resendInvite.success.message")
+                    message: t("invite:notifications.resendInvite.success.message")
                 }));
 
             }).catch((error) => {
             if (error?.response?.data?.description) {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.invite.notifications.resendInvite.error.description"),
+                        ?? t("invite:notifications.resendInvite.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("console:manage.features.invite.notifications.resendInvite.error.message")
+                        ?? t("invite:notifications.resendInvite.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:manage.features.invite.notifications.resendInvite.genericError." +
+                description: t("invite:notifications.resendInvite.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.invite.notifications.resendInvite.genericError.message")
+                message: t("invite:notifications.resendInvite.genericError.message")
             }));
         });
     };
@@ -327,16 +327,16 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ handleSearchQueryClear }>
-                            { t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.clearButton") }
+                            { t("invite:placeholder.emptySearchResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.title") }
+                    title={ t("invite:placeholder.emptySearchResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.subTitle.0",
+                        t("invite:placeholder.emptySearchResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.subTitle.1")
+                        t("invite:placeholder.emptySearchResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -350,16 +350,16 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.invite.placeholder.emptyResultPlaceholder.addButton") }
+                            { t("invite:placeholder.emptyResultPlaceholder.addButton") }
                         </PrimaryButton>
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.invite.placeholder.emptyResultPlaceholder.title") }
+                    title={ t("invite:placeholder.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.invite.placeholder.emptyResultPlaceholder.subTitle.0"),
-                        t("console:manage.features.invite.placeholder.emptyResultPlaceholder.subTitle.1"),
-                        t("console:manage.features.invite.placeholder.emptyResultPlaceholder.subTitle.2")
+                        t("invite:placeholder.emptyResultPlaceholder.subTitle.0"),
+                        t("invite:placeholder.emptyResultPlaceholder.subTitle.1"),
+                        t("invite:placeholder.emptyResultPlaceholder.subTitle.2")
                     ] }
                 />
             );
@@ -382,9 +382,9 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
         updateInvite(inviteeID, inviteeData)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.updateInvite.success.description"),
+                    description: t("invite:notifications.updateInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.updateInvite.success.message")
+                    message: t("invite:notifications.updateInvite.success.message")
                 }));
                 setUpdateInviteList(true);
 
@@ -392,20 +392,20 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
             if (error?.response?.data?.description) {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.invite.notifications.updateInvite.error.description"),
+                        ?? t("invite:notifications.updateInvite.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("console:manage.features.invite.notifications.updateInvite.error.message")
+                        ?? t("invite:notifications.updateInvite.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:manage.features.invite.notifications.updateInvite.genericError." +
+                description: t("invite:notifications.updateInvite.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.invite.notifications.updateInvite.genericError.message")
+                message: t("invite:notifications.updateInvite.genericError.message")
             }));
             });
 
@@ -435,23 +435,23 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                     filterAttributeOptions={ [
                         {
                             key: 1,
-                            text: t("console:manage.features.invite.advancedSearch.form.dropdown." +
+                            text: t("invite:advancedSearch.form.dropdown." +
                                 "filterAttributeOptions.email"),
                             value: "emails"
                         }
                     ] }
                     filterAttributePlaceholder={
-                        t("console:manage.features.invite.advancedSearch.form.inputs.filterAttribute.placeholder")
+                        t("invite:advancedSearch.form.inputs.filterAttribute.placeholder")
                     }
                     filterConditionsPlaceholder={
-                        t("console:manage.features.invite.advancedSearch.form.inputs.filterCondition" +
+                        t("invite:advancedSearch.form.inputs.filterCondition" +
                             ".placeholder")
                     }
                     filterValuePlaceholder={
-                        t("console:manage.features.invite.advancedSearch.form.inputs.filterValue" +
+                        t("invite:advancedSearch.form.inputs.filterValue" +
                             ".placeholder")
                     }
-                    placeholder={ t("console:manage.features.invite.advancedSearch.placeholder") }
+                    placeholder={ t("invite:advancedSearch.placeholder") }
                     defaultSearchAttribute="email"
                     defaultSearchOperator="co"
                     triggerClearQuery={ triggerClearQuery }
@@ -600,7 +600,7 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                             (
                                 <p>
                                     <Trans
-                                        i18nKey={ "console:manage.features.invite.confirmationModal.deleteInvite." +
+                                        i18nKey={ "invite:confirmationModal.deleteInvite." +
                                         "assertionHint" }
                                         tOptions={ { name: deleteUserInvite.email } }
                                     >
@@ -617,17 +617,17 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.header") }
+                            { t("invite:confirmationModal.deleteInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${testId}-confirmation-modal-message` }
                             attached
                             warning
                         >
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.message") }
+                            { t("invite:confirmationModal.deleteInvite.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.content") }
+                            { t("invite:confirmationModal.deleteInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -644,7 +644,7 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                             (
                                 <p>
                                     <Trans
-                                        i18nKey={ "console:manage.features.invite.confirmationModal.resendInvite." +
+                                        i18nKey={ "invite:confirmationModal.resendInvite." +
                                         "assertionHint" }
                                         tOptions={ { name: resendUserInvite.email } }
                                     >
@@ -661,17 +661,17 @@ const AdminDevPage: FunctionComponent<UsersPageInterface> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                            { t("console:manage.features.invite.confirmationModal.resendInvite.header") }
+                            { t("invite:confirmationModal.resendInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${testId}-confirmation-modal-message` }
                             attached
                             warning
                         >
-                            { t("console:manage.features.invite.confirmationModal.resendInvite.message") }
+                            { t("invite:confirmationModal.resendInvite.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
-                            { t("console:manage.features.invite.confirmationModal.resendInvite.content") }
+                            { t("invite:confirmationModal.resendInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

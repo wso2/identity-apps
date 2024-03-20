@@ -191,7 +191,10 @@ export class Config {
             ns: [
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-                I18nConstants.EXTENSIONS_NAMESPACE
+                I18nConstants.EXTENSIONS_NAMESPACE,
+                "invite",
+                "parentOrgInvitations",
+                "oidcScopes"
             ],
             preload: []
         };
