@@ -116,10 +116,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
+                    description: t("emailTemplateTypes:notifications.getTemplateTypes" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
+                    message: t("emailTemplateTypes:notifications.getTemplateTypes" +
                         ".genericError.message")
                 }));
             })
@@ -128,7 +128,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
+                        message: t("emailTemplateTypes:notifications.getTemplateTypes" +
                             ".error.message")
                     }));
 
@@ -136,10 +136,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
+                    description: t("emailTemplateTypes:notifications.getTemplateTypes" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.emailTemplateTypes.notifications.getTemplateTypes" +
+                    message: t("emailTemplateTypes:notifications.getTemplateTypes" +
                         ".genericError.message")
                 }));
             })
@@ -227,10 +227,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
             .then((response: AxiosResponse) => {
                 if (response.status === 204) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("console:manage.features.emailTemplateTypes.notifications" +
+                        description: t("emailTemplateTypes:notifications" +
                             ".deleteTemplateType.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.emailTemplateTypes.notifications" +
+                        message: t("emailTemplateTypes:notifications" +
                             ".deleteTemplateType.success.message")
                     }));
 
@@ -240,10 +240,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplateTypes.notifications" +
+                    description: t("emailTemplateTypes:notifications" +
                         ".deleteTemplateType.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplateTypes.notifications" +
+                    message: t("emailTemplateTypes:notifications" +
                         ".deleteTemplateType.genericError.message")
                 }));
             })
@@ -252,7 +252,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.emailTemplateTypes.notifications" +
+                        message: t("emailTemplateTypes:notifications" +
                             ".deleteTemplateType.error.message")
                     }));
 
@@ -260,10 +260,10 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplateTypes.notifications" +
+                    description: t("emailTemplateTypes:notifications" +
                         ".deleteTemplateType.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplateTypes.notifications" +
+                    message: t("emailTemplateTypes:notifications" +
                         ".deleteTemplateType.genericError.message")
                 }));
             });
@@ -278,7 +278,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
-                        { t("console:manage.features.emailTemplateTypes.buttons.newType") }
+                        { t("emailTemplateTypes:buttons.newType") }
                     </PrimaryButton>
                 )
             }
@@ -300,19 +300,19 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:manage.features.emailTemplateTypes.advancedSearch.form.inputs" +
+                            t("emailTemplateTypes:advancedSearch.form.inputs" +
                                 ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.emailTemplateTypes.advancedSearch.form.inputs" +
+                            t("emailTemplateTypes:advancedSearch.form.inputs" +
                                 ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.emailTemplateTypes.advancedSearch.form.inputs" +
+                            t("emailTemplateTypes:advancedSearch.form.inputs" +
                                 ".filterValue.placeholder")
                         }
                         placeholder={
-                            t("console:manage.features.emailTemplateTypes.advancedSearch.placeholder")
+                            t("emailTemplateTypes:advancedSearch.placeholder")
                         }
                         defaultSearchAttribute="displayName"
                         defaultSearchOperator="co"
