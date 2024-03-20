@@ -138,6 +138,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                 >
                     <IconButton
                         aria-label="Reset field to default"
+                        className="reset-field-to-default-adornment"
                         onClick={ () =>
                             resetCustomTextField(
                                 fieldName.replaceAll("_", "."),
