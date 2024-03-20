@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -102,10 +102,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ariaLabel="name"
                         inputType="resource_name"
                         name="name"
-                        label={ t("console:develop.features.idvp.forms.generalDetails.name.label") }
+                        label={ t("idvp:forms.generalDetails.name.label") }
                         required={ true }
-                        message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
-                        placeholder={ t("console:develop.features.idvp.forms.generalDetails.name.placeholder")  }
+                        message={ t("idvp:forms.generalDetails.name.validations.empty") }
+                        placeholder={ t("idvp:forms.generalDetails.name.placeholder")  }
                         validation={ (value: string) => validateIDVPName(value,
                             idvpList.identityVerificationProviders,
                             identityVerificationProvider
@@ -114,20 +114,20 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
                         minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
                         data-componentid={ `${ componentId }-idp-name` }
-                        hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
+                        hint={ t("idvp:forms.generalDetails.name.hint") }
                         readOnly={ isReadOnly }
                     />
                     <Field.Textarea
                         name="description"
                         ariaLabel="description"
-                        label={ t("console:develop.features.idvp.forms.generalDetails.description.label") }
+                        label={ t("idvp:forms.generalDetails.description.label") }
                         required={ false }
-                        placeholder={ t("console:develop.features.idvp.forms.generalDetails.description.placeholder") }
+                        placeholder={ t("idvp:forms.generalDetails.description.placeholder") }
                         value={ identityVerificationProvider.description }
                         data-componentid={ `${ componentId }-idp-description` }
                         maxLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MAX_LENGTH }
                         minLength={ IdentityVerificationProviderConstants.IDVP_DESCRIPTION_MIN_LENGTH }
-                        hint={ t("console:develop.features.idvp.forms.generalDetails.description.hint") }
+                        hint={ t("idvp:forms.generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
                     { !isReadOnly && (
