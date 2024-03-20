@@ -134,7 +134,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                     description: t("console:develop.features.authenticationProvider" +
                         ".notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".success.message")
                 }));
 
@@ -155,10 +155,10 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
                 }
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".genericError.message")
                 }));
             })
@@ -254,7 +254,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             ].includes(authenticator.id)
         ) {
             panes.push({
-                menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
+                menuItem: t("authenticationProvider:edit.common.settings.tabName"),
                 render: AuthenticatorSettingsTabPane
             });
         }

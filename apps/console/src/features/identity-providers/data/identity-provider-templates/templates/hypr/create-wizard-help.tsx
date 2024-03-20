@@ -58,7 +58,7 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
             <Message
                 type="info"
                 header={
-                    t("console:develop.features.authenticationProvider.templates.hypr.wizardHelp." +
+                    t("authenticationProvider:templates.hypr.wizardHelp." +
                         "preRequisites.heading")
                 }
                 content={
@@ -66,7 +66,7 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                         <p>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.hypr.wizardHelp." +
+                                    "authenticationProvider:templates.hypr.wizardHelp." +
                                     "preRequisites.rpDescription"
                                 }
                             >
@@ -79,7 +79,7 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                         <p>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.hypr.wizardHelp." +
+                                    "authenticationProvider:templates.hypr.wizardHelp." +
                                     "preRequisites.tokenDescription"
                                 }
                             >
@@ -95,16 +95,16 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.hypr" +
+                    t("authenticationProvider:templates.hypr" +
                         ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.hypr." +
+                        ? t("authenticationProvider:templates.hypr." +
                             "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.hypr." +
+                        : t("authenticationProvider:templates.hypr." +
                             "wizardHelp.name.idpDescription")
                 }
             </p>
@@ -112,12 +112,12 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
             <Divider/>
 
             <Heading as="h5">
-                { t("console:develop.features.authenticationProvider.templates.hypr.wizardHelp.appId.heading") }
+                { t("authenticationProvider:templates.hypr.wizardHelp.appId.heading") }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.hypr" +
+                        "authenticationProvider:templates.hypr" +
                         ".wizardHelp.appId.description"
                     }
                 >
@@ -129,14 +129,14 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.hypr" +
+                    t("authenticationProvider:templates.hypr" +
                         ".wizardHelp.baseUrl.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.hypr" +
+                        "authenticationProvider:templates.hypr" +
                         ".wizardHelp.baseUrl.description"
                     }
                 >
@@ -148,14 +148,14 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.hypr" +
+                    t("authenticationProvider:templates.hypr" +
                         ".wizardHelp.apiToken.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.hypr" +
+                        "authenticationProvider:templates.hypr" +
                         ".wizardHelp.apiToken.description"
                     }
                 >

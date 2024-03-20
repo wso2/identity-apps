@@ -92,11 +92,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
     const addCertificate = (values: any) => {
         if (idp?.certificate?.certificates?.includes(values["certificate"])) {
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider." +
+                description: t("authenticationProvider:" +
                     "notifications.duplicateCertificateUpload.error" +
                     ".description", { idp: idp.name }),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.authenticationProvider." +
+                message: t("authenticationProvider:" +
                     "notifications.duplicateCertificateUpload.error.message")
             }));
             closeWizard();
@@ -134,11 +134,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
         updateIDPCertificate(idp.id, data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.success.message")
                 }));
                 closeWizard();
@@ -149,7 +149,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider." +
+                        message: t("authenticationProvider:" +
                             "notifications.updateIDPCertificate.error.message")
                     });
 
@@ -157,11 +157,11 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                 }
 
                 setAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
+                    message: t("authenticationProvider:" +
                         "notifications.updateIDPCertificate.genericError.message")
                 });
             })
@@ -206,10 +206,10 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("console:develop.features.authenticationProvider.modals.addCertificate.title",
+                { t("authenticationProvider:modals.addCertificate.title",
                     { idpName: idp.name }) }
                 <Heading as="h6">
-                    { t("console:develop.features.authenticationProvider.modals.addCertificate.subTitle") }
+                    { t("authenticationProvider:modals.addCertificate.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">

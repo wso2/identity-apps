@@ -431,7 +431,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                         >
                             <Icon name="add" />
                             { identityProviderConfig.useNewConnectionsView
-                                ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                ? t("authenticationProvider:buttons.addIDP")
                                 : t("console:develop.features.idp.buttons.addIDP") }
                         </PrimaryButton>
                     </Show>

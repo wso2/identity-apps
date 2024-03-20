@@ -295,9 +295,9 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "trusted-token-issuer":
                 return (
                     <TrustedTokenIssuerCreateWizard
-                        title= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
+                        title= { t("authenticationProvider:templates.trustedTokenIssuer." +
                             "addWizard.title") }
-                        subTitle= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
+                        subTitle= { t("authenticationProvider:templates.trustedTokenIssuer." +
                             "addWizard.subtitle", { productName }) }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
@@ -314,9 +314,9 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case "enterprise-protocols":
                 return (
                     <EnterpriseConnectionCreateWizard
-                        title= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                        title= { t("authenticationProvider:templates.enterprise." +
                             "addWizard.title") }
-                        subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
+                        subTitle= { t("authenticationProvider:templates.enterprise." +
                             "addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);

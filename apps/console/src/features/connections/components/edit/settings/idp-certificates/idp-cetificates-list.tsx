@@ -200,10 +200,10 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 return;
             }
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider.notifications" +
+                description: t("authenticationProvider:notifications" +
                     ".deleteCertificate.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.authenticationProvider.notifications" +
+                message: t("authenticationProvider:notifications" +
                     ".deleteCertificate.genericError.message")
             }));
         };
@@ -423,7 +423,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 type="negative"
                 open={ showPEMCertificateDeleteConfirmationModal }
                 assertionType="checkbox"
-                assertionHint={ t("console:develop.features.authenticationProvider."+
+                assertionHint={ t("authenticationProvider:"+
                     "confirmations.deleteCertificate.assertionHint") }
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -433,19 +433,19 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-componentid={ `${ testId }-delete-certificate-confirmation-header` }>
-                    { t("console:develop.features.authenticationProvider.confirmations.deleteCertificate.header") }
+                    { t("authenticationProvider:confirmations.deleteCertificate.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
                     data-componentid={ `${ testId }-delete-certificate-confirmation` }
                 >
-                    { t("console:develop.features.authenticationProvider.confirmations.deleteCertificate.message") }
+                    { t("authenticationProvider:confirmations.deleteCertificate.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ testId }-delete-certificate-confirmation-content` }>
                     <Trans
                         i18nKey= {
-                            "console:develop.features.authenticationProvider.confirmations.deleteCertificate." +
+                            "authenticationProvider:confirmations.deleteCertificate." +
                             "content"
                         }
                         values={ { productName: config.ui.productName } }

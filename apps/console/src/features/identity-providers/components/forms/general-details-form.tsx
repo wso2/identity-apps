@@ -144,7 +144,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const idpNameValidation = (value: string): string => {
         if (!FormValidation.isValidResourceName(value)) {
-            return t("console:develop.features.authenticationProvider." +
+            return t("authenticationProvider:" +
                 "templates.enterprise.validation.name");
         }
         let nameExist: boolean = false;
@@ -171,7 +171,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const issuerValidation = (value: string): string => {
         if (!FormValidation.resourceName(value)) {
-            return t("console:develop.features.authenticationProvider." +
+            return t("authenticationProvider:" +
                 "templates.trustedTokenIssuer.forms.issuer.validation.notValid", { issuer: value });
         }
     };
@@ -184,7 +184,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const aliasValidation = (value: string): string => {
         if (!FormValidation.resourceName(value)) {
-            return t("console:develop.features.authenticationProvider." +
+            return t("authenticationProvider:" +
             "templates.trustedTokenIssuer.forms.alias.validation.notValid", { alias: value });
         }
     };
@@ -264,10 +264,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ariaLabel="name"
                         inputType="resource_name"
                         name="name"
-                        label={ t("console:develop.features.authenticationProvider.forms." +
+                        label={ t("authenticationProvider:forms." +
                             "generalDetails.name.label") }
                         required
-                        message={ t("console:develop.features.authenticationProvider." +
+                        message={ t("authenticationProvider:" +
                             "forms.generalDetails.name.validations.empty") }
                         placeholder={ editingIDP.name }
                         validation={ (value: string) => idpNameValidation(value) }
@@ -275,7 +275,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         maxLength={ IDP_NAME_MAX_LENGTH }
                         minLength={ IdentityProviderConstants.IDP_NAME_MIN_LENGTH }
                         data-testid={ `${ testId }-idp-name` }
-                        hint={ t("console:develop.features.authenticationProvider.forms." +
+                        hint={ t("authenticationProvider:forms." +
                             "generalDetails.name.hint") }
                         readOnly={ isReadOnly }
                     />
@@ -285,9 +285,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 ariaLabel="idpIssuerName"
                                 inputType="resource_name"
                                 name="idpIssuerName"
-                                label={ t("console:develop.features.authenticationProvider.forms." +
+                                label={ t("authenticationProvider:forms." +
                                     "generalDetails.issuer.label") }
-                                hint={ t("console:develop.features.authenticationProvider.forms." +
+                                hint={ t("authenticationProvider:forms." +
                                     "generalDetails.issuer.hint") }
                                 required
                                 placeholder={ editingIDP.idpIssuerName }
@@ -306,14 +306,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 ariaLabel="alias"
                                 inputType="resource_name"
                                 name="alias"
-                                label={ t("console:develop.features.authenticationProvider.forms." +
+                                label={ t("authenticationProvider:forms." +
                                     "generalDetails.alias.label") }
                                 required={ false }
-                                message={ t("console:develop.features.authenticationProvider." +
+                                message={ t("authenticationProvider:" +
                                     "forms.generalDetails.name.validations.empty") }
-                                placeholder={ t("console:develop.features.authenticationProvider.forms." +
+                                placeholder={ t("authenticationProvider:forms." +
                                     "generalDetails.alias.placeholder") }
-                                hint={ t("console:develop.features.authenticationProvider.forms." +
+                                hint={ t("authenticationProvider:forms." +
                                     "generalDetails.alias.hint", { productName: config.ui.productName }) }
                                 validation={ (value: string) => aliasValidation(value) }
                                 value={ editingIDP.alias }
@@ -327,16 +327,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     <Field.Textarea
                         name="description"
                         ariaLabel="description"
-                        label={ t("console:develop.features.authenticationProvider.forms." +
+                        label={ t("authenticationProvider:forms." +
                             "generalDetails.description.label") }
                         required={ false }
-                        placeholder={ t("console:develop.features.authenticationProvider.forms." +
+                        placeholder={ t("authenticationProvider:forms." +
                             "generalDetails.description.placeholder") }
                         value={ editingIDP.description }
                         data-testid={ `${ testId }-idp-description` }
                         maxLength={ IdentityProviderConstants.IDP_DESCRIPTION_MAX_LENGTH }
                         minLength={ IdentityProviderConstants.IDP_DESCRIPTION_MIN_LENGTH }
-                        hint={ t("console:develop.features.authenticationProvider.forms." +
+                        hint={ t("authenticationProvider:forms." +
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
@@ -345,10 +345,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             name="image"
                             ariaLabel="image"
                             inputType="url"
-                            label={ t("console:develop.features.authenticationProvider." +
+                            label={ t("authenticationProvider:" +
                                 "forms.generalDetails.image.label") }
                             required={ false }
-                            placeholder={ t("console:develop.features.authenticationProvider." +
+                            placeholder={ t("authenticationProvider:" +
                                 "forms.generalDetails.image." +
                                 "placeholder") }
                             value={ editingIDP.image }
@@ -361,7 +361,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 IdentityProviderManagementConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
                             }
-                            hint={ t("console:develop.features.authenticationProvider.forms." +
+                            hint={ t("authenticationProvider:forms." +
                                 "generalDetails.image.hint") }
                             readOnly={ isReadOnly }
                         />
