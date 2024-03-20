@@ -226,7 +226,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 .then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.deleteInvite.success.description"
+                            "invite:notifications.deleteInvite.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -273,7 +273,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 .then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.deleteInvite.success.description"
+                            "invite:notifications.deleteInvite.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
