@@ -78,7 +78,7 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
         return screens.map((screen: string) => {
             return {
                 key: screen,
-                text: t(`console:branding.screens.${ screen }`),
+                text: t(`branding:screens.${ screen }`),
                 value: screen
             };
         });

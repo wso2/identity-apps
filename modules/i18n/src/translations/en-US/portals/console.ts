@@ -592,35 +592,6 @@ export const console: ConsoleNS = {
             }
         }
     },
-    branding: {
-        form: {
-            actions: {
-                save: "Save & Publish",
-                resetAll: "Reset to Default"
-            }
-        },
-        tabs: {
-            text: {
-                label: "Text"
-            },
-            preview: {
-                label: "Preview"
-            }
-        },
-        screens: {
-            common: "Common",
-            login: "Login",
-            "sms-otp": "SMS OTP",
-            "email-otp": "Email OTP",
-            "email-template": "Email Templates",
-            "sign-up": "Sign Up",
-            "totp": "TOTP",
-            myaccount: "My Account",
-            "password-recovery": "Password Recovery",
-            "password-reset": "Password Reset",
-            "password-reset-success": "Password Reset Link Sent"
-        }
-    },
     brandingCustomText: {
         revertScreenConfirmationModal: {
             content: "Once you confirm, your users will start to see the {{productName}} defaults and it will not be reversible. Please proceed with caution.",

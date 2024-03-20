@@ -475,35 +475,6 @@ export interface ConsoleNS {
             };
         };
     };
-    branding: {
-        form: {
-            actions: {
-                save: string;
-                resetAll: string;
-            };
-        };
-        tabs: {
-            text: {
-                label: string;
-            };
-            preview: {
-                label: string;
-            };
-        };
-        screens: {
-            common: string;
-            login: string;
-            "sms-otp": string;
-            "email-otp": string;
-            "email-template": string;
-            "sign-up": string;
-            totp: string;
-            myaccount: string;
-            "password-recovery": string;
-            "password-reset": string;
-            "password-reset-success": string;
-        };
-    };
     brandingCustomText: {
         revertScreenConfirmationModal: {
             content: string;
