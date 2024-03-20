@@ -65,7 +65,10 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ "remoteFetch", "portals" ],
+        [ "roles", "portals" ],
+        [ "serverConfigs", "portals" ]
     ]);
 
     /**

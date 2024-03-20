@@ -408,11 +408,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             .then(() => {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.roles.notifications.updateRole.success.description"
+                        "roles:notifications.updateRole.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.roles.notifications.updateRole.success.message"
+                        "roles:notifications.updateRole.success.message"
                     )
                 }));
                 handleCloseAddNewGroupModal();
@@ -428,7 +428,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.roles.notifications.updateRole.error.message"
+                            "roles:notifications.updateRole.error.message"
                         )
                     });
 
@@ -437,11 +437,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
                 setAlert({
                     description: t(
-                        "console:manage.features.roles.notifications.updateRole.genericError.description"
+                        "roles:notifications.updateRole.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.roles.notifications.updateRole.genericError.message"
+                        "roles:notifications.updateRole.genericError.message"
                     )
                 });
             })
@@ -490,9 +490,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             className="user-roles"
         >
             <Modal.Header>
-                { t("console:manage.features.roles.edit.groups.addGroupsModal.heading") }
+                { t("roles:edit.groups.addGroupsModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.roles.edit.groups.addGroupsModal.subHeading") }
+                    { t("roles:edit.groups.addGroupsModal.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
@@ -675,9 +675,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     return (
         <>
             <Heading as="h4">
-                { t("console:manage.features.roles.edit.groups.heading") }
+                { t("roles:edit.groups.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.roles.edit.groups.subHeading") }
+                    { t("roles:edit.groups.subHeading") }
                 </Heading>
             </Heading>
             <Divider hidden />
@@ -742,10 +742,10 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         <EmphasizedSegment>
                                             <EmptyPlaceholder
                                                 data-testid="role-mgt-empty-groups-list"
-                                                title={ t("console:manage.features.roles.edit.groups.placeholders." +
+                                                title={ t("roles:edit.groups.placeholders." +
                                                         "emptyPlaceholder.title") }
                                                 subtitle={ [
-                                                    t("console:manage.features.roles.edit.groups.placeholders." +
+                                                    t("roles:edit.groups.placeholders." +
                                                             "emptyPlaceholder.subtitles.0")
                                                 ] }
                                                 action={
@@ -755,7 +755,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                             icon="plus"
                                                             onClick={ handleOpenAddNewGroupModal }
                                                         >
-                                                            { t("console:manage.features.roles.edit.groups." +
+                                                            { t("roles:edit.groups." +
                                                                     "placeholders.emptyPlaceholder.action") }
                                                         </PrimaryButton>
                                                     )
