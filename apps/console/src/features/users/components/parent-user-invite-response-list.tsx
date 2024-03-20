@@ -86,7 +86,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
     useEffect(() => {
         if (response && response?.length > 0) {
             response.map((item: ParentOrgUserInvitationResult) => {
-                let message: string = t("console:manage.features.invite.notifications.sendInvite.success.message");
+                let message: string = t("invite:notifications.sendInvite.success.message");
 
                 if (item.result.errorCode) {
                     switch (item.result.errorCode) {
