@@ -277,8 +277,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 />
                                                                 <List.Header>
                                                                     { t(
-                                                                        "console:manage.features." +
-                                                                "claims.dialects.sections." +
+                                                                        "claims:dialects.sections." +
                                                                 "manageAttributes.attributes.heading"
                                                                     ) }
                                                                 </List.Header>
@@ -286,8 +285,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     data-testid={ `${ testId }-local-dialect` }
                                                                 >
                                                                     { t(
-                                                                        "console:manage.features." +
-                                                                "claims.dialects.sections." +
+                                                                        "claims:dialects.sections." +
                                                                 "manageAttributes.attributes.description"
                                                                     ) }
                                                                 </List.Description>
@@ -530,8 +528,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features." +
-                                                                    "claims.attributeMappings." +
+                                                                    "claims:attributeMappings." +
                                                                     "oidc.description"
                                                                 ) }
                                                             </List.Description>
@@ -695,8 +692,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features." +
-                                                                    "claims.attributeMappings." +
+                                                                    "claims:attributeMappings." +
                                                                     "axschema.heading"
                                                                 ) }
                                                             </List.Header>
@@ -704,8 +700,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features." +
-                                                                    "claims.attributeMappings." +
+                                                                    "claims:attributeMappings." +
                                                                     "axschema.description"
                                                                 ) }
                                                             </List.Description>
@@ -785,8 +780,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features." +
-                                                                    "claims.attributeMappings." +
+                                                                    "claims:attributeMappings." +
                                                                     "eidas.heading"
                                                                 ) }
                                                             </List.Header>
@@ -794,8 +788,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features." +
-                                                                    "claims.attributeMappings." +
+                                                                    "claims:attributeMappings." +
                                                                     "eidas.description"
                                                                 ) }
                                                             </List.Description>

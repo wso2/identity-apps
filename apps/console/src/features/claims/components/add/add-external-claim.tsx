@@ -382,10 +382,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 if (attributeType === ClaimManagementConstants.OIDC) {
                                                     if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
                                                         validation.isValid = false;
-                                                        validation.errorMessages.push(t("console:manage.features." +
-                                                            "claims.external.forms.attributeURI." +
+                                                        validation.errorMessages.push(t(
+                                                            "claims:external.forms.attributeURI." +
                                                             "validationErrorMessages.invalidName",
-                                                        { type: resolveType(attributeType) }));
+                                                            { type: resolveType(attributeType) }));
                                                     }
                                                 }
                                             } }
