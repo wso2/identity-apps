@@ -453,9 +453,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -486,9 +486,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -725,9 +725,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                                         data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                        emptyPlaceholderDefaultContent={ t("transferList:list."
                                             + "emptyPlaceholders.default") }
                                     >
                                         {
@@ -759,9 +759,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         handleHeaderCheckboxChange={ selectAllAssignedList }
                                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                                         data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                         "emptyPlaceholders.roles.unselected", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                        emptyPlaceholderDefaultContent={ t("transferList:list."
                                             + "emptyPlaceholders.default") }
                                     >
                                         {

@@ -198,11 +198,11 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
+                        "user:profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
+                        "user:profile.notifications.updateProfileInfo.success.message"
                     )
                 }));
 
@@ -217,7 +217,7 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.profile.notifications.updateProfileInfo.error.message"
+                            "user:profile.notifications.updateProfileInfo.error.message"
                         )
                     }));
 
@@ -226,11 +226,11 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
 
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.description"
+                        "user:profile.notifications.updateProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.message"
+                        "user:profile.notifications.updateProfileInfo.genericError.message"
                     )
                 }));
             })

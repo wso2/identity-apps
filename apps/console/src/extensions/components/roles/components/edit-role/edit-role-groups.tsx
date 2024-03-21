@@ -487,7 +487,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Modal.Content image>
                 { alert && alertComponent }
                 <TransferComponent
-                    searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                    searchPlaceholder={ t("transferList:searchPlaceholder",
                         { type: "groups" }) }
                     addItems={ addGroups }
                     removeItems={ removeGroups }
@@ -499,15 +499,15 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         isListEmpty={ !(groupList?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("console:manage.features.transferList.list.headers.0"),
-                            t("console:manage.features.transferList.list.headers.1"), ""
+                            t("transferList:list.headers.0"),
+                            t("transferList:list.headers.1"), ""
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.roles.unselected", { type: "groups" }) }
                         data-testid="role-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -534,15 +534,15 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         isListEmpty={ !(tempGroupList?.length > 0) }
                         listType="selected"
                         listHeaders={ [
-                            t("console:manage.features.transferList.list.headers.0"),
-                            t("console:manage.features.transferList.list.headers.1")
+                            t("transferList:list.headers.0"),
+                            t("transferList:list.headers.1")
                         ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.roles.selected", { type: "groups" }) }
                         data-testid="role-mgt-update-groups-modal-selected-groups-select-all-checkbox"
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -685,7 +685,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 data-testid="role-mgt-groups-list-search-input"
                                                 icon={ <Icon name="search" /> }
                                                 onChange={ handleAssignedGroupListSearch }
-                                                placeholder={ t("console:manage.features.user.updateUser.groups." +
+                                                placeholder={ t("user:updateUser.groups." +
                                                     "editGroups.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
@@ -709,13 +709,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 <Table.Row>
                                                     <Table.HeaderCell>
                                                         <strong>
-                                                            { t("console:manage.features.user.updateUser.groups." +
+                                                            { t("user:updateUser.groups." +
                                                                 "editGroups.groupList.headers.0") }
                                                         </strong>
                                                     </Table.HeaderCell>
                                                     <Table.HeaderCell>
                                                         <strong>
-                                                            { t("console:manage.features.user.updateUser.groups." +
+                                                            { t("user:updateUser.groups." +
                                                                 "editGroups.groupList.headers.1") }
                                                         </strong>
                                                     </Table.HeaderCell>

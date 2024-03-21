@@ -160,10 +160,10 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
-                            "console:manage.features.users.notifications.revokeAdmin.genericError.description"
+                            "users:notifications.revokeAdmin.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.revokeAdmin.genericError.message")
+                        message: t("users:notifications.revokeAdmin.genericError.message")
                     })
                 );
             },
@@ -172,9 +172,9 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                 onComplete();
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("console:manage.features.users.notifications.revokeAdmin.success.description"),
+                        description: t("users:notifications.revokeAdmin.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.users.notifications.revokeAdmin.success.message")
+                        message: t("users:notifications.revokeAdmin.success.message")
                     })
                 );
             }
@@ -282,7 +282,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                         {
                             key: 0,
                             text: t(
-                                "console:manage.features.users.advancedSearch.form.dropdown." +
+                                "users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.username"
                             ),
                             value: "userName"
@@ -290,7 +290,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                         {
                             key: 1,
                             text: t(
-                                "console:manage.features.users.advancedSearch.form.dropdown." +
+                                "users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"
                             ),
                             value: "emails"
@@ -307,13 +307,13 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                         }
                     ] }
                     filterAttributePlaceholder={ t(
-                        "console:manage.features.users.advancedSearch.form.inputs.filterAttribute. " + "placeholder"
+                        "users:advancedSearch.form.inputs.filterAttribute. " + "placeholder"
                     ) }
                     filterConditionsPlaceholder={ t(
-                        "console:manage.features.users.advancedSearch.form.inputs.filterCondition" + ".placeholder"
+                        "users:advancedSearch.form.inputs.filterCondition" + ".placeholder"
                     ) }
                     filterValuePlaceholder={ t(
-                        "console:manage.features.users.advancedSearch.form.inputs.filterValue" + ".placeholder"
+                        "users:advancedSearch.form.inputs.filterValue" + ".placeholder"
                     ) }
                     placeholder={ "Search by Username" }
                     defaultSearchAttribute={ "userName" }
@@ -357,9 +357,9 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             { adminUserListFetchError
                 ? (
                     <EmptyPlaceholder
-                        subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                            t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
-                        title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                        subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                            t("users:placeholders.userstoreError.subtitles.1") ] }
+                        title={ t("users:placeholders.userstoreError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     />

@@ -85,4 +85,28 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * transferList namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";
+
+    /**
+     * User namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly USER_NAMESPACE: string = "user";
+
+    /**
+     * Users namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly USERS_NAMESPACE: string = "users";
 }

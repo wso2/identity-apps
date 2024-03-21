@@ -391,20 +391,20 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                            ?? t("users:notifications.fetchUsers.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                            ?? t("users:notifications.fetchUsers.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    description: t("users:notifications.fetchUsers.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    message: t("users:notifications.fetchUsers.genericError.message")
                 }));
 
                 setUserStoreError(true);
@@ -456,7 +456,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         const storeOptions: UserStoreItem[] = [
             {
                 key: -1,
-                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                text: t("users:userstores.userstoreOptions.primary"),
                 value: "primary"
             }
         ];
@@ -673,30 +673,30 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             filterAttributeOptions={ [
                 {
                     key: 0,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                         "filterAttributeOptions.username"),
                     value: "userName"
                 },
                 {
                     key: 1,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                         "filterAttributeOptions.email"),
                     value: "emails"
                 }
             ] }
             filterAttributePlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
             }
             filterConditionsPlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                t("users:advancedSearch.form.inputs.filterCondition" +
                     ".placeholder")
             }
             filterValuePlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                t("users:advancedSearch.form.inputs.filterValue" +
                     ".placeholder")
             }
-            placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
             triggerClearQuery={ triggerClearQuery }
@@ -743,9 +743,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             >
                 { userStoreError
                     ? (<EmptyPlaceholder
-                        subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                            t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
-                        title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                        subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                            t("users:placeholders.userstoreError.subtitles.1")     ] }
+                        title={ t("users:placeholders.userstoreError.title") }
                         image={ getEmptyPlaceholderIllustrations().genericError }
                         imageSize="tiny"
                     />)
@@ -775,7 +775,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             dropDownOptions.push({
                 "data-componentid": `${componentId}-add-user`,
                 key: 1,
-                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
+                text: t("users:addUserDropDown.addNewUser"),
                 value: UserAccountTypesMain.EXTERNAL
             });
         }
@@ -787,7 +787,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
                 "data-testid": `${testId}-bulk-import-users-dropdown-item`,
                 key: 2,
-                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+                text: t("users:addUserDropDown.bulkImport"),
                 value: UserAddOptionTypes.BULK_IMPORT
             });
         }
@@ -959,9 +959,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     userStoreError
                         ? (
                             <EmptyPlaceholder
-                                subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                                    t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
-                                title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                                subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                                    t("users:placeholders.userstoreError.subtitles.1") ] }
+                                title={ t("users:placeholders.userstoreError.title") }
                                 image={ getEmptyPlaceholderIllustrations().genericError }
                                 imageSize="tiny"
                             />
@@ -1019,13 +1019,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
-                    { t("console:manage.features.users.confirmations.addMultipleUser.header") }
+                    { t("users:confirmations.addMultipleUser.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message attached warning>
-                    { t("console:manage.features.users.confirmations.addMultipleUser.message") }
+                    { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("console:manage.features.users.confirmations.addMultipleUser.content") }
+                    { t("users:confirmations.addMultipleUser.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );

@@ -295,20 +295,20 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             dispatch(addAlert({
                 description: adminUserListFetchRequestError?.response?.data?.description
                     ?? adminUserListFetchRequestError?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        ?? t("users:notifications.fetchUsers.error.description"),
                 level: AlertLevels.ERROR,
                 message: adminUserListFetchRequestError?.response?.data?.message
-                    ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    ?? t("users:notifications.fetchUsers.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+            description: t("users:notifications.fetchUsers.genericError." +
                 "description"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+            message: t("users:notifications.fetchUsers.genericError.message")
         }));
     }, [ adminUserListFetchRequestError ]);
 
@@ -324,20 +324,20 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             dispatch(addAlert({
                 description: guestUserListFetchRequestError?.response?.data?.description
                     ?? guestUserListFetchRequestError?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        ?? t("users:notifications.fetchUsers.error.description"),
                 level: AlertLevels.ERROR,
                 message: guestUserListFetchRequestError?.response?.data?.message
-                    ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    ?? t("users:notifications.fetchUsers.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+            description: t("users:notifications.fetchUsers.genericError." +
                 "description"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+            message: t("users:notifications.fetchUsers.genericError.message")
         }));
     }, [ guestUserListFetchRequestError ]);
 
@@ -353,20 +353,20 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             dispatch(addAlert({
                 description: serverConfigsFetchRequestError?.response?.data?.description
                     ?? serverConfigsFetchRequestError?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        ?? t("users:notifications.fetchUsers.error.description"),
                 level: AlertLevels.ERROR,
                 message: serverConfigsFetchRequestError?.response?.data?.message
-                    ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    ?? t("users:notifications.fetchUsers.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+            description: t("users:notifications.fetchUsers.genericError." +
                 "description"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+            message: t("users:notifications.fetchUsers.genericError.message")
         }));
     }, [ serverConfigsFetchRequestError ]);
 
@@ -743,16 +743,16 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.getAdminRole.error.message")
+                        message: t("users:notifications.getAdminRole.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.getAdminRole." +
+                    description: t("users:notifications.getAdminRole." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.getAdminRole.genericError" +
+                    message: t("users:notifications.getAdminRole.genericError" +
                         ".message")
                 }));
             });
@@ -935,20 +935,20 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                            ?? t("users:notifications.fetchUsers.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        ?? t("users:notifications.fetchUsers.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                description: t("users:notifications.fetchUsers.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                message: t("users:notifications.fetchUsers.genericError.message")
             }));
         }).finally(() => {
             setInternalAdminUserListFetchRequestLoading(false);
@@ -1105,13 +1105,13 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                         filterAttributeOptions={ (invitationStatusOption === InvitationStatus.ACCEPTED) ? [
                             {
                                 key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"),
                                 value: "emails"
                             },
@@ -1129,25 +1129,25 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                             [
                                 {
                                     key: 0,
-                                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                    text: t("users:advancedSearch.form.dropdown." +
                                         "filterAttributeOptions.email"),
                                     value: "email"
                                 }
                             ]
                         }
                         filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute. " +
+                            t("users:advancedSearch.form.inputs.filterAttribute. " +
                                 "placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                            t("users:advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                            t("users:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                        placeholder={ t("users:advancedSearch.placeholder") }
                         defaultSearchAttribute={ (invitationStatusOption === InvitationStatus.ACCEPTED)
                             ? "userName": "email" }
                         defaultSearchOperator="co"
@@ -1207,30 +1207,30 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                                     filterAttributeOptions={ [
                                         {
                                             key: 0,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.username"),
                                             value: "userName"
                                         },
                                         {
                                             key: 1,
-                                            text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            text: t("users:advancedSearch.form.dropdown." +
                                                 "filterAttributeOptions.email"),
                                             value: "emails"
                                         }
                                     ] }
                                     filterAttributePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs" +
+                                        t("users:advancedSearch.form.inputs" +
                                             ".filterAttribute.placeholder")
                                     }
                                     filterConditionsPlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs" +
+                                        t("users:advancedSearch.form.inputs" +
                                             ".filterCondition.placeholder")
                                     }
                                     filterValuePlaceholder={
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                                        t("users:advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
-                                    placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                                    placeholder={ t("users:advancedSearch.placeholder") }
                                     defaultSearchAttribute="userName"
                                     defaultSearchOperator="co"
                                     triggerClearQuery={ triggerClearQuery }
@@ -1297,12 +1297,12 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                text: t("users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"),
                                 value: "emails"
                             }
                         ] }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+                        placeholder={ t("users:advancedSearch.placeholder") }
                         defaultSearchAttribute=""
                         defaultSearchOperator=""
                         triggerClearQuery={ triggerClearQuery }

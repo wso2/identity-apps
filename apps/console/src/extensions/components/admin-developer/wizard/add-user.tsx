@@ -111,23 +111,23 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Field
                             data-testid="user-mgt-add-user-form-email-input"
                             label={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email.label"
+                                "user:forms.addUserForm.inputs.email.label"
                             ) }
                             name="email"
                             placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "user:forms.addUserForm.inputs." +
                                 "email.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
+                                "user:forms.addUserForm.inputs.email.validations.empty"
                             ) }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.email(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t(
-                                            "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                            "user:forms.addUserForm.inputs.email." +
                                             "validations.invalid"
                                         ).toString()
                                     );
@@ -149,7 +149,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             name="role"
                             children={ userRoleOptions }
                             requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
+                                "user:forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
                             value={ userRoleOptions[0]?.value }

@@ -282,7 +282,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                         <Grid.Column width={ 10 }>
                             <TransferComponent
                                 selectionComponent
-                                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                                searchPlaceholder={ t("transferList:searchPlaceholder",
                                     { type: "Groups" }) }
                                 handleUnelectedListSearch={ handleUnselectedListSearch }
                                 data-componentid="application-role-assign-group-modal"
@@ -295,10 +295,10 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                                     listType="unselected"
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
-                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                    emptyPlaceholderContent={ t("transferList:list." +
                                         "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
-                                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                    emptyPlaceholderDefaultContent={ t("transferList:list."
                                         + "emptyPlaceholders.default") }
                                 >
                                     {

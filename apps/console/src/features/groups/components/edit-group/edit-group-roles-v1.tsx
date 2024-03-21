@@ -653,7 +653,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                         <Modal.Content image>
                             { alert && alertComponent }
                             <TransferComponent
-                                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                                searchPlaceholder={ t("transferList:searchPlaceholder",
                                     { type: "Roles" }) }
                                 addItems={ addRoles }
                                 removeItems={ removeRoles }
@@ -665,15 +665,15 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                                     isListEmpty={ !(roleList.length > 0) }
                                     listType="unselected"
                                     listHeaders={ [
-                                        t("console:manage.features.transferList.list.headers.0"),
-                                        t("console:manage.features.transferList.list.headers.1"), ""
+                                        t("transferList:list.headers.0"),
+                                        t("transferList:list.headers.1"), ""
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                    emptyPlaceholderContent={ t("transferList:list." +
                                         "emptyPlaceholders.users.roles.unselected", { type: "roles" }) }
                                     data-testid="group-mgt-update-roles-modal-unselected-roles-select-all-checkbox"
-                                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                    emptyPlaceholderDefaultContent={ t("transferList:list."
                                         + "emptyPlaceholders.default") }
                                 >
                                     {
@@ -706,15 +706,15 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                                     isListEmpty={ !(tempRoleList.length > 0) }
                                     listType="selected"
                                     listHeaders={ [
-                                        t("console:manage.features.transferList.list.headers.0"),
-                                        t("console:manage.features.transferList.list.headers.1")
+                                        t("transferList:list.headers.0"),
+                                        t("transferList:list.headers.1")
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                    emptyPlaceholderContent={ t("transferList:list." +
                                         "emptyPlaceholders.users.roles.selected", { type: "roles" }) }
                                     data-testid="group-mgt-update-roles-modal-selected-roles-select-all-checkbox"
-                                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                    emptyPlaceholderDefaultContent={ t("transferList:list."
                                         + "emptyPlaceholders.default") }
                                 >
                                     {
@@ -826,7 +826,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
     return (
         <>
             <Heading as="h4">
-                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
+                { t("user:updateUser.roles.editRoles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
                 { t("console:manage.features.groups.edit.roles.subHeading") }
@@ -847,7 +847,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                                                 data-testid="group-mgt-roles-list-search-input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedRoleListSearch }
-                                                placeholder={ t("console:manage.features.user.updateUser.roles." +
+                                                placeholder={ t("user:updateUser.roles." +
                                                     "editRoles.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
@@ -872,7 +872,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                                                     <Table.HeaderCell>
                                                         <strong>
                                                             {
-                                                                t("console:manage.features.user.updateUser.roles." +
+                                                                t("user:updateUser.roles." +
                                                                     "editRoles.roleList.headers.0")
                                                             }
                                                         </strong>
@@ -880,7 +880,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                                                     <Table.HeaderCell>
                                                         <strong>
                                                             {
-                                                                t("console:manage.features.user.updateUser.roles." +
+                                                                t("user:updateUser.roles." +
                                                                     "editRoles.roleList.headers.1")
                                                             }
                                                         </strong>
@@ -950,14 +950,14 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                                 <EmphasizedSegment>
                                     <EmptyPlaceholder
                                         data-testid="group-mgt-group-empty-roles-list"
-                                        title={ t("console:manage.features.user.updateUser.roles.editRoles." +
+                                        title={ t("user:updateUser.roles.editRoles." +
                                             "roleList.emptyListPlaceholder.title") }
                                         subtitle={ [
-                                            t("console:manage.features.user.updateUser.roles.editRoles." +
+                                            t("user:updateUser.roles.editRoles." +
                                                 "roleList.emptyListPlaceholder.subTitle.0"),
-                                            t("console:manage.features.user.updateUser.roles.editRoles." +
+                                            t("user:updateUser.roles.editRoles." +
                                                 "roleList.emptyListPlaceholder.subTitle.1"),
-                                            t("console:manage.features.user.updateUser.roles.editRoles." +
+                                            t("user:updateUser.roles.editRoles." +
                                                 "roleList.emptyListPlaceholder.subTitle.2")
                                         ] }
                                         action={

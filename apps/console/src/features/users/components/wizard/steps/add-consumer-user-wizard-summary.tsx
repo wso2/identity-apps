@@ -106,7 +106,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
-                            { t("console:manage.features.user.modals.addUserWizard.wizardSummary.name") }
+                            { t("user:modals.addUserWizard.wizardSummary.name") }
                         </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
@@ -122,7 +122,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                                 <div className="label">
-                                    { t("console:manage.features.user.modals.addUserWizard.wizardSummary.groups") }
+                                    { t("user:modals.addUserWizard.wizardSummary.groups") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
@@ -154,7 +154,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
-                            { t("console:manage.features.user.modals.addUserWizard.wizardSummary.username") }
+                            { t("user:modals.addUserWizard.wizardSummary.username") }
                         </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
@@ -170,7 +170,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
                                 {
-                                    t("console:manage.features.user.modals.addUserWizard.wizardSummary.passwordOption" +
+                                    t("user:modals.addUserWizard.wizardSummary.passwordOption" +
                                         ".label")
                                 }
                             </div>
@@ -178,7 +178,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">
                                 {
-                                    t("console:manage.features.user.modals.addUserWizard.wizardSummary.passwordOption" +
+                                    t("user:modals.addUserWizard.wizardSummary.passwordOption" +
                                         ".message.0",
                                     { email: modifiedSummary.email })
                                 }
@@ -191,14 +191,14 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div className="label">
                                 {
-                                    t("console:manage.features.user.modals.addUserWizard.wizardSummary.passwordOption" +
+                                    t("user:modals.addUserWizard.wizardSummary.passwordOption" +
                                         ".label")
                                 }
                             </div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url">
-                                { t("console:manage.features.user.modals.addUserWizard.wizardSummary" +
+                                { t("user:modals.addUserWizard.wizardSummary" +
                                     ".passwordOption.message.1") }
                             </div>
                         </Grid.Column>
