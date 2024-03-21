@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.13.24
+
+### Patch Changes
+
+- [#5798](https://github.com/wso2/identity-apps/pull/5798) [`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix revert button for individual custom text configuration fields not appearing in text tab in branding page
+
+- Updated dependencies [[`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c)]:
+  - @wso2is/form@2.0.41
+
+## 2.13.23
+
+### Patch Changes
+
+- [#5783](https://github.com/wso2/identity-apps/pull/5783) [`a731a5731c`](https://github.com/wso2/identity-apps/commit/a731a5731c7b07d94005454f27e4c18b9923a7f4) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Remove legacyAuthzRuntime check when transforming tenantDomain
+
 ## 2.13.22
 
 ### Patch Changes
