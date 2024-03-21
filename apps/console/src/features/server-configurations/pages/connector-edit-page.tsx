@@ -289,12 +289,33 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
             serverConfigurationConfig.autoEnableConnectorToggleProperty
         ) {
-            data.properties.push({
-                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
-                ),
-                value: "true"
-            });
+            if (connectorId === ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID) {
+                if (ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE in values
+                || ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE in values) {
+                    const emailLinkEnabled: boolean = values[ ServerConfigurationsConstants
+                        .RECOVERY_EMAIL_LINK_ENABLE ] === true;
+                    const smsOtpEnabled: boolean = values[ ServerConfigurationsConstants
+                        .RECOVERY_SMS_OTP_ENABLE ] === true;
+                    const value: string = emailLinkEnabled || smsOtpEnabled
+                        ? "true"
+                        : "false";
+
+                    data.properties.push({
+                        name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                            serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                        ),
+                        value: value
+                    });
+                }
+            }
+            else {
+                data.properties.push({
+                    name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                        serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                    ),
+                    value: "true"
+                });
+            }
         }
 
         setIsSubmitting(true);
@@ -565,7 +586,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
                     ? undefined
-                    : ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
+                    : null;
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
                 return ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE;
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:

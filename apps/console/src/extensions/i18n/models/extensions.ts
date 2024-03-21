@@ -2993,8 +2993,11 @@ export interface Extensions {
                     form: {
                         fields: {
                             enable: FormAttributes;
+                            enableSMSBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
+                            smsOtpExpiryTime: FormAttributes;
+                            smsOtpRegex: FormAttributes;
                         };
                     };
                     connectorDescription: string;

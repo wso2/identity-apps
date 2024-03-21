@@ -237,6 +237,9 @@ export class ServerConfigurationsConstants {
 	public static readonly RECOVERY_CALLBACK_REGEX: string = "Recovery.CallbackRegex";
 	public static readonly PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE: string =
 		"Recovery.Question.Password.Forced.Enable";
+	public static readonly RECOVERY_EMAIL_LINK_ENABLE: string = "Recovery.Notification.Password.emailLink.Enable";
+	public static readonly RECOVERY_SMS_OTP_ENABLE: string = "Recovery.Notification.Password.smsOtp.Enable";
+	public static readonly RECOVERY_SMS_OTP_REGEX: string = "Recovery.Notification.Password.smsOtp.Regex";
 
 	/**
 	 * Login policies - account locking API Keyword constants.

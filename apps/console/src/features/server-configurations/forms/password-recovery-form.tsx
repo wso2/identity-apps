@@ -71,6 +71,22 @@ interface PasswordRecoveryFormInitialValuesInterface {
      * Notify user on successful password recovery.
      */
     notifySuccess: boolean;
+    /**
+     * Whether email based recovery is enabled.
+     */
+    enableEmailBasedRecovery: boolean;
+    /**
+     * Whether SMS based recovery is enabled.
+     */
+    enableSMSBasedRecovery: boolean;
+    /**
+     * SMS OTP expiry time.
+     */
+    smsOtpExpiryTime: string;
+    /**
+     * SMS OTP regex.
+     */
+    smsOtpRegex: string;
 }
 
 /**
@@ -81,11 +97,23 @@ export interface PasswordRecoveryFormErrorValidationsInterface {
      * Recovery link expiry time field.
      */
     expiryTime: string;
+    /**
+     * Sms otp expiry time field
+     */
+    smsOtpExpiryTime: string;
+    /**
+     * SMS OTP regex field.
+     */
+    smsOtpRegex: string;
 }
 
 const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.NOTIFY_SUCCESS,
-    ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME
+    ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME,
+    ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE,
+    ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE,
+    ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME,
+    ServerConfigurationsConstants.RECOVERY_SMS_OTP_REGEX
 ];
 
 const FORM_ID: string = "governance-connectors-password-recovery-form";
@@ -112,6 +140,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const { t } = useTranslation();
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<PasswordRecoveryFormInitialValuesInterface>(undefined);
+    const [ isEmailRecoveryEnabled, setIsEmailRecoveryEnabled ] = useState<boolean>(false);
+    const [ isSMSRecoveryEnabled, setIsSMSRecoveryEnabled ] = useState<boolean>(false);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -136,10 +166,32 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         ...resolvedInitialValues,
                         expiryTime: property.value
                     };
+                } else if (property.name === ServerConfigurationsConstants.RECOVERY_EMAIL_LINK_ENABLE) {
+                    resolvedInitialValues = {
+                        ...resolvedInitialValues,
+                        enableEmailBasedRecovery: CommonUtils.parseBoolean(property.value)
+                    };
+                } else if (property.name === ServerConfigurationsConstants.RECOVERY_SMS_OTP_ENABLE) {
+                    resolvedInitialValues = {
+                        ...resolvedInitialValues,
+                        enableSMSBasedRecovery: CommonUtils.parseBoolean(property.value)
+                    };
+                } else if (property.name === ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME) {
+                    resolvedInitialValues = {
+                        ...resolvedInitialValues,
+                        smsOtpExpiryTime: property.value
+                    };
+                } else if (property.name === ServerConfigurationsConstants.RECOVERY_SMS_OTP_REGEX) {
+                    resolvedInitialValues = {
+                        ...resolvedInitialValues,
+                        smsOtpRegex: property.value
+                    };
                 }
             }
         });
         setInitialConnectorValues(resolvedInitialValues);
+        setIsEmailRecoveryEnabled(resolvedInitialValues?.enableEmailBasedRecovery);
+        setIsSMSRecoveryEnabled(resolvedInitialValues?.enableSMSBasedRecovery);
     }, [ initialValues ]);
 
     /**
@@ -152,7 +204,9 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         PasswordRecoveryFormErrorValidationsInterface => {
 
         const errors: PasswordRecoveryFormErrorValidationsInterface = {
-            expiryTime: undefined
+            expiryTime: undefined,
+            smsOtpExpiryTime: undefined,
+            smsOtpRegex: undefined
         };
 
         if (!values.expiryTime) {
@@ -170,12 +224,49 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             // Check for invalid range.
             errors.expiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
                 "passwordRecovery.form.fields.expiryTime.validations.range");
+        } else if (values.smsOtpExpiryTime &&
+            !FormValidation.isLengthValid(values.smsOtpExpiryTime as string, GovernanceConnectorConstants
+                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_EXPIRY_TIME_MAX_LENGTH)) {
+            // Check for invalid input length.
+            errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpExpiryTime.validations.maxLengthReached");
         } else if (values.expiryTime &&
             !FormValidation.isLengthValid(values.expiryTime as string, GovernanceConnectorConstants
                 .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH)) {
             // Check for invalid input length.
             errors.expiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
                 "passwordRecovery.form.fields.expiryTime.validations.maxLengthReached");
+        } else if (!values.smsOtpExpiryTime) {
+            // Check for required error.
+            errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpExpiryTime.validations.empty");
+        } else if (!FormValidation.isInteger(values.smsOtpExpiryTime as unknown as number)) {
+            // Check for invalid input.
+            errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpExpiryTime.validations.invalid");
+        } else if ((parseInt(values.smsOtpExpiryTime, 10) < GovernanceConnectorConstants
+            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
+            || (parseInt(values.smsOtpExpiryTime, 10) > GovernanceConnectorConstants
+                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_EXPIRY_TIME_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpExpiryTime.validations.range");
+        } else if (values.smsOtpExpiryTime &&
+            !FormValidation.isLengthValid(values.smsOtpExpiryTime as string, GovernanceConnectorConstants
+                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_EXPIRY_TIME_MAX_LENGTH)) {
+            // Check for invalid input length.
+            errors.smsOtpExpiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpExpiryTime.validations.maxLengthReached");
+        } else if (!values.smsOtpRegex) {
+            // Check for required error.
+            errors.smsOtpRegex = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpRegex.validations.empty");
+        } else if (values.smsOtpRegex &&
+            !FormValidation.isLengthValid(values.smsOtpRegex as string, GovernanceConnectorConstants
+                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_REGEX_MAX_LENGTH)) {
+            // Check for invalid input length.
+            errors.smsOtpRegex = t("extensions:manage.serverConfigurations.accountRecovery." +
+                "passwordRecovery.form.fields.smsOtpRegex.validations.maxLengthReached");
         }
 
         return errors;
@@ -190,14 +281,30 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const getUpdatedConfigurations = (values: Record<string, any>) => {
         const data: {
             "Recovery.ExpiryTime": any;
+            "Recovery.Notification.Password.emailLink.Enable": boolean;
+            "Recovery.Notification.Password.ExpiryTime.smsOtp": number;
+            "Recovery.Notification.Password.smsOtp.Enable": boolean;
+            "Recovery.Notification.Password.smsOtp.Regex": any;
             "Recovery.NotifySuccess": boolean;
         } = {
             "Recovery.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
                 : initialConnectorValues?.expiryTime,
+            "Recovery.Notification.Password.ExpiryTime.smsOtp": values.smsOtpExpiryTime !== undefined
+                ? values.smsOtpExpiryTime
+                : initialConnectorValues?.smsOtpExpiryTime,
+            "Recovery.Notification.Password.emailLink.Enable": values.enableEmailBasedRecovery !== undefined
+                ? !!values.enableEmailBasedRecovery
+                : initialConnectorValues?.enableEmailBasedRecovery,
+            "Recovery.Notification.Password.smsOtp.Enable": values.enableSMSBasedRecovery !== undefined
+                ? !!values.enableSMSBasedRecovery
+                : initialConnectorValues?.enableSMSBasedRecovery,
+            "Recovery.Notification.Password.smsOtp.Regex": values.smsOtpRegex !== undefined
+                ? values.smsOtpRegex
+                : initialConnectorValues?.smsOtpRegex,
             "Recovery.NotifySuccess": values.notifySuccess !== undefined
                 ? !!values.notifySuccess
-                : initialConnectorValues?.notifySuccess
+                : initialConnectorValues?.notifySuccess,
         };
 
         return data;
@@ -216,6 +323,96 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >
+                <Field.Checkbox
+                    ariaLabel="enableSMSBasedRecovery"
+                    name="enableSMSBasedRecovery"
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.enableSMSBasedRecovery.label") }
+                    required={ false }
+                    readOnly={ readOnly }
+                    width={ 10 }
+                    disabled={ !isConnectorEnabled }
+                    listen={ (value: boolean) => setIsSMSRecoveryEnabled(value) }
+                    data-testid={ `${testId}-sms-based-recovery` }
+                />
+                <Hint className={ "mb-5" }>
+                    {
+                        t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.enableSMSBasedRecovery.hint")
+                    }
+                </Hint>
+                <Field.Input
+                    className="ml-6"
+                    ariaLabel="smsOtpExpiryTime"
+                    inputType="number"
+                    name="smsOtpExpiryTime"
+                    min={
+                        GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                            .EXPIRY_TIME_MIN_VALUE
+                    }
+                    max={
+                        GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                            .SMS_OTP_EXPIRY_TIME_MAX_VALUE
+                    }
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.smsOtpExpiryTime.label") }
+                    placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.smsOtpExpiryTime.placeholder") }
+                    required={ false }
+                    maxLength={
+                        GovernanceConnectorConstants
+                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_EXPIRY_TIME_MAX_LENGTH
+                    }
+                    minLength={
+                        GovernanceConnectorConstants
+                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
+                    }
+                    readOnly={ readOnly }
+                    width={ 10 }
+                    labelPosition="right"
+                    disabled={ !isSMSRecoveryEnabled }
+                    data-testid={ `${testId}-sms-otp-expiry-time` }
+                >
+                    <input/>
+                    <Label
+                        content={ "mins" }
+                    />
+                </Field.Input>
+                <Hint className={ "mb-5 ml-6" }>
+                    {
+                        t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.smsOtpExpiryTime.hint")
+                    }
+                </Hint>
+                <Field.Input
+                    className="ml-6"
+                    ariaLabel="smsOtpRegex"
+                    inputType="default"
+                    name="smsOtpRegex"
+                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.smsOtpRegex.label") }
+                    placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.smsOtpRegex.placeholder") }
+                    required={ false }
+                    maxLength={
+                        GovernanceConnectorConstants
+                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_REGEX_MAX_LENGTH
+                    }
+                    minLength={
+                        GovernanceConnectorConstants
+                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_REGEX_MIN_LENGTH
+                    }
+                    readOnly={ readOnly }
+                    width={ 10 }
+                    disabled={ !isSMSRecoveryEnabled }
+                    data-testid={ `${testId}-sms-otp-regex` }
+                />
+                <Hint className={ "mb-5 ml-6" }>
+                    {
+                        t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.smsOtpRegex.hint")
+                    }
+                </Hint>
                 <Field.Checkbox
                     ariaLabel="notifyRecoverySuccess"
                     name="notifySuccess"

@@ -3502,6 +3502,10 @@ export const extensions: Extensions = {
                                 hint: "Enabling this will let the users reset their password using an email.",
                                 label: "Enable"
                             },
+                            enableSMSBasedRecovery: {
+                                hint: "This specifies whether to send an SMS OTP to the mobile.",
+                                label: "Enable SMS based recovery"
+                            },
                             expiryTime: {
                                 hint: "Password recovery link expiry time in minutes.",
                                 label: "Recovery link expiry time",
@@ -3521,6 +3525,31 @@ export const extensions: Extensions = {
                                     "This specifies whether to notify the user via an email when password " +
                                     "recovery is successful.",
                                 label: "Notify on successful recovery"
+                            },
+                            smsOtpExpiryTime: {
+                                hint: "SMS OTP expiry time in minutes.",
+                                label: "SMS OTP expiry time",
+                                placeholder: "Enter expiry time",
+                                validations: {
+                                    invalid: "SMS OTP expiry time should be an integer.",
+                                    empty: "SMS OTP expiry time cannot be empty.",
+                                    range:
+                                        "SMS OTP expiry time should be between 1 minute & 1440 minutes " +
+                                        "(1 day).",
+                                    maxLengthReached:
+                                        "SMS OTP expiry time should be a number with 4 or less digits."
+                                }
+                            },
+                            smsOtpRegex: {
+                                hint: "Regex for SMS OTP in format [allowed characters]{length}. " +
+                                "Supported character ranges are a-z, A-Z, 0-9. Minimum OTP length is 4.",
+                                label: "SMS OTP Regex",
+                                placeholder: "Enter Regex",
+                                validations: {
+                                    empty: "SMS OTP regex cannot be empty.",
+                                    maxLengthReached:
+                                        "SMS OTP expiry time should be a string with 20 or less characters."
+                                }
                             }
                         }
                     },
@@ -3537,8 +3566,7 @@ export const extensions: Extensions = {
                         }
                     },
                     subHeading:
-                        "Enable self-service password recovery for users " +
-                        "on the login page.\nThe user will receive a password reset link via email upon request."
+                    "Enable self-service password recovery for users on the login page."
                 },
                 subHeading: "Account Recovery related settings."
             },
