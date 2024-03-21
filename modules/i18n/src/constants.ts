@@ -85,4 +85,21 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * emailTemplateTypes namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+
+    public static readonly EMAIL_TEMPLATE_TYPES_NAMESPACE: string = "emailTemplateTypes";
+
+    /**
+     * emailTemplates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
 }

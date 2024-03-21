@@ -192,8 +192,8 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
-                "emailTemplateTypes",
-                "emailTemplates"
+                I18nConstants.EMAIL_TEMPLATE_TYPES_NAMESPACE,
+                I18nConstants.EMAIL_TEMPLATES_NAMESPACE
             ],
             preload: []
         };
