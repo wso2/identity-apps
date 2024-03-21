@@ -20,5 +20,5 @@ export * from "./common";
 export * from "./console";
 export * from "./myaccount";
 export * from "./invite";
-export * from "./parentOrgInvitations";
-export * from "./oidcScopes";
+export * from "./parent-org-invitations";
+export * from "./oidc-scopes";

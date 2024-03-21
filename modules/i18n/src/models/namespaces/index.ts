@@ -20,5 +20,5 @@ export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./invite-ns";
-export * from "./parentOrgInvitations-ns";
-export * from "./oidcScopes-ns";
+export * from "./parent-org-invitations-ns";
+export * from "./oidc-scopes-ns";

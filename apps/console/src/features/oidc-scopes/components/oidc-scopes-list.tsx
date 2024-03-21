@@ -172,10 +172,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 setDeletingScope(undefined);
                 onScopeDelete();
                 dispatch(addAlert({
-                    description: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.success" +
+                    description: t("oidcScopes:notifications.deleteOIDCScope.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.success.message")
+                    message: t("oidcScopes:notifications.deleteOIDCScope.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -185,7 +185,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.error" +
+                        message: t("oidcScopes:notifications.deleteOIDCScope.error" +
                             ".message")
                     }));
 
@@ -193,10 +193,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope" +
+                    description: t("oidcScopes:notifications.deleteOIDCScope" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.oidcScopes.notifications.deleteOIDCScope.genericError" +
+                    message: t("oidcScopes:notifications.deleteOIDCScope.genericError" +
                         ".message")
                 }));
             });
@@ -242,7 +242,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.oidcScopes.list.columns.name")
+                title: t("oidcScopes:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -250,7 +250,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.oidcScopes.list.columns.actions")
+                title: t("oidcScopes:list.columns.actions")
             }
         ];
     };
@@ -317,15 +317,15 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ () => clearSearchQuery() }>
-                            { t("console:manage.features.oidcScopes.placeholders.emptySearch.action") }
+                            { t("oidcScopes:placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.oidcScopes.placeholders.emptySearch.title") }
+                    title={ t("oidcScopes:placeholders.emptySearch.title") }
                     subtitle={ [
-                        t("console:manage.features.oidcScopes.placeholders.emptySearch.subtitles.0"),
-                        t("console:manage.features.oidcScopes.placeholders.emptySearch.subtitles.1")
+                        t("oidcScopes:placeholders.emptySearch.subtitles.0"),
+                        t("oidcScopes:placeholders.emptySearch.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -339,17 +339,17 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         <Show when={ AccessControlConstants.SCOPE_WRITE }>
                             <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                                 <Icon name="add"/>
-                                { t("console:manage.features.oidcScopes.placeholders.emptyList.action") }
+                                { t("oidcScopes:placeholders.emptyList.action") }
                             </PrimaryButton>
                         </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations()?.newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.oidcScopes.placeholders.emptyList.title") }
+                    title={ t("oidcScopes:placeholders.emptyList.title") }
                     subtitle={ [
-                        t("console:manage.features.oidcScopes.placeholders.emptyList.subtitles.0"),
-                        t("console:manage.features.oidcScopes.placeholders.emptyList.subtitles.1"),
-                        t("console:manage.features.oidcScopes.placeholders.emptyList.subtitles.2")
+                        t("oidcScopes:placeholders.emptyList.subtitles.0"),
+                        t("oidcScopes:placeholders.emptyList.subtitles.1"),
+                        t("oidcScopes:placeholders.emptyList.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -393,7 +393,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingScope.name }
-                        assertionHint={ t("console:manage.features.oidcScopes.confirmationModals.deleteScope" +
+                        assertionHint={ t("oidcScopes:confirmationModals.deleteScope" +
                         ".assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -406,19 +406,19 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                         >
-                            { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.header") }
+                            { t("oidcScopes:confirmationModals.deleteScope.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.message") }
+                            { t("oidcScopes:confirmationModals.deleteScope.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            { t("console:manage.features.oidcScopes.confirmationModals.deleteScope.content") }
+                            { t("oidcScopes:confirmationModals.deleteScope.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

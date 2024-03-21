@@ -15,9 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { parentOrgInvitationsNS } from "../../../models"
+import { parentOrgInvitationsNS } from "../../../models";
 
-export const parentOrgInvitations: parentOrgInvitationsNS ={
+export const parentOrgInvitations: parentOrgInvitationsNS = {
     addUserWizard: {
         heading: "Invite Parent Users",
         description: "Invite users from the parent organization.",

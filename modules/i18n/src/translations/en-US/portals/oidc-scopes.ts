@@ -17,7 +17,7 @@
  */
 import { oidcScopesNS } from "../../../models";
 
-export const oidcScopes: oidcScopesNS ={
+export const oidcScopes: oidcScopesNS = {
     back: "Go back to OpenID Connect Attrbute Mappings",
     viewAttributes: "View Attributes",
     manageAttributes: "Manage Attributes",

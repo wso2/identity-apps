@@ -17,7 +17,7 @@
  */
 import { inviteNS } from "../../../models";
 
-export const invite:inviteNS ={
+export const invite: inviteNS = {
     advancedSearch: {
         form: {
             dropdown: {
