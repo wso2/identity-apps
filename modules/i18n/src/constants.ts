@@ -85,4 +85,13 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * Certificate namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = "certificates";
+
 }

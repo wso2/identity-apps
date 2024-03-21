@@ -46,13 +46,18 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Certificates namespace.
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = I18nModuleConstants.CERTIFICATES_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "certificates", "portals" ]
+        [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ]
     ]);
 
     /**
