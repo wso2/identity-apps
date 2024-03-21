@@ -142,8 +142,8 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
 
     return (
         <PageLayout
-            title={ t("console:manage.pages.invite.title") }
-            description={ t("console:manage.pages.invite.subTitle") }
+            title={ t("pages:invite.title") }
+            description={ t("pages:invite.subTitle") }
         >
             <Grid>
                 <Grid.Row>

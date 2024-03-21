@@ -314,9 +314,9 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
     return (
         <PageLayout
-            title={ t("console:manage.pages.approvalsPage.title") }
-            pageTitle={ t("console:manage.pages.approvalsPage.title") }
-            description={ t("console:manage.pages.approvalsPage.subTitle") }
+            title={ t("pages:approvalsPage.title") }
+            pageTitle={ t("pages:approvalsPage.title") }
+            description={ t("pages:approvalsPage.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout

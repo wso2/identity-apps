@@ -228,11 +228,11 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                         </Show>
                     ) : null
             }
-            title={ t("console:manage.pages.roles.title") }
-            pageTitle={ t("console:manage.pages.roles.title") }
+            title={ t("pages:roles.title") }
+            pageTitle={ t("pages:roles.title") }
             description={ isSubOrg
-                ? t("console:manage.pages.roles.alternateSubTitle")
-                : t("console:manage.pages.roles.subTitle") }
+                ? t("pages:roles.alternateSubTitle")
+                : t("pages:roles.subTitle") }
         >
             <ListLayout
                 advancedSearch={ (

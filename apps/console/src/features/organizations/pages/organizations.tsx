@@ -499,7 +499,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         </Show>
                     )
                 }
-                pageTitle={ t("console:manage.pages.organizations.title") }
+                pageTitle={ t("pages:organizations.title") }
                 title={
                     isOrganizationListRequestLoading
                         ? null
@@ -521,11 +521,11 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 componentAbovePageHeader={
                     (<>
                         <Header as="h1" data-componentid={ `${ testId }-organization-header` }>
-                            { t("console:manage.pages.organizations.title") }
+                            { t("pages:organizations.title") }
                             <Header.Subheader
                                 data-componentid={ `${ testId }-sub-title` }
                             >
-                                { t("console:manage.pages.organizations.subTitle") }
+                                { t("pages:organizations.subTitle") }
                             </Header.Subheader>
                         </Header>
                         <Divider hidden />

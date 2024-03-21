@@ -371,8 +371,8 @@ export class GovernanceConnectorUtils {
             {
                 connectors: [
                     {
-                        description: I18n.instance.t("console:manage.pages.emailDomainDiscovery.subTitle"),
-                        header: I18n.instance.t("console:manage.pages.emailDomainDiscovery.title"),
+                        description: I18n.instance.t("pages:emailDomainDiscovery.subTitle"),
+                        header: I18n.instance.t("pages:emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
                         testId: "email-domain-discovery-card"

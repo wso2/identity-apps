@@ -1045,8 +1045,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 && !isReadOnlyUserStore
                 && renderUserDropDown()
             }
-            title={ t("console:manage.pages.users.title") }
-            pageTitle={ t("console:manage.pages.users.title") }
+            title={ t("pages:users.title") }
+            pageTitle={ t("pages:users.title") }
             description={ t("extensions:manage.users.usersSubTitle") }
             data-testid={ `${ testId }-page-layout` }
         >

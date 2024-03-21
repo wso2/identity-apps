@@ -85,4 +85,12 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * pages namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PAGES_NAMESPACE: string = "pages";
 }

@@ -333,9 +333,9 @@ const RolesPage = (): ReactElement => {
                     </Show>
                 )
             }
-            title={ t("console:manage.pages.roles.title") }
-            pageTitle={ t("console:manage.pages.roles.title") }
-            description={ t("console:manage.pages.roles.subTitle") }
+            title={ t("pages:roles.title") }
+            pageTitle={ t("pages:roles.title") }
+            description={ t("pages:roles.subTitle") }
         >
             {
                 !isEmptyResults && (
