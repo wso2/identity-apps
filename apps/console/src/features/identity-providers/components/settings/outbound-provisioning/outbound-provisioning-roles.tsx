@@ -153,8 +153,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 } as DropdownItemProps;
                             }) }
                             value={ selectedRole }
-                            placeholder={ t("console:develop.features.authenticationProvider" +
-                                ".forms.outboundProvisioningRoles" +
+                            placeholder={ t("authenticationProvider:" +
+                                "forms.outboundProvisioningRoles" +
                                 ".placeHolder") }
                             onChange={
                                 (event, data) => {

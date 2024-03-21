@@ -131,8 +131,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             readOnly={ isReadOnly }
                         />
                         <Hint>
-                            { t("console:develop.features.authenticationProvider" +
-                                ".forms.advancedConfigs.homeRealmIdentifier.hint") }
+                            { t("authenticationProvider:" +
+                                "forms.advancedConfigs.homeRealmIdentifier.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

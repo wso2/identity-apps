@@ -414,8 +414,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             attributeMapColumnHeader: t("authenticationProvider:" +
                                 "forms.attributeSettings." +
                                 "attributeProvisioning.attributeMapColumnHeader"),
-                            attributeMapInputPlaceholderPrefix: t("console:develop.features." +
-                                "authenticationProvider.forms" +
+                            attributeMapInputPlaceholderPrefix: t("authenticationProvider:forms" +
                                 ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
                             componentHeading: t("authenticationProvider:" +
                                 "forms.attributeSettings." +

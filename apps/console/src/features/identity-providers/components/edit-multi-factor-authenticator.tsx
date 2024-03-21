@@ -131,8 +131,8 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider" +
-                        ".notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
+                    description: t("authenticationProvider:" +
+                        "notifications." + i18nKeyForMFAAuthenticator + ".success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("authenticationProvider:notifications." +
                         i18nKeyForMFAAuthenticator + ".success.message")
@@ -143,12 +143,12 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider" +
-                            ".notifications." + i18nKeyForMFAAuthenticator + ".error.description",
+                        description: t("authenticationProvider:" +
+                            "notifications." + i18nKeyForMFAAuthenticator + ".error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider" +
-                            ".notifications." + i18nKeyForMFAAuthenticator + ".error.message")
+                        message: t("authenticationProvider:" +
+                            "notifications." + i18nKeyForMFAAuthenticator + ".error.message")
                     }));
 
                     return;

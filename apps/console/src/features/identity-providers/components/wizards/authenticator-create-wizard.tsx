@@ -226,12 +226,12 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         updateFederatedAuthenticator(idpId, authenticator)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider" +
-                        ".notifications.addFederatedAuthenticator." +
+                    description: t("authenticationProvider:" +
+                        "notifications.addFederatedAuthenticator." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider" +
-                        ".notifications.addFederatedAuthenticator.success.message")
+                    message: t("authenticationProvider:" +
+                        "notifications.addFederatedAuthenticator.success.message")
                 }));
             })
             .catch((error: AxiosError) => {
@@ -496,8 +496,8 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                     onClick={ navigateToPrevious }
                                     data-testid={ `${ testId }-modal-previous-button` }>
                                     <Icon name="arrow left"/>
-                                    { t("console:develop.features.authenticationProvider" +
-                                        ".wizards.buttons.previous") }
+                                    { t("authenticationProvider:" +
+                                        "wizards.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

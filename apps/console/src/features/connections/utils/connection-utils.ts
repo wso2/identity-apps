@@ -685,8 +685,8 @@ export const handleGetConnectionsMetaDataError = (error: AxiosError): void => {
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider" +
-                        ".notifications.getConnectionMetaDetails.error.message"
+                    "authenticationProvider:" +
+                        "notifications.getConnectionMetaDetails.error.message"
                 )
             })
         );
@@ -696,13 +696,13 @@ export const handleGetConnectionsMetaDataError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.getConnectionMetaDetails.genericError.description"
+                "authenticationProvider:" +
+                    "notifications.getConnectionMetaDetails.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.getConnectionMetaDetails.genericError.message"
+                "authenticationProvider:" +
+                    "notifications.getConnectionMetaDetails.genericError.message"
             )
         })
     );
@@ -718,14 +718,14 @@ export const handleGetAuthenticatorTagsError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider" +
-                        ".notifications.getAuthenticatorTags.error.message",
+                    "authenticationProvider:" +
+                        "notifications.getAuthenticatorTags.error.message",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider" +
-                        ".notifications.getAuthenticatorTags.error.message"
+                    "authenticationProvider:" +
+                        "notifications.getAuthenticatorTags.error.message"
                 )
             })
         );
@@ -735,13 +735,13 @@ export const handleGetAuthenticatorTagsError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
+                "authenticationProvider:" +
                     ".notifications.getAuthenticatorTags.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.getAuthenticatorTags.genericError.message"
+                "authenticationProvider:" +
+                    "notifications.getAuthenticatorTags.genericError.message"
             )
         })
     );
@@ -754,14 +754,14 @@ export const handleGetRoleListError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider" +
-                        ".notifications.getRolesList.error.description",
+                    "authenticationProvider:" +
+                        "notifications.getRolesList.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider" +
-                        ".notifications.getRolesList.error.message"
+                    "authenticationProvider:" +
+                        "notifications.getRolesList.error.message"
                 )
             })
         );
@@ -772,13 +772,13 @@ export const handleGetRoleListError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.getRolesList.genericError.description"
+                "authenticationProvider:" +
+                    "notifications.getRolesList.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.getRolesList.genericError.message"
+                "authenticationProvider:" +
+                    "notifications.getRolesList.genericError.message"
             )
         })
     );
@@ -795,8 +795,8 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider" +
-                        ".notifications.updateIDPRoleMappings.error.message"
+                    "authenticationProvider:" +
+                        "notifications.updateIDPRoleMappings.error.message"
                 )
             })
         );
@@ -805,13 +805,13 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.updateIDPRoleMappings.genericError.description"
+                "authenticationProvider:" +
+                    "notifications.updateIDPRoleMappings.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider" +
-                    ".notifications.updateIDPRoleMappings.genericError.message"
+                "authenticationProvider:" +
+                    "notifications.updateIDPRoleMappings.genericError.message"
             )
         })
     );

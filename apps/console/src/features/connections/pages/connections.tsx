@@ -485,20 +485,20 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                                     }
                                 ] }
                                 filterAttributePlaceholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.form.inputs.filterAttribute.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.form.inputs.filterAttribute.placeholder"
                                 ) }
                                 filterConditionsPlaceholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.form.inputs.filterCondition.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.form.inputs.filterCondition.placeholder"
                                 ) }
                                 filterValuePlaceholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.form.inputs.filterValue.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.form.inputs.filterValue.placeholder"
                                 ) }
                                 placeholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.placeholder"
                                 ) }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="sw"

@@ -156,8 +156,7 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
             });
         }
         if (nameExist) {
-            return t("console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+            return t("authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate");
         }
     };

@@ -400,8 +400,8 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
                 validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.scopes(value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push(I18n.instance.t("console:develop.features." +
-                            "authenticationProvider.forms.common.invalidScopesErrorMessage"));
+                        validation.errorMessages.push(I18n.instance.t("authenticationProvider:forms.common."+
+                        "invalidScopesErrorMessage"));
                     }
                     if (propertyMetadata?.maxLength && value.length > propertyMetadata.maxLength) {
                         validation.isValid = false;

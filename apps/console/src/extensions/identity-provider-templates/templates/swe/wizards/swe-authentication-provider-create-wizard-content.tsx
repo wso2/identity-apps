@@ -135,8 +135,7 @@ export const SIWEAuthenticationProviderCreateWizardContent: FunctionComponent<
             }
 
             return t(
-                "console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+                "authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate"
             );
         };

@@ -347,8 +347,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                     />
                 ),
                 icon: getOutboundProvisioningConnectorWizardIcons().connectorSelection,
-                title: t("console:develop.features.authenticationProvider" +
-                ".wizards.addProvisioningConnector.steps.connectorSelection.title")
+                title: t("authenticationProvider:" +
+                "wizards.addProvisioningConnector.steps.connectorSelection.title")
             },
             {
                 content: (
@@ -399,8 +399,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                     { t("authenticationProvider:modals.addProvisioningConnector.title") }
                     <Heading as="h6">
                         { 
-                            t("console:develop.features.authenticationProvider" +
-                            ".modals.addProvisioningConnector.subTitle") 
+                            t("authenticationProvider:" +
+                            "modals.addProvisioningConnector.subTitle") 
                         }
                     </Heading>
                 </Modal.Header>
@@ -474,8 +474,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
                                         { 
-                                            t("console:develop.features.authenticationProvider"
-                                                + ".wizards.buttons.previous") 
+                                            t("authenticationProvider:"
+                                                + "wizards.buttons.previous") 
                                         }
                                     </LinkButton>
                                 ) }

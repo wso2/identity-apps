@@ -182,8 +182,7 @@ export const OrganizationEnterpriseConnectionCreateWizardContent:
                             () => {
                                 if (isUserInputIdpNameAlreadyTaken) {
                                     return t(
-                                        "console:develop.features." +
-                                        "authenticationProvider.forms.generalDetails.name." +
+                                        "authenticationProvider:forms.generalDetails.name." +
                                         "validations.duplicate"
                                     );
                                 }

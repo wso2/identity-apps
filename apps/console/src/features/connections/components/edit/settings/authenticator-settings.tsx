@@ -301,8 +301,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             .then(() => {
                 if (isDefaultAuthSet) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider" +
-                            ".notifications.updateFederatedAuthenticator." +
+                        description: t("authenticationProvider:" +
+                            "notifications.updateFederatedAuthenticator." +
                             "success.description"),
                         level: AlertLevels.SUCCESS,
                         message: t("authenticationProvider:notifications." +
@@ -315,12 +315,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider" +
-                            ".notifications.updateFederatedAuthenticator." +
+                        description: t("authenticationProvider:" +
+                            "notifications.updateFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider" +
-                            ".notifications.updateFederatedAuthenticator." +
+                        message: t("authenticationProvider:" +
+                            "notifications.updateFederatedAuthenticator." +
                             "error.message")
                     }));
 
