@@ -57,6 +57,30 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * invite namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly INVITE_NAMESPACE: string = I18nModuleConstants.INVITE_NAMESPACE;
+    
+    /**
+     * Parent org invitations namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string = I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
+
+    /**
+     * OIDC scopes namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly OIDC_SCOPES_NAMESPACE: string = I18nModuleConstants.OIDC_SCOPES_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -66,9 +90,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "invite", "portals" ],
-        [ "parentOrgInvitations", "portals" ],
-        [ "oidcScopes", "portals" ]
+        [ I18nConstants.INVITE_NAMESPACE, "portals" ],
+        [ I18nConstants.PARENT_ORG_INVITATIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.OIDC_SCOPES_NAMESPACE, "portals" ]
     ]);
 
     /**

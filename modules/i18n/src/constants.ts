@@ -85,4 +85,28 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * invite namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly INVITE_NAMESPACE: string = "invite";
+
+    /**
+     * Parent org invitations namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string = "parentOrgInvitations";
+
+    /**
+     * OIDC scopes namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly OIDC_SCOPES_NAMESPACE: string = "oidcScopes";
 }
