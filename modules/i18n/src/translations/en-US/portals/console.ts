@@ -13391,44 +13391,6 @@ export const console: ConsoleNS = {
             }
         }
     },
-    sessionManagement: {
-        description: "Manage settings related to the session of your users.",
-        title: "Session Management",
-        form: {
-            idleSessionTimeout: {
-                hint: "The user will be logged out automatically after the configured time.",
-                label: "Idle Session Timeout",
-                placeholder: "Enter the idle session timeout in minutes"
-            },
-            rememberMePeriod: {
-                hint: "The user will be prompted to login again after the configured time.",
-                label: "Remember Me Period",
-                placeholder: "Enter the remember me period in minutes"
-            },
-            validation: {
-                idleSessionTimeout: "Idle Session Timeout should be a positive integer.",
-                rememberMePeriod: "Remember Me Period should be a positive integer."
-            }
-        },
-        notifications: {
-            getConfiguration: {
-                error: {
-                    description: "Error occurred while fetching session management settings.",
-                    message: "Error occurred"
-                }
-            },
-            updateConfiguration: {
-                error: {
-                    description: "Error occurred while updating session management settings.",
-                    message: "Error occurred"
-                },
-                success: {
-                    description: "Successfully updated the session management settings.",
-                    message: "Update successful"
-                }
-            }
-        }
-    },
     wsFederationConfig: {
         title: "WS-Federation Configuration",
         description: "Configure WS-Federation protocol for your applications.",

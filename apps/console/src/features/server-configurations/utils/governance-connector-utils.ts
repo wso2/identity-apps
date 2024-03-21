@@ -254,7 +254,7 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: "Manage and configure user session settings and preferences.",
-                        header: I18n.instance.t("console:sessionManagement.title"),
+                        header: I18n.instance.t("sessionManagement:title"),
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         testId: "session-management-card"

@@ -20,3 +20,4 @@ export * from "./common";
 export * from "./console";
 export * from "./myaccount";
 export * from "./saml2-config";
+export * from "./session-management";

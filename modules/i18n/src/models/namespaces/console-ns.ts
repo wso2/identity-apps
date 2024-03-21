@@ -12694,44 +12694,6 @@ export interface ConsoleNS {
             };
         };
     };
-    sessionManagement: {
-        title: string;
-        description: string;
-        form: {
-            idleSessionTimeout: {
-                hint: string;
-                label: string;
-                placeholder: string;
-            };
-            rememberMePeriod: {
-                hint: string;
-                label: string;
-                placeholder: string;
-            };
-            validation: {
-                rememberMePeriod: string;
-                idleSessionTimeout: string;
-            };
-        };
-        notifications: {
-            updateConfiguration: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getConfiguration: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
-    };
     wsFederationConfig: {
         title: string;
         description: string;

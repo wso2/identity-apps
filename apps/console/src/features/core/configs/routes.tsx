@@ -96,7 +96,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 component: lazy(() => import("../../session-management/pages/session-management")),
                                 exact: true,
                                 id: "sessionManagement",
-                                name: "console:sessionManagement.title",
+                                name: "sessionManagement:title",
                                 path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                                 protected: true,
                                 showOnSidePanel: false
