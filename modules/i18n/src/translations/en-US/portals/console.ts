@@ -734,42 +734,6 @@ export const console: ConsoleNS = {
             placeholder: "Select screen"
         }
     },
-    consoleSettings: {
-        administrators: {
-            add: {
-                action: "Add Administrator",
-                options: {
-                    addExistingUser: "Add Existing User",
-                    inviteNewUser: "Invite New User"
-                }
-            },
-            edit: {
-                backButton: "Go back to Administrators"
-            },
-            tabLabel: "Administrators"
-        },
-        loginFlow: {
-            tabLabel: "Login Flow"
-        },
-        protocol: {
-            tabLabel: "Protocol"
-        },
-        roles: {
-            add: {
-                organizationPermissions: {
-                    label: "Organization Permissions"
-                },
-                tenantPermissions: {
-                    label: "Root Organization Permissions"
-                }
-            },
-            tabLabel: "Roles",
-            permissionLevels: {
-                edit: "Edit",
-                view: "View"
-            }
-        }
-    },
     featureGate: {
         enabledFeatures: {
             tags: {

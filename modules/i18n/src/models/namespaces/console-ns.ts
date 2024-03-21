@@ -617,42 +617,6 @@ export interface ConsoleNS {
             placeholder: string;
         };
     };
-    consoleSettings: {
-        administrators: {
-            add: {
-                action: string;
-                options: {
-                    addExistingUser: string;
-                    inviteNewUser: string;
-                };
-            };
-            edit: {
-                backButton: string;
-            };
-            tabLabel: string;
-        };
-        loginFlow: {
-            tabLabel: string;
-        };
-        protocol: {
-            tabLabel: string;
-        };
-        roles: {
-            add: {
-                organizationPermissions: {
-                    label: string;
-                };
-                tenantPermissions: {
-                    label: string;
-                };
-            };
-            tabLabel: string;
-            permissionLevels: {
-                edit: string;
-                view: string;
-            };
-        };
-    };
     featureGate: {
         enabledFeatures: {
             tags: {
