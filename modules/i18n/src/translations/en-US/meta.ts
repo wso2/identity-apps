@@ -29,6 +29,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
         I18nModuleConstants.EXTENSIONS_NAMESPACE,
         "saml2Config",
-        "sessionManagement"
+        "sessionManagement",
+        "wsFederationConfig"
     ]
 };

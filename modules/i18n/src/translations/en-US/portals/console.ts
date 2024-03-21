@@ -13390,32 +13390,5 @@ export const console: ConsoleNS = {
                 title: "Page under construction"
             }
         }
-    },
-    wsFederationConfig: {
-        title: "WS-Federation Configuration",
-        description: "Configure WS-Federation protocol for your applications.",
-        form: {
-            enableRequestSigning: {
-                label: "Enable Authentication Requests Signing"
-            }
-        },
-        notifications: {
-            getConfiguration: {
-                error: {
-                    description: "Error occurred while fetching WS-Federation configurations.",
-                    message: "Error occurred"
-                }
-            },
-            updateConfiguration: {
-                error: {
-                    description: "Error occurred while updating WS-Federation configurations.",
-                    message: "Error occurred"
-                },
-                success: {
-                    description: "Successfully updated the WS-Federation configurations.",
-                    message: "Update successful"
-                }
-            }
-        }
     }
 };

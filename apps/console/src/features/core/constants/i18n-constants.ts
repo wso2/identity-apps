@@ -53,7 +53,8 @@ export class I18nConstants {
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
         [ "saml2Config", "portals" ],
-        [ "sessionManagement", "portals" ]
+        [ "sessionManagement", "portals" ],
+        [ "wsFederationConfig", "portals" ]
 
     ]);
 

@@ -12694,31 +12694,4 @@ export interface ConsoleNS {
             };
         };
     };
-    wsFederationConfig: {
-        title: string;
-        description: string;
-        form: {
-            enableRequestSigning: {
-                label: string;
-            };
-        };
-        notifications: {
-            updateConfiguration: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getConfiguration: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
-    };
 }

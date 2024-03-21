@@ -15,10 +15,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-export * from "./common";
-export * from "./console";
-export * from "./myaccount";
-export * from "./saml2-config";
-export * from "./session-management";
-export * from "./ws-federation-config";
+export interface WsFederationConfigNS {
+    title: string;
+    description: string;
+    form: {
+        enableRequestSigning: {
+            label: string;
+        };
+    };
+    notifications: {
+        updateConfiguration: {
+            error: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        getConfiguration: {
+            error: {
+                message: string;
+                description: string;
+            };
+        };
+    };
+}

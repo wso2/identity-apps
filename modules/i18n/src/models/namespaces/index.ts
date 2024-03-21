@@ -21,3 +21,4 @@ export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./saml2-config-ns";
 export * from "./session-management-ns";
+export * from "./ws-federation-config-ns";

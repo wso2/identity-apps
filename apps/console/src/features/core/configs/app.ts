@@ -193,7 +193,8 @@ export class Config {
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
                 "saml2Config",
-                "sessionManagement"
+                "sessionManagement",
+                "wsFederationConfig"
             ],
             preload: []
         };

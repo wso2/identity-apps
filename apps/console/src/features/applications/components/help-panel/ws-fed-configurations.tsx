@@ -84,10 +84,10 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:wsFederationConfig.notifications." +
+                description: t("wsFederationConfig:notifications." +
                 "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:wsFederationConfig.notifications." +
+                message: t("wsFederationConfig:notifications." +
                 "getConfiguration.error.message")
             })
         );
