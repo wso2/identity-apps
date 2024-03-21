@@ -85,4 +85,20 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * insights namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly INSIGHTS_NAMESPACE: string = "insights";
+
+    /**
+     * SMS Providers namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SMS_PROVIDERS_NAMESPACE: string = "smsProviders";
 }

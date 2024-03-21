@@ -57,6 +57,22 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * insights namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly INSIGHTS_NAMESPACE: string = I18nModuleConstants.INSIGHTS_NAMESPACE;
+
+    /**
+     * SMS Providers namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -65,7 +81,9 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
+        [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ]
     ]);
 
     /**
