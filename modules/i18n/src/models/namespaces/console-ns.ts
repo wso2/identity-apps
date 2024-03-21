@@ -117,22 +117,6 @@ export interface ConsoleNS {
                 sessionTimedOutDescription: string;
             };
         };
-        notifications: {
-            invalidPEMFile: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
         placeholders: {
             404: {
                 action: string;
@@ -6620,50 +6604,6 @@ export interface ConsoleNS {
                 };
             };
         };
-        notifications: {
-            endSession: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getProfileInfo: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getProfileSchema: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
         pages: {
             applicationTemplate: {
                 backButton: string;
@@ -12531,50 +12471,6 @@ export interface ConsoleNS {
                             message: string;
                         };
                     };
-                };
-            };
-        };
-        notifications: {
-            endSession: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getProfileInfo: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getProfileSchema: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
                 };
             };
         };

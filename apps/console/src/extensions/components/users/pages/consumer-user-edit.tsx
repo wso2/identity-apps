@@ -199,7 +199,7 @@ const ConsumerUserEditPage = (): ReactElement => {
                             addAlert<AlertInterface>({
                                 description: error.response.data.description,
                                 level: AlertLevels.ERROR,
-                                message: I18n.instance.t("console:manage.notifications.getProfileSchema." +
+                                message: I18n.instance.t("notifications:getProfileSchema." +
                                     "error.message")
                             })
                         );
@@ -208,11 +208,11 @@ const ConsumerUserEditPage = (): ReactElement => {
                     dispatch(
                         addAlert<AlertInterface>({
                             description: I18n.instance.t(
-                                "console:manage.notifications.getProfileSchema.genericError.description"
+                                "notifications:getProfileSchema.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "console:manage.notifications.getProfileSchema.genericError.message"
+                                "notifications:getProfileSchema.genericError.message"
                             )
                         })
                     );
@@ -231,7 +231,7 @@ const ConsumerUserEditPage = (): ReactElement => {
                         addAlert<AlertInterface>({
                             description: error.response.data.detail,
                             level: AlertLevels.ERROR,
-                            message: I18n.instance.t("console:manage.notifications.getProfileInfo.error.message")
+                            message: I18n.instance.t("notifications:getProfileInfo.error.message")
                         })
                     );
 
@@ -240,11 +240,11 @@ const ConsumerUserEditPage = (): ReactElement => {
                     dispatch(
                         addAlert<AlertInterface>({
                             description: I18n.instance.t(
-                                "console:manage.notifications.getProfileSchema.genericError.description"
+                                "notifications:getProfileSchema.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "console:manage.notifications.getProfileSchema.genericError.message"
+                                "notifications:getProfileSchema.genericError.message"
                             )
                         })
                     );

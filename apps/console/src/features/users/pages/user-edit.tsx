@@ -159,7 +159,7 @@ const UserEditPage = (): ReactElement => {
                         addAlert<AlertInterface>({
                             description: error.response.data.detail,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.notifications.getProfileInfo.error.message")
+                            message: t("notifications:getProfileInfo.error.message")
                         })
                     );
 
@@ -168,11 +168,11 @@ const UserEditPage = (): ReactElement => {
                     dispatch(
                         addAlert<AlertInterface>({
                             description: t(
-                                "console:manage.notifications.getProfileSchema.genericError.description"
+                                "notifications:getProfileSchema.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.notifications.getProfileSchema.genericError.message"
+                                "notifications:getProfileSchema.genericError.message"
                             )
                         })
                     );

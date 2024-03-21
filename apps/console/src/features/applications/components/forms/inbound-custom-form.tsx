@@ -318,9 +318,9 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                 setShowCertificateModal(true);
             } else {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:common.notifications.invalidPEMFile.genericError.description"),
+                    description: t("notifications:invalidPEMFile.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:common.notifications.invalidPEMFile.genericError.message")
+                    message: t("notifications:invalidPEMFile.genericError.message")
                 }));
             }
         }

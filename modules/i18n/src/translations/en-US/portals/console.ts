@@ -168,22 +168,6 @@ export const console: ConsoleNS = {
                 sessionTimedOutHeading: "User session has expired due to inactivity."
             }
         },
-        notifications: {
-            invalidPEMFile: {
-                error: {
-                    description: "{{ description }}",
-                    message: "Decoding Error"
-                },
-                genericError: {
-                    description: "An error occurred while decoding the certificate.",
-                    message: "Decoding Error"
-                },
-                success: {
-                    description: "Successfully decoded the certificate file.",
-                    message: "Decoding Successful"
-                }
-            }
-        },
         placeholders: {
             404: {
                 action: "Back to home",
@@ -7192,50 +7176,6 @@ export const console: ConsoleNS = {
                 }
             }
         },
-        notifications: {
-            endSession: {
-                error: {
-                    description: "{{description}}",
-                    message: "Termination error"
-                },
-                genericError: {
-                    description: "Couldn't terminate the current session.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "Successfully terminated the current session.",
-                    message: "Termination successful"
-                }
-            },
-            getProfileInfo: {
-                error: {
-                    description: "{{description}}",
-                    message: "Retrieval error"
-                },
-                genericError: {
-                    description: "Couldn't retrieve user profile details.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "Successfully retrieved user profile details.",
-                    message: "Retrieval successful"
-                }
-            },
-            getProfileSchema: {
-                error: {
-                    description: "{{description}}",
-                    message: "Retrieval error"
-                },
-                genericError: {
-                    description: "Couldn't retrieve user profile schemas.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "Successfully retrieved user profile schemas.",
-                    message: "Retrieval successful"
-                }
-            }
-        },
         pages: {
             applicationTemplate: {
                 backButton: "Go back to Applications",
@@ -13227,50 +13167,6 @@ export const console: ConsoleNS = {
                             description: "Successfully updated the sms provider configurations."
                         }
                     }
-                }
-            }
-        },
-        notifications: {
-            endSession: {
-                error: {
-                    description: "{{description}}",
-                    message: "Termination error"
-                },
-                genericError: {
-                    description: "Couldn't terminate the current session.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "Successfully terminated the current session.",
-                    message: "Termination successful"
-                }
-            },
-            getProfileInfo: {
-                error: {
-                    description: "{{description}}",
-                    message: "Retrieval error"
-                },
-                genericError: {
-                    description: "Couldn't retrieve user profile details.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "Successfully retrieved user profile details.",
-                    message: "Retrieval successful"
-                }
-            },
-            getProfileSchema: {
-                error: {
-                    description: "{{description}}",
-                    message: "Retrieval error"
-                },
-                genericError: {
-                    description: "Couldn't retrieve user profile schemas.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "Successfully retrieved user profile schemas.",
-                    message: "Retrieval successful"
                 }
             }
         },

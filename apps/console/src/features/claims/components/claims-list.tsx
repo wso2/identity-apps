@@ -430,7 +430,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.notifications.getProfileSchema.error.message")
+                        message: t("notifications:getProfileSchema.error.message")
                     })
                     );
                 }
@@ -438,11 +438,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.notifications.getProfileSchema.genericError.description"
+                            "notifications:getProfileSchema.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.notifications.getProfileSchema.genericError.message"
+                            "notifications:getProfileSchema.genericError.message"
                         )
                     })
                 );

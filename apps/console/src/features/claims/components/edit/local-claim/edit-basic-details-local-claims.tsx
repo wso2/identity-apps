@@ -396,7 +396,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.notifications.getProfileSchema.error.message")
+                        message: t("notifications:getProfileSchema.error.message")
                     })
                     );
                 }
@@ -404,11 +404,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
-                            "console:manage.notifications.getProfileSchema.genericError.description"
+                            "notifications:getProfileSchema.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.notifications.getProfileSchema.genericError.message"
+                            "notifications:getProfileSchema.genericError.message"
                         )
                     })
                 );
