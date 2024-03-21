@@ -85,4 +85,20 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * governanceConnectors namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = "governanceConnectors";
+
+    /**
+     * Groups namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GROUPS_NAMESPACE: string = "groups";
 }

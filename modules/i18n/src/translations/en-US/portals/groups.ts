@@ -17,7 +17,7 @@
  */
 import { groupsNS } from "../../../models";
 
-export const groups:groupsNS ={
+export const groups: groupsNS = {
     advancedSearch: {
         form: {
             inputs: {

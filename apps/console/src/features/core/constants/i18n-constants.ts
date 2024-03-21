@@ -57,6 +57,22 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * governanceConnectors namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
+
+    /**
+     * Groups namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GROUPS_NAMESPACE: string = I18nModuleConstants.GROUPS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -66,8 +82,8 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "governanceConnectors", "portals" ],
-        [ "groups", "portals" ]
+        [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
+        [ I18nConstants.GROUPS_NAMESPACE, "portals" ]
     ]);
 
     /**

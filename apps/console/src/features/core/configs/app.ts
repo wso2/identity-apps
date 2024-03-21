@@ -192,8 +192,8 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
-                "governanceConnectors",
-                "groups"
+                I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE,
+                I18nConstants.GROUPS_NAMESPACE
             ],
             preload: []
         };

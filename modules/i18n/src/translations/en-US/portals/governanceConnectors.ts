@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { governanceConnectorsNS } from "../../../models"
+import { governanceConnectorsNS } from "../../../models";
 
-export const governanceConnectors: governanceConnectorsNS ={
+export const governanceConnectors: governanceConnectorsNS = {
     goBackLoginAndRegistration: "Go back to login & registration",
     categories: "Categories",
     connectorSubHeading: "Configure {{ name }} settings.",
