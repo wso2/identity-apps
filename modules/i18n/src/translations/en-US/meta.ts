@@ -63,6 +63,6 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE,
         I18nModuleConstants.CERTIFICATES_NAMESPACE,
         I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
-        "idp"
+        I18nModuleConstants.IDP_NAMESPACE
     ]
 };

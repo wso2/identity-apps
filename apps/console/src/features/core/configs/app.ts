@@ -227,7 +227,7 @@ export class Config {
                 I18nConstants.CERTIFICATES_NAMESPACE,
                 I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE,
                 I18nConstants.GROUPS_NAMESPACE,
-                "idp"
+                I18nConstants.IDP_NAMESPACE
             ],
             preload: []
         };
