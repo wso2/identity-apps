@@ -46,13 +46,18 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * IDVP namespace.
+     */
+    public static readonly IDVP_NAMESPACE: string = I18nModuleConstants.IDVP_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "idvp", "portals" ]
+        [ I18nConstants.IDVP_NAMESPACE, "portals" ]
     ]);
 
     /**
