@@ -42,12 +42,12 @@ const SecretWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement 
         <div data-testid={ testId }>
             <Heading as="h5">Secret Name</Heading>
             <p>
-                { t("console:develop.features.secrets.wizards.addSecret.form.secretNameField.hint") }
+                { t("secrets:wizards.addSecret.form.secretNameField.hint") }
             </p>
             <Divider/>
             <Heading as="h5">Secret Value</Heading>
             <p>
-                { t("console:develop.features.secrets.wizards.addSecret.form.secretValueField.hint", {
+                { t("secrets:wizards.addSecret.form.secretValueField.hint", {
                     maxLength: SECRET_VALUE_LENGTH.max,
                     minLength: SECRET_VALUE_LENGTH.min
                 }) }
@@ -55,7 +55,7 @@ const SecretWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement 
             <Divider/>
             <Heading as="h5">Secret Description</Heading>
             <p>
-                { t("console:develop.features.secrets.wizards.addSecret.form.secretDescriptionField.hint") }
+                { t("secrets:wizards.addSecret.form.secretDescriptionField.hint") }
             </p>
         </div>
     );
