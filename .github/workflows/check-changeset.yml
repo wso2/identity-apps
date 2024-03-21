@@ -24,7 +24,7 @@ name: 🦋 Check for Changeset
 
 on:
     workflow_run:
-        workflows: ["Receive PR"]
+        workflows: ["📩 Receive PR"]
         types:
             - completed
 
