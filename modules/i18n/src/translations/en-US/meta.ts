@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,8 +28,8 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
         I18nModuleConstants.EXTENSIONS_NAMESPACE,
-        "saml2Config",
-        "sessionManagement",
-        "wsFederationConfig"
+        I18nModuleConstants.SAML2_CONFIG_NAMESPACE,
+        I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE,
+        I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE
     ]
 };

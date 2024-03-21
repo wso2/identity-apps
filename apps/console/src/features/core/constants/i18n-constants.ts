@@ -46,15 +46,30 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * SAML 2.0 Configuration namespace.
+     */
+    public static readonly SAML2_CONFIG_NAMESPACE: string = I18nModuleConstants.SAML2_CONFIG_NAMESPACE;
+
+    /**
+     * Session management namespace.
+     */
+    public static readonly SESSION_MANAGEMENT_NAMESPACE: string = I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE;
+
+    /**
+     * WS-Federation Configuration namespace.
+     */
+    public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "saml2Config", "portals" ],
-        [ "sessionManagement", "portals" ],
-        [ "wsFederationConfig", "portals" ]
+        [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
+        [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
+        [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ]
 
     ]);
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,4 +85,28 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * SAML 2.0 Configuration namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SAML2_CONFIG_NAMESPACE: string = "saml2Config";
+
+    /**
+     * Session management namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SESSION_MANAGEMENT_NAMESPACE: string = "sessionManagement";
+
+    /**
+     * WS-Federation Configuration namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = "wsFederationConfig";
 }

@@ -48,7 +48,7 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
     const {
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     const { t } = useTranslation();
     const dispatch : Dispatch<any> = useDispatch();
 
@@ -59,10 +59,10 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
         data: originalWSFederationConfig,
         isLoading: isWSFederationFetchRequestLoading,
         error: wsFederationConfigFetchRequestError
-    } = useWSFederationConfig();  
+    } = useWSFederationConfig();
 
     useEffect(() => {
-        if (originalWSFederationConfig instanceof IdentityAppsApiException 
+        if (originalWSFederationConfig instanceof IdentityAppsApiException
             || wsFederationConfigFetchRequestError) {
             handleRetrieveError();
 
@@ -75,9 +75,9 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
 
         setWSFedConfigurations({
             passiveStsUrl: originalWSFederationConfig.passiveSTSUrl
-        });      
+        });
     }, [ originalWSFederationConfig ]);
-    
+
     /**
      * Displays the error banner when unable to fetch WSFederation configuration.
      */
