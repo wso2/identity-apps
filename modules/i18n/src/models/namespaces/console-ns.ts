@@ -5257,22 +5257,6 @@ export interface ConsoleNS {
                     userPortalNav: string;
                 };
             };
-            helpPanel: {
-                actions: {
-                    close: string;
-                    open: string;
-                    pin: string;
-                    unPin: string;
-                };
-                notifications: {
-                    pin: {
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                };
-            };
             idp: {
                 advancedSearch: {
                     form: {

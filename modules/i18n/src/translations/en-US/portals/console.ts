@@ -5777,22 +5777,6 @@ export const console: ConsoleNS = {
                     userPortalNav: "My Account"
                 }
             },
-            helpPanel: {
-                actions: {
-                    close: "Close",
-                    open: "Open help panel",
-                    pin: "Pin",
-                    unPin: "Unpin"
-                },
-                notifications: {
-                    pin: {
-                        success: {
-                            description: "Help panel will always appear {{state}} unless you change explicitly.",
-                            message: "Help panel {{state}}"
-                        }
-                    }
-                }
-            },
             idp: {
                 advancedSearch: {
                     form: {
