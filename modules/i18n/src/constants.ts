@@ -85,4 +85,28 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * remoteFetch namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly REMOTE_FETCH_NAMESPACE: string = "remoteFetch";
+
+    /**
+     * Roles namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ROLES_NAMESPACE: string = "roles";
+
+    /**
+     * Server configurations namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";
 }

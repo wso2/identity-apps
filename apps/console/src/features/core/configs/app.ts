@@ -192,9 +192,9 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
-                "remoteFetch",
-                "roles",
-                "serverConfigs"
+                I18nConstants.REMOTE_FETCH_NAMESPACE,
+                I18nConstants.ROLES_NAMESPACE,
+                I18nConstants.SERVER_CONFIGS_NAMESPACE
             ],
             preload: []
         };

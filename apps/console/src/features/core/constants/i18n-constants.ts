@@ -57,6 +57,30 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * remoteFetch namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly REMOTE_FETCH_NAMESPACE: string = I18nModuleConstants.REMOTE_FETCH_NAMESPACE;
+
+    /**
+     * Roles namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
+
+    /**
+     * Server configurations namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -66,9 +90,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "remoteFetch", "portals" ],
-        [ "roles", "portals" ],
-        [ "serverConfigs", "portals" ]
+        [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
+        [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ]
     ]);
 
     /**
