@@ -76,7 +76,7 @@ const BasicAuthFragment = (props: BasicAuthFragmentPropsInterface): ReactElement
     return (
         <div className="basic-auth-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("console:loginFlow.nodes.signIn.header") }
+                { t("loginFlow:nodes.signIn.header") }
             </Typography>
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
@@ -84,17 +84,17 @@ const BasicAuthFragment = (props: BasicAuthFragmentPropsInterface): ReactElement
                         toRemove: IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
                     });
                 } }
-                optionSwitchTooltipContent={ t("console:loginFlow.nodes.signIn.controls.optionSwitchTooltipContent") }
-                optionRemoveTooltipContent={ t("console:loginFlow.nodes.signIn.controls.optionRemoveTooltipContent") }
+                optionSwitchTooltipContent={ t("loginFlow:nodes.signIn.controls.optionSwitchTooltipContent") }
+                optionRemoveTooltipContent={ t("loginFlow:nodes.signIn.controls.optionRemoveTooltipContent") }
             >
                 <TextField
                     required
                     fullWidth
                     autoComplete="off"
-                    label={ t("console:loginFlow.nodes.signIn.form.fields.username.label") }
+                    label={ t("loginFlow:nodes.signIn.form.fields.username.label") }
                     name="text"
                     value={ null }
-                    placeholder={ t("console:loginFlow.nodes.signIn.form.fields.username.placeholder") }
+                    placeholder={ t("loginFlow:nodes.signIn.form.fields.username.placeholder") }
                     className="non-interactive"
                 />
                 <TextField
@@ -102,17 +102,17 @@ const BasicAuthFragment = (props: BasicAuthFragmentPropsInterface): ReactElement
                     fullWidth
                     name="password"
                     autoComplete="new-password"
-                    label={ t("console:loginFlow.nodes.signIn.form.fields.password.label") }
+                    label={ t("loginFlow:nodes.signIn.form.fields.password.label") }
                     type="password"
                     value={ null }
-                    placeholder={ t("console:loginFlow.nodes.signIn.form.fields.password.placeholder") }
+                    placeholder={ t("loginFlow:nodes.signIn.form.fields.password.placeholder") }
                     className="non-interactive"
                 />
             </BasicSignInOptionControls>
             <FormGroup className="non-interactive">
                 <FormControlLabel
                     control={ <Checkbox color="secondary" /> }
-                    label={ t("console:loginFlow.nodes.signIn.form.fields.rememberMe.label") }
+                    label={ t("loginFlow:nodes.signIn.form.fields.rememberMe.label") }
                 />
             </FormGroup>
             <Button
@@ -122,7 +122,7 @@ const BasicAuthFragment = (props: BasicAuthFragmentPropsInterface): ReactElement
                 type="submit"
                 fullWidth
             >
-                { t("console:loginFlow.nodes.signIn.form.actions.primary") }
+                { t("loginFlow:nodes.signIn.form.actions.primary") }
             </Button>
         </div>
     );

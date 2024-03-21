@@ -275,13 +275,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             let title: ReactNode = null;
 
             if (sequenceCategoryId === ((PredefinedFlowCategories.Basic as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.basic.label");
+                title = t("loginFlow:predefinedFlows.categories.basic.label");
             } else if (sequenceCategoryId === ((PredefinedFlowCategories.MFA as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.mfa.label");
+                title = t("loginFlow:predefinedFlows.categories.mfa.label");
             } else if (sequenceCategoryId === ((PredefinedFlowCategories.Passwordless as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.passwordless.label");
+                title = t("loginFlow:predefinedFlows.categories.passwordless.label");
             } else if (sequenceCategoryId === ((PredefinedFlowCategories.Social as unknown) as string)) {
-                title = t("console:loginFlow.predefinedFlows.categories.social.label");
+                title = t("loginFlow:predefinedFlows.categories.social.label");
             }
 
             /**
@@ -294,13 +294,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             const getAuthenticatorDisplayName = (authenticatorName: string, authenticatorIdP: string): string => {
                 if (authenticatorIdP !== "LOCAL") {
                     if (authenticatorIdP === SocialIdPPlaceholders.Apple) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.apple.displayName");
+                        return t("loginFlow:predefinedFlows.authenticators.apple.displayName");
                     } else if (authenticatorIdP === SocialIdPPlaceholders.Facebook) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.facebook.displayName");
+                        return t("loginFlow:predefinedFlows.authenticators.facebook.displayName");
                     } else if (authenticatorIdP === SocialIdPPlaceholders.Google) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.google.displayName");
+                        return t("loginFlow:predefinedFlows.authenticators.google.displayName");
                     } else if (authenticatorIdP === SocialIdPPlaceholders.GitHub) {
-                        return t("console:loginFlow.predefinedFlows.authenticators.github.displayName");
+                        return t("loginFlow:predefinedFlows.authenticators.github.displayName");
                     }
                 }
 
@@ -647,7 +647,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                                     setShowAdaptiveAuthTemplateChangeConfirmationModal(true);
                                                 } }
                                             >
-                                                { t("console:loginFlow.predefinedFlows.adaptive.actions.add") }
+                                                { t("loginFlow:predefinedFlows.adaptive.actions.add") }
                                             </Button>
                                         </div>
                                     </div>
@@ -713,7 +713,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         <div className="predefined-flows-side-panel" data-componentid={ componentId }>
             <div className="toolbar-container">
                 <Toolbar variant="dense">
-                    <Typography>{ t("console:loginFlow.predefinedFlows.header") }</Typography>
+                    <Typography>{ t("loginFlow:predefinedFlows.header") }</Typography>
                 </Toolbar>
             </div>
             <div
@@ -739,7 +739,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             expandIcon={ <ChevronRightIcon height="14px" /> }
                             onClick={ () => handleAccordionChange("basic-login-panel") }
                         >
-                            <Typography>{ t("console:loginFlow.predefinedFlows.basic.header") }</Typography>
+                            <Typography>{ t("loginFlow:predefinedFlows.basic.header") }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>{ generateLoginSequences() }</AccordionDetails>
                     </Accordion>
@@ -764,7 +764,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             expandIcon={ <ChevronRightIcon height="14px" /> }
                             onClick={ () => handleAccordionChange("conditional-login-panel") }
                         >
-                            <Typography>{ t("console:loginFlow.predefinedFlows.adaptive.header") }</Typography>
+                            <Typography>{ t("loginFlow:predefinedFlows.adaptive.header") }</Typography>
                         </AccordionSummary>
                         <AccordionDetails>{ generateAdaptiveAuthTemplates() }</AccordionDetails>
                     </Accordion>

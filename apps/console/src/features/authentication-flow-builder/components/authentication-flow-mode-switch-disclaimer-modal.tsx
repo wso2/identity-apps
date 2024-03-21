@@ -55,17 +55,17 @@ const AuthenticationFlowModeSwitchDisclaimerModal: FunctionComponent<
             onClose={ onClose }
             type="warning"
             closeOnDimmerClick={ false }
-            assertionHint={ t("console:loginFlow.modes.switchConfirmationModal.assertionHint") }
+            assertionHint={ t("loginFlow:modes.switchConfirmationModal.assertionHint") }
             assertionType="checkbox"
-            primaryAction={ t("console:loginFlow.modes.switchConfirmationModal.primaryActionButtonText") }
-            secondaryAction={ t("console:loginFlow.modes.switchConfirmationModal.secondaryActionButtonText") }
+            primaryAction={ t("loginFlow:modes.switchConfirmationModal.primaryActionButtonText") }
+            secondaryAction={ t("loginFlow:modes.switchConfirmationModal.secondaryActionButtonText") }
             data-componentid={ componentId }
             onPrimaryActionClick={ () => onClose(null, null) }
             onSecondaryActionClick={ (event: MouseEvent<HTMLElement>) => onClose(event, null) }
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("console:loginFlow.modes.switchConfirmationModal.title") }
+                { t("loginFlow:modes.switchConfirmationModal.title") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
@@ -73,7 +73,7 @@ const AuthenticationFlowModeSwitchDisclaimerModal: FunctionComponent<
                 data-componentid={ `${componentId}-message` }
             >
                 <Trans
-                    i18nKey="console:loginFlow.modes.switchConfirmationModal.warningMessage"
+                    i18nKey="loginFlow:modes.switchConfirmationModal.warningMessage"
                     tOptions={ { mode: mode.label } }
                 >
                     If you switch to the <strong>{ mode.label }</strong>, you will loose the
@@ -81,7 +81,7 @@ const AuthenticationFlowModeSwitchDisclaimerModal: FunctionComponent<
                 </Trans>
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
-                { t("console:loginFlow.modes.switchConfirmationModal.content") }
+                { t("loginFlow:modes.switchConfirmationModal.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
