@@ -105,7 +105,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
                                 exact: true,
                                 id: "saml2Configuration",
-                                name: "console:saml2Config.title",
+                                name: "saml2Config:title",
                                 path: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
                                 protected: true,
                                 showOnSidePanel: false

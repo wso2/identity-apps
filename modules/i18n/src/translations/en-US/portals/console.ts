@@ -13391,45 +13391,6 @@ export const console: ConsoleNS = {
             }
         }
     },
-    saml2Config: {
-        title: "SAML2 Web SSO Configuration",
-        description: "Configure SAML2 Web SSO for your applications.",
-        form: {
-            metadataValidityPeriod: {
-                hint: "Set the SAML metadata validity period in minutes.",
-                label: "Metadata Validity Period"
-            },
-            destinationUrl: {
-                hint: "The location to send the SAML Response, as defined in the SAML assertion.",
-                label: "Destination URLs"
-            },
-            enableMetadataSigning: {
-                label: "Enable Metadata Signing"
-            },
-            validation: {
-                metadataValidityPeriod: "Metadata validity period should be a positive integer.",
-                destinationURLs: "Destination URL should be a valid URL."
-            }
-        },
-        notifications: {
-            getConfiguration: {
-                error: {
-                    description: "Error occurred while fetching saml2 configurations.",
-                    message: "Error occurred"
-                }
-            },
-            updateConfiguration: {
-                error: {
-                    description: "Error occurred while updating saml2 configurations.",
-                    message: "Error occurred"
-                },
-                success: {
-                    description: "Successfully updated the saml2 configurations.",
-                    message: "Update successful"
-                }
-            }
-        }
-    },
     sessionManagement: {
         description: "Manage settings related to the session of your users.",
         title: "Session Management",

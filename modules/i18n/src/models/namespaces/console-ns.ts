@@ -12694,45 +12694,6 @@ export interface ConsoleNS {
             };
         };
     };
-    saml2Config: {
-        title: string;
-        description: string;
-        form: {
-            metadataValidityPeriod: {
-                hint: string;
-                label: string;
-            };
-            destinationUrl: {
-                hint: string;
-                label: string;
-            };
-            enableMetadataSigning: {
-                label: string;
-            };
-            validation: {
-                metadataValidityPeriod: string;
-                destinationURLs: string;
-            };
-        };
-        notifications: {
-            updateConfiguration: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-            getConfiguration: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
-    };
     sessionManagement: {
         title: string;
         description: string;

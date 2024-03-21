@@ -351,7 +351,7 @@ export class GovernanceConnectorUtils {
                 connectors: [
                     {
                         description: "Configure settings for SAML2 Web Single Sign-On functionality.",
-                        header: I18n.instance.t("console:saml2Config.title"),
+                        header: I18n.instance.t("saml2Config:title"),
                         id: ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
                         testId: "saml2-web-sso-card"
