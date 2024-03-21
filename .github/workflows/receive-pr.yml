@@ -20,7 +20,7 @@
 
 # This workflow will receive a PR and save the PR number for later use.
 
-name: Receive PR
+name: 📩 Receive PR
 
 on:
     pull_request:
@@ -30,16 +30,16 @@ jobs:
     save-pr-information:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout Repository
+            - name: ⬇️ Checkout
               uses: actions/checkout@v3
 
-            - name: Display PR Information
+            - name: ℹ️ Display PR Information
               run: echo "PR Number \#${{github.event.number}}"
 
-            - name: Save PR Number for Later Use
+            - name: 💾 Save PR Number for Later Use
               run: echo "${{github.event.number}}" > PR_NUMBER
 
-            - name: Upload PR Number as Artifact
+            - name: 📦 Upload PR Number as Artifact
               uses: actions/upload-artifact@v3
               with:
                 name: pr-number
