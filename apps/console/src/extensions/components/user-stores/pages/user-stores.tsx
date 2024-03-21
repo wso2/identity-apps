@@ -135,11 +135,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
         dispatch(addAlert({
             description: userStoreListFetchRequestError?.response?.data?.description
-                || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                || t("userstores:notifications.fetchUserstores.genericError" +
                     ".description"),
             level: AlertLevels.ERROR,
             message: userStoreListFetchRequestError?.response?.data?.message
-                || t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                || t("userstores:notifications.fetchUserstores.genericError.message")
         }));
     }, [ userStoreListFetchRequestError ]);
 

@@ -57,6 +57,30 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * userstores namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly USERSTORES_NAMESPACE: string = I18nModuleConstants.USERSTORES_NAMESPACE;
+
+    /**
+     * Validation namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly VALIDATION_NAMESPACE: string = I18nModuleConstants.VALIDATION_NAMESPACE;
+
+    /**
+     * JWT private key configuration namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -65,7 +89,10 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.USERSTORES_NAMESPACE, "portals" ],
+        [ I18nConstants.VALIDATION_NAMESPACE, "portals" ],
+        [ I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE, "portals" ]
     ]);
 
     /**

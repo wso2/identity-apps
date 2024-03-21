@@ -85,4 +85,28 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * userstores namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly USERSTORES_NAMESPACE: string = "userstores";
+
+    /**
+     * Validation namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly VALIDATION_NAMESPACE: string = "validation";
+
+    /**
+     * JWT private key configuration namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */ 
+    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
 }

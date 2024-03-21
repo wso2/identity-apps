@@ -255,11 +255,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 .catch((error: any) => {
                     dispatch(addAlert({
                         description: error?.description
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                            ?? t("userstores:notifications.fetchUserstores.genericError" +
                                 ".description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            ?? t("console:manage.features.userstores.notifications." +
+                            ?? t("userstores:notifications." +
                             "fetchUserstores.genericError.message")
                     }));
                 });

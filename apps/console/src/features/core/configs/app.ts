@@ -191,7 +191,10 @@ export class Config {
             ns: [
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-                I18nConstants.EXTENSIONS_NAMESPACE
+                I18nConstants.EXTENSIONS_NAMESPACE,
+                I18nConstants.USERSTORES_NAMESPACE,
+                I18nConstants.VALIDATION_NAMESPACE,
+                I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE
             ],
             preload: []
         };

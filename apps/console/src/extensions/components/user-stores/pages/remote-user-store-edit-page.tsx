@@ -220,11 +220,11 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPageInterfac
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                        || t("userstores:notifications.fetchUserstores.genericError" +
                             ".description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                        || t("userstores:notifications.fetchUserstores.genericError" +
                             ".message")
                 }
             ));
@@ -322,7 +322,7 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPageInterfac
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
-                text: t("console:manage.features.userstores.pageLayout.edit.back")
+                text: t("userstores:pageLayout.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

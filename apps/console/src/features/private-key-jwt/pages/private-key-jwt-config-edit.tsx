@@ -78,7 +78,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     const resolveConnectorUpdateErrorMessage = (error: AxiosError): string => {
         
         return (
-            t("console:manage.features.jwtPrivateKeyConfiguration.notifications.error.description",
+            t("jwtPrivateKeyConfiguration:notifications.error.description",
                 { description: error.response.data.description })
         );
     };
@@ -86,10 +86,10 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:manage.features.jwtPrivateKeyConfiguration.notifications.success.description"),
+                description: t("jwtPrivateKeyConfiguration:notifications.success.description"),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.jwtPrivateKeyConfiguration.notifications." +
+                    "jwtPrivateKeyConfiguration:notifications." +
                     "success.message"
                 )
             })
@@ -103,7 +103,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                     description: resolveConnectorUpdateErrorMessage(error),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.jwtPrivateKeyConfiguration.notifications.error.message"
+                        "jwtPrivateKeyConfiguration:notifications.error.message"
                     )
                 })
             );
@@ -112,12 +112,12 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.jwtPrivateKeyConfiguration.notifications." +
+                        "jwtPrivateKeyConfiguration:notifications." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.jwtPrivateKeyConfiguration.notifications." +
+                        "jwtPrivateKeyConfiguration:notifications." +
                         ".genericError.message"
                     )
                 })
@@ -151,8 +151,8 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
             <>
                 <Checkbox
                     label={ enableTokenReuse 
-                        ? t("console:manage.features.jwtPrivateKeyConfiguration.tokenReuseEnabled") 
-                        : t("console:manage.features.jwtPrivateKeyConfiguration.tokenReuseDisabled") }
+                        ? t("jwtPrivateKeyConfiguration:tokenReuseEnabled") 
+                        : t("jwtPrivateKeyConfiguration:tokenReuseDisabled") }
                     toggle
                     onChange={ handleToggle }
                     checked={ enableTokenReuse }
@@ -167,11 +167,11 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
         <PageLayout
             pageTitle="Private Key JWT Client Authentication for OIDC"
             title={ t(
-                "console:manage.features.jwtPrivateKeyConfiguration.pageTitle"
+                "jwtPrivateKeyConfiguration:pageTitle"
             ) }
             description={ (
                 <>
-                    { t("console:manage.features.jwtPrivateKeyConfiguration.description" ) }
+                    { t("jwtPrivateKeyConfiguration:description" ) }
                     <DocumentationLink
                         link={ getLink("manage.privateKeyJWT.learnMore") }
                     >
@@ -201,7 +201,7 @@ export const PrivateKeyJWTConfigEditPage: FunctionComponent<IdentifiableComponen
                                 content={ (
                                     <>
                                         <Icon name="info circle"/>
-                                        { t("console:manage.features.jwtPrivateKeyConfiguration.messageInfo") }
+                                        { t("jwtPrivateKeyConfiguration:messageInfo") }
                                     </>
                                 ) }
                             />
