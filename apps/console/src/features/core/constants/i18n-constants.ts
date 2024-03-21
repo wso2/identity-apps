@@ -274,7 +274,8 @@ export class I18nConstants {
         [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
-        [ I18nConstants.IDP_NAMESPACE, "portals" ]
+        [ I18nConstants.IDP_NAMESPACE, "portals" ],
+        [ "apiResources", "portals" ]
     ]);
 
     /**

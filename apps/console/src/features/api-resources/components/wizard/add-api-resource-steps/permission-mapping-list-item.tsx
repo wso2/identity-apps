@@ -78,7 +78,7 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
     } = props;
 
     const { t } = useTranslation();
-    
+
     const [ resetForm, setResetForm ] = useTrigger();
 
     /**
@@ -118,11 +118,11 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         <Field
                             type="text"
                             name="identifier"
-                            label={ t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.permission.label") }
-                            placeholder={ t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            placeholder={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.permission.placeholder") }
-                            requiredErrorMessage={ t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.permission.emptyValidate") }
                             loading={ isPermissionValidationLoading }
                             validation={ async (value: string, validation: Validation) => {
@@ -132,22 +132,22 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                                 if (value) {
                                     if (!APIResourcesConstants.checkValidPermissionIdentifier(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("console:apiResources.wizard.addApiResource." +
+                                        validation.errorMessages.push(t("apiResources:wizard.addApiResource." +
                                             "steps.scopes.form.fields.permission.invalid"));
                                     } else if (addedPermissions.has(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("console:apiResources.wizard.addApiResource." +
+                                        validation.errorMessages.push(t("apiResources:wizard.addApiResource." +
                                             "steps.scopes.form.fields.permission.uniqueValidate"));
                                     } else {
 
                                         const filter: string = "name eq " + value;
 
-                                        const response: APIResourcePermissionInterface[] = 
+                                        const response: APIResourcePermissionInterface[] =
                                             await getAPIResourcePermissions(filter);
 
                                         if (response?.length > 0) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("console:apiResources.wizard." +
+                                            validation.errorMessages.push(t("apiResources:wizard." +
                                                 "addApiResource.steps.scopes.form.fields.permission.uniqueValidate"));
                                         }
                                     }
@@ -160,10 +160,10 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                             data-testid={ `${componentId}-identifier` }
                         />
                         <Hint>
-                            <Trans 
-                                i18nKey= { "console:apiResources.wizard.addApiResource.steps." +
+                            <Trans
+                                i18nKey= { "apiResources:wizard.addApiResource.steps." +
                                     "scopes.form.fields.permission.hint" }>
-                                A unique value that acts as the scope when requesting an access token. 
+                                A unique value that acts as the scope when requesting an access token.
                                 <b>Note that the permission cannot be modified once created.</b>
                             </Trans>
                         </Hint>
@@ -172,18 +172,18 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         <Field
                             type="text"
                             name="displayName"
-                            label={ t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.displayName.label") }
-                            placeholder={ t("console:apiResources.wizard.addApiResource.steps.scopes." +
+                            placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
                                 "form.fields.displayName.placeholder") }
-                            requiredErrorMessage={ t("console:apiResources.wizard.addApiResource.steps." +
+                            requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps." +
                                 "scopes.form.fields.displayName.emptyValidate") }
                             required={ true }
                             tabIndex={ 2 }
                             data-testid={ `${componentId}-displayName` }
                         />
                         <Hint>
-                            { t("console:apiResources.wizard.addApiResource.steps." +
+                            { t("apiResources:wizard.addApiResource.steps." +
                                 "scopes.form.fields.displayName.hint") }
                         </Hint>
                     </Grid.Column>
@@ -194,15 +194,15 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                         <Field
                             type="text"
                             name="description"
-                            label={ t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.description.label") }
-                            placeholder={ t("console:apiResources.wizard.addApiResource.steps.scopes." +
+                            placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
                                 "form.fields.description.placeholder") }
                             tabIndex={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>
-                            { t("console:apiResources.wizard.addApiResource.steps.scopes." +
+                            { t("apiResources:wizard.addApiResource.steps.scopes." +
                                 "form.fields.description.hint") }
                         </Hint>
                     </Grid.Column>
@@ -218,10 +218,10 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                             buttonType="primary_btn"
                             name="submit-button"
                             icon="add"
-                            value={ t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
+                            value={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "button") }
                             loading={ isPermissionValidationLoading }
-                            data-testid={ `${componentId}-add-permission-btn` }    
+                            data-testid={ `${componentId}-add-permission-btn` }
                             onClick={ setAddPermission } />
                     </Grid.Column>
                 </Grid.Row>
