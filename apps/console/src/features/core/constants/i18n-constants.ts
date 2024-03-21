@@ -57,6 +57,22 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Claims namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
+
+    /**
+     * Email locale namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EMAIL_LOCALE_NAMESPACE: string = I18nModuleConstants.EMAIL_LOCALE_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -66,8 +82,8 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ "claims", "portals" ],
-        [ "emailLocale", "portals" ]
+        [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
+        [ I18nConstants.EMAIL_LOCALE_NAMESPACE, "portals" ]
     ]);
 
     /**
