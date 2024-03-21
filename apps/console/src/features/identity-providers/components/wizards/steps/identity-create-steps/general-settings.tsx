@@ -79,7 +79,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="ClientId"
                                 label={ "Client ID" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
@@ -109,7 +109,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="OAuth2AuthzEPUrl"
                                 label={ "Authorization Endpoint URL" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
@@ -117,7 +117,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("authenticationProvider:forms.common." +
+                                            t("console:develop.features.authenticationProvider.forms.common." +
                                                 "invalidURLErrorMessage"));
                                     }
                                 } }
@@ -131,14 +131,14 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="OAuth2TokenEPUrl"
                                 label={ "Token Endpoint URL" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common.requiredErrorMessage") }
                                 type="text"
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("authenticationProvider:forms.common." +
+                                            t("console:develop.features.authenticationProvider.forms.common." +
                                                 "invalidURLErrorMessage"));
                                     }
                                 } }
@@ -157,7 +157,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="SPEntityId"
                                 label={ "Service provider entity ID" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
@@ -171,7 +171,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="NameIDType"
                                 label={ "NameID format" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
@@ -185,7 +185,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="IdPEntityId"
                                 label={ "Authentication entity ID" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
@@ -199,7 +199,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="SSOUrl"
                                 label={ "SSO URL" }
                                 required={ true }
-                                requiredErrorMessage={ t("authenticationProvider:" +
+                                requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                     "forms.common." +
                                     "requiredErrorMessage") }
                                 type="text"
@@ -207,7 +207,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("authenticationProvider:forms.common." +
+                                            t("console:develop.features.authenticationProvider.forms.common." +
                                                 "invalidURLErrorMessage"));
                                     }
                                 } }
@@ -262,13 +262,13 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                         <Field
                             name="name"
-                            label={ t("authenticationProvider:forms." +
+                            label={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.label") }
                             required={ true }
-                            requiredErrorMessage={ t("authenticationProvider:" +
+                            requiredErrorMessage={ t("console:develop.features.authenticationProvider." +
                                 "forms.generalDetails." +
                                 "name.validations.empty") }
-                            placeholder={ t("authenticationProvider:forms." +
+                            placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.placeholder") }
                             type="text"
                             validation={ async (value: string, validation: Validation) => {

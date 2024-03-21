@@ -121,13 +121,13 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h4">
                                         {
-                                            t("authenticationProvider:wizards." +
+                                            t("console:develop.features.authenticationProvider.wizards." +
                                                 "addAuthenticator.steps.authenticatorSelection.quickSetup.title")
                                         }
                                     </Heading>
                                     <Hint>
                                         {
-                                            t("authenticationProvider:wizards." +
+                                            t("console:develop.features.authenticationProvider.wizards." +
                                                 "addAuthenticator.steps.authenticatorSelection.quickSetup.subTitle")
                                         }
                                     </Hint>
@@ -186,14 +186,14 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                                         <>
                                             <Heading as="h4">
                                                 {
-                                                    t("authenticationProvider:" +
+                                                    t("console:develop.features.authenticationProvider." +
                                                         "wizards.addAuthenticator.steps.authenticatorSelection." +
                                                         "manualSetup.title")
                                                 }
                                             </Heading>
                                             <Hint>
                                                 {
-                                                    t("authenticationProvider:wizards." +
+                                                    t("console:develop.features.authenticationProvider.wizards." +
                                                         "addAuthenticator.steps.authenticatorSelection." +
                                                         "manualSetup.subTitle")
                                                 }

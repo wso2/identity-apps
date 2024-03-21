@@ -71,13 +71,13 @@ export class IdentityProviderManagementUtils {
                     store.dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "authenticationProvider:notifications." +
+                                "console:develop.features.authenticationProvider.notifications." +
                                     "getFederatedAuthenticatorsList.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "authenticationProvider:notifications." +
+                                "console:develop.features.authenticationProvider.notifications." +
                                     "getFederatedAuthenticatorsList.error.message"
                             )
                         })
@@ -89,12 +89,12 @@ export class IdentityProviderManagementUtils {
                 store.dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "authenticationProvider:notifications." +
+                            "console:develop.features.authenticationProvider.notifications." +
                                 "getFederatedAuthenticatorsList.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t(
-                            "authenticationProvider:notifications." +
+                            "console:develop.features.authenticationProvider.notifications." +
                                 "getFederatedAuthenticatorsList.genericError.message"
                         )
                     })

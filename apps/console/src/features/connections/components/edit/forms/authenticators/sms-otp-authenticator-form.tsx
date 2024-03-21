@@ -289,52 +289,52 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
 
         if (!values.SmsOTP_ExpiryTime) {
             // Check for required error.
-            errors.SmsOTP_ExpiryTime = t("authenticationProvider:forms" +
+            errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.required");
         } else if (!FormValidation.isInteger(values.SmsOTP_ExpiryTime as unknown as number)) {
             // Check for invalid input.
-            errors.SmsOTP_ExpiryTime = t("authenticationProvider:forms" +
+            errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.invalid");
         } else if ((values.SmsOTP_ExpiryTime < AuthenticatorManagementConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
         || (values.SmsOTP_ExpiryTime > AuthenticatorManagementConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
             // Check for invalid range.
-            errors.SmsOTP_ExpiryTime = t("authenticationProvider:forms" +
+            errors.SmsOTP_ExpiryTime = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.range");
         }
 
         if (!values.SmsOTP_OTPLength) {
             // Check for required error.
-            errors.SmsOTP_OTPLength = t("authenticationProvider:forms" +
+            errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.tokenLength.validations.required");
         } else if (!FormValidation.isInteger(values.SmsOTP_OTPLength as unknown as number)) {
             // Check for invalid input.
-            errors.SmsOTP_OTPLength = t("authenticationProvider:forms" +
+            errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.tokenLength.validations.invalid");
         } else if ((parseInt(values.SmsOTP_OTPLength, 10) < AuthenticatorManagementConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
             || (parseInt(values.SmsOTP_OTPLength, 10) > AuthenticatorManagementConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
-            errors.SmsOTP_OTPLength = t("authenticationProvider:forms" +
+            errors.SmsOTP_OTPLength = t("console:develop.features.authenticationProvider.forms" +
                 `.authenticatorSettings.smsOTP.tokenLength.validations.range.${isOTPNumeric? "digits" : "characters"}`);
         }
 
         if (!values.SmsOTP_ResendAttemptsCount) {
             // Check for required error.
-            errors.SmsOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
+            errors.SmsOTP_ResendAttemptsCount = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.required");
         } else if (!FormValidation.isInteger(values.SmsOTP_ResendAttemptsCount as unknown as number)) {
             // Check for invalid input.
-            errors.SmsOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
+            errors.SmsOTP_ResendAttemptsCount = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.invalid");
         } else if (values.SmsOTP_ResendAttemptsCount < AuthenticatorManagementConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
             || (values.SmsOTP_ResendAttemptsCount > AuthenticatorManagementConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
             // Check for invalid range.
-            errors.SmsOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
+            errors.SmsOTP_ResendAttemptsCount = t("console:develop.features.authenticationProvider.forms" +
                 ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.range");
         }
 
@@ -356,18 +356,18 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 inputType="number"
                 name="SmsOTP_ExpiryTime"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.expiryTime.label")
                 }
                 labelPosition="right"
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.expiryTime.placeholder")
                 }
                 hint={
                     (<Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".smsOTP.expiryTime.hint"
                         }
                     >
@@ -394,7 +394,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 <input />
                 <Label>
                     {
-                        t("authenticationProvider:forms.authenticatorSettings" +
+                        t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".smsOTP.expiryTime.unit")
                     }
                 </Label>
@@ -403,13 +403,13 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 ariaLabel="Use numeric characters for SMS OTP token"
                 name="SmsOTP_OtpRegex_UseNumericChars"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.useNumericChars.label")
                 }
                 hint={
                     (<Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".smsOTP.useNumericChars.hint"
                         }
                     >
@@ -426,18 +426,18 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 inputType="number"
                 name="SmsOTP_OTPLength"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.tokenLength.label")
                 }
                 labelPosition="right"
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.tokenLength.placeholder")
                 }
                 hint={
                     (<Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".smsOTP.tokenLength.hint"
                         }
                     >
@@ -461,7 +461,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 <input />
                 <Label>
                     {
-                        t("authenticationProvider:forms.authenticatorSettings" +
+                        t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             `.smsOTP.tokenLength.unit.${isOTPNumeric? "digits" : "characters"}`)
                     }
                 </Label>
@@ -473,17 +473,17 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 inputType="number"
                 name="SmsOTP_ResendAttemptsCount"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.allowedResendAttemptCount.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".smsOTP.allowedResendAttemptCount.placeholder")
                 }
                 hint={
                     (<Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".smsOTP.allowedResendAttemptCount.hint"
                         }
                     >

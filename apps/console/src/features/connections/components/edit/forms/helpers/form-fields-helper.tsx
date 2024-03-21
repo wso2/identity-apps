@@ -54,7 +54,7 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
                 name={ propertyMetadata?.key }
                 placeholder={ propertyMetadata?.defaultValue }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 value={ eachProp?.value }
                 type="password"
@@ -87,7 +87,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 type="checkbox"
                 required={ false }
                 value={ (eachProp?.value == "true") ? [ eachProp?.key ] : [] }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
                     [
@@ -120,7 +120,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                 type="checkbox"
                 required={ false }
                 value={ eachProp?.value?.toString() === "true" ? [ eachProp?.key ] : [] }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
                     [
@@ -156,7 +156,7 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
                 type="radio"
                 required={ propertyMetadata?.isMandatory }
                 default ={ propertyMetadata?.defaultValue }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
                     propertyMetadata?.subProperties?.map(
@@ -213,7 +213,7 @@ export const getUserIdClaimRadioButtonField = (
                 type="radio"
                 required={ propertyMetadata?.isMandatory }
                 value={ eachProp?.value }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={ options }
                 listen={ (values: Map<string, FormValue>) => {
@@ -245,7 +245,7 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
                 required={ propertyMetadata?.isMandatory }
                 value={ propertyMetadata?.defaultValue }
                 default ={ propertyMetadata?.defaultValue }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
                     propertyMetadata?.subProperties?.map(
@@ -280,7 +280,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 type="text"
@@ -320,14 +320,14 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms." +
                     "common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
-                            I18n.instance.t("authenticationProvider:forms.common." +
+                            I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                                 "invalidURLErrorMessage"));
                     }
                     if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value) &&
@@ -388,7 +388,7 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 type="scopes"
                 value={ eachProp?.value }
@@ -426,13 +426,13 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url("https://www.sample.com?" + value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
-                            I18n.instance.t("authenticationProvider:forms.common." +
+                            I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                                 "invalidQueryParamErrorMessage"));
                     }
                 } }
@@ -467,7 +467,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                 name={ propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:forms.common." +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
                 type="text"
@@ -536,7 +536,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
                 name={ eachProp?.key || propertyMetadata?.key }
                 label={ propertyMetadata?.displayName }
                 required={ propertyMetadata?.isMandatory }
-                requiredErrorMessage={ I18n.instance.t("authenticationProvider:" +
+                requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
                     "forms.common.requiredErrorMessage") }
                 type="dropdown"
                 value={ eachProp?.value || propertyMetadata?.key }
@@ -569,7 +569,7 @@ export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterfac
                         name={ eachProp?.key || propertyMetadata?.key }
                         label={ propertyMetadata?.displayName }
                         required={ propertyMetadata?.isMandatory }
-                        requiredErrorMessage={ I18n.instance.t("authenticationProvider:" +
+                        requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
                         "forms.common.requiredErrorMessage") }
                         type="filePicker"
                         value={ data }

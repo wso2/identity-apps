@@ -182,10 +182,10 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 });
 
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications.addIDP." +
+                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                     "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications.addIDP." +
+                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                     "success.message")
                 }));
 
@@ -217,11 +217,11 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.error.message")
                     });
 
@@ -229,10 +229,10 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 }
 
                 setAlert({
-                    description: t("authenticationProvider:notifications.addIDP." +
+                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                     "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications.addIDP." +
+                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                     "genericError.message")
                 });
             })
@@ -436,7 +436,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("authenticationProvider:" +
+                                        { t("console:develop.features.authenticationProvider." +
                                             "wizards.buttons.next") }
                                     </PrimaryButton>
                                 )
@@ -454,7 +454,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         {
                                             totalStep === 1
                                                 ? t("common:create")
-                                                : t("authenticationProvider:" +
+                                                : t("console:develop.features.authenticationProvider." +
                                                     "wizards.buttons.finish")
                                         }
                                     </PrimaryButton>
@@ -470,7 +470,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                     data-testid="add-connection-modal-previous-button"
                                     data-componentid="add-connection-modal-previous-button"
                                 >
-                                    { t("authenticationProvider:" +
+                                    { t("console:develop.features.authenticationProvider." +
                                         "wizards.buttons.previous") }
                                 </LinkButton>
                             )

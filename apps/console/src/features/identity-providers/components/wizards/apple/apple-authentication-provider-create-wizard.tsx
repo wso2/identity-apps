@@ -183,10 +183,10 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                 });
 
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications.addIDP." +
+                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications.addIDP." +
+                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.message")
                 }));
 
@@ -218,11 +218,11 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.error.message")
                     });
 
@@ -230,10 +230,10 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                 }
 
                 setAlert({
-                    description: t("authenticationProvider:notifications.addIDP." +
+                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                     "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications.addIDP." +
+                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                     "genericError.message")
                 });
             })
@@ -379,7 +379,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                             >
-                                { t("authenticationProvider:wizards.buttons.next") }
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                             </PrimaryButton>
                         ) : (
                             <>
@@ -392,7 +392,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("authenticationProvider:wizards.buttons.finish") }
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                 </PrimaryButton>
                             </>
                         ) }
@@ -405,7 +405,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                                     } }
                                     data-testid={ `${ componentId }-modal-previous-button` }
                                 >
-                                    { t("authenticationProvider:wizards.buttons" +
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons" +
                                     ".previous") }
                                 </LinkButton>
                             )
@@ -435,7 +435,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
                         {
-                            t("authenticationProvider:templates" +
+                            t("console:develop.features.authenticationProvider.templates" +
                                 ".apple.wizardHelp.heading")
                         }
                     </div>

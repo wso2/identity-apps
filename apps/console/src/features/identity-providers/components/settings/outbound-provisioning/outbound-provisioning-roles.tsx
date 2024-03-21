@@ -114,11 +114,11 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         ).then(() => {
             dispatch(addAlert(
                 {
-                    description: t("authenticationProvider:" +
+                    description: t("console:develop.features.authenticationProvider." +
                         "notifications.updateIDPRoleMappings." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.updateIDPRoleMappings.success.message")
                 }
             ));
@@ -135,7 +135,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             <Grid.Row>
                 <Grid.Column width={ 8 }>
                     <Heading as="h5">
-                        { t("authenticationProvider:forms.outboundProvisioningRoles"
+                        { t("console:develop.features.authenticationProvider.forms.outboundProvisioningRoles"
                             + ".heading") }
                     </Heading>
                 </Grid.Column>
@@ -165,7 +165,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 }
                             }
                             search
-                            label={ t("authenticationProvider:forms." +
+                            label={ t("console:develop.features.authenticationProvider.forms." +
                                 "outboundProvisioningRoles.label") }
                             data-testid={ `${ testId }-role-select-dropdown` }
                             readOnly={ isReadOnly }
@@ -185,14 +185,14 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 )
                             }
                             position="top center"
-                            content={ t("authenticationProvider:forms." +
+                            content={ t("console:develop.features.authenticationProvider.forms." +
                                 "outboundProvisioningRoles.popup.content") }
                             inverted
                             data-testid={ `${ testId }-add-button` }
                         />
                     </Form>
                     <Hint>
-                        { t("authenticationProvider:forms.outboundProvisioningRoles.hint") }
+                        { t("console:develop.features.authenticationProvider.forms.outboundProvisioningRoles.hint") }
                     </Hint>
 
                     {

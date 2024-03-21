@@ -348,10 +348,10 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     type: componentId + "-" + kebabCase(selectedProtocol)
                 });
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.message")
                 }));
                 // The created resource's id is sent as a location header.
@@ -406,11 +406,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
                     });
                     setTimeout(() => setAlert(undefined), 4000);
@@ -418,10 +418,10 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     return;
                 }
                 setAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.message")
                 });
                 setTimeout(() => setAlert(undefined), 4000);
@@ -439,11 +439,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
                 if (values?.name && isUserInputIdpNameAlreadyTaken) {
-                    errors.name = t("authenticationProvider:" +
+                    errors.name = t("console:develop.features.authenticationProvider." +
                         "forms.generalDetails.name.validations.duplicate");
                 }
                 if (!FormValidation.isValidResourceName(values.name)) {
-                    errors.name = t("authenticationProvider:" +
+                    errors.name = t("console:develop.features.authenticationProvider." +
                         "templates.enterprise.validation.name");
                 }
                 setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -470,11 +470,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
                     if (values && isUserInputIdpNameAlreadyTaken) {
-                        errors = t("authenticationProvider:" +
+                        errors = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
                     if (!FormValidation.isValidResourceName(values)) {
-                        errors = t("authenticationProvider:" +
+                        errors = t("console:develop.features.authenticationProvider." +
                             "templates.enterprise.validation.invalidName",
                         { idpName: values });
                     }
@@ -1011,7 +1011,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                         } }
                                         data-testid="add-connection-modal-next-button"
                                     >
-                                        { t("authenticationProvider:wizards.buttons.next") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
@@ -1030,7 +1030,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                         data-testid="add-connection-modal-finish-button"
                                         loading={ isSubmitting }
                                     >
-                                        { t("authenticationProvider:wizards.buttons.finish") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 ) }
                                 { currentWizardStep > 0 && (
@@ -1041,7 +1041,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                         data-testid="add-connection-modal-previous-button"
                                     >
                                         <Icon name="arrow left"/>
-                                        { t("authenticationProvider:wizards.buttons." +
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons." +
                                             "previous") }
                                     </LinkButton>
                                 ) }

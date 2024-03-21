@@ -362,7 +362,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                 "roleBasicDetails.roleName.placeholder")
                         }
                         required
-                        message={ t("authenticationProvider:" +
+                        message={ t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.empty") }
                         value={ null }
                         maxLength={ RoleConstants.ROLE_NAME_MAX_LENGTH }

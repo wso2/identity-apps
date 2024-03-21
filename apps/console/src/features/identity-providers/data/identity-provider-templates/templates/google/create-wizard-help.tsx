@@ -68,7 +68,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
             <Message
                 type="info"
                 header={
-                    t("authenticationProvider:templates.google.wizardHelp." +
+                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
                         "preRequisites.heading")
                 }
                 content={
@@ -76,7 +76,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                         <p>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.google.wizardHelp." +
+                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp." +
                                     "preRequisites.getCredentials"
                                 }
                             >
@@ -91,7 +91,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.google.wizardHelp" +
+                                    "console:develop.features.authenticationProvider.templates.google.wizardHelp" +
                                     ".preRequisites.configureRedirectURL"
                                 }
                             >
@@ -108,7 +108,7 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
                                 showEmptyLinkText
                             >
                                 {
-                                    t("authenticationProvider:templates.google.wizardHelp." +
+                                    t("console:develop.features.authenticationProvider.templates.google.wizardHelp." +
                                         "preRequisites.configureOAuthApps")
                                 }
                             </DocumentationLink>
@@ -119,16 +119,16 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.google" +
+                    t("console:develop.features.authenticationProvider.templates.google" +
                         ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("authenticationProvider:templates.google." +
+                        ? t("console:develop.features.authenticationProvider.templates.google." +
                             "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.google." +
+                        : t("console:develop.features.authenticationProvider.templates.google." +
                             "wizardHelp.name.idpDescription")
                 }
             </p>
@@ -136,12 +136,12 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
             <Divider/>
 
             <Heading as="h5">
-                { t("authenticationProvider:templates.google.wizardHelp.clientId.heading") }
+                { t("console:develop.features.authenticationProvider.templates.google.wizardHelp.clientId.heading") }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.google" +
+                        "console:develop.features.authenticationProvider.templates.google" +
                         ".wizardHelp.clientId.description"
                     }
                 >
@@ -153,14 +153,14 @@ const GoogleIDPCreateWizardHelp: FunctionComponent<GoogleIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.google" +
+                    t("console:develop.features.authenticationProvider.templates.google" +
                         ".wizardHelp.clientSecret.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.google" +
+                        "console:develop.features.authenticationProvider.templates.google" +
                         ".wizardHelp.clientSecret.description"
                     }
                 >

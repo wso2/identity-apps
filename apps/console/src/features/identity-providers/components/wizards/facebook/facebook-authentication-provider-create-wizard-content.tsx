@@ -161,15 +161,15 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
         };
 
         if (!values.name) {
-            errors.name = t("authenticationProvider:forms.common" +
+            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientId) {
-            errors.clientId = t("authenticationProvider:forms.common" +
+            errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientSecret) {
-            errors.clientSecret = t("authenticationProvider:forms.common" +
+            errors.clientSecret = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
 
@@ -196,9 +196,9 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             ariaLabel="Facebook IDP Name"
                             inputType="name"
                             name="name"
-                            label={ t("authenticationProvider:forms." +
+                            label={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.label") }
-                            placeholder={ t("authenticationProvider:forms." +
+                            placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.placeholder") }
                             required={ true }
                             validation={ (value) => idpNameValidation(value) }
@@ -218,16 +218,16 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             inputType="client_id"
                             name="clientId"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.facebook.clientId.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.facebook.clientId.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.facebook.clientId.validations.required")
                             }
                             type="text"
@@ -249,16 +249,16 @@ export const FacebookAuthenticationProviderCreateWizardContent: FunctionComponen
                             className="addon-field-wrapper"
                             name="clientSecret"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.facebook.clientSecret.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.facebook.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.facebook.clientSecret.validations.required")
                             }
                             type="password"

@@ -214,11 +214,11 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
         const doOnSuccess = () => {
             dispatch(addAlert({
-                description: t("authenticationProvider:notifications." +
+                description: t("console:develop.features.authenticationProvider.notifications." +
                     "updateIDPCertificate.success" +
                     ".description"),
                 level: AlertLevels.SUCCESS,
-                message: t("authenticationProvider:notifications." +
+                message: t("console:develop.features.authenticationProvider.notifications." +
                     "updateIDPCertificate.success.message")
             }));
             onUpdate(editingIDP.id);
@@ -229,18 +229,18 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 dispatch(addAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "updateIDPCertificate.error.message")
                 }));
 
                 return;
             }
             dispatch(addAlert({
-                description: t("authenticationProvider:notifications." +
+                description: t("console:develop.features.authenticationProvider.notifications." +
                     "updateIDPCertificate.genericError" +
                     ".description"),
                 level: AlertLevels.ERROR,
-                message: t("authenticationProvider:notifications." +
+                message: t("console:develop.features.authenticationProvider.notifications." +
                     "updateIDPCertificate.genericError.message")
             }));
         };
@@ -385,7 +385,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     shouldShowNoCertificatesAlert() && (
                         <Grid xs={ 12 }>
                             <Alert severity="error">
-                                { t("authenticationProvider:forms.certificateSection." +
+                                { t("console:develop.features.authenticationProvider.forms.certificateSection." +
                                     "noCertificateAlert", { productName: config.ui.productName } ) }
                             </Alert>
                         </Grid>
@@ -402,12 +402,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                 onChange={ onSelectionChange }
                                 options={ [
                                     {
-                                        label: t("authenticationProvider:forms." +
+                                        label: t("console:develop.features.authenticationProvider.forms." +
                                             "certificateSection.certificateEditSwitch.jwks"),
                                         value: ("jwks" as CertificateConfigurationMode)
                                     },
                                     {
-                                        label: t("authenticationProvider:forms." +
+                                        label: t("console:develop.features.authenticationProvider.forms." +
                                             "certificateSection.certificateEditSwitch.pem"),
                                         value: ("certificates" as CertificateConfigurationMode)
                                     }

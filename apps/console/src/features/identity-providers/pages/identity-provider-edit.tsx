@@ -281,11 +281,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("authenticationProvider:" +
+                        description: t("console:develop.features.authenticationProvider." +
                             "notifications.getIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" +
+                        message: t("console:develop.features.authenticationProvider." +
                             "notifications.getIDP.error.message")
                     }));
 
@@ -293,10 +293,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("authenticationProvider:" +
+                    description: t("console:develop.features.authenticationProvider." +
                         "notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.getIDP.genericError.message")
                 }));
             })
@@ -329,11 +329,11 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 .catch((error: IdentityAppsApiException) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
-                            description: t("authenticationProvider:" +
+                            description: t("console:develop.features.authenticationProvider." +
                                 "notifications.getConnectionDetails.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:" +
+                            message: t("console:develop.features.authenticationProvider." +
                                 "notifications.getConnectionDetails.error.message")
                         }));
 
@@ -341,10 +341,10 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                     }
 
                     dispatch(addAlert({
-                        description: t("authenticationProvider:" +
+                        description: t("console:develop.features.authenticationProvider." +
                             "notifications.getConnectionDetails.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" +
+                        message: t("console:develop.features.authenticationProvider." +
                             "notifications.getConnectionDetails.genericError.message")
                     }));
                 })
@@ -428,8 +428,8 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         if (connector?.isEnabled) {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus.enabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." +
+                    popupHeader={ t("console:develop.features.authenticationProvider.popups.appStatus.enabled.header") }
+                    popupSubHeader={ t("console:develop.features.authenticationProvider.popups.appStatus." +
                         "enabled.content") }
                     labelColor="green"
                 />
@@ -437,9 +437,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
         } else {
             return (
                 <LabelWithPopup
-                    popupHeader={ t("authenticationProvider:popups.appStatus." +
+                    popupHeader={ t("console:develop.features.authenticationProvider.popups.appStatus." +
                         "disabled.header") }
-                    popupSubHeader={ t("authenticationProvider:popups.appStatus." +
+                    popupSubHeader={ t("console:develop.features.authenticationProvider.popups.appStatus." +
                         "disabled.content") }
                     labelColor="grey"
                 />

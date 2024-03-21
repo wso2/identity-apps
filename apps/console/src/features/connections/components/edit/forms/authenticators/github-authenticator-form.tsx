@@ -246,7 +246,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
 
         if (scope === AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.github.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -257,7 +257,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
             };
         } else if (scope === AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.github.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -287,17 +287,17 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 inputType="default"
                 name="ClientId"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".github.clientId.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".github.clientId.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".github.clientId.hint"
                         }
                     >
@@ -328,17 +328,17 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 type="password"
                 name="ClientSecret"
                 label={
-                    t("authenticationProvider:forms" +
+                    t("console:develop.features.authenticationProvider.forms" +
                         ".authenticatorSettings.github.clientSecret.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms" +
+                    t("console:develop.features.authenticationProvider.forms" +
                         ".authenticatorSettings.github.clientSecret.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".github.clientSecret.hint"
                         }
                     >
@@ -367,15 +367,15 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 inputType="copy_input"
                 name="callbackUrl"
                 label={
-                    t("authenticationProvider:forms" +
+                    t("console:develop.features.authenticationProvider.forms" +
                         ".authenticatorSettings.github.callbackUrl.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms" +
+                    t("console:develop.features.authenticationProvider.forms" +
                         ".authenticatorSettings.github.callbackUrl.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms" +
+                    t("console:develop.features.authenticationProvider.forms" +
                         ".authenticatorSettings.github.callbackUrl.hint")
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
@@ -402,7 +402,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 && (
                     <FormSection
                         heading={
-                            t("authenticationProvider:forms" +
+                            t("console:develop.features.authenticationProvider.forms" +
                                 ".authenticatorSettings.github.scopes.heading")
                         }
                     >
@@ -449,7 +449,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                         <Hint>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:forms" +
+                                    "console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.github.scopes.hint"
                                 }
                             >

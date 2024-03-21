@@ -287,7 +287,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
         if (scope === AuthenticatorManagementConstants.GOOGLE_SCOPE_DICTIONARY.EMAIL) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.google.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -300,7 +300,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
         if (scope === AuthenticatorManagementConstants.GOOGLE_SCOPE_DICTIONARY.OPENID) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.google.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -313,7 +313,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
 
         if (scope === AuthenticatorManagementConstants.GOOGLE_SCOPE_DICTIONARY.PROFILE) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.google.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -368,17 +368,17 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 inputType="default"
                 name="ClientId"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientId.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientId.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".google.clientId.hint"
                         }
                     >
@@ -410,17 +410,17 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 type="password"
                 name="ClientSecret"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientSecret.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.clientSecret.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
+                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                             ".google.clientSecret.hint"
                         }
                     >
@@ -449,15 +449,15 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                 inputType="copy_input"
                 name="callbackUrl"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.callbackUrl.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.callbackUrl.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.callbackUrl.hint")
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
@@ -479,21 +479,21 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
             />
             <Field.Input
                 ariaLabel={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.AdditionalQueryParameters.ariaLabel")
                 }
                 inputType="default"
                 name="AdditionalQueryParameters"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.AdditionalQueryParameters.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.AdditionalQueryParameters.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".google.AdditionalQueryParameters.hint")
                 }
                 required={ formFields?.AdditionalQueryParameters?.meta?.isMandatory }
@@ -524,15 +524,15 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                         required={ false }
                         toggle
                         label={
-                            t("authenticationProvider:forms.authenticatorSettings" +
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                                ".google.enableGoogleOneTap.label")
                         }
                         placeholder={
-                            t("authenticationProvider:forms.authenticatorSettings" +
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                                ".google.enableGoogleOneTap.placeholder")
                         }
                         hint={
-                            t("authenticationProvider:forms.authenticatorSettings" +
+                            t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                                ".google.enableGoogleOneTap.hint")
                         }
                         readOnly={ readOnly }
@@ -545,7 +545,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (
                     <FormSection
                         heading={
-                            t("authenticationProvider:forms" +
+                            t("console:develop.features.authenticationProvider.forms" +
                                 ".authenticatorSettings.google.scopes.heading")
                         }
                     >
@@ -591,7 +591,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                         <Hint compact>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:forms" +
+                                    "console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.google.scopes.hint"
                                 }
                             >

@@ -256,14 +256,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-attributes" data-testid={ `${ testId }-modal` }>
             <Modal.Header data-testid={ `${ testId }-modal-header` }>
-                { t("authenticationProvider:modals.attributeSelection.title") }
+                { t("console:develop.features.authenticationProvider.modals.attributeSelection.title") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("authenticationProvider:modals.attributeSelection.subTitle") }
+                    { t("console:develop.features.authenticationProvider.modals.attributeSelection.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image data-testid={ `${ testId }-modal-content` }>
                 <TransferComponent
-                    searchPlaceholder={ t("authenticationProvider:modals.attributeSelection." +
+                    searchPlaceholder={ t("console:develop.features.authenticationProvider.modals.attributeSelection." +
                         "content.searchPlaceholder") }
                     addItems={ addAttributes }
                     removeItems={ removeAttributes }

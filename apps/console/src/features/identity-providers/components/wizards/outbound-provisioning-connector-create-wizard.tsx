@@ -155,11 +155,11 @@ export const OutboundProvisioningConnectorCreateWizard:
             updateOutboundProvisioningConnector(identityProvider.id, connector)
                 .then(() => {
                     dispatch(addAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateOutboundProvisioningConnector." +
                         "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                         "updateOutboundProvisioningConnector." +
                         "success.message")
                     }));
@@ -182,12 +182,12 @@ export const OutboundProvisioningConnectorCreateWizard:
                 .catch(error => {
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
-                            description: t("authenticationProvider:notifications." +
+                            description: t("console:develop.features.authenticationProvider.notifications." +
                             "getOutboundProvisioningConnectorsList.error.description",
                             { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications." +
+                            message: t("console:develop.features.authenticationProvider.notifications." +
                             "getOutboundProvisioningConnectorsList.error.message")
                         });
 
@@ -195,11 +195,11 @@ export const OutboundProvisioningConnectorCreateWizard:
                     }
 
                     setAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                         "getOutboundProvisioningConnectorsList." +
                         "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                         "getOutboundProvisioningConnectorsList." +
                         "genericError.message")
                     });
@@ -355,7 +355,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     />
                 ),
                 icon: getOutboundProvisioningConnectorWizard().connectorDetails,
-                title: t("authenticationProvider:" +
+                title: t("console:develop.features.authenticationProvider." +
                 "wizards.addProvisioningConnector.steps.connectorConfiguration.title")
             },
             {
@@ -370,7 +370,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     />
                 ),
                 icon: getOutboundProvisioningConnectorWizard().summary,
-                title: t("authenticationProvider:" +
+                title: t("console:develop.features.authenticationProvider." +
                 "wizards.addProvisioningConnector.steps.summary.title")
             }
         ];
@@ -387,14 +387,14 @@ export const OutboundProvisioningConnectorCreateWizard:
                 data-testid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
-                    { t("authenticationProvider:modals.addProvisioningConnector.title") }
+                    { t("console:develop.features.authenticationProvider.modals.addProvisioningConnector.title") }
                     <Heading as="h6">
-                        { t("authenticationProvider:modals.addProvisioningConnector.subTitle") }
+                        { t("console:develop.features.authenticationProvider.modals.addProvisioningConnector.subTitle") }
                     </Heading>
                 </Modal.Header>
                 <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
                     <Steps.Group
-                        header={ t("authenticationProvider:wizards." +
+                        header={ t("console:develop.features.authenticationProvider.wizards." +
                         "addProvisioningConnector.header") }
                         current={ currentWizardStep }
                     >
@@ -431,7 +431,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         disabled={ isConnectorMetadataRequestLoading }
                                         data-testid={ `${ testId }-modal-next-button` }
                                     >
-                                        { t("authenticationProvider:wizards.buttons.next") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
@@ -443,7 +443,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         disabled={ isSubmitting }
                                         data-testid={ `${ testId }-modal-finish-button` }
                                     >
-                                        { t("authenticationProvider:wizards.buttons.finish") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 ) }
                                 { currentWizardStep > 0 && (
@@ -452,7 +452,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         onClick={ navigateToPrevious }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("authenticationProvider:wizards.buttons.previous") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
                                     </LinkButton>
                                 ) }
                             </Grid.Column>

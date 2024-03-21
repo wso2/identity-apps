@@ -70,7 +70,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
             <Message
                 type="info"
                 header={
-                    t("authenticationProvider:templates.apple." +
+                    t("console:develop.features.authenticationProvider.templates.apple." +
                     "wizardHelp.preRequisites.heading")
                 }
                 content={
@@ -78,7 +78,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                         <p>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.apple." +
+                                    "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.getCredentials"
                                 }
                             >
@@ -93,7 +93,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                         <p>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.apple." +
+                                    "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.configureWebDomain"
                                 }
                             >
@@ -107,7 +107,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                         <p>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.apple." +
+                                    "console:develop.features.authenticationProvider.templates.apple." +
                                     "wizardHelp.preRequisites.configureReturnURL"
                                 }
                             >
@@ -122,7 +122,7 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
                                 showEmptyLinkText
                             >
                                 {
-                                    t("authenticationProvider:templates.apple" +
+                                    t("console:develop.features.authenticationProvider.templates.apple" +
                                     ".wizardHelp.preRequisites.configureAppleSignIn")
                                 }
                             </DocumentationLink>
@@ -133,16 +133,16 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.apple" +
+                    t("console:develop.features.authenticationProvider.templates.apple" +
                             ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("authenticationProvider:templates.apple." +
+                        ? t("console:develop.features.authenticationProvider.templates.apple." +
                                 "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.apple." +
+                        : t("console:develop.features.authenticationProvider.templates.apple." +
                                 "wizardHelp.name.idpDescription")
                 }
             </p>
@@ -150,13 +150,13 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
             <Divider/>
 
             <Heading as="h5">
-                { t("authenticationProvider:" +
+                { t("console:develop.features.authenticationProvider." +
                         "templates.apple.wizardHelp.clientId.heading") }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.apple" +
+                        "console:develop.features.authenticationProvider.templates.apple" +
                             ".wizardHelp.clientId.description"
                     }
                 >
@@ -168,14 +168,14 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.apple" +
+                    t("console:develop.features.authenticationProvider.templates.apple" +
                             ".wizardHelp.teamId.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.apple." +
+                        "console:develop.features.authenticationProvider.templates.apple." +
                             "wizardHelp.teamId.description"
                     }
                 >
@@ -187,14 +187,14 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.apple" +
+                    t("console:develop.features.authenticationProvider.templates.apple" +
                             ".wizardHelp.keyId.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.apple." +
+                        "console:develop.features.authenticationProvider.templates.apple." +
                             "wizardHelp.keyId.description"
                     }
                 >
@@ -206,14 +206,14 @@ const AppleIdentityProviderCreateWizardHelp: FunctionComponent<AppleIdentityProv
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.apple" +
+                    t("console:develop.features.authenticationProvider.templates.apple" +
                             ".wizardHelp.privateKey.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.apple." +
+                        "console:develop.features.authenticationProvider.templates.apple." +
                             "wizardHelp.privateKey.description"
                     }
                 >

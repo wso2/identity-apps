@@ -160,7 +160,7 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
             };
 
             if (!values.name) {
-                errors.name = t("authenticationProvider:forms.common" +
+                errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
             }
 
@@ -188,9 +188,9 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                                 ariaLabel="Organization IDP Name"
                                 inputType="name"
                                 name="name"
-                                label={ t("authenticationProvider:forms." +
+                                label={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.label") }
-                                placeholder={ t("authenticationProvider:forms." +
+                                placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                 "generalDetails.name.placeholder") }
                                 required={ true }
                                 validation={ (value) => idpNameValidation(value) }
@@ -210,15 +210,15 @@ export const OrganizationEnterpriseAuthenticationProviderCreateWizardContent:
                                 inputType="description"
                                 name="description"
                                 label={
-                                    t("authenticationProvider:forms." +
+                                    t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.description.placeholder")
                                 }
                                 placeholder={
-                                    t("authenticationProvider:forms." +
+                                    t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.description.placeholder")
                                 }
                                 message={
-                                    t("authenticationProvider:forms." +
+                                    t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.description.placeholder")
                                 }
                                 type="text"

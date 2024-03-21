@@ -161,19 +161,19 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
         };
 
         if (!values.name) {
-            errors.name = t("authenticationProvider:forms.common" +
+            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.appId) {
-            errors.appId = t("authenticationProvider:forms.common" +
+            errors.appId = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.apiToken) {
-            errors.apiToken = t("authenticationProvider:forms.common" +
+            errors.apiToken = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.baseUrl) {
-            errors.baseUrl = t("authenticationProvider:forms.common" +
+            errors.baseUrl = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
 
@@ -201,11 +201,11 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="name"
                             name="name"
                             label={
-                                t("authenticationProvider:forms." +
+                                t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.name.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms." +
+                                t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.name.placeholder")
                             }
                             required={ true }
@@ -226,16 +226,16 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="client_id"
                             name="appId"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.appId.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.appId.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.appId.validations.required")
                             }
                             type="text"
@@ -255,16 +255,16 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="url"
                             name="baseUrl"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.baseUrl.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.baseUrl.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.baseUrl.validations.required")
                             }
                             type="text"
@@ -285,16 +285,16 @@ export const HyprAuthenticationProviderCreateWizardContent: FunctionComponent<
                             className="addon-field-wrapper"
                             name="apiToken"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.apiToken.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.apiToken.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.hypr.apiToken.validations.required")
                             }
                             type="password"

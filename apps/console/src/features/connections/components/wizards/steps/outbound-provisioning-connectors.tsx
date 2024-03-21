@@ -88,11 +88,11 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
             submitState={ triggerSubmit }
         >         
             <Heading as="h4">
-                { t("authenticationProvider:wizards." +
+                { t("console:develop.features.authenticationProvider.wizards." +
                     "addProvisioningConnector.steps." +
                     "connectorSelection.defaultSetup.title") }
                 <Heading subHeading as="h6">
-                    { t("authenticationProvider:" +
+                    { t("console:develop.features.authenticationProvider." +
                         "wizards.addProvisioningConnector.steps." +
                         "connectorSelection.defaultSetup.subTitle") }
                 </Heading>

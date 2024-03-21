@@ -147,7 +147,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             ".forms.jitProvisioning.provisioningScheme.children.2"),
         value: SupportedJITProvisioningSchemes.PROMPT_CONSENT
     }, {
-        label: t("authenticationProvider:" +
+        label: t("console:develop.features.authenticationProvider." +
             "forms.jitProvisioning.provisioningScheme.children.3"),
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
@@ -210,7 +210,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         );
                                     } }
                                     children={ [ {
-                                        label: t("authenticationProvider:forms." +
+                                        label: t("console:develop.features.authenticationProvider.forms." +
                                             "jitProvisioning.enableJITProvisioning.label"),
                                         value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
                                     } ] }
@@ -248,7 +248,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     }
                                     type="checkbox"
                                     children={ [ {
-                                        label: t("authenticationProvider:forms." +
+                                        label: t("console:develop.features.authenticationProvider.forms." +
                                             "jitProvisioning.associateLocalUser.label"),
                                         value: JITProvisioningConstants.ASSOCIATE_LOCAL_USER
                                     } ] }
@@ -256,7 +256,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     readOnly={ isReadOnly }
                                 />
                                 <Hint>
-                                    { t("authenticationProvider:forms." +
+                                    { t("console:develop.features.authenticationProvider.forms." +
                                         "jitProvisioning.associateLocalUser.hint") }
                                 </Hint>
                             </Grid.Column>

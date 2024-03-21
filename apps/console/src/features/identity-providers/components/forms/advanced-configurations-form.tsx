@@ -90,13 +90,13 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             name="federationHub"
                             label=""
                             required={ false }
-                            requiredErrorMessage={ t("authenticationProvider:forms.common." +
+                            requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms.common." +
                                 "requiredErrorMessage") }
                             value={ config?.isFederationHub ? ["federationHub"] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("authenticationProvider:forms.advancedConfigs." +
+                                    label: t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
                                         "federationHub.label"),
                                     value: "federationHub"
                                 }
@@ -106,7 +106,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             readOnly={ isReadOnly }
                         />
                         <Hint>
-                            { t("authenticationProvider:forms." +
+                            { t("console:develop.features.authenticationProvider.forms." +
                                 "advancedConfigs.federationHub.hint") }
                         </Hint>
                     </Grid.Column>
@@ -115,12 +115,12 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="homeRealmIdentifier"
-                            label={ t("authenticationProvider:forms.advancedConfigs." +
+                            label={ t("console:develop.features.authenticationProvider.forms.advancedConfigs." +
                                 "homeRealmIdentifier.label") }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".advancedConfigs.homeRealmIdentifier.placeholder")
                             }
                             type="text"
@@ -143,7 +143,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".advancedConfigs.alias.placeholder")
                             }
                             type="text"
@@ -152,7 +152,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             readOnly={ isReadOnly }
                         />
                         <Hint>
-                            { t("authenticationProvider:forms.advancedConfigs.alias.hint") }
+                            { t("console:develop.features.authenticationProvider.forms.advancedConfigs.alias.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

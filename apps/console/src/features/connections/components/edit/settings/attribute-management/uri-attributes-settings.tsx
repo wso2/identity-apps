@@ -127,7 +127,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             (
                                 <Trans
                                     i18nKey={
-                                        "authenticationProvider:" +
+                                        "console:develop.features.authenticationProvider." +
                                             "forms.uriAttributeSettings.group.messageOIDC"
                                     }
                                     tOptions={ {
@@ -152,7 +152,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         (
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:" +
+                                    "console:develop.features.authenticationProvider." +
                                         "forms.uriAttributeSettings.group.messageSAML"
                                 }
                                 tOptions={ {
@@ -190,7 +190,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             (
                                 <Trans
                                     i18nKey={
-                                        "authenticationProvider:" +
+                                        "console:develop.features.authenticationProvider." +
                                             "forms.uriAttributeSettings.group.mappedRolesPresentMessage"
                                     }
                                     tOptions={ {
@@ -218,7 +218,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         (
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:" +
+                                    "console:develop.features.authenticationProvider." +
                                         "forms.uriAttributeSettings.group.mappedRolesAbsentMessage"
                                 }
                             >
@@ -239,7 +239,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         (
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:" +
+                                    "console:develop.features.authenticationProvider." +
                                         "forms.uriAttributeSettings.group.messageOIDC"
                                 }
                                 tOptions={ {
@@ -264,7 +264,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     (
                         <Trans
                             i18nKey={
-                                "authenticationProvider:" +
+                                "console:develop.features.authenticationProvider." +
                                     "forms.uriAttributeSettings.group.messageSAML"
                             }
                             tOptions={ {
@@ -286,7 +286,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             <Grid.Row>
                 <Grid.Column>
                     <Heading as="h4">
-                        { t("authenticationProvider:forms.uriAttributeSettings." +
+                        { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
                             "subject.heading") }
                     </Heading>
                     <Form>
@@ -296,7 +296,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 dropDownOptions.concat(
                                     {
                                         key: "default_subject",
-                                        text: t("authenticationProvider:forms." +
+                                        text: t("console:develop.features.authenticationProvider.forms." +
                                             "uriAttributeSettings.subject." +
                                             "placeHolder"),
                                         value: ""
@@ -304,7 +304,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 )
                             }
                             value={ getValidatedInitialValue(initialSubjectUri) }
-                            placeholder={ t("authenticationProvider:forms." +
+                            placeholder={ t("console:develop.features.authenticationProvider.forms." +
                                 "uriAttributeSettings.subject." +
                                 "placeHolder") }
                             onChange={
@@ -314,7 +314,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             }
                             search
                             fullTextSearch={ false }
-                            label={ t("authenticationProvider:forms." +
+                            label={ t("console:develop.features.authenticationProvider.forms." +
                                 "uriAttributeSettings.subject.label") }
                             data-testid={ `${ testId }-form-element-subject` }
                             error={ subjectError && {
@@ -332,7 +332,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             ? (
                                 <Trans
                                     i18nKey={
-                                        "console:authenticationProvider:forms" +
+                                        "console:console:develop.features.authenticationProvider.forms" +
                                         ".uriAttributeSettings.subject.hint"
                                     }
                                 >
@@ -364,7 +364,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Grid.Row columns={ 2 }>
                             <Grid.Column>
                                 <Heading as="h4">
-                                    { t("authenticationProvider:forms.uriAttributeSettings." +
+                                    { t("console:develop.features.authenticationProvider.forms.uriAttributeSettings." +
                                 "group.heading") }
                                 </Heading>
                                 {
@@ -393,7 +393,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                 }
                                                 search
                                                 fullTextSearch={ false }
-                                                label={ t("authenticationProvider:forms." +
+                                                label={ t("console:develop.features.authenticationProvider.forms." +
                                                     "uriAttributeSettings.group.label") }
                                                 data-testid={ `${ testId }-form-element-role` }
                                                 error={ roleError && {
@@ -405,7 +405,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                                 readOnly={ isReadOnly }
                                             />
                                             <Hint>
-                                                { t("authenticationProvider:" +
+                                                { t("console:develop.features.authenticationProvider." +
                                                     "forms.uriAttributeSettings.group.hint") }
                                             </Hint>
                                         </Form>

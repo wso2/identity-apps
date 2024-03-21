@@ -341,10 +341,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     type: componentId + "-" + kebabCase(selectedProtocol)
                 });
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.message")
                 }));
                 // The created resource's id is sent as a location header.
@@ -401,11 +401,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
                     });
                     setTimeout(() => setAlert(undefined), 4000);
@@ -413,10 +413,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     return;
                 }
                 setAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.message")
                 });
                 setTimeout(() => setAlert(undefined), 4000);
@@ -434,11 +434,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
                 if (isIdpNameAlreadyTaken(values.name)) {
-                    errors.name = t("authenticationProvider:" +
+                    errors.name = t("console:develop.features.authenticationProvider." +
                         "forms.generalDetails.name.validations.duplicate");
                 }
                 if (!FormValidation.isValidResourceName(values.name)) {
-                    errors.name = t("authenticationProvider:" +
+                    errors.name = t("console:develop.features.authenticationProvider." +
                         "templates.enterprise.validation.name");
                 }
                 setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -463,11 +463,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
                     if (isIdpNameAlreadyTaken(values)) {
-                        errors = t("authenticationProvider:" +
+                        errors = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
                     if (!FormValidation.isValidResourceName(values)) {
-                        errors = t("authenticationProvider:" +
+                        errors = t("console:develop.features.authenticationProvider." +
                             "templates.enterprise.validation.invalidName",
                         { idpName: values });
                     }
@@ -1005,7 +1005,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                             wizardRef.current.gotoNextPage();
                                         } }
                                         data-testid={ `${ testId }-modal-next-button` }>
-                                        { t("authenticationProvider:wizards.buttons.next") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
@@ -1024,7 +1024,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         data-testid={ `${ testId }-modal-finish-button` }
                                         loading={ isSubmitting }
                                     >
-                                        { t("authenticationProvider:wizards.buttons.finish") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 ) }
                                 { currentWizardStep > 0 && (
@@ -1034,7 +1034,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                                         onClick={ () => wizardRef.current.gotoPreviousPage() }
                                         data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("authenticationProvider:wizards.buttons." +
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons." +
                                             "previous") }
                                     </LinkButton>
                                 ) }

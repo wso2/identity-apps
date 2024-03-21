@@ -390,12 +390,12 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
-                        t("authenticationProvider:placeHolders.emptyConnectionTypeList.title")
+                        t("console:develop.features.authenticationProvider.placeHolders.emptyConnectionTypeList.title")
                     }
                     subtitle={ [
-                        t("authenticationProvider:placeHolders.emptyConnectionTypeList" +
+                        t("console:develop.features.authenticationProvider.placeHolders.emptyConnectionTypeList" +
                             ".subtitles.0"),
-                        t("authenticationProvider:placeHolders.emptyConnectionTypeList" +
+                        t("console:develop.features.authenticationProvider.placeHolders.emptyConnectionTypeList" +
                             ".subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }

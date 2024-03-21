@@ -68,7 +68,7 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
             <Message
                 type="info"
                 header={
-                    t("authenticationProvider:templates.microsoft.wizardHelp." +
+                    t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp." +
                         "preRequisites.heading")
                 }
                 content={
@@ -76,7 +76,7 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                         <p>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.microsoft.wizardHelp." +
+                                    "console:develop.features.authenticationProvider.templates.microsoft.wizardHelp." +
                                     "preRequisites.getCredentials"
                                 }
                             >
@@ -92,7 +92,7 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
 
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:templates.microsoft.wizardHelp" +
+                                    "console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
                                     ".preRequisites.configureRedirectURL"
                                 }
                             >
@@ -109,7 +109,7 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
                                 showEmptyLinkText
                             >
                                 {
-                                    t("authenticationProvider:templates.microsoft.wizardHelp" +
+                                    t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp" +
                                         ".preRequisites.configureOAuthApps")
                                 }
                             </DocumentationLink>
@@ -120,16 +120,16 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.microsoft" +
+                    t("console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("authenticationProvider:templates.microsoft." +
+                        ? t("console:develop.features.authenticationProvider.templates.microsoft." +
                             "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.microsoft." +
+                        : t("console:develop.features.authenticationProvider.templates.microsoft." +
                             "wizardHelp.name.idpDescription")
                 }
             </p>
@@ -137,12 +137,12 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
             <Divider/>
 
             <Heading as="h5">
-                { t("authenticationProvider:templates.microsoft.wizardHelp.clientId.heading") }
+                { t("console:develop.features.authenticationProvider.templates.microsoft.wizardHelp.clientId.heading") }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.microsoft" +
+                        "console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.clientId.description"
                     }
                 >
@@ -154,14 +154,14 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
 
             <Heading as="h5">
                 {
-                    t("authenticationProvider:templates.microsoft" +
+                    t("console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.clientSecret.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "authenticationProvider:templates.microsoft" +
+                        "console:develop.features.authenticationProvider.templates.microsoft" +
                         ".wizardHelp.clientSecret.description"
                     }
                 >

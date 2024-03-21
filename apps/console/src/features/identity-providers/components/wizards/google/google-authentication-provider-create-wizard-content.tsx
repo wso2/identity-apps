@@ -182,15 +182,15 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             const errors: any = {};
 
                             if (!values.name) {
-                                errors.name = t("authenticationProvider:forms.common" +
+                                errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                                     ".requiredErrorMessage");
                             }
                             if (!values.clientId) {
-                                errors.clientId = t("authenticationProvider:forms.common" +
+                                errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
                                     ".requiredErrorMessage");
                             }
                             if (!values.clientSecret) {
-                                errors.clientSecret = t("authenticationProvider:forms" +
+                                errors.clientSecret = t("console:develop.features.authenticationProvider.forms" +
                                     ".common.requiredErrorMessage");
                             }
 
@@ -202,11 +202,11 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="name"
                             name="name"
                             label={
-                                t("authenticationProvider:forms." +
+                                t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.name.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms." +
+                                t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.name.placeholder")
                             }
                             required={ true }
@@ -227,16 +227,16 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="client_id"
                             name="clientId"
                             label={
-                                t("authenticationProvider:templates.google" +
+                                t("console:develop.features.authenticationProvider.templates.google" +
                                     ".wizardHelp.clientId.heading")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.google.clientId.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:" +
+                                t("console:develop.features.authenticationProvider." +
                                     "forms.common.requiredErrorMessage")
                             }
                             type="text"
@@ -258,16 +258,16 @@ export const GoogleAuthenticationProviderCreateWizardContent: FunctionComponent<
                             className="addon-field-wrapper"
                             name="clientSecret"
                             label={
-                                t("authenticationProvider:templates.google" +
+                                t("console:develop.features.authenticationProvider.templates.google" +
                                     ".wizardHelp.clientSecret.heading")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.google.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:" +
+                                t("console:develop.features.authenticationProvider." +
                                     "forms.common.requiredErrorMessage")
                             }
                             type="password"

@@ -156,10 +156,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         createIdentityProvider(identityProvider)
             .then((response: AxiosResponse) => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.success.message")
                 }));
 
@@ -203,11 +203,11 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
                     });
 
@@ -215,10 +215,10 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 }
 
                 setAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "addIDP.genericError.message")
                 });
             })
@@ -562,7 +562,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
                 submitCallback: setSubmitGeneralSettings,
-                title: t("authenticationProvider:wizards.addIDP.steps.generalSettings.title")
+                title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps.generalSettings.title")
             }
         ];
 
@@ -573,7 +573,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                     name: WizardSteps.AUTHENTICATOR_SETTINGS,
                     submitCallback: setSubmitAuthenticator,
-                    title: t("authenticationProvider:wizards.addIDP.steps." +
+                    title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps." +
                         "authenticatorConfiguration.title")
                 }
             ];
@@ -586,7 +586,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: getIdentityProviderWizardStepIcons().outboundProvisioningSettings,
                     name: WizardSteps.OUTBOUND_PROVISIONING_SETTINGS,
                     submitCallback: setSubmitOutboundProvisioningSettings(),
-                    title: t("authenticationProvider:wizards.addIDP.steps." +
+                    title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps." +
                         "provisioningConfiguration.title")
                 }
             ];
@@ -600,7 +600,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: getIdentityProviderWizardStepIcons().summary,
                     name: WizardSteps.SUMMARY,
                     submitCallback: setFinishSubmit,
-                    title: t("authenticationProvider:wizards.addIDP.steps.summary.title")
+                    title: t("console:develop.features.authenticationProvider.wizards.addIDP.steps.summary.title")
                 }
             ];
         }
@@ -707,7 +707,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                                 floated="right"
                                 onClick={ navigateToNext }
                                 data-testid={ `${ testId }-modal-next-button` }>
-                                { t("authenticationProvider:wizards.buttons.next") }
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                 <Icon name="arrow right" />
                             </PrimaryButton>
                         ) }
@@ -718,7 +718,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                                 data-testid={ `${ testId }-modal-finish-button` }>
-                                { t("authenticationProvider:wizards.buttons.finish") }
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                             </PrimaryButton>
                         ) }
                         { currentWizardStep > 0 && (
@@ -727,7 +727,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                                 onClick={ navigateToPrevious }
                                 data-testid={ `${ testId }-modal-previous-button` }>
                                 <Icon name="arrow left" />
-                                { t("authenticationProvider:wizards.buttons.previous") }
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
                             </LinkButton>
                         ) }
                     </Grid.Column>

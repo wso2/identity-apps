@@ -95,21 +95,21 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
         updateJITProvisioningConfigs(idpId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:" +
+                    description: t("console:develop.features.authenticationProvider." +
                         "notifications.updateJITProvisioning." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.updateJITProvisioning.success.message")
                 }));
                 onUpdate(idpId);
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateJITProvisioning.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "updateJITProvisioning.genericError.message")
                 }));
             });

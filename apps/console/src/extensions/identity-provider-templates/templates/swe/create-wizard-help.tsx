@@ -76,7 +76,7 @@ const SIWEAuthenticationProviderCreateWizardHelp: FunctionComponent<
                 <Message
                     type="info"
                     header={
-                        t("authenticationProvider:templates.github.wizardHelp." +
+                        t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
                         "preRequisites.heading")
                     }
                     content={ (

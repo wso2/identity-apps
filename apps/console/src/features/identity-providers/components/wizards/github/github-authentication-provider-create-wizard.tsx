@@ -168,10 +168,10 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                     });
 
                     dispatch(addAlert({
-                        description: t("authenticationProvider:notifications.addIDP." +
+                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications.addIDP." +
+                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "success.message")
                     }));
 
@@ -205,11 +205,11 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
 
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
-                            description: t("authenticationProvider:notifications." +
+                            description: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications." +
+                            message: t("console:develop.features.authenticationProvider.notifications." +
                             "addIDP.error.message")
                         });
 
@@ -217,10 +217,10 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                     }
 
                     setAlert({
-                        description: t("authenticationProvider:notifications.addIDP." +
+                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.addIDP." +
+                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
                         "genericError.message")
                     });
                 })
@@ -343,7 +343,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("authenticationProvider:wizards.buttons.next") }
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                 </PrimaryButton>
                             ) : (
                                 <>
@@ -356,7 +356,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("authenticationProvider:wizards.buttons.finish") }
+                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 </>
                             ) }
@@ -369,7 +369,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                                 } }
                                 data-testid={ `${ testId }-modal-previous-button` }
                             >
-                                { t("authenticationProvider:wizards.buttons.previous") }
+                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
                             </LinkButton>)
                             }
                         </Grid.Column>
@@ -398,7 +398,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("authenticationProvider:templates.github.wizardHelp.heading") }
+                            { t("console:develop.features.authenticationProvider.templates.github.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>

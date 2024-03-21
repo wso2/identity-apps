@@ -407,21 +407,21 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
                         uiProps={ {
                             attributeColumnHeader: isEmpty(selectedClaimsWithMapping) ?
-                                t("authenticationProvider:forms.attributeSettings." +
+                                t("console:develop.features.authenticationProvider.forms.attributeSettings." +
                                     "attributeProvisioning.attributeColumnHeader.0") :
-                                t("authenticationProvider:forms.attributeSettings." +
+                                t("console:develop.features.authenticationProvider.forms.attributeSettings." +
                                     "attributeProvisioning.attributeColumnHeader.1"),
-                            attributeMapColumnHeader: t("authenticationProvider:" +
+                            attributeMapColumnHeader: t("console:develop.features.authenticationProvider." +
                                 "forms.attributeSettings." +
                                 "attributeProvisioning.attributeMapColumnHeader"),
                             attributeMapInputPlaceholderPrefix: t("console:develop.features." +
                                 "authenticationProvider.forms" +
                                 ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                            componentHeading: t("authenticationProvider:" +
+                            componentHeading: t("console:develop.features.authenticationProvider." +
                                 "forms.attributeSettings." +
                                 "attributeProvisioning.componentHeading"),
                             enablePrecedingDivider: false,
-                            hint: t("authenticationProvider:forms.attributeSettings." +
+                            hint: t("console:develop.features.authenticationProvider.forms.attributeSettings." +
                                 "attributeProvisioning.hint")
                         } }
                         data-testid={ `${ testId }-provisioning-attribute-selection` }

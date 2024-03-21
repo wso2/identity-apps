@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,7 +71,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
     const [ initialGroupList, setInitialGroupList ] = useState<string[]>([]);
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<string[]>([]);
     const [ isSelectUnassignedGroupsAllRolesChecked, setIsSelectUnassignedAllGroupsChecked ] = useState(false);
-
+    
     const {
         data: originalAssignedGroups,
         mutate: mutateAssignedGroups,
@@ -96,11 +96,11 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     handleAlerts({
-                        description: t("authenticationProvider:" +
+                        description: t("console:develop.features.authenticationProvider." +
                             "notifications.getIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:" +
+                        message: t("console:develop.features.authenticationProvider." +
                             "notifications.getIDP.error.message")
                     });
 
@@ -108,23 +108,23 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                 }
 
                 handleAlerts({
-                    description: t("authenticationProvider:" +
+                    description: t("console:develop.features.authenticationProvider." +
                         "notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.getIDP.genericError.message")
                 });
             }).finally(() => {
                 setGroupListRequestLoading(false);
-            });
+            }); 
     }, []);
 
     useEffect(() => {
         setLoading(isGroupListRequestLoading || isAssignedGroupsFetchRequestLoading);
     }, [ isGroupListRequestLoading, isAssignedGroupsFetchRequestLoading ]);
 
-    useEffect(() => {
-        if (originalAssignedGroups instanceof IdentityAppsApiException
+    useEffect(() => {                        
+        if (originalAssignedGroups instanceof IdentityAppsApiException 
                 || assignedGroupsFetchRequestError) {
             handleAlerts({
                 description: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
@@ -198,8 +198,8 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group: string) => {
-        const checkedGroups: string[] = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (group: string) => {        
+        const checkedGroups: string[] = [ ...checkedUnassignedListItems ];        
 
         if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
@@ -230,17 +230,17 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
     const assignAuthenticatorGroupsToRole = () => {
         setIsSubmitting(true);
         const addedGroups: ApplicationRoleGroupInterface[] =
-            tempGroupList?.filter((groupName: string) =>
+            tempGroupList?.filter((groupName: string) => 
                 !initialAssignedGroups?.find((group: ApplicationRoleGroupInterface) => group?.name === groupName))
                 .map((groupName: string) => {
                     return {
                         name: groupName
                     };
-                });
+                });        
 
         const removedGroups: ApplicationRoleGroupInterface[] =
-            initialAssignedGroups?.filter((group: ApplicationRoleGroupInterface) =>
-                !tempGroupList.includes(group?.name));
+            initialAssignedGroups?.filter((group: ApplicationRoleGroupInterface) => 
+                !tempGroupList.includes(group?.name));  
 
         const data: ApplicationRoleGroupsUpdatePayloadInterface = {
             added_groups: addedGroups,
@@ -275,7 +275,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
     };
 
     return (
-        !isLoading
+        !isLoading 
             ? (
                 <Grid>
                     <Grid.Row>
@@ -306,7 +306,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                                             return (
                                                 <TransferListItem
                                                     style={ { height: "100%" } }
-                                                    handleItemChange={ () =>
+                                                    handleItemChange={ () => 
                                                         handleUnassignedItemCheckboxChange(group) }
                                                     key={ index }
                                                     listItem={ group }
@@ -344,7 +344,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                 <EmphasizedSegment padded="very">
                     <ContentLoader />
                 </EmphasizedSegment>
-            )
+            ) 
     );
 };
 

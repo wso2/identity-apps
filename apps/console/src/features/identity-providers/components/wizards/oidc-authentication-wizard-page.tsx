@@ -111,7 +111,7 @@ export const OidcAuthenticationWizardFrom = (props: OidcAuthenticationWizardFrom
                     ariaLabel= "name"
                     inputType= "name"
                     name="name"
-                    label={ t("authenticationProvider:forms." +
+                    label={ t("console:develop.features.authenticationProvider.forms." +
                         "generalDetails.name.label") }
                     required={ true }
                     maxLength={ 50 }

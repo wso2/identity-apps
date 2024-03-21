@@ -456,9 +456,9 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return showWizard && !isEmpty(selectedTemplateWithUniqueName)
                 ? (
                     <TrustedTokenIssuerCreateWizard
-                        title= { t("authenticationProvider:templates.trustedTokenIssuer." +
+                        title= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
                             "addWizard.title") }
-                        subTitle= { t("authenticationProvider:templates.trustedTokenIssuer." +
+                        subTitle= { t("console:develop.features.authenticationProvider.templates.trustedTokenIssuer." +
                             "addWizard.subtitle") }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
@@ -489,9 +489,9 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
                 })
                     ?? (
                         <EnterpriseIDPCreateWizard
-                            title= { t("authenticationProvider:templates.enterprise." +
+                            title= { t("console:develop.features.authenticationProvider.templates.enterprise." +
                                 "addWizard.title") }
-                            subTitle= { t("authenticationProvider:templates.enterprise." +
+                            subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
                                 "addWizard.subtitle") }
                             onWizardClose={ () => {
                                 setSelectedTemplateWithUniqueName(undefined);

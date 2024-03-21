@@ -161,15 +161,15 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
         };
 
         if (!values.name) {
-            errors.name = t("authenticationProvider:forms.common" +
+            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientId) {
-            errors.clientId = t("authenticationProvider:forms.common" +
+            errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientSecret) {
-            errors.clientSecret = t("authenticationProvider:forms.common" +
+            errors.clientSecret = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
         }
 
@@ -197,11 +197,11 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             inputType="name"
                             name="name"
                             label={
-                                t("authenticationProvider:forms." +
+                                t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.name.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms." +
+                                t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.name.placeholder")
                             }
                             required={ true }
@@ -222,16 +222,16 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             inputType="client_id"
                             name="clientId"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.microsoft.clientId.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.microsoft.clientId.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.microsoft.clientId.validations.required")
                             }
                             type="text"
@@ -253,16 +253,16 @@ export const MicrosoftAuthenticationProviderCreateWizardContent: FunctionCompone
                             className="addon-field-wrapper"
                             name="clientSecret"
                             label={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.microsoft.clientSecret.label")
                             }
                             placeholder={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.microsoft.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
-                                t("authenticationProvider:forms" +
+                                t("console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.microsoft.clientSecret.validations.required")
                             }
                             type="password"

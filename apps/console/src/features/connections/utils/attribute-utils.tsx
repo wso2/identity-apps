@@ -114,10 +114,10 @@ export const handleAttributeSettingsFormSubmit = (connectionId: string, values: 
                 onUpdate(connectionId);
                 // Show single alert message when both requests are successfully completed.
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("authenticationProvider:" +
+                    description: I18n.instance.t("console:develop.features.authenticationProvider." +
                             "notifications.updateAttributes.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: I18n.instance.t("authenticationProvider:" +
+                    message: I18n.instance.t("console:develop.features.authenticationProvider." +
                             "notifications.updateAttributes." +
                             "success.message")
                 }));
@@ -128,7 +128,7 @@ export const handleAttributeSettingsFormSubmit = (connectionId: string, values: 
         .catch((error: IdentityAppsApiException) => {
             if (error.response && error.response.data && error.response.data.description) {
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("authenticationProvider:notifications." +
+                    description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                         "updateClaimsConfigs.error.description",
                     { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
@@ -139,10 +139,10 @@ export const handleAttributeSettingsFormSubmit = (connectionId: string, values: 
             }
 
             store.dispatch(addAlert({
-                description: I18n.instance.t("authenticationProvider:notifications." +
+                description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                     "updateClaimsConfigs.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("authenticationProvider:notifications." +
+                message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
                     "updateClaimsConfigs.genericError.message")
             }));
         });
@@ -165,11 +165,11 @@ export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): v
     }
 
     store.dispatch(addAlert({
-        description: I18n.instance.t("authenticationProvider:" +
+        description: I18n.instance.t("console:develop.features.authenticationProvider." +
             "notifications.getAllLocalClaims." +
             "genericError.description"),
         level: AlertLevels.ERROR,
-        message: I18n.instance.t("authenticationProvider:notifications." +
+        message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
             "getAllLocalClaims.genericError.message")
     }));
 };

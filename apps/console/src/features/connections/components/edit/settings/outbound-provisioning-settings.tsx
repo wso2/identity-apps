@@ -169,11 +169,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 .catch((error: AxiosError) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
-                            description: t("authenticationProvider:notifications." +
+                            description: t("console:develop.features.authenticationProvider.notifications." +
                                 "getOutboundProvisioningConnector.error.description",
                             { description: error.response.data.description } ),
                             level: AlertLevels.ERROR,
-                            message: t("authenticationProvider:notifications." +
+                            message: t("console:develop.features.authenticationProvider.notifications." +
                                 "getOutboundProvisioningConnector.error.message")
                         }));
 
@@ -181,10 +181,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     }
 
                     dispatch(addAlert({
-                        description: t("authenticationProvider:notifications." +
+                        description: t("console:develop.features.authenticationProvider.notifications." +
                             "getOutboundProvisioningConnector.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "getOutboundProvisioningConnector.genericError.message")
                     }));
                 });
@@ -216,11 +216,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnector(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:" +
+                    description: t("console:develop.features.authenticationProvider." +
                         "notifications.updateOutboundProvisioningConnector." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.updateOutboundProvisioningConnector." +
                         "success.message")
                 }));
@@ -257,11 +257,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnectors(data, identityProvider.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateOutboundProvisioningConnectors" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.updateOutboundProvisioningConnectors" +
                         ".success.message")
                 }));
@@ -273,7 +273,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "updateOutboundProvisioningConnectors" +
                             ".error.message")
                     }));
@@ -282,11 +282,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 }
 
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateOutboundProvisioningConnectors" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.updateOutboundProvisioningConnectors" +
                         ".genericError.message")
                 }));
@@ -341,8 +341,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             {
                 defaultChecked: connector.data?.isEnabled,
                 label: t(connector.data?.isEnabled ?
-                    "authenticationProvider:forms.outboundConnectorAccordion.enable.0" :
-                    "authenticationProvider:forms.outboundConnectorAccordion.enable.1"
+                    "console:develop.features.authenticationProvider.forms.outboundConnectorAccordion.enable.0" :
+                    "console:develop.features.authenticationProvider.forms.outboundConnectorAccordion.enable.1"
                 ),
                 onChange: handleConnectorEnableToggle,
                 type: "toggle"
@@ -399,7 +399,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     data-testid={ `${ testId }-add-connector-button` }
                                                 >
                                                     <Icon name="add"/>
-                                                    { t("authenticationProvider:" +
+                                                    { t("console:develop.features.authenticationProvider." +
                                                             "buttons.addConnector") }
                                                 </PrimaryButton>
                                             </Show>
@@ -483,14 +483,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("authenticationProvider:" +
+                                        title={ t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +
                                             "title") }
                                         subtitle={ [
-                                            t("authenticationProvider:" +
+                                            t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +
                                                 "subtitles.0"),
-                                            t("authenticationProvider:" +
+                                            t("console:develop.features.authenticationProvider." +
                                                 "placeHolders.emptyConnectorList." +
                                                 "subtitles.1")
                                         ] }
@@ -501,7 +501,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     onClick={ () => setShowWizard(true) }
                                                     data-testid={ `${ testId }-add-connector-button` }>
                                                     <Icon name="add"/>
-                                                    { t("authenticationProvider:" +
+                                                    { t("console:develop.features.authenticationProvider." +
                                                             "buttons.addConnector") }
                                                 </PrimaryButton>
                                             </Show>
@@ -525,7 +525,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey={ "authenticationProvider:"+
+                                    i18nKey={ "console:develop.features.authenticationProvider."+
                                     "confirmations.deleteConnector.assertionHint" }
                                     tOptions={ { name: deletingConnector?.meta.name } }
                                 >
@@ -544,18 +544,18 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("authenticationProvider:confirmations." +
+                            { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteConnector.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("authenticationProvider:confirmations." +
+                            { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteConnector.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("authenticationProvider:confirmations." +
+                            { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteConnector.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

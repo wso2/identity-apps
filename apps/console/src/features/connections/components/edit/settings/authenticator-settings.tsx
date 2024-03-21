@@ -223,13 +223,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     dispatch(
                         addAlert({
                             description: t(
-                                "authenticationProvider:notifications." +
+                                "console:develop.features.authenticationProvider.notifications." +
                                     "getFederatedAuthenticatorsList.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "authenticationProvider:notifications." +
+                                "console:develop.features.authenticationProvider.notifications." +
                                     "getFederatedAuthenticatorsList.error.message"
                             )
                         })
@@ -241,12 +241,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 dispatch(
                     addAlert({
                         description: t(
-                            "authenticationProvider:notifications." +
+                            "console:develop.features.authenticationProvider.notifications." +
                                 "getFederatedAuthenticatorsList.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "authenticationProvider:notifications." +
+                            "console:develop.features.authenticationProvider.notifications." +
                                 "getFederatedAuthenticatorsList.genericError.message"
                         )
                     })
@@ -305,7 +305,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             ".notifications.updateFederatedAuthenticator." +
                             "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "updateFederatedAuthenticator." +
                             "success.message")
                     }));
@@ -328,11 +328,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
 
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "updateFederatedAuthenticator." +
                         "genericError.message")
                 }));
@@ -376,11 +376,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const handleGetFederatedAuthenticatorAPICallError = (error: AxiosError) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(addAlert({
-                description: t("authenticationProvider:notifications." +
+                description: t("console:develop.features.authenticationProvider.notifications." +
                     "getFederatedAuthenticator.error.description",
                 { description: error.response.data.description }),
                 level: AlertLevels.ERROR,
-                message: t("authenticationProvider:" +
+                message: t("console:develop.features.authenticationProvider." +
                     "notifications.getFederatedAuthenticator.error.message")
             }));
 
@@ -388,10 +388,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
 
         dispatch(addAlert({
-            description: t("authenticationProvider:notifications.getFederatedAuthenticator." +
+            description: t("console:develop.features.authenticationProvider.notifications.getFederatedAuthenticator." +
                 "genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("authenticationProvider:notifications." +
+            message: t("console:develop.features.authenticationProvider.notifications." +
                 "getFederatedAuthenticator.genericError.message")
         }));
     };
@@ -501,10 +501,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // Validation
         if (authenticator.isDefault && !data.checked) {
             dispatch(addAlert({
-                description: t("authenticationProvider:notifications." +
+                description: t("console:develop.features.authenticationProvider.notifications." +
                     "disableAuthenticator.error.description"),
                 level: AlertLevels.WARNING,
-                message: t("authenticationProvider:notifications." +
+                message: t("console:develop.features.authenticationProvider.notifications." +
                     "disableAuthenticator.error.message")
             }));
             onUpdate(identityProvider.id);
@@ -541,11 +541,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         updateFederatedAuthenticators(data, identityProvider.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateFederatedAuthenticators" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "updateFederatedAuthenticators" +
                         ".success.message")
                 }));
@@ -557,7 +557,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "updateFederatedAuthenticators" +
                             ".error.message")
                     }));
@@ -566,11 +566,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 }
 
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
+                    description: t("console:develop.features.authenticationProvider.notifications." +
                         "updateFederatedAuthenticators" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
+                    message: t("console:develop.features.authenticationProvider.notifications." +
                         "updateFederatedAuthenticators" +
                         ".genericError.message")
                 }));
@@ -690,8 +690,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 defaultChecked: isDefaultAuthenticator,
                 disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
                 label: t(isDefaultAuthenticator ?
-                    "authenticationProvider:forms.authenticatorAccordion.default.0" :
-                    "authenticationProvider:forms.authenticatorAccordion.default.1"
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.default.0" :
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.default.1"
                 ),
                 onChange: handleDefaultAuthenticatorChange,
                 type: "checkbox"
@@ -701,8 +701,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 defaultChecked: authenticator.data?.isEnabled,
                 disabled: isDefaultAuthenticator,
                 label: t(authenticator.data?.isEnabled ?
-                    "authenticationProvider:forms.authenticatorAccordion.enable.0" :
-                    "authenticationProvider:forms.authenticatorAccordion.enable.1"
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.enable.0" :
+                    "console:develop.features.authenticationProvider.forms.authenticatorAccordion.enable.1"
                 ),
                 onChange: handleAuthenticatorEnableToggle,
                 type: "toggle"
@@ -809,7 +809,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                     data-testid={ `${ testId }-add-authenticator-button` }
                                 >
                                     <Icon name="add"/>
-                                    { t("authenticationProvider:buttons.addAuthenticator") }
+                                    { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
                                 </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>
@@ -1020,20 +1020,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 data-testid={ `${ testId }-add-authenticator-button` }
                             >
                                 <Icon name="add" />
-                                { t("authenticationProvider:buttons.addAuthenticator") }
+                                { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
                             </PrimaryButton>
                         </Show>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("authenticationProvider:placeHolders." +
+                    title={ t("console:develop.features.authenticationProvider.placeHolders." +
                         "emptyAuthenticatorList.title") }
                     subtitle={ [
-                        t("authenticationProvider:placeHolders." +
+                        t("console:develop.features.authenticationProvider.placeHolders." +
                             "emptyAuthenticatorList.subtitles.0"),
-                        t("authenticationProvider:placeHolders." +
+                        t("console:develop.features.authenticationProvider.placeHolders." +
                             "emptyAuthenticatorList.subtitles.1"),
-                        t("authenticationProvider:placeHolders." +
+                        t("console:develop.features.authenticationProvider.placeHolders." +
                             "emptyAuthenticatorList.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
@@ -1077,7 +1077,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey={ "authenticationProvider:" +
+                                    i18nKey={ "console:develop.features.authenticationProvider." +
                                         "confirmations.deleteAuthenticator.assertionHint" }
                                     tOptions={ { name: deletingAuthenticator?.name } }
                                 >
@@ -1097,19 +1097,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("authenticationProvider:confirmations." +
+                            { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteAuthenticator.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("authenticationProvider:confirmations." +
+                            { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteAuthenticator.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("authenticationProvider:confirmations." +
+                            { t("console:develop.features.authenticationProvider.confirmations." +
                                 "deleteAuthenticator.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
@@ -1118,10 +1118,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
             {
                 showAddAuthenticatorWizard && (
                     <AuthenticatorCreateWizard
-                        title={ t("authenticationProvider:modals." +
+                        title={ t("console:develop.features.authenticationProvider.modals." +
                             "addAuthenticator.title") }
                         subTitle={
-                            t("authenticationProvider:modals." +
+                            t("console:develop.features.authenticationProvider.modals." +
                             "addAuthenticator.subTitle", { idpName: identityProvider.name })
                         }
                         closeWizard={ () => {

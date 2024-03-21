@@ -55,7 +55,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                     (<>
                         <Trans
                             i18nKey={
-                                "authenticationProvider:templates.enterprise.saml." +
+                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
                                 "preRequisites.configureRedirectURL"
                             }
                         >
@@ -67,7 +67,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                         />
                         <Icon name="info circle" />
                         {
-                            t("authenticationProvider:templates.enterprise.saml." +
+                            t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
                                 "preRequisites.hint", {
                                 productName: config.ui.productName
                             })
@@ -80,7 +80,7 @@ const SamlIDPWizardHelp: FunctionComponent<Props> = (props: Props): ReactElement
                             link={ getLink("develop.connections.newConnection.enterprise.saml.learnMore") }
                         >
                             {
-                                t("authenticationProvider:templates.enterprise.saml." +
+                                t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
                                     "preRequisites.configureIdp")
                             }
                         </DocumentationLink>

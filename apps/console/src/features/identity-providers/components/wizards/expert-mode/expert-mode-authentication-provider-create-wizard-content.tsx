@@ -152,7 +152,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             };
 
             if (!values.name) {
-                errors.name = t("authenticationProvider:forms.common" +
+                errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
             }
 
@@ -184,11 +184,11 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                         inputType="name"
                         name="name"
                         label={
-                            t("authenticationProvider:forms." +
+                            t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.label")
                         }
                         placeholder={
-                            t("authenticationProvider:forms." +
+                            t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.placeholder")
                         }
                         required={ true }
@@ -209,11 +209,11 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                         inputType="description"
                         name="description"
                         label={
-                            t("authenticationProvider:forms." +
+                            t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.description.label")
                         }
                         placeholder={
-                            t("authenticationProvider:forms." +
+                            t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.description.placeholder")
                         }
                         required={ false }

@@ -237,11 +237,11 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("authenticationProvider:" +
+                        description: t("console:develop.features.authenticationProvider." +
                             "notifications.addFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications." +
+                        message: t("console:develop.features.authenticationProvider.notifications." +
                             "addFederatedAuthenticator.error.message")
                     });
 
@@ -249,11 +249,11 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 }
 
                 setAlert({
-                    description: t("authenticationProvider:" +
+                    description: t("console:develop.features.authenticationProvider." +
                         "notifications.addFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:" +
+                    message: t("console:develop.features.authenticationProvider." +
                         "notifications.addFederatedAuthenticator." +
                         "genericError.message")
                 });
@@ -305,16 +305,16 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                     image={ getEmptyPlaceholderIllustrations().newList }
                                     imageSize="tiny"
                                     title={
-                                        t("authenticationProvider:wizards.addAuthenticator." +
+                                        t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
                                             "steps.authenticatorSettings.emptyPlaceholder.title")
                                     }
                                     subtitle={ [
-                                        t("authenticationProvider:wizards.addAuthenticator." +
+                                        t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
                                             "steps.authenticatorSettings.emptyPlaceholder.subtitles.0"),
                                         <Trans
                                             key="0"
                                             i18nKey={
-                                                "authenticationProvider:wizards." +
+                                                "console:develop.features.authenticationProvider.wizards." +
                                                 "addAuthenticator.steps.authenticatorSettings.emptyPlaceholder." +
                                                 "subtitles.1"
                                             }
@@ -391,14 +391,14 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.TEMPLATE_SELECTION,
                 submitCallback: setSubmitTemplateSelection,
-                title: t("authenticationProvider:wizards.addAuthenticator." +
+                title: t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
                     "steps.authenticatorSelection.title")
             },
             {
                 icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.AUTHENTICATOR_SETTINGS,
                 submitCallback: setSubmitAuthenticator,
-                title: t("authenticationProvider:wizards.addAuthenticator." +
+                title: t("console:develop.features.authenticationProvider.wizards.addAuthenticator." +
                     "steps.authenticatorConfiguration.title")
             }
         ].filter(Boolean));
@@ -440,7 +440,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
                 <Steps.Group
-                    header={ t("authenticationProvider:" +
+                    header={ t("console:develop.features.authenticationProvider." +
                     "wizards.addAuthenticator.header") }
                     current={ currentWizardStep }>
                     { wizardSteps.map((step: WizardStepInterface, index: number) => (
@@ -475,7 +475,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                     disabled={ !isTemplateSelected }
                                     data-testid={ `${ testId }-modal-next-button` }
                                 >
-                                    { t("authenticationProvider:wizards.buttons.next") }
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>
                             ) }
@@ -487,7 +487,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("authenticationProvider:wizards.buttons.finish") }
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (

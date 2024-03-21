@@ -105,12 +105,12 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
         if (currentlyEditingIdP?.certificate?.certificates?.includes(pemBase64String)) {
             dispatch(addAlert({
                 description: t(
-                    "authenticationProvider:notifications" +
+                    "console:develop.features.authenticationProvider.notifications" +
                     ".duplicateCertificateUpload.error.description",
                     { idp: currentlyEditingIdP.name }
                 ),
                 level: AlertLevels.ERROR,
-                message: t("authenticationProvider:notifications" +
+                message: t("console:develop.features.authenticationProvider.notifications" +
                     ".duplicateCertificateUpload.error.message")
             }));
             setRequestInProgress(false);
@@ -135,10 +135,10 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
 
         const doOnSuccess = () => {
             dispatch(addAlert({
-                description: t("authenticationProvider:notifications" +
+                description: t("console:develop.features.authenticationProvider.notifications" +
                     ".updateIDPCertificate.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("authenticationProvider:notifications" +
+                message: t("console:develop.features.authenticationProvider.notifications" +
                     ".updateIDPCertificate.success.message")
             }));
             setRequestInProgress(false);
@@ -151,7 +151,7 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
                 setAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications" +
+                    message: t("console:develop.features.authenticationProvider.notifications" +
                         ".updateIDPCertificate.error.message")
                 });
                 setRequestInProgress(false);
@@ -159,10 +159,10 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
                 return;
             }
             setAlert({
-                description: t("authenticationProvider:notifications" +
+                description: t("console:develop.features.authenticationProvider.notifications" +
                     ".updateIDPCertificate.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("authenticationProvider:notifications" +
+                message: t("console:develop.features.authenticationProvider.notifications" +
                     ".updateIDPCertificate.genericError.message")
             });
             setRequestInProgress(false);
@@ -184,9 +184,9 @@ export const AddIdpCertificateModal: FC<AddIdPCertificateModalV2Props> = (props)
             data-testid={ `${ testId }-view-certificate-modal` }>
 
             <Modal.Header className="wizard-header">
-                { t("authenticationProvider:modals.addCertificate.title") }
+                { t("console:develop.features.authenticationProvider.modals.addCertificate.title") }
                 <Heading as="h6">
-                    { t("authenticationProvider:modals.addCertificate.subTitle", {
+                    { t("console:develop.features.authenticationProvider.modals.addCertificate.subTitle", {
                         idpName: currentlyEditingIdP?.name ?? ""
                     }) }
                 </Heading>

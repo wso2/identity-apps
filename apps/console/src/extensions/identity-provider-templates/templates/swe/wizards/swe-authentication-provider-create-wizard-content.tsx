@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -157,15 +157,15 @@ export const SIWEAuthenticationProviderCreateWizardContent: FunctionComponent<
             };
 
             if (!values.name) {
-                errors.name = t("authenticationProvider:forms.common" +
+                errors.name = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
             }
             if (!values.clientId) {
-                errors.clientId = t("authenticationProvider:forms.common" +
+                errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
             }
             if (!values.clientSecret) {
-                errors.clientSecret = t("authenticationProvider:forms.common" +
+                errors.clientSecret = t("console:develop.features.authenticationProvider.forms.common" +
                 ".requiredErrorMessage");
             }
 
@@ -197,11 +197,11 @@ export const SIWEAuthenticationProviderCreateWizardContent: FunctionComponent<
                         inputType="name"
                         name="name"
                         label={
-                            t("authenticationProvider:forms." +
+                            t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.label")
                         }
                         placeholder={
-                            t("authenticationProvider:forms." +
+                            t("console:develop.features.authenticationProvider.forms." +
                             "generalDetails.name.placeholder")
                         }
                         required={ true }

@@ -275,7 +275,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
 
         if (scope === IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.apple.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -288,7 +288,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
 
         if (scope === IdentityProviderManagementConstants.APPLE_SCOPE_DICTIONARY.NAME) {
             return {
-                description: t("authenticationProvider:forms" +
+                description: t("console:develop.features.authenticationProvider.forms" +
                     ".authenticatorSettings.apple.scopes.list.name.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -321,15 +321,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 inputType="default"
                 name="ClientId"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.clientId.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.clientId.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.clientId.hint")
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
@@ -354,15 +354,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 inputType="default"
                 name="TeamId"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.teamId.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.teamId.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.teamId.hint")
                 }
                 required={ formFields?.TeamId?.meta?.isMandatory }
@@ -390,15 +390,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 inputType="default"
                 name="KeyId"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.keyId.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.keyId.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.keyId.hint")
                 }
                 required={ formFields?.KeyId?.meta?.isMandatory }
@@ -427,15 +427,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 type="password"
                 name="PrivateKey"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.privateKey.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.privateKey.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.privateKey.hint")
                 }
                 required={ formFields?.PrivateKey?.meta?.isMandatory }
@@ -463,15 +463,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 inputType="default"
                 name="SecretValidityPeriod"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.secretValidityPeriod.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.secretValidityPeriod.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.secretValidityPeriod.hint")
                 }
                 required={ formFields?.SecretValidityPeriod?.meta?.isMandatory }
@@ -501,15 +501,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 inputType="copy_input"
                 name="callbackUrl"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.callbackUrl.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.callbackUrl.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.callbackUrl.hint")
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
@@ -534,15 +534,15 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 inputType="default"
                 name="AdditionalQueryParameters"
                 label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.additionalQueryParameters.label")
                 }
                 placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.additionalQueryParameters.placeholder")
                 }
                 hint={
-                    t("authenticationProvider:forms.authenticatorSettings" +
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".apple.additionalQueryParameters.hint")
                 }
                 required={ formFields?.AdditionalQueryParams?.meta?.isMandatory }
@@ -574,7 +574,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 && (
                     <FormSection
                         heading={
-                            t("authenticationProvider:forms" +
+                            t("console:develop.features.authenticationProvider.forms" +
                                 ".authenticatorSettings.apple.scopes.heading")
                         }
                     >
@@ -621,7 +621,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                         <Hint compact>
                             <Trans
                                 i18nKey={
-                                    "authenticationProvider:forms" +
+                                    "console:develop.features.authenticationProvider.forms" +
                                     ".authenticatorSettings.apple.scopes.hint"
                                 }
                             >
