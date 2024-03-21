@@ -192,7 +192,7 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
-                "suborganizations"
+                I18nConstants.SUBORGANIZATIONS_NAMESPACE
             ],
             preload: []
         };
