@@ -93,8 +93,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 name="ClientSecret"
                                 label={ "Client secret" }
                                 required={ true }
-                                requiredErrorMessage={ t("console:develop.features." +
-                                    "authenticationProvider.forms.common." +
+                                requiredErrorMessage={ t("authenticationProvider:forms.common." +
                                     "requiredErrorMessage") }
                                 type="password"
                                 hidePassword={ t("common:hide") }
@@ -280,8 +279,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                         validation.isValid = true;
                                     } else {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("console:develop.features." +
-                                            "authenticationProvider.forms." +
+                                        validation.errorMessages.push(t("authenticationProvider:forms." +
                                             "generalDetails.name.validations.duplicate"));
                                     }
                                 } catch (error) {

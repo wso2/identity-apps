@@ -26,8 +26,8 @@ import { getEmptyPlaceholderIllustrations } from "../../../../../core";
 
 // Component constants.
 
-const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "console:develop.features.authenticationProvider" +
-    ".placeHolders.emptyCertificateList";
+const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "authenticationProvider:" +
+    "placeHolders.emptyCertificateList";
 
 /**
  * Props interface of {@link EmptyCertificatesPlaceholder}

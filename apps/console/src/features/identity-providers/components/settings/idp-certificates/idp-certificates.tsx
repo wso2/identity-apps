@@ -338,8 +338,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                         data-testid={ `${ testId }-add-certificate-button` }
                                     >
                                         <Icon name="add" />
-                                        { t("console:develop.features.authenticationProvider" +
-                                            ".buttons.addCertificate") }
+                                        { t("authenticationProvider:" +
+                                            "buttons.addCertificate") }
                                     </PrimaryButton>
                                 </Show>
                             </Grid>

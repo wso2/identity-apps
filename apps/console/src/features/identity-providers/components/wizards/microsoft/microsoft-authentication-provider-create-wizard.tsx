@@ -408,8 +408,8 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider" +
-                            ".templates.microsoft.wizardHelp.heading") }
+                            { t("authenticationProvider:" +
+                            "templates.microsoft.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>

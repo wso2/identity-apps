@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -157,15 +157,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             });
         }
         if (nameExist) {
-            return t("console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+            return t("authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate");
         }
     };
 
     /**
      * Validate issuer value.
-     * 
+     *
      * @param value - Issuer value
      * @returns error msg if issuer is not valid.
      */
@@ -178,7 +177,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     /**
      * Validate alias value.
-     * 
+     *
      * @param value - Alias value
      * @returns error msg if alias is not valid.
      */

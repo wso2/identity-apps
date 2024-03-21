@@ -218,8 +218,8 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
                         "updateClaimsConfigs.error.description",
                     { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("console:develop.features.authenticationProvider" +
-                        ".notifications.updateClaimsConfigs." +
+                    message: I18n.instance.t("authenticationProvider:" +
+                        "notifications.updateClaimsConfigs." +
                         "error.message")
                 }));
             }
@@ -237,13 +237,13 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
 export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(addAlert({
-            description: I18n.instance.t("console:develop.features.authenticationProvider" +
-                ".notifications.getAllLocalClaims." +
+            description: I18n.instance.t("authenticationProvider:" +
+                "notifications.getAllLocalClaims." +
                 "error.description",
             { description: error.response.data.description }),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.authenticationProvider" +
-                ".notifications.getAllLocalClaims.error.message")
+            message: I18n.instance.t("authenticationProvider:" +
+                "notifications.getAllLocalClaims.error.message")
         }));
     }
 

@@ -201,8 +201,8 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                 "notifications.updateClaimsConfigs.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: I18n.instance.t("console:develop.features.authenticationProvider" +
-                                ".notifications.updateClaimsConfigs." +
+                            message: I18n.instance.t("authenticationProvider:" +
+                                "notifications.updateClaimsConfigs." +
                                 "error.message")
                         }));
                     }

@@ -177,11 +177,11 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
         const doOnSuccess = () => {
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider" +
-                    ".notifications.deleteCertificate.success.description"),
+                description: t("authenticationProvider:" +
+                    "notifications.deleteCertificate.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.authenticationProvider" +
-                    ".notifications.deleteCertificate.success.message")
+                message: t("authenticationProvider:" +
+                    "notifications.deleteCertificate.success.message")
             }));
             refreshIdP(currentlyEditingIdP.id);
         };
@@ -191,8 +191,8 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 dispatch(addAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider" +
-                        ".notifications.deleteCertificate.error.message")
+                    message: t("authenticationProvider:" +
+                        "notifications.deleteCertificate.error.message")
                 }));
 
                 return;

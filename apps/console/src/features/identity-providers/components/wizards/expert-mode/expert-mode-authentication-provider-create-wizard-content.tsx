@@ -132,8 +132,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             }
 
             return t(
-                "console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+                "authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate"
             );
         };

@@ -305,8 +305,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
         if (isUserInputIdpNameAlreadyTaken) {
             return t(
-                "console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+                "authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate"
             );
         }

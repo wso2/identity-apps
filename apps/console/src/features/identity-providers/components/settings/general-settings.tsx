@@ -306,8 +306,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                         subheader={ editingIDP.isEnabled
                                             ? t("authenticationProvider:" +
                                                 "dangerZoneGroup.disableIDP.subheader")
-                                            : t("console:develop.features." +
-                                                "authenticationProvider.dangerZoneGroup.disableIDP.subheader2") }
+                                            : t("authenticationProvider:dangerZoneGroup.disableIDP.subheader2") }
                                         onActionClick={ undefined }
                                         toggle={ {
                                             checked: editingIDP.isEnabled,

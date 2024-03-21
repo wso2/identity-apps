@@ -129,8 +129,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             readOnly={ isReadOnly }
                         />
                         <Hint>
-                            { t("console:develop.features.authenticationProvider" +
-                                ".forms.advancedConfigs.homeRealmIdentifier.hint") }
+                            { t("authenticationProvider:" +
+                                "forms.advancedConfigs.homeRealmIdentifier.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -138,8 +138,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="alias"
-                            label={ t("console:develop.features.authenticationProvider" +
-                                ".forms.advancedConfigs.alias.label") }
+                            label={ t("authenticationProvider:" +
+                                "forms.advancedConfigs.alias.label") }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={

@@ -337,8 +337,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                     />
                 ),
                 icon: getOutboundProvisioningConnectorWizard().connectorSelection,
-                title: t("console:develop.features.authenticationProvider" +
-                ".wizards.addProvisioningConnector.steps.connectorSelection.title")
+                title: t("authenticationProvider:" +
+                "wizards.addProvisioningConnector.steps.connectorSelection.title")
             },
             {
                 content: (
