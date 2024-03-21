@@ -164,7 +164,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                     <Heading as="h4">
-                        { t("console:develop.features.authenticationProvider.forms.roleMapping.heading") }
+                        { t("authenticationProvider:forms.roleMapping.heading") }
                     </Heading>
                     <DynamicField
                         bottomMargin={ false }
@@ -179,13 +179,13 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         }
                         keyType="dropdown"
                         keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName={ t("console:develop.features.authenticationProvider.forms.roleMapping.keyName") }
-                        valueName={ t("console:develop.features.authenticationProvider.forms.roleMapping.valueName") }
-                        keyRequiredMessage={ t("console:develop.features.authenticationProvider.forms.roleMapping." +
+                        keyName={ t("authenticationProvider:forms.roleMapping.keyName") }
+                        valueName={ t("authenticationProvider:forms.roleMapping.valueName") }
+                        keyRequiredMessage={ t("authenticationProvider:forms.roleMapping." +
                             "validation.keyRequiredMessage") }
-                        valueRequiredErrorMessage={ t("console:develop.features.authenticationProvider.forms." +
+                        valueRequiredErrorMessage={ t("authenticationProvider:forms." +
                             "roleMapping.validation.valueRequiredErrorMessage") }
-                        duplicateKeyErrorMsg={ t("console:develop.features.authenticationProvider.forms.roleMapping." +
+                        duplicateKeyErrorMsg={ t("authenticationProvider:forms.roleMapping." +
                             "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
                         listen={ (data: KeyValue[]) => {
@@ -206,7 +206,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         data-testid={ testId }
                         readOnly={ isReadOnly }
                     />
-                    <Hint>{ t("console:develop.features.authenticationProvider.forms.roleMapping.hint") }</Hint>
+                    <Hint>{ t("authenticationProvider:forms.roleMapping.hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
         </>

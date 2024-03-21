@@ -68,7 +68,7 @@ export const EmptyCertificatesPlaceholder: FC<EmptyCertificatesPlaceholderProps>
                             data-testid={ `${ testId }-emptyPlaceholder-add-certificate-button` }
                             type="button">
                             <Icon name="add"/>
-                            { t("console:develop.features.authenticationProvider.buttons.addCertificate") }
+                            { t("authenticationProvider:buttons.addCertificate") }
                         </PrimaryButton>
                     </Show>
                 ) }
