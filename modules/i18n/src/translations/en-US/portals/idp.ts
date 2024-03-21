@@ -17,6 +17,12 @@
  */
 import { IdpNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
+/* eslint-disable sort-keys */
 
 export const idp: IdpNS = {
     advancedSearch: {

@@ -87,7 +87,7 @@ export class I18nConstants {
 
     /**
      * pages namespace.
-     */ 
+     */
     public static readonly PAGES_NAMESPACE: string = I18nModuleConstants.PAGES_NAMESPACE;
 
     /**
