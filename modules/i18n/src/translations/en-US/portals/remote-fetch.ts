@@ -17,7 +17,7 @@
  */
 import { remoteFetchNS } from "../../../models";
 
-export const remoteFetch:remoteFetchNS ={
+export const remoteFetch: remoteFetchNS = {
     components: {
         status: {
             details: "Details",

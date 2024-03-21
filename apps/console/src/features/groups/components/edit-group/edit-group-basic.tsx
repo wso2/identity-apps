@@ -270,10 +270,10 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
                                                 if (!isGroupNameValid) {
                                                     validation.isValid = false;
-                                                    validation.errorMessages.push(t("console:manage.features." +
-                                                        "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                                    validation.errorMessages.push(t(
+                                                        "roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                                                         "validations.invalid",
-                                                    { type: "group" }));
+                                                        { type: "group" }));
                                                 }
 
                                                 const searchData: SearchGroupInterface = {

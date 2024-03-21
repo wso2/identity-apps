@@ -306,10 +306,10 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
                                                 if (!isRoleNameValid) {
                                                     validation.isValid = false;
-                                                    validation.errorMessages.push(t("console:manage.features." +
-                                                        "roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                                    validation.errorMessages.push(t(
+                                                        "roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                                                         "validations.invalid",
-                                                    { type: "role" }));
+                                                        { type: "role" }));
                                                 }
 
                                                 const searchData: SearchRoleInterface = {

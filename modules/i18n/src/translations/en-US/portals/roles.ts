@@ -15,9 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { rolesNS } from "../../../models"
+import { rolesNS } from "../../../models";
 
-export const roles: rolesNS ={
+export const roles: rolesNS = {
     addRoleWizard: {
         buttons: {
             finish: "Finish",

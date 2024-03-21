@@ -17,7 +17,7 @@
  */
 import { serverConfigsNS } from "../../../models";
 
-export const serverConfigs: serverConfigsNS ={
+export const serverConfigs: serverConfigsNS = {
     adminAdvisory: {
         configurationEditSection: {
             backButtonLabel: "Go back to Admin Advisory Banner",
