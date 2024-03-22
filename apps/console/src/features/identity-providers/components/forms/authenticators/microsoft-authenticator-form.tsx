@@ -249,7 +249,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
 
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
             return {
-                description: t("console:develop.features.authenticationProvider.forms" +
+                description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -262,7 +262,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
 
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
             return {
-                description: t("console:develop.features.authenticationProvider.forms" +
+                description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -275,7 +275,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
 
         if (scope === IdentityProviderManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
             return {
-                description: t("console:develop.features.authenticationProvider.forms" +
+                description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -330,17 +330,17 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 inputType="default"
                 name="ClientId"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.clientId.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.clientId.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            "authenticationProvider:forms.authenticatorSettings" +
                             ".microsoft.clientId.hint"
                         }
                     >
@@ -372,17 +372,17 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 type="password"
                 name="ClientSecret"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.clientSecret.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.clientSecret.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            "authenticationProvider:forms.authenticatorSettings" +
                             ".microsoft.clientSecret.hint"
                         }
                     >
@@ -411,15 +411,15 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 inputType="copy_input"
                 name="callbackUrl"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.callbackUrl.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.callbackUrl.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.callbackUrl.hint")
                 }
                 required={ formFields?.callbackUrl?.meta?.isMandatory }
@@ -441,20 +441,20 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
             />
             <Field.Scopes
                 ariaLabel={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.scopes.ariaLabel")
                 }
                 inputType="default"
                 name={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.scopes.heading")
                 }
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.scopes.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.scopes.placeholder")
                 }
                 hint="The types of access provided for the connected apps to access data from Microsoft."
@@ -477,21 +477,21 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
             />
             <Field.QueryParams
                 ariaLabel={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.commonAuthQueryParams.ariaLabel")
                 }
                 inputType="default"
                 name="commonAuthQueryParams"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.commonAuthQueryParams.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.commonAuthQueryParams.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".microsoft.commonAuthQueryParams.hint")
                 }
                 required={ formFields?.commonAuthQueryParams?.meta?.isMandatory }
@@ -516,7 +516,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                     && !isEmpty(extractScopes(formFields.Scopes.value))) && (
                     <FormSection
                         heading={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.microsoft.scopes.heading")
                         }
                     >
@@ -562,7 +562,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                         <Hint compact>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.forms" +
+                                    "authenticationProvider:forms" +
                                     ".authenticatorSettings.microsoft.scopes.hint"
                                 }
                             >

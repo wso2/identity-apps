@@ -136,22 +136,20 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                         t("console:brandingCustomText.form.genericFieldResetTooltip")
                     }
                 >
-                    <div>
-                        <IconButton
-                            aria-label="Reset field to default"
-                            className="reset-field-to-default-adornment"
-                            onClick={ () =>
-                                resetCustomTextField(
-                                    fieldName.replaceAll("_", "."),
-                                    selectedScreen,
-                                    selectedLocale
-                                )
-                            }
-                            edge="end"
-                        >
-                            <ArrowRotateLeft height={ 12 } width={ 12 } />
-                        </IconButton>
-                    </div>
+                    <IconButton
+                        aria-label="Reset field to default"
+                        className="reset-field-to-default-adornment"
+                        onClick={ () =>
+                            resetCustomTextField(
+                                fieldName.replaceAll("_", "."),
+                                selectedScreen,
+                                selectedLocale
+                            )
+                        }
+                        edge="end"
+                    >
+                        <ArrowRotateLeft height={ 12 } width={ 12 } />
+                    </IconButton>
                 </Tooltip>
             </InputAdornment>
         );

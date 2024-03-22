@@ -439,7 +439,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIDP?.name }
-                        assertionHint={ t("console:develop.features.authenticationProvider."+
+                        assertionHint={ t("authenticationProvider:"+
                         "confirmations.deleteIDP.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }

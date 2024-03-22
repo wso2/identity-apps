@@ -20,4 +20,4 @@ export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./certificates-ns";
-
+export * from "./authentication-provider-ns";
