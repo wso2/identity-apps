@@ -36,13 +36,16 @@ import {
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
+import isObject from "lodash-es/isObject";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
+import transform from "lodash-es/transform";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ExtendedFeatureConfigInterface } from "../../../extensions/configs/models";
+import { BrandingAIComponent, LoadingScreen } from "../../ai/components";
 import { EventPublisher } from "../../core";
 import { AppState } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
@@ -72,7 +75,6 @@ type BrandingPageInterface = IdentifiableComponentInterface;
  * Should show the org logo in the page title?
  */
 const SHOW_ORGANIZATION_LOGO_IN_PAGE_TITLE: boolean = false;
-
 /**
  * Branding page.
  *
@@ -87,9 +89,11 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
+    const [ traceId, setTraceId ] = useState<string>("");
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
+    const [ isGeneratingBranding, setGeneratingBranding ] = useState(false);
     const { isGreaterThanComputerViewport } = useMediaContext();
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -157,6 +161,10 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         featureConfig?.branding?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
+
+    const disabledFeatures: string[] = useMemo(() => {
+        return featureConfig?.branding?.disabledFeatures;
+    }, [ featureConfig ]);
 
     const {
         data: originalBrandingPreference,
@@ -457,9 +465,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                         message: t("extensions:develop.branding.notifications.update.genericError.message")
                     }));
                 }
-                
+
                 if (originalBrandingPreference
-                    && !(originalBrandingPreference instanceof IdentityAppsApiException)) {                    
+                    && !(originalBrandingPreference instanceof IdentityAppsApiException)) {
                     setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
                         BrandingPreferenceUtils.migrateThemePreference(
                             originalBrandingPreference.preference,
@@ -503,6 +511,46 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
             setShowSubOrgBrandingDeleteAlert(false);
             setShowSubOrgBrandingUpdateAlert(true);
         }
+    };
+
+    /**
+     * This function removes keys from an object that have empty values.
+     * If the value is an object, it recursively removes empty keys from that object as well.
+     *
+     * @param obj - The object to remove empty keys from.
+     * @returns - The object with empty keys removed.
+     */
+    function removeEmptyKeys(obj: Record<string, any>): Record<string, any> {
+        return transform(obj, (result: Record<string, any>, value: any, key: string) => {
+            // If the value is an object, recursively remove empty keys from it.
+            if (isObject(value)) {
+                const newValue: Record<string, any> = removeEmptyKeys(value);
+
+                // If the new value is not empty, add it to the result.
+                if (!isEmpty(newValue)) {
+                    result[key] = newValue;
+                }
+            }
+            // If the value is not an object and it is not empty, add it to the result.
+            else if (!isEmpty(value)) {
+                result[key] = value;
+            }
+        });
+    }
+
+    const handleBrandingAIResponseData = (data: any) => {
+        setGeneratingBranding(false);
+        const { theme } = removeEmptyKeys(data);
+        const { activeTheme, LIGHT } = theme;
+        const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference), {
+            activeTheme: activeTheme,
+            theme: {
+                ...brandingPreference.theme,
+                LIGHT: LIGHT
+            }
+        });
+
+        setBrandingPreference(mergedBrandingPreference);
     };
 
     /**
@@ -620,7 +668,8 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 className="branding-page"
             >
                 {
-                    !isBrandingPageLoading && !brandingPreference.configs?.isBrandingEnabled && (
+                    !isBrandingPageLoading && !brandingPreference.configs?.isBrandingEnabled
+                     && !isGeneratingBranding &&  (
                         <Message
                             info
                             floating
@@ -673,136 +722,168 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                         />
                     )
                 }
-                <BrandingPreferenceTabs
-                    key={ preferenceTabsComponentKey }
-                    predefinedThemes={ predefinedThemes }
-                    brandingPreference={ brandingPreference }
-                    isLoading={ isBrandingPageLoading }
-                    isUpdating={ isBrandingPreferenceUpdateRequestLoading }
-                    onSubmit={ (values: Partial<BrandingPreferenceInterface>, shouldShowNotifications: boolean) => {
-                        handlePreferenceFormSubmit(values, shouldShowNotifications);
-                    } }
-                    isSplitView={ isGreaterThanComputerViewport }
-                    readOnly={ isReadOnly }
-                    onLayoutChange={ (values: DesignFormValuesInterface): void => {
-                        setSelectedLayout(values.layout.activeLayout);
-                    } }
-                    onPreviewResize={ (width: number): void => {
-                        setCurrentWidth(width);
-                    } }
-                />
-                <ConfirmationModal
-                    onClose={ (): void => setShowBrandingPublishStatusConfirmationModal(false) }
-                    type="warning"
-                    open={ showBrandingPublishStatusConfirmationModal }
-                    assertionHint={
-                        t("extensions:develop.branding.confirmations.revertBranding.assertionHint")
-                    }
-                    assertionType="checkbox"
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ (): void => setShowBrandingPublishStatusConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleBrandingPublishStatus() }
-                    data-componentid={ `${ componentId }-branding-feature-confirmation-modal` }
-                    closeOnDimmerClick={ false }
-                    primaryActionLoading={ isBrandingFeatureRequestLoading }
-                >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-branding-feature-confirmation-modal-header` }
-                    >
-                        { t("extensions:develop.branding.confirmations.unpublishBranding.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        warning
-                        data-componentid={ `${ componentId }-branding-feature-confirmation-modal-message` }
-                    >
-                        { brandingPreference.configs?.isBrandingEnabled ?
-                            t("extensions:develop.branding.confirmations.unpublishBranding.disableMessage",
-                                { productName: productName }) :
-                            t("extensions:develop.branding.confirmations.unpublishBranding.enableMessage")
-                        }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content
-                        data-componentid={ `${ componentId }-branding-feature-confirmation-modal-content` }
-                    >
-                        { brandingPreference.configs?.isBrandingEnabled ?
-                            t("extensions:develop.branding.confirmations.unpublishBranding.disableContent") :
-                            t("extensions:develop.branding.confirmations.unpublishBranding.enableContent")
-                        }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
-                <Show when={ AccessControlConstants.BRANDING_DELETE }>
-                    <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
-                        { brandingPreference.configs?.isBrandingEnabled && (
-                            <DangerZone
-                                actionTitle={
-                                    t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.actionTitle")
-                                }
-                                header={
-                                    t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.header")
-                                }
-                                subheader={
-                                    t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.subheader",
-                                        { productName: productName })
-                                }
-                                onActionClick={ (): void => handleBrandingUnpublish() }
-                                data-componentid={ `${ componentId }-danger-zone-unpublish` }
+
+
+                { isGeneratingBranding ? (
+                    <div>
+                        <LoadingScreen traceId={ traceId } />
+                    </div>
+                )
+                    : (
+                        <>
+                            {
+                                !disabledFeatures.includes("branding.ai") &&
+                                (<BrandingAIComponent
+                                    onGenerate={ handleBrandingAIResponseData }
+                                    onGenerateBrandingClick={ (generatedTraceId: string) => {
+                                        setGeneratingBranding(true);
+                                        setTraceId(generatedTraceId);
+                                    } }
+                                />)
+                            }
+                            <BrandingPreferenceTabs
+                                key={ preferenceTabsComponentKey }
+                                predefinedThemes={ predefinedThemes }
+                                brandingPreference={ brandingPreference }
+                                isLoading={ isBrandingPageLoading }
+                                isUpdating={ isBrandingPreferenceUpdateRequestLoading }
+                                onSubmit={ (values: Partial<BrandingPreferenceInterface>,
+                                    shouldShowNotifications: boolean) => {
+                                    handlePreferenceFormSubmit(values, shouldShowNotifications);
+                                } }
+                                isSplitView={ isGreaterThanComputerViewport }
+                                readOnly={ isReadOnly }
+                                onLayoutChange={ (values: DesignFormValuesInterface): void => {
+                                    setSelectedLayout(values.layout.activeLayout);
+                                } }
+                                onPreviewResize={ (width: number): void => {
+                                    setCurrentWidth(width);
+                                } }
                             />
-                        ) }
-                        <DangerZone
-                            actionTitle={
-                                t("extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle")
-                            }
-                            header={
-                                t("extensions:develop.branding.dangerZoneGroup.revertBranding.header")
-                            }
-                            subheader={
-                                t("extensions:develop.branding.dangerZoneGroup.revertBranding.subheader",
-                                    { productName: productName })
-                            }
-                            onActionClick={ (): void => setShowRevertConfirmationModal(true) }
-                            data-componentid={ `${ componentId }-danger-zone` }
-                        />
-                    </DangerZoneGroup>
-                </Show>
-                <ConfirmationModal
-                    onClose={ (): void => setShowRevertConfirmationModal(false) }
-                    type="negative"
-                    open={ showRevertConfirmationModal }
-                    assertionHint={
-                        t("extensions:develop.branding.confirmations.revertBranding.assertionHint")
-                    }
-                    assertionType="checkbox"
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ (): void => setShowRevertConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleBrandingPreferenceDelete() }
-                    data-componentid={ `${ componentId }-branding-preference-revert-confirmation-modal` }
-                    closeOnDimmerClick={ false }
-                    primaryActionLoading={ isBrandingPreferenceDeleteRequestLoading }
-                >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-branding-preference-revert-confirmation-modal-header` }
-                    >
-                        { t("extensions:develop.branding.confirmations.revertBranding.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        negative
-                        data-componentid={ `${ componentId }-branding-preference-revert-confirmation-modal-message` }
-                    >
-                        {
-                            t("extensions:develop.branding.confirmations.revertBranding.message",
-                                { productName: productName })
-                        }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content
-                        data-componentid={ `${ componentId }-branding-preference-revert-confirmation-modal-content` }
-                    >
-                        { t("extensions:develop.branding.confirmations.revertBranding.content") }
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
+                            <ConfirmationModal
+                                onClose={ (): void => setShowBrandingPublishStatusConfirmationModal(false) }
+                                type="warning"
+                                open={ showBrandingPublishStatusConfirmationModal }
+                                assertionHint={
+                                    t("extensions:develop.branding.confirmations.revertBranding.assertionHint")
+                                }
+                                assertionType="checkbox"
+                                primaryAction={ t("common:confirm") }
+                                secondaryAction={ t("common:cancel") }
+                                onSecondaryActionClick={ (): void =>
+                                    setShowBrandingPublishStatusConfirmationModal(false) }
+                                onPrimaryActionClick={ (): void => handleBrandingPublishStatus() }
+                                data-componentid={ `${ componentId }-branding-feature-confirmation-modal` }
+                                closeOnDimmerClick={ false }
+                                primaryActionLoading={ isBrandingFeatureRequestLoading }
+                            >
+                                <ConfirmationModal.Header
+                                    data-componentid={ `${ componentId }-branding-feature-confirmation-modal-header` }
+                                >
+                                    { t("extensions:develop.branding.confirmations.unpublishBranding.header") }
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message
+                                    attached
+                                    warning
+                                    data-componentid={ `${ componentId }-branding-feature-confirmation-modal-message` }
+                                >
+                                    { brandingPreference.configs?.isBrandingEnabled ?
+                                        t("extensions:develop.branding.confirmations.unpublishBranding.disableMessage",
+                                            { productName: productName }) :
+                                        t("extensions:develop.branding.confirmations.unpublishBranding.enableMessage")
+                                    }
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content
+                                    data-componentid={ `${ componentId }-branding-feature-confirmation-modal-content` }
+                                >
+                                    { brandingPreference.configs?.isBrandingEnabled ?
+                                        t("extensions:develop.branding.confirmations." +
+                                        "unpublishBranding.disableContent") :
+                                        t("extensions:develop.branding.confirmations.unpublishBranding.enableContent")
+                                    }
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
+                            <Show when={ AccessControlConstants.BRANDING_DELETE }>
+                                <DangerZoneGroup
+                                    sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }
+                                >
+                                    { brandingPreference.configs?.isBrandingEnabled && (
+                                        <DangerZone
+                                            actionTitle={
+                                                t("extensions:develop.branding.dangerZoneGroup." +
+                                                "unpublishBranding.actionTitle")
+                                            }
+                                            header={
+                                                t("extensions:develop.branding.dangerZoneGroup." +
+                                                "unpublishBranding.header")
+                                            }
+                                            subheader={
+                                                t("extensions:develop.branding.dangerZoneGroup." +
+                                                "unpublishBranding.subheader",
+                                                { productName: productName })
+                                            }
+                                            onActionClick={ (): void => handleBrandingUnpublish() }
+                                            data-componentid={ `${ componentId }-danger-zone-unpublish` }
+                                        />
+                                    ) }
+                                    <DangerZone
+                                        actionTitle={
+                                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle")
+                                        }
+                                        header={
+                                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.header")
+                                        }
+                                        subheader={
+                                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.subheader",
+                                                { productName: productName })
+                                        }
+                                        onActionClick={ (): void => setShowRevertConfirmationModal(true) }
+                                        data-componentid={ `${ componentId }-danger-zone` }
+                                    />
+                                </DangerZoneGroup>
+                            </Show>
+                            <ConfirmationModal
+                                onClose={ (): void => setShowRevertConfirmationModal(false) }
+                                type="negative"
+                                open={ showRevertConfirmationModal }
+                                assertionHint={
+                                    t("extensions:develop.branding.confirmations.revertBranding.assertionHint")
+                                }
+                                assertionType="checkbox"
+                                primaryAction={ t("common:confirm") }
+                                secondaryAction={ t("common:cancel") }
+                                onSecondaryActionClick={ (): void => setShowRevertConfirmationModal(false) }
+                                onPrimaryActionClick={ (): void => handleBrandingPreferenceDelete() }
+                                data-componentid={ `${ componentId }-branding-preference-revert-confirmation-modal` }
+                                closeOnDimmerClick={ false }
+                                primaryActionLoading={ isBrandingPreferenceDeleteRequestLoading }
+                            >
+                                <ConfirmationModal.Header
+                                    data-componentid={
+                                        `${ componentId }-branding-preference-revert-confirmation-modal-header` }
+                                >
+                                    { t("extensions:develop.branding.confirmations.revertBranding.header") }
+                                </ConfirmationModal.Header>
+                                <ConfirmationModal.Message
+                                    attached
+                                    negative
+                                    data-componentid={
+                                        `${ componentId }-branding-preference-revert-confirmation-modal-message` }
+                                >
+                                    {
+                                        t("extensions:develop.branding.confirmations.revertBranding.message",
+                                            { productName: productName })
+                                    }
+                                </ConfirmationModal.Message>
+                                <ConfirmationModal.Content
+                                    data-componentid={
+                                        `${ componentId }-branding-preference-revert-confirmation-modal-content` }
+                                >
+                                    { t("extensions:develop.branding.confirmations.revertBranding.content") }
+                                </ConfirmationModal.Content>
+                            </ConfirmationModal>
+                        </>
+                    ) }
             </PageLayout>
         </BrandingPreferenceProvider>
     );
