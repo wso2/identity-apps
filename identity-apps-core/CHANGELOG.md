@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.0.0
+
+### Major Changes
+
+- [#5819](https://github.com/wso2/identity-apps/pull/5819) [`4c37e2b677`](https://github.com/wso2/identity-apps/commit/4c37e2b67759d73ebdddebe77e2555a15136e9ee) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - update condition logic
+
+* [#5819](https://github.com/wso2/identity-apps/pull/5819) [`31d2bb512f`](https://github.com/wso2/identity-apps/commit/31d2bb512f1832a6b265815da28a5e6114bc2efe) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Exclude logic execution of spId when sp is present in request params
+
 ## 2.1.46
 
 ### Patch Changes
