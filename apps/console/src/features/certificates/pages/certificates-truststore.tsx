@@ -50,17 +50,17 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY : {
-                        key: number;
-                        text: string;
-                        value: string;
-                    }[] = [
-                        {
-                            key: 0,
-                            text: "Alias",
-                            value: "alias"
-                        }
-                    ];
+    const SORT_BY: {
+        key: number;
+        text: string;
+        value: string;
+    }[] = [
+        {
+            key: 0,
+            text: "Alias",
+            value: "alias"
+        }
+    ];
 
     const [ certificatesTruststore, setCertificatesTruststore ] = useState<Certificate[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -72,7 +72,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
-    const dispatch : Dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -85,7 +85,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
             setCertificatesTruststore(response);
             setFilteredCertificatesTruststore(response);
             setIsLoading(false);
-        }).catch((error:IdentityAppsError) => {
+        }).catch((error: IdentityAppsError) => {
             setIsLoading(false);
             dispatch(addAlert(
                 {
@@ -109,7 +109,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
      * This slices and returns a portion of the list.
      *
      * @param list - List of items.
-     * @param limit- Items per page.
+     * @param limit - Items per page.
      * @param offset - Offset.
      */
     const paginate = (list: Certificate[], limit: number, offset: number): Certificate[] => {
@@ -119,8 +119,8 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * Handles the change in the number of items to display.
      *
-     * @param event-  React.MouseEvent<HTMLAnchorElement>.
-     * @param data-  DropdownProps.
+     * @param event -  React.MouseEvent<HTMLAnchorElement>.
+     * @param data -  DropdownProps.
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
@@ -152,7 +152,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
      * @param data - DropdownProps.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter((option : any )=> option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: any )=> option.value === data.value)[ 0 ]);
     };
 
     /**
