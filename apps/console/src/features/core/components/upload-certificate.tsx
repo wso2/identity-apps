@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,12 +10,13 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { GenericIcon, Message } from "@wso2is/react-components";
@@ -34,8 +35,8 @@ Blob.prototype.arrayBuffer = Blob.prototype.arrayBuffer || myArrayBuffer;
 
 function myArrayBuffer() {
     // this: File or Blob
-    return new Promise<ArrayBuffer>((resolve) => {
-        const fr = new FileReader();
+    return new Promise<ArrayBuffer>((resolve : (value: ArrayBuffer | PromiseLike<ArrayBuffer>) => void) => {
+        const fr : FileReader = new FileReader();
 
         fr.onload = () => {
             resolve(fr.result as ArrayBuffer);
@@ -113,9 +114,9 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
  * This is the first step of the import certificate wizard.
  * TODO: Move this to `@wso2is/react-components`.
  *
- * @param {UploadCertificatePropsInterface} props
+ * @param UploadCertificatePropsInterface - props
  *
- * @returns {ReactElement}
+ * @returns ReactElement
  */
 export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterface> = (
     props: UploadCertificatePropsInterface
@@ -146,8 +147,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const [ dark, setDark ] = useState(false);
     const [ forgeCertificate, setForgeCertificate ] = useState<X509>(null);
 
-    const fileUpload = useRef(null);
-    const init = useRef(true);
+    const fileUpload : React.MutableRefObject<any>= useRef(null);
+    const init : React.MutableRefObject<boolean> = useRef(true);
 
     const { t } = useTranslation();
 
@@ -248,7 +249,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         if (window.matchMedia("(prefers-color-scheme:dark)")?.matches) {
             setDark(true);
         }
-        const callback = (e) => {
+        const callback = (e: any) => {
             if (e.matches) {
                 setDark(true);
             } else {
@@ -272,15 +273,15 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     /**
      * Convert PEM string to forge certificate object.
      *
-     * @param {string} pem The PEM string.
+     * @param string - pem The PEM string.
      *
-     * @returns {PemCertificate} Object containing the stripped PEM string and the forge certificate.
+     * @returns PemCertificate Object containing the stripped PEM string and the forge certificate.
      */
     const convertFromPem = (pem: string): PemCertificate => {
-        const pemValue = CertificateManagementUtils.enclosePem(pem);
+        const pemValue : string = CertificateManagementUtils.enclosePem(pem);
 
         try {
-            const certificateForge = new X509().readCertFromPEM(pemValue);
+            const certificateForge : any = new X509().readCertFromPEM(pemValue);
 
             setForgeCertificate(certificateForge);
 
@@ -290,9 +291,9 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             };
         } catch {
             try {
-                const certificate = forge.pki.certificateFromPem(pemValue);
-                const pem = forge.pki.certificateToPem(certificate);
-                const cert = new X509();
+                const certificate : forge.pki.Certificate = forge.pki.certificateFromPem(pemValue);
+                const pem : string = forge.pki.certificateToPem(certificate);
+                const cert : X509= new X509();
 
                 cert.readCertPEM(pem);
 
@@ -311,32 +312,32 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     /**
      * Checks the certificate type and decodes appropriately.
      *
-     * @param {File} file The File object.
+     * @param File - file The File object.
      *
-     * @returns {Promise<string>} A promise that resolves to the content of the file.
+     * @returns Promise<string> A promise that resolves to the content of the file.
      */
     const checkCertType = (file: File): Promise<string> => {
         return file.arrayBuffer().then((value: ArrayBuffer) => {
             try {
-                const hex = Array.prototype.map
-                    .call(new Uint8Array(value), x => ("00" + x.toString(16)).slice(-2)).join("");
-                const cert = new X509();
+                const hex : any  = Array.prototype.map
+                    .call(new Uint8Array(value), (x : any) => ("00" + x.toString(16)).slice(-2)).join("");
+                const cert : X509 = new X509();
 
                 cert.readCertHex(hex);
-                const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
-                const pem = certificate.getPEM();
+                const certificate : any = new KJUR.asn1.x509.Certificate(cert.getParam());
+                const pem : string = certificate.getPEM();
 
                 setForgeCertificate(cert);
 
                 return Promise.resolve(CertificateManagementUtils.stripPem(pem));
             } catch {
-                const byteString = forge.util.createBuffer(value);
+                const byteString : forge.util.ByteStringBuffer = forge.util.createBuffer(value);
 
                 try {
-                    const asn1 = forge.asn1.fromDer(byteString);
-                    const certificate = forge.pki.certificateFromAsn1(asn1);
-                    const pem = forge.pki.certificateToPem(certificate);
-                    const cert = new X509();
+                    const asn1 : forge.asn1.Asn1 = forge.asn1.fromDer(byteString);
+                    const certificate : forge.pki.Certificate = forge.pki.certificateFromAsn1(asn1);
+                    const pem : string = forge.pki.certificateToPem(certificate);
+                    const cert : X509 = new X509();
 
                     cert.readCertPEM(pem);
                     setForgeCertificate(cert);
@@ -344,19 +345,19 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     return Promise.resolve(CertificateManagementUtils.stripPem(pem));
                 } catch {
                     try {
-                        const cert = new X509();
+                        const cert : X509 = new X509();
 
                         cert.readCertPEM(byteString.data);
-                        const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
-                        const pem = certificate.getPEM();
+                        const certificate : any = new KJUR.asn1.x509.Certificate(cert.getParam());
+                        const pem : string = certificate.getPEM();
 
                         setForgeCertificate(cert);
 
                         return Promise.resolve(CertificateManagementUtils.stripPem(pem));
                     } catch {
-                        const certificate = forge.pki.certificateFromPem(byteString.data);
-                        const pem = forge.pki.certificateToPem(certificate);
-                        const cert = new X509();
+                        const certificate : forge.pki.Certificate = forge.pki.certificateFromPem(byteString.data);
+                        const pem : string = forge.pki.certificateToPem(certificate);
+                        const cert : X509 = new X509();
 
                         cert.readCertPEM(pem);
                         setForgeCertificate(cert);
@@ -365,7 +366,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     }
                 }
             }
-        }).catch((error) => {
+        }).catch((error : IdentityAppsError) => {
             return Promise.reject(error);
         });
     };
@@ -375,7 +376,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      */
     const onSubmit = (): void => {
         (!file && !pem) && setCertEmpty(true);
-        const certificate = resolveCertificate();
+        const certificate : string | PemCertificate = resolveCertificate();
 
         if (!hideAliasInput) {
             !name && setNameError(true);
@@ -388,8 +389,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             }
         }
 
-        let pemString;
-        let certificateObject;
+        let pemString : string;
+        let certificateObject : any;
 
         if (typeof certificate === "string") {
             pemString = certificate;
@@ -411,7 +412,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * Decides which certificate to import when
      * both a file has been uploaded and text has been inserted.
      *
-     * @returns {string | PemCertificate} The decoded string or an object containing it.
+     * @returns string | PemCertificate The decoded string or an object containing it.
      */
     const resolveCertificate = (): string | PemCertificate => {
         if (fileDecoded && pem) {
@@ -428,112 +429,115 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     /**
      * The tab panes that display the drop zone and the textarea.
      */
-    const panes = [
-        {
-            menuItem: t("console:manage.features.certificates.keystore.wizard.panes.upload"),
-            render: () => (
-                !file
-                    ? (
-                        <div
-                            onDrop={ (event: React.DragEvent<HTMLDivElement>) => {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                setDragOver(false);
-                                if (event.dataTransfer.files[ 0 ]) {
-                                    const file = event.dataTransfer.files[ 0 ];
+    const panes:{
+                    menuItem: string;
+                    render: () => JSX.Element;
+                }[] = [
+                    {
+                        menuItem: t("certificates:keystore.wizard.panes.upload"),
+                        render: () => (
+                            !file
+                                ? (
+                                    <div
+                                        onDrop={ (event: React.DragEvent<HTMLDivElement>) => {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                            setDragOver(false);
+                                            if (event.dataTransfer.files[ 0 ]) {
+                                                const file : File = event.dataTransfer.files[ 0 ];
 
-                                    addFile(file);
-                                }
-                            }
-                            }
-                            onDragOver={ event => {
-                                event.preventDefault();
-                                event.stopPropagation();
-                                setDragOver(true);
-                            } }
-                            onDragLeave={ () => {
-                                setDragOver(false);
-                            } }
-                            data-testid={ `${ testId }-certificate-upload-dropzone` }
-                        >
-                            <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
-                                <div className="certificate-upload-placeholder">
-                                    <GenericIcon
-                                        inline
-                                        transparent
-                                        size="mini"
-                                        icon={ getCertificateIllustrations().uploadPlaceholder }
-                                    />
-                                    <p className="description">
-                                        { t("console:manage.features.certificates." +
-                                            "keystore.wizard.dropZone.description") }
-                                    </p>
-                                    <p className="description">– or –</p>
-                                </div>
-                                <Button
-                                    basic
-                                    primary
-                                    onClick={ (event) => {
-                                        event.preventDefault();
-                                        fileUpload.current.click();
-                                    } }
-                                >
-                                    { t("console:manage.features.certificates.keystore.wizard.dropZone.action") }
-                                </Button>
-                            </Segment>
-                        </div >
-                    )
-                    : (
-                        <Segment placeholder>
-                            <Segment textAlign="center" basic>
-                                <GenericIcon
-                                    inline
-                                    transparent
-                                    size="auto"
-                                    icon={ getCertificateIllustrations().file }
-                                />
-                                <p className="file-name">{ file.name }</p>
-                                <Icon
-                                    name="trash alternate"
-                                    link
-                                    onClick={ () => {
-                                        setFile(null);
+                                                addFile(file);
+                                            }
+                                        }
+                                        }
+                                        onDragOver={ (event : React.DragEvent<HTMLDivElement>) => {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                            setDragOver(true);
+                                        } }
+                                        onDragLeave={ () => {
+                                            setDragOver(false);
+                                        } }
+                                        data-testid={ `${ testId }-certificate-upload-dropzone` }
+                                    >
+                                        <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
+                                            <div className="certificate-upload-placeholder">
+                                                <GenericIcon
+                                                    inline
+                                                    transparent
+                                                    size="mini"
+                                                    icon={ getCertificateIllustrations().uploadPlaceholder }
+                                                />
+                                                <p className="description">
+                                                    { t("certificates:" +
+                                                        "keystore.wizard.dropZone.description") }
+                                                </p>
+                                                <p className="description">– or –</p>
+                                            </div>
+                                            <Button
+                                                basic
+                                                primary
+                                                onClick={ (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                                                    event.preventDefault();
+                                                    fileUpload.current.click();
+                                                } }
+                                            >
+                                                { t("certificates:keystore.wizard.dropZone.action") }
+                                            </Button>
+                                        </Segment>
+                                    </div >
+                                )
+                                : (
+                                    <Segment placeholder>
+                                        <Segment textAlign="center" basic>
+                                            <GenericIcon
+                                                inline
+                                                transparent
+                                                size="auto"
+                                                icon={ getCertificateIllustrations().file }
+                                            />
+                                            <p className="file-name">{ file.name }</p>
+                                            <Icon
+                                                name="trash alternate"
+                                                link
+                                                onClick={ () => {
+                                                    setFile(null);
+                                                    setFileError(false);
+                                                    setFileDecoded("");
+                                                } }
+                                            />
+                                        </Segment>
+                                    </Segment>
+                                )
+                        )
+                    },
+                    {
+                        menuItem: t("certificates:keystore.wizard.panes.paste"),
+                        render: () => (
+                            <Form>
+                                <TextArea
+                                    rows={ 13 }
+                                    placeholder={ t("certificates:keystore.wizard.pastePlaceholder") }
+                                    value={ pem }
+                                    onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                        setPem(event.target.value);
+                                        setCertEmpty(false);
                                         setFileError(false);
-                                        setFileDecoded("");
                                     } }
+                                    spellCheck={ false }
+                                    className={ `certificate-editor ${dark ? "dark" : "light"}` }
+                                    data-testid={ `${ testId }-certificate-content-textarea` }
                                 />
-                            </Segment>
-                        </Segment>
-                    )
-            )
-        },
-        {
-            menuItem: t("console:manage.features.certificates.keystore.wizard.panes.paste"),
-            render: () => (
-                <Form>
-                    <TextArea
-                        rows={ 13 }
-                        placeholder={ t("console:manage.features.certificates.keystore.wizard.pastePlaceholder") }
-                        value={ pem }
-                        onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setPem(event.target.value);
-                            setCertEmpty(false);
-                            setFileError(false);
-                        } }
-                        spellCheck={ false }
-                        className={ `certificate-editor ${dark ? "dark" : "light"}` }
-                        data-testid={ `${ testId }-certificate-content-textarea` }
-                    />
-                </Form>
-            )
-        }
-    ];
+                            </Form>
+                        )
+                    }
+                ];
 
     /**
      * Called when a file is added.
      * The file is decoded and saved to the state.
      *
-     * @param {File} file The file to be added.
+     * @param File - file The file to be added.
      */
     const addFile = (file: File): void => {
         checkCertType(file)?.then((value: string) => {
@@ -541,7 +545,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             setCertEmpty(false);
             setFileError(false);
 
-            const fileName = file.name.split(".");
+            const fileName : string[] = file.name.split(".");
 
             // removes the file extension
             fileName.pop();
@@ -559,7 +563,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 type="file"
                 accept=".pem, .cer, .crt, .cert"
                 hidden
-                onChange={ (event) => {
+                onChange={ (event : React.ChangeEvent<HTMLInputElement>) => {
                     const file: File = event.target.files[ 0 ];
 
                     event.target.value = null;
@@ -574,20 +578,20 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                             <Form.Input
                                 fluid
                                 type="text"
-                                placeholder={ t("console:manage.features.certificates.keystore.forms.alias." +
+                                placeholder={ t("certificates:keystore.forms.alias." +
                                     "placeholder") }
-                                label={ t("console:manage.features.certificates.keystore.forms.alias.label") }
+                                label={ t("certificates:keystore.forms.alias.label") }
                                 required={ true }
                                 error={
                                     nameError
                                         ? {
-                                            content: t("console:manage.features.certificates.keystore." +
+                                            content: t("certificates:keystore." +
                                                 "forms.alias.requiredErrorMessage")
                                         }
                                         : false
                                 }
                                 value={ name }
-                                onChange={ (event) => {
+                                onChange={ (event : React.ChangeEvent<HTMLInputElement>) => {
                                     setName(event.target.value);
                                 } }
                                 data-testid={ `${ testId }-alias-input` }
@@ -605,7 +609,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 } }
                 panes={ panes }
                 activeIndex={ activeIndex }
-                onTabChange={ (event, { activeIndex }) => {
+                onTabChange={ (event : React.MouseEvent<HTMLDivElement, MouseEvent>,
+                    { activeIndex }:{ activeIndex: number | string }) => {
                     setActiveIndex(parseInt(activeIndex.toString()));
                 } }
                 data-testid={ `${ testId }-certificate-upload-tab` }
@@ -618,8 +623,8 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         data-testid={ `${ testId }-error-message` }
                         content={
                             fileError
-                                ? t("console:manage.features.certificates.keystore.errorCertificate")
-                                : t("console:manage.features.certificates.keystore.errorEmpty")
+                                ? t("certificates:keystore.errorCertificate")
+                                : t("certificates:keystore.errorEmpty")
                         }
                     />
                 )

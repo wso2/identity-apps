@@ -21,3 +21,5 @@ export * from "./console";
 export * from "./myaccount";
 export * from "./emailTemplateTypes";
 export * from "./emailTemplates";
+export * from "./certificates";
+export * from "./authentication-provider";

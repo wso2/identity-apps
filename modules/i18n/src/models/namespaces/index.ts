@@ -21,3 +21,5 @@ export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./emailTemplateTypes-ns";
 export * from "./emailTemplates-ns";
+export * from "./certificates-ns";
+export * from "./authentication-provider-ns";
