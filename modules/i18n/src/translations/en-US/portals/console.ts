@@ -3903,11 +3903,13 @@ export const console: ConsoleNS = {
                             primaryAttribute: {
                                 label: "Primary lookup attribute",
                                 hint: "Select the primary attribute that will be used to check if" +
-                                    " there is a matching local user account"
+                                    " there is a matching local user account",
+                                placeholder: "Select the primary attribute"
                             },
                             secondaryAttribute: {
                                 label: "Secondary lookup attribute",
-                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute"
+                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute",
+                                placeholder: "Select the secondary attribute"
                             },
                             warning: "Ensure that the selected attributes are verified by the token issuer"
                         }
