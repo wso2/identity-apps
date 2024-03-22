@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,12 +15,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-export * from "./common";
-export * from "./console";
-export * from "./myaccount";
-export * from "./emailTemplateTypes";
-export * from "./emailTemplates";
-export * from "./certificates";
-export * from "./authentication-provider";
-export * from "./url-input";
+export interface URLInputNS {
+    withLabel: {
+        positive: {
+            header: string;
+            content: string;
+            detailedContent: {
+                0: string;
+                1: string;
+            };
+        };
+        negative: {
+            header: string;
+            content: string;
+            detailedContent: {
+                0: string;
+                1: string;
+            };
+            leftAction: string;
+        };
+    };
+}

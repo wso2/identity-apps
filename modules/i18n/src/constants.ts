@@ -102,7 +102,7 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
-  
+
     /**
      * Certificate namespace.
      * @constant
@@ -114,4 +114,10 @@ export class I18nModuleConstants {
      * @constant
      */
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
+
+    /**
+     * URL Input namespace.
+     * @constant
+     */
+    public static readonly URL_INPUT_NAMESPACE: string = "URLInput";
 }

@@ -664,27 +664,6 @@ export interface ConsoleNS {
     };
     develop: {
         features: {
-            URLInput: {
-                withLabel: {
-                    positive: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    negative: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                        leftAction: string;
-                    };
-                };
-            };
             applications: {
                 addWizard: {
                     steps: {

@@ -790,29 +790,6 @@ export const console: ConsoleNS = {
             }
         },
         features: {
-            URLInput: {
-                withLabel: {
-                    negative: {
-                        content: "You need to enable CORS for the origin of this URL to make requests" +
-                            " to {{productName}} from a browser.",
-                        detailedContent: {
-                            0: "",
-                            1: ""
-                        },
-                        header: "CORS is not Allowed for",
-                        leftAction: "Allow"
-                    },
-                    positive: {
-                        content: "The origin of this URL is allowed to make requests to " +
-                            "{{productName}} APIs from a browser.",
-                        detailedContent: {
-                            0: "",
-                            1: ""
-                        },
-                        header: "CORS is Allowed for"
-                    }
-                }
-            },
             applications: {
                 addWizard: {
                     steps: {

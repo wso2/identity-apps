@@ -312,17 +312,17 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         } }
                                         showPredictions={ false }
                                         customLabel={ assertionConsumerURLsErrorLabel }
-                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderPositive={ t("URLInput:withLabel."
                                             + "positive.header") }
-                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderNegative={ t("URLInput:withLabel."
                                             + "negative.header") }
-                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentPositive={ t("URLInput:withLabel."
                                             + "positive.content", { productName: config.ui.productName }) }
-                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentNegative={ t("URLInput:withLabel."
                                             + "negative.content", { productName: config.ui.productName }) }
-                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        popupDetailedContentPositive={ t("URLInput:"
                                             + "withLabel.positive.detailedContent.0") }
-                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        popupDetailedContentNegative={ t("URLInput:"
                                             + "withLabel.negative.detailedContent.0") }
                                         insecureURLDescription={ t("console:common.validations.inSecureURL."
                                             + "description") }

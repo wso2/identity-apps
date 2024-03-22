@@ -195,7 +195,8 @@ export class Config {
                 I18nConstants.EMAIL_TEMPLATE_TYPES_NAMESPACE,
                 I18nConstants.EMAIL_TEMPLATES_NAMESPACE,
                 I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
-                I18nConstants.CERTIFICATES_NAMESPACE
+                I18nConstants.CERTIFICATES_NAMESPACE,
+                I18nConstants.URL_INPUT_NAMESPACE
             ],
             preload: []
         };
