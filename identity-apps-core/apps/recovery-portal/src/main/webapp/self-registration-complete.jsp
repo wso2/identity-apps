@@ -121,12 +121,10 @@
     String usernameWithTenant = IdentityManagementEndpointUtil.getFullQualifiedUsername(username,tenantDomain, null);
     tenantAwareUsername = Encode.forHtml(MultitenantUtils.getTenantAwareUsername(UserCoreUtil.removeDomainFromName(usernameWithTenant)));
 
-    if (StringUtils.isBlank(sp) && StringUtils.isNotBlank(spId)) {
+    if (StringUtils.isNotBlank(spId)) {
         try {
             ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
-            if (spId.equals("My_Account")) {
-                sp = "My Account";
-            } else {
+            if (!sp.equals("My Account")) {
                 sp = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
             }
         } catch (Exception e) {
