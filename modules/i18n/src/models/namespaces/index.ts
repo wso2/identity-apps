@@ -23,5 +23,5 @@ export * from "./emailTemplateTypes-ns";
 export * from "./emailTemplates-ns";
 export * from "./certificates-ns";
 export * from "./authentication-provider-ns";
-export * from "./governanceConnectors-ns";
+export * from "./governance-connectors-ns";
 export * from "./groups-ns";

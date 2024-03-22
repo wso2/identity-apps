@@ -47,57 +47,21 @@ export class I18nConstants {
 
     /**
      * governanceConnectors namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
 
     /**
      * Groups namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly GROUPS_NAMESPACE: string = I18nModuleConstants.GROUPS_NAMESPACE;
 
     /**
      * emailTemplateTypes namespace.
-     * @constant
      */
     public static readonly EMAIL_TEMPLATE_TYPES_NAMESPACE: string = I18nModuleConstants.EMAIL_TEMPLATE_TYPES_NAMESPACE;
 
     /**
      * emailTemplates namespace.
-     * @constant
-     */
-    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE;
-
-    /**
-     * Certificates namespace.
-     */
-    public static readonly CERTIFICATES_NAMESPACE: string = I18nModuleConstants.CERTIFICATES_NAMESPACE;
-  
-    /**
-     * authenticationProvider namespace.
-     */
-    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string =
-      I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
-
-    /**
-     * Locations of the I18n namespaces.
-     */
-    public static readonly GROUPS_NAMESPACE: string = I18nModuleConstants.GROUPS_NAMESPACE;
-
-    /**
-     * emailTemplateTypes namespace.
-     * @constant
-     */
-    public static readonly EMAIL_TEMPLATE_TYPES_NAMESPACE: string = I18nModuleConstants.EMAIL_TEMPLATE_TYPES_NAMESPACE;
-
-    /**
-     * emailTemplates namespace.
-     * @constant
      */
     public static readonly EMAIL_TEMPLATES_NAMESPACE: string = I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE;
 
@@ -123,7 +87,6 @@ export class I18nConstants {
         [ I18nConstants.EMAIL_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ],
         [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ],
-        [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
         [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ]
     ]);
