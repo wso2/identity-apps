@@ -87,14 +87,14 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="name"
-                            label={ t("console:develop.features.applications.forms.generalDetails.fields.name.label") }
+                            label={ t("applications:forms.generalDetails.fields.name.label") }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:develop.features.applications.forms.generalDetails.fields.name" +
+                                t("applications:forms.generalDetails.fields.name" +
                                     ".validations.empty")
                             }
                             placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.name.placeholder")
+                                t("applications:forms.generalDetails.fields.name.placeholder")
                             }
                             value={ initialValues?.name }
                             type="text"
@@ -107,13 +107,13 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                         <Field
                             name="description"
                             label={
-                                t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                                t("applications:forms.generalDetails.fields.description" +
                                     ".label")
                             }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                                t("applications:forms.generalDetails.fields.description" +
                                     ".placeholder")
                             }
                             type="textarea"
@@ -127,19 +127,19 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                         <Field
                             name="imageUrl"
                             label={
-                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl.label")
+                                t("applications:forms.generalDetails.fields.imageUrl.label")
                             }
                             required={ false }
                             requiredErrorMessage=""
                             placeholder={
-                                t("console:develop.features.applications.forms.generalDetails.fields.imageUrl" +
+                                t("applications:forms.generalDetails.fields.imageUrl" +
                                     ".placeholder")
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.generalDetails.fields" +
+                                        t("applications:forms.generalDetails.fields" +
                                             ".imageUrl.validations.invalid")
                                     );
                                 }
@@ -167,7 +167,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 }
                                 children={ [
                                     {
-                                        label: t("console:develop.features.applications.forms.generalDetails.fields" +
+                                        label: t("applications:forms.generalDetails.fields" +
                                             ".discoverable.label"),
                                         value: "discoverableByEndUsers"
                                     }
@@ -184,7 +184,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             <Hint compact>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.applications.forms.generalDetails." +
+                                        "applications:forms.generalDetails." +
                                         "fields.discoverable.hint"
                                     }
                                 >
@@ -204,23 +204,23 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             <Field
                                 name="accessUrl"
                                 label={
-                                    t("console:develop.features.applications.forms.generalDetails.fields" +
+                                    t("applications:forms.generalDetails.fields" +
                                         ".accessUrl.label")
                                 }
                                 required={ isDiscoverable }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+                                    t("applications:forms.generalDetails.fields.accessUrl" +
                                         ".validations.empty")
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+                                    t("applications:forms.generalDetails.fields.accessUrl" +
                                         ".placeholder")
                                 }
                                 validation={ (value: string, validation: Validation) => {
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("console:develop.features.applications.forms.generalDetails.fields" +
+                                            t("applications:forms.generalDetails.fields" +
                                                 ".accessUrl.validations.invalid")
                                         );
                                     }
@@ -231,7 +231,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             />
                             <Hint compact>
                                 {
-                                    t("console:develop.features.applications.forms.generalDetails.fields" +
+                                    t("applications:forms.generalDetails.fields" +
                                     ".accessUrl.hint")
                                 }
                             </Hint>

@@ -418,11 +418,11 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             });
             updatedScopes.push({
                 claims: updatedScopelessClaims,
-                description: t("console:develop.features.applications.edit.sections.attributes" +
+                description: t("applications:edit.sections.attributes" +
                     ".selection.scopelessAttributes.description"),
-                displayName: t("console:develop.features.applications.edit.sections.attributes" +
+                displayName: t("applications:edit.sections.attributes" +
                     ".selection.scopelessAttributes.displayName"),
-                name: t("console:develop.features.applications.edit.sections.attributes" +
+                name: t("applications:edit.sections.attributes" +
                     ".selection.scopelessAttributes.name"),
                 selected: isScopelessClaimRequested
             });
@@ -886,10 +886,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
         else {
             dispatch(addAlert({
-                description: t("console:develop.features.applications.notifications.updateClaimConfig" +
+                description: t("applications:notifications.updateClaimConfig" +
                     ".error.description", { description: "Mapped user attributes cannot be duplicated." }),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications.updateClaimConfig.error" +
+                message: t("applications:notifications.updateClaimConfig.error" +
                     ".message")
             }));
         }
@@ -1070,10 +1070,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
          */
         const onClaimConfigUpdateError = () => {
             dispatch(addAlert({
-                description: t("console:develop.features.applications.notifications.updateClaimConfig" +
+                description: t("applications:notifications.updateClaimConfig" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications.updateClaimConfig.genericError" +
+                message: t("applications:notifications.updateClaimConfig.genericError" +
                     ".message")
             }));
         };
@@ -1085,10 +1085,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         const onSuccessfulClaimConfigUpdate = () => {
             onUpdate(appId);
             dispatch(addAlert({
-                description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
+                description: t("applications:notifications.updateClaimConfig.success" +
                     ".description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
+                message: t("applications:notifications.updateClaimConfig.success.message")
             }));
         };
 
@@ -1256,11 +1256,11 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 type={ "warning" }
                                 open={ showClaimMappingConfirmation }
                                 primaryAction={
-                                    t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    t("applications:edit.sections.attributes.selection" +
                                         ".mappingTable.mappingRevert.confirmPrimaryAction")
                                 }
                                 secondaryAction={
-                                    t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                    t("applications:edit.sections.attributes.selection" +
                                         ".mappingTable.mappingRevert.confirmSecondaryAction")
                                 }
                                 onSecondaryActionClick={ (): void => handleClaimMapping(true) }
@@ -1268,19 +1268,19 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             >
                                 <ConfirmationModal.Header>
                                     {
-                                        t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        t("applications:edit.sections.attributes.selection" +
                                             ".mappingTable.mappingRevert.confirmationHeading")
                                     }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message warning>
                                     {
-                                        t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        t("applications:edit.sections.attributes.selection" +
                                             ".mappingTable.mappingRevert.confirmationMessage")
                                     }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content>
                                     {
-                                        t("console:develop.features.applications.edit.sections.attributes.selection" +
+                                        t("applications:edit.sections.attributes.selection" +
                                             ".mappingTable.mappingRevert.confirmationContent")
                                     }
                                 </ConfirmationModal.Content>

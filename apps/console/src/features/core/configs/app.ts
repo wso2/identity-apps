@@ -226,7 +226,8 @@ export class Config {
                 I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
                 I18nConstants.CERTIFICATES_NAMESPACE,
                 I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE,
-                I18nConstants.GROUPS_NAMESPACE
+                I18nConstants.GROUPS_NAMESPACE,
+                I18nConstants.APPLICATIONS_NAMESPACE
             ],
             preload: []
         };

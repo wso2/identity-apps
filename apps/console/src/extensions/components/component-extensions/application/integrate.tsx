@@ -101,7 +101,7 @@ export const IntegrateAppComponent: FunctionComponent<IntegrateAppComponentProps
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
+                            message: t("applications:notifications.getInboundProtocolConfig" +
                                 ".error.message")
                         }));
 
@@ -109,10 +109,10 @@ export const IntegrateAppComponent: FunctionComponent<IntegrateAppComponentProps
                     }
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
+                        description: t("applications:notifications.getInboundProtocolConfig" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
+                        message: t("applications:notifications.getInboundProtocolConfig" +
                             ".genericError.message")
                     }));
                 })

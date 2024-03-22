@@ -228,10 +228,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
-                    || t("console:develop.features.applications.notifications.fetchTemplates.genericError.description"),
+                    || t("applications:notifications.fetchTemplates.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                    || t("console:develop.features.applications.notifications.fetchTemplates.genericError.message")
+                    || t("applications:notifications.fetchTemplates.genericError.message")
                 }));
             })
             .finally(() => {
@@ -335,7 +335,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                 {
                                     app.advancedConfigurations?.fragment && (
                                         <Label size="mini">
-                                            { t("console:develop.features.applications.list.labels.fragment") }
+                                            { t("applications:list.labels.fragment") }
                                         </Label>
                                     )
                                 }
@@ -348,7 +348,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         </Header>
                     );
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("applications:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -356,7 +356,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.applications.list.columns.actions")
+                title: t("applications:list.columns.actions")
             }
         ];
     };

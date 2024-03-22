@@ -46,6 +46,11 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Applications namespace.
+     */
+    public static readonly APPLICATIONS_NAMESPACE: string = I18nModuleConstants.APPLICATIONS_NAMESPACE;
+
+    /**
      * userstores namespace.
      */
     public static readonly USERSTORES_NAMESPACE: string = I18nModuleConstants.USERSTORES_NAMESPACE;
@@ -262,7 +267,8 @@ export class I18nConstants {
         [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ],
         [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ],
         [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
-        [ I18nConstants.GROUPS_NAMESPACE, "portals" ]
+        [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ]
     ]);
 
     /**

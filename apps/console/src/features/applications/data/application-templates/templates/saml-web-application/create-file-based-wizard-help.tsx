@@ -48,28 +48,28 @@ const SAMLWebApplicationFileBasedCreateWizardHelp: FunctionComponent<
         return (
             <div data-testid={ testId }>
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.title") }
                 </Heading>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.subTitle") }
                 </p>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                     ".heading.example") }
                 </p>
                 <>
                     <Divider/>
                     <Heading as="h5">
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.common.protocol.title")
                         }
                     </Heading>
                     <p>
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.common.protocol.subTitle")
                         }
                     </p>
@@ -80,13 +80,13 @@ const SAMLWebApplicationFileBasedCreateWizardHelp: FunctionComponent<
                 <>
                     <Heading as="h5">
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.samlWeb.metaFile.title")
                         }
                     </Heading>
                     <p>
                         {
-                            t("console:develop.features.applications.wizards.minimalAppCreationWizard" +
+                            t("applications:wizards.minimalAppCreationWizard" +
                                 ".help.template.samlWeb.metaFile.subTitle")
                         }
                     </p>

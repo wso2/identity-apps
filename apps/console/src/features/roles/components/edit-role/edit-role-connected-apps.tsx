@@ -154,7 +154,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                         </Header>
                     );
                 },
-                title: t("console:develop.features.applications.list.columns.name")
+                title: t("applications:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -162,7 +162,7 @@ export const RoleConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> =
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:develop.features.applications.list.columns.actions")
+                title: t("applications:list.columns.actions")
             }
         ];
     };

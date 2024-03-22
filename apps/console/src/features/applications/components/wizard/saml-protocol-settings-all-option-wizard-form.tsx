@@ -335,17 +335,17 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     ref={ issuerRef }
                                     displayErrorOn="blur"
                                     label={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.issuer.label")
                                     }
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                        t("applications:forms.inboundSAML.fields" +
                                             ".issuer.validations.empty")
                                     }
                                     type="text"
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                        t("applications:forms.inboundSAML.fields" +
                                             ".issuer.placeholder")
                                     }
                                     value={ issuer }
@@ -353,7 +353,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         if (issuerError) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("console:develop.features.applications.forms.inboundSAML" +
+                                                t("applications:forms.inboundSAML" +
                                                     ".fields.issuer.errorMessage"));
                                         } else {
                                             setIssuer(value);
@@ -363,7 +363,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 />
                                 { !hideFieldHints && (
                                     <Hint>
-                                        { t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                        { t("applications:forms.inboundSAML.fields" +
                                             ".issuer.hint") }
                                     </Hint>
                                 ) }
@@ -376,17 +376,17 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 <Field
                                     name="applicationQualifier"
                                     label={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.qualifier.label")
                                     }
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.qualifier.validations.empty")
                                     }
                                     type="text"
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.qualifier.placeholder")
                                     }
                                     value={
@@ -397,7 +397,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 />
                                 { !hideFieldHints && (
                                     <Hint>
-                                        { t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                        { t("applications:forms.inboundSAML.fields" +
                                             ".qualifier.hint") }
                                     </Hint>
                                 ) }
@@ -411,19 +411,19 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     urlState={ assertionConsumerUrls }
                                     setURLState={ updateAssertionConsumerUrls }
                                     labelName={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.assertionURLs.label")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.assertionURLs.placeholder")
                                     }
                                     validationErrorMsg={
-                                        t("console:develop.features.applications.forms." +
+                                        t("applications:forms." +
                                             "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
                                     }
                                     emptyErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.assertionURLs.validations.empty")
                                     }
                                     validation={ (value: string) => {
@@ -446,8 +446,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     showError={ showAssertionConsumerUrlError }
                                     setShowError={ setAssertionConsumerUrlError }
                                     hint={
-                                        !hideFieldHints && t("console:develop.features.applications" +
-                                            ".forms.inboundSAML.fields.assertionURLs.hint")
+                                        !hideFieldHints && t("applications:" +
+                                            "forms.inboundSAML.fields.assertionURLs.hint")
                                     }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -482,7 +482,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                 (<>
                                                     {
                                                         <Trans
-                                                            i18nKey={ "console:develop.features.applications.forms." +
+                                                            i18nKey={ "applications:forms." +
                                                             "inboundSAML.fields.assertionURLs.info" }
                                                             tOptions={ {
                                                                 assertionURLFromTemplate:
@@ -539,24 +539,24 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                             ref={ metaUrlRef }
                             displayErrorOn="blur"
                             label={
-                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                t("applications:forms.inboundSAML.fields" +
                                     ".metaURL.label")
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                t("applications:forms.inboundSAML.fields" +
                                     ".metaURL.validations.empty")
                             }
                             type="text"
                             placeholder={
-                                t("console:develop.features.applications.forms.inboundSAML.fields" +
+                                t("applications:forms.inboundSAML.fields" +
                                     ".metaURL.placeholder")
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.metaURL.validations.invalid")
                                     );
                                 }
@@ -572,7 +572,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 if (metaUrlError) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.inboundSAML" +
+                                        t("applications:forms.inboundSAML" +
                                             ".fields.metaURL.errorMessage")
                                     );
                                 }
@@ -582,7 +582,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         />
                         { !hideFieldHints && (
                             <Hint>
-                                { t("console:develop.features.applications.forms.inboundSAML.fields.metaURL" +
+                                { t("applications:forms.inboundSAML.fields.metaURL" +
                                     ".hint") }
                             </Hint>
                         ) }

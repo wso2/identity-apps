@@ -390,19 +390,19 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
             { openLimitReachedModal && (
                 <TierLimitReachErrorModal
                     actionLabel={ t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.action"
                     ) }
                     handleModalClose={ handleLimitReachedModalClose }
                     header={ t(
-                        "console:develop.features.applications.notifications.tierLimitReachedError.heading"
+                        "applications:notifications.tierLimitReachedError.heading"
                     ) }
                     description={ t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                     ) }
                     message={ t(
-                        "console:develop.features.applications.notifications." +
+                        "applications:notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                     ) }
                     openModal={ openLimitReachedModal }

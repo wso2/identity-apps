@@ -119,7 +119,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 value={ initialValue?.value }
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.dropdown" +
+                                    t("applications:forms.inboundCustom.fields.dropdown" +
                                         ".validations.empty", { name: config?.displayName })
                                 }
                                 default={ config?.defaultValue }
@@ -141,12 +141,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 value={ initialValue?.value }
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.password" +
+                                    t("applications:forms.inboundCustom.fields.password" +
                                         ".validations.empty",
                                     { name: config?.displayName })
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.password" +
+                                    t("applications:forms.inboundCustom.fields.password" +
                                         ".placeholder",
                                     { name: config?.displayName })
                                 }
@@ -166,7 +166,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 label=""
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.checkbox" +
+                                    t("applications:forms.inboundCustom.fields.checkbox" +
                                         ".validations.empty",
                                     { user: config?.displayName })
                                 }
@@ -193,12 +193,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 required={ config?.required }
                                 value={ initialValue?.value }
                                 requiredErrorMessage={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
+                                    t("applications:forms.inboundCustom.fields.generic" +
                                         ".validations.empty",
                                     { name: config?.displayName })
                                 }
                                 placeholder={
-                                    t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
+                                    t("applications:forms.inboundCustom.fields.generic" +
                                         ".placeholder",
                                     { name: config?.displayName })
                                 }
@@ -342,12 +342,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Heading as="h5">
                             {
-                                t("console:develop.features.applications.forms." +
+                                t("applications:forms." +
                                     "advancedConfig.sections.certificate.heading") }
                         </Heading>
                         <Field
                             label={
-                                t("console:develop.features.applications.forms." +
+                                t("applications:forms." +
                                     "advancedConfig.sections.certificate.fields.type.label")
                             }
                             name="type"
@@ -361,12 +361,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                             value={ certificate?.type }
                             children={ [
                                 {
-                                    label: t("console:develop.features.applications.forms." +
+                                    label: t("applications:forms." +
                                         "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
                                     value: CertificateTypeInterface.JWKS
                                 },
                                 {
-                                    label: t("console:develop.features.applications.forms." +
+                                    label: t("applications:forms." +
                                         "advancedConfig.sections.certificate.fields.type.children.pem.label"),
                                     value: CertificateTypeInterface.PEM
                                 }
@@ -386,12 +386,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                         <Field
                                             name="certificateValue"
                                             label={
-                                                t("console:develop.features.applications.forms.advancedConfig" +
+                                                t("applications:forms.advancedConfig" +
                                                     ".sections.certificate.fields.pemValue.label")
                                             }
                                             required={ false }
                                             requiredErrorMessage={
-                                                t("console:develop.features.applications.forms.advancedConfig" +
+                                                t("applications:forms.advancedConfig" +
                                                     ".sections.certificate.fields.pemValue.validations.empty")
                                             }
                                             placeholder={
@@ -414,7 +414,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                         />
                                         < Hint>
                                             {
-                                                t("console:develop.features.applications.forms." +
+                                                t("applications:forms." +
                                                     "advancedConfig.sections.certificate.fields.pemValue.hint")
                                             }
                                         </Hint>
@@ -428,7 +428,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                             data-testid={ `${ testId }-certificate-info-button` }
                                         >
                                             {
-                                                t("console:develop.features.applications.forms." +
+                                                t("applications:forms." +
                                                     "advancedConfig.sections.certificate.fields.pemValue." +
                                                     "actions.view")
                                             }
@@ -440,16 +440,16 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                         <Field
                                             name="jwksValue"
                                             label={
-                                                t("console:develop.features.applications.forms.advancedConfig" +
+                                                t("applications:forms.advancedConfig" +
                                                     ".sections.certificate.fields.jwksValue.label")
                                             }
                                             required={ false }
                                             requiredErrorMessage={
-                                                t("console:develop.features.applications.forms.advancedConfig" +
+                                                t("applications:forms.advancedConfig" +
                                                     ".sections.certificate.fields.jwksValue.validations.empty")
                                             }
                                             placeholder={
-                                                t("console:develop.features.applications.forms.advancedConfig" +
+                                                t("applications:forms.advancedConfig" +
                                                     ".sections.certificate.fields.jwksValue.placeholder") }
                                             type="text"
                                             validation={ (value: string, validation: Validation) => {
@@ -457,7 +457,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                                     validation.isValid = false;
                                                     validation.errorMessages.push(
                                                         t(
-                                                            "console:develop.features.applications.forms" +
+                                                            "applications:forms" +
                                                             ".advancedConfig.sections.certificate.fields." +
                                                             "jwksValue.validations.invalid"
                                                         )

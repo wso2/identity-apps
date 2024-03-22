@@ -111,7 +111,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             dispatch(addAlert({
                 description: scopeListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications.fetchApplications.error." +
+                message: t("applications:notifications.fetchApplications.error." +
                     "message")
             }));
 
@@ -119,10 +119,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.notifications.fetchApplications" +
+            description: t("applications:notifications.fetchApplications" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.notifications.fetchApplications.genericError." +
+            message: t("applications:notifications.fetchApplications.genericError." +
                 "message")
         }));
     }, [ scopeListFetchRequestError ]);

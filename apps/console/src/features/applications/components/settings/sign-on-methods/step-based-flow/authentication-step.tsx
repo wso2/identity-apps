@@ -370,7 +370,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                         (
                             <div>
                                 <Label attached="top">
-                                    { t("console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                                    { t("applications:edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.sections.stepBased.actions.selectAuthenticator") }
                                 </Label>
                                 <Form data-componentid={ `${ componentId }-authenticator-selection` }>
@@ -460,7 +460,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                             >
                                                 <Icon name="plus"/>
                                                 {
-                                                    t("console:develop.features.applications." +
+                                                    t("applications:" +
                                                         "edit.sections.signOnMethod." +
                                                         "sections.authenticationFlow.sections.stepBased.actions." +
                                                         "addAuthentication")
@@ -479,14 +479,14 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         >
                                             <Icon name="plus"/>
                                             {
-                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                t("applications:edit.sections.signOnMethod." +
                                                     "sections.authenticationFlow.sections.stepBased.actions." +
                                                     "addAuthentication")
                                             }
                                         </LinkButton>
                                         <EmptyPlaceholder
                                             subtitle={ [
-                                                t("console:develop.features.applications.placeholders." +
+                                                t("applications:placeholders." +
                                                     "emptyAuthenticatorStep.subtitles.0")
                                             ] }
                                             data-componentid={ `${ componentId }-empty-placeholder` }
@@ -510,7 +510,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                     trigger={ (
                                                         <Checkbox
                                                             label={ t(
-                                                                "console:develop.features.applications.edit.sections" +
+                                                                "applications:edit.sections" +
                                                                 ".signOnMethod.sections.authenticationFlow.sections" +
                                                                 ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                                             ) }
@@ -525,7 +525,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         />
                                                     ) }
                                                     content={ t(
-                                                        "console:develop.features.applications.edit.sections" +
+                                                        "applications:edit.sections" +
                                                         ".signOnMethod.sections.landing.flowBuilder.types.idf" +
                                                         ".tooltipText"
                                                     ) }
@@ -536,7 +536,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                             ) : (
                                                 <Checkbox
                                                     label={ t(
-                                                        "console:develop.features.applications.edit.sections" +
+                                                        "applications:edit.sections" +
                                                         ".signOnMethod.sections.authenticationFlow.sections" +
                                                         ".stepBased.forms.fields.subjectIdentifierFrom.label"
                                                     ) }
@@ -553,7 +553,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                     trigger={ (
                                                         <Checkbox
                                                             label={ t(
-                                                                "console:develop.features.applications.edit.sections" +
+                                                                "applications:edit.sections" +
                                                                 ".signOnMethod.sections.authenticationFlow.sections" +
                                                                 ".stepBased.forms.fields.attributesFrom.label"
                                                             ) }
@@ -568,7 +568,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         />
                                                     ) }
                                                     content={ t(
-                                                        "console:develop.features.applications.edit.sections" +
+                                                        "applications:edit.sections" +
                                                         ".signOnMethod.sections.landing.flowBuilder.types.idf" +
                                                         ".tooltipText"
                                                     ) }
@@ -579,7 +579,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                             ) : (
                                                 <Checkbox
                                                     label={ t(
-                                                        "console:develop.features.applications.edit.sections" +
+                                                        "applications:edit.sections" +
                                                         ".signOnMethod.sections.authenticationFlow.sections" +
                                                         ".stepBased.forms.fields.attributesFrom.label"
                                                     ) }
@@ -595,7 +595,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                 { showBackupCodesEnableCheckBox ? (
                                     <Checkbox
                                         label={ t(
-                                            "console:develop.features.applications.edit.sections" +
+                                            "applications:edit.sections" +
                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                             ".stepBased.forms.fields.enableBackupCodes.label"
                                         ) }

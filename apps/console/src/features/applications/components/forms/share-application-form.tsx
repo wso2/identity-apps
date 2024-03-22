@@ -233,7 +233,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                        message: t("applications:edit.sections.shareApplication" +
                                 ".getSharedOrganizations.genericError.message")
                     })
                 );
@@ -243,10 +243,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
 
             dispatch(
                 addAlert({
-                    description: t("console:develop.features.applications.edit.sections.shareApplication" +
+                    description: t("applications:edit.sections.shareApplication" +
                             ".getSharedOrganizations.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.edit.sections.shareApplication" +
+                    message: t("applications:edit.sections.shareApplication" +
                             ".getSharedOrganizations.genericError.message")
                 })
             );
@@ -299,12 +299,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                "applications:edit.sections.shareApplication" +
                                 ".addSharingNotification.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                "applications:edit.sections.shareApplication" +
                                 ".addSharingNotification.success.message"
                             )
                         })
@@ -317,7 +317,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                 description: error.response.data.message,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".addSharingNotification.genericError.message"
                                 )
                             })
@@ -326,12 +326,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".addSharingNotification.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".addSharingNotification.genericError.message"
                                 )
                             })
@@ -356,13 +356,13 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".stopSharingNotification.success.description",
                                     { organization: removedOrganization.name }
                                 ),
                                 level: AlertLevels.SUCCESS,
                                 message: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".stopSharingNotification.success.message"
                                 )
                             })
@@ -375,7 +375,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                     description: error.response.data.message,
                                     level: AlertLevels.ERROR,
                                     message: t(
-                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        "applications:edit.sections.shareApplication" +
                                         ".stopSharingNotification.genericError.message"
                                     )
                                 })
@@ -384,7 +384,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             dispatch(
                                 addAlert({
                                     description: t(
-                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        "applications:edit.sections.shareApplication" +
                                         ".stopSharingNotification.genericError.description",
                                         {
                                             organization:
@@ -393,7 +393,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                     ),
                                     level: AlertLevels.ERROR,
                                     message: t(
-                                        "console:develop.features.applications.edit.sections.shareApplication" +
+                                        "applications:edit.sections.shareApplication" +
                                         ".stopSharingNotification.genericError.message"
                                     )
                                 })
@@ -407,12 +407,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                "applications:edit.sections.shareApplication" +
                                 ".stopAllSharingNotification.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:develop.features.applications.edit.sections.shareApplication" +
+                                "applications:edit.sections.shareApplication" +
                                 ".stopAllSharingNotification.success.message"
                             )
                         })
@@ -425,7 +425,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                 description: error.response.data.message,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".addSharingNotification.genericError.message"
                                 )
                             })
@@ -434,12 +434,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".addSharingNotification.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:develop.features.applications.edit.sections.shareApplication" +
+                                    "applications:edit.sections.shareApplication" +
                                     ".addSharingNotification.genericError.message"
                                 )
                             })
@@ -515,7 +515,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     return (
         <>
             <Heading ellipsis as="h6">
-                { t("console:develop.features.applications.edit.sections.sharedAccess.subTitle") }
+                { t("applications:edit.sections.sharedAccess.subTitle") }
             </Heading>
             <Grid>
                 <Grid.Row>
@@ -555,7 +555,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                                         <p>
                                             {
                                                 t(
-                                                    "console:develop.features.applications.edit."
+                                                    "applications:edit."
                                                     + "sections.shareApplication"
                                                     + ".switchToSelectiveShareFromSharingWithAllSuborgsWarning"
                                                 )

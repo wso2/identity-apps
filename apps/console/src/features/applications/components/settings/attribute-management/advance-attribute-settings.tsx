@@ -206,7 +206,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         };
 
         if (values?.sectorIdentifierURI && !URLUtils.isHttpsUrl(values.sectorIdentifierURI)) {
-            errors.sectorIdentifierURI= t("console:develop.features.applications.forms.advancedAttributeSettings" +
+            errors.sectorIdentifierURI= t("applications:forms.advancedAttributeSettings" +
                 ".sections.subject.fields.sectorIdentifierURI.validations.invalid");
         }
 
@@ -313,7 +313,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     <Hint compact>
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                "applications:forms.advancedAttributeSettings.sections" +
                                 ".subject.fields.subjectAttribute.hintOIDC"
                             }
                         >
@@ -329,7 +329,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     <Hint compact>
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                                "applications:forms.advancedAttributeSettings.sections" +
                                 ".subject.fields.subjectAttribute.hintSAML"
                             }
                         >
@@ -343,7 +343,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
             return (
                 <Hint compact>
-                    { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                    { t("applications:forms.advancedAttributeSettings.sections" +
                         ".subject.fields.subjectAttribute.hint") }
                 </Hint>
             );
@@ -351,7 +351,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
         return (
             <Hint compact>
-                { t("console:develop.features.applications.forms.advancedAttributeSettings.sections" +
+                { t("applications:forms.advancedAttributeSettings.sections" +
                     ".subject.fields.subjectAttribute.hint") }
             </Hint>
         );
@@ -390,7 +390,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 as="h4"
                             >
                                 { t(
-                                    "console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "applications:forms.advancedAttributeSettings." +
                                 "sections.subject.heading"
                                 ) }
                             </Heading>
@@ -400,11 +400,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")) && (
                         <>
                             <Checkbox
-                                ariaLabel={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                ariaLabel={ t("applications:forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
                                 data-componentid={ `${ componentId }-reassign-subject-attribute-checkbox` }
                                 checked={ showSubjectAttribute }
-                                label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                label={ t("applications:forms.advancedAttributeSettings." +
                                     "sections.subject.fields.alternateSubjectAttribute.label") }
                                 onClick={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) =>
                                     setShowSubjectAttribute(data?.checked) }
@@ -412,7 +412,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             />
                             <Hint>
                                 <Trans
-                                    i18nKey={ t("console:develop.features.applications.forms." +
+                                    i18nKey={ t("applications:forms." +
                                         "advancedAttributeSettings.sections.subject.fields.alternateSubjectAttribute." +
                                         "hint") }
                                 >
@@ -426,7 +426,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         ariaLabel="Subject attribute"
                         name="subjectAttribute"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectAttribute.label")
                         }
                         required={ claimMappingOn }
@@ -442,7 +442,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     <Field.CheckboxLegacy
                         ariaLabel="Subject include user domain"
                         name="subjectIncludeUserDomain"
-                        label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                        label={ t("applications:forms.advancedAttributeSettings." +
                             "sections.subject.fields.subjectIncludeUserDomain.label") }
                         required={ false }
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
@@ -451,7 +451,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
                             || resolveSubjectAttributeHiddenStatus() }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
                         }
                     />
@@ -459,7 +459,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         ariaLabel="Subject include tenant domain"
                         name="subjectIncludeTenantDomain"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.label")
                         }
                         required={ false }
@@ -469,7 +469,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={ disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
                             || resolveSubjectAttributeHiddenStatus() }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
@@ -480,7 +480,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                           <div>
                               <Text>
                                   {
-                                      t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                      t("applications:forms.advancedAttributeSettings" +
                                         ".sections.subject.fields.subjectType.label")
                                   }
                               </Text>
@@ -497,11 +497,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                       ariaLabel={ `Subject type ${subjectType}` }
                                                       name={ "subjectType" }
                                                       value={ subjectType }
-                                                      label={ t("console:develop.features.applications.forms" +
+                                                      label={ t("applications:forms" +
                                                         ".advancedAttributeSettings.sections.subject.fields" +
                                                         ".subjectType." + subjectType + ".label") }
                                                       hint={ subjectType === SubjectTypes.PAIRWISE &&
-                                                            t("console:develop.features.applications.forms" +
+                                                            t("applications:forms" +
                                                         ".advancedAttributeSettings.sections.subject.fields" +
                                                         ".subjectType." + subjectType + ".hint") }
                                                       checked={ selectedSubjectType === subjectType }
@@ -521,15 +521,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             ariaLabel="Sector Identifier URI"
                             inputType="url"
                             name="sectorIdentifierURI"
-                            label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            label={ t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.sectorIdentifierURI.label")
                             }
                             required={ false }
                             placeholder={
-                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                t("applications:forms.advancedAttributeSettings" +
                                     ".sections.subject.fields.sectorIdentifierURI.placeholder")
                             }
-                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            hint={ t("applications:forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.sectorIdentifierURI.hint") }
                             readOnly={ readOnly }
                             maxLength={ 200 }
@@ -546,11 +546,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             <Heading
                                 as="h4"
                             >
-                                { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                { t("applications:forms.advancedAttributeSettings." +
                                     "sections.linkedAccounts.heading") }
                             </Heading>
                             <Heading as="h6" color="grey">
-                                { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                { t("applications:forms.advancedAttributeSettings." +
                                     "sections.linkedAccounts.descriptionFederated") }
                             </Heading>
                         </>)
@@ -561,7 +561,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         ariaLabel="Validate linked local account"
                         name="validateLinkedLocalAccount"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            t("applications:forms.advancedAttributeSettings." +
                             "sections.linkedAccounts.fields.validateLocalAccount.label")
                         }
                         required={ false }
@@ -577,7 +577,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             !applicationConfig.attributeSettings.advancedAttributeSettings
                                 .showValidateLinkedLocalAccount
                         }
-                        hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                        hint={ t("applications:forms.advancedAttributeSettings." +
                         "sections.linkedAccounts.fields.validateLocalAccount.hint") }
                     />
                     { applicationConfig.attributeSettings.advancedAttributeSettings
@@ -590,7 +590,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ariaLabel="Mandate linked local account"
                                 name="mandateLinkedLocalAccount"
                                 label={
-                                    t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    t("applications:forms.advancedAttributeSettings." +
                                     "sections.linkedAccounts.fields.mandateLocalAccount.label")
                                 }
                                 required={ false }
@@ -601,7 +601,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 }
                                 readOnly={ readOnly }
                                 data-testid={ `${ componentId }-mandate-linked-local-account-checkbox` }
-                                hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                hint={ t("applications:forms.advancedAttributeSettings." +
                                 "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
                             />
                         </div>): null }
@@ -614,7 +614,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         UIConfig?.legacyMode?.roleMapping && (
                             <>
                                 <Heading as="h4">
-                                    { t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                    { t("applications:forms.advancedAttributeSettings" +
                                         ".sections.role.heading") }
                                 </Heading>
                             </>
@@ -624,7 +624,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         ariaLabel="Role attribute"
                         name="roleAttribute"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            t("applications:forms.advancedAttributeSettings" +
                                 ".sections.role.fields.roleAttribute.label")
                         }
                         required={ claimMappingOn }
@@ -635,7 +635,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            t("applications:forms.advancedAttributeSettings." +
                                 "sections.role.fields.roleAttribute.hint")
                         }
                     />
@@ -643,7 +643,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         ariaLabel="Role"
                         name="role"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            t("applications:forms.advancedAttributeSettings." +
                                 "sections.role.fields.role.label")
                         }
                         required={ false }
@@ -654,7 +654,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             .showIncludeUserstoreDomainRole ||
                             !UIConfig?.legacyMode?.roleMapping }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            t("applications:forms.advancedAttributeSettings." +
                                 "sections.role.fields.role.hint")
                         }
                     />

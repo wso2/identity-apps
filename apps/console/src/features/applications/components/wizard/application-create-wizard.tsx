@@ -210,7 +210,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchProtocolMeta.error" +
+                        message: t("applications:notifications.fetchProtocolMeta.error" +
                             ".message")
                     });
 
@@ -218,10 +218,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
 
                 setAlert({
-                    description: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                    description: t("applications:notifications.fetchProtocolMeta" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchProtocolMeta" +
+                    message: t("applications:notifications.fetchProtocolMeta" +
                         ".genericError.message")
                 });
             });
@@ -275,17 +275,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         setAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.fetchTemplate.error" +
+                            message: t("applications:notifications.fetchTemplate.error" +
                                 ".message")
                         });
 
                         return;
                     }
                     setAlert({
-                        description: t("console:develop.features.applications.notifications.fetchTemplate" +
+                        description: t("applications:notifications.fetchTemplate" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchTemplate.genericError" +
+                        message: t("applications:notifications.fetchTemplate.genericError" +
                             ".message")
                     });
                 });
@@ -312,10 +312,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         createApplication(submittingApplication)
             .then((response: AxiosResponse) => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.addApplication.success" +
+                    description: t("applications:notifications.addApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.addApplication.success.message")
+                    message: t("applications:notifications.addApplication.success.message")
                 }));
 
                 // The created resource's id is sent as a location header.
@@ -348,18 +348,18 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.addApplication.error.message")
+                        message: t("applications:notifications.addApplication.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("console:develop.features.applications.notifications.addApplication.genericError" +
+                    description: t("applications:notifications.addApplication.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:develop.features.applications.notifications.addApplication.genericError.message")
+                        "applications:notifications.addApplication.genericError.message")
                 });
             }).finally(() => {
                 setIsSubmitting(false);
@@ -379,10 +379,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         >(appId, values, selectedTemplate.authenticationProtocol)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateProtocol.success" +
+                    description: t("applications:notifications.updateProtocol.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateProtocol.success.message")
+                    message: t("applications:notifications.updateProtocol.success.message")
                 }));
 
                 onUpdate(appId);
@@ -393,17 +393,17 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.updateProtocol.error.message")
+                        message: t("applications:notifications.updateProtocol.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("console:develop.features.applications.notifications.updateProtocol.genericError" +
+                    description: t("applications:notifications.updateProtocol.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateProtocol.error.message")
+                    message: t("applications:notifications.updateProtocol.error.message")
                 });
             })
             .finally(() => {
@@ -734,22 +734,22 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         {
             icon: getApplicationWizardStepIcons().protocolSelection,
             name: WizardStepsFormTypes.PROTOCOL_SELECTION,
-            title: t("console:develop.features.applications.addWizard.steps.protocolSelection.heading")
+            title: t("applications:addWizard.steps.protocolSelection.heading")
         },
         {
             icon: getApplicationWizardStepIcons().general,
             name: WizardStepsFormTypes.GENERAL_SETTINGS,
-            title: t("console:develop.features.applications.addWizard.steps.generalSettings.heading")
+            title: t("applications:addWizard.steps.generalSettings.heading")
         },
         {
             icon: getApplicationWizardStepIcons().protocolConfig,
             name: WizardStepsFormTypes.PROTOCOL_SETTINGS,
-            title: t("console:develop.features.applications.addWizard.steps.protocolConfig.heading")
+            title: t("applications:addWizard.steps.protocolConfig.heading")
         },
         {
             icon: getApplicationWizardStepIcons().summary,
             name: WizardStepsFormTypes.SUMMARY,
-            title: t("console:develop.features.applications.addWizard.steps.summary.heading")
+            title: t("applications:addWizard.steps.summary.heading")
         }
     ];
 

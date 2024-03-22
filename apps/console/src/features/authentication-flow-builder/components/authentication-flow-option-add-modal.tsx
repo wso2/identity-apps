@@ -72,7 +72,7 @@ const AuthenticationFlowOptionAddModal: FunctionComponent<AuthenticationFlowOpti
             } }
             onClose={ onClose }
             header={ t(
-                "console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
+                "applications:edit.sections.signOnMethod.sections.authenticationFlow." +
                     "sections.stepBased.addAuthenticatorModal.heading"
             ) }
             authenticators={ authenticators }

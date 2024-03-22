@@ -328,13 +328,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             closeOnEscape
         >
             <Modal.Header>
-                { t("console:develop.features.applications.edit." +
+                { t("applications:edit." +
                 "sections.roles.createApplicationRoleWizard.title") }
                 <Heading
                     as="h6"
                     subHeading>
                     {
-                        t("console:develop.features.applications.edit." +
+                        t("applications:edit." +
                         "sections.roles.createApplicationRoleWizard.subTitle")
                     }
                 </Heading>

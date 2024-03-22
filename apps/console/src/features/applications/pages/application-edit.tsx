@@ -141,17 +141,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             dispatch(addAlert({
                 description: applicationGetRequestError.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications.fetchApplication.error.message")
+                message: t("applications:notifications.fetchApplication.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.notifications.fetchApplication" +
+            description: t("applications:notifications.fetchApplication" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.notifications.fetchApplication.genericError." +
+            message: t("applications:notifications.fetchApplication.genericError." +
                 "message")
         }));
     }, [ applicationGetRequestError ]);
@@ -444,8 +444,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
             return (
                 <LabelWithPopup
-                    popupHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.header") }
-                    popupSubHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.content") }
+                    popupHeader={ t("applications:popups.appStatus.notConfigured.header") }
+                    popupSubHeader={ t("applications:popups.appStatus.notConfigured.content") }
                     labelColor="yellow"
                 />
             );
@@ -460,8 +460,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
                 return (
                     <LabelWithPopup
-                        popupHeader={ t("console:develop.features.applications.popups.appStatus.revoked.header") }
-                        popupSubHeader={ t("console:develop.features.applications.popups.appStatus.revoked.content") }
+                        popupHeader={ t("applications:popups.appStatus.revoked.header") }
+                        popupSubHeader={ t("applications:popups.appStatus.revoked.content") }
                         labelColor="grey"
                     />
                 );
@@ -470,8 +470,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         return (
             <LabelWithPopup
-                popupHeader={ t("console:develop.features.applications.popups.appStatus.active.header") }
-                popupSubHeader={ t("console:develop.features.applications.popups.appStatus.active.content") }
+                popupHeader={ t("applications:popups.appStatus.active.header") }
+                popupSubHeader={ t("applications:popups.appStatus.active.content") }
                 labelColor="green"
             />
         );
@@ -500,7 +500,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (application?.advancedConfigurations?.fragment) {
             return (
                 <Label size="small">
-                    { t("console:develop.features.applications.list.labels.fragment") }
+                    { t("applications:list.labels.fragment") }
                 </Label>
             );
         }

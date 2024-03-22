@@ -618,20 +618,20 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 <div className="tour-step">
                     <Heading bold as="h6">
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            t("applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.heading")
                         }
                     </Heading>
                     <Text>
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            t("applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.0")
                         }
                     </Text>
                     <Text>
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.1"
                             }
                         >
@@ -649,13 +649,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 <div className="tour-step">
                     <Heading bold as="h6">
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            t("applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.heading")
                         }
                     </Heading>
                     <Text>
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            t("applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.content.0")
                         }
                     </Text>
@@ -670,14 +670,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 <div className="tour-step">
                     <Heading bold as="h6">
                         {
-                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                            t("applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.heading")
                         }
                     </Heading>
                     <Text>
                         <Trans
                             i18nKey={
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                 "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.content.0"
                             }
                         >
@@ -824,7 +824,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         content={ (
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.applications.edit." +
+                                    "applications:edit." +
                                     "sections.signOnMethod.sections.authenticationFlow." +
                                     "sections.scriptBased.secretsList.tooltips.keyIcon"
                                 }
@@ -847,7 +847,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 icon="search"
                                 iconPosition="left"
                                 className="search"
-                                placeholder={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                placeholder={ t("applications:edit.sections.signOnMethod" +
                                     ".sections.authenticationFlow.sections.scriptBased.secretsList.search") }
                                 onChange={ (data: ChangeEvent<HTMLInputElement>
                                 ) => {
@@ -915,7 +915,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         trigger={ (
                                                             <Icon name="plus"/>
                                                         ) }
-                                                        content={ t("console:develop.features.applications.edit." +
+                                                        content={ t("applications:edit." +
                                                             "sections.signOnMethod.sections.authenticationFlow." +
                                                             "sections.scriptBased.secretsList.tooltips.plusIcon") }
                                                         size="mini"
@@ -941,7 +941,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 <Dropdown.Item
                                     data-componentid={ `${ componentId }-empty-placeholder` }
                                     key={ "secretEmptyPlaceholder" }
-                                    text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                    text={ t("applications:edit.sections.signOnMethod" +
                                         ".sections.authenticationFlow.sections.scriptBased.secretsList." +
                                         "emptyPlaceholder") }
                                     disabled
@@ -960,7 +960,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         >
                             <Dropdown.Item
                                 key={ "createSecret" }
-                                text={ t("console:develop.features.applications.edit.sections.signOnMethod" +
+                                text={ t("applications:edit.sections.signOnMethod" +
                                     ".sections.authenticationFlow.sections.scriptBased.secretsList.create") }
                                 onClick={ () => {
                                     setShowAddSecretModal(true);
@@ -1046,13 +1046,13 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 }
                             />
                             <p>
-                                { t("console:develop.features.applications.edit.sections" +
+                                { t("applications:edit.sections" +
                                             ".signOnMethod.sections.authenticationFlow.sections" +
                                             ".scriptBased.editor.apiDocumentation") }
                             </p>
                         </Button>
                     ) }
-                    content={ t("console:develop.features.applications.edit.sections" +
+                    content={ t("applications:edit.sections" +
                             ".signOnMethod.sections.authenticationFlow.sections" +
                             ".scriptBased.editor.goToApiDocumentation") }
                     size="mini"
@@ -1084,7 +1084,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-componentid={ `${ componentId }-reset-confirmation-modal-header` }>
-                    { t("console:develop.features.applications.edit." +
+                    { t("applications:edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.heading") }
                 </ConfirmationModal.Header>
@@ -1093,14 +1093,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     warning
                     data-componentid={ `${ componentId }-reset-confirmation-modal-message` }
                 >
-                    { t("console:develop.features.applications.edit." +
+                    { t("applications:edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ componentId }-reset-confirmation-modal-content` }>
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                            "applications:edit.sections.signOnMethod.sections" +
                             ".authenticationFlow.sections.scriptBased.editor.resetConfirmation.content"
                         }
                     >
@@ -1139,7 +1139,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-componentid={ `${ componentId }-reset-confirmation-modal-header` }>
-                    { t("console:develop.features.applications.edit." +
+                    { t("applications:edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.heading") }
                 </ConfirmationModal.Header>
@@ -1148,7 +1148,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     warning
                     data-componentid={ `${ componentId }-reset-confirmation-modal-message` }
                 >
-                    { t("console:develop.features.applications.edit." +
+                    { t("applications:edit." +
                         "sections.signOnMethod.sections.authenticationFlow." +
                         "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
@@ -1187,7 +1187,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     }
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections" +
+                            "applications:edit.sections.signOnMethod.sections" +
                             ".authenticationFlow.sections.scriptBased.editor.changeConfirmation.content"
                         }
                     >
@@ -1261,7 +1261,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <div className="conditional-auth-accordion-title-text">
                                         <Heading as="h5" compact  className="heading">
                                             {
-                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                t("applications:edit.sections.signOnMethod." +
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
                                                     "title.heading")
                                             }
@@ -1292,7 +1292,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Heading>
                                         <Text muted compact>
                                             {
-                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                t("applications:edit.sections.signOnMethod." +
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
                                                     "title.description")
                                             }
@@ -1321,7 +1321,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     onELKModalClose={ () => setIsELKConfigureClicked(false) }
                                     isELKConfigureClicked={ isELKConfigureClicked }
                                     title={
-                                        t("console:develop.features.applications.edit.sections" +
+                                        t("applications:edit.sections" +
                                             ".signOnMethod.sections" +
                                             ".authenticationFlow.sections.scriptBased.editor.templates.heading")
                                     }

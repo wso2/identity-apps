@@ -201,17 +201,17 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                 <Field
                                     type="dropdown"
                                     label={
-                                        t("console:develop.features.applications.resident.provisioning." +
+                                        t("applications:resident.provisioning." +
                                             "outbound.form.fields.connection.label")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.resident.provisioning." +
+                                        t("applications:resident.provisioning." +
                                             "outbound.form.fields.connection.placeholder")
                                     }
                                     name="idp"
                                     children={ idpListOptions }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.resident.provisioning." +
+                                        t("applications:resident.provisioning." +
                                             "outbound.form.fields.connection.empty")
                                     }
                                     readOnly={ isReadOnly }
@@ -229,17 +229,17 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         <Field
                             type="dropdown"
                             label={
-                                t("console:develop.features.applications.forms.outboundProvisioning.fields.connector" +
+                                t("applications:forms.outboundProvisioning.fields.connector" +
                                     ".label")
                             }
                             placeholder={
-                                t("console:develop.features.applications.forms.outboundProvisioning.fields.connector" +
+                                t("applications:forms.outboundProvisioning.fields.connector" +
                                     ".placeholder")
                             }
                             name="connector"
                             children={ connectorListOptions }
                             requiredErrorMessage={
-                                t("console:develop.features.applications.forms.outboundProvisioning.fields" +
+                                t("applications:forms.outboundProvisioning.fields" +
                                     ".connector.validations.empty")
                             }
                             readOnly={ isReadOnly }
@@ -255,7 +255,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         { connectorListOptions?.length <= 0 && (
                             <Hint icon="warning sign">
                                 {
-                                    t("console:develop.features.applications.edit.sections.provisioning." +
+                                    t("applications:edit.sections.provisioning." +
                                         "outbound.addIdpWizard.errors.noProvisioningConnector")
                                 }
                             </Hint>
@@ -273,7 +273,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     type="checkbox"
                                     children={ [
                                         {
-                                            label: t("console:develop.features.applications.forms." +
+                                            label: t("applications:forms." +
                                                 "outboundProvisioning.fields.rules.label"),
                                             value: "rules"
                                         }
@@ -288,7 +288,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                                     data-componentid={ `${ componentId }-rules-checkbox` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.outboundProvisioning." +
+                                    { t("applications:forms.outboundProvisioning." +
                                         "fields.rules.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -304,7 +304,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("console:develop.features.applications.forms.outboundProvisioning" +
+                                    label: t("applications:forms.outboundProvisioning" +
                                         ".fields.blocking.label"),
                                     value: "blocking"
                                 }
@@ -319,7 +319,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                             data-componentid={ `${ componentId }-blocking-checkbox` }
                         />
                         <Hint>
-                            { t("console:develop.features.applications.forms.outboundProvisioning.fields.blocking" +
+                            { t("applications:forms.outboundProvisioning.fields.blocking" +
                                 ".hint") }
                         </Hint>
                     </Grid.Column>

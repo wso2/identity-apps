@@ -228,17 +228,17 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             case SupportedAuthProtocolTypes.OIDC:
                 return (
                     <Trans
-                        i18nKey={ "console:develop.features.applications.forms." +
+                        i18nKey={ "applications:forms." +
                         "advancedConfig.sections.certificate.hint.customOidc" }>
                         This certificate is used to encrypt the <Code>id_token</Code>
                         returned after the authentication.
                     </Trans>
                 );
             case SupportedAuthProtocolTypes.SAML:
-                return t("console:develop.features.applications.forms.advancedConfig" +
+                return t("applications:forms.advancedConfig" +
                     ".sections.certificate.hint.customSaml");
             case SupportedAuthProtocolTypes.WS_FEDERATION:
-                return t("console:develop.features.applications.forms.advancedConfig" +
+                return t("applications:forms.advancedConfig" +
                     ".sections.certificate.hint.customPassiveSTS");
             default:
                 return null;
@@ -264,13 +264,13 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                 data-testid={ `${ testId }-invalid-operation-modal-header` }
             >
                 {
-                    t("console:develop.features.applications.forms." +
+                    t("applications:forms." +
             "advancedConfig.sections.certificate.invalidOperationModal.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Content
                 data-testid={ `${ testId }-invalid-operation-modal-content` }
             >
-                { t("console:develop.features.applications.forms." +
+                { t("applications:forms." +
             "advancedConfig.sections.certificate.invalidOperationModal.message") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -295,12 +295,12 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Heading as="h4">
                                 {
-                                    t("console:develop.features.applications.forms." +
+                                    t("applications:forms." +
                                 "advancedConfig.sections.certificate.heading") }
                             </Heading>
                             <Field
                                 label={
-                                    t("console:develop.features.applications.forms." +
+                                    t("applications:forms." +
                                 "advancedConfig.sections.certificate.fields.type.label")
                                 }
                                 name="certificateType"
@@ -338,25 +338,25 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     },
                                     {
                                         hint: {
-                                            content: t("console:develop.features.applications.forms." +
+                                            content: t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.jwksValue.description"),
-                                            header: t("console:develop.features.applications.forms." +
+                                            header: t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.type.children." +
                                             "jwks.label")
                                         },
-                                        label: t("console:develop.features.applications.forms." +
+                                        label: t("applications:forms." +
                                         "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
                                         value: CertificateTypeInterface.JWKS
                                     },
                                     {
                                         hint: {
-                                            content: t("console:develop.features.applications.forms." +
+                                            content: t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.pemValue.description"),
-                                            header: t("console:develop.features.applications.forms." +
+                                            header: t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.type.children." +
                                             "pem.label")
                                         },
-                                        label: t("console:develop.features.applications.forms." +
+                                        label: t("applications:forms." +
                                         "advancedConfig.sections.certificate.fields.type.children.pem.label"),
                                         value: CertificateTypeInterface.PEM
                                     }
@@ -368,13 +368,13 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         },
                                         {
                                             hint: {
-                                                content: t("console:develop.features.applications.forms." +
+                                                content: t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.pemValue.description"),
-                                                header: t("console:develop.features.applications.forms." +
+                                                header: t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.type.children." +
                                             "pem.label")
                                             },
-                                            label: t("console:develop.features.applications.forms." +
+                                            label: t("applications:forms." +
                                         "advancedConfig.sections.certificate.fields.type.children.pem.label"),
                                             value: CertificateTypeInterface.PEM
                                         }
@@ -396,7 +396,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                             (
                                                 <>
                                                     {
-                                                        t("console:develop.features.applications.forms" +
+                                                        t("applications:forms" +
                                                             ".inboundSAML.sections.certificates" +
                                                             ".certificateRemoveConfirmation.content")
                                                     }
@@ -432,16 +432,16 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         name="jwksValue"
                                         displayErrorOn="blur"
                                         label={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                            t("applications:forms.advancedConfig" +
                                                 ".sections.certificate.fields.jwksValue.label")
                                         }
                                         required={ CertificateTypeInterface.JWKS === selectedCertType }
                                         requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                            t("applications:forms.advancedConfig" +
                                                 ".sections.certificate.fields.jwksValue.validations.empty")
                                         }
                                         placeholder={
-                                            t("console:develop.features.applications.forms.advancedConfig" +
+                                            t("applications:forms.advancedConfig" +
                                                 ".sections.certificate.fields.jwksValue.placeholder") }
                                         type="text"
                                         validation={ (value: string, validation: Validation) => {
@@ -449,7 +449,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(
                                                     t(
-                                                        "console:develop.features.applications.forms" +
+                                                        "applications:forms" +
                                                         ".advancedConfig.sections.certificate.fields" +
                                                         ".jwksValue.validations.invalid"
                                                     )

@@ -270,4 +270,12 @@ export class I18nModuleConstants {
      * Groups namespace.
      */
     public static readonly GROUPS_NAMESPACE: string = "groups";
+
+    /**
+     * Applications namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APPLICATIONS_NAMESPACE: string = "applications";
 }
