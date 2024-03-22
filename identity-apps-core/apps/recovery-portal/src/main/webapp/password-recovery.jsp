@@ -113,6 +113,9 @@
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
+   
+    boolean isSmsOTPEnabled = false;
+    isSmsOTPEnabled = Boolean.parseBoolean("true"); // todo:RNN: This needs to be read from the relevant place
 
     boolean reCaptchaEnabled = false;
 
@@ -123,6 +126,7 @@
 
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
+    Boolean isSMSOTPBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isMultiAttributeLoginEnabledInTenant = false;
     String allowedAttributes = null;
     try {
@@ -130,6 +134,8 @@
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain) &&
                                                      Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
         isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
+        isSMSOTPBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkSMSOTPBasedPasswordRecovery(tenantDomain);
+        org.apache.logging.log4j.LogManager.getLogger().error("sms enabled : " + isSMSOTPBasedPasswordRecoveryEnabledByTenant); // todo:RNN: remove this
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
@@ -143,6 +149,8 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
+    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant;
+    Boolean isSMSRevocetyAvailable = isSmsOTPEnabled && isSMSOTPBasedPasswordRecoveryEnabledByTenant;
 
     String usernameLabel = "Username";
     if (isMultiAttributeLoginEnabledInTenant) {
@@ -224,7 +232,7 @@
                         %>
                         <div class="field">
                             <%
-                               if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                               if (isEmailRecoveryAvailable
                                                     && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
 
                             %>
@@ -260,7 +268,7 @@
 
                         <div class="field">
                             <%
-                                if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
+                                if (isEmailRecoveryAvailable
                                                                && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
                            %>
                            <label class="mb-5 line-break" for="username">
@@ -311,10 +319,16 @@
                         </div>
 
                         <%
-                            if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
-                                                    && isQuestionBasedPasswordRecoveryEnabledByTenant ) {
+                            Boolean multipleRecoveryOptionsAvailable = isEmailRecoveryAvailable && isSMSRevocetyAvailable
+                                                    || isEmailRecoveryAvailable && isQuestionBasedPasswordRecoveryEnabledByTenant
+                                                    || isSMSRevocetyAvailable && isQuestionBasedPasswordRecoveryEnabledByTenant;
+
+                            if (multipleRecoveryOptionsAvailable) {
                         %>
                         <div class="ui secondary segment" style="text-align: left;">
+                            <% 
+                                if (isEmailRecoveryAvailable) {
+                            %>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="EMAIL" checked/>
@@ -322,6 +336,22 @@
                                     </label>
                                 </div>
                             </div>
+                            <%
+                                }
+                                if (isSMSRevocetyAvailable) {
+                            %>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="recoveryOption" value="EMAIL" checked/>
+                                    <label>
+                                    Recover with SMSOTP
+                                    </label>
+                                </div>
+                            </div>
+                            <%
+                                }
+                                if (isQuestionBasedPasswordRecoveryEnabledByTenant) {
+                            %>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="SECURITY_QUESTIONS"/>
@@ -329,9 +359,14 @@
                                     </label>
                                 </div>
                             </div>
+                            <%
+                                }
+                            %>
                         </div>
                         <% } else if (isNotificationBasedPasswordRecoveryEnabledByTenant){ %>
                             <input type="hidden" name="recoveryOption" value="EMAIL"/>
+                        <% } else if (isNotificationBasedPasswordRecoveryEnabledByTenant){ %>
+                            <input type="hidden" name="recoveryOption" value="SMSOTP"/>
                         <% } else { %>
                             <input type="hidden" name="recoveryOption" value="SECURITY_QUESTIONS"/>
                         <% } %>
@@ -374,30 +409,17 @@
                         %>
                         <div class="mt-4">
                             <%
-                               if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
-                                                    && !isQuestionBasedPasswordRecoveryEnabledByTenant) {
-
+                                String submitButtoni18nText = multipleRecoveryOptionsAvailable? "Submit" :
+                                            isEmailRecoveryAvailable? "password.recovery.button" : 
+                                            isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
+                                            isSMSRevocetyAvailable ? "password.recovery.button" : // todo:RNN: Change this into a new value for smsotp
+                                            "Submit";
                             %>
-                                <button id="recoverySubmit"
-                                        class="ui primary button large fluid"
-                                        type="submit">
-                                    <%=i18n(recoveryResourceBundle, customText, "password.recovery.button")%>
-                                </button>
-                            <% } else if (!isNotificationBasedPasswordRecoveryEnabledByTenant
-                                                   && isQuestionBasedPasswordRecoveryEnabledByTenant) { %>
-                               <button id="recoverySubmit"
-                                       class="ui primary button large fluid"
-                                       type="submit">
-                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.question")%>
-                               </button>
-                            <% } else  if (isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant
-                                                                && isQuestionBasedPasswordRecoveryEnabledByTenant){ %>
-                               <button id="recoverySubmit"
-                                       class="ui primary button large fluid"
-                                       type="submit">
-                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                               </button>
-                            <% } %>
+                            <button id="recoverySubmit"
+                                    class="ui primary button large fluid"
+                                    type="submit">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, submitButtoni18nText)%>
+                            </button>
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
