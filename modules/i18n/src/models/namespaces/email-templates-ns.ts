@@ -18,13 +18,21 @@
 
 export interface emailTemplatesNS {
     buttons: {
-        editTemplate: string;
-        deleteTemplate: string;
         newTemplate: string;
         viewTemplate: string;
+        createTemplateType: string;
+        deleteTemplate: string;
+        editTemplate: string;
+        newType: string;
     };
     confirmations: {
         deleteTemplate: {
+            assertionHint: string;
+            header: string;
+            message: string;
+            content: string;
+        };
+        deleteTemplateType: {
             assertionHint: string;
             header: string;
             message: string;
@@ -122,6 +130,62 @@ export interface emailTemplatesNS {
                 description: string;
             };
         };
+        deleteTemplateType: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        getTemplateTypes: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updateTemplateType: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        createTemplateType: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
     };
     placeholders: {
         emptyList: {
@@ -133,8 +197,54 @@ export interface emailTemplatesNS {
                 2: string;
             };
         };
+        emptySearch: {
+            action: string;
+            title: string;
+            subtitles: string;
+        };
     };
     viewTemplate: {
         heading: string;
+    };
+    wizards: {
+        addTemplateType: {
+            heading: string;
+            subHeading: string;
+            steps: {
+                templateType: {
+                    heading: string;
+                };
+            };
+        };
+    };
+    forms: {
+        addTemplateType: {
+            fields: {
+                type: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        empty: string;
+                    };
+                };
+            };
+        };
+    };
+    advancedSearch: {
+        form: {
+            inputs: {
+                filterAttribute: {
+                    placeholder: string;
+                };
+                filterCondition: {
+                    placeholder: string;
+                };
+                filterValue: {
+                    placeholder: string;
+                };
+            };
+        };
+        placeholder: string;
+        error: string;
     };
 }
