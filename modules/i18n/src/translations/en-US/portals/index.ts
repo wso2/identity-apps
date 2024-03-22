@@ -19,4 +19,5 @@
 export * from "./common";
 export * from "./console";
 export * from "./myaccount";
+export * from "./certificates";
 export * from "./authentication-provider";

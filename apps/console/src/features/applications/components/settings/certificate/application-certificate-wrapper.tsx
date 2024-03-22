@@ -485,7 +485,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     <Message
                                         type="error"
                                         data-testid={ `${ testId }-error-message` }
-                                        content={ t("console:manage.features.certificates.keystore.errorEmpty") }
+                                        content={ t("certificates:keystore.errorEmpty") }
                                     />
                                 )
                             }

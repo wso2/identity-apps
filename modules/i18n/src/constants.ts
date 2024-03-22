@@ -87,10 +87,14 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Certificate namespace.
+     * @constant
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = "certificates";
+
+    /**
      * authenticationProvider namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
 }
