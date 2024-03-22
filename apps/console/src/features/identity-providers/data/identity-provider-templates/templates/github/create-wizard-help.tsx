@@ -71,7 +71,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                 <Message
                     type="info"
                     header={
-                        t("console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                        t("authenticationProvider:templates.github.wizardHelp." +
                             "preRequisites.heading")
                     }
                     content={
@@ -79,7 +79,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.github.wizardHelp." +
+                                        "authenticationProvider:templates.github.wizardHelp." +
                                         "preRequisites.getCredentials"
                                     }
                                 >
@@ -95,7 +95,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
 
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                        "authenticationProvider:templates.github.wizardHelp" +
                                         ".preRequisites.configureHomePageURL"
                                     }
                                 >
@@ -110,7 +110,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.github.wizardHelp" +
+                                        "authenticationProvider:templates.github.wizardHelp" +
                                         ".preRequisites.configureRedirectURL"
                                     }
                                 >
@@ -127,7 +127,7 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                                     showEmptyLinkText
                                 >
                                     {
-                                        t("console:develop.features.authenticationProvider.templates.github." +
+                                        t("authenticationProvider:templates.github." +
                                             "wizardHelp.preRequisites.configureOAuthApps")
                                     }
                                 </DocumentationLink>
@@ -138,16 +138,16 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
 
                 <Heading as="h5">
                     {
-                        t("console:develop.features.authenticationProvider.templates.github" +
+                        t("authenticationProvider:templates.github" +
                             ".wizardHelp.name.heading")
                     }
                 </Heading>
                 <p>
                     {
                         useNewConnectionsView
-                            ? t("console:develop.features.authenticationProvider.templates.github." +
+                            ? t("authenticationProvider:templates.github." +
                                 "wizardHelp.name.connectionDescription")
-                            : t("console:develop.features.authenticationProvider.templates.github." +
+                            : t("authenticationProvider:templates.github." +
                                 "wizardHelp.name.idpDescription")
                     }
                 </p>
@@ -155,13 +155,13 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
                 <Divider/>
 
                 <Heading as="h5">
-                    { t("console:develop.features.authenticationProvider." +
+                    { t("authenticationProvider:" +
                         "templates.github.wizardHelp.clientId.heading") }
                 </Heading>
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.templates.github" +
+                            "authenticationProvider:templates.github" +
                             ".wizardHelp.clientId.description"
                         }
                     >
@@ -173,14 +173,14 @@ const GithubIdentityProviderCreateWizardHelp: FunctionComponent<
 
                 <Heading as="h5">
                     {
-                        t("console:develop.features.authenticationProvider.templates.github" +
+                        t("authenticationProvider:templates.github" +
                             ".wizardHelp.clientSecret.heading")
                     }
                 </Heading>
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.templates.github" +
+                            "authenticationProvider:templates.github" +
                             ".wizardHelp.clientSecret.description"
                         }
                     >

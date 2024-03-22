@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,7 +71,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     }[] = [
         {
             key: 0,
-            text: t("console:manage.features.certificates.keystore.attributes.alias"),
+            text: t("certificates:keystore.attributes.alias"),
             value: "alias"
         }
     ];
@@ -118,11 +118,11 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                 dispatch(addAlert(
                     {
                         description: error?.description
-                            || t("console:manage.features.certificates.keystore.notifications." +
+                            || t("certificates:keystore.notifications." +
                                 "getCertificates.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.certificates.keystore.notifications." +
+                            || t("certificates:keystore.notifications." +
                                 "getCertificates.genericError.message")
                     }
                 ));
@@ -242,15 +242,15 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                                 data-testid={ `${ testId }-list-layout-upload-button` }
                             >
                                 <Icon name="cloud upload" />
-                                { t("console:manage.features.certificates.keystore.pageLayout.primaryAction") }
+                                { t("certificates:keystore.pageLayout.primaryAction") }
                             </PrimaryButton>
                         </Show>
                     )
                 }
                 isLoading={ isLoading }
-                title={ t("console:manage.features.certificates.keystore.pageLayout.title") }
-                pageTitle={ t("console:manage.features.certificates.keystore.pageLayout.title") }
-                description={ t("console:manage.features.certificates.keystore.pageLayout.description") }
+                title={ t("certificates:keystore.pageLayout.title") }
+                pageTitle={ t("certificates:keystore.pageLayout.title") }
+                description={ t("certificates:keystore.pageLayout.description") }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout
@@ -265,19 +265,19 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
+                                t("certificates:keystore.advancedSearch.form.inputs" +
                                     ".filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
+                                t("certificates:keystore.advancedSearch.form.inputs" +
                                     ".filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
+                                t("certificates:keystore.advancedSearch.form.inputs" +
                                     ".filterValue.placeholder")
                             }
                             placeholder={
-                                t("console:manage.features.certificates.keystore.advancedSearch.placeholder")
+                                t("certificates:keystore.advancedSearch.placeholder")
                             }
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"
@@ -313,19 +313,19 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
+                                    t("certificates:keystore.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
+                                    t("certificates:keystore.advancedSearch.form.inputs" +
                                         ".filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
+                                    t("certificates:keystore.advancedSearch.form.inputs" +
                                         ".filterValue.placeholder")
                                 }
                                 placeholder={
-                                    t("console:manage.features.certificates.keystore.advancedSearch.placeholder")
+                                    t("certificates:keystore.advancedSearch.placeholder")
                                 }
                                 defaultSearchAttribute="alias"
                                 defaultSearchOperator="co"

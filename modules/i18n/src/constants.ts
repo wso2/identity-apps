@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,6 +85,35 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly META_FILENAME: string = "meta.json";
+
+    /**
+     * emailTemplateTypes namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+
+    public static readonly EMAIL_TEMPLATE_TYPES_NAMESPACE: string = "emailTemplateTypes";
+
+    /**
+     * emailTemplates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
+  
+    /**
+     * Certificate namespace.
+     * @constant
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = "certificates";
+
+    /**
+     * authenticationProvider namespace.
+     * @constant
+     */
+    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
 
     /**
      * governanceConnectors namespace.
