@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.26
+
+### Patch Changes
+
+- [#5822](https://github.com/wso2/identity-apps/pull/5822) [`beedc6b44f`](https://github.com/wso2/identity-apps/commit/beedc6b44f66800ba07a178796c48d31c8c0519e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Disable URL input validation for empty values in advanced tab in branding page
+
 ## 2.13.25
 
 ### Patch Changes
