@@ -6,7 +6,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "pnpm nx run theme:build && node theme-distribute.js",
+        "build": "pnpm nx run theme:build && node theme-distribute.js && mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true",
         "clean": "pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:node-modules",
         "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
         "clean:maven-folders": "pnpm rimraf target",

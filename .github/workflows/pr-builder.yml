@@ -213,12 +213,21 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: 🐳 Set SHAs for Nx
+        id: set-shas
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: ☕ Set up JDK 1.8
         id: jdk-setup
@@ -259,13 +268,7 @@ jobs:
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
-        run: pnpm build
-
-      - name: 🏗️ Maven Build identity-apps-core
-        id: build-with-maven
-        run: |
-          cd identity-apps-core
-          mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --plain --target=build --parallel=3
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
