@@ -1092,7 +1092,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ) ? (
                                                 <Show when={ AccessControlConstants.USER_EDIT }>
                                                     <DangerZone
-                                                        data-testid={ `${ testId }-change-password` }
+                                                        data-testid={ `${ testId }-change-password-delete-button` }
                                                         actionTitle={ t("console:manage.features.user.editUser." +
                                                             "dangerZoneGroup.passwordResetZone.actionTitle") }
                                                         header={ t("console:manage.features.user.editUser." +
@@ -1114,7 +1114,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                             <DangerZone
-                                                data-testid={ `${ testId }-danger-zone` }
+                                                data-testid={ `${ testId }-account-disable-button` }
                                                 actionTitle={ t("console:manage.features.user.editUser." +
                                                 "dangerZoneGroup.disableUserZone.actionTitle") }
                                                 header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
@@ -1133,7 +1133,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         !allowDeleteOnly && !isUserManagedByParentOrg  && (
                                             <DangerZone
-                                                data-testid={ `${ testId }-danger-zone` }
+                                                data-testid={ `${ testId }-danger-zone-toggle` }
                                                 actionTitle={ t("console:manage.features.user.editUser." +
                                                     "dangerZoneGroup.lockUserZone.actionTitle") }
                                                 header={
@@ -1174,7 +1174,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     )
                                     }
                                     <DangerZone
-                                        data-testid={ `${ testId }-danger-zone` }
+                                        data-testid={ `${ testId }-danger-zone-delete-button` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
                                         "deleteUserZone.actionTitle") }
                                         header={ t("console:manage.features.user.editUser.dangerZoneGroup." +

@@ -17,6 +17,7 @@
  */
 
 import { ProfileInfoInterface } from "@wso2is/core/models";
+import { AskPasswordOptionTypes, PasswordOptionTypes } from "../../../features/users/constants";
 
 export interface User {
     bulkUserImportLimit: {
@@ -25,6 +26,8 @@ export interface User {
         userCount: number;
     };
     enableBulkImportSecondaryUserStore: boolean;
+    defaultPasswordOption: PasswordOptionTypes;
+    defautlAskPasswordOption: AskPasswordOptionTypes;
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
     disableManagedByColumn: boolean;
     enableAdminPrivilegeRevokeOption: boolean;

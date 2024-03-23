@@ -17,13 +17,82 @@
  */
 
 import { UserGroupIcon } from "@oxygen-ui/react-icons";
-import { LegacyModeInterface } from "@wso2is/core/models";
+import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import React, { lazy } from "react";
 import { CommonConfig } from "./models";
 import { getSidePanelIcons } from "../../features/core/configs/ui";
 import { AppConstants } from "../../features/core/constants";
 
 const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+
+const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
+    ? {
+        category: "extensions:manage.sidePanel.categories.userManagement",
+        children: [
+            {
+                component: lazy(() => import("../../features/roles-v1/pages/role-edit")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().childIcon
+                },
+                id: "rolesV1Edit",
+                name: "console:manage.features.sidePanel.editRoles",
+                path: AppConstants.getPaths().get("ROLE_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: lazy(() => import("../../features/roles-v1/pages/role")),
+        exact: true,
+        icon: {
+            icon: getSidePanelIcons().applicationRoles
+        },
+        id: "userV1Roles",
+        name: "console:manage.features.sidePanel.roles",
+        order: 7,
+        path: AppConstants.getPaths().get("ROLES"),
+        protected: true,
+        showOnSidePanel: legacyMode?.rolesV1
+    } : {
+        category: "extensions:manage.sidePanel.categories.userManagement",
+        children: [
+            {
+                component: lazy(() => import("../../features/roles/pages/role-edit")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().childIcon
+                },
+                id: "rolesEdit",
+                name: "console:manage.features.sidePanel.editRoles",
+                path: AppConstants.getPaths().get("ROLE_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: lazy(() => import("../../features/roles/pages/create-role-wizard")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().childIcon
+                },
+                id: "rolesCreate",
+                name: "console:manage.features.sidePanel.createRole",
+                path: AppConstants.getPaths().get("ROLE_CREATE"),
+                protected: true,
+                showOnSidePanel: false
+            }
+        ],
+        component: lazy(() => import("../../features/roles/pages/role")),
+        exact: true,
+        icon: {
+            icon: getSidePanelIcons().applicationRoles
+        },
+        id: "userRoles",
+        name: "console:manage.features.sidePanel.roles",
+        order: 7,
+        path: AppConstants.getPaths().get("ROLES"),
+        protected: true,
+        showOnSidePanel: !legacyMode?.rolesV1
+    };
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -204,7 +273,8 @@ export const commonConfig: CommonConfig = {
             path: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
             protected: true,
             showOnSidePanel: false
-        }
+        },
+        resolvedRoleRoute
     ],
     footer: {
         customClassName: "console-footer"

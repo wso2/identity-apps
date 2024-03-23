@@ -20,6 +20,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
 import { deleteUser } from "../../features/users/api/users";
+import { AskPasswordOptionTypes, PasswordOptionTypes } from "../../features/users/constants";
 
 export const userConfig: User = {
     bulkUserImportLimit: {
@@ -27,6 +28,8 @@ export const userConfig: User = {
         inviteEmails: 50,
         userCount: 100
     },
+    defaultPasswordOption: PasswordOptionTypes.CREATE_PASSWORD,
+    defautlAskPasswordOption: AskPasswordOptionTypes.OFFLINE,
     deleteUser: (user: ProfileInfoInterface): Promise<any> => {
         return deleteUser(user.id);
     },

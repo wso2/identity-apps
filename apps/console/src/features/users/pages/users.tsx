@@ -713,7 +713,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)) {
             dropDownOptions.push({
-                "data-componentid": `${componentId}-add-user`,
+                "data-componentid": `${componentId}-add-user-dropdown-item`,
                 key: 1,
                 text: t("console:manage.features.users.addUserDropDown.addNewUser"),
                 value: UserAccountTypesMain.EXTERNAL
@@ -977,8 +977,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             {
                 showWizard && (
                     <AddUserWizard
-                        data-componentid={ `${ componentId }-user-mgt-add-user-wizard-modal` }
-                        data-testid={ `${ testId }-user-mgt-add-user-wizard-modal` }
+                        data-componentid={ "user-mgt-add-user-wizard-modal" }
+                        data-testid={ "user-mgt-add-user-wizard-modal" }
                         isSubOrg={ isSubOrganization() }
                         closeWizard={ () => {
                             setShowWizard(false);

@@ -112,7 +112,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         onSuccessfulUserAddition,
         userStore,
         requiredSteps,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -963,6 +964,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 wizardSteps[ currentWizardStep ]?.name !== WizardStepsFormTypes.USER_SUMMARY && (
                                     <LinkButton
                                         data-testid={ `${ testId }-cancel-button` }
+                                        data-componentid={ `${ componentId }-cancel-button` }
                                         floated="left"
                                         onClick={ () => {
                                             closeWizard();
@@ -977,6 +979,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             { currentWizardStep < wizardSteps.length - 1 && (
                                 <PrimaryButton
                                     data-testid={ `${ testId }-next-button` }
+                                    data-componentid={ `${ componentId }-next-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isBasicDetailsLoading }
@@ -991,6 +994,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             { currentWizardStep === wizardSteps.length - 1 && (
                                 <PrimaryButton
                                     data-testid={ `${ testId }-finish-button` }
+                                    data-componentid={ `${ componentId }-finish-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isSubmitting }
@@ -1005,6 +1009,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 && (
                                     <LinkButton
                                         data-testid={ `${ testId }-previous-button` }
+                                        data-componentid={ `${ componentId }-previous-button` }
                                         floated="right"
                                         onClick={ navigateToPrevious }
                                     >
@@ -1024,6 +1029,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         wizardSteps && isStepsUpdated ? (
             <Modal
                 data-testid={ testId }
+                data-componentid={ componentId }
                 open={ true }
                 className="wizard application-create-wizard"
                 dimmer="blurring"

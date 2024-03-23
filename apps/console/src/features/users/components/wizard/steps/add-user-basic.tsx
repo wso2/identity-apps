@@ -27,7 +27,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { userstoresConfig } from "../../../../../extensions/configs";
+import { userConfig, userstoresConfig } from "../../../../../extensions/configs";
 import { AppConstants } from "../../../../core/constants";
 import { history } from "../../../../core/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
@@ -109,8 +109,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         validationConfig
     } = props;
 
-    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(PasswordOptionTypes.CREATE_PASSWORD);
-    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(AskPasswordOptionTypes.OFFLINE);
+    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
+    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
