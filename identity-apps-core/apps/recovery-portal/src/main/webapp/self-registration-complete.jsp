@@ -124,7 +124,9 @@
     if (StringUtils.isNotBlank(spId)) {
         try {
             ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
-            if (!sp.equals("My Account")) {
+            if (spId.equals("My_Account")) {
+                sp = "My Account";
+            } else {
                 sp = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
             }
         } catch (Exception e) {
