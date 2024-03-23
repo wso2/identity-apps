@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.27
+
+### Patch Changes
+
+- [#5823](https://github.com/wso2/identity-apps/pull/5823) [`970ee6eea1`](https://github.com/wso2/identity-apps/commit/970ee6eea1c91151d1bb101bc0b00a2e6476e9a9) Thanks [@savindi7](https://github.com/savindi7)! - Improve Profile Information.
+
 ## 2.13.26
 
 ### Patch Changes
