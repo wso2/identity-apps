@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.28
+
+### Patch Changes
+
+- [#5830](https://github.com/wso2/identity-apps/pull/5830) [`17ab3e87c6`](https://github.com/wso2/identity-apps/commit/17ab3e87c68da2c1971a00bcb6653e62682b996a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add models for login security related doc links
+
 ## 2.13.27
 
 ### Patch Changes
