@@ -419,7 +419,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         >
                             When self registration is enabled, users can register via the
                             <strong>
-                                Create an account
+                                Register
                             </strong> link on the application’s Login page. This creates a new{ " " }
                             <strong>user</strong> account in the organization.
                         </Trans>
