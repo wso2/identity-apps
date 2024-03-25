@@ -43,6 +43,7 @@
 
 <%!
     private boolean isMultiAuthAvailable(String multiOptionURI) {
+
         boolean isMultiAuthAvailable = true;
         if (multiOptionURI == null || multiOptionURI.equals("null")) {
             isMultiAuthAvailable = false;
@@ -54,7 +55,7 @@
                 String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
                 int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
                 authenticators = authenticators.substring(0, authLastIndex);
-                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                List<String> authList = Arrays.asList(authenticators.split("%3B"));
                 if (authList.size() < 2) {
                     isMultiAuthAvailable = false;
                 }
