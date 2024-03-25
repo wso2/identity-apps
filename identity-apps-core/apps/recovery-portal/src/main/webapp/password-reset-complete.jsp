@@ -17,6 +17,7 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.http.client.utils.URIBuilder" %>
 <%@ page import="org.owasp.encoder.Encode" %>
@@ -27,9 +28,12 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Error" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResetRequest" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResetResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ResetPasswordRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
@@ -76,13 +80,19 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String spId = request.getParameter("spId");
+    if (StringUtils.isBlank(spId)) {
+        spId = (String)request.getAttribute("spId");
+    }
     String sp = Encode.forJava(request.getParameter("sp"));
+    if (StringUtils.isBlank(sp)) {
+        sp = (String)request.getAttribute("sp");
+    }
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
     String type = request.getParameter("type");
     String username = null;
     String tenantAwareUsername = null;
     String applicationName = null;
-
+    boolean useRecoveryV2API = Boolean.parseBoolean((String)request.getAttribute("useRecoveryV2API"));
     String tenantDomainFromQuery = request.getParameter("tenantDomainFromQuery");
     if (StringUtils.isNotBlank(tenantDomainFromQuery)) {
         tenantDomain = tenantDomainFromQuery;
@@ -127,8 +137,35 @@
             // Ignored and fallback to login page url.
         }
     }
+    applicationAccessURLWithoutEncoding = "something is here";
 
-    if (StringUtils.isNotBlank(newPassword)) {
+    if (StringUtils.isNotBlank(newPassword) && useRecoveryV2API) {
+
+        RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
+        String resetCode = request.getParameter("resetCode");
+        String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
+        String password = request.getParameter("reset-password"); // todo: RNN : Change this to char array
+
+        try {
+            Map<String, String> requestHeaders = new HashedMap();
+            if (request.getParameter("g-recaptcha-response") != null) {
+                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+            }
+            ResetRequest resetRequest = new ResetRequest();
+            // For local notification channels flowConfirmationCode is used as confirmation code
+            resetRequest.setResetCode(resetCode);
+            resetRequest.setFlowConfirmationCode(flowConfirmationCode);
+            resetRequest.setPassword(password);
+            ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
+        } catch (ApiException e) {
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+    } else if (StringUtils.isNotBlank(newPassword)) {
         NotificationApi notificationApi = new NotificationApi();
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
         List<Property> properties = new ArrayList<Property>();
@@ -316,7 +353,7 @@
                         <%
                             }
                         %>
-                        <% } else { %>
+                        <% } else {  %>
                             <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
                                     applicationAccessURLWithoutEncoding)%>">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>

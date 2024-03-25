@@ -201,6 +201,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>passwordrecoveryotp.do</servlet-name>
+        <jsp-file>/password-recovery-otp.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>completepasswordreset.do</servlet-name>
         <jsp-file>/password-reset-complete.jsp</jsp-file>
     </servlet>
@@ -280,6 +285,10 @@
         <url-pattern>/viewsecurityquestions.do</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>passwordrecoveryotp.do</servlet-name>
+        <url-pattern>/passwordrecoveryotp.do</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>confirmrecovery.do</servlet-name>

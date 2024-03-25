@@ -58,6 +58,15 @@
 <% } %>
 
 <%
+
+    String ispwReEmCnf = request.getParameter("isPasswordRecoveryEmailConfirmation");
+    String isUsernameRec = request.getParameter("isUsernameRecovery");
+    String isPwRecWithClaNoti = request.getParameter("isPasswordRecoveryWithClaimsNotify");
+    String servProv = request.getParameter("sp");
+    String gCaptcha = request.getParameter("g-recaptcha-response");
+    String recCode = request.getParameter("recoveryCode");
+    String recoveryStage = request.getParameter("recoveryStage");
+
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
@@ -258,11 +267,9 @@
             if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(recoveryOption)) {
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("password-recovery-notify.jsp").forward(request, response);
-            } else if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SECURITY_QUESTIONS
-                    .equals(recoveryOption)) {
-                request.setAttribute("callback", callback);
-                request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
-                        response);
+            } else if(IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(recoveryOption)) {
+                request.setAttribute("channel", IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP);
+                request.getRequestDispatcher("password-recovery-otp.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -280,6 +287,5 @@
     <title></title>
 </head>
 <body>
-
 </body>
 </html>
