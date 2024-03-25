@@ -1274,7 +1274,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                         content={
                                                             (<p>
                                                                 {
-                                                                    t("console:featureGate.enabledFeatures.tags." +
+                                                                    t("applications:featureGate.enabledFeatures.tags." +
                                                                     "premium.warning")
                                                                 }
                                                             </p>)

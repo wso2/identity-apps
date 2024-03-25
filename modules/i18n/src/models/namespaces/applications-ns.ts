@@ -16,6 +16,27 @@
  * under the License.
  */
 export interface ApplicationsNS {
+    URLInput: {
+        withLabel: {
+            positive: {
+                header: string;
+                content: string;
+                detailedContent: {
+                    0: string;
+                    1: string;
+                };
+            };
+            negative: {
+                header: string;
+                content: string;
+                detailedContent: {
+                    0: string;
+                    1: string;
+                };
+                leftAction: string;
+            };
+        };
+    };
     addWizard: {
         steps: {
             generalSettings: {
@@ -1954,7 +1975,30 @@ export interface ApplicationsNS {
             };
         };
     };
+    featureGate: {
+        enabledFeatures: {
+            tags: {
+                premium: {
+                    warning: string;
+                };
+            };
+        };
+    };
     notifications: {
+        invalidPEMFile: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         addApplication: {
             error: {
                 message: string;
@@ -2530,6 +2574,11 @@ export interface ApplicationsNS {
         };
     };
     templates: {
+        emptyPlaceholder: {
+            action: string;
+            title: string;
+            subtitles: string;
+        };
         manualSetup: {
             heading: string;
             subHeading: string;

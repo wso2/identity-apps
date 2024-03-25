@@ -117,22 +117,6 @@ export interface ConsoleNS {
                 sessionTimedOutDescription: string;
             };
         };
-        notifications: {
-            invalidPEMFile: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
         placeholders: {
             404: {
                 action: string;
@@ -475,38 +459,186 @@ export interface ConsoleNS {
             };
         };
     };
-    featureGate: {
-        enabledFeatures: {
-            tags: {
-                premium: {
-                    warning: string;
+    branding: {
+        form: {
+            actions: {
+                save: string;
+                resetAll: string;
+            };
+        };
+        tabs: {
+            text: {
+                label: string;
+            };
+            preview: {
+                label: string;
+            };
+        };
+        screens: {
+            common: string;
+            login: string;
+            "sms-otp": string;
+            "email-otp": string;
+            "email-template": string;
+            "sign-up": string;
+            totp: string;
+            myaccount: string;
+            "password-recovery": string;
+            "password-reset": string;
+            "password-reset-success": string;
+        };
+    };
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        revertUnsavedConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        form: {
+            genericFieldResetTooltip: string;
+            genericFieldPlaceholder: string;
+            fields: {
+                copyright: {
+                    hint: string;
                 };
+                "privacy.policy": {
+                    hint: string;
+                };
+                "site.title": {
+                    hint: string;
+                };
+                "terms.of.service": {
+                    hint: string;
+                };
+                "login.button": {
+                    hint: string;
+                };
+                "login.heading": {
+                    hint: string;
+                };
+                "sms.otp.heading": {
+                    hint: string;
+                };
+                "email.otp.heading": {
+                    hint: string;
+                };
+                "totp.heading": {
+                    hint: string;
+                };
+                "sign.up.button": {
+                    hint: string;
+                };
+                "sign.up.heading": {
+                    hint: string;
+                };
+                "password.recovery.body": {
+                    hint: string;
+                };
+                "password.recovery.button": {
+                    hint: string;
+                };
+                "password.recovery.heading": {
+                    hint: string;
+                };
+                "password.reset.button": {
+                    hint: string;
+                };
+                "password.reset.heading": {
+                    hint: string;
+                };
+                "password.reset.success.action": {
+                    hint: string;
+                };
+                "password.reset.success.body": {
+                    hint: string;
+                };
+                "password.reset.success.heading": {
+                    hint: string;
+                };
+            };
+        };
+        localeSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+        modes: {
+            text: {
+                label: string;
+            };
+            json: {
+                label: string;
+            };
+        };
+        notifications: {
+            getPreferenceError: {
+                description: string;
+                message: string;
+            };
+            revertError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            updateError: {
+                description: string;
+                message: string;
+            };
+            updateSuccess: {
+                description: string;
+                message: string;
+            };
+        };
+        screenSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+    };
+    consoleSettings: {
+        administrators: {
+            add: {
+                action: string;
+                options: {
+                    addExistingUser: string;
+                    inviteNewUser: string;
+                };
+            };
+            edit: {
+                backButton: string;
+            };
+            tabLabel: string;
+        };
+        loginFlow: {
+            tabLabel: string;
+        };
+        protocol: {
+            tabLabel: string;
+        };
+        roles: {
+            add: {
+                organizationPermissions: {
+                    label: string;
+                };
+                tenantPermissions: {
+                    label: string;
+                };
+            };
+            tabLabel: string;
+            permissionLevels: {
+                edit: string;
+                view: string;
             };
         };
     };
     develop: {
         features: {
-            URLInput: {
-                withLabel: {
-                    positive: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    negative: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                        leftAction: string;
-                    };
-                };
-            };
             authenticationProvider: {
                 advancedSearch: {
                     form: {
@@ -3482,13 +3614,6 @@ export interface ConsoleNS {
                 overview: string;
                 remoteRepo: string;
                 remoteRepoEdit: string;
-            };
-            templates: {
-                emptyPlaceholder: {
-                    action: string;
-                    title: string;
-                    subtitles: string;
-                };
             };
         };
         notifications: {

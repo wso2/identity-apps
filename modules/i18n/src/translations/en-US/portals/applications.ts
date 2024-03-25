@@ -25,6 +25,29 @@ import { ApplicationsNS } from "../../../models";
 /* eslint-disable sort-keys */
 
 export const applications: ApplicationsNS = {
+    URLInput: {
+        withLabel: {
+            negative: {
+                content: "You need to enable CORS for the origin of this URL to make requests" +
+                    " to {{productName}} from a browser.",
+                detailedContent: {
+                    0: "",
+                    1: ""
+                },
+                header: "CORS is not Allowed for",
+                leftAction: "Allow"
+            },
+            positive: {
+                content: "The origin of this URL is allowed to make requests to " +
+                    "{{productName}} APIs from a browser.",
+                detailedContent: {
+                    0: "",
+                    1: ""
+                },
+                header: "CORS is Allowed for"
+            }
+        }
+    },
     addWizard: {
         steps: {
             generalSettings: {
@@ -2273,7 +2296,30 @@ export const applications: ApplicationsNS = {
             }
         }
     },
+    featureGate: {
+        enabledFeatures: {
+            tags: {
+                premium: {
+                    warning: "This is a premium feature and will soon be disabled for the free subscription plan. Upgrade your subscription for uninterrupted access to this feature."
+                }
+            }
+        }
+    },
     notifications: {
+        invalidPEMFile: {
+            error: {
+                description: "{{ description }}",
+                message: "Decoding Error"
+            },
+            genericError: {
+                description: "An error occurred while decoding the certificate.",
+                message: "Decoding Error"
+            },
+            success: {
+                description: "Successfully decoded the certificate file.",
+                message: "Decoding Successful"
+            }
+        },
         addApplication: {
             error: {
                 description: "{{description}}",
@@ -2786,6 +2832,11 @@ export const applications: ApplicationsNS = {
         }
     },
     templates: {
+        emptyPlaceholder: {
+            action: null,
+            subtitles: "Please add templates to display here.",
+            title: "No templates to display."
+        },
         manualSetup: {
             heading: "Manual Setup",
             subHeading: "Create an application with custom configurations."

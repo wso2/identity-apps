@@ -378,9 +378,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                         <EmptyPlaceholder
                                             image={ getEmptyPlaceholderIllustrations().newList }
                                             imageSize="tiny"
-                                            title={ t("console:develop.features.templates.emptyPlaceholder." +
+                                            title={ t("applications:templates.emptyPlaceholder." +
                                                     "title") }
-                                            subtitle={ [ t("console:develop.features.templates." +
+                                            subtitle={ [ t("applications:templates." +
                                                     "emptyPlaceholder.subtitles") ] }
                                             data-testid={
                                                 `${ testId }-quick-start-template-grid-empty-placeholder`

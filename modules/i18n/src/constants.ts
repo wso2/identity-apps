@@ -98,7 +98,7 @@ export class I18nModuleConstants {
 
     /**
      * JWT private key configuration namespace.
-     */ 
+     */
     public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
 
     /**
