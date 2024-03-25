@@ -87,10 +87,14 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Branding namespace.
+     * @constant
+     */
+    public static readonly BRANDING_NAMESPACE: string = "branding";
+  
+    /**
      * emailTemplates namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
 
