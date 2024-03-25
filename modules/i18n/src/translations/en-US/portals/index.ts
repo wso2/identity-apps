@@ -20,3 +20,6 @@ export * from "./common";
 export * from "./console";
 export * from "./myaccount";
 export * from "./suborganizations";
+export * from "./email-templates";
+export * from "./certificates";
+export * from "./authentication-provider";

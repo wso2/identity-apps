@@ -5221,6 +5221,27 @@ export interface ConsoleNS {
                         next: string;
                         finish: string;
                         previous: string;
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
+                        heading: string;
+                    };
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: string;
+                            title: string;
+                            subtitles: string;
+                        };
+                        heading: string;
+                    };
+                    duplicateOrgError: {
+                        message: string;
+                        description: string;
                     };
                 };
             };
@@ -5370,10 +5391,12 @@ export interface ConsoleNS {
                             primaryAttribute: {
                                 label: string;
                                 hint: string;
+                                placeholder: string;
                             };
                             secondaryAttribute: {
                                 label: string;
                                 hint: string;
+                                placeholder: string;
                             };
                             warning: string;
                         };

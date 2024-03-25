@@ -49,6 +49,22 @@ export class I18nConstants {
      * suborganizations namespace.
      */
     public static readonly SUBORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.SUBORGANIZATIONS_NAMESPACE;
+  
+    /**
+     * emailTemplates namespace.
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE;
+
+    /**
+     * Certificates namespace.
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = I18nModuleConstants.CERTIFICATES_NAMESPACE;
+  
+    /**
+     * authenticationProvider namespace.
+     */
+    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string =
+      I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -57,7 +73,10 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ I18nConstants.SUBORGANIZATIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.SUBORGANIZATIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.EMAIL_TEMPLATES_NAMESPACE, "portals" ],
+        [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ],
+        [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ]
     ]);
 
     /**

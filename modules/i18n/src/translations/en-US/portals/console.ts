@@ -5739,6 +5739,29 @@ export const console: ConsoleNS = {
                         finish: "Finish",
                         next: "Next",
                         previous: "Previous"
+            suborganizations: {
+                notifications: {
+                    tierLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of allowed organizations."
+                        },
+                        heading: "You've reached the maximum limit for organizations"
+                    },
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: "View Plans",
+                            subtitles: "You can contact the organization administrator or (if you are the " +
+                                "administrator) upgrade your subscription to increase the allowed limit.",
+                            title: "You have reached the maximum number of allowed organization levels."
+                        },
+                        heading: "You’ve reached the maximum organization levels allowed for the organization."
+                    },
+                    duplicateOrgError: {
+                        message: "An organization with the same name already exists.",
+                        description: "The organization you are trying to create already exists."
                     }
                 }
             },
@@ -5895,11 +5918,13 @@ export const console: ConsoleNS = {
                             primaryAttribute: {
                                 label: "Primary lookup attribute",
                                 hint: "Select the primary attribute that will be used to check if" +
-                                    " there is a matching local user account"
+                                    " there is a matching local user account",
+                                placeholder: "Select the primary attribute"
                             },
                             secondaryAttribute: {
                                 label: "Secondary lookup attribute",
-                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute"
+                                hint: "Secondary attribute will be used if a unique user is not found using the primary attribute",
+                                placeholder: "Select the secondary attribute"
                             },
                             warning: "Ensure that the selected attributes are verified by the token issuer"
                         }

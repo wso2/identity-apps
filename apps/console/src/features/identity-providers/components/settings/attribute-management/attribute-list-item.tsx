@@ -83,7 +83,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             <Label
                                 basic color="red"
                                 pointing="left">
-                                { t("console:develop.features.authenticationProvider.forms.attributeSettings." +
+                                { t("authenticationProvider:forms.attributeSettings." +
                                     "attributeListItem.validation.empty") }
                             </Label>
                         ) }
