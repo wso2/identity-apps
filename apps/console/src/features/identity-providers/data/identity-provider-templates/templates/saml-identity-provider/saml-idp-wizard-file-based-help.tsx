@@ -59,7 +59,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                     (<>
                         <Trans
                             i18nKey={
-                                "console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                "authenticationProvider:templates.enterprise.saml." +
                                 "preRequisites.configureRedirectURL"
                             }
                         >
@@ -71,7 +71,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                         />
                         <Icon name="info circle" />
                         {
-                            t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                            t("authenticationProvider:templates.enterprise.saml." +
                                 "preRequisites.hint", {
                                 productName: config.ui.productName
                             })
@@ -84,7 +84,7 @@ const SAMLIdPWizardFileBasedHelp: FunctionComponent<Props> = (props: Props): Rea
                             link={ getLink("develop.connections.newConnection.enterprise.saml.learnMore") }
                         >
                             {
-                                t("console:develop.features.authenticationProvider.templates.enterprise.saml." +
+                                t("authenticationProvider:templates.enterprise.saml." +
                                     "preRequisites.configureIdp")
                             }
                         </DocumentationLink>

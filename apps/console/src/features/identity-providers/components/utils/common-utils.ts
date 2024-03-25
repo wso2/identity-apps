@@ -33,11 +33,11 @@ export const handleIDPDeleteError = (error: AxiosError): void  => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.deleteIDPWithConnectedApps" +
+                    "authenticationProvider:notifications.deleteIDPWithConnectedApps" +
                     ".error.description"),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.deleteIDPWithConnectedApps" +
+                    "authenticationProvider:notifications.deleteIDPWithConnectedApps" +
                     ".error.message")
             })
         );
@@ -47,12 +47,12 @@ export const handleIDPDeleteError = (error: AxiosError): void  => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.deleteIDP.error.description",
+                    "authenticationProvider:notifications.deleteIDP.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.deleteIDP.error.message"
+                    "authenticationProvider:notifications.deleteIDP.error.message"
                 )
             })
         );
@@ -63,11 +63,11 @@ export const handleIDPDeleteError = (error: AxiosError): void  => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.deleteIDP.genericError.description"
+                "authenticationProvider:notifications.deleteIDP.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.deleteIDP.genericError.message"
+                "authenticationProvider:notifications.deleteIDP.genericError.message"
             )
         })
     );
@@ -78,12 +78,12 @@ export const handleIDPUpdateError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.updateIDP.error.description",
+                    "authenticationProvider:notifications.updateIDP.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.updateIDP.error.message"
+                    "authenticationProvider:notifications.updateIDP.error.message"
                 )
             })
         );
@@ -94,11 +94,11 @@ export const handleIDPUpdateError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateIDP.genericError.description"
+                "authenticationProvider:notifications.updateIDP.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateIDP.genericError.message"
+                "authenticationProvider:notifications.updateIDP.genericError.message"
             )
         })
     );
@@ -109,12 +109,12 @@ export const handleGetRoleListError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getRolesList.error.description",
+                    "authenticationProvider:notifications.getRolesList.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getRolesList.error.message"
+                    "authenticationProvider:notifications.getRolesList.error.message"
                 )
             })
         );
@@ -125,12 +125,12 @@ export const handleGetRoleListError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getRolesList.genericError." +
+                "authenticationProvider:notifications.getRolesList.genericError." +
                     "description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getRolesList.genericError.message"
+                "authenticationProvider:notifications.getRolesList.genericError.message"
             )
         })
     );
@@ -141,13 +141,13 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                         "updateIDPRoleMappings.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings.error.message"
+                    "authenticationProvider:notifications.updateIDPRoleMappings.error.message"
                 )
             })
         );
@@ -156,12 +156,12 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings." +
+                "authenticationProvider:notifications.updateIDPRoleMappings." +
                     "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateIDPRoleMappings." +
+                "authenticationProvider:notifications.updateIDPRoleMappings." +
                     "genericError.message"
             )
         })
@@ -173,13 +173,13 @@ export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: Axios
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                         "getFederatedAuthenticatorMetadata.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                         "getFederatedAuthenticatorMetadata.error.message"
                 )
             })
@@ -191,12 +191,12 @@ export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: Axios
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getFederatedAuthenticatorMetadata." +
+                "authenticationProvider:notifications.getFederatedAuthenticatorMetadata." +
                     "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications." +
+                "authenticationProvider:notifications." +
                     "getFederatedAuthenticatorMetadata.genericError.message"
             )
         })
@@ -208,13 +208,13 @@ export const handleGetOutboundProvisioningConnectorMetadataError = (error: Axios
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                         "getOutboundProvisioningConnectorMetadata.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                         "getOutboundProvisioningConnectorMetadata.error.message"
                 )
             })
@@ -226,12 +226,12 @@ export const handleGetOutboundProvisioningConnectorMetadataError = (error: Axios
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications." +
+                "authenticationProvider:notifications." +
                     "getOutboundProvisioningConnectorMetadata.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications." +
+                "authenticationProvider:notifications." +
                     "getOutboundProvisioningConnectorMetadata.genericError.message"
             )
         })
@@ -243,13 +243,13 @@ export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                         "updateOutboundProvisioningConnector.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications." +
+                    "authenticationProvider:notifications." +
                     "updateOutboundProvisioningConnector." +
                         "error.message"
                 )
@@ -262,12 +262,12 @@ export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateOutboundProvisioningConnector." +
+                "authenticationProvider:notifications.updateOutboundProvisioningConnector." +
                     "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.updateOutboundProvisioningConnector." +
+                "authenticationProvider:notifications.updateOutboundProvisioningConnector." +
                     "genericError.message"
             )
         })
@@ -279,13 +279,13 @@ export const handleGetIDPTemplateListError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getIDPTemplateList." +
+                    "authenticationProvider:notifications.getIDPTemplateList." +
                         "error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getIDPTemplateList.error.message"
+                    "authenticationProvider:notifications.getIDPTemplateList.error.message"
                 )
             })
         );
@@ -296,12 +296,12 @@ export const handleGetIDPTemplateListError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getIDPTemplateList." +
+                "authenticationProvider:notifications.getIDPTemplateList." +
                     "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getIDPTemplateList.genericError.message"
+                "authenticationProvider:notifications.getIDPTemplateList.genericError.message"
             )
         })
     );
@@ -312,12 +312,12 @@ export const handleGetIDPTemplateAPICallError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getIDPTemplate.error.description",
+                    "authenticationProvider:notifications.getIDPTemplate.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getIDPTemplate.error.message"
+                    "authenticationProvider:notifications.getIDPTemplate.error.message"
                 )
             })
         );
@@ -328,12 +328,12 @@ export const handleGetIDPTemplateAPICallError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getIDPTemplate." +
+                "authenticationProvider:notifications.getIDPTemplate." +
                     "genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getIDPTemplate.genericError.message"
+                "authenticationProvider:notifications.getIDPTemplate.genericError.message"
             )
         })
     );
@@ -344,12 +344,12 @@ export const handleGetIDPListCallError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getIDPList.error.message",
+                    "authenticationProvider:notifications.getIDPList.error.message",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.authenticationProvider.notifications.getIDPList.error.message"
+                    "authenticationProvider:notifications.getIDPList.error.message"
                 )
             })
         );
@@ -359,11 +359,11 @@ export const handleGetIDPListCallError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getIDPList.genericError.description"
+                "authenticationProvider:notifications.getIDPList.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.authenticationProvider.notifications.getIDPList.genericError.message"
+                "authenticationProvider:notifications.getIDPList.genericError.message"
             )
         })
     );

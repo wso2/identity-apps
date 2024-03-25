@@ -62,16 +62,16 @@ const ExpertModeIdPCreateWizardHelp: FunctionComponent<ExpertModeIdPCreateWizard
         <div data-componentid={ componentId }>
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.expert" +
+                    t("authenticationProvider:templates.expert" +
                         ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.expert." +
+                        ? t("authenticationProvider:templates.expert." +
                             "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.expert." +
+                        : t("authenticationProvider:templates.expert." +
                             "wizardHelp.name.idpDescription")
                 }
             </p>
@@ -79,14 +79,14 @@ const ExpertModeIdPCreateWizardHelp: FunctionComponent<ExpertModeIdPCreateWizard
             <Divider/>
 
             <Heading as="h5">
-                { t("console:develop.features.authenticationProvider.templates.expert.wizardHelp.description.heading") }
+                { t("authenticationProvider:templates.expert.wizardHelp.description.heading") }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.expert." +
+                        ? t("authenticationProvider:templates.expert." +
                             "wizardHelp.description.connectionDescription")
-                        : t("console:develop.features.authenticationProvider.templates.expert." +
+                        : t("authenticationProvider:templates.expert." +
                             "wizardHelp.description.idpDescription")
                 }
             </p>

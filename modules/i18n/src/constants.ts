@@ -89,8 +89,24 @@ export class I18nModuleConstants {
     /**
      * Branding namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly BRANDING_NAMESPACE: string = "branding";
+  
+    /**
+     * emailTemplates namespace.
+     * @constant
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
+
+    /**
+     * Certificate namespace.
+     * @constant
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = "certificates";
+
+    /**
+     * authenticationProvider namespace.
+     * @constant
+     */
+    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
 }

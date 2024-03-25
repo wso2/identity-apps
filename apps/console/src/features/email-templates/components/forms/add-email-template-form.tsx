@@ -150,11 +150,11 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 if (response.status === 201) {
                     dispatch(addAlert<AlertInterface>({
                         description: t(
-                            "console:manage.features.emailTemplates.notifications.createTemplate.success.description"
+                            "emailTemplates:notifications.createTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.emailTemplates.notifications.createTemplate.success.message"
+                            "emailTemplates:notifications.createTemplate.success.message"
                         )
                     }));
 
@@ -167,7 +167,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.emailTemplates.notifications.createTemplate.genericError.message"
+                        "emailTemplates:notifications.createTemplate.genericError.message"
                     )
                 }));
             })
@@ -198,11 +198,11 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 if (response.status === 200) {
                     dispatch(addAlert<AlertInterface>({
                         description: t(
-                            "console:manage.features.emailTemplates.notifications.updateTemplate.success.description"
+                            "emailTemplates:notifications.updateTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.emailTemplates.notifications.updateTemplate.success.message"
+                            "emailTemplates:notifications.updateTemplate.success.message"
                         )
                     }));
                 }
@@ -212,7 +212,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.emailTemplates.notifications.updateTemplate.genericError.message"
+                        "emailTemplates:notifications.updateTemplate.genericError.message"
                     )
                 }));
             })

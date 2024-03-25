@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../core";
 import { listClientCertificates } from "../api";
@@ -35,9 +37,7 @@ type CertificatesTruststorePageInterface = TestableComponentInterface
 /**
  * This renders the Certificates Truststore page.
  *
- * @param {CertificatesTruststorePageInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param CertificatesTruststorePageInterface - props Props injected to the component.
  */
 const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterface> = (
     props: CertificatesTruststorePageInterface
@@ -50,7 +50,11 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY = [
+    const SORT_BY: {
+        key: number;
+        text: string;
+        value: string;
+    }[] = [
         {
             key: 0,
             text: "Alias",
@@ -68,7 +72,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -77,11 +81,11 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
      */
     const fetchCertificatesTruststore = () => {
         setIsLoading(true);
-        listClientCertificates().then(response => {
+        listClientCertificates().then((response:any) => {
             setCertificatesTruststore(response);
             setFilteredCertificatesTruststore(response);
             setIsLoading(false);
-        }).catch(error => {
+        }).catch((error: IdentityAppsError) => {
             setIsLoading(false);
             dispatch(addAlert(
                 {
@@ -104,11 +108,9 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * This slices and returns a portion of the list.
      *
-     * @param {number} list.
-     * @param {number} limit.
-     * @param {number} offset.
-     *
-     * @return {Certificate[]} Paginated list.
+     * @param list - List of items.
+     * @param limit - Items per page.
+     * @param offset - Offset.
      */
     const paginate = (list: Certificate[], limit: number, offset: number): Certificate[] => {
         return list?.slice(offset, offset + limit);
@@ -117,8 +119,8 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * Handles the change in the number of items to display.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {DropdownProps} data.
+     * @param event -  React.MouseEvent<HTMLAnchorElement>.
+     * @param data -  DropdownProps.
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
@@ -127,8 +129,8 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * This paginates.
      *
-     * @param {React.MouseEvent<HTMLAnchorElement>} event.
-     * @param {PaginationProps} data.
+     * @param event - React.MouseEvent<HTMLAnchorElement>.
+     * @param data - PaginationProps.
      */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
@@ -137,7 +139,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * Handles sort order change.
      *
-     * @param {boolean} isAscending.
+     * @param isAscending - boolean.
      */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
@@ -146,17 +148,17 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
     /**
      * Handle sort strategy change.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} event.
-     * @param {DropdownProps} data.
+     * @param event - React.SyntheticEvent<HTMLElement> .
+     * @param data - DropdownProps.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: any )=> option.value === data.value)[ 0 ]);
     };
 
     /**
      * Handles the `onFilter` callback action from the search component.
      *
-     * @param {string} query - Search query.
+     * @param query - Search query.
      */
     const handleTruststoreFilter = (query: string): void => {
         // TODO: Implement once the API is ready
@@ -193,19 +195,19 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
+                            t("certificates:truststore.advancedSearch.form.inputs" +
                                 ".filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
+                            t("certificates:truststore.advancedSearch.form.inputs" +
                                 ".filterCondition.placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
+                            t("certificates:truststore.advancedSearch.form.inputs" +
                                 ".filterValue.placeholder")
                         }
                         placeholder={
-                            t("console:manage.features.certificates.truststore.advancedSearch.placeholder")
+                            t("certificates:truststore.advancedSearch.placeholder")
                         }
                         defaultSearchAttribute="alias"
                         defaultSearchOperator="co"
@@ -238,19 +240,19 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
+                                t("certificates:truststore.advancedSearch.form.inputs" +
                                     ".filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
+                                t("certificates:truststore.advancedSearch.form.inputs" +
                                     ".filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("console:manage.features.certificates.truststore.advancedSearch.form.inputs" +
+                                t("certificates:truststore.advancedSearch.form.inputs" +
                                     ".filterValue.placeholder")
                             }
                             placeholder={
-                                t("console:manage.features.certificates.truststore.advancedSearch.placeholder")
+                                t("certificates:truststore.advancedSearch.placeholder")
                             }
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"
