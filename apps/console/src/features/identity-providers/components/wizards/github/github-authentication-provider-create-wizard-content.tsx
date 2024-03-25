@@ -139,8 +139,7 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
             });
         }
         if (nameExist) {
-            return t("console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
+            return t("authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate");
         }
     };
@@ -161,15 +160,15 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
         };
 
         if (!values.name) {
-            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.name = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientId) {
-            errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.clientId = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientSecret) {
-            errors.clientSecret = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.clientSecret = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
 
@@ -197,11 +196,11 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="name"
                             name="name"
                             label={
-                                t("console:develop.features.authenticationProvider.forms." +
+                                t("authenticationProvider:forms." +
                                     "generalDetails.name.label")
                             }
                             placeholder={
-                                t("console:develop.features.authenticationProvider.forms." +
+                                t("authenticationProvider:forms." +
                                     "generalDetails.name.placeholder")
                             }
                             required={ true }
@@ -222,16 +221,16 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                             inputType="client_id"
                             name="clientId"
                             label={
-                                t("console:develop.features.authenticationProvider.forms" +
+                                t("authenticationProvider:forms" +
                                     ".authenticatorSettings.github.clientId.label")
                             }
                             placeholder={
-                                t("console:develop.features.authenticationProvider.forms" +
+                                t("authenticationProvider:forms" +
                                     ".authenticatorSettings.github.clientId.placeholder")
                             }
                             required={ true }
                             message={
-                                t("console:develop.features.authenticationProvider.forms" +
+                                t("authenticationProvider:forms" +
                                     ".authenticatorSettings.github.clientId.validations.required")
                             }
                             type="text"
@@ -253,16 +252,16 @@ export const GitHubAuthenticationProviderCreateWizardContent: FunctionComponent<
                             className="addon-field-wrapper"
                             name="clientSecret"
                             label={
-                                t("console:develop.features.authenticationProvider.forms" +
+                                t("authenticationProvider:forms" +
                                     ".authenticatorSettings.github.clientSecret.label")
                             }
                             placeholder={
-                                t("console:develop.features.authenticationProvider.forms" +
+                                t("authenticationProvider:forms" +
                                     ".authenticatorSettings.github.clientSecret.placeholder")
                             }
                             required={ true }
                             message={
-                                t("console:develop.features.authenticationProvider.forms" +
+                                t("authenticationProvider:forms" +
                                     ".authenticatorSettings.github.clientSecret.validations.required")
                             }
                             type="password"

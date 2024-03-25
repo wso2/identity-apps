@@ -142,10 +142,10 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     });
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        description: t("authenticationProvider:notifications.addIDP." +
                         "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        message: t("authenticationProvider:notifications.addIDP." +
                         "success.message")
                     }));
 
@@ -179,11 +179,11 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
 
                     if (error.response && error.response.data && error.response.data.description) {
                         setAlert({
-                            description: t("console:develop.features.authenticationProvider.notifications." +
+                            description: t("authenticationProvider:notifications." +
                             "addIDP.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.authenticationProvider.notifications." +
+                            message: t("authenticationProvider:notifications." +
                             "addIDP.error.message")
                         });
 
@@ -191,10 +191,10 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     }
 
                     setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        description: t("authenticationProvider:notifications.addIDP." +
                         "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                        message: t("authenticationProvider:notifications.addIDP." +
                         "genericError.message")
                     });
                 })
@@ -268,7 +268,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                    { t("authenticationProvider:wizards.buttons.next") }
                                 </PrimaryButton>
                             ) : (
                                 <>
@@ -281,7 +281,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
-                                        { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                        { t("authenticationProvider:wizards.buttons.finish") }
                                     </PrimaryButton>
                                 </>
                             ) }
@@ -295,7 +295,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                                         data-componentid={ `${ componentId }-modal-previous-button` }
                                     >
                                         {
-                                            t("console:develop.features.authenticationProvider.wizards" +
+                                            t("authenticationProvider:wizards" +
                                                 ".buttons.previous")
                                         }
                                     </LinkButton>
@@ -327,7 +327,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider.templates.expert.wizardHelp.heading") }
+                            { t("authenticationProvider:templates.expert.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>

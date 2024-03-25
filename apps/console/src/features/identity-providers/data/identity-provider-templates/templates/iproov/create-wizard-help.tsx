@@ -58,7 +58,7 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
             <Message
                 type="info"
                 header={
-                    t("console:develop.features.authenticationProvider.templates.iproov.wizardHelp." +
+                    t("authenticationProvider:templates.iproov.wizardHelp." +
                         "preRequisites.heading")
                 }
                 content={
@@ -66,7 +66,7 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
                         <p>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.iproov.wizardHelp." +
+                                    "authenticationProvider:templates.iproov.wizardHelp." +
                                     "preRequisites.appDescription"
                                 }
                             >
@@ -79,7 +79,7 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
                         <p>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.templates.iproov.wizardHelp." +
+                                    "authenticationProvider:templates.iproov.wizardHelp." +
                                     "preRequisites.tokenDescription"
                                 }
                             >
@@ -95,14 +95,14 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.iproov" +
+                    t("authenticationProvider:templates.iproov" +
                         ".wizardHelp.name.heading")
                 }
             </Heading>
             <p>
                 {
                     useNewConnectionsView
-                        ? t("console:develop.features.authenticationProvider.templates.iproov." +
+                        ? t("authenticationProvider:templates.iproov." +
                             "wizardHelp.name.connectionDescription")
                         : t("console:develop.features.authenthypricationProvider.templates.iproov." +
                             "wizardHelp.name.idpDescription")
@@ -112,12 +112,12 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
             <Divider/>
 
             <Heading as="h5">
-                { t("console:develop.features.authenticationProvider.templates.iproov.wizardHelp.appId.heading") }
+                { t("authenticationProvider:templates.iproov.wizardHelp.appId.heading") }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.iproov" +
+                        "authenticationProvider:templates.iproov" +
                         ".wizardHelp.appId.description"
                     }
                 >
@@ -129,14 +129,14 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.iproov" +
+                    t("authenticationProvider:templates.iproov" +
                         ".wizardHelp.baseUrl.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.iproov" +
+                        "authenticationProvider:templates.iproov" +
                         ".wizardHelp.baseUrl.description"
                     }
                 >
@@ -148,14 +148,14 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
 
             <Heading as="h5">
                 {
-                    t("console:develop.features.authenticationProvider.templates.iproov" +
+                    t("authenticationProvider:templates.iproov" +
                         ".wizardHelp.apiToken.heading")
                 }
             </Heading>
             <p>
                 <Trans
                     i18nKey={
-                        "console:develop.features.authenticationProvider.templates.iproov" +
+                        "authenticationProvider:templates.iproov" +
                         ".wizardHelp.apiToken.description"
                     }
                 >

@@ -190,18 +190,18 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const handleCertificateTypeChange = (certType: CertificateTypeInterface): void => {
         if (certType === CertificateTypeInterface.PEM && !isEmpty(JWKSValue)) {
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider.notifications." +
+                description: t("authenticationProvider:notifications." +
                     "changeCertType.pem.description"),
                 level: AlertLevels.WARNING,
-                message: t("console:develop.features.authenticationProvider.notifications." +
+                message: t("authenticationProvider:notifications." +
                     "changeCertType.pem.message")
             }));
         } else if (certType === CertificateTypeInterface.JWKS && !isEmpty(PEMValue)) {
             dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider.notifications.changeCertType.jwks" +
+                description: t("authenticationProvider:notifications.changeCertType.jwks" +
                     ".description"),
                 level: AlertLevels.WARNING,
-                message: t("console:develop.features.authenticationProvider.notifications.changeCertType.jwks.message")
+                message: t("authenticationProvider:notifications.changeCertType.jwks.message")
             }));
         }
 
@@ -485,7 +485,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     <Message
                                         type="error"
                                         data-testid={ `${ testId }-error-message` }
-                                        content={ t("console:manage.features.certificates.keystore.errorEmpty") }
+                                        content={ t("certificates:keystore.errorEmpty") }
                                     />
                                 )
                             }
