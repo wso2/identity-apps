@@ -150,7 +150,7 @@
         return;
     }
     Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && isNotificationBasedPasswordRecoveryEnabledByTenant;
-    Boolean isSMSRevocetyAvailable = isSmsOTPEnabled && isSMSOTPBasedPasswordRecoveryEnabledByTenant;
+    Boolean isSMSRecoveryAvailable = isSmsOTPEnabled && isSMSOTPBasedPasswordRecoveryEnabledByTenant;
 
     String usernameLabel = "Username";
     if (isMultiAttributeLoginEnabledInTenant) {
@@ -319,9 +319,9 @@
                         </div>
 
                         <%
-                            Boolean multipleRecoveryOptionsAvailable = isEmailRecoveryAvailable && isSMSRevocetyAvailable
+                            Boolean multipleRecoveryOptionsAvailable = isEmailRecoveryAvailable && isSMSRecoveryAvailable
                                                     || isEmailRecoveryAvailable && isQuestionBasedPasswordRecoveryEnabledByTenant
-                                                    || isSMSRevocetyAvailable && isQuestionBasedPasswordRecoveryEnabledByTenant;
+                                                    || isSMSRecoveryAvailable && isQuestionBasedPasswordRecoveryEnabledByTenant;
 
                             if (multipleRecoveryOptionsAvailable) {
                         %>
@@ -338,11 +338,11 @@
                             </div>
                             <%
                                 }
-                                if (isSMSRevocetyAvailable) {
+                                if (isSMSRecoveryAvailable) {
                             %>
                             <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="recoveryOption" value="EMAIL" checked/>
+                                    <input type="radio" name="recoveryOption" value="SMSOTP" checked/>
                                     <label>
                                     Recover with SMSOTP
                                     </label>
@@ -365,11 +365,14 @@
                         </div>
                         <% } else if (isNotificationBasedPasswordRecoveryEnabledByTenant){ %>
                             <input type="hidden" name="recoveryOption" value="EMAIL"/>
-                        <% } else if (isNotificationBasedPasswordRecoveryEnabledByTenant){ %>
+                        <% } else if (isSMSRecoveryAvailable){ %>
                             <input type="hidden" name="recoveryOption" value="SMSOTP"/>
                         <% } else { %>
                             <input type="hidden" name="recoveryOption" value="SECURITY_QUESTIONS"/>
                         <% } %>
+
+                        <input type="hidden" name="recoveryStage" value="INITIATE"/>
+                        <input type="hidden" name="channel" value=""/>
 
                         <%
                             String callback = request.getParameter("callback");
@@ -412,7 +415,7 @@
                                 String submitButtoni18nText = multipleRecoveryOptionsAvailable? "Submit" :
                                             isEmailRecoveryAvailable? "password.recovery.button" : 
                                             isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
-                                            isSMSRevocetyAvailable ? "password.recovery.button" : // todo:RNN: Change this into a new value for smsotp
+                                            isSMSRecoveryAvailable ? "password.recovery.button" : // todo:RNN: Change this into a new value for smsotp
                                             "Submit";
                             %>
                             <button id="recoverySubmit"
