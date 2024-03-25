@@ -20,4 +20,4 @@ export * from "./common";
 export * from "./console";
 export * from "./myaccount";
 export * from "./claims";
-export * from "./emailLocale";
+export * from "./email-locale";

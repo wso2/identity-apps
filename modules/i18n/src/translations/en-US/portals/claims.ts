@@ -17,7 +17,7 @@
  */
 import { ClaimsNS } from "../../../models";
 
-export const claims : ClaimsNS ={
+export const claims: ClaimsNS = {
     attributeMappings: {
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "

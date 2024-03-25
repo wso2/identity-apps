@@ -20,4 +20,4 @@ export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./claims-ns";
-export * from "./emailLocale-ns";
+export * from "./email-locale-ns";

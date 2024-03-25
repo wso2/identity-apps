@@ -62,22 +62,6 @@ export class I18nConstants {
      * @type {string}
      * @default
      */
-    public static readonly CLAIMS_NAMESPACE: string = "claims";
-
-    /**
-     * Email locale namespace.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly EMAIL_LOCALE_NAMESPACE: string = "emailLocale";
-
-    /**
-     * Claims namespace.
-     * @constant
-     * @type {string}
-     * @default
-     */
     public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
 
     /**

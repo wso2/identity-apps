@@ -17,7 +17,7 @@
  */
 import { emailLocaleNS } from "../../../models";
 
-export const emailLocale: emailLocaleNS ={
+export const emailLocale: emailLocaleNS = {
     buttons: {
         addLocaleTemplate: "Add Locale Template",
         saveChanges: "Save Changes"
