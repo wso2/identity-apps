@@ -80,18 +80,18 @@ const BasicLoginFlowTemplateChangeConfirmationModal: FunctionComponent<
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("loginFlow:basicLoginFlowSelectConfirmationModal.heading") }
+                { t("authenticationFlow:basicLoginFlowSelectConfirmationModal.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-componentid={ `${componentId}-message` }
             >
-                { t("loginFlow:basicLoginFlowSelectConfirmationModal.message") }
+                { t("authenticationFlow:basicLoginFlowSelectConfirmationModal.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
                 <Trans
-                    i18nKey={ "loginFlow:basicLoginFlowSelectConfirmationModal.content" }
+                    i18nKey={ "authenticationFlow:basicLoginFlowSelectConfirmationModal.content" }
                 >
                     The selected template will replace the existing login steps you configured.
                     Click <Code>Confirm</Code> to proceed.

@@ -19,4 +19,4 @@
 export * from "./common";
 export * from "./console";
 export * from "./myaccount";
-export * from "./login-flow";
+export * from "./authentication-flow";

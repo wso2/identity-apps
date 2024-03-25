@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export interface LoginFlowNS {
+export interface AuthenticationFlowNS {
     adaptiveLoginFlowSelectConfirmationModal: {
         content: string;
         heading: string;

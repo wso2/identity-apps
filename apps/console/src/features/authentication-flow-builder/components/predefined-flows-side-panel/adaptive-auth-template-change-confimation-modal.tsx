@@ -89,14 +89,14 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("loginFlow:adaptiveLoginFlowSelectConfirmationModal.heading") }
+                { t("authenticationFlow:adaptiveLoginFlowSelectConfirmationModal.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-componentid={ `${componentId}-message` }
             >
-                { t("loginFlow:adaptiveLoginFlowSelectConfirmationModal.message") }
+                { t("authenticationFlow:adaptiveLoginFlowSelectConfirmationModal.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
                 {
@@ -133,7 +133,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                 }
                 <Trans
                     i18nKey={
-                        "loginFlow:adaptiveLoginFlowSelectConfirmationModal.content"
+                        "authenticationFlow:adaptiveLoginFlowSelectConfirmationModal.content"
                     }
                 >
                     The selected template will replace the existing script in the editor as well

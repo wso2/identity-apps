@@ -61,10 +61,10 @@ const TOTPFragment = (props: TOTPFragmentPropsInterface): ReactElement => {
     return (
         <div className="totp-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("loginFlow:nodes.totp.header") }
+                { t("authenticationFlow:nodes.totp.header") }
             </Typography>
             <Typography align="center" className="oxygen-sign-in-sub-header" variant="subtitle1">
-                { t("loginFlow:nodes.totp.form.fields.code.label") }
+                { t("authenticationFlow:nodes.totp.form.fields.code.label") }
             </Typography>
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
@@ -72,7 +72,7 @@ const TOTPFragment = (props: TOTPFragmentPropsInterface): ReactElement => {
                         toRemove: IdentityProviderManagementConstants.TOTP_AUTHENTICATOR
                     });
                 } }
-                optionRemoveTooltipContent={ t("loginFlow:nodes.totp.controls.optionRemoveTooltipContent") }
+                optionRemoveTooltipContent={ t("authenticationFlow:nodes.totp.controls.optionRemoveTooltipContent") }
             >
                 <div className="pin-code-input-fields">
                     { [ ...Array(6) ].map((_: number, index: number) => (
@@ -93,10 +93,10 @@ const TOTPFragment = (props: TOTPFragmentPropsInterface): ReactElement => {
                 type="submit"
                 fullWidth
             >
-                { t("loginFlow:nodes.totp.form.actions.primary") }
+                { t("authenticationFlow:nodes.totp.form.actions.primary") }
             </Button>
             <Typography align="center" className="oxygen-sign-in-sub-header" variant="subtitle2">
-                { t("loginFlow:nodes.totp.form.help") }
+                { t("authenticationFlow:nodes.totp.form.help") }
             </Typography>
         </div>
     );

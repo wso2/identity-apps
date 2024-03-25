@@ -87,10 +87,10 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
-     * Login flow namespace.
+     * Authentication flow namespace.
      * @constant
      * @type {string}
      * @default
      */
-    public static readonly LOGIN_FLOW_NAMESPACE: string = "loginFlow";
+    public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = "authenticationFlow";
 }

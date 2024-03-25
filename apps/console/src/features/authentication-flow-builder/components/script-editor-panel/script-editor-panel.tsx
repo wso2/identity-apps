@@ -229,7 +229,7 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
         <Box className="script-editor-toolbar-container">
             <Toolbar variant="dense">
                 <Box>
-                    <Typography>{ t("loginFlow:scriptEditor.panelHeader") }</Typography>
+                    <Typography>{ t("authenticationFlow:scriptEditor.panelHeader") }</Typography>
                 </Box>
                 <div className="actions">
                     { scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized && (
@@ -245,13 +245,13 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                                         } }
                                     >
                                         <MenuItem value={ SupportedEditorThemes.LIGHT }>
-                                            { t("loginFlow:scriptEditor.themes.light.label") }
+                                            { t("authenticationFlow:scriptEditor.themes.light.label") }
                                         </MenuItem>
                                         <MenuItem value={ SupportedEditorThemes.DARK }>
-                                            { t("loginFlow:scriptEditor.themes.dark.label") }
+                                            { t("authenticationFlow:scriptEditor.themes.dark.label") }
                                         </MenuItem>
                                         <MenuItem value={ SupportedEditorThemes.HIGH_CONTRAST }>
-                                            { t("loginFlow:scriptEditor.themes.highContrast.label") }
+                                            { t("authenticationFlow:scriptEditor.themes.highContrast.label") }
                                         </MenuItem>
                                     </Select>
                                 </FormControl>

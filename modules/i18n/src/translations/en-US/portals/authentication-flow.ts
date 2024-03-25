@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { LoginFlowNS } from "../../../models";
+import { AuthenticationFlowNS } from "../../../models";
 
 /**
  * NOTES: No need to care about the max-len for this file since it's easier to
@@ -24,7 +24,7 @@ import { LoginFlowNS } from "../../../models";
 /* eslint-disable max-len */
 /* eslint-disable sort-keys */
 
-export const loginFlow: LoginFlowNS = {
+export const authenticationFlow: AuthenticationFlowNS = {
     adaptiveLoginFlowSelectConfirmationModal: {
         content: "The selected template will replace the existing script in the editor as well as the login steps you configured. Click <1>Confirm</1> to proceed.",
         heading: "Are you sure?",

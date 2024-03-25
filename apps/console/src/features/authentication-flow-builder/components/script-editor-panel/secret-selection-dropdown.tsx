@@ -127,7 +127,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                 size="small"
                 data-componentid={ `${ componentId }-trigger` }
             >
-                { t("loginFlow:scriptEditor.secretSelector.label") }
+                { t("authenticationFlow:scriptEditor.secretSelector.label") }
             </Button>
             <Popover
                 anchorEl={ secretsDropdownAnchorEl }
@@ -160,13 +160,13 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                         >
                             <ListItemText>
                                 <Typography variant="body1">
-                                    { t("loginFlow:scriptEditor.secretSelector.emptyPlaceholder.header") }
+                                    { t("authenticationFlow:scriptEditor.secretSelector.emptyPlaceholder.header") }
                                 </Typography>
                                 <Divider  />
                                 <Typography variant="caption">
                                     <Trans
                                         i18nKey={
-                                            "loginFlow:scriptEditor.secretSelector." +
+                                            "authenticationFlow:scriptEditor.secretSelector." +
                                             "emptyPlaceholder.description"
                                         }
                                     >
@@ -226,7 +226,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                                     } }
                                     data-componentid={ `${ componentId }-create-new-secret-button` }
                                 >
-                                    { t("loginFlow:scriptEditor.secretSelector.actions.create.label") }
+                                    { t("authenticationFlow:scriptEditor.secretSelector.actions.create.label") }
                                 </Button>
                             )
                         }

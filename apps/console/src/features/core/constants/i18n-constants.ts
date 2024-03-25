@@ -46,9 +46,9 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
-     * Login Flow namespace.
+     * Authentication Flow namespace.
      */
-    public static readonly LOGIN_FLOW_NAMESPACE: string = I18nModuleConstants.LOGIN_FLOW_NAMESPACE;
+    public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -57,7 +57,7 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ I18nConstants.LOGIN_FLOW_NAMESPACE, "portals" ]
+        [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ]
     ]);
 
     /**

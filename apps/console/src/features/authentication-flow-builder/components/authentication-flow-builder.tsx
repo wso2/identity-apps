@@ -114,19 +114,19 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
         {
             id: 0,
-            label: t("loginFlow:modes.legacy.label"),
+            label: t("authenticationFlow:modes.legacy.label"),
             mode: AuthenticationFlowBuilderModes.Classic
         }
     ] : [
         {
             id: 0,
-            label: t("loginFlow:modes.legacy.label"),
+            label: t("authenticationFlow:modes.legacy.label"),
             mode: AuthenticationFlowBuilderModes.Classic
         },
         {
             extra: <Chip size="small" label="Beta" className="oxygen-chip-beta" />,
             id: 1,
-            label: t("loginFlow:modes.visual.label"),
+            label: t("authenticationFlow:modes.visual.label"),
             mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
@@ -338,7 +338,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                     classNames("predefined-side-panel-drawer", { hidden: activeFlowMode.id === FlowModes[0].id })
                 }
                 panel={ <PredefinedFlowsSidePanel showAdaptiveLoginTemplates={ isAdaptiveAuthAvailable } /> }
-                panelControlsLabel={ t("loginFlow:predefinedFlows.panelHeader") }
+                panelControlsLabel={ t("authenticationFlow:predefinedFlows.panelHeader") }
             >
                 <div id="drawer-container" style={ { position: "relative" } }>
                     <Box>
@@ -400,7 +400,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                         data-componentid={ `${componentId}-update-button` }
                                         onClick={ () => handleOnUpdate(authenticationSequence) }
                                     >
-                                        { t("loginFlow:visualEditor.actions.update.label") }
+                                        { t("authenticationFlow:visualEditor.actions.update.label") }
                                     </PrimaryButton>
                                 </div>
                             ) }

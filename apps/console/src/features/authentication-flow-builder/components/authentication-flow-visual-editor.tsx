@@ -533,7 +533,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
                 >
                     <ArrowRotateLeft />
-                    { t("loginFlow:visualEditor.actions.revert.label") }
+                    { t("authenticationFlow:visualEditor.actions.revert.label") }
                 </Button>
                 <ReactFlow
                     fitView
@@ -554,7 +554,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             disabled={ !isValidAuthenticationFlow }
                             data-componentid={ `${componentId}-update-button` }
                         >
-                            { t("loginFlow:visualEditor.actions.update.label") }
+                            { t("authenticationFlow:visualEditor.actions.update.label") }
                         </Button>
                     ) }
                 </ReactFlow>

@@ -91,8 +91,8 @@ const ActiveSessionsLimitFragment = (props: ActiveSessionsLimitFragmentPropsInte
             <table>
                 <tr>
                     <th><Checkbox className="non-interactive" /></th>
-                    <th>{ t("loginFlow:nodes.activeSessionsLimit.form.sessions.browserLabel") }</th>
-                    <th>{ t("loginFlow:nodes.activeSessionsLimit.form.sessions.lastAccessedLabel") }</th>
+                    <th>{ t("authenticationFlow:nodes.activeSessionsLimit.form.sessions.browserLabel") }</th>
+                    <th>{ t("authenticationFlow:nodes.activeSessionsLimit.form.sessions.lastAccessedLabel") }</th>
                 </tr>
                 <tr>
                     <td><Checkbox className="non-interactive" /></td>
@@ -110,10 +110,10 @@ const ActiveSessionsLimitFragment = (props: ActiveSessionsLimitFragmentPropsInte
     return (
         <div className="active-sessions-limit-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("loginFlow:nodes.activeSessionsLimit.header") }
+                { t("authenticationFlow:nodes.activeSessionsLimit.header") }
             </Typography>
             <Typography align="center" className="oxygen-sign-in-sub-header" variant="subtitle1">
-                { t("loginFlow:nodes.activeSessionsLimit.form.help") }
+                { t("authenticationFlow:nodes.activeSessionsLimit.form.help") }
             </Typography>
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
@@ -121,7 +121,7 @@ const ActiveSessionsLimitFragment = (props: ActiveSessionsLimitFragmentPropsInte
                         toRemove: IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
                     });
                 } }
-                optionRemoveTooltipContent={ t("loginFlow:nodes.signIn.controls.optionRemoveTooltipContent") }
+                optionRemoveTooltipContent={ t("authenticationFlow:nodes.signIn.controls.optionRemoveTooltipContent") }
             >
                 {
                     getActiveSessionsTable()
