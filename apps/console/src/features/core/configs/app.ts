@@ -192,7 +192,6 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
-                I18nConstants.EMAIL_TEMPLATE_TYPES_NAMESPACE,
                 I18nConstants.EMAIL_TEMPLATES_NAMESPACE,
                 I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
                 I18nConstants.CERTIFICATES_NAMESPACE

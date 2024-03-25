@@ -29,7 +29,6 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
         I18nModuleConstants.EXTENSIONS_NAMESPACE,
         I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE,
-        I18nModuleConstants.EMAIL_TEMPLATE_TYPES_NAMESPACE,
         I18nModuleConstants.CERTIFICATES_NAMESPACE,
         I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE
     ]
