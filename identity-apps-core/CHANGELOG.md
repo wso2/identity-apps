@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.48
+
+### Patch Changes
+
+- [#5729](https://github.com/wso2/identity-apps/pull/5729) [`ac910bfad7`](https://github.com/wso2/identity-apps/commit/ac910bfad78e53384a0fe70a2248b9dd0f3696da) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Added support to validate MultiOptionURI
+
 ## 2.1.47
 
 ### Patch Changes
