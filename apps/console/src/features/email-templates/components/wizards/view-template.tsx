@@ -98,7 +98,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
             <Modal.Header className="wizard-header template-type-wizard">
                 { templateData?.subject }
                 <Heading as="h6">
-                    { t("console:manage.features.emailTemplates.viewTemplate.heading") }
+                    { t("emailTemplates:viewTemplate.heading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container template-view-content" scrolling>
@@ -122,7 +122,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                                 onClick={ () => { onEditHandler(); } }
                                 data-testid={ `${ testId }-modal-edit-button` }
                             >
-                                { t("console:manage.features.emailTemplates.buttons.editTemplate") }
+                                { t("emailTemplates:buttons.editTemplate") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

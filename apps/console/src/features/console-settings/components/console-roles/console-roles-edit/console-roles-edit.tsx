@@ -98,7 +98,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const resolveResourcePanes = () => {
         const panes: ResourceTabPaneInterface[] = [
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
+                menuItem: t("roles:edit.menuItems.basic"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
@@ -114,7 +114,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 )
             },
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
+                menuItem: t("roles:edit.menuItems.permissions"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ConsoleRolePermissions
@@ -132,7 +132,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 )
             },
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.groups"),
+                menuItem: t("roles:edit.menuItems.groups"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
@@ -146,7 +146,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 )
             },
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
+                menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleUsersList
@@ -162,7 +162,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
             // Hide connected apps tab if the audience is application.
             roleObject?.audience?.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
                 ? {
-                    menuItem: t("console:manage.features.roles.edit.menuItems.connectedApps"),
+                    menuItem: t("roles:edit.menuItems.connectedApps"),
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleConnectedApps

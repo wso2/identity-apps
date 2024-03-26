@@ -303,7 +303,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                                     wizardRef.current.gotoNextPage();
                                 } }
                                 data-componentid={ `${ componentId }-modal-next-button` }>
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                { t("authenticationProvider:wizards.buttons.next") }
                                 <Icon name="arrow right"/>
                             </PrimaryButton>
                         ) }
@@ -322,7 +322,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                                 data-componentid={ `${ componentId }-modal-finish-button` }
                                 loading={ isSubmitting }
                             >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                { t("authenticationProvider:wizards.buttons.finish") }
                             </PrimaryButton>
                         ) }
                         { currentWizardStep > 0 && (
@@ -332,7 +332,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                                 onClick={ () => wizardRef.current.gotoPreviousPage() }
                                 data-componentid={ `${ componentId }-modal-previous-button` }>
                                 <Icon name="arrow left"/>
-                                { t("console:develop.features.authenticationProvider.wizards.buttons." +
+                                { t("authenticationProvider:wizards.buttons." +
                                     "previous") }
                             </LinkButton>
                         ) }

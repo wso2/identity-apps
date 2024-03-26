@@ -133,10 +133,10 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                        || t("claims:local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                        || t("claims:local.notifications.getClaims.genericError.message")
                 }
             ));
         });
@@ -148,11 +148,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                 dispatch(addAlert(
                     {
                         description: error?.response?.data?.description
-                            || t("console:manage.features.claims.external.notifications." +
+                            || t("claims:external.notifications." +
                                 "getExternalAttribute.genericError.description", { type: resolveType(attributeType) }),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            || t("console:manage.features.claims.external.notifications." +
+                            || t("claims:external.notifications." +
                                 "getExternalAttribute.genericError.message")
                     }
                 ));
@@ -245,11 +245,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: t("console:manage.features.claims.external.notifications." +
+                                description: t("claims:external.notifications." +
                                     "updateExternalAttribute.success.description",
                                 { type: resolveType(attributeType) }),
                                 level: AlertLevels.SUCCESS,
-                                message: t("console:manage.features.claims.external.notifications." +
+                                message: t("claims:external.notifications." +
                                     "updateExternalAttribute.success.message", { type: resolveType(attributeType) })
                             }
                         ));
@@ -258,12 +258,12 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         dispatch(addAlert(
                             {
                                 description: error?.response?.data?.description
-                                    || t("console:manage.features.claims.external.notifications." +
+                                    || t("claims:external.notifications." +
                                         "updateExternalAttribute.genericError.description",
                                     { type: resolveType(attributeType) }),
                                 level: AlertLevels.ERROR,
                                 message: error?.response?.data?.message
-                                    || t("console:manage.features.claims.external.notifications." +
+                                    || t("claims:external.notifications." +
                                         "updateExternalAttribute.genericError.message")
                             }
                         ));
@@ -283,13 +283,13 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             <Grid.Column width={ 8 }>
                                 <Field
                                     name="claimURI"
-                                    label={ t("console:manage.features.claims.external.forms.attributeURI.label",
+                                    label={ t("claims:external.forms.attributeURI.label",
                                         { type: resolveType(attributeType, true) }) }
                                     required={ true }
-                                    requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                                    requiredErrorMessage={ t("claims:external.forms." +
                                         "attributeURI.label", { type: resolveType(attributeType, true) }) }
                                     placeholder={
-                                        t("console:manage.features.claims.external.forms.attributeURI.label",
+                                        t("claims:external.forms.attributeURI.label",
                                             { type: resolveType(attributeType) })
                                     }
                                     type="text"
@@ -299,7 +299,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                         for (const claim of externalClaims) {
                                             if (claim.claimURI === value) {
                                                 validation.isValid = false;
-                                                validation.errorMessages.push(t("console:manage.features.claims." +
+                                                validation.errorMessages.push(t("claims:" +
                                                     "external.forms.attributeURI.validationErrorMessages.duplicateName",
                                                 { type: resolveType(attributeType) }));
 
@@ -315,11 +315,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
+                            label={ t("claims:external.forms.localAttribute.label") }
                             required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                            requiredErrorMessage={ t("claims:external.forms." +
                                 "localAttribute.requiredErrorMessage") }
-                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
+                            placeholder={ t("claims:external.forms.attributeURI.placeholder") }
                             search
                             loading={ isClaimsLoading }
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }

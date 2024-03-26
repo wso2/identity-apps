@@ -60,19 +60,19 @@ const CustomTextUnsavedChangesConfirmationModal: FunctionComponent<
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("console:brandingCustomText.revertUnsavedConfirmationModal.heading") }
+                { t("branding:brandingCustomText.revertUnsavedConfirmationModal.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-componentid={ `${componentId}-message` }
             >
-                { t("console:brandingCustomText.revertUnsavedConfirmationModal.message") }
+                { t("branding:brandingCustomText.revertUnsavedConfirmationModal.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
                 <Trans
                     i18nKey={
-                        "console:brandingCustomText.revertUnsavedConfirmationModal.content"
+                        "branding:brandingCustomText.revertUnsavedConfirmationModal.content"
                     }
                 >
                     If you switch the screen, your unsaved changes will be lost.

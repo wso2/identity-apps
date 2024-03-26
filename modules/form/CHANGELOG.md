@@ -1,5 +1,11 @@
 # @wso2is/form
 
+## 2.0.41
+
+### Patch Changes
+
+- [#5798](https://github.com/wso2/identity-apps/pull/5798) [`de0b331c72`](https://github.com/wso2/identity-apps/commit/de0b331c723c47295a1d1731684520df64150c9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix revert button for individual custom text configuration fields not appearing in text tab in branding page
+
 ## 2.0.40
 
 ### Patch Changes

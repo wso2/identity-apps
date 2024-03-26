@@ -114,10 +114,10 @@ export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: Insi
                 }).catch((error: Error) => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.insights.notifications.fetchInsights.genericError.description"
+                            "insights:notifications.fetchInsights.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.insights.notifications.fetchInsights.genericError.message")
+                        message: t("insights:notifications.fetchInsights.genericError.message")
                     }));
 
                     throw error;

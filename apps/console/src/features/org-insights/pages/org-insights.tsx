@@ -69,9 +69,9 @@ const OrgInsightsPage: FunctionComponent = () => {
     return (
         <PageLayout
             data-componentid="asgardeo-insights"
-            pageTitle={ t("console:manage.features.insights.pageTitle") }
-            title={ t("console:manage.features.insights.title") }
-            description={ t("console:manage.features.insights.description") }
+            pageTitle={ t("insights:pageTitle") }
+            title={ t("insights:title") }
+            description={ t("insights:description") }
             action={
                 (<>
                     <Select
@@ -96,10 +96,10 @@ const OrgInsightsPage: FunctionComponent = () => {
 
                     <div className="org-insights-last-fetched-warning">
                         <Hint icon="warning sign" popup compact warning>
-                            { t("console:manage.features.insights.lastFetchedMessage.tooltipText") }
+                            { t("insights:lastFetchedMessage.tooltipText") }
                         </Hint>
                         <p>
-                            { t("console:manage.features.insights.lastFetchedMessage.label", {
+                            { t("insights:lastFetchedMessage.label", {
                                 time: lastFetchTimestamp
                             }) }
                         </p>

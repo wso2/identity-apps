@@ -111,7 +111,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 </p>
             ) }
             assertionType="input"
-            primaryAction={ t("console:manage.features.claims.dialects.confirmations.action") }
+            primaryAction={ t("claims:dialects.confirmations.action") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
@@ -119,17 +119,17 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                { t("console:manage.features.claims.dialects.confirmations.header") }
+                { t("claims:dialects.confirmations.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
-                { t("console:manage.features.claims.dialects.confirmations.message") }
+                { t("claims:dialects.confirmations.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                { t("console:manage.features.claims.dialects.confirmations.content", {
+                { t("claims:dialects.confirmations.content", {
                     type: resolveType(attributeType)
                 }) }
             </ConfirmationModal.Content>
@@ -152,14 +152,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         description:
                             error?.description ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "fetchADialect.genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.message ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "fetchADialect.genericError.message"
                             )
                     })
@@ -204,7 +204,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             description:
                                 error?.response?.data?.description ||
                                 t(
-                                    "console:manage.features.claims.dialects.notifications." +
+                                    "claims:dialects.notifications." +
                                     "fetchExternalClaims.genericError.description",
                                     { type: resolveType(attributeType) }
                                 ),
@@ -212,7 +212,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             message:
                                 error?.response?.data?.message ||
                                 t(
-                                    "console:manage.features.claims.dialects.notifications." +
+                                    "claims:dialects.notifications." +
                                     "fetchExternalClaims.genericError.message"
                                 )
                         })
@@ -238,13 +238,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.claims.dialects.notifications." +
+                            "claims:dialects.notifications." +
                             "deleteDialect.success.description",
                             { type: resolveType(attributeType, true) }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.claims.dialects.notifications." + "deleteDialect.success.message"
+                            "claims:dialects.notifications." + "deleteDialect.success.message"
                         )
                     })
                 );
@@ -255,7 +255,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         description:
                             error?.description ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "deleteDialect.genericError.description",
                                 { type: resolveType(attributeType, true) }
                             ),
@@ -263,7 +263,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         message:
                             error?.message ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "deleteDialect.genericError.message"
                             )
                     })
@@ -279,7 +279,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
                                 <Header as="h4">
-                                    { t("console:manage.features.claims.dialects.pageLayout.edit.updateDialectURI", {
+                                    { t("claims:dialects.pageLayout.edit.updateDialectURI", {
                                         type: resolveType(attributeType, true)
                                     }) }
                                 </Header>
@@ -307,7 +307,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     <Grid columns={ 1 }>
                         <Grid.Column width={ 16 }>
                             <Header as="h4">
-                                { t("console:manage.features.claims.dialects.pageLayout.edit.updateExternalAttributes",
+                                { t("claims:dialects.pageLayout.edit.updateExternalAttributes",
                                     {
                                         type: resolveType(attributeType, true)
                                     }
@@ -345,14 +345,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                                     data-testid={ `${ testId }-danger-zone-group` }
                                 >
                                     <DangerZone
-                                        actionTitle={ t("console:manage.features.claims.dialects." +
+                                        actionTitle={ t("claims:dialects." +
                                             "dangerZone.actionTitle", {
                                             type: resolveType(attributeType, true, true)
                                         }) }
-                                        header={ t("console:manage.features.claims.dialects.dangerZone.header", {
+                                        header={ t("claims:dialects.dangerZone.header", {
                                             type: resolveType(attributeType, true)
                                         }) }
-                                        subheader={ t("console:manage.features.claims.dialects.dangerZone.subheader", {
+                                        subheader={ t("claims:dialects.dangerZone.subheader", {
                                             type: resolveType(attributeType)
                                         }) }
                                         onActionClick={ () => setConfirmDelete(true) }

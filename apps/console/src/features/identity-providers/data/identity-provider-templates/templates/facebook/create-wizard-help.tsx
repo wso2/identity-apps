@@ -71,7 +71,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                 <Message
                     type="info"
                     header={
-                        t("console:develop.features.authenticationProvider.templates.facebook." +
+                        t("authenticationProvider:templates.facebook." +
                         "wizardHelp.preRequisites.heading")
                     }
                     content={
@@ -79,7 +79,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.facebook." +
+                                        "authenticationProvider:templates.facebook." +
                                         "wizardHelp.preRequisites.getCredentials"
                                     }
                                 >
@@ -96,7 +96,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
     
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.facebook." +
+                                        "authenticationProvider:templates.facebook." +
                                         "wizardHelp.preRequisites.configureSiteURL"
                                     }
                                 >
@@ -111,7 +111,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "console:develop.features.authenticationProvider.templates.facebook." +
+                                        "authenticationProvider:templates.facebook." +
                                         "wizardHelp.preRequisites.configureRedirectURL"
                                     }
                                 >
@@ -128,7 +128,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                     showEmptyLinkText
                                 >
                                     {
-                                        t("console:develop.features.authenticationProvider.templates.facebook" +
+                                        t("authenticationProvider:templates.facebook" +
                                             ".wizardHelp.preRequisites.configureOAuthApps")
                                     }
                                 </DocumentationLink>
@@ -139,16 +139,16 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
     
                 <Heading as="h5">
                     {
-                        t("console:develop.features.authenticationProvider.templates.facebook" +
+                        t("authenticationProvider:templates.facebook" +
                                 ".wizardHelp.name.heading")
                     }
                 </Heading>
                 <p>
                     {
                         useNewConnectionsView
-                            ? t("console:develop.features.authenticationProvider.templates.facebook." +
+                            ? t("authenticationProvider:templates.facebook." +
                                     "wizardHelp.name.connectionDescription")
-                            : t("console:develop.features.authenticationProvider.templates.facebook." +
+                            : t("authenticationProvider:templates.facebook." +
                                     "wizardHelp.name.idpDescription")
                     }
                 </p>
@@ -156,13 +156,13 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                 <Divider/>
     
                 <Heading as="h5">
-                    { t("console:develop.features.authenticationProvider." +
+                    { t("authenticationProvider:" +
                             "templates.facebook.wizardHelp.clientId.heading") }
                 </Heading>
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.templates.facebook" +
+                            "authenticationProvider:templates.facebook" +
                                 ".wizardHelp.clientId.description"
                         }
                     >
@@ -174,14 +174,14 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
     
                 <Heading as="h5">
                     {
-                        t("console:develop.features.authenticationProvider.templates.facebook" +
+                        t("authenticationProvider:templates.facebook" +
                                 ".wizardHelp.clientSecret.heading")
                     }
                 </Heading>
                 <p>
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.templates.facebook." +
+                            "authenticationProvider:templates.facebook." +
                                 "wizardHelp.clientSecret.description"
                         }
                     >

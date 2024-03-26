@@ -100,10 +100,10 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
         <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 14 }>
-                    <h4>{ t("console:manage.features.claims.local.wizard." +
+                    <h4>{ t("claims:local.wizard." +
                         "steps.mapAttributes") }</h4>
                     <p>
-                        { t("console:manage.features.claims.local.mappedAttributes.hint") }
+                        { t("claims:local.mappedAttributes.hint") }
                     </p>
                     <Divider hidden />
                     <Divider hidden />
@@ -136,10 +136,10 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                                                     <Field
                                                         type="text"
                                                         name={ store.name }
-                                                        placeholder={ t("console:manage.features.claims.local.forms." +
+                                                        placeholder={ t("claims:local.forms." +
                                                             "attribute.placeholder") }
                                                         required={ true }
-                                                        requiredErrorMessage={ t("console:manage.features.claims." +
+                                                        requiredErrorMessage={ t("claims:" +
                                                             "local.forms.attribute.requiredErrorMessage") }
                                                         value={ values?.get(store.name)?.toString() }
                                                         data-testid={ `${ testId }-form-store-name-input` }

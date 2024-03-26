@@ -372,7 +372,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                                     } }
                                 >
                                     <Icon name="add"/>
-                                    { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                                    { t("roles:list.emptyPlaceholders.search.action") }
                                 </PrimaryButton>
                             </Show>
                         )
@@ -414,7 +414,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:manage.features.roles.list.confirmations.deleteItem.assertionHint"
+                        "roles:list.confirmations.deleteItem.assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -428,19 +428,19 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-testid={ `${testId}-delete-org-role-confirmation-modal-header` }>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                        { t("roles:list.confirmations.deleteItem.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         negative
                         data-testid={ `${testId}-delete-org-role-confirmation-modal-message` }
                     >
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                        { t("roles:list.confirmations.deleteItem.message",
                             { type: "role" }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                         <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                        { t("roles:list.confirmations.deleteItem.content",
                             { type: "role" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

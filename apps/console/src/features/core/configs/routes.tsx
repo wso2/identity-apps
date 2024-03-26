@@ -96,7 +96,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 component: lazy(() => import("../../session-management/pages/session-management")),
                                 exact: true,
                                 id: "sessionManagement",
-                                name: "console:sessionManagement.title",
+                                name: "sessionManagement:title",
                                 path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -105,7 +105,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
                                 exact: true,
                                 id: "saml2Configuration",
-                                name: "console:saml2Config.title",
+                                name: "saml2Config:title",
                                 path: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -114,7 +114,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
                                 exact: true,
                                 id: "wsFedConfiguration",
-                                name: "console:wsFederationConfig.title",
+                                name: "wsFederationConfig:title",
                                 path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -1099,7 +1099,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "secretManagementEdit",
-                                name: "console:develop.features.secrets.routes.sidePanelChildrenNames.0",
+                                name: "secrets:routes.sidePanelChildrenNames.0",
                                 path: AppConstants.getPaths().get("SECRET_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -1109,7 +1109,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         exact: true,
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secretsManagement",
-                        name: "console:develop.features.secrets.routes.name",
+                        name: "secrets:routes.name",
                         order: 28,
                         path: AppConstants.getPaths().get("SECRETS"),
                         protected: true,

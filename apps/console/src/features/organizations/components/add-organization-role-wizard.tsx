@@ -287,7 +287,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
             />
         ),
         icon: getRolesWizardStepIcons().general,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
+        title: t("roles:addRoleWizard.wizardSteps.0")
     }, {
         content: (
             <OrganizationPermissionList
@@ -303,7 +303,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
             />
         ),
         icon: <Icon name="key" inverted size="large"/>,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.1")
+        title: t("roles:addRoleWizard.wizardSteps.1")
     }, {
         content: (
             <AssignGroupsUsers
@@ -331,7 +331,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
             />
         ),
         icon: getRolesWizardStepIcons().assignUser,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.4")
+        title: t("roles:addRoleWizard.wizardSteps.4")
     }, {
         content: (
             <CreateOrganizationRoleSummary
@@ -343,7 +343,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
             />
         ),
         icon: getRolesWizardStepIcons().summary,
-        title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
+        title: t("roles:addRoleWizard.wizardSteps.3")
     } ];
 
     /**
@@ -395,7 +395,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.roles.addRoleWizard.heading", { type: "Role" }) }
+                { t("roles:addRoleWizard.heading", { type: "Role" }) }
                 {
                     wizardState && wizardState[WizardStepsFormTypes.BASIC_DETAILS]?.roleName
                         ? " - " + wizardState[WizardStepsFormTypes.BASIC_DETAILS]?.roleName
@@ -403,7 +403,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                 }
                 <Heading as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.subHeading", { type: "role" })
+                        t("roles:addRoleWizard.subHeading", { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
@@ -442,7 +442,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                                     onClick={ changeStepToNext }
                                     data-testid={ `${testId}-next-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.next") }
+                                    { t("roles:addRoleWizard.buttons.next") }
                                     <Icon name="arrow right" data-testid={ `${testId}-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
@@ -454,7 +454,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                                     onClick={ handleFinishFlow }
                                     data-testid={ `${testId}-initial-finish-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                    { t("roles:addRoleWizard.buttons.finish") }
                                 </Button>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
@@ -465,7 +465,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                                     disabled={ isSubmitting }
                                     data-testid={ `${testId}-finish-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                    { t("roles:addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentStep > 0 && (
@@ -475,7 +475,7 @@ export const AddOrganizationRoleWizard: FunctionComponent<AddOrganizationRolePro
                                     data-testid={ `${testId}-previous-button` }
                                 >
                                     <Icon name="arrow left" data-testid={ `${testId}-previous-button-icon` }/>
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
+                                    { t("roles:addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

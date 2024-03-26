@@ -128,7 +128,7 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
         >
             <Modal.Header className="wizard-header">
                 {
-                    t("console:manage.features.roles.addRoleWizard.heading", { type: "Group" })
+                    t("roles:addRoleWizard.heading", { type: "Group" })
                 }
                 <Heading as="h6">
                     { t("extensions:console.identityProviderGroups.createGroupWizard.subHeading") }
@@ -180,7 +180,7 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
                                 loading={ isSubmitting }
                                 type="submit"
                             >
-                                { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                { t("roles:addRoleWizard.buttons.finish") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

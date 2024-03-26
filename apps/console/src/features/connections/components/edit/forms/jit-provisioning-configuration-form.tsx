@@ -135,19 +135,19 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         label: string;
         value: SupportedJITProvisioningSchemes;
     }[] = [ {
-        label: t("console:develop.features.authenticationProvider" +
-            ".forms.jitProvisioning.provisioningScheme.children.0"),
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.provisioningScheme.children.0"),
         value: SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT
     }, {
-        label: t("console:develop.features.authenticationProvider" +
-            ".forms.jitProvisioning.provisioningScheme.children.1"),
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.provisioningScheme.children.1"),
         value: SupportedJITProvisioningSchemes.PROMPT_PASSWORD_CONSENT
     }, {
-        label: t("console:develop.features.authenticationProvider" +
-            ".forms.jitProvisioning.provisioningScheme.children.2"),
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.provisioningScheme.children.2"),
         value: SupportedJITProvisioningSchemes.PROMPT_CONSENT
     }, {
-        label: t("console:develop.features.authenticationProvider." +
+        label: t("authenticationProvider:" +
             "forms.jitProvisioning.provisioningScheme.children.3"),
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
@@ -210,7 +210,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         );
                                     } }
                                     children={ [ {
-                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                        label: t("authenticationProvider:forms." +
                                             "jitProvisioning.enableJITProvisioning.label"),
                                         value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
                                     } ] }
@@ -248,7 +248,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     }
                                     type="checkbox"
                                     children={ [ {
-                                        label: t("console:develop.features.authenticationProvider.forms." +
+                                        label: t("authenticationProvider:forms." +
                                             "jitProvisioning.associateLocalUser.label"),
                                         value: JITProvisioningConstants.ASSOCIATE_LOCAL_USER
                                     } ] }
@@ -256,7 +256,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     readOnly={ isReadOnly }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.authenticationProvider.forms." +
+                                    { t("authenticationProvider:forms." +
                                         "jitProvisioning.associateLocalUser.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -271,8 +271,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     <Field
                                         name={ JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY }
                                         label={
-                                            t("console:develop.features.authenticationProvider" +
-                                                ".forms.jitProvisioning.provisioningUserStoreDomain.label")
+                                            t("authenticationProvider:" +
+                                                "forms.jitProvisioning.provisioningUserStoreDomain.label")
                                         }
                                         required={ false }
                                         requiredErrorMessage=""
@@ -286,8 +286,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     />
                                     <Hint>
                                         {
-                                            t("console:develop.features.authenticationProvider" +
-                                                ".forms.jitProvisioning.provisioningUserStoreDomain.hint")
+                                            t("authenticationProvider:" +
+                                                "forms.jitProvisioning.provisioningUserStoreDomain.hint")
                                         }
                                     </Hint>
                                 </Grid.Column>
@@ -304,8 +304,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         <Field
                                             required={ false }
                                             requiredErrorMessage=""
-                                            label={ t("console:develop.features.authenticationProvider" +
-                                                ".forms.jitProvisioning.provisioningScheme.label") }
+                                            label={ t("authenticationProvider:" +
+                                                "forms.jitProvisioning.provisioningScheme.label") }
                                             name={ JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY }
                                             default={
                                                 initialValues?.scheme
@@ -319,8 +319,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                             readOnly={ isReadOnly }
                                         />
                                         <Hint>
-                                            { t("console:develop.features.authenticationProvider" +
-                                                ".forms.jitProvisioning.provisioningScheme.hint") }
+                                            { t("authenticationProvider:" +
+                                                "forms.jitProvisioning.provisioningScheme.hint") }
                                         </Hint>
                                     </Fragment>
                                 </Grid.Column>
