@@ -201,7 +201,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                         .replace(":customAttributeMappingID", "")
                     );
                 },
-                text: t("console:manage.features.claims.local.pageLayout.local.back")
+                text: t("claims:local.pageLayout.local.back")
             } }
         >
             <ListLayout

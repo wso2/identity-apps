@@ -77,7 +77,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
             />
         ),
         icon: getAddEmailTemplateTypeWizardStepIcons().general,
-        title: t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
+        title: t("emailTemplates:wizards.addTemplateType.steps.templateType.heading")
     } ];
 
     const createTemplateType = (templateTypeName: string): void => {
@@ -86,10 +86,10 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
             .then((response: AxiosResponse) => {
                 if (response.status === 201) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
+                        description: t("emailTemplates:notifications.createTemplateType" +
                             ".success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
+                        message: t("emailTemplates:notifications.createTemplateType" +
                             ".success.message")
                     }));
                 }
@@ -102,7 +102,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                 setAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplateTypes.notifications.createTemplateType" +
+                    message: t("emailTemplates:notifications.createTemplateType" +
                         ".genericError.message")
                 });
             }).finally(() => {
@@ -122,9 +122,9 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header template-type-wizard">
-                { t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.heading") }
+                { t("emailTemplates:wizards.addTemplateType.heading") }
                 <Heading as="h6">
-                    { t("console:manage.features.emailTemplateTypes.wizards.addTemplateType.subHeading") }
+                    { t("emailTemplates:wizards.addTemplateType.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
@@ -153,7 +153,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                             >
-                                { t("console:manage.features.emailTemplateTypes.buttons.createTemplateType") }
+                                { t("emailTemplates:buttons.createTemplateType") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

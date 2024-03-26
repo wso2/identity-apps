@@ -292,9 +292,9 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                             )
                             : wizard && (
                                 <EmptyPlaceholder
-                                    title={ t("console:manage.features.claims.external.placeholders.empty.title",
+                                    title={ t("claims:external.placeholders.empty.title",
                                         { type: resolveType(attributeType, true) }) }
-                                    subtitle={ [ t("console:manage.features.claims.external." +
+                                    subtitle={ [ t("claims:external." +
                                         "placeholders.empty.subtitle", { type: resolveType(attributeType) }) ] }
                                     image={ getEmptyPlaceholderIllustrations().emptyList }
                                     imageSize="tiny"

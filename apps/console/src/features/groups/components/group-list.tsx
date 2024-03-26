@@ -195,16 +195,16 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             data-testid={ `${ testId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
-                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                            { t("roles:list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("roles:list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("roles:list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("roles:list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -221,7 +221,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                                 onClick={ onEmptyListPlaceholderActionClick }
                             >
                                 <Icon name="add"/>
-                                { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                                { t("roles:list.emptyPlaceholders.emptyRoleList.action",
                                     { type: "Group" }) }
                             </PrimaryButton>
                         </Show>
@@ -230,23 +230,23 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     imageSize="tiny"
                     title={
                         isReadOnlyUserStore
-                            ? t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.emptyRoles",
+                            ? t("roles:list.emptyPlaceholders.emptyRoleList.emptyRoles",
                                 { type: "groups" })
-                            : t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
+                            : t("roles:list.emptyPlaceholders.emptyRoleList.title",
                                 { type: "group" })
                     }
                     subtitle={
                         isReadOnlyUserStore
                             ? [
-                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                     { type: "groups" })
                             ]
                             : [
-                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                     { type: "groups" }),
-                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                                t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.1",
                                     { type: "group" }),
-                                t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                                t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.2",
                                     { type: "group" })
                             ]
                     }
@@ -380,7 +380,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 setCurrentDeletedGroup(group);
                 setShowDeleteConfirmationModal(!showGroupDeleteConfirmation);
             },
-            popupText: (): string => t("console:manage.features.roles.list.popups.delete", { type: "Group" }),
+            popupText: (): string => t("roles:list.popups.delete", { type: "Group" }),
             renderer: "semantic-icon"
         });
 
@@ -419,7 +419,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showGroupDeleteConfirmation }
-                        assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                        assertionHint={ t("roles:list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
@@ -431,14 +431,14 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                            { t("roles:list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                            { t("roles:list.confirmations.deleteItem.message",
                                 { type: "group" }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                            { t("roles:list.confirmations.deleteItem.content",
                                 { type: "group" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>)

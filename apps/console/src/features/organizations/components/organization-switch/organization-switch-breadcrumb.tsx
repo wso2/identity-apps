@@ -514,7 +514,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
                             >
                                 <p className="organization-breadcrumb-label">
-                                    { t("console:manage.features.organizations.switching.switchLabel") }
+                                    { t("organizations:switching.switchLabel") }
                                 </p>
                                 <Breadcrumb>
                                     { generateBreadcrumb() }

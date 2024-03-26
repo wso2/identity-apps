@@ -1,5 +1,34 @@
 # @wso2is/console
 
+## 2.13.28
+
+### Patch Changes
+
+- [#5830](https://github.com/wso2/identity-apps/pull/5830) [`17ab3e87c6`](https://github.com/wso2/identity-apps/commit/17ab3e87c68da2c1971a00bcb6653e62682b996a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add models for login security related doc links
+
+## 2.13.27
+
+### Patch Changes
+
+- [#5823](https://github.com/wso2/identity-apps/pull/5823) [`970ee6eea1`](https://github.com/wso2/identity-apps/commit/970ee6eea1c91151d1bb101bc0b00a2e6476e9a9) Thanks [@savindi7](https://github.com/savindi7)! - Improve Profile Information.
+
+## 2.13.26
+
+### Patch Changes
+
+- [#5822](https://github.com/wso2/identity-apps/pull/5822) [`beedc6b44f`](https://github.com/wso2/identity-apps/commit/beedc6b44f66800ba07a178796c48d31c8c0519e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Disable URL input validation for empty values in advanced tab in branding page
+
+## 2.13.25
+
+### Patch Changes
+
+- [#5816](https://github.com/wso2/identity-apps/pull/5816) [`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Make secondary attribute dropdown in trusted token issuer advanced tab clearable
+
+* [#5818](https://github.com/wso2/identity-apps/pull/5818) [`11701769b9`](https://github.com/wso2/identity-apps/commit/11701769b91ec2c865bcda4df1744bd8bbc44d4f) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Introduce configurations to alter visibility of app configs
+
+* Updated dependencies [[`fd82055601`](https://github.com/wso2/identity-apps/commit/fd820556010c0f240bd695f0764bbe70b220d01c)]:
+  - @wso2is/i18n@2.1.5
+
 ## 2.13.24
 
 ### Patch Changes

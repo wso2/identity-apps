@@ -39,7 +39,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
@@ -60,7 +59,7 @@
     String applicationAccessUrl = "";
 
     String confirmationKey = request.getParameter("confirmation");
-    String callback = Encode.forJava(request.getParameter("callback"));
+    String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
     String sp = Encode.forJava(request.getParameter("sp"));
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();

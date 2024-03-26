@@ -279,7 +279,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                     <>
                         <Heading as="h5" className="mt-3">Add Users</Heading>
                         <Hint>
-                            { t("console:manage.features.roles.addRoleWizard.users.assignUserModal.hint") }
+                            { t("roles:addRoleWizard.users.assignUserModal.hint") }
                         </Hint>
                         <TransferComponent
                             compact
@@ -288,7 +288,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                             className="one-column-selection"
                             selectionComponent
                             searchPlaceholder={
-                                t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                t("roles:addRoleWizard.users.assignUserModal.list" +
                                     ".searchPlaceholder")
                             }
                             isLoading={ isUsersFetchRequestLoading }

@@ -139,7 +139,7 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
             });
         }
         if (nameExist) {
-            return t("console:develop.features.authenticationProvider.forms.generalDetails.name." +
+            return t("authenticationProvider:forms.generalDetails.name." +
                 "validations.duplicate");
         }
     };
@@ -162,23 +162,23 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
         };
 
         if (!values.name) {
-            errors.name = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.name = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.clientId) {
-            errors.clientId = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.clientId = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.teamId) {
-            errors.teamId = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.teamId = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.keyId) {
-            errors.keyId = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.keyId = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
         if (!values.privateKey) {
-            errors.privateKey = t("console:develop.features.authenticationProvider.forms.common" +
+            errors.privateKey = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
         }
 
@@ -204,9 +204,9 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         ariaLabel="Apple IDP Name"
                         inputType="name"
                         name="name"
-                        label={ t("console:develop.features.authenticationProvider.forms." +
+                        label={ t("authenticationProvider:forms." +
                             "generalDetails.name.label") }
-                        placeholder={ t("console:develop.features.authenticationProvider.forms." +
+                        placeholder={ t("authenticationProvider:forms." +
                             "generalDetails.name.placeholder") }
                         required={ true }
                         validation={ (value: string) => idpNameValidation(value) }
@@ -226,16 +226,16 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         inputType="client_id"
                         name="clientId"
                         label={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.clientId.label")
                         }
                         placeholder={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.clientId.placeholder")
                         }
                         required={ true }
                         message={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.clientId.validations.required")
                         }
                         type="text"
@@ -256,16 +256,16 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         inputType="name"
                         name="teamId"
                         label={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.teamId.label")
                         }
                         placeholder={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.teamId.placeholder")
                         }
                         required={ true }
                         message={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.teamId.validations.required")
                         }
                         type="text"
@@ -286,16 +286,16 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         inputType="name"
                         name="keyId"
                         label={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.keyId.label")
                         }
                         placeholder={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.keyId.placeholder")
                         }
                         required={ true }
                         message={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.keyId.validations.required")
                         }
                         type="text"
@@ -316,16 +316,16 @@ export const AppleAuthenticationProviderCreateWizardContent: FunctionComponent<
                         inputType="password"
                         name="privateKey"
                         label={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.privateKey.label")
                         }
                         placeholder={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.privateKey.placeholder")
                         }
                         required={ true }
                         message={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.apple.privateKey.validations.required")
                         }
                         type="password"

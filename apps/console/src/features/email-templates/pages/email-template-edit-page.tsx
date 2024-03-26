@@ -112,10 +112,10 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
+                    description: t("emailTemplates:notifications.getTemplateDetails" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
+                    message: t("emailTemplates:notifications.getTemplateDetails" +
                         ".genericError.message")
                 }));
             })
@@ -124,7 +124,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
+                        message: t("emailTemplates:notifications.getTemplateDetails" +
                             ".error.message")
                     }));
 
@@ -132,10 +132,10 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
+                    description: t("emailTemplates:notifications.getTemplateDetails" +
                         ".genericError.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.emailTemplates.notifications.getTemplateDetails" +
+                    message: t("emailTemplates:notifications.getTemplateDetails" +
                         ".genericError.message")
                 }));
             });

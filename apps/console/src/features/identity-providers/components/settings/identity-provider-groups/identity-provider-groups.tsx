@@ -185,10 +185,10 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
             updateClaimsConfigs(editingIDP?.id, mappedAttribute)
                 .then(() => {    
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:develop.features.authenticationProvider." +
+                        description: I18n.instance.t("authenticationProvider:" +
                                 "notifications.updateAttributes.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: I18n.instance.t("console:develop.features.authenticationProvider." +
+                        message: I18n.instance.t("authenticationProvider:" +
                                 "notifications.updateAttributes." +
                                 "success.message")
                     }));
@@ -197,21 +197,21 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                 .catch((error: IdentityAppsApiException) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         store.dispatch(addAlert({
-                            description: I18n.instance.t("console:develop.features.authenticationProvider." +
+                            description: I18n.instance.t("authenticationProvider:" +
                                 "notifications.updateClaimsConfigs.error.description",
                             { description: error.response.data.description }),
                             level: AlertLevels.ERROR,
-                            message: I18n.instance.t("console:develop.features.authenticationProvider" +
-                                ".notifications.updateClaimsConfigs." +
+                            message: I18n.instance.t("authenticationProvider:" +
+                                "notifications.updateClaimsConfigs." +
                                 "error.message")
                         }));
                     }
     
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
+                        description: I18n.instance.t("authenticationProvider:notifications." +
                             "updateClaimsConfigs.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("console:develop.features.authenticationProvider.notifications." +
+                        message: I18n.instance.t("authenticationProvider:notifications." +
                             "updateClaimsConfigs.genericError.message")
                     }));
                 }).finally(() => {

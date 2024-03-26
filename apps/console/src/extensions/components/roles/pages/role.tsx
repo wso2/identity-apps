@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -339,11 +339,11 @@ const RolesPage = (): ReactElement => {
         deleteRoleById(role.id).then(() => {
             handleAlerts({
                 description: t(
-                    "console:manage.features.roles.notifications.deleteRole.success.description"
+                    "roles:notifications.deleteRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.roles.notifications.deleteRole.success.message"
+                    "roles:notifications.deleteRole.success.message"
                 )
             });
             setListUpdated(true);
@@ -378,18 +378,18 @@ const RolesPage = (): ReactElement => {
                 }
             ] }
             filterAttributePlaceholder={
-                t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                t("roles:advancedSearch.form.inputs.filterAttribute." +
                     "placeholder")
             }
             filterConditionsPlaceholder={
-                t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                t("roles:advancedSearch.form.inputs.filterCondition" +
                     ".placeholder")
             }
             filterValuePlaceholder={
-                t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                t("roles:advancedSearch.form.inputs.filterValue" +
                     ".placeholder")
             }
-            placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+            placeholder={ t("roles:advancedSearch.placeholder") }
             defaultSearchAttribute="displayName"
             defaultSearchOperator="co"
             triggerClearQuery={ triggerClearQuery }
@@ -434,9 +434,9 @@ const RolesPage = (): ReactElement => {
                 pin: getHelpPanelActionIcons().pin,
                 unpin: getHelpPanelActionIcons().unpin
             } }
-            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
-            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
+            sidebarToggleTooltip={ t("helpPanel:actions.open") }
+            pinButtonTooltip={ t("helpPanel:actions.pin") }
+            unpinButtonTooltip={ t("helpPanel:actions.unPin") }
             onHelpPanelVisibilityChange={ (isVisible: boolean) => {
                 dispatch(toggleHelpPanelVisibility(isVisible));
                 setShowHelpPanel(!showHelpPanel);
@@ -455,7 +455,7 @@ const RolesPage = (): ReactElement => {
                             data-testid="role-mgt-roles-list-add-button-icon"
                             name="add"
                         />
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
+                        { t("roles:list.buttons.addButton", { type: "Role" }) }
                     </PrimaryButton>
                 )
                 }

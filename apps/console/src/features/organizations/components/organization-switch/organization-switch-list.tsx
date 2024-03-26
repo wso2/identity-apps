@@ -78,7 +78,7 @@ const OrganizationSwitcherList = (
                             >
                                 <Icon name="arrow left" />
                                 { t(
-                                    "console:manage.features.organizations.switching.goBack"
+                                    "organizations:switching.goBack"
                                 ) }
                             </div>
                         </Grid.Column>
@@ -123,7 +123,7 @@ const OrganizationSwitcherList = (
                                 data-componentid={ `${ componentId }-empty-message` }
                             >
                                 { t(
-                                    "console:manage.features.organizations.switching." +
+                                    "organizations:switching." +
                                     "emptyList"
                                 ) }
                             </div>

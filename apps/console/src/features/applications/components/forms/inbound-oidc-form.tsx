@@ -2046,6 +2046,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
+                && applicationConfig?.inboundOIDCForm?.showRequestObjectConfigurations
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2902,6 +2903,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
                 && !isSystemApplication
                 && !isDefaultApplication
+                && applicationConfig?.inboundOIDCForm?.showIdTokenResponseSigningAlgorithm
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
