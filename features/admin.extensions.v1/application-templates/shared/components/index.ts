@@ -24,3 +24,4 @@ export * from "./spa-technology-selection";
 export * from "./technology-selection";
 export * from "./twa-oidc-custom-configuration";
 export * from "./twa-saml-custom-configuration";
+export * from "./m2m-custom-configuration";

@@ -1,0 +1,46 @@
+{
+    "id": "m2m-application",
+    "templateId": "m2m-application",
+    "category": "DEFAULT",
+    "description": "Applications developed to target m2m applciation.",
+    "enabled": true,
+    "displayOrder": 5,
+    "image": "oidcMobile",
+    "name": "M2M Application",
+    "subTemplatesSectionTitle": "Technology",
+    "types": [
+        "android",
+        "ios",
+        "flutter"
+    ],
+    "authenticationProtocol": "oidc",
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true,
+            "skipLoginConsent": true
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "client_credentials"
+                ]
+            }
+        }
+    }
+}
