@@ -20,3 +20,8 @@ export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./help-panel-ns";
+export * from "./secrets-ns";
+export * from "./branding-ns";
+export * from "./email-templates-ns";
+export * from "./certificates-ns";
+export * from "./authentication-provider-ns";

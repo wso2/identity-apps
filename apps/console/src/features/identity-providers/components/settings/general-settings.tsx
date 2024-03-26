@@ -193,10 +193,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         deleteIdentityProvider(editingIDP.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.deleteIDP." +
+                    description: t("authenticationProvider:notifications.deleteIDP." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications.deleteIDP." +
+                    message: t("authenticationProvider:notifications.deleteIDP." +
                         "success.message")
                 }));
 
@@ -222,10 +222,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.updateIDP." +
+                    description: t("authenticationProvider:notifications.updateIDP." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications.updateIDP." +
+                    message: t("authenticationProvider:notifications.updateIDP." +
                         "success.message")
                 }));
                 onUpdate(editingIDP.id);
@@ -250,10 +250,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     );
                 } else {
                     dispatch(addAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications" +
+                        description: t("authenticationProvider:notifications" +
                             ".disableIDPWithConnectedApps.error.description"),
                         level: AlertLevels.WARNING,
-                        message: t("console:develop.features.authenticationProvider.notifications" +
+                        message: t("authenticationProvider:notifications" +
                             ".disableIDPWithConnectedApps.error.message")
                     }));
                 }
@@ -293,21 +293,20 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(editingIDP.name)) && (
                         <Show when={ AccessControlConstants.IDP_EDIT || AccessControlConstants.IDP_DELETE }>
                             <DangerZoneGroup
-                                sectionHeader={ t("console:develop.features.authenticationProvider." +
+                                sectionHeader={ t("authenticationProvider:" +
                                 "dangerZoneGroup.header") }>
                                 <Show when={ AccessControlConstants.IDP_EDIT }>
                                     <DangerZone
-                                        actionTitle={ t("console:develop.features.authenticationProvider." +
+                                        actionTitle={ t("authenticationProvider:" +
                                             "dangerZoneGroup.disableIDP.actionTitle",
                                         { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") }) }
-                                        header={ t("console:develop.features.authenticationProvider.dangerZoneGroup." +
+                                        header={ t("authenticationProvider:dangerZoneGroup." +
                                             "disableIDP.header",
                                         { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") } ) }
                                         subheader={ editingIDP.isEnabled
-                                            ? t("console:develop.features.authenticationProvider." +
+                                            ? t("authenticationProvider:" +
                                                 "dangerZoneGroup.disableIDP.subheader")
-                                            : t("console:develop.features." +
-                                                "authenticationProvider.dangerZoneGroup.disableIDP.subheader2") }
+                                            : t("authenticationProvider:dangerZoneGroup.disableIDP.subheader2") }
                                         onActionClick={ undefined }
                                         toggle={ {
                                             checked: editingIDP.isEnabled,
@@ -318,11 +317,11 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 </Show>
                                 <Show when={ AccessControlConstants.IDP_DELETE }>
                                     <DangerZone
-                                        actionTitle={ t("console:develop.features.authenticationProvider." +
+                                        actionTitle={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.actionTitle") }
-                                        header={ t("console:develop.features.authenticationProvider." +
+                                        header={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.header") }
-                                        subheader={ t("console:develop.features.authenticationProvider." +
+                                        subheader={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.subheader") }
                                         onActionClick={ handleIdentityProviderDeleteAction }
                                         data-testid={ `${ testId }-delete-idp-danger-zone` }
@@ -339,7 +338,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 type="negative"
                                 open={ showDeleteConfirmationModal }
                                 assertion={ editingIDP.name }
-                                assertionHint={ t("console:develop.features.authenticationProvider."+
+                                assertionHint={ t("authenticationProvider:"+
                                 "confirmations.deleteIDP.assertionHint") }
                                 assertionType="checkbox"
                                 primaryAction={ t("common:confirm") }
@@ -350,18 +349,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider." +
+                                    { t("authenticationProvider:" +
                                         "confirmations.deleteIDP.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
                                     negative
                                     data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider." +
+                                    { t("authenticationProvider:" +
                                         "confirmations.deleteIDP.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider." +
+                                    { t("authenticationProvider:" +
                                         "confirmations.deleteIDP.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
@@ -379,18 +378,18 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider.confirmations." +
+                                    { t("authenticationProvider:confirmations." +
                                         "deleteIDPWithConnectedApps.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
                                     negative
                                     data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider.confirmations." +
+                                    { t("authenticationProvider:confirmations." +
                                         "deleteIDPWithConnectedApps.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                                    { t("console:develop.features.authenticationProvider.confirmations." +
+                                    { t("authenticationProvider:confirmations." +
                                         "deleteIDPWithConnectedApps.content") }
                                     <Divider hidden />
                                     <List ordered className="ml-6">

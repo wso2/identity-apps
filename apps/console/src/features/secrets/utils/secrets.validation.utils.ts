@@ -56,7 +56,7 @@ export const secretNameValidator = (
 
     return isNameAlreadyExists ?  
         I18n.instance.t(
-            "console:develop.features.secrets.wizards.addSecret.form.secretNameField.alreadyPresentError"
+            "secrets:wizards.addSecret.form.secretNameField.alreadyPresentError"
         ) : undefined;
 };
 
