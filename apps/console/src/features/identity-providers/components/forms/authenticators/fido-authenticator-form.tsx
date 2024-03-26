@@ -23,7 +23,7 @@ import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,

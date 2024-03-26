@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,13 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { store } from "../../core";
+import { Config } from "../../core/configs";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../features/core/hooks/use-request";
-import { store } from "../../core";
-import { Config } from "../../core/configs";
+} from "../../core/hooks/use-request";
 import { UpdateJWTAuthenticatorConfigInterface } from "../models/private-key-jwt-config";
 
 /**

@@ -18,10 +18,10 @@
 
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
-import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { AppConstants } from "../../../features/core";
+import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { AppConstants } from "../../core";
 import { UserBasicInterface } from "../../users/models/user";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
@@ -69,7 +69,7 @@ export class RoleManagementUtils {
                 if (response.status === 200 && response.data && response.data instanceof Array) {
 
                     const permissionStringArray: PermissionObject[] = !isEmpty(permissionsToSkip)
-                        ? response.data.filter((permission: { resourcePath: string; }) => 
+                        ? response.data.filter((permission: { resourcePath: string; }) =>
                             !permissionsToSkip.includes(permission.resourcePath))
                         : response.data;
 
@@ -84,14 +84,14 @@ export class RoleManagementUtils {
                             path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
                             arr
                         );
-                        
+
                         return nodes;
                     },[]);
 
                     if (permissionTree[0]?.title !== AppConstants.PERMISSIONS_ROOT_NODE) {
                         return permissionTree[0]?.children;
                     }
-    
+
                     return permissionTree;
                 }
             });
@@ -99,18 +99,18 @@ export class RoleManagementUtils {
 
     /**
      * Get the display name from the name with userstore.
-     * 
+     *
      * @param nameWithUserstore - name with userstore
      * @returns - display name
      */
-    public static getDisplayName = (nameWithUserstore: string): string => 
+    public static getDisplayName = (nameWithUserstore: string): string =>
         nameWithUserstore?.split("/").length > 1
             ? nameWithUserstore?.split("/")[1]
             : nameWithUserstore;
 
     /**
      * Get the display name of the group.
-     * 
+     *
      * @param group - group
      * @returns - display name of the group
      */
@@ -118,7 +118,7 @@ export class RoleManagementUtils {
 
     /**
      * Get the display name of the user.
-     * 
+     *
      * @param user - user
      * @returns - display name of the user
      */
@@ -126,7 +126,7 @@ export class RoleManagementUtils {
 
     /**
      * Get the userstore from the name with userstore.
-     * 
+     *
      * @param nameWithUserstore - name with userstore
      * @returns - userstore
      */
@@ -137,7 +137,7 @@ export class RoleManagementUtils {
 
     /**
      * Get name to display of the user.
-     * 
+     *
      * @param user - user
      * @returns - name to display of the user
      */
@@ -162,7 +162,7 @@ export class RoleManagementUtils {
 
     /**
      * Get the user managed by.
-     * 
+     *
      * @param user - user
      * @returns - user managed by
      */
@@ -182,7 +182,7 @@ export class RoleManagementUtils {
 
     /**
      * Groups the role groups by the identity provider ID.
-     * 
+     *
      * @param roleGroups - List of role groups.
      * @returns A map of role groups grouped by the identity provider ID.
      */
@@ -195,7 +195,7 @@ export class RoleManagementUtils {
             roleGroups.forEach((group: RoleGroupsInterface) => {
                 const ref: string = group.$ref;
                 let idpId: string;
-            
+
                 // Extract the identity provider ID from the $ref attribute.
                 const match: RegExpMatchArray = ref.match(/identity-providers\/([^/]+)/);
 
@@ -204,11 +204,11 @@ export class RoleManagementUtils {
                 } else {
                     idpId = "LOCAL"; // A default category for groups not belonging to an identity provider.
                 }
-            
+
                 if (!categorizedGroups[idpId]) {
                     categorizedGroups[idpId] = [];
                 }
-            
+
                 categorizedGroups[idpId].push(group);
             });
         }

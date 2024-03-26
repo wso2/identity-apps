@@ -29,18 +29,18 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
-import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
-import { UserStoreDropdownItem } from "../../../../../features/userstores/models";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     UIConstants,
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { deleteParentOrgInvite } from "../../../../users/components/guests/api/invite";
 import { UserManagementConstants } from "../../../../users/constants";
 import { UserInviteInterface } from "../../../../users/models";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
+import { UserStoreDropdownItem } from "../../../../userstores/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import InviteNewAdministratorWizard from "../invite-new-administrator-wizard/invite-new-administrator-wizard";
 

@@ -33,16 +33,16 @@ import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
-import { getApplicationList } from "../../../../../features/applications/api";
-import { ApplicationList } from "../../../../../features/applications/components/application-list";
-import { ApplicationListInterface } from "../../../../../features/applications/models";
+import { getApplicationList } from "../../../../applications/api";
+import { ApplicationList } from "../../../../applications/components/application-list";
+import { ApplicationListInterface } from "../../../../applications/models";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
-} from "../../../../../features/connections/models/connection";
-import { AdvancedSearchWithBasicFilters } from "../../../../../features/core/components";
-import { AppConstants } from "../../../../../features/core/constants";
-import { history } from "../../../../../features/core/helpers";
+} from "../../../../connections/models/connection";
+import { AdvancedSearchWithBasicFilters } from "../../../../core/components";
+import { AppConstants } from "../../../../core/constants";
+import { history } from "../../../../core/helpers";
 import { FeatureConfigInterface } from "../../../../core/models";
 import { AppState } from "../../../../core/store";
 
