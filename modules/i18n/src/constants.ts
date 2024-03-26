@@ -87,6 +87,12 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Help panel namespace.
+     * @constant
+     */
+    public static readonly HELP_PANEL_NAMESPACE: string = "helpPanel";
+  
+    /**
      * Suborganizations namespace.
      * @constant
      */
