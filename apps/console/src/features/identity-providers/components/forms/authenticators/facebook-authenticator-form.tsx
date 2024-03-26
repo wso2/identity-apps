@@ -242,7 +242,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 
         if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.EMAIL) {
             return {
-                description: t("console:develop.features.authenticationProvider.forms" +
+                description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.facebook.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -255,7 +255,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
 
         if (scope === IdentityProviderManagementConstants.FACEBOOK_SCOPE_DICTIONARY.PUBLIC_PROFILE) {
             return {
-                description: t("console:develop.features.authenticationProvider.forms" +
+                description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.facebook.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
@@ -285,15 +285,15 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 inputType="default"
                 name="ClientId"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.clientId.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.clientId.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.clientId.hint")
                 }
                 required={ formFields?.ClientId?.meta?.isMandatory }
@@ -320,17 +320,17 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 type="password"
                 name="ClientSecret"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.clientSecret.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.clientSecret.placeholder")
                 }
                 hint={ (
                     <Trans
                         i18nKey={
-                            "console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                            "authenticationProvider:forms.authenticatorSettings" +
                             ".facebook.clientSecret.hint"
                         }
                     >
@@ -359,15 +359,15 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 inputType="copy_input"
                 name="callBackUrl"
                 label={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.callbackUrl.label")
                 }
                 placeholder={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.callbackUrl.placeholder")
                 }
                 hint={
-                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                    t("authenticationProvider:forms.authenticatorSettings" +
                         ".facebook.callbackUrl.hint")
                 }
                 required={ formFields?.callBackUrl?.meta?.isMandatory }
@@ -394,7 +394,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                 && (
                     <FormSection
                         heading={
-                            t("console:develop.features.authenticationProvider.forms" +
+                            t("authenticationProvider:forms" +
                                 ".authenticatorSettings.facebook.scopes.heading")
                         }
                     >
@@ -441,7 +441,7 @@ export const FacebookAuthenticatorForm: FunctionComponent<FacebookAuthenticatorF
                         <Hint compact>
                             <Trans
                                 i18nKey={
-                                    "console:develop.features.authenticationProvider.forms" +
+                                    "authenticationProvider:forms" +
                                     ".authenticatorSettings.facebook.scopes.hint"
                                 }
                             >

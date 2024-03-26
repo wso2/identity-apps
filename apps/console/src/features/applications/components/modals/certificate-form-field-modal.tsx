@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,10 +37,7 @@ interface CertificateFormFieldModalPropsInterface extends ModalProps, TestableCo
 
 /**
  * Certificate form field modal component.
- *
- * @param {CertificateFormFieldModalPropsInterface} props - Props injected to the component.
- *
- * @return {React.ReactElement}
+ * @param  props - Props injected to the component.
  */
 export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldModalPropsInterface> = (
     props: CertificateFormFieldModalPropsInterface
@@ -54,12 +51,12 @@ export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldMo
 
     const { t } = useTranslation();
 
-    const CannotReadCertificate = (
+    const CannotReadCertificate :JSX.Element = (
         <Segment className="certificate" data-testid={ testId }>
             <p className="certificate-field">
                 We were unable to read this certificate. Currently we only
                 support displaying public key information in certificate types of {
-                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo, index) => (
+                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo : string, index: number) => (
                         <span key={ `${ algo }+${ index }` }>
                             <Code>{ algo }</Code>&nbsp;
                         </span>
@@ -107,11 +104,11 @@ export const CertificateFormFieldModal: FunctionComponent<CertificateFormFieldMo
                             <CertificateDisplay
                                 certificate={ certificate }
                                 labels={ {
-                                    issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
-                                    subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
-                                    validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
-                                    validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
-                                    version: t("console:manage.features.certificates.keystore.summary.version")
+                                    issuerDN: t("certificates:keystore.summary.issuerDN"),
+                                    subjectDN: t("certificates:keystore.summary.subjectDN"),
+                                    validFrom: t("certificates:keystore.summary.validFrom"),
+                                    validTill: t("certificates:keystore.summary.validTill"),
+                                    version: t("certificates:keystore.summary.version")
                                 } }
                             />
                         )

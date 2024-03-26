@@ -178,37 +178,37 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     actionLabel={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "emptyPlaceholder.action")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                            t("suborganizations:notifications.tierLimitReachedError." +
                         "emptyPlaceholder.action")
                     }
                     handleModalClose={ handleLimitReachedModalClose }
                     header={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "heading")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError.heading")
+                            t("suborganizations:notifications.tierLimitReachedError.heading")
                     }
                     description={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "emptyPlaceholder.subtitles")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                            t("suborganizations:notifications.tierLimitReachedError." +
                         "emptyPlaceholder.subtitles")
                     }
                     message={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "emptyPlaceholder.title")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                            t("suborganizations:notifications.tierLimitReachedError." +
                         "emptyPlaceholder.title")
                     }
                     openModal={ openLimitReachedModal }
