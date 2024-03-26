@@ -29,7 +29,7 @@ import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";
 import { SECRET_VALUE_LENGTH, secretValueValidator } from "../utils/secrets.validation.utils";
 
-const FIELD_I18N_KEY = "console:develop.features.secrets.forms.editSecret.secretValueField";
+const FIELD_I18N_KEY = "secrets:forms.editSecret.secretValueField";
 
 /**
  * Props interface of {@link SecretValueForm}
@@ -70,12 +70,12 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
             }
         }).then((): void => {
             dispatch(addAlert({
-                description: t("console:develop.features.secrets.alerts.updatedSecret.description", {
+                description: t("secrets:alerts.updatedSecret.description", {
                     secretName: editingSecret?.secretName,
                     secretType: editingSecret?.type
                 }),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.secrets.alerts.updatedSecret.message")
+                message: t("secrets:alerts.updatedSecret.message")
             }));
         }).catch((error): void => {
             if (error.response && error.response.data && error.response.data.description) {
@@ -88,9 +88,9 @@ const SecretValueForm: FC<SecretValueFormProps> = (props: SecretValueFormProps):
                 return;
             }
             dispatch(addAlert({
-                description: t("console:develop.features.secrets.errors.generic.description"),
+                description: t("secrets:errors.generic.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.secrets.errors.generic.message")
+                message: t("secrets:errors.generic.message")
             }));
         }).finally(() => {
             setLoading(false);

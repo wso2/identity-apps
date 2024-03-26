@@ -87,6 +87,12 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Secrets namespace.
+     * @constant
+     */
+    public static readonly SECRETS_NAMESPACE: string = "secrets";
+  
+    /**
      * Branding namespace.
      * @constant
      */

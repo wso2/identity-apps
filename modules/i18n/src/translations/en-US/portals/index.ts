@@ -19,6 +19,7 @@
 export * from "./common";
 export * from "./console";
 export * from "./myaccount";
+export * from "./secrets";
 export * from "./branding";
 export * from "./email-templates";
 export * from "./certificates";
