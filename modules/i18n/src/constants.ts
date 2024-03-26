@@ -87,6 +87,21 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * SAML 2.0 Configuration namespace.
+     */
+    public static readonly SAML2_CONFIG_NAMESPACE: string = "saml2Config";
+
+    /**
+     * Session management namespace.
+     */
+    public static readonly SESSION_MANAGEMENT_NAMESPACE: string = "sessionManagement";
+
+    /**
+     * WS-Federation Configuration namespace.
+     */
+    public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = "wsFederationConfig";
+  
+    /**
      * insights namespace.
      */
     public static readonly INSIGHTS_NAMESPACE: string = "insights";

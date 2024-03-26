@@ -46,6 +46,21 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * SAML 2.0 Configuration namespace.
+     */
+    public static readonly SAML2_CONFIG_NAMESPACE: string = I18nModuleConstants.SAML2_CONFIG_NAMESPACE;
+
+    /**
+     * Session management namespace.
+     */
+    public static readonly SESSION_MANAGEMENT_NAMESPACE: string = I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE;
+
+    /**
+     * WS-Federation Configuration namespace.
+     */
+    public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE;
+  
+    /**
      * insights namespace.
      */
     public static readonly INSIGHTS_NAMESPACE: string = I18nModuleConstants.INSIGHTS_NAMESPACE;
@@ -113,6 +128,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
+        [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
+        [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
         [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
