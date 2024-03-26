@@ -46,6 +46,16 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * insights namespace.
+     */
+    public static readonly INSIGHTS_NAMESPACE: string = I18nModuleConstants.INSIGHTS_NAMESPACE;
+
+    /**
+     * SMS Providers namespace.
+     */
+    public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
+  
+    /**
      * Claims namespace.
      */
     public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
@@ -103,6 +113,8 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
+        [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_LOCALE_NAMESPACE, "portals" ],
         [ I18nConstants.HELP_PANEL_NAMESPACE, "portals" ],
