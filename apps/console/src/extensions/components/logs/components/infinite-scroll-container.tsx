@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { saveAs } from "file-saver";
 import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, 
-    lazy, useEffect, useState } from "react";
+lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";
@@ -34,7 +35,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import "./log-data-viewer-panel.scss";
 import { Popup } from "@wso2is/react-components";
-import { saveAs } from "file-saver";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
@@ -73,7 +73,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     } = props;
 
     const { t } = useTranslation();
-    const [ activeIndex, setActiveIndex ] = useState<number[]>([-1]);
+    const [ activeIndex, setActiveIndex ] = useState<number[]>([ -1 ]);
     const [ view, setView ] = useState<boolean>(false);
     const [ currentLog, setCurrentLog ] = useState<InterfaceLogEntry>();
 
@@ -229,7 +229,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 <td className="log-property">{ property }:</td>
                                 <td className="view-data-button">
                                     <span
-                                        data-testid={`${componentId}-${logObject["id"]}-view-data-button`}
+                                        data-testid={ `${ componentId }-${ logObject["id"] }-view-data-button` }
                                         onClick={ () => handleLogDataView(logObject) }
                                     >
                                         <Icon name="eye"/>
@@ -288,7 +288,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         return propertyElements;
     };
 
-const LogDataViewerPanel  : ReactElement = (
+    const LogDataViewerPanel  : ReactElement = (
 
         <MonacoEditor
             loading={ <CircularProgress /> }
@@ -297,14 +297,13 @@ const LogDataViewerPanel  : ReactElement = (
             height="100%"
             language="javascript"
             theme={ "vc" } // visual studio code light theme
-            value={currentLog ? JSON.stringify(currentLog["data"], null, 2) : '{}'}
+            value={ currentLog ? JSON.stringify(currentLog["data"], null, 2) : '{}' }
             options={ {
-                automaticLayout: true,
-                readOnly: true 
+                automaticLayout: true, readOnly: true 
             } }
             data-componentid={ `${componentId}-data-viewer` }
         />
-);
+    );
 
     const LogViewerToolbar : ReactElement = (
 
@@ -315,9 +314,9 @@ const LogDataViewerPanel  : ReactElement = (
                         {
                             t("extensions:develop.monitor.logView.logDataviewer")
                         }
-                        </Typography>
+                    </Typography>
                 </Box>
-            <div className="actions">
+                <div className="actions">
                     <div className="editor-fullscreen">
                         <Tooltip
                             title={ "Download" }
@@ -328,7 +327,7 @@ const LogDataViewerPanel  : ReactElement = (
                                 onClick={ exportCurrentLog }
                             >
                                 {
-                                 <Icon name="download"/>
+                                    <Icon name="download"/>
                                 }
                             </IconButton>
                         </Tooltip>
@@ -341,7 +340,7 @@ const LogDataViewerPanel  : ReactElement = (
                                 onClick={ copyCurrentLog }
                             >
                                 {
-                                 <Icon name="copy"/>
+                                    <Icon name="copy"/>
                                 }
                             </IconButton>
                         </Tooltip>
@@ -354,14 +353,14 @@ const LogDataViewerPanel  : ReactElement = (
                                 onClick={ handleLogDataViewClose }
                             >
                                 {
-                                 <Icon name="close"/>
+                                    <Icon name="close"/>
                                 }
                             </IconButton>
                         </Tooltip>
                     </div>
                 </div>
             </Toolbar>
-    </Box>
+        </Box>
     );
 
     return (
@@ -390,16 +389,16 @@ const LogDataViewerPanel  : ReactElement = (
                         <div className="log-description-header">
                             <div className="log-actionId">
                                 <Typography variant="body1">
-                                {
-                                    t("extensions:develop.monitor.logView.headers.actionId")
-                                }                        
+                                    {
+                                        t("extensions:develop.monitor.logView.headers.actionId")
+                                    }                        
                                 </Typography>
                             </div>
                             <div className="log-targetId">
                                 <Typography variant="body1">
-                                {
-                                    t("extensions:develop.monitor.logView.headers.targetId")
-                                } 
+                                    {
+                                        t("extensions:develop.monitor.logView.headers.targetId")
+                                    } 
                                 </Typography>
                             </div>
                         </div>
@@ -455,40 +454,40 @@ const LogDataViewerPanel  : ReactElement = (
                                         }
                                         { (logType === TabIndex.AUDIT_LOGS) && (
                                             <div>
-                                                {log.actionId && (
+                                                { log.actionId && (
                                                     <div className="log-actionid-container">
                                                         { log.actionId }
                                                     </div>
-                                                )}
-                                                {log.action && (
+                                                ) }
+                                                { log.action && (
                                                     <div className="log-actionid-container">
                                                         { log.action }
                                                     </div>
-                                                )}
+                                                ) }
                                             </div>
                                         ) }
                                         { logType === TabIndex.DIAGNOSTIC_LOGS && (
                                             <div>
-                                                {log.actionId && (
+                                                { log.actionId && (
                                                     <div className="log-actionid-container">
                                                         { log.actionId }
                                                     </div>
                                                 )}
-                                                {log.action && (
+                                                { log.action && (
                                                     <div className="log-actionid-container">
                                                         { log.action }
                                                     </div>
-                                                )}
+                                                ) }
                                             </div>
                                         ) }
                                         { logType === TabIndex.AUDIT_LOGS && (
                                             <div>
                                                 <div>
-                                                    {log.targetId && (
+                                                    { log.targetId && (
                                                         <div className="log-targetId-container">
                                                             { log.targetId }
                                                         </div>
-                                                    )}
+                                                    ) }
                                                 </div>
                                             </div>
                                         )}
@@ -521,7 +520,7 @@ const LogDataViewerPanel  : ReactElement = (
                                 aria-describedby="transition-modal-description"
                                 open={ view }
                                 onClose={ handleLogDataViewClose }
-                            >
+                                >
                                 <Box className="full-screen-log-data-viewer-container"> 
                                     { LogViewerToolbar }
                                     { LogDataViewerPanel } 
