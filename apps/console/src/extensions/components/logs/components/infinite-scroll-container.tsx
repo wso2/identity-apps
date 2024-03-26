@@ -16,17 +16,8 @@
  * under the License.
  */
 
-import { saveAs } from "file-saver";
-import React, { 
-    LazyExoticComponent,
-    MutableRefObject, 
-    ReactElement, 
-    Suspense, 
-    UIEventHandler, 
-    lazy, 
-    useEffect, 
-    useState 
-    } from "react";
+import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, 
+    lazy, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";
@@ -43,6 +34,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import "./log-data-viewer-panel.scss";
 import { Popup } from "@wso2is/react-components";
+import { saveAs } from "file-saver";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
