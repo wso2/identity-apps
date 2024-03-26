@@ -133,7 +133,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     title={
                         roleObject && roleObject?.displayName 
                             ? roleObject?.displayName
-                            : t("console:manage.pages.rolesEdit.title")
+                            : t("pages:rolesEdit.title")
                     }
                     description={ (
                         <Grid container alignItems="center">
@@ -157,10 +157,10 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                             </Grid>
                         </Grid>
                     ) }
-                    pageTitle={ t("console:manage.pages.rolesEdit.title") }
+                    pageTitle={ t("pages:rolesEdit.title") }
                     backButton={ {
                         onClick: handleBackButtonClick,
-                        text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })
+                        text: t("pages:rolesEdit.backButton", { type: "roles" })
                     } }
                     titleTextAlign="left"
                     bottomMargin={ false }

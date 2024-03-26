@@ -258,19 +258,19 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
             isLoading={ isEmailTemplatesFetchRequestLoading }
             title={
                 (emailTemplateTypeDetails && emailTemplateTypeDetails.displayName)
-                    ? t("console:manage.pages.emailTemplatesWithDisplayName.title",
+                    ? t("pages:emailTemplatesWithDisplayName.title",
                         { displayName: emailTemplateTypeDetails.displayName })
-                    : t("console:manage.pages.emailTemplates.title")
+                    : t("pages:emailTemplates.title")
             }
             pageTitle={
                 (emailTemplateTypeDetails && emailTemplateTypeDetails.displayName)
-                    ? t("console:manage.pages.emailTemplatesWithDisplayName.title",
+                    ? t("pages:emailTemplatesWithDisplayName.title",
                         { displayName: emailTemplateTypeDetails.displayName })
-                    : t("console:manage.pages.emailTemplates.title")
+                    : t("pages:emailTemplates.title")
             }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.emailTemplates.backButton")
+                text: t("pages:emailTemplates.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

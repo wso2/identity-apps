@@ -283,9 +283,9 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 )
             }
             isLoading={ isTemplateTypesFetchRequestLoading }
-            title={ t("console:manage.pages.emailTemplateTypes.title") }
-            pageTitle={ t("console:manage.pages.emailTemplateTypes.title") }
-            description={ t("console:manage.pages.emailTemplateTypes.subTitle") }
+            title={ t("pages:emailTemplateTypes.title") }
+            pageTitle={ t("pages:emailTemplateTypes.title") }
+            description={ t("pages:emailTemplateTypes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout

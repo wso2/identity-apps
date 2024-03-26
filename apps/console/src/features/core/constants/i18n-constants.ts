@@ -46,6 +46,11 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * pages namespace.
+     */ 
+    public static readonly PAGES_NAMESPACE: string = I18nModuleConstants.PAGES_NAMESPACE;
+  
+    /**
      * IDVP namespace.
      */
     public static readonly IDVP_NAMESPACE: string = I18nModuleConstants.IDVP_NAMESPACE;
@@ -183,6 +188,7 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.PAGES_NAMESPACE, "portals" ],
         [ I18nConstants.IDVP_NAMESPACE, "portals" ],
         [ I18nConstants.INVITE_NAMESPACE, "portals" ],
         [ I18nConstants.PARENT_ORG_INVITATIONS_NAMESPACE, "portals" ],

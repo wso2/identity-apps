@@ -402,9 +402,9 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     </Show>
                 )
             }
-            pageTitle={ t("console:manage.pages.emailDomainDiscovery.title") }
-            title={ t("console:manage.pages.emailDomainDiscovery.title") }
-            description={ t("console:manage.pages.emailDomainDiscovery.subTitle") }
+            pageTitle={ t("pages:emailDomainDiscovery.title") }
+            title={ t("pages:emailDomainDiscovery.title") }
+            description={ t("pages:emailDomainDiscovery.subTitle") }
             data-componentid={ `${ testId }-page-layout` }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,

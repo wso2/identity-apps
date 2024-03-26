@@ -431,13 +431,13 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         <Label className="no-margin-left">
                             <code>{ scope.name }</code>
                         </Label>
-                        { " " + (scope.description || t("console:manage.pages.oidcScopesEdit.subTitle")) }
+                        { " " + (scope.description || t("pages:oidcScopesEdit.subTitle")) }
                     </>)
                 }
                 image={ <AnimatedAvatar name={ scope.name } size="tiny" floated="left" /> }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: t("console:manage.pages.oidcScopesEdit.backButton")
+                    text: t("pages:oidcScopesEdit.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

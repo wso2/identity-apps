@@ -191,8 +191,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                     </Show>
                 )
             }
-            title={ t("console:manage.pages.oidcScopes.title") }
-            description={ t("console:manage.pages.oidcScopes.subTitle") }
+            title={ t("pages:oidcScopes.title") }
+            description={ t("pages:oidcScopes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
             backButton={ {
                 onClick: () => {

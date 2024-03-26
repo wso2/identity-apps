@@ -19,6 +19,7 @@
 export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
+export * from "./pages-ns";
 export * from "./idvp-ns";
 export * from "./invite-ns";
 export * from "./parent-org-invitations-ns";

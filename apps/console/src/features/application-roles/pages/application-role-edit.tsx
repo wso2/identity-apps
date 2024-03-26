@@ -144,7 +144,7 @@ const ApplicationRoleEditPage = (props: ApplicationRoleEditPageProps): ReactElem
             isLoading={ isRoleDetailsRequestLoading }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "application roles" })
+                text: t("pages:rolesEdit.backButton", { type: "application roles" })
             } }
             titleTextAlign="left"
             bottomMargin={ false }

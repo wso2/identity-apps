@@ -459,7 +459,7 @@ const RolesPage = (): ReactElement => {
                     </PrimaryButton>
                 )
                 }
-                title={ t("console:manage.pages.roles.title") }
+                title={ t("pages:roles.title") }
                 description={
                     `Create roles and assign permissions to collectively manage access to the ${
                         config.ui.productName } console.`

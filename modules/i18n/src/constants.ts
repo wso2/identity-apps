@@ -87,6 +87,11 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * pages namespace.
+     */
+    public static readonly PAGES_NAMESPACE: string = "pages";
+  
+    /**
      * Identity Verification Provider namespace.
      */
     public static readonly IDVP_NAMESPACE: string = "idvp";
