@@ -237,14 +237,14 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                             data-testid={ `${ componentId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
-                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                            { t("roles:list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("roles:list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("roles:list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("roles:list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -434,7 +434,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                     onClose={ (): void => setShowGroupDeleteConfirmation(false) }
                                     type="negative"
                                     open={ showGroupDeleteConfirmation }
-                                    assertionHint={ t("console:manage.features.roles.list.confirmations" +
+                                    assertionHint={ t("roles:list.confirmations" +
                                         ".deleteItem.assertionHint") }
                                     assertionType="checkbox"
                                     primaryAction="Confirm"
@@ -447,7 +447,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                     primaryActionLoading={ isSubmitting }
                                 >
                                     <ConfirmationModal.Header>
-                                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                                        { t("roles:list.confirmations.deleteItem.header") }
                                     </ConfirmationModal.Header>
                                     <ConfirmationModal.Message attached negative>
                                         { t("extensions:console.applicationRoles.roleGroups.confirmation." +

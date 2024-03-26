@@ -85,9 +85,9 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                 return;
             }
             dispatch(addAlert({
-                description: t("console:develop.features.secrets.errors.generic.description"),
+                description: t("secrets:errors.generic.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.secrets.errors.generic.message")
+                message: t("secrets:errors.generic.message")
             }));
         }).finally(() => {
             setIsSecretListLoading(false);
@@ -142,15 +142,15 @@ const SecretsPage: FC<SecretsPageProps> = (props: SecretsPageProps): ReactElemen
                         onClick={ onAddNewSecretButtonClick }
                         data-testid={ `${ testId }-add-button` }>
                         <Icon name="add"/>
-                        { t("console:develop.features.secrets.page.primaryActionButtonText") }
+                        { t("secrets:page.primaryActionButtonText") }
                     </PrimaryButton>
                 </Show>
             ) }
             
             isLoading={ isSecretListLoading }
-            title={ t("console:develop.features.secrets.page.title") }
-            pageTitle={ t("console:develop.features.secrets.page.title") }
-            description={ t("console:develop.features.secrets.page.description") }
+            title={ t("secrets:page.title") }
+            pageTitle={ t("secrets:page.title") }
+            description={ t("secrets:page.description") }
         >
                
             <Show when={ AccessControlConstants.SECRET_READ }>

@@ -71,7 +71,7 @@ import {
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 0,
-        text: I18n.instance.t("console:manage.features.organizationDiscovery.advancedSearch." +
+        text: I18n.instance.t("organizationDiscovery:advancedSearch." +
         "form.dropdown.filterAttributeOptions.organizationName") as ReactNode,
         value: "organizationName"
     }
@@ -158,12 +158,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         dispatch(
             addAlert({
                 description: t(
-                    "console:manage.features.organizationDiscovery.notifications." +
+                    "organizationDiscovery:notifications." +
                             "getEmailDomainDiscovery.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "console:manage.features.organizationDiscovery.notifications." +
+                    "organizationDiscovery:notifications." +
                             "getEmailDomainDiscovery.error.message"
                 )
             })
@@ -181,12 +181,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         dispatch(
             addAlert({
                 description: t(
-                    "console:manage.features.organizationDiscovery.notifications." +
+                    "organizationDiscovery:notifications." +
                     "getOrganizationListWithDiscovery.error.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "console:manage.features.organizationDiscovery.notifications." +
+                    "organizationDiscovery:notifications." +
                 "getOrganizationListWithDiscovery.error.message"
                 )
             })
@@ -272,12 +272,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizationDiscovery.notifications." +
+                                "organizationDiscovery:notifications." +
                                 "enableEmailDomainDiscovery.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:manage.features.organizationDiscovery.notifications." +
+                                "organizationDiscovery:notifications." +
                                 "enableEmailDomainDiscovery.success.message"
                             )
                         })
@@ -289,12 +289,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizationDiscovery.notifications." +
+                                "organizationDiscovery:notifications." +
                                 "enableEmailDomainDiscovery.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizationDiscovery.notifications." +
+                                "organizationDiscovery:notifications." +
                                 "enableEmailDomainDiscovery.error.message"
                             )
                         })
@@ -309,12 +309,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.success.message"
                         )
                     })
@@ -326,12 +326,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.error.message"
                         )
                     })
@@ -345,7 +345,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const discoveryToggle = (): ReactElement => {
         return (
             <Checkbox
-                label={ t("console:manage.features.organizationDiscovery." +
+                label={ t("organizationDiscovery:" +
                     "emailDomains.actions.enable") }
                 toggle
                 onChange={ handleToggle }
@@ -397,7 +397,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                             data-componentid={ `${ testId }-list-layout-assign-button` }
                         >
                             <Icon name="add" />
-                            { t("console:manage.features.organizationDiscovery.emailDomains.actions.assign") }
+                            { t("organizationDiscovery:emailDomains.actions.assign") }
                         </PrimaryButton>
                     </Show>
                 )
@@ -415,7 +415,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             { discoveryToggle() }
             <Divider hidden />
             <Alert severity="info">
-                { t("console:manage.features.organizationDiscovery.message") }
+                { t("organizationDiscovery:message") }
             </Alert>
             <Divider hidden />
             { isOrganizationDiscoveryEnabled && (
@@ -426,25 +426,25 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
-                                    text: t("console:manage.features.organizationDiscovery.advancedSearch." +
+                                    text: t("organizationDiscovery:advancedSearch." +
                                     "form.dropdown.filterAttributeOptions.organizationName"),
                                     value: "organizationName"
                                 }
                             ] }
                             filterAttributePlaceholder={ t(
-                                "console:manage.features.organizationDiscovery.advancedSearch.form" +
+                                "organizationDiscovery:advancedSearch.form" +
                                         ".inputs.filterAttribute.placeholder"
                             ) }
                             filterConditionsPlaceholder={ t(
-                                "console:manage.features.organizationDiscovery.advancedSearch.form" +
+                                "organizationDiscovery:advancedSearch.form" +
                                         ".inputs.filterCondition.placeholder"
                             ) }
                             filterValuePlaceholder={ t(
-                                "console:manage.features.organizationDiscovery.advancedSearch.form" +
+                                "organizationDiscovery:advancedSearch.form" +
                                 ".inputs.filterValue.placeholder"
                             ) }
                             placeholder={ t(
-                                "console:manage.features.organizationDiscovery.advancedSearch.placeholder"
+                                "organizationDiscovery:advancedSearch.placeholder"
                             ) }
                             defaultSearchAttribute="organizationName"
                             defaultSearchOperator="co"

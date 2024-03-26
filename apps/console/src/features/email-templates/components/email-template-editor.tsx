@@ -113,7 +113,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                     iframe.current && writeToIframe();
                                 } }>
                                 <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                    { t("console:manage.features.emailTemplates.notifications.iframeUnsupported" +
+                                    { t("emailTemplates:notifications.iframeUnsupported" +
                                         ".genericError.description") }
                                 </p>
                             </iframe>
@@ -128,7 +128,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                             defaultActiveTab={ isAddFlow ? 1 : 0 }
                             panes={ [
                                 {
-                                    menuItem: t("console:manage.features.emailTemplates.editor.tabs.preview.tabName"),
+                                    menuItem: t("emailTemplates:editor.tabs.preview.tabName"),
                                     render: () => (
                                         <ResourceTab.Pane
                                             className="render-view"
@@ -142,7 +142,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                                     iframe.current && writeToIframe();
                                                 } }>
                                                 <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                                    { t("console:manage.features.emailTemplates.notifications" +
+                                                    { t("emailTemplates:notifications" +
                                                         ".iframeUnsupported.genericError.description") }
                                                 </p>
                                             </iframe>
@@ -150,7 +150,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                     )
                                 },
                                 {
-                                    menuItem: t("console:manage.features.emailTemplates.editor.tabs.code.tabName"),
+                                    menuItem: t("emailTemplates:editor.tabs.code.tabName"),
                                     render: () => (
                                         <ResourceTab.Pane
                                             attached={ false }

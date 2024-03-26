@@ -149,10 +149,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         ) {
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                    description: t("roles:addRoleWizard.forms.rolePermission." +
                         "notifications.fetchAPIResourceError.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                    message: t("roles:addRoleWizard.forms.rolePermission." +
                         "notifications.fetchAPIResourceError.error.message")
                 })
             );
@@ -361,10 +361,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             })
             .catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications." +
+                    description: t("roles:notifications." +
                         "fetchAPIResource.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.fetchAPIResource.error.message")
+                    message: t("roles:notifications.fetchAPIResource.error.message")
                 });
             });
     };
@@ -445,15 +445,15 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.success.description"),
+                    description: t("roles:notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.roles.notifications.updateRole.success.message")
+                    message: t("roles:notifications.updateRole.success.message")
                 });
             }).catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    description: t("roles:notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                    message: t("roles:notifications.updateRole.error.message")
                 });
             }).finally(() => {
                 setIsSubmitting(false);
@@ -582,9 +582,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     renderInput={ (params: AutocompleteRenderInputParams) => (
                         <TextField
                             { ...params }
-                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                            label={ t("roles:addRoleWizard.forms.rolePermission." +
                                 "apiResource.label") }
-                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms." +
+                            placeholder={ t("roles:addRoleWizard.forms." +
                                 "rolePermission.apiResource.placeholder") }
                             size="small"
                         />
@@ -597,7 +597,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         ? (
                             <div className="role-permission-list field">
                                 <label className="form-label">
-                                    { t("console:manage.features.roles.addRoleWizard." +
+                                    { t("roles:addRoleWizard." +
                                         "forms.rolePermission.permissions.label") }
                                 </label>
                                 <EmphasizedSegment
@@ -676,16 +676,16 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         <EmphasizedSegment padded="very">
             <Grid xs={ 8 }>
                 <Heading as="h4">
-                    { t("console:manage.features.roles.edit.permissions.heading") }
+                    { t("roles:edit.permissions.heading") }
                 </Heading>
                 {
                     isReadOnly ? (
                         <Heading as="h6" color="grey" subHeading className="mb-5">
-                            { t("console:manage.features.roles.edit.permissions.readOnlySubHeading") }
+                            { t("roles:edit.permissions.readOnlySubHeading") }
                         </Heading>
                     ) : (
                         <Heading as="h6" color="grey" subHeading className="mb-5">
-                            { t("console:manage.features.roles.edit.permissions.subHeading") }
+                            { t("roles:edit.permissions.subHeading") }
                         </Heading>
                     )
                 }

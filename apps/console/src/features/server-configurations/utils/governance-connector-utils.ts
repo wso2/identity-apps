@@ -254,7 +254,7 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: "Manage and configure user session settings and preferences.",
-                        header: I18n.instance.t("console:sessionManagement.title"),
+                        header: I18n.instance.t("sessionManagement:title"),
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         testId: "session-management-card"
@@ -351,14 +351,14 @@ export class GovernanceConnectorUtils {
                 connectors: [
                     {
                         description: "Configure settings for SAML2 Web Single Sign-On functionality.",
-                        header: I18n.instance.t("console:saml2Config.title"),
+                        header: I18n.instance.t("saml2Config:title"),
                         id: ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
                         testId: "saml2-web-sso-card"
                     },
                     {
                         description: "Manage settings for WS-Federation based single sign-on.",
-                        header: I18n.instance.t("console:wsFederationConfig.title"),
+                        header: I18n.instance.t("wsFederationConfig:title"),
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                         testId: "ws-federation-sso-card"

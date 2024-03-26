@@ -123,10 +123,10 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                 .then((response: AxiosResponse) => {
                     if (response.status === 201) {
                         dispatch(addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.success" +
+                            description: t("roles:notifications.createRole.success" +
                                 ".description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.roles.notifications.createRole.success.message")
+                            message: t("roles:notifications.createRole.success.message")
                         }));
 
                         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
@@ -135,25 +135,25 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                 .catch((error: AxiosError) => {
                     if (!error.response || error.response.status === 401) {
                         dispatch(addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.error" +
+                            description: t("roles:notifications.createRole.error" +
                                     ".description"),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                            message: t("roles:notifications.createRole.error.message")
                         }));
                     } else if (error.response && error.response.data.detail) {
                         dispatch(addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.error" +
+                            description: t("roles:notifications.createRole.error" +
                                 ".description",
                             { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                            message: t("roles:notifications.createRole.error.message")
                         }));
                     } else {
                         dispatch(addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.genericError" +
+                            description: t("roles:notifications.createRole.genericError" +
                                 ".description"),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                            message: t("roles:notifications.createRole.genericError.message")
                         }));
                     }
                 })
@@ -179,7 +179,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                     } }
                 />
             ),
-            stepTitle: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
+            stepTitle: t("roles:addRoleWizard.wizardSteps.0")
         },
         {
             preventGoToNextStep: isPermissionStepNextButtonDisabled,
@@ -202,19 +202,19 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                     }
                 />
             ),
-            stepTitle: t("console:manage.features.roles.addRoleWizard.wizardSteps.1")
+            stepTitle: t("roles:addRoleWizard.wizardSteps.1")
         }
     ];
 
     return (
         <PageLayout
-            title={ t("console:manage.features.roles.addRoleWizard.heading", { type: "Role" }) }
+            title={ t("roles:addRoleWizard.heading", { type: "Role" }) }
             contentTopMargin={ true }
-            description={ t("console:manage.features.roles.addRoleWizard.subHeading", { type: "role" }) }
+            description={ t("roles:addRoleWizard.subHeading", { type: "role" }) }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: () => history.push(AppConstants.getPaths().get("ROLES")),
-                text: t("console:manage.features.roles.addRoleWizard.back")
+                text: t("roles:addRoleWizard.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

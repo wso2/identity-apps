@@ -222,9 +222,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.roles.edit.groups.notifications.success.description"),
+                        description: t("roles:edit.groups.notifications.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.roles.edit.groups.notifications.success.message")
+                        message: t("roles:edit.groups.notifications.success.message")
                     })
                 );
                 onRoleUpdate(tabIndex);
@@ -234,19 +234,19 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     dispatch(
                         addAlert({
                             description:
-                                t("console:manage.features.roles.edit.groups.notifications.error.description",
+                                t("roles:edit.groups.notifications.error.description",
                                     { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.edit.groups.notifications.error.message")
+                            message: t("roles:edit.groups.notifications.error.message")
                         })
                     );
                 } else {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" +
+                            description: t("roles:edit.groups.notifications.genericError" +
                                 ".description"),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.edit.groups.notifications.genericError.message")
+                            message: t("roles:edit.groups.notifications.genericError.message")
                         })
                     );
                 }
@@ -259,13 +259,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     return (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
-                { t("console:manage.features.roles.edit.groups.heading") }
+                { t("roles:edit.groups.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("console:manage.features.roles.edit.groups.subHeading") }
+                { t("roles:edit.groups.subHeading") }
             </Heading>
             <Heading as="h5">
-                { t("console:manage.features.roles.edit.groups.localGroupsHeading") }
+                { t("roles:edit.groups.localGroupsHeading") }
             </Heading>
             {
                 <EditRoleLocalGroupsAccordion
@@ -283,7 +283,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                         <Divider hidden />
                         <Divider />
                         <Heading as="h5">
-                            { t("console:manage.features.roles.edit.groups.externalGroupsHeading") }
+                            { t("roles:edit.groups.externalGroupsHeading") }
                         </Heading>
                     </>
                 )

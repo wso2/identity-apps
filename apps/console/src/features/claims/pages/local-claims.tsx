@@ -82,7 +82,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
         },
         {
             key: 1,
-            text: t("console:manage.features.claims.local.attributes.attributeURI"),
+            text: t("claims:local.attributes.attributeURI"),
             value: "claimURI"
         }
     ];
@@ -136,10 +136,10 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                        || t("claims:local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                        || t("claims:local.notifications.getClaims.genericError.message")
                 }
             ));
         }).finally(() => {
@@ -163,10 +163,10 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("console:manage.features.claims.local.notifications.getLocalDialect.genericError.message"),
+                        || t("claims:local.notifications.getLocalDialect.genericError.message"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("console:manage.features.claims.local.notifications.getLocalDialect.genericError.message")
+                        || t("claims:local.notifications.getLocalDialect.genericError.message")
                 }
             ));
         });
@@ -314,14 +314,14 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                                 data-testid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add" />
-                                { t("console:manage.features.claims.local.pageLayout.local.action") }
+                                { t("claims:local.pageLayout.local.action") }
                             </PrimaryButton>
                         </Show>
                     )
                 }
                 isLoading={ isLoading }
-                title={ t("console:manage.features.claims.local.pageLayout.local.title") }
-                pageTitle={ t("console:manage.features.claims.local.pageLayout.local.title") }
+                title={ t("claims:local.pageLayout.local.title") }
+                pageTitle={ t("claims:local.pageLayout.local.title") }
                 description={ (
                     <>
                         { t(attributeConfig.attributes.description) }
@@ -334,7 +334,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 ) }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")); },
-                    text: t("console:manage.features.claims.local.pageLayout.local.back")
+                    text: t("claims:local.pageLayout.local.back")
                 } }
                 data-testid={ `${ testId }-page-layout` }
             >
@@ -351,23 +351,23 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                                 },
                                 {
                                     key: 1,
-                                    text: t("console:manage.features.claims.local.attributes.attributeURI"),
+                                    text: t("claims:local.attributes.attributeURI"),
                                     value: "claimURI"
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("console:manage.features.claims.local.advancedSearch.form." +
+                                t("claims:local.advancedSearch.form." +
                                     "inputs.filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("console:manage.features.claims.local.advancedSearch.form." +
+                                t("claims:local.advancedSearch.form." +
                                     "inputs.filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("console:manage.features.claims.local.advancedSearch.form.inputs." +
+                                t("claims:local.advancedSearch.form.inputs." +
                                     "filterValue.placeholder")
                             }
-                            placeholder={ t("console:manage.features.claims.local.advancedSearch.placeholder") }
+                            placeholder={ t("claims:local.advancedSearch.placeholder") }
                             defaultSearchAttribute="displayName"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
@@ -401,23 +401,23 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                                     },
                                     {
                                         key: 1,
-                                        text: t("console:manage.features.claims.local.attributes.attributeURI"),
+                                        text: t("claims:local.attributes.attributeURI"),
                                         value: "claimURI"
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("console:manage.features.claims.local.advancedSearch.form." +
+                                    t("claims:local.advancedSearch.form." +
                                         "inputs.filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("console:manage.features.claims.local.advancedSearch.form." +
+                                    t("claims:local.advancedSearch.form." +
                                         "inputs.filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("console:manage.features.claims.local.advancedSearch.form.inputs." +
+                                    t("claims:local.advancedSearch.form.inputs." +
                                         "filterValue.placeholder")
                                 }
-                                placeholder={ t("console:manage.features.claims.local.advancedSearch.placeholder") }
+                                placeholder={ t("claims:local.advancedSearch.placeholder") }
                                 defaultSearchAttribute="displayName"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }

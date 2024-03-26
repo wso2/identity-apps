@@ -294,7 +294,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             onClick={ () => setShowWizard(true) }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                            { t("roles:list.buttons.addButton", { type: "Group" }) }
                         </PrimaryButton>
                     </Show>
                 )

@@ -82,9 +82,9 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
     useEffect(() => {
         if(roleDetailsRequestError) {
             dispatch(addAlert<AlertInterface>({
-                description: t("console:manage.features.roles.notifications.fetchRole.genericError.description"),
+                description: t("roles:notifications.fetchRole.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.roles.notifications.fetchRole.genericError.message")
+                message: t("roles:notifications.fetchRole.genericError.message")
             }));
         }
     }, [ roleDetailsRequestError ]);
@@ -96,13 +96,13 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
         if (roleDetailsRequestError) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ [ t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.subtitles.0"),
-                        t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.subtitles.1") ] }
-                    title={ t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.title") }
+                    subtitle={ [ t("roles:edit.placeholders.errorPlaceHolder.subtitles.0"),
+                        t("roles:edit.placeholders.errorPlaceHolder.subtitles.1") ] }
+                    title={ t("roles:edit.placeholders.errorPlaceHolder.title") }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={ (
                         <Button onClick={ handleBackButtonClick }>
-                            { t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.action") }
+                            { t("roles:edit.placeholders.errorPlaceHolder.action") }
                         </Button>
                     ) }
                     imageSize="tiny"
@@ -147,8 +147,8 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
                     <Grid>
                         {
                             RoleAudienceTypes.ORGANIZATION === roleObject?.audience?.type.toUpperCase()
-                                ? t("console:manage.features.roles.list.columns.managedByOrg.label")
-                                : t("console:manage.features.roles.list.columns.managedByApp.label")
+                                ? t("roles:list.columns.managedByOrg.label")
+                                : t("roles:list.columns.managedByApp.label")
                         }
                     </Grid>
                     <Grid>

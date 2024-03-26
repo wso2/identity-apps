@@ -137,10 +137,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 || authorizedAPIListForApplicationError ) {
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                        description: t("roles:addRoleWizard.forms.rolePermission." +
                             "notifications.fetchAPIResourceError.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                        message: t("roles:addRoleWizard.forms.rolePermission." +
                             "notifications.fetchAPIResourceError.error.message")
                     })
                 );
@@ -383,7 +383,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                             <Grid xs={ 12 }>
                                 <Alert severity="info">
                                     <Trans
-                                        i18nKey= { "console:manage.features.roles.addRoleWizard.forms." +
+                                        i18nKey= { "roles:addRoleWizard.forms." +
                                             "rolePermission.notes.applicationRoles" }
                                         tOptions={ { applicationName: assignedApplicationName } }
                                     >
@@ -466,9 +466,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField
                                 { ...params }
-                                label={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                label={ t("roles:addRoleWizard.forms." +
                                     "rolePermission.apiResource.label") }
-                                placeholder={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                placeholder={ t("roles:addRoleWizard.forms." +
                                     "rolePermission.apiResource.placeholder") }
                                 size="small"
                                 variant="outlined"
@@ -482,7 +482,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                             ? (
                                 <div className="role-permission-list field">
                                     <label className="form-label">
-                                        { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                        { t("roles:addRoleWizard.forms.rolePermission." +
                                             "permissions.label") }
                                     </label>
                                     <EmphasizedSegment

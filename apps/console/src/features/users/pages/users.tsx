@@ -176,12 +176,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const invitationStatusOptions: DropdownItemProps[] = [
         {
             key: 2,
-            text: t("console:manage.features.parentOrgInvitations.searchdropdown.pendingLabel"),
+            text: t("parentOrgInvitations:searchdropdown.pendingLabel"),
             value: "Pending"
         },
         {
             key: 3,
-            text: t("console:manage.features.parentOrgInvitations.searchdropdown.expiredLabel"),
+            text: t("parentOrgInvitations:searchdropdown.expiredLabel"),
             value: "Expired"
         }
     ];
@@ -797,7 +797,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             dropDownOptions.push({
                 "data-componentid": `${componentId}-invite-parent-user`,
                 key: 3,
-                text: t("console:manage.features.parentOrgInvitations.addUserWizard.heading"),
+                text: t("parentOrgInvitations:addUserWizard.heading"),
                 value: UserAccountTypesMain.INTERNAL
             });
         }
@@ -899,13 +899,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         panes.push({
             componentId: "users",
-            menuItem: t("console:manage.features.parentOrgInvitations.tab.usersTab"),
+            menuItem: t("parentOrgInvitations:tab.usersTab"),
             render: renderUsersList
         });
 
         panes.push({
             componentId: "invitations",
-            menuItem: t("console:manage.features.parentOrgInvitations.tab.invitationsTab"),
+            menuItem: t("parentOrgInvitations:tab.invitationsTab"),
             render: renderInvitationsList
         });
 
@@ -945,7 +945,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             options={ invitationStatusOptions }
                             onChange={ handleAccountStatusChange }
                             text={
-                                t("console:manage.features.parentOrgInvitations.filterLabel")
+                                t("parentOrgInvitations:filterLabel")
                                 +  invitationStatusOption
                             }
                             disabled={

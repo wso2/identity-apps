@@ -105,9 +105,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const handleOnDelete = (): void => {
         deleteRoleById(role.id).then(() => {
             handleAlerts({
-                description: t("console:manage.features.roles.notifications.deleteRole.success.description"),
+                description: t("roles:notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.roles.notifications.deleteRole.success.message")
+                message: t("roles:notifications.deleteRole.success.message")
             });
 
             history.push(AppConstants.getPaths().get("ROLES"));
@@ -136,7 +136,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
             if (!isRolesListLoading || !isRolesListValidating) {
                 if (rolesList?.totalResults > 0 || rolesListError) {
-                    errors.roleName = t("console:manage.features.roles.addRoleWizard.forms."
+                    errors.roleName = t("roles:addRoleWizard.forms."
                         + "roleBasicDetails.roleName.validations.duplicate",{ type: "Role" });
                 }
             }
@@ -166,15 +166,15 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             .then(() => {
                 onRoleUpdate(tabIndex);
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.success.description"),
+                    description: t("roles:notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.roles.notifications.updateRole.success.message")
+                    message: t("roles:notifications.updateRole.success.message")
                 });
             }).catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.genericError.description"),
+                    description: t("roles:notifications.updateRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.updateRole.genericError.message")
+                    message: t("roles:notifications.updateRole.genericError.message")
                 });
             }).finally(() => {
                 setIsSubmitting(false);
@@ -199,9 +199,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         required={ true }
                         readOnly={ isReadOnly }
                         value={ role?.displayName }
-                        label={ t("console:manage.features.roles.edit.basics.fields.roleName.name") }
+                        label={ t("roles:edit.basics.fields.roleName.name") }
                         placeholder={
-                            t("console:manage.features.roles.edit.basics.fields.roleName.placeholder")
+                            t("roles:edit.basics.fields.roleName.placeholder")
                         }
                         maxLength={ RoleConstants.ROLE_NAME_MAX_LENGTH }
                         minLength={ RoleConstants.ROLE_NAME_MIN_LENGTH }
@@ -225,15 +225,15 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
                             actionTitle={
-                                t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
+                                t("roles:edit.basics.dangerZone.actionTitle",
                                     { type: "Role" })
                             }
                             header={
-                                t("console:manage.features.roles.edit.basics.dangerZone.header",
+                                t("roles:edit.basics.dangerZone.header",
                                     { type: "role" })
                             }
                             subheader={
-                                t("console:manage.features.roles.edit.basics.dangerZone.subheader",
+                                t("roles:edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
                             onActionClick={ () => onRoleDeleteClicked() }
@@ -248,7 +248,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showRoleDeleteConfirmation }
-                        assertionHint={ t("console:manage.features.roles.edit.basics.confirmation.assertionHint") }
+                        assertionHint={ t("roles:edit.basics.confirmation.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -258,13 +258,13 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            { t("console:manage.features.roles.edit.basics.confirmation.header") }
+                            { t("roles:edit.basics.confirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
-                            { t("console:manage.features.roles.edit.basics.confirmation.message", { type: "role." }) }
+                            { t("roles:edit.basics.confirmation.message", { type: "role." }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.roles.edit.basics.confirmation.content", { type: "role" }) }
+                            { t("roles:edit.basics.confirmation.content", { type: "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

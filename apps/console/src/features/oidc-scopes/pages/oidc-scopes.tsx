@@ -66,7 +66,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         },
         {
             key: 1,
-            text: t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label"),
+            text: t("oidcScopes:forms.addScopeForm.inputs.scopeName.label"),
             value: "name"
         }
     ];
@@ -186,7 +186,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.oidcScopes.buttons.addScope") }
+                            { t("oidcScopes:buttons.addScope") }
                         </PrimaryButton>
                     </Show>
                 )
@@ -201,7 +201,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                         .replace(":customAttributeMappingID", "")
                     );
                 },
-                text: t("console:manage.features.claims.local.pageLayout.local.back")
+                text: t("claims:local.pageLayout.local.back")
             } }
         >
             <ListLayout
@@ -220,7 +220,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             iconPosition="left"
                             value={ searchQuery }
                             onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value) }
-                            placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
+                            placeholder={ t("oidcScopes:list.searchPlaceholder") }
                             floated="right"
                             size="small"
                             onKeyPress={ (e: React.KeyboardEvent<HTMLInputElement>) => handleEnterKeyInSearch(e) }

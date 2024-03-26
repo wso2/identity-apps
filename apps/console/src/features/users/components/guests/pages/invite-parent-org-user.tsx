@@ -99,7 +99,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         };
 
         if (!values.username) {
-            errors.username = t("console:manage.features.parentOrgInvitations.addUserWizard.username.validations" +
+            errors.username = t("parentOrgInvitations:addUserWizard.username.validations" +
                 ".required");
         }
 
@@ -122,22 +122,22 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         <Message
                             type="info"
                             className="add-user-info"
-                            content={ t("console:manage.features.parentOrgInvitations.addUserWizard.hint") }
+                            content={ t("parentOrgInvitations:addUserWizard.hint") }
                         />
                         <FinalFormField
                             fullWidth
                             ariaLabel="Usernames field"
                             data-componentid={ `${componentId}-external-form-username-input` }
-                            label={ t("console:manage.features.parentOrgInvitations.addUserWizard.username.label") }
+                            label={ t("parentOrgInvitations:addUserWizard.username.label") }
                             name="username"
                             placeholder={ t(
-                                "console:manage.features.parentOrgInvitations.addUserWizard.username.placeholder"
+                                "parentOrgInvitations:addUserWizard.username.placeholder"
                             ) }
                             required={ true }
                             helperText={ (
                                 <Hint>
                                     <Typography variant="inherit">
-                                        { t("console:manage.features.parentOrgInvitations.addUserWizard.username" +
+                                        { t("parentOrgInvitations:addUserWizard.username" +
                                             ".hint") }
                                     </Typography>
                                 </Hint>
@@ -194,17 +194,17 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                             ariaLabel="Groups field"
                             data-componentid={ `${componentId}-form-groups-field` }
                             name="groups"
-                            label={ t("console:manage.features.parentOrgInvitations.addUserWizard.groups.label") }
+                            label={ t("parentOrgInvitations:addUserWizard.groups.label") }
                             helperText={
                                 (<Hint>
                                     <Typography variant="inherit">
-                                        { t("console:manage.features.parentOrgInvitations.addUserWizard.groups" +
+                                        { t("parentOrgInvitations:addUserWizard.groups" +
                                             ".hint") }
                                     </Typography>
                                 </Hint>)
                             }
                             placeholder={
-                                t("console:manage.features.parentOrgInvitations.addUserWizard.groups.placeholder")
+                                t("parentOrgInvitations:addUserWizard.groups.placeholder")
                             }
                             component={ AutocompleteFieldAdapter }
                             options={ groupsAutocompleteOptions }

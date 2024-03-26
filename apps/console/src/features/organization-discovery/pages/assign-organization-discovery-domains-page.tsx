@@ -71,9 +71,9 @@ const AssignOrganizationDiscoverDomainsPage: FunctionComponent<EmailDomainAssign
 
     return (
         <PageLayout
-            title={ t("console:manage.features.organizationDiscovery.assign.title") }
+            title={ t("organizationDiscovery:assign.title") }
             pageTitle="Assign Email Domains"
-            description={ t("console:manage.features.organizationDiscovery.assign.description") }
+            description={ t("organizationDiscovery:assign.description") }
             backButton={ {
                 "data-componentid": "assign-discovery-domains-page-back-button",
                 onClick: goBackToOrganizationListWithDomains,

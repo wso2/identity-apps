@@ -59,8 +59,8 @@ export class OrganizationManagementConstants {
 
     public static readonly ERROR_SUB_ORGANIZATION_EXIST: IdentityAppsError = new IdentityAppsError(
         "ORG-60076",
-        "console:develop.features.suborganizations.notifications.duplicateOrgError.description",
-        "console:develop.features.suborganizations.notifications.duplicateOrgError.message",
+        "suborganizations:notifications.duplicateOrgError.description",
+        "suborganizations:notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
 

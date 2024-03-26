@@ -104,7 +104,7 @@ export const StickyTabPaneActionPanel: FunctionComponent<PropsWithChildren<Stick
                 ariaLabel="Branding preference form save button"
                 data-componentid={ saveButtonComponentId }
             >
-                { t("console:branding.form.actions.save") }
+                { t("branding:form.actions.save") }
             </PrimaryButton>
             { children }
         </Segment>

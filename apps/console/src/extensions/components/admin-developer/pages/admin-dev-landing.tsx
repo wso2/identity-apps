@@ -160,7 +160,7 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
                                         className={ getRadioButtonClass(UserListOptions.ONBOARD) }
                                         checked={ selectedUserList === UserListOptions.ONBOARD }
                                     />
-                                    { t("console:manage.features.invite.subSelection.onBoard") }
+                                    { t("invite:subSelection.onBoard") }
                                 </Card.Content>
                             </Card>
                             <Card
@@ -174,7 +174,7 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
                                         className={ getRadioButtonClass(UserListOptions.INVITE) }
                                         checked={ selectedUserList === UserListOptions.INVITE }
                                     />
-                                    { t("console:manage.features.invite.subSelection.invitees") }
+                                    { t("invite:subSelection.invitees") }
                                 </Card.Content>
                             </Card>
                         </Card.Group>
@@ -194,7 +194,7 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
                                 floated="right"
                             >
                                 <Icon name="add"/>
-                                { t("console:manage.features.invite.inviteButton") }
+                                { t("invite:inviteButton") }
                             </PrimaryButton>
                         </Grid.Column>
                     )

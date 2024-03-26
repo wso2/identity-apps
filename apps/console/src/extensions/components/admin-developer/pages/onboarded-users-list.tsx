@@ -409,7 +409,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             (
                                 <p>
                                     <Trans
-                                        i18nKey={ "console:manage.features.onboarded.confirmationModal.removeUser." +
+                                        i18nKey={ "onboarded:confirmationModal.removeUser." +
                                         "assertionHint" }
                                         tOptions={ { name: deletingUser.userName } }
                                     >
@@ -426,17 +426,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.onboarded.confirmationModal.removeUser.header") }
+                            { t("onboarded:confirmationModal.removeUser.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
                             attached
                             warning
                         >
-                            { t("console:manage.features.onboarded.confirmationModal.removeUser.message") }
+                            { t("onboarded:confirmationModal.removeUser.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
-                            { t("console:manage.features.onboarded.confirmationModal.removeUser.content") }
+                            { t("onboarded:confirmationModal.removeUser.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

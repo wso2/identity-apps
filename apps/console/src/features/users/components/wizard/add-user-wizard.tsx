@@ -851,7 +851,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
             wizardTitle = t("extensions:manage.users.wizard.addUser.title");
         } else {
-            wizardTitle = t("console:manage.features.parentOrgInvitations.addUserWizard.heading");
+            wizardTitle = t("parentOrgInvitations:addUserWizard.heading");
         }
 
         if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName) {

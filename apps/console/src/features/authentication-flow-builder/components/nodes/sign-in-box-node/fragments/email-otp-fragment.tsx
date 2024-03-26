@@ -61,7 +61,7 @@ const EmailOTPFragment = (props: EmailOTPFragmentPropsInterface): ReactElement =
     return (
         <div className="email-otp-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("console:loginFlow.nodes.emailOTP.header") }
+                { t("authenticationFlow:nodes.emailOTP.header") }
             </Typography>
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
@@ -69,15 +69,15 @@ const EmailOTPFragment = (props: EmailOTPFragmentPropsInterface): ReactElement =
                         toRemove: IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
                     });
                 } }
-                optionRemoveTooltipContent={ t("console:loginFlow.nodes.signIn.controls.optionRemoveTooltipContent") }
+                optionRemoveTooltipContent={ t("authenticationFlow:nodes.signIn.controls.optionRemoveTooltipContent") }
             >
                 <TextField
                     required
                     fullWidth
                     name="password"
-                    label={ t("console:loginFlow.nodes.emailOTP.form.fields.code.label") }
+                    label={ t("authenticationFlow:nodes.emailOTP.form.fields.code.label") }
                     type="password"
-                    placeholder={ t("console:loginFlow.nodes.emailOTP.form.fields.code.placeholder") }
+                    placeholder={ t("authenticationFlow:nodes.emailOTP.form.fields.code.placeholder") }
                     autoComplete="off"
                     className="otp-input non-interactive"
                 />
@@ -90,7 +90,7 @@ const EmailOTPFragment = (props: EmailOTPFragmentPropsInterface): ReactElement =
                     type="submit"
                     fullWidth
                 >
-                    { t("console:loginFlow.nodes.emailOTP.form.actions.primary") }
+                    { t("authenticationFlow:nodes.emailOTP.form.actions.primary") }
                 </Button>
                 <Button
                     color="secondary"
@@ -98,7 +98,7 @@ const EmailOTPFragment = (props: EmailOTPFragmentPropsInterface): ReactElement =
                     className="oxygen-sign-in-cta non-interactive"
                     fullWidth
                 >
-                    { t("console:loginFlow.nodes.emailOTP.form.actions.secondary") }
+                    { t("authenticationFlow:nodes.emailOTP.form.actions.secondary") }
                 </Button>
             </div>
         </div>

@@ -26,8 +26,8 @@ import { getEmptyPlaceholderIllustrations } from "../../../../../core";
 
 // Component constants.
 
-const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "console:develop.features.authenticationProvider" +
-    ".placeHolders.emptyCertificateList";
+const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY = "authenticationProvider:" +
+    "placeHolders.emptyCertificateList";
 
 /**
  * Props interface of {@link EmptyCertificatesPlaceholder}
@@ -68,7 +68,7 @@ export const EmptyCertificatesPlaceholder: FC<EmptyCertificatesPlaceholderProps>
                             data-testid={ `${ testId }-emptyPlaceholder-add-certificate-button` }
                             type="button">
                             <Icon name="add"/>
-                            { t("console:develop.features.authenticationProvider.buttons.addCertificate") }
+                            { t("authenticationProvider:buttons.addCertificate") }
                         </PrimaryButton>
                     </Show>
                 ) }

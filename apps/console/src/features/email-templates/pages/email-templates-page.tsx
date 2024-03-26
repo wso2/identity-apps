@@ -104,10 +104,10 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplates.notifications.getTemplates" +
+                    description: t("emailTemplates:notifications.getTemplates" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplates.notifications.getTemplates" +
+                    message: t("emailTemplates:notifications.getTemplates" +
                         ".genericError.message")
                 }));
             })
@@ -116,17 +116,17 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.emailTemplates.notifications.getTemplates.error.message")
+                        message: t("emailTemplates:notifications.getTemplates.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplates.notifications.getTemplates" +
+                    description: t("emailTemplates:notifications.getTemplates" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplates.notifications.getTemplates" +
+                    message: t("emailTemplates:notifications.getTemplates" +
                         ".genericError.message")
                 }));
             })
@@ -197,11 +197,11 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 if (response.status === 204) {
                     dispatch(addAlert<AlertInterface>({
                         description: t(
-                            "console:manage.features.emailTemplates.notifications.deleteTemplate.success.description"
+                            "emailTemplates:notifications.deleteTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.emailTemplates.notifications.deleteTemplate.success.message"
+                            "emailTemplates:notifications.deleteTemplate.success.message"
                         )
                     }));
 
@@ -211,10 +211,10 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
+                    description: t("emailTemplates:notifications.deleteTemplate" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
+                    message: t("emailTemplates:notifications.deleteTemplate" +
                         ".genericError.message")
                 }));
             })
@@ -224,7 +224,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.emailTemplates.notifications.deleteTemplate.error.message"
+                            "emailTemplates:notifications.deleteTemplate.error.message"
                         )
                     }));
 
@@ -232,10 +232,10 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
+                    description: t("emailTemplates:notifications.deleteTemplate" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.emailTemplates.notifications.deleteTemplate" +
+                    message: t("emailTemplates:notifications.deleteTemplate" +
                         ".genericError.message")
                 }));
             });
@@ -251,7 +251,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
-                        { t("console:manage.features.emailTemplates.buttons.newTemplate") }
+                        { t("emailTemplates:buttons.newTemplate") }
                     </PrimaryButton>
                 )
             }

@@ -113,9 +113,9 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             >
                                 {
                                     isAddGroup ?
-                                        t("console:manage.features.roles.addRoleWizard.summary.labels.roleName",
+                                        t("roles:addRoleWizard.summary.labels.roleName",
                                             { type: "Group" }) :
-                                        t("console:manage.features.roles.addRoleWizard.summary.labels.roleName",
+                                        t("roles:addRoleWizard.summary.labels.roleName",
                                             { type: "Role" })
                                 }
                             </div>
@@ -142,7 +142,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                     data-testid={ `${ testId }-permissions-label` }
                                     className="label"
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.permissions") }
+                                    { t("roles:addRoleWizard.summary.labels.permissions") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
@@ -175,7 +175,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                     data-testid={ `${ testId }-users-label` }
                                     className="label"
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.users") }
+                                    { t("roles:addRoleWizard.summary.labels.users") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
@@ -210,7 +210,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                     data-testid={ `${ testId }-users-label` }
                                     className="label"
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.summary.labels.groups") }
+                                    { t("roles:addRoleWizard.summary.labels.groups") }
                                 </div>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">

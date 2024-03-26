@@ -141,10 +141,10 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                 });
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    description: t("authenticationProvider:notifications.addIDP." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    message: t("authenticationProvider:notifications.addIDP." +
                         "success.message")
                 }));
 
@@ -175,11 +175,11 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
 
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("console:develop.features.authenticationProvider.notifications." +
+                        description: t("authenticationProvider:notifications." +
                             "addIDP.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications." +
+                        message: t("authenticationProvider:notifications." +
                             "addIDP.error.message")
                     });
 
@@ -187,10 +187,10 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                 }
 
                 setAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    description: t("authenticationProvider:notifications.addIDP." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider.notifications.addIDP." +
+                    message: t("authenticationProvider:notifications.addIDP." +
                         "genericError.message")
                 });
             })
@@ -299,7 +299,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                             >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.next") }
+                                { t("authenticationProvider:wizards.buttons.next") }
                             </PrimaryButton>
                         ) : (
                             <>
@@ -312,7 +312,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                                     loading={ isSubmitting }
                                     disabled={ isSubmitting }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons.finish") }
+                                    { t("authenticationProvider:wizards.buttons.finish") }
                                 </PrimaryButton>
                             </>
                         ) }
@@ -325,7 +325,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                                 } }
                                 data-testid={ `${componentId}-modal-previous-button` }
                             >
-                                { t("console:develop.features.authenticationProvider.wizards.buttons.previous") }
+                                { t("authenticationProvider:wizards.buttons.previous") }
                             </LinkButton>)
                         }
                     </Grid.Column>
@@ -355,7 +355,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                     <div className="help-panel-header-text">
                         {
-                            t("console:develop.features.authenticationProvider.templates" +
+                            t("authenticationProvider:templates" +
                                 ".facebook.wizardHelp.heading")
                         }
                     </div>

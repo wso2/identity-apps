@@ -125,18 +125,18 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         return deleteParentOrgInvite(user.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.success.description"),
+                    description: t("invite:notifications.deleteInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.success.message")
+                    message: t("invite:notifications.deleteInvite.success.message")
                 }));
 
                 mutateInvitedAdministratorsListFetchRequest();
             }).catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.genericError." +
+                    description: t("invite:notifications.deleteInvite.genericError." +
                     "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.genericError.message")
+                    message: t("invite:notifications.deleteInvite.genericError.message")
                 }));
             })
             .finally(() => onComplete());

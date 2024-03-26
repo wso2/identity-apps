@@ -98,9 +98,9 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
         return deleteInvite(traceID)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.success.description"),
+                    description: t("invite:notifications.deleteInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.success.message")
+                    message: t("invite:notifications.deleteInvite.success.message")
                 }));
                 getGuestUsersList();
 
@@ -108,20 +108,20 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.invite.notifications.deleteInvite.error.description"),
+                        ?? t("invite:notifications.deleteInvite.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                        ?? t("console:manage.features.invite.notifications.deleteInvite.error.message")
+                        ?? t("invite:notifications.deleteInvite.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.genericError." +
+                    description: t("invite:notifications.deleteInvite.genericError." +
                     "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.genericError.message")
+                    message: t("invite:notifications.deleteInvite.genericError.message")
                 }));
             });
     };
@@ -131,9 +131,9 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
         return deleteParentOrgInvite(traceID)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.success.description"),
+                    description: t("invite:notifications.deleteInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.success.message")
+                    message: t("invite:notifications.deleteInvite.success.message")
                 }));
                 getGuestUsersList();
 
@@ -141,20 +141,20 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.invite.notifications.deleteInvite.error.description"),
+                        ?? t("invite:notifications.deleteInvite.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                        ?? t("console:manage.features.invite.notifications.deleteInvite.error.message")
+                        ?? t("invite:notifications.deleteInvite.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.genericError." +
+                    description: t("invite:notifications.deleteInvite.genericError." +
                     "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.genericError.message")
+                    message: t("invite:notifications.deleteInvite.genericError.message")
                 }));
             });
     };
@@ -164,29 +164,29 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
         return resendInvite(traceID)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.resendInvite.success.description"),
+                    description: t("invite:notifications.resendInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.resendInvite.success.message")
+                    message: t("invite:notifications.resendInvite.success.message")
                 }));
 
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.invite.notifications.resendInvite.error.description"),
+                        ?? t("invite:notifications.resendInvite.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                        ?? t("console:manage.features.invite.notifications.resendInvite.error.message")
+                        ?? t("invite:notifications.resendInvite.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.resendInvite.genericError." +
+                    description: t("invite:notifications.resendInvite.genericError." +
                     "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.invite.notifications.resendInvite.genericError.message")
+                    message: t("invite:notifications.resendInvite.genericError.message")
                 }));
             });
     };
@@ -230,16 +230,16 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.clearButton") }
+                            { t("invite:placeholder.emptySearchResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.title") }
+                    title={ t("invite:placeholder.emptySearchResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.subTitle.0",
+                        t("invite:placeholder.emptySearchResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.invite.placeholder.emptySearchResultPlaceholder.subTitle.1")
+                        t("invite:placeholder.emptySearchResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -254,9 +254,9 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         imageSize="tiny"
                         subtitle={ 
                             [ userTypeSelection === UserAccountTypesMain.EXTERNAL
-                                ?  t("console:manage.features.parentOrgInvitations." +
+                                ?  t("parentOrgInvitations:" +
                                     "emptyPlaceholder.noExpiredInvitations")
-                                :   t("console:manage.features.parentOrgInvitations." +
+                                :   t("parentOrgInvitations:" +
                                     "emptyPlaceholder.noCollaboratorUserInvitations")
                             ]
                         }
@@ -269,7 +269,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         imageSize="tiny"
                         subtitle={ 
                             [ userTypeSelection === UserAccountTypesMain.EXTERNAL
-                                ? t("console:manage.features.parentOrgInvitations." +
+                                ? t("parentOrgInvitations:" +
                                 "emptyPlaceholder.noPendingInvitations")
                                 : "There are no collaborator users with pending invitations at the moment."
                             ]
@@ -282,7 +282,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ [ t("console:manage.features.parentOrgInvitations." +
+                    subtitle={ [ t("parentOrgInvitations:" +
                     "emptyPlaceholder.noInvitations") ] }
                 />
             );
@@ -417,7 +417,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         type="negative"
                         open={ showDeleteModal }
                         assertion={ deleteUserInvite.email }
-                        assertionHint={ t("console:manage.features.invite.confirmationModal.deleteInvite." +
+                        assertionHint={ t("invite:confirmationModal.deleteInvite." +
                         "assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
@@ -427,17 +427,17 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.header") }
+                            { t("invite:confirmationModal.deleteInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.message") }
+                            { t("invite:confirmationModal.deleteInvite.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.content") }
+                            { t("invite:confirmationModal.deleteInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -451,7 +451,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         type="warning"
                         open={ showResendConfirmationModal }
                         assertion={ resendUserInvite.email }
-                        assertionHint={ t("console:manage.features.invite.confirmationModal.resendInvite." +
+                        assertionHint={ t("invite:confirmationModal.resendInvite." +
                                         "assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
@@ -461,17 +461,17 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
-                            { t("console:manage.features.invite.confirmationModal.resendInvite.header") }
+                            { t("invite:confirmationModal.resendInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             warning
                         >
-                            { t("console:manage.features.invite.confirmationModal.resendInvite.message") }
+                            { t("invite:confirmationModal.resendInvite.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
-                            { t("console:manage.features.invite.confirmationModal.resendInvite.content") }
+                            { t("invite:confirmationModal.resendInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
