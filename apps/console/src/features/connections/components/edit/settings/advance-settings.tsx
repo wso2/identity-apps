@@ -111,10 +111,10 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateIdentityProviderDetails({ id: editingIDP.id, ...values })
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         "updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);
@@ -133,10 +133,10 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         updateImplicitAssociationConfig(editingIDP.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider.notifications." +
+                    description: t("authenticationProvider:notifications." +
                         "updateIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "updateIDP.success.message")
                 }));
                 onUpdate(editingIDP.id);

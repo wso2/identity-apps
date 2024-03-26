@@ -103,12 +103,12 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 description: data?.description
             });
             dispatch(addAlert({
-                description: t("console:develop.features.secrets.alerts.updatedSecret.description", {
+                description: t("secrets:alerts.updatedSecret.description", {
                     secretName: copyOfEditingSecret?.secretName,
                     secretType: copyOfEditingSecret?.type
                 }),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.secrets.alerts.updatedSecret.message")
+                message: t("secrets:alerts.updatedSecret.message")
             }));
         }).catch((error): void => {
             if (error.response && error.response.data && error.response.data.description) {
@@ -121,9 +121,9 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 return;
             }
             dispatch(addAlert({
-                description: t("console:develop.features.secrets.errors.generic.description"),
+                description: t("secrets:errors.generic.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.secrets.errors.generic.message")
+                message: t("secrets:errors.generic.message")
             }));
         }).finally(() => {
             setLoading(false);
@@ -141,15 +141,15 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 <Field.Textarea
                     data-componentid={ `${ testId }-description-field` }
                     ariaLabel={
-                        t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.ariaLabel")
+                        t("secrets:forms.editSecret.secretDescriptionField.ariaLabel")
                     }
                     label={
-                        t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.label")
+                        t("secrets:forms.editSecret.secretDescriptionField.label")
                     }
                     placeholder={
-                        t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.placeholder")
+                        t("secrets:forms.editSecret.secretDescriptionField.placeholder")
                     }
-                    hint={ t("console:develop.features.secrets.forms.editSecret.secretDescriptionField.hint") }
+                    hint={ t("secrets:forms.editSecret.secretDescriptionField.hint") }
                     name="secret_description"
                     value={ copyOfEditingSecret?.description }
                     minLength={ SECRET_DESCRIPTION_LENGTH.min }
@@ -164,8 +164,8 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                         disabled={ !canUpdateDescription || loading }
                         type="submit"
                         buttonType="primary_btn"
-                        ariaLabel={ t("console:develop.features.secrets.forms.actions.submitButton.ariaLabel") }
-                        label={ t("console:develop.features.secrets.forms.actions.submitButton.label") }
+                        ariaLabel={ t("secrets:forms.actions.submitButton.ariaLabel") }
+                        label={ t("secrets:forms.actions.submitButton.label") }
                         name="submit"/>
                 </Show>
             </Form>

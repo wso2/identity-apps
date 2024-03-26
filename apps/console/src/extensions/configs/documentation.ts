@@ -312,6 +312,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     learnMore: undefined
                 }
             },
+            loginSecurity: {
+                botDetection: {
+                    learnMore: undefined
+                },
+                loginAttempts: {
+                    learnMore: undefined
+                }
+            },
             organizations: {
                 learnMore: undefined
             },

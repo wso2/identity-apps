@@ -193,7 +193,15 @@ export class Config {
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
                 I18nConstants.CLAIMS_NAMESPACE,
-                I18nConstants.EMAIL_LOCALE_NAMESPACE
+                I18nConstants.EMAIL_LOCALE_NAMESPACE,
+                I18nConstants.HELP_PANEL_NAMESPACE,
+                I18nConstants.SUBORGANIZATIONS_NAMESPACE,
+                I18nConstants.CONSOLE_SETTINGS_NAMESPACE,
+                I18nConstants.SECRETS_NAMESPACE,
+                I18nConstants.BRANDING_NAMESPACE,
+                I18nConstants.EMAIL_TEMPLATES_NAMESPACE,
+                I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
+                I18nConstants.CERTIFICATES_NAMESPACE
             ],
             preload: []
         };

@@ -198,6 +198,8 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 options={ primaryClaimList }
                 data-componentid={ `${componentId}-primary-lookup-attribute` }
                 listen={ primaryAttributeChangeListener }
+                placeholder={ t("console:develop.features.idp.forms.advancedConfigs." +
+                    "implicitAssociation.primaryAttribute.placeholder") }
                 enableReinitialize={ true }
                 hint={ (<Hint disabled={ !implicitAssociationEnabled }>
                     { t("console:develop.features.idp.forms.advancedConfigs." +
@@ -218,6 +220,9 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 data-componentid={ `${componentId}-secondary-lookup-attribute` }
                 listen={ secondaryAttributeChangeListener }
                 enableReinitialize={ true }
+                placeholder={ t("console:develop.features.idp.forms.advancedConfigs." +
+                    "implicitAssociation.secondaryAttribute.placeholder") }
+                clearable={ true }
                 hint={ (<Hint disabled={ !implicitAssociationEnabled }>
                     { t("console:develop.features.idp.forms.advancedConfigs." +
                     "implicitAssociation.secondaryAttribute.hint") }

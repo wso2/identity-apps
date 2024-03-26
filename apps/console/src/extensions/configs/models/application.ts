@@ -118,7 +118,9 @@ export interface ApplicationConfig {
         showScopeValidators: boolean;
         showNativeClientSecretMessage: boolean;
         showIdTokenEncryption: boolean;
+        showIdTokenResponseSigningAlgorithm: boolean;
         showBackChannelLogout: boolean;
+        showRequestObjectConfigurations: boolean;
         showRequestObjectSignatureValidation: boolean;
         showCertificates: boolean;
         showReturnAuthenticatedIdPList: boolean;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -89,16 +89,60 @@ export class I18nModuleConstants {
     /**
      * Claims namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly CLAIMS_NAMESPACE: string = "claims";
 
     /**
      * Email locale namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly EMAIL_LOCALE_NAMESPACE: string = "emailLocale";
+  
+    /**
+     * Help panel namespace.
+     * @constant
+     */
+    public static readonly HELP_PANEL_NAMESPACE: string = "helpPanel";
+  
+    /**
+     * Suborganizations namespace.
+     * @constant
+     */
+    public static readonly SUBORGANIZATIONS_NAMESPACE: string = "suborganizations";
+  
+    /**
+     * Console settings namespace.
+     * @constant
+     */
+    public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
+  
+    /**
+     * Secrets namespace.
+     * @constant
+     */
+    public static readonly SECRETS_NAMESPACE: string = "secrets";
+  
+    /**
+     * Branding namespace.
+     * @constant
+     */
+    public static readonly BRANDING_NAMESPACE: string = "branding";
+  
+    /**
+     * emailTemplates namespace.
+     * @constant
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
+
+    /**
+     * Certificate namespace.
+     * @constant
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = "certificates";
+
+    /**
+     * authenticationProvider namespace.
+     * @constant
+     */
+    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
 }
