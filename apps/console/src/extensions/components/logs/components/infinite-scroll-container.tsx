@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import {IdentifiableComponentInterface} from "@wso2is/core/models";
-import {Popup} from "@wso2is/react-components";
-import {saveAs} from "file-saver";
-import React, {LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, lazy, useCallback, useEffect, useRef, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {Accordion, Icon} from "semantic-ui-react";
+import { Popup } from "@wso2is/react-components";
+import { saveAs } from "file-saver";
+import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, lazy, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";
 import LoaderPlaceholder from "./loader-placeholder";
-import {InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex} from "../models/log-models";
-import {formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp} from "../utils/datetime-utils";
+import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
+import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -33,7 +32,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { SupportedEditorThemes } from "apps/console/src/features/authentication-flow-builder/models/script-editor";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import "./log-data-viewer-panel.scss";
 
 interface InfiniteScrollContainerPropsInterface
@@ -73,9 +72,9 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     } = props;
 
     const {t} = useTranslation();
-    const [activeIndex, setActiveIndex] = useState<number[]>([-1]);
-    const [view, setView] = useState<boolean>(false);
-    const [currentLog, setCurrentLog] = useState<InterfaceLogEntry>();
+    const [ activeIndex, setActiveIndex ] = useState<number[]>([-1]);
+    const [ view, setView ] = useState<boolean>(false);
+    const [ currentLog, setCurrentLog ] = useState<InterfaceLogEntry>();
 
     useEffect(() => {
         /**
@@ -106,12 +105,12 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     function handleLogDataViewClose(): void {
         setView(false);
         setCurrentLog(null);
-    }
+    };
 
     const handleLogDataView = (logObject: InterfaceLogEntry) => {
         setCurrentLog(logObject);
         setView(true);
-    }
+    };
 
     const exportDataOfLog = (logObject : InterfaceLogEntry) => {
         const blob: Blob = new Blob( [ JSON.stringify(logObject["data"], null, 2) ],
@@ -125,8 +124,8 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     };
 
     const exportCurrentLog = () => {
-        const blob: Blob = new Blob([JSON.stringify(currentLog["data"], null, 2)],
-            {type: "application/json"});
+        const blob: Blob = new Blob( [ JSON.stringify(currentLog["data"], null, 2) ],
+            { type: "application/json" });
 
         saveAs(blob, "log_data_" + currentLog["id"] + ".json");
     };
@@ -230,10 +229,10 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 <td className="view-data-button">
                                     <span
                                         data-testid={`${componentId}-${logObject["id"]}-view-data-button`}
-                                        onClick={() => handleLogDataView(logObject)}
+                                        onClick={ () => handleLogDataView(logObject) }
                                     >
                                         <Icon name="eye"/>
-                                        {t("extensions:develop.monitor.filter.viewButton.label")}
+                                        { t("extensions:develop.monitor.filter.viewButton.label") }
                                     </span>
                                 </td>
                                 <td></td>
@@ -291,12 +290,12 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
 const LogDataViewerPanel  : ReactElement = (
 
         <MonacoEditor
-            loading={<CircularProgress />}
+            loading={ <CircularProgress /> }
             className="log-data-viewer"
             width="100%"
             height="100%"
             language="javascript"
-            theme={ SupportedEditorThemes.LIGHT }
+            theme={ "vc" } // visual studio code light theme
             value={currentLog ? JSON.stringify(currentLog["data"], null, 2) : '{}'}
             options={ {
                 automaticLayout: true,
@@ -304,7 +303,7 @@ const LogDataViewerPanel  : ReactElement = (
             } }
             data-componentid={ `${componentId}-data-viewer` }
         />
-)
+);
 
     const LogViewerToolbar : ReactElement = (
 
@@ -317,10 +316,10 @@ const LogDataViewerPanel  : ReactElement = (
                         }
                         </Typography>
                 </Box>
-                <div className="actions">
+            <div className="actions">
                     <div className="editor-fullscreen">
                         <Tooltip
-                            title={"Download"}
+                            title={ "Download" }
                             data-componentid="log-data-viewer-download-tooltip"
                         >
                             <IconButton
@@ -333,7 +332,7 @@ const LogDataViewerPanel  : ReactElement = (
                             </IconButton>
                         </Tooltip>
                         <Tooltip
-                            title={"Copy"}
+                            title={ "Copy" }
                             data-componentid="log-data-viewer-copy-tooltip"
                         >
                             <IconButton
@@ -346,7 +345,7 @@ const LogDataViewerPanel  : ReactElement = (
                             </IconButton>
                         </Tooltip>
                         <Tooltip
-                            title={"Exit"}
+                            title={ "Exit" } 
                             data-componentid="log-data-viewer-exit-tooltip"
                         >
                             <IconButton
@@ -358,11 +357,11 @@ const LogDataViewerPanel  : ReactElement = (
                                 }
                             </IconButton>
                         </Tooltip>
-                        </div>
                     </div>
-                </Toolbar>
-        </Box>
-    )
+                </div>
+            </Toolbar>
+    </Box>
+    );
 
     return (
         <div
@@ -379,31 +378,31 @@ const LogDataViewerPanel  : ReactElement = (
                     <LoaderPlaceholder />
                 ) }
                 { !loading && logType === TabIndex.AUDIT_LOGS && (
-                <div className="log-header">
-                    <div className="log-Recordedtime">
-                        <Typography variant="body1">
-                            {
-                                t("extensions:develop.monitor.logView.headers.recordedAt")
-                            }
-                        </Typography>
-                    </div>
-                    <div className="log-description-header">
-                        <div className="log-actionId">
+                    <div className="log-header">
+                        <div className="log-Recordedtime">
                             <Typography variant="body1">
-                            {
-                                t("extensions:develop.monitor.logView.headers.actionId")
-                            }                        
+                                {
+                                    t("extensions:develop.monitor.logView.headers.recordedAt")
+                                }
                             </Typography>
                         </div>
-                        <div className="log-targetId">
-                            <Typography variant="body1">
-                            {
-                                t("extensions:develop.monitor.logView.headers.targetId")
-                            } 
-                            </Typography>
+                        <div className="log-description-header">
+                            <div className="log-actionId">
+                                <Typography variant="body1">
+                                {
+                                    t("extensions:develop.monitor.logView.headers.actionId")
+                                }                        
+                                </Typography>
+                            </div>
+                            <div className="log-targetId">
+                                <Typography variant="body1">
+                                {
+                                    t("extensions:develop.monitor.logView.headers.targetId")
+                                } 
+                                </Typography>
+                            </div>
                         </div>
                     </div>
-                </div>
                 ) }
                 <Accordion data-componentid={ `${componentId}-log-entries-wrapper` } exclusive={ false } fluid>
                     { logs.map((log: InterfaceLogEntry, key: number) => (
@@ -457,12 +456,12 @@ const LogDataViewerPanel  : ReactElement = (
                                             <div>
                                                 {log.actionId && (
                                                     <div className="log-actionid-container">
-                                                        {log.actionId}
+                                                        { log.actionId }
                                                     </div>
                                                 )}
                                                 {log.action && (
                                                     <div className="log-actionid-container">
-                                                        {log.action}
+                                                        { log.action }
                                                     </div>
                                                 )}
                                             </div>
@@ -471,12 +470,12 @@ const LogDataViewerPanel  : ReactElement = (
                                             <div>
                                                 {log.actionId && (
                                                     <div className="log-actionid-container">
-                                                        {log.actionId}
+                                                        { log.actionId }
                                                     </div>
                                                 )}
                                                 {log.action && (
                                                     <div className="log-actionid-container">
-                                                        {log.action}
+                                                        { log.action }
                                                     </div>
                                                 )}
                                             </div>
@@ -486,7 +485,7 @@ const LogDataViewerPanel  : ReactElement = (
                                                 <div>
                                                     {log.targetId && (
                                                         <div className="log-targetId-container">
-                                                            {log.targetId}
+                                                            { log.targetId }
                                                         </div>
                                                     )}
                                                 </div>
@@ -499,13 +498,13 @@ const LogDataViewerPanel  : ReactElement = (
                                 { handleExpandedView(log).map((el: ReactElement, key: number) => (
                                     <table className="log-expanded-view" key={ key }>
                                         <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                        </tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        {el}
+                                            { el }
                                         </tbody>
                                     </table>
                                 )) }
@@ -521,7 +520,7 @@ const LogDataViewerPanel  : ReactElement = (
                                 aria-describedby="transition-modal-description"
                                 open={ view }
                                 onClose={ handleLogDataViewClose }
-                                >
+                            >
                                 <Box className="full-screen-log-data-viewer-container"> 
                                     { LogViewerToolbar }
                                     { LogDataViewerPanel } 
