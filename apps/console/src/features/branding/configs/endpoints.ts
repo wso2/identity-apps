@@ -24,15 +24,23 @@ import { BrandingPreferenceResourceEndpointsInterface } from "../models/endpoint
  * @param serverHost - Server Host.
  * @returns The resource endpoints for the Branding Preference feature.
  */
-export const getBrandingResourceEndpoints = 
+export const getBrandingResourceEndpoints =
     (serverHostWithOrgPath: string): BrandingPreferenceResourceEndpointsInterface => {
         const subOrgPath: string = window[ "AppUtils" ]?.getConfig()?.serverOrigin +
             window[ "AppUtils" ]?.getOrganizationPath();
 
         return {
             brandingPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference`,
+            brandingPreferenceGenerate: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/generate`,
+            brandingPreferenceGenerateResult: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/result`,
+            brandingPreferenceGenerateResultSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/result`,
+            brandingPreferenceGenerateStatus: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/` +
+                "/status",
+            brandingPreferenceGenerateStatusSubOrg: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/` +
+                "/status",
+            brandingPreferenceGenerateSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/generate`,
             brandingPreferenceSubOrg: `${ subOrgPath }/api/server/v1/branding-preference`,
             brandingTextPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/text`,
-            brandingTextPreferenceSubOrg: `${ subOrgPath}/api/server/v1/branding-preference/text`
+            brandingTextPreferenceSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/text`
         };
     };

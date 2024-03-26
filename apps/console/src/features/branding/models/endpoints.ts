@@ -18,8 +18,7 @@
 
 /**
  * Interface for the Branding Preference resource endpoints.
- */
-export interface BrandingPreferenceResourceEndpointsInterface {
+ */export interface BrandingPreferenceResourceEndpointsInterface {
     /**
      * Endpoint to get the branding preferences.
      */
@@ -36,4 +35,28 @@ export interface BrandingPreferenceResourceEndpointsInterface {
      * Endpoint to get the branding text preference for a sub organization.
      */
     brandingTextPreferenceSubOrg: string;
+    /**
+     * Endpoint to generate the branding preferences.
+     */
+    brandingPreferenceGenerate: string;
+    /**
+     * Endpoint to generate the branding preference for a sub organization.
+     */
+    brandingPreferenceGenerateSubOrg: string;
+    /**
+     * Endpoint to get the status of the branding preference generation.
+     */
+    brandingPreferenceGenerateStatus: string;
+    /**
+     * Endpoint to get the status of the branding preference generation for a sub organization.
+     */
+    brandingPreferenceGenerateStatusSubOrg: string;
+    /**
+     * Endpoint to get the result of the branding preference generation.
+     */
+    brandingPreferenceGenerateResult: string;
+    /**
+     * Endpoint to get the result of the branding preference generation for a sub organization.
+     */
+    brandingPreferenceGenerateResultSubOrg: string;
 }

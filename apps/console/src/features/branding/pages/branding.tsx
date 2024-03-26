@@ -723,7 +723,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                     )
                 }
 
-
                 { isGeneratingBranding ? (
                     <div>
                         <LoadingScreen traceId={ traceId } />

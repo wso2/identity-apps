@@ -25,6 +25,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ReactComponent as LoadingPlaceholder }
     from "../../../themes/wso2is/assets/images/branding/ai-loading-screen-placeholder.svg";
+import AIContextProvider from "../providers/ai-context-provider";
 
 export const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element => {
     const { t } = useTranslation();
@@ -185,55 +186,64 @@ export const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element =
     }, [ factIndex ]);
 
     return (
-        <Box sx={ { alignItems: "center", display: "flex", justifyContent: "center" } }>
-            <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", width: "75%" } }>
-                <Box
-                    sx={ {
-                        alignItems: "center",
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginBottom: "20px"
-                    } }>
-                    <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", mt: 2 } }>
-                        <Box sx={ { alignItems: "left", display: "flex", flexDirection: "column", maxWidth: "75%" } }>
-                            <Typography variant="h5" sx={ { color: "rgba(0, 0, 0, 0.6)", fontWeight: "bold" } }>
-                                Did you know?
-                            </Typography>
-                            <Typography
-                                variant="body1"
-                                align="justify"
+        <AIContextProvider>
+
+            <Box sx={ { alignItems: "center", display: "flex", justifyContent: "center" } }>
+                <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", width: "75%" } }>
+                    <Box
+                        sx={ {
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                            marginBottom: "20px"
+                        } }>
+                        <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", mt: 2 } }>
+                            <Box
                                 sx={ {
-                                    color: "#757575",
-                                    height: "150px",
-                                    mt: 2,
-                                    overflow: "auto"
+                                    alignItems: "left",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    maxWidth: "75%"
                                 } }>
-                                { facts[factIndex] }
-                            </Typography>
+                                <Typography variant="h5" sx={ { color: "rgba(0, 0, 0, 0.6)", fontWeight: "bold" } }>
+                                Did you know?
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    align="justify"
+                                    sx={ {
+                                        color: "#757575",
+                                        height: "150px",
+                                        mt: 2,
+                                        overflow: "auto"
+                                    } }>
+                                    { facts[factIndex] }
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box sx={ { display: "flex", justifyContent: "left" } }>
+                            <LoadingPlaceholder />
                         </Box>
                     </Box>
-                    <Box sx={ { display: "flex", justifyContent: "left" } }>
-                        <LoadingPlaceholder />
+                    <Box sx={ { width: "100%" } }>
+                        <LinearProgress variant="determinate" value={ progress } />
+                    </Box>
+                    <Box
+                        sx={ {
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "flex-start",
+                            mt: 2,
+                            width: "100%"
+                        } }>
+                        { polling && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                        <Typography variant="h6">
+                            { currentStatus }
+                        </Typography>
                     </Box>
                 </Box>
-                <Box sx={ { width: "100%" } }>
-                    <LinearProgress variant="determinate" value={ progress } />
-                </Box>
-                <Box
-                    sx={ {
-                        alignItems: "center",
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        mt: 2,
-                        width: "100%"
-                    } }>
-                    { polling && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
-                    <Typography variant="h6">
-                        { currentStatus }
-                    </Typography>
-                </Box>
             </Box>
-        </Box>
+        </AIContextProvider>
     );
 };

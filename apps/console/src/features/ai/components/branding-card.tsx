@@ -27,6 +27,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, Input, Segment } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as AIIcon } from "../../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
+import AIContextProvider from "../providers/ai-context-provider";
 
 enum BannerState {
     Full = "banner-full",
@@ -75,57 +76,122 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
     };
 
     return (
-        <>
-            { bannerState === BannerState.Full && (
-                <Segment
-                    basic
-                    style={ {
-                        background: "linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,1) 37%)",
-                        borderRadius: "8px"
-                    } }
-                >
-                    <div
+        <AIContextProvider>
+            <>
+                { bannerState === BannerState.Full && (
+                    <Segment
+                        basic
                         style={ {
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            padding: "45px"
-                        } }>
-                        <div>
-                            <Header as="h3">{ t("console:branding.ai.banner.full.heading") }</Header>
-                            <p>{ t("console:branding.ai.banner.full.subHeading") }</p>
+                            background: "linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,1) 37%)",
+                            borderRadius: "8px"
+                        } }
+                    >
+                        <div
+                            style={ {
+                                alignItems: "center",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                padding: "45px"
+                            } }>
+                            <div>
+                                <Header as="h3">{ t("console:branding.ai.banner.full.heading") }</Header>
+                                <p>{ t("console:branding.ai.banner.full.subHeading") }</p>
+                            </div>
+                            <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
+                                <GenericIcon
+                                    icon={ AIIcon }
+                                    style={ { paddingRight: "5px" } }
+                                />
+                                { t("console:branding.ai.banner.full.button") }
+                            </Button>
                         </div>
-                        <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
-                            <GenericIcon
-                                icon={ AIIcon }
-                                style={ { paddingRight: "5px" } }
-                            />
-                            { t("console:branding.ai.banner.full.button") }
-                        </Button>
-                    </div>
-                </Segment>
-            ) }
-            { bannerState === BannerState.Input && (
-                <Segment>
-                    <div style={ { display: "flex", flexDirection: "column", height: "100%", position: "relative" } }>
-                        <Icon
-                            name="dropdown"
-                            onClick={ handleCollapseClick }
-                            style={ { cursor: "pointer", position: "absolute", right: 0, top: 0 } }
-                        />
-
+                    </Segment>
+                ) }
+                { bannerState === BannerState.Input && (
+                    <Segment>
                         <div
                             style={ {
                                 display: "flex",
                                 flexDirection: "column",
+                                height: "100%",
+                                position: "relative"
+                            } }>
+                            <Icon
+                                name="dropdown"
+                                onClick={ handleCollapseClick }
+                                style={ { cursor: "pointer", position: "absolute", right: 0, top: 0 } }
+                            />
+
+                            <div
+                                style={ {
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "space-between",
+                                    padding: "10px"
+                                } }>
+                                <div>
+                                    <Header as="h3" style={ { marginBottom: "5px" } }>
+                                        { t("console:branding.ai.banner.input.heading") }
+                                    </Header>
+                                    <p>{ t("console:branding.ai.banner.input.subHeading") }
+                                        <DocumentationLink
+                                            link={ "develop.applications.editApplication.asgardeoTryitApplication" +
+                                    ".general.learnMore" }
+                                            isLinkRef = { true }
+                                        >
+                                            <Trans
+                                                i18nKey={ "extensions:common.learnMore" }
+                                            >
+                                            Learn More
+                                            </Trans>
+                                        </DocumentationLink>
+                                    </p>
+                                </div>
+                                <div
+                                    style={ {
+                                        alignItems: "center",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        paddingRight: "20px",
+                                        paddingTop: "20px"
+                                    } }>
+                                    <Input
+                                        placeholder={ t("console:branding.ai.banner.input.placeholder") }
+                                        value={ websiteUrl }
+                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                            setWebsiteUrl(e.target.value) }
+                                        style={ { width: "40%" } }
+                                    />
+                                    <Button
+                                        onClick={ handleGenerateClick }
+                                        color="secondary"
+                                        variant="outlined"
+                                        style={ { marginLeft: "auto" } }
+                                    >
+                                        <GenericIcon
+                                            icon={ AIIcon }
+                                            style={ { paddingRight: "5px" } }
+                                        />
+                                        { t("console:branding.ai.banner.input.button") }
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </Segment>
+                ) }
+                { bannerState === BannerState.Collapsed && (
+                    <Segment>
+                        <div
+                            style={ {
+                                alignItems: "center",
+                                display: "flex",
                                 justifyContent: "space-between",
                                 padding: "10px"
                             } }>
                             <div>
                                 <Header as="h3" style={ { marginBottom: "5px" } }>
-                                    { t("console:branding.ai.banner.input.heading") }
-                                </Header>
-                                <p>{ t("console:branding.ai.banner.input.subHeading") }
+                                    { t("console:branding.ai.banner.input.heading") }</Header>
+                                <p>{ t("console:branding.ai.banner.collapsed.subHeading") }
                                     <DocumentationLink
                                         link={ "develop.applications.editApplication.asgardeoTryitApplication" +
                                     ".general.learnMore" }
@@ -134,84 +200,27 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                         <Trans
                                             i18nKey={ "extensions:common.learnMore" }
                                         >
-                                            Learn More
+                                        Learn More
                                         </Trans>
                                     </DocumentationLink>
                                 </p>
                             </div>
-                            <div
-                                style={ {
-                                    alignItems: "center",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    paddingRight: "20px",
-                                    paddingTop: "20px"
-                                } }>
-                                <Input
-                                    placeholder={ t("console:branding.ai.banner.input.placeholder") }
-                                    value={ websiteUrl }
-                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                        setWebsiteUrl(e.target.value) }
-                                    style={ { width: "40%" } }
+                            <Button
+                                onClick={ () => setBannerState(BannerState.Input) }
+                                color="secondary"
+                                variant="outlined"
+                            >
+                                <GenericIcon
+                                    icon={ AIIcon }
+                                    style={ { paddingRight: "5px" } }
                                 />
-                                <Button
-                                    onClick={ handleGenerateClick }
-                                    color="secondary"
-                                    variant="outlined"
-                                    style={ { marginLeft: "auto" } }
-                                >
-                                    <GenericIcon
-                                        icon={ AIIcon }
-                                        style={ { paddingRight: "5px" } }
-                                    />
-                                    { t("console:branding.ai.banner.input.button") }
-                                </Button>
-                            </div>
+                                { t("console:branding.ai.banner.collapsed.button") }
+                            </Button>
                         </div>
-                    </div>
-                </Segment>
-            ) }
-            { bannerState === BannerState.Collapsed && (
-                <Segment>
-                    <div
-                        style={ {
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            padding: "10px"
-                        } }>
-                        <div>
-                            <Header as="h3" style={ { marginBottom: "5px" } }>
-                                { t("console:branding.ai.banner.input.heading") }</Header>
-                            <p>{ t("console:branding.ai.banner.collapsed.subHeading") }
-                                <DocumentationLink
-                                    link={ "develop.applications.editApplication.asgardeoTryitApplication" +
-                                    ".general.learnMore" }
-                                    isLinkRef = { true }
-                                >
-                                    <Trans
-                                        i18nKey={ "extensions:common.learnMore" }
-                                    >
-                                        Learn More
-                                    </Trans>
-                                </DocumentationLink>
-                            </p>
-                        </div>
-                        <Button
-                            onClick={ () => setBannerState(BannerState.Input) }
-                            color="secondary"
-                            variant="outlined"
-                        >
-                            <GenericIcon
-                                icon={ AIIcon }
-                                style={ { paddingRight: "5px" } }
-                            />
-                            { t("console:branding.ai.banner.collapsed.button") }
-                        </Button>
-                    </div>
-                </Segment>
-            ) }
-        </>
+                    </Segment>
+                ) }
+            </>
+        </AIContextProvider>
     );};
 
 BrandingAIComponent.defaultProps = {
