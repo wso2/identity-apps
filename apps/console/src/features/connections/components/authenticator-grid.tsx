@@ -262,10 +262,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             .then(() => {
                 onConnectionUpdate();
                 dispatch(addAlert({
-                    description: t("console:develop.features.authenticationProvider." +
+                    description: t("authenticationProvider:" +
                         "notifications.deleteConnection.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.authenticationProvider.notifications." +
+                    message: t("authenticationProvider:notifications." +
                         "deleteConnection.success.message")
                 }));
             })
@@ -300,13 +300,13 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:develop.features.authenticationProvider.placeHolders." +
+                    title={ t("authenticationProvider:placeHolders." +
                         "emptyIDPSearchResults.title") }
                     subtitle={ [
-                        t("console:develop.features.authenticationProvider.placeHolders." +
+                        t("authenticationProvider:placeHolders." +
                             "emptyIDPSearchResults.subtitles.0",
                         { searchQuery: searchQuery }),
-                        t("console:develop.features.authenticationProvider.placeHolders." +
+                        t("authenticationProvider:placeHolders." +
                             "emptyIDPSearchResults.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
@@ -322,13 +322,13 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         <PrimaryButton
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
-                            { t("console:develop.features.authenticationProvider.buttons.addIDP") }
+                            { t("authenticationProvider:buttons.addIDP") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.authenticationProvider.placeHolders.emptyIDPList.subtitles.0")
+                        t("authenticationProvider:placeHolders.emptyIDPList.subtitles.0")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -471,7 +471,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertion={ deletingIDP?.name }
-                        assertionHint={ t("console:develop.features.authenticationProvider."+
+                        assertionHint={ t("authenticationProvider:"+
                         "confirmations.deleteIDP.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -484,17 +484,17 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                            { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.header") }
+                            { t("authenticationProvider:confirmations.deleteIDP.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.message") }
+                            { t("authenticationProvider:confirmations.deleteIDP.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                            { t("console:develop.features.authenticationProvider.confirmations.deleteIDP.content") }
+                            { t("authenticationProvider:confirmations.deleteIDP.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -511,18 +511,18 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.authenticationProvider.confirmations." +
+                            { t("authenticationProvider:confirmations." +
                                 "deleteIDPWithConnectedApps.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.authenticationProvider." +
+                            { t("authenticationProvider:" +
                             "confirmations.deleteIDPWithConnectedApps.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-delete-idp-confirmation` }>
-                            { t("console:develop.features.authenticationProvider.confirmations." +
+                            { t("authenticationProvider:confirmations." +
                                 "deleteIDPWithConnectedApps.content") }
                             <Divider hidden />
                             <List className="ml-6">

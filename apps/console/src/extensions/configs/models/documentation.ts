@@ -26,6 +26,18 @@ interface AccountRecoveryDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the login security section documentation structure.
+ */
+interface LoginSecurityDocumentationLinksInterface {
+    botDetection: {
+        learnMore: string;
+    },
+    loginAttempts: {
+        learnMore: string;
+    }
+}
+
+/**
  * Interface for the API Resources section documentation structure.
  */
 interface APIResourcesDocumentationLinksInterface {
@@ -462,6 +474,10 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for account recovery elements.
          */
         accountRecovery: AccountRecoveryDocumentationLinksInterface;
+        /**
+         * Documentation links for login security elements.
+         */
+        loginSecurity: LoginSecurityDocumentationLinksInterface;
         /**
          * Documentation links for attributes section elements.
          */

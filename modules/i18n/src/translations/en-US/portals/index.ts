@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,3 +22,18 @@ export * from "./myaccount";
 export * from "./remote-fetch";
 export * from "./roles";
 export * from "./server-configs";
+export * from "./saml2-config";
+export * from "./session-management";
+export * from "./ws-federation-config";
+export * from "./insights";
+export * from "./sms-providers";
+export * from "./claims";
+export * from "./email-locale";
+export * from "./help-panel";
+export * from "./suborganizations";
+export * from "./console-settings";
+export * from "./secrets";
+export * from "./branding";
+export * from "./email-templates";
+export * from "./certificates";
+export * from "./authentication-provider";

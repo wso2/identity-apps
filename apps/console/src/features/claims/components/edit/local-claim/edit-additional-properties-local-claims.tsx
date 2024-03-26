@@ -84,19 +84,19 @@ export const EditAdditionalPropertiesLocalClaims:
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                            <p>{ t("console:manage.features.claims.local.additionalProperties.hint") }</p>
+                            <p>{ t("claims:local.additionalProperties.hint") }</p>
                             <DynamicField
                                 data={ claim.properties }
                                 keyType="text"
-                                keyName={ t("console:manage.features.claims.local.additionalProperties.key") }
-                                valueName={ t("console:manage.features.claims.local.additionalProperties.value") }
+                                keyName={ t("claims:local.additionalProperties.key") }
+                                valueName={ t("claims:local.additionalProperties.value") }
                                 submit={ submit }
                                 keyRequiredMessage={ t(
-                                    "console:manage.features.claims.local.additionalProperties." +
+                                    "claims:local.additionalProperties." +
                                     "keyRequiredErrorMessage"
                                 ) }
                                 valueRequiredErrorMessage={ t(
-                                    "console:manage.features.claims.local.additionalProperties." +
+                                    "claims:local.additionalProperties." +
                                 "valueRequiredErrorMessage"
                                 ) }
                                 requiredField={ true }
@@ -116,12 +116,12 @@ export const EditAdditionalPropertiesLocalClaims:
                                             dispatch(
                                                 addAlert({
                                                     description: t(
-                                                        "console:manage.features.claims.local.notifications." +
+                                                        "claims:local.notifications." +
                                                     "updateClaim.success.description"
                                                     ),
                                                     level: AlertLevels.SUCCESS,
                                                     message: t(
-                                                        "console:manage.features.claims.local.notifications." +
+                                                        "claims:local.notifications." +
                                                     "updateClaim.success.message"
                                                     )
                                                 })
@@ -134,14 +134,14 @@ export const EditAdditionalPropertiesLocalClaims:
                                                     description:
                                                     error?.description ||
                                                     t(
-                                                        "console:manage.features.claims.local.notifications." +
+                                                        "claims:local.notifications." +
                                                         "updateClaim.genericError.description"
                                                     ),
                                                     level: AlertLevels.ERROR,
                                                     message:
                                                     error?.message ||
                                                     t(
-                                                        "console:manage.features.claims.local.notifications." +
+                                                        "claims:local.notifications." +
                                                         "updateClaim.genericError.message"
                                                     )
                                                 })
