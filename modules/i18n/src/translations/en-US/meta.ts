@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,10 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
         I18nModuleConstants.EXTENSIONS_NAMESPACE,
         I18nModuleConstants.CONSOLE_SETTINGS_NAMESPACE,
-        I18nModuleConstants.FEATURE_GATE_NAMESPACE
+        I18nModuleConstants.SECRETS_NAMESPACE,
+        I18nModuleConstants.BRANDING_NAMESPACE,
+        I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE,
+        I18nModuleConstants.CERTIFICATES_NAMESPACE,
+        I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE
     ]
 };

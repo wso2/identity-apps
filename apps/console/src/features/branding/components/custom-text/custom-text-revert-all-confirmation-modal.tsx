@@ -65,11 +65,11 @@ const CustomTextRevertConfirmationModal: FunctionComponent<CustomTextRevertConfi
             { ...rest }
         >
             <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
-                { t("console:brandingCustomText.revertScreenConfirmationModal.heading") }
+                { t("branding:brandingCustomText.revertScreenConfirmationModal.heading") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message attached negative data-componentid={ `${componentId}-message` }>
                 <Trans
-                    i18nKey={ "console:brandingCustomText.revertScreenConfirmationModal.message" }
+                    i18nKey={ "branding:brandingCustomText.revertScreenConfirmationModal.message" }
                     tOptions={ {
                         locale: selectedLocale,
                         screen: selectedScreen
@@ -80,7 +80,7 @@ const CustomTextRevertConfirmationModal: FunctionComponent<CustomTextRevertConfi
                 </Trans>
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
-                { t("console:brandingCustomText.revertScreenConfirmationModal.content", { productName }) }
+                { t("branding:brandingCustomText.revertScreenConfirmationModal.content", { productName }) }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import React, { FC, PropsWithChildren, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Segment } from "semantic-ui-react";
 import { getCertificateIllustrations } from "../../../../core";
-import { CertificateManagementConstants } from "@wso2is/core/constants";
 
 /**
  * Props interface of {@link ShowCertificateModal}
@@ -37,8 +37,7 @@ export interface ShowCertificateModalProps extends IdentifiableComponentInterfac
 /**
  * Displays the certificate in a modal.
  *
- * @param props {ShowCertificateModalProps}
- * @constructor
+ * @param props - ShowCertificateModalProps
  */
 export const ShowCertificateModal: FC<ShowCertificateModalProps> = (
     props: PropsWithChildren<ShowCertificateModalProps>
@@ -59,23 +58,24 @@ export const ShowCertificateModal: FC<ShowCertificateModalProps> = (
         } else if (certificateToDisplay?.issuerDN) {
             return CertificateManagementUtils.searchIssuerDNAlias(certificateToDisplay?.issuerDN);
         }
+
         return EMPTY_STRING;
     };
 
     /**
      * Content to render if we cannot read the certificate content.
      */
-    const CannotReadCertificate = (
+    const CannotReadCertificate : JSX.Element = (
         <Segment className="certificate" data-testid={ testId }>
             <p className="certificate-field">
                 We were unable to read this certificate. Currently we only
                 support displaying public key information in certificate types of {
-                CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo, index) => (
-                    <span key={ `${ algo }+${ index }` }>
-                        <Code>{ algo }</Code>&nbsp;
-                    </span>
-                ))
-            } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
+                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo : string, index : number) => (
+                        <span key={ `${ algo }+${ index }` }>
+                            <Code>{ algo }</Code>&nbsp;
+                        </span>
+                    ))
+                } key algorithms. Support for <strong>Elliptic Curve Cryptography</strong>&nbsp;
                 key algorithms will be enabled soon.
             </p>
         </Segment>
@@ -114,11 +114,11 @@ export const ShowCertificateModal: FC<ShowCertificateModalProps> = (
                             <CertificateDisplay
                                 certificate={ certificateToDisplay }
                                 labels={ {
-                                    issuerDN: t("console:manage.features.certificates.keystore.summary.issuerDN"),
-                                    subjectDN: t("console:manage.features.certificates.keystore.summary.subjectDN"),
-                                    validFrom: t("console:manage.features.certificates.keystore.summary.validFrom"),
-                                    validTill: t("console:manage.features.certificates.keystore.summary.validTill"),
-                                    version: t("console:manage.features.certificates.keystore.summary.version")
+                                    issuerDN: t("certificates:keystore.summary.issuerDN"),
+                                    subjectDN: t("certificates:keystore.summary.subjectDN"),
+                                    validFrom: t("certificates:keystore.summary.validFrom"),
+                                    validTill: t("certificates:keystore.summary.validTill"),
+                                    version: t("certificates:keystore.summary.version")
                                 } }
                             />
                         )
@@ -129,7 +129,7 @@ export const ShowCertificateModal: FC<ShowCertificateModalProps> = (
 
 };
 
-const EMPTY_STRING = "";
+const EMPTY_STRING : string = "";
 
 /**
  * Default props of {@link ShowCertificateModal}

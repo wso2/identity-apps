@@ -20,3 +20,8 @@ export * from "./common";
 export * from "./console";
 export * from "./myaccount";
 export * from "./console-settings";
+export * from "./secrets";
+export * from "./branding";
+export * from "./email-templates";
+export * from "./certificates";
+export * from "./authentication-provider";
