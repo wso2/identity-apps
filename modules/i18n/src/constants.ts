@@ -87,6 +87,21 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Onboarded namespace.
+     */
+    public static readonly ONBOARDED_NAMESPACE: string = "onboarded";
+
+    /**
+     * Organization discovery namespace.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string = "organizationDiscovery";
+
+    /**
+     * Organizations namespace.
+     */
+    public static readonly ORGANIZATIONS_NAMESPACE: string = "organizations";
+  
+    /**
      * Authentication flow namespace.
      */
     public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = "authenticationFlow";

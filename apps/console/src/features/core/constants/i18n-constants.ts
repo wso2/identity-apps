@@ -46,6 +46,21 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Onboarded namespace.
+     */
+    public static readonly ONBOARDED_NAMESPACE: string = I18nModuleConstants.ONBOARDED_NAMESPACE;
+
+    /**
+     * Organization discovery namespace.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string = I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
+
+    /**
+     * Organizations namespace.
+     */
+    public static readonly ORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.ORGANIZATIONS_NAMESPACE;
+  
+    /**
      * Authentication Flow namespace.
      */
     public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE;
@@ -148,6 +163,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.ONBOARDED_NAMESPACE, "portals" ],
+        [ I18nConstants.ORGANIZATION_DISCOVERY_NAMESPACE, "portals" ],
+        [ I18nConstants.ORGANIZATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
         [ I18nConstants.ROLES_NAMESPACE, "portals" ],

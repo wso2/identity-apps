@@ -173,7 +173,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                         </Header>
                     );
                 },
-                title: t("console:manage.features.organizations.list.columns.name")
+                title: t("organizations:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -181,7 +181,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.organizations.list.columns.actions")
+                title: t("organizations:list.columns.actions")
             }
         ];
     };
@@ -276,7 +276,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                                     } }
                                 >
                                     <Icon name="add" />
-                                    { t("console:manage.features.organizationDiscovery.placeholders.emptyList.action") }
+                                    { t("organizationDiscovery:placeholders.emptyList.action") }
                                 </PrimaryButton>
                             </Show>
                         )
@@ -284,7 +284,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
-                    subtitle={ [ t("console:manage.features.organizationDiscovery.placeholders.emptyList.subtitles") ] }
+                    subtitle={ [ t("organizationDiscovery:placeholders.emptyList.subtitles") ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );
