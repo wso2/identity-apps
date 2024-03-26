@@ -74,10 +74,10 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.remoteFetch.notifications." +
+                    description: t("remoteFetch:notifications." +
                         "getConfigDeploymentDetails.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.remoteFetch.notifications." +
+                    message: t("remoteFetch:notifications." +
                         "getConfigDeploymentDetails.genericError.message")
                 }));
             });
@@ -112,7 +112,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
             data-componentid={ `${ componentId }-modal` }
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.remoteFetch.modal.appStatusModal.heading") }
+                { t("remoteFetch:modal.appStatusModal.heading") }
                 <Hint icon="linkify" className="mt-0 mb-1">
                     { remoteDeployment?.repositoryManagerAttributes?.uri }
                 </Hint>
@@ -203,19 +203,19 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                     triggerConfigDeployment(remoteDeployment.id)
                                         .then(() => {
                                             dispatch(addAlert({
-                                                description: t("console:manage.features.remoteFetch.notifications" +
+                                                description: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.success.description"),
                                                 level: AlertLevels.SUCCESS,
-                                                message: t("console:manage.features.remoteFetch.notifications" +
+                                                message: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.success.message")
                                             }));
                                         })
                                         .catch(() => {
                                             dispatch(addAlert({
-                                                description: t("console:manage.features.remoteFetch.notifications" +
+                                                description: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.genericError.description"),
                                                 level: AlertLevels.ERROR,
-                                                message: t("console:manage.features.remoteFetch.notifications" +
+                                                message: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.genericError.message")
                                             }));
                                         })
@@ -224,7 +224,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                         });
                                 } }
                             >
-                                { t("console:manage.features.remoteFetch.modal.appStatusModal.primaryButton") }
+                                { t("remoteFetch:modal.appStatusModal.primaryButton") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

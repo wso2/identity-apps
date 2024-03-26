@@ -46,6 +46,21 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * remoteFetch namespace.
+     */
+    public static readonly REMOTE_FETCH_NAMESPACE: string = I18nModuleConstants.REMOTE_FETCH_NAMESPACE;
+
+    /**
+     * Roles namespace.
+     */
+    public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
+
+    /**
+     * Server configurations namespace.
+     */
+    public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
+  
+    /**
      * SAML 2.0 Configuration namespace.
      */
     public static readonly SAML2_CONFIG_NAMESPACE: string = I18nModuleConstants.SAML2_CONFIG_NAMESPACE;
@@ -128,6 +143,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
+        [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
         [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],

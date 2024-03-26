@@ -87,6 +87,21 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * remoteFetch namespace.
+     */
+    public static readonly REMOTE_FETCH_NAMESPACE: string = "remoteFetch";
+
+    /**
+     * Roles namespace.
+     */
+    public static readonly ROLES_NAMESPACE: string = "roles";
+
+    /**
+     * Server configurations namespace.
+     */
+    public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";
+  
+    /**
      * SAML 2.0 Configuration namespace.
      */
     public static readonly SAML2_CONFIG_NAMESPACE: string = "saml2Config";

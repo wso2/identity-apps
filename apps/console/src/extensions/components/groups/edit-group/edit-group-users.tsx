@@ -573,12 +573,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         } else {
             return (<EmptyPlaceholder
                 title={ t(
-                    "console:manage.features.roles.edit.users.list." +
+                    "roles:edit.users.list." +
                     "emptyPlaceholder.title"
                 ) }
                 subtitle={ [
                     t(
-                        "console:manage.features.roles.edit.users.list." +
+                        "roles:edit.users.list." +
                         "emptyPlaceholder.subtitles",
                         { type: "group" }
                     )
@@ -592,7 +592,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         >
                             <Icon name="plus" />
                             { t(
-                                "console:manage.features.roles.edit.users.list." +
+                                "roles:edit.users.list." +
                                 "emptyPlaceholder.action"
                             ) }
                         </PrimaryButton>
@@ -615,12 +615,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         >
             <Modal.Header>
                 {
-                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("roles:addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -663,7 +663,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                     className="group-add-user-model-transfer-list"
                                     selectionComponent
                                     searchPlaceholder={
-                                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                        t("roles:addRoleWizard.users.assignUserModal.list" +
                                             ".searchPlaceholder")
                                     }
                                     isLoading={ isUsersFetchRequestLoading }
