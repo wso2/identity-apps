@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -434,9 +434,9 @@ const RolesPage = (): ReactElement => {
                 pin: getHelpPanelActionIcons().pin,
                 unpin: getHelpPanelActionIcons().unpin
             } }
-            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
-            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
+            sidebarToggleTooltip={ t("helpPanel:actions.open") }
+            pinButtonTooltip={ t("helpPanel:actions.pin") }
+            unpinButtonTooltip={ t("helpPanel:actions.unPin") }
             onHelpPanelVisibilityChange={ (isVisible: boolean) => {
                 dispatch(toggleHelpPanelVisibility(isVisible));
                 setShowHelpPanel(!showHelpPanel);

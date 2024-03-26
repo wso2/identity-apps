@@ -91,11 +91,11 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                 <Table.HeaderCell>
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("console:manage.features.claims.dialects.wizard.summary.externalAttribute",
+                                    { t("claims:dialects.wizard.summary.externalAttribute",
                                         { type: resolveType(attributeType, true) } ) }
                                 </Table.HeaderCell>
                                 <Table.HeaderCell>
-                                    { t("console:manage.features.claims.dialects.wizard.summary.mappedAttribute") }
+                                    { t("claims:dialects.wizard.summary.mappedAttribute") }
                                 </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
@@ -133,7 +133,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                             <Message
                                                 type="warning"
                                                 content={
-                                                    t("console:manage.features.claims.dialects.wizard." +
+                                                    t("claims:dialects.wizard." +
                                                         "summary.notFound", { type: resolveType(attributeType, true) })
                                                 }
                                             />

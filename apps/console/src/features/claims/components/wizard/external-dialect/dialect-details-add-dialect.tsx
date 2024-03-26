@@ -76,14 +76,14 @@ export const DialectDetails: FunctionComponent<DialectDetailsPropsInterface> = (
                 name="dialectURI"
                 label={ 
                     t(
-                        "console:manage.features.claims.dialects.forms.dialectURI.label",
+                        "claims:dialects.forms.dialectURI.label",
                         { type: resolveType(ClaimManagementConstants.OTHERS, true) }
                     ) 
                 }
                 required={ true }
-                requiredErrorMessage={ t("console:manage.features.claims.dialects." +
+                requiredErrorMessage={ t("claims:dialects." +
                     "forms.dialectURI.requiredErrorMessage") }
-                placeholder={ t("console:manage.features.claims.dialects.forms.dialectURI.placeholder") }
+                placeholder={ t("claims:dialects.forms.dialectURI.placeholder") }
                 value={ values?.get("dialectURI")?.toString() }
                 data-testid={ `${ testId }-form-dialect-uri-input` }
             />
