@@ -87,6 +87,12 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Console settings namespace.
+     * @constant
+     */
+    public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
+  
+    /**
      * Secrets namespace.
      * @constant
      */
