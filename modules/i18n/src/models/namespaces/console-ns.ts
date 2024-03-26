@@ -475,42 +475,6 @@ export interface ConsoleNS {
             };
         };
     };
-    consoleSettings: {
-        administrators: {
-            add: {
-                action: string;
-                options: {
-                    addExistingUser: string;
-                    inviteNewUser: string;
-                };
-            };
-            edit: {
-                backButton: string;
-            };
-            tabLabel: string;
-        };
-        loginFlow: {
-            tabLabel: string;
-        };
-        protocol: {
-            tabLabel: string;
-        };
-        roles: {
-            add: {
-                organizationPermissions: {
-                    label: string;
-                };
-                tenantPermissions: {
-                    label: string;
-                };
-            };
-            tabLabel: string;
-            permissionLevels: {
-                edit: string;
-                view: string;
-            };
-        };
-    };
     featureGate: {
         enabledFeatures: {
             tags: {
@@ -3121,30 +3085,6 @@ export interface ConsoleNS {
                             description1: string;
                             description2: string;
                         };
-                    };
-                };
-            };
-            suborganizations: {
-                notifications: {
-                    tierLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: string;
-                            title: string;
-                            subtitles: string;
-                        };
-                        heading: string;
-                    };
-                    subOrgLevelsLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: string;
-                            title: string;
-                            subtitles: string;
-                        };
-                        heading: string;
-                    };
-                    duplicateOrgError: {
-                        message: string;
-                        description: string;
                     };
                 };
             };

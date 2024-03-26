@@ -592,42 +592,6 @@ export const console: ConsoleNS = {
             }
         }
     },
-    consoleSettings: {
-        administrators: {
-            add: {
-                action: "Add Administrator",
-                options: {
-                    addExistingUser: "Add Existing User",
-                    inviteNewUser: "Invite New User"
-                }
-            },
-            edit: {
-                backButton: "Go back to Administrators"
-            },
-            tabLabel: "Administrators"
-        },
-        loginFlow: {
-            tabLabel: "Login Flow"
-        },
-        protocol: {
-            tabLabel: "Protocol"
-        },
-        roles: {
-            add: {
-                organizationPermissions: {
-                    label: "Organization Permissions"
-                },
-                tenantPermissions: {
-                    label: "Root Organization Permissions"
-                }
-            },
-            tabLabel: "Roles",
-            permissionLevels: {
-                edit: "Edit",
-                view: "View"
-            }
-        }
-    },
     featureGate: {
         enabledFeatures: {
             tags: {
@@ -3579,32 +3543,6 @@ export const console: ConsoleNS = {
                             },
                             subHeading: "Configure outbound provisioning settings for the resident application."
                         }
-                    }
-                }
-            },
-            suborganizations: {
-                notifications: {
-                    tierLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: "View Plans",
-                            subtitles: "You can contact the organization administrator or (if you are the " +
-                                "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed organizations."
-                        },
-                        heading: "You've reached the maximum limit for organizations"
-                    },
-                    subOrgLevelsLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: "View Plans",
-                            subtitles: "You can contact the organization administrator or (if you are the " +
-                                "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed organization levels."
-                        },
-                        heading: "You’ve reached the maximum organization levels allowed for the organization."
-                    },
-                    duplicateOrgError: {
-                        message: "An organization with the same name already exists.",
-                        description: "The organization you are trying to create already exists."
                     }
                 }
             },
