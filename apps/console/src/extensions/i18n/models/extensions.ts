@@ -2411,7 +2411,12 @@ export interface Extensions {
                     actionId: string,
                     targetId: string
                 },
-                logDataviewer : string;
+                logDataviewer : {
+                    panelName: string,
+                    download: string,
+                    copy: string,
+                    close: string
+                }
             };
             notifications: {
                 genericError: {

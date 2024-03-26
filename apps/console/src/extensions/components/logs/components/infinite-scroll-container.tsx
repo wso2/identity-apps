@@ -243,7 +243,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                         data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
                                         onClick={ () => exportDataOfLog(logObject) }
                                     >
-                                        <Icon name="download"/>
+                                        <Icon name="download" />
                                         { t("extensions:develop.monitor.filter.downloadButton.label") }
                                     </span>
                                 </td>
@@ -288,8 +288,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         return propertyElements;
     };
 
-    const LogDataViewerPanel  : ReactElement = (
-
+    const LogDataViewerPanel: ReactElement = (
         <MonacoEditor
             loading={ <CircularProgress /> }
             className="log-data-viewer"
@@ -302,60 +301,53 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                 automaticLayout: true,
                 readOnly: true
             } }
-            data-componentid={ `${componentId}-data-viewer` }
+            data-componentid={ `${ componentId }-data-viewer` }
         />
     );
 
-    const LogViewerToolbar : ReactElement = (
-
+    const LogViewerToolbar: ReactElement = (
         <Box className="log-data-viewer-toolbar-container">
             <Toolbar variant="dense">
                 <Box>
                     <Typography>
                         {
-                            t("extensions:develop.monitor.logView.logDataviewer")
+                            t("extensions:develop.monitor.logView.logDataviewer.panelName")
                         }
                     </Typography>
                 </Box>
                 <div className="actions">
                     <div className="editor-fullscreen">
                         <Tooltip
-                            title={ "Download" }
-                            data-componentid="log-data-viewer-download-tooltip"
+                            title={ "extensions:develop.monitor.logView.logDataviewer.download" }
+                            data-componentid="{ `${ componentId }-download-tooltip` }"
                         >
                             <IconButton
                                 size="small"
                                 onClick={ exportCurrentLog }
                             >
-                                {
-                                    <Icon name="download"/>
-                                }
+                                <Icon name="download"/>
                             </IconButton>
                         </Tooltip>
                         <Tooltip
-                            title={ "Copy" }
+                            title={ "extensions:develop.monitor.logView.logDataviewer.copy" }
                             data-componentid="log-data-viewer-copy-tooltip"
                         >
                             <IconButton
                                 size="small"
                                 onClick={ copyCurrentLog }
                             >
-                                {
-                                    <Icon name="copy"/>
-                                }
+                                <Icon name="copy"/>
                             </IconButton>
                         </Tooltip>
                         <Tooltip
-                            title={ "Exit" }
+                            title={ "extensions:develop.monitor.logView.logDataviewer.close" }
                             data-componentid="log-data-viewer-exit-tooltip"
                         >
                             <IconButton
                                 size="small"
                                 onClick={ handleLogDataViewClose }
                             >
-                                {
-                                    <Icon name="close"/>
-                                }
+                                <Icon name="close"/>
                             </IconButton>
                         </Tooltip>
                     </div>

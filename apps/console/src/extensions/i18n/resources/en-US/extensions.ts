@@ -2690,7 +2690,12 @@ export const extensions: Extensions = {
                     actionId: "Action",
                     targetId: "Target"
                 },
-                logDataviewer : "AuditLog Data Viewer"
+                logDataviewer : {
+                    panelName: "AuditLog Data Viewer",
+                    download: "Download",
+                    copy: "Copy",
+                    close: "Close"
+                }
             },
             notifications: {
                 genericError: {
