@@ -16,9 +16,17 @@
  * under the License.
  */
 
-import { Popup } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
-import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, lazy, useEffect, useState } from "react";
+import React, { 
+    LazyExoticComponent,
+    MutableRefObject, 
+    ReactElement, 
+    Suspense, 
+    UIEventHandler, 
+    lazy, 
+    useEffect, 
+    useState 
+    } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";
@@ -34,6 +42,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import "./log-data-viewer-panel.scss";
+import { Popup } from "@wso2is/react-components";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
@@ -71,7 +80,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         setSearchQuery
     } = props;
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [ activeIndex, setActiveIndex ] = useState<number[]>([-1]);
     const [ view, setView ] = useState<boolean>(false);
     const [ currentLog, setCurrentLog ] = useState<InterfaceLogEntry>();
@@ -105,7 +114,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
     function handleLogDataViewClose(): void {
         setView(false);
         setCurrentLog(null);
-    };
+    }
 
     const handleLogDataView = (logObject: InterfaceLogEntry) => {
         setCurrentLog(logObject);
