@@ -368,7 +368,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "Server" })
+                text: t("pages:rolesEdit.backButton", { type: "Server" })
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

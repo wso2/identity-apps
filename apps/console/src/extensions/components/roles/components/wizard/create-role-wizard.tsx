@@ -198,10 +198,10 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 if (response.status === 201) {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.success" +
+                            description: t("roles:notifications.createRole.success" +
                                 ".description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("console:manage.features.roles.notifications.createRole.success.message")
+                            message: t("roles:notifications.createRole.success.message")
                         })
                     );
 
@@ -214,30 +214,30 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.error" +
+                            description: t("roles:notifications.createRole.error" +
                                 ".description"),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                            message: t("roles:notifications.createRole.error.message")
                         })
                     );
                 } else if (error.response && error.response.data.detail) {
 
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.notifications.createRole.error" +
+                            description: t("roles:notifications.createRole.error" +
                                 ".description",
                             { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                            message: t("roles:notifications.createRole.error.message")
                         })
                     );
                 } else {
 
                     dispatch(addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.genericError" +
+                        description: t("roles:notifications.createRole.genericError" +
                             ".description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                        message: t("roles:notifications.createRole.genericError.message")
                     }));
                 }
             })
@@ -435,7 +435,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             ),
             icon: getRolesWizardStepIcons().summary,
             name: WizardStepsFormTypes.SUMMARY,
-            title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
+            title: t("roles:addRoleWizard.wizardSteps.3")
         };
     };
 
@@ -472,7 +472,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.roles.addRoleWizard.heading", { type: "Role" }) }
+                { t("roles:addRoleWizard.heading", { type: "Role" }) }
                 <Heading as="h6">
                     Assign permissions to a new role and add collaborator users to the role.
                 </Heading>
@@ -516,7 +516,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     onClick={ changeStepToNext }
                                     data-testid={ `${ testId }-next-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.next") }
+                                    { t("roles:addRoleWizard.buttons.next") }
                                     <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
@@ -528,7 +528,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     disabled={ isSubmitting }
                                     data-testid={ `${ testId }-finish-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                    { t("roles:addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { currentStep > 0 && (
@@ -538,7 +538,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     data-testid={ `${ testId }-previous-button` }
                                 >
                                     <Icon name="arrow left" data-testid={ `${ testId }-previous-button-icon` }/>
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
+                                    { t("roles:addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

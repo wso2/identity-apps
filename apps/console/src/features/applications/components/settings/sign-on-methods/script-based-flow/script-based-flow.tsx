@@ -232,9 +232,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:develop.features.secrets.errors.generic.description"),
+                    description: t("secrets:errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.secrets.errors.generic.message")
+                    message: t("secrets:errors.generic.message")
                 }));
             }).finally(() => {
                 setIsSecretListLoading(false);
@@ -758,12 +758,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     }
                 });
                 dispatch(addAlert({
-                    description: t("console:develop.features.secrets.alerts.deleteSecret.description", {
+                    description: t("secrets:alerts.deleteSecret.description", {
                         secretName: deletingSecret.secretName,
                         secretType: deletingSecret.type
                     }),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.secrets.alerts.deleteSecret.message")
+                    message: t("secrets:alerts.deleteSecret.message")
                 }));
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -776,9 +776,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:develop.features.secrets.errors.generic.description"),
+                    description: t("secrets:errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.secrets.errors.generic.message")
+                    message: t("secrets:errors.generic.message")
                 }));
             } finally {
                 const refreshSecretList: boolean = true;
@@ -1212,23 +1212,23 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             onPrimaryActionClick={ onSecretDeleteClick }
             open={ showDeleteConfirmationModal }
             type="negative"
-            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
+            assertionHint={ t("secrets:modals.deleteSecret.assertionHint") }
             assertionType="checkbox"
-            primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
-            secondaryAction={ t("console:develop.features.secrets.modals.deleteSecret.secondaryActionButtonText") }
+            primaryAction={ t("secrets:modals.deleteSecret.primaryActionButtonText") }
+            secondaryAction={ t("secrets:modals.deleteSecret.secondaryActionButtonText") }
             data-componentid={ `${ componentId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
             <ConfirmationModal.Header data-componentid={ `${ componentId }-delete-confirmation-modal-header` }>
-                { t("console:develop.features.secrets.modals.deleteSecret.title") }
+                { t("secrets:modals.deleteSecret.title") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-componentid={ `${ componentId }-delete-confirmation-modal-message` }>
-                { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
+                { t("secrets:modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${ componentId }-delete-confirmation-modal-content` }>
-                { t("console:develop.features.secrets.modals.deleteSecret.content") }
+                { t("secrets:modals.deleteSecret.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

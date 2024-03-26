@@ -194,7 +194,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         description: error.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizations.notifications." +
+                            "organizations:notifications." +
                                 "getOrganizationList.error.message"
                         )
                     })
@@ -206,12 +206,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                        "organizations:notifications.getOrganizationList" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.organizations.notifications." +
+                        "organizations:notifications." +
                             "getOrganizationList.genericError.message"
                     )
                 })
@@ -523,7 +523,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         <Radio
                             disabled={ readOnly }
                             label={ t(
-                                "console:manage.features.organizations.unshareApplicationRadio"
+                                "organizations:unshareApplicationRadio"
                             ) }
                             onChange={ () => setShareType(ShareType.UNSHARE) }
                             checked={ shareType === ShareType.UNSHARE }
@@ -531,14 +531,14 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         />
                         <Hint inline popup>
                             { t(
-                                "console:manage.features.organizations.unshareApplicationInfo"
+                                "organizations:unshareApplicationInfo"
                             ) }
                         </Hint>
                         <Divider hidden className="mb-0 mt-0" />
                         <Radio
                             disabled={ readOnly }
                             label={ t(
-                                "console:manage.features.organizations.shareWithSelectedOrgsRadio"
+                                "organizations:shareWithSelectedOrgsRadio"
                             ) }
                             onChange={ () => setShareType(ShareType.SHARE_SELECTED) }
                             checked={ shareType === ShareType.SHARE_SELECTED }
@@ -650,7 +650,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         <Divider hidden className="mb-0 mt-0" />
                         <Radio
                             label={ t(
-                                "console:manage.features.organizations.shareApplicationRadio"
+                                "organizations:shareApplicationRadio"
                             ) }
                             onChange={ () => setShareType(ShareType.SHARE_ALL) }
                             checked={ shareType === ShareType.SHARE_ALL }
@@ -658,7 +658,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         />
                         <Hint inline popup>
                             { t(
-                                "console:manage.features.organizations.shareApplicationInfo"
+                                "organizations:shareApplicationInfo"
                             ) }
                         </Hint>
                         <Divider hidden />

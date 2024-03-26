@@ -620,7 +620,9 @@ export const applicationConfig: ApplicationConfig = {
         showClientSecretMessage: false,
         showFrontChannelLogout: false,
         showIdTokenEncryption: true,
+        showIdTokenResponseSigningAlgorithm: true,
         showNativeClientSecretMessage: false,
+        showRequestObjectConfigurations: true,
         showRequestObjectSignatureValidation: false,
         showReturnAuthenticatedIdPList: false,
         showScopeValidators: false

@@ -16,9 +16,111 @@
  * under the License.
  */
 
-export interface emailTemplateTypesNS {
+export interface inviteNS {
+    inviteButton: string;
+    subSelection: {
+        onBoard: string;
+        invitees: string;
+    };
+    notifications: {
+        deleteInvite: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        resendInvite: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        sendInvite: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updateInvite: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+    };
+    confirmationModal: {
+        deleteInvite: {
+            assertionHint: string;
+            header: string;
+            message: string;
+            content: string;
+        };
+        resendInvite: {
+            assertionHint: string;
+            header: string;
+            message: string;
+            content: string;
+        };
+    };
+    placeholder: {
+        emptySearchResultPlaceholder: {
+            clearButton: string;
+            subTitle: {
+                0: string;
+                1: string;
+            };
+            title: string;
+        };
+        emptyResultPlaceholder: {
+            addButton: string;
+            subTitle: {
+                0: string;
+                1: string;
+                2: string;
+            };
+            title: string;
+        };
+    };
     advancedSearch: {
         form: {
+            dropdown: {
+                filterAttributeOptions: {
+                    username: string;
+                    email: string;
+                };
+            };
             inputs: {
                 filterAttribute: {
                     placeholder: string;
@@ -32,122 +134,16 @@ export interface emailTemplateTypesNS {
             };
         };
         placeholder: string;
-        error: string;
     };
-    buttons: {
-        createTemplateType: string;
-        deleteTemplate: string;
-        editTemplate: string;
-        newType: string;
-    };
-    confirmations: {
-        deleteTemplateType: {
-            assertionHint: string;
-            header: string;
-            message: string;
-            content: string;
-        };
-    };
-    forms: {
-        addTemplateType: {
-            fields: {
-                type: {
-                    label: string;
-                    placeholder: string;
-                    validations: {
-                        empty: string;
-                    };
-                };
-            };
-        };
-    };
-    list: {
-        actions: string;
-        name: string;
-    };
-    notifications: {
-        deleteTemplateType: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        getTemplateTypes: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        updateTemplateType: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        createTemplateType: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-    };
-    placeholders: {
-        emptySearch: {
-            action: string;
+    form: {
+        sendmail: {
             title: string;
-            subtitles: string;
-        };
-        emptyList: {
-            action: string;
-            title: string;
-            subtitles: {
-                0: string;
-                1: string;
-                2: string;
-            };
+            subTitle: string;
         };
     };
-    wizards: {
-        addTemplateType: {
-            heading: string;
-            subHeading: string;
-            steps: {
-                templateType: {
-                    heading: string;
-                };
-            };
-        };
+    rolesUpdateModal: {
+        header: string;
+        subHeader: string;
+        searchPlaceholder: string;
     };
 }

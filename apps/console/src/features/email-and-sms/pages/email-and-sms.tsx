@@ -100,10 +100,10 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                     <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <SettingsSection
                             data-componentid={ "sms-provider-card" }
-                            description={ t("console:manage.features.smsProviders.description") }
+                            description={ t("smsProviders:description") }
                             icon={ <SMSIcon fill="white" /> }
                             header={
-                                t("console:manage.features.smsProviders.heading")
+                                t("smsProviders:heading")
                             }
                             onPrimaryActionClick={ handleSMSSelection }
                             primaryAction={ t("common:configure") }

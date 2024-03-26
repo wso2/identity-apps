@@ -180,10 +180,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 dispatch(addAlert(
                     {
-                        description: t("console:manage.features.claims.local.notifications." +
+                        description: t("claims:local.notifications." +
                             "addLocalClaim.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.claims.local.notifications." +
+                        message: t("claims:local.notifications." +
                             "addLocalClaim.success.message")
                     }
                 ));
@@ -238,11 +238,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 setAlert(
                     {
                         description: error?.description
-                            || t("console:manage.features.claims.local.notifications." +
+                            || t("claims:local.notifications." +
                                 "addLocalClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.claims.local.notifications.addLocalClaim." +
+                            || t("claims:local.notifications.addLocalClaim." +
                                 "genericError.message")
                     }
                 );
@@ -379,7 +379,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 />
             ),
             icon: getAddLocalClaimWizardStepIcons().general,
-            title: t("console:manage.features.claims.local.wizard.steps.general")
+            title: t("claims:local.wizard.steps.general")
         },
         ( showMapAttributes ?
             {
@@ -392,7 +392,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     />
                 ),
                 icon: getAddLocalClaimWizardStepIcons().general,
-                title: t("console:manage.features.claims.local.wizard.steps.mapAttributes")
+                title: t("claims:local.wizard.steps.mapAttributes")
             }
             : undefined
         ),
@@ -406,7 +406,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                         />
                     ),
                     icon: getAddLocalClaimWizardStepIcons().general,
-                    title: t("console:manage.features.claims.local.wizard.steps.summary")
+                    title: t("claims:local.wizard.steps.summary")
 
                 }
                 : undefined
@@ -469,7 +469,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
-                { t("console:manage.features.claims.local.wizard.header") }
+                { t("claims:local.wizard.header") }
                 {
                     basicDetailsData && basicDetailsData.get("name")
                         ? " - " + basicDetailsData.get("name")

@@ -394,7 +394,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const resolveConnectorDescription = (connector: GovernanceConnectorInterface): string | React.ReactNode => {
         switch (connector?.id) {
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading");
+                return (<>
+                    { t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading") }
+                    <DocumentationLink link={ getLink("manage.loginSecurity.loginAttempts.learnMore") }>
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>);
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
                     ? "Enable self-service username recovery for users on the login page." +
@@ -408,7 +413,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         </div>
                     );
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading");
+                return (<>
+                    { t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading") }
+                    <DocumentationLink link={ getLink("manage.loginSecurity.botDetection.learnMore") }>
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>);
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return (
                     <>
@@ -419,7 +429,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         >
                             When self registration is enabled, users can register via the
                             <strong>
-                                Create an account
+                                Register
                             </strong> link on the application’s Login page. This creates a new{ " " }
                             <strong>user</strong> account in the organization.
                         </Trans>

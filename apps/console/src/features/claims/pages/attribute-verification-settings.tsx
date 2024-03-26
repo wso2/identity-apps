@@ -523,7 +523,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                 },
-                text: t("console:manage.features.claims.local.pageLayout.local.back")
+                text: t("claims:local.pageLayout.local.back")
             } }
         >
             <EmphasizedSegment className="very padded">

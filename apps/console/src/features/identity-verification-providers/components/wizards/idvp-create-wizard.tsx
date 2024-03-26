@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -222,9 +222,9 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
             .then((response:AxiosResponse) => {
 
                 dispatch(addAlert({
-                    description: t("console:develop.features.idvp.notifications.addIDVP.success.description"),
+                    description: t("idvp:notifications.addIDVP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.idvp.notifications.addIDVP.success.message")
+                    message: t("idvp:notifications.addIDVP.success.message")
                 }));
 
                 // The id of the created IDVP is sent in the response body.If that's available,
@@ -241,20 +241,20 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
                     setAlert({
-                        description: t("console:develop.features.idvp.notifications.addIDVP.error.description",
+                        description: t("idvp:notifications.addIDVP.error.description",
                             { description: error.response.data.description }
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.idvp.notifications.addIDVP.error.message")
+                        message: t("idvp:notifications.addIDVP.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("console:develop.features.idvp.notifications.addIDVP.genericError.description"),
+                    description: t("idvp:notifications.addIDVP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.idvp.notifications.addIDVP.genericError.message")
+                    message: t("idvp:notifications.addIDVP.genericError.message")
                 });
             })
             .finally(() => {
@@ -395,16 +395,16 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
                     ariaLabel="name"
                     inputType="resource_name"
                     name="name"
-                    label={ t("console:develop.features.idvp.forms.generalDetails.name.label") }
+                    label={ t("idvp:forms.generalDetails.name.label") }
                     required={ true }
-                    message={ t("console:develop.features.idvp.forms.generalDetails.name.validations.empty") }
-                    placeholder={ t("console:develop.features.idvp.forms.generalDetails.name.placeholder") }
+                    message={ t("idvp:forms.generalDetails.name.validations.empty") }
+                    placeholder={ t("idvp:forms.generalDetails.name.placeholder") }
                     validate={ (value: string) => validateIDVPName(value, idvpList.identityVerificationProviders) }
                     maxLength={ IdentityVerificationProviderConstants.IDVP_NAME_MAX_LENGTH }
                     minLength={ IdentityVerificationProviderConstants.IDVP_NAME_MIN_LENGTH }
                     format={ (values: any) => values.toString().trimStart() }
                     data-componentid={ `${ componentId }-form-wizard-idvp-name` }
-                    hint={ t("console:develop.features.idvp.forms.generalDetails.name.hint") }
+                    hint={ t("idvp:forms.generalDetails.name.hint") }
                 />
                 { renderFormUIWithMetadata(uiMetaData?.pages?.edit?.settings, idvpTemplate) }
             </WizardPage>);

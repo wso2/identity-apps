@@ -144,7 +144,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                                 description: error.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications." + // ToDo
+                                    "organizations:notifications." + // ToDo
                                     "getOrganizationList.error.message"
                                 )
                             })
@@ -156,12 +156,12 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.getOrganizationList" + // ToDo
+                                "organizations:notifications.getOrganizationList" + // ToDo
                                 ".genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications." + // ToDo
+                                "organizations:notifications." + // ToDo
                                 "getOrganizationList.genericError.message"
                             )
                         })
@@ -286,10 +286,10 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
             if (response.status === 201) {
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole." +
+                        description: t("roles:notifications.createRole." +
                             "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.roles.notifications.createRole.success.message")
+                        message: t("roles:notifications.createRole.success.message")
                     })
                 );
 
@@ -302,28 +302,28 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 setShowWizard(false);
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.error.description"),
+                        description: t("roles:notifications.createRole.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        message: t("roles:notifications.createRole.error.message")
                     })
                 );
             } else if (error.response && error.response.data.detail) {
                 setShowWizard(false);
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.roles.notifications.createRole.error.description",
+                        description: t("roles:notifications.createRole.error.description",
                             { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        message: t("roles:notifications.createRole.error.message")
                     })
                 );
             } else {
                 setShowWizard(false);
                 dispatch(addAlert({
-                    description: t("console:manage.features.roles.notifications.createRole." +
+                    description: t("roles:notifications.createRole." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                    message: t("roles:notifications.createRole.genericError.message")
                 }));
             }
         }).finally(() => {
@@ -401,19 +401,19 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                                         }
                                     ] }
                                     filterAttributePlaceholder={ t(
-                                        "console:manage.features.organizations.advancedSearch.form" +
+                                        "organizations:advancedSearch.form" +
                                         ".inputs.filterAttribute.placeholder"
                                     ) }
                                     filterConditionsPlaceholder={ t(
-                                        "console:manage.features.organizations.advancedSearch.form" +
+                                        "organizations:advancedSearch.form" +
                                         ".inputs.filterCondition.placeholder"
                                     ) }
                                     filterValuePlaceholder={ t(
-                                        "console:manage.features.organizations.advancedSearch.form.inputs.filterValue" +
+                                        "organizations:advancedSearch.form.inputs.filterValue" +
                                         ".placeholder"
                                     ) }
                                     placeholder={ t(
-                                        "console:manage.features.organizations." + "advancedSearch.placeholder"
+                                        "organizations:" + "advancedSearch.placeholder"
                                     ) }
                                     defaultSearchAttribute="name"
                                     defaultSearchOperator="co"
@@ -453,19 +453,19 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                                             }
                                         ] }
                                         filterAttributePlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
+                                            "organizations:advancedSearch." +
                                             "form.inputs.filterAttribute.placeholder"
                                         ) }
                                         filterConditionsPlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
+                                            "organizations:advancedSearch." +
                                             "form.inputs.filterCondition.placeholder"
                                         ) }
                                         filterValuePlaceholder={ t(
-                                            "console:manage.features.organizations.advancedSearch." +
+                                            "organizations:advancedSearch." +
                                             "form.inputs.filterValue.placeholder"
                                         ) }
                                         placeholder={ t(
-                                            "console:manage.features.organizations.advancedSearch.placeholder"
+                                            "organizations:advancedSearch.placeholder"
                                         ) }
                                         defaultSearchAttribute="name"
                                         defaultSearchOperator="co"

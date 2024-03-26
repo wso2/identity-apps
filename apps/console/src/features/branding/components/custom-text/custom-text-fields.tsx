@@ -133,7 +133,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
             <InputAdornment position="end">
                 <Tooltip
                     title={
-                        t("console:brandingCustomText.form.genericFieldResetTooltip")
+                        t("branding:brandingCustomText.form.genericFieldResetTooltip")
                     }
                 >
                     <IconButton
@@ -188,7 +188,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                             { /* So `orderBy` is needed to stop the UI from glitching during rerenders.*/ }
                             { transformedFields &&
                                 orderBy(Object.keys(transformedFields), [], [ "asc" ]).map((fieldName: string) => {
-                                    const hintKey: string = `console:brandingCustomText.form.fields.${
+                                    const hintKey: string = `branding:brandingCustomText.form.fields.${
                                         fieldName.replaceAll("_", ".")
                                     }.hint`;
 
@@ -206,7 +206,7 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             type="text"
                                             label={ getFieldLabel(fieldName) }
                                             placeholder={
-                                                t("console:brandingCustomText.form.genericFieldPlaceholder")
+                                                t("branding:brandingCustomText.form.genericFieldPlaceholder")
                                             }
                                             helperText={ (
                                                 i18n.exists(hintKey) && (
