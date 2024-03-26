@@ -20,6 +20,7 @@ export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
 export * from "./suborganizations-ns";
+export * from "./console-settings-ns";
 export * from "./secrets-ns";
 export * from "./branding-ns";
 export * from "./email-templates-ns";

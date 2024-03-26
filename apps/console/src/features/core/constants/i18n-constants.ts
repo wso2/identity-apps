@@ -51,6 +51,11 @@ export class I18nConstants {
     public static readonly SUBORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.SUBORGANIZATIONS_NAMESPACE;
   
     /**
+     * console settings namespace.
+     */
+    public static readonly CONSOLE_SETTINGS_NAMESPACE: string = I18nModuleConstants.CONSOLE_SETTINGS_NAMESPACE;
+  
+    /**
      * Secrets namespace.
      */
     public static readonly SECRETS_NAMESPACE: string = I18nModuleConstants.SECRETS_NAMESPACE;
@@ -84,6 +89,7 @@ export class I18nConstants {
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
         [ I18nConstants.SUBORGANIZATIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.CONSOLE_SETTINGS_NAMESPACE, "portals" ],
         [ I18nConstants.SECRETS_NAMESPACE, "portals" ],
         [ I18nConstants.BRANDING_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_TEMPLATES_NAMESPACE, "portals" ],

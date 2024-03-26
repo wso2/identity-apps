@@ -93,6 +93,12 @@ export class I18nModuleConstants {
     public static readonly SUBORGANIZATIONS_NAMESPACE: string = "suborganizations";
   
     /**
+     * Console settings namespace.
+     * @constant
+     */
+    public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
+  
+    /**
      * Secrets namespace.
      * @constant
      */
