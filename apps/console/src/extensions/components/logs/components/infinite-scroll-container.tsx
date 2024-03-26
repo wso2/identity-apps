@@ -16,15 +16,9 @@
  * under the License.
  */
 
-import { saveAs } from "file-saver";
 import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, 
-lazy, useEffect, useState } from "react";
+useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Accordion, Icon } from "semantic-ui-react";
-import CopyButton from "./copy-button";
-import LoaderPlaceholder from "./loader-placeholder";
-import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
-import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -32,9 +26,15 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import "./log-data-viewer-panel.scss";
 import { Popup } from "@wso2is/react-components";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Accordion, Icon } from "semantic-ui-react";
+import { saveAs } from "file-saver";
+import CopyButton from "./copy-button";
+import LoaderPlaceholder from "./loader-placeholder";
+import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
+import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
+import "./log-data-viewer-panel.scss";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
@@ -244,7 +244,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                         onClick={ () => exportDataOfLog(logObject) }
                                     >
                                         <Icon name="download"/>
-                                        {t("extensions:develop.monitor.filter.downloadButton.label")}
+                                        { t("extensions:develop.monitor.filter.downloadButton.label") }
                                     </span>
                                 </td>
                             </tr>
@@ -297,9 +297,10 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
             height="100%"
             language="javascript"
             theme={ "vc" } // visual studio code light theme
-            value={ currentLog ? JSON.stringify(currentLog["data"], null, 2) : '{}' }
+            value={ currentLog ? JSON.stringify(currentLog["data"], null, 2) : "{}" }
             options={ {
-                automaticLayout: true, readOnly: true 
+            automaticLayout: true, 
+            readOnly: true 
             } }
             data-componentid={ `${componentId}-data-viewer` }
         />
@@ -345,8 +346,8 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                             </IconButton>
                         </Tooltip>
                         <Tooltip
-                            title={ "Exit" } 
-                            data-componentid="log-data-viewer-exit-tooltip"
+                        title={ "Exit" } 
+                        data-componentid="log-data-viewer-exit-tooltip"
                         >
                             <IconButton
                                 size="small"
@@ -389,16 +390,16 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         <div className="log-description-header">
                             <div className="log-actionId">
                                 <Typography variant="body1">
-                                    {
-                                        t("extensions:develop.monitor.logView.headers.actionId")
-                                    }                        
+                                {
+                                    t("extensions:develop.monitor.logView.headers.actionId")
+                                }                        
                                 </Typography>
                             </div>
                             <div className="log-targetId">
                                 <Typography variant="body1">
-                                    {
-                                        t("extensions:develop.monitor.logView.headers.targetId")
-                                    } 
+                                {
+                                    t("extensions:develop.monitor.logView.headers.targetId")
+                                } 
                                 </Typography>
                             </div>
                         </div>
@@ -472,7 +473,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                                     <div className="log-actionid-container">
                                                         { log.actionId }
                                                     </div>
-                                                )}
+                                                ) }
                                                 { log.action && (
                                                     <div className="log-actionid-container">
                                                         { log.action }
