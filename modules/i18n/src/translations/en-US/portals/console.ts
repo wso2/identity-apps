@@ -3546,32 +3546,6 @@ export const console: ConsoleNS = {
                     }
                 }
             },
-            suborganizations: {
-                notifications: {
-                    tierLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: "View Plans",
-                            subtitles: "You can contact the organization administrator or (if you are the " +
-                                "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed organizations."
-                        },
-                        heading: "You've reached the maximum limit for organizations"
-                    },
-                    subOrgLevelsLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: "View Plans",
-                            subtitles: "You can contact the organization administrator or (if you are the " +
-                                "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed organization levels."
-                        },
-                        heading: "You’ve reached the maximum organization levels allowed for the organization."
-                    },
-                    duplicateOrgError: {
-                        message: "An organization with the same name already exists.",
-                        description: "The organization you are trying to create already exists."
-                    }
-                }
-            },
             footer: {
                 copyright: "WSO2 Identity Server © {{year}}"
             },

@@ -87,6 +87,12 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Suborganizations namespace.
+     * @constant
+     */
+    public static readonly SUBORGANIZATIONS_NAMESPACE: string = "suborganizations";
+  
+    /**
      * Console settings namespace.
      * @constant
      */

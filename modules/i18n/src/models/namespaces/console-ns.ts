@@ -3088,30 +3088,6 @@ export interface ConsoleNS {
                     };
                 };
             };
-            suborganizations: {
-                notifications: {
-                    tierLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: string;
-                            title: string;
-                            subtitles: string;
-                        };
-                        heading: string;
-                    };
-                    subOrgLevelsLimitReachedError: {
-                        emptyPlaceholder: {
-                            action: string;
-                            title: string;
-                            subtitles: string;
-                        };
-                        heading: string;
-                    };
-                    duplicateOrgError: {
-                        message: string;
-                        description: string;
-                    };
-                };
-            };
             footer: {
                 copyright: string;
             };
