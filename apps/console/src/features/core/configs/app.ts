@@ -192,7 +192,25 @@ export class Config {
                 I18nConstants.COMMON_NAMESPACE,
                 I18nConstants.CONSOLE_PORTAL_NAMESPACE,
                 I18nConstants.EXTENSIONS_NAMESPACE,
-                I18nConstants.AUTHENTICATION_FLOW_NAMESPACE
+                I18nConstants.AUTHENTICATION_FLOW_NAMESPACE,
+                I18nConstants.REMOTE_FETCH_NAMESPACE,
+                I18nConstants.ROLES_NAMESPACE,
+                I18nConstants.SERVER_CONFIGS_NAMESPACE,
+                I18nConstants.SAML2_CONFIG_NAMESPACE,
+                I18nConstants.SESSION_MANAGEMENT_NAMESPACE,
+                I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE,
+                I18nConstants.INSIGHTS_NAMESPACE,
+                I18nConstants.SMS_PROVIDERS_NAMESPACE,
+                I18nConstants.CLAIMS_NAMESPACE,
+                I18nConstants.EMAIL_LOCALE_NAMESPACE,
+                I18nConstants.HELP_PANEL_NAMESPACE,
+                I18nConstants.SUBORGANIZATIONS_NAMESPACE,
+                I18nConstants.CONSOLE_SETTINGS_NAMESPACE,
+                I18nConstants.SECRETS_NAMESPACE,
+                I18nConstants.BRANDING_NAMESPACE,
+                I18nConstants.EMAIL_TEMPLATES_NAMESPACE,
+                I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE,
+                I18nConstants.CERTIFICATES_NAMESPACE
             ],
             preload: []
         };

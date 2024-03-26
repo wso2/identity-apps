@@ -54,7 +54,7 @@ export const InsightsView: React.FunctionComponent<PropsWithChildren<InsightView
                 <div className="org-insights-duration-notice-container">
                     <p data-componentid="org-insights-helper-text" className="org-insights-helper-text">
                         <Trans
-                            i18nKey={ "console:manage.features.insights.durationMessage" }
+                            i18nKey={ "insights:durationMessage" }
                             tOptions={ {
                                 endTimestamp: new Date(
                                     getTimestamps(duration as DurationOption, { forDisplay: true }).endTimestamp

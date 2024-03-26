@@ -88,9 +88,106 @@ export class I18nModuleConstants {
 
     /**
      * Authentication flow namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = "authenticationFlow";
+  
+    /**
+     * remoteFetch namespace.
+     */
+    public static readonly REMOTE_FETCH_NAMESPACE: string = "remoteFetch";
+
+    /**
+     * Roles namespace.
+     */
+    public static readonly ROLES_NAMESPACE: string = "roles";
+
+    /**
+     * Server configurations namespace.
+     */
+    public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";
+  
+    /**
+     * SAML 2.0 Configuration namespace.
+     */
+    public static readonly SAML2_CONFIG_NAMESPACE: string = "saml2Config";
+
+    /**
+     * Session management namespace.
+     */
+    public static readonly SESSION_MANAGEMENT_NAMESPACE: string = "sessionManagement";
+
+    /**
+     * WS-Federation Configuration namespace.
+     */
+    public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = "wsFederationConfig";
+  
+    /**
+     * insights namespace.
+     */
+    public static readonly INSIGHTS_NAMESPACE: string = "insights";
+
+    /**
+     * SMS Providers namespace.
+     */
+    public static readonly SMS_PROVIDERS_NAMESPACE: string = "smsProviders";
+  
+    /**
+     * Claims namespace.
+     * @constant
+     */
+    public static readonly CLAIMS_NAMESPACE: string = "claims";
+
+    /**
+     * Email locale namespace.
+     * @constant
+     */
+    public static readonly EMAIL_LOCALE_NAMESPACE: string = "emailLocale";
+  
+    /**
+     * Help panel namespace.
+     * @constant
+     */
+    public static readonly HELP_PANEL_NAMESPACE: string = "helpPanel";
+  
+    /**
+     * Suborganizations namespace.
+     * @constant
+     */
+    public static readonly SUBORGANIZATIONS_NAMESPACE: string = "suborganizations";
+  
+    /**
+     * Console settings namespace.
+     * @constant
+     */
+    public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
+  
+    /**
+     * Secrets namespace.
+     * @constant
+     */
+    public static readonly SECRETS_NAMESPACE: string = "secrets";
+  
+    /**
+     * Branding namespace.
+     * @constant
+     */
+    public static readonly BRANDING_NAMESPACE: string = "branding";
+  
+    /**
+     * emailTemplates namespace.
+     * @constant
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
+
+    /**
+     * Certificate namespace.
+     * @constant
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = "certificates";
+
+    /**
+     * authenticationProvider namespace.
+     * @constant
+     */
+    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
 }

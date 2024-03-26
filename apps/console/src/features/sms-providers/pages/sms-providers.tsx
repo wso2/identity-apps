@@ -215,10 +215,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:manage.features.smsProviders." +
+                description: t("smsProviders:" +
                     "notifications.getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.smsProviders." +
+                message: t("smsProviders:" +
                     "notifications.getConfiguration.error.message")
             })
         );
@@ -230,10 +230,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const handleDeleteSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:manage.features.smsProviders." +
+                description: t("smsProviders:" +
                     "notifications.deleteConfiguration.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.smsProviders." +
+                message: t("smsProviders:" +
                     "notifications.deleteConfiguration.success.message")
             })
         );
@@ -336,10 +336,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             setSmsProviderSettings({ ...smsProviderSettings, providerParams: updatedParams });
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.smsProviders." +
+                    description: t("smsProviders:" +
                         "notifications.updateConfiguration.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.smsProviders." +
+                    message: t("smsProviders:" +
                         "notifications.updateConfiguration.success.message")
                 })
             );
@@ -349,10 +349,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.smsProviders." +
+                        description: t("smsProviders:" +
                             "notifications.updateConfiguration.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.smsProviders." +
+                        message: t("smsProviders:" +
                             "notifications.updateConfiguration.error.message")
                     })
                 );
@@ -400,49 +400,49 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         if (smsProviderSettings.selectedProvider === "TwilioSMSProvider") {
             if (!values?.twilioKey) {
                 error.twilioKey = t(
-                    "console:manage.features.smsProviders.form.twilio.validations.required"
+                    "smsProviders:form.twilio.validations.required"
                 );
             }
             if (!values?.twilioSecret) {
                 error.twilioSecret = t(
-                    "console:manage.features.smsProviders.form.twilio.validations.required"
+                    "smsProviders:form.twilio.validations.required"
                 );
             }
             if (!values?.twilioSender) {
                 error.twilioSender = t(
-                    "console:manage.features.smsProviders.form.twilio.validations.required"
+                    "smsProviders:form.twilio.validations.required"
                 );
             }
         } else if (smsProviderSettings.selectedProvider === "VonageSMSProvider") {
             if (!values?.vonageKey) {
                 error.vonageKey = t(
-                    "console:manage.features.smsProviders.form.vonage.validations.required"
+                    "smsProviders:form.vonage.validations.required"
                 );
             }
             if (!values?.vonageSecret) {
                 error.vonageSecret = t(
-                    "console:manage.features.smsProviders.form.vonage.validations.required"
+                    "smsProviders:form.vonage.validations.required"
                 );
             }
             if (!values?.vonageSender) {
                 error.vonageSender = t(
-                    "console:manage.features.smsProviders.form.vonage.validations.required"
+                    "smsProviders:form.vonage.validations.required"
                 );
             }
         } else {
             if (!values?.providerURL) {
                 error.providerURL = t(
-                    "console:manage.features.smsProviders.form.custom.validations.required"
+                    "smsProviders:form.custom.validations.required"
                 );
             }
             if (!values?.contentType) {
                 error.contentType = t(
-                    "console:manage.features.smsProviders.form.custom.validations.required"
+                    "smsProviders:form.custom.validations.required"
                 );
             }
             if (!values?.payload) {
                 error.payload = t(
-                    "console:manage.features.smsProviders.form.custom.validations.required"
+                    "smsProviders:form.custom.validations.required"
                 );
             }
         }
@@ -473,10 +473,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
 
     const handleDeleteError = (error?: IdentityAppsApiException) => {
-        let errorMessage: string = t("console:manage.features.smsProviders." +
+        let errorMessage: string = t("smsProviders:" +
         "notifications.deleteConfiguration.error.message");
 
-        let errorDescription: string = t("console:manage.features.smsProviders." +
+        let errorDescription: string = t("smsProviders:" +
         "notifications.deleteConfiguration.error.description");
 
         // If the SMS provider is being used by SMS OTP connection and it is
@@ -501,12 +501,12 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
     return (
         <PageLayout
-            title={ t("console:manage.features.smsProviders.heading") }
-            pageTitle={ t("console:manage.features.smsProviders.heading") }
+            title={ t("smsProviders:heading") }
+            pageTitle={ t("smsProviders:heading") }
             description={ (
                 <div style={ { whiteSpace: "pre-line" } }>
                     {
-                        t("console:manage.features.smsProviders.subHeading")
+                        t("smsProviders:subHeading")
                     }
                     <DocumentationLink
                         link={ getLink("develop.smsProviders.learnMore") }
@@ -520,7 +520,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.smsProviders.goBack")
+                text: t("smsProviders:goBack")
             } }
             data-componentid={ `${componentId}-form-layout` }
         >
@@ -630,16 +630,16 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     >
                         <Divider hidden />
                         <DangerZoneGroup
-                            sectionHeader={ t("console:manage.features.smsProviders.dangerZoneGroup" +
+                            sectionHeader={ t("smsProviders:dangerZoneGroup" +
                                 ".header") }
                         >
                             <DangerZone
                                 data-componentid={ `${componentId}-revert-sms-provider-config` }
-                                actionTitle={ t("console:manage.features.smsProviders.dangerZoneGroup" +
+                                actionTitle={ t("smsProviders:dangerZoneGroup" +
                                     ".revertConfig.actionTitle") }
-                                header={ t("console:manage.features.smsProviders.dangerZoneGroup" +
+                                header={ t("smsProviders:dangerZoneGroup" +
                                     ".revertConfig.heading") }
-                                subheader={ t("console:manage.features.smsProviders.dangerZoneGroup" +
+                                subheader={ t("smsProviders:dangerZoneGroup" +
                                     ".revertConfig.subHeading") }
                                 onActionClick={ (): void => {
                                     setOpenRevertConfigModal(true);
@@ -652,7 +652,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                             onClose={ (): void => setOpenRevertConfigModal(false) }
                             type="negative"
                             open={ isOpenRevertConfigModal }
-                            assertionHint={ t("console:manage.features.smsProviders.confirmationModal" +
+                            assertionHint={ t("smsProviders:confirmationModal" +
                                 ".assertionHint") }
                             assertionType="checkbox"
                             primaryAction={ t("common:confirm") }
@@ -672,7 +672,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                             <ConfirmationModal.Header
                                 data-componentid={ `${componentId}-revert-confirmation-modal-header` }
                             >
-                                { t("console:manage.features.smsProviders.confirmationModal.header") }
+                                { t("smsProviders:confirmationModal.header") }
                             </ConfirmationModal.Header>
                             <ConfirmationModal.Message
                                 data-componentid={
@@ -681,10 +681,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 attached
                                 negative
                             >
-                                { t("console:manage.features.smsProviders.confirmationModal.message") }
+                                { t("smsProviders:confirmationModal.message") }
                             </ConfirmationModal.Message>
                             <ConfirmationModal.Content>
-                                { t("console:manage.features.smsProviders.confirmationModal.content") }
+                                { t("smsProviders:confirmationModal.content") }
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
                     </Show>

@@ -401,7 +401,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         setShowCustomTextRevertAllConfirmationModal(true);
                     } }
                 >
-                    { t("console:branding.form.actions.resetAll") }
+                    { t("branding:form.actions.resetAll") }
                 </Button>
             </StickyTabPaneActionPanel>
             { showCustomTextRevertAllConfirmationModal && (
@@ -448,7 +448,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
             menuItem: (
                 <Menu.Item key="text">
-                    { t("console:branding.tabs.text.label") }
+                    { t("branding:tabs.text.label") }
                     { isSAASDeployment && (
                         <Chip
                             size="small"
@@ -531,7 +531,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                             {
                                 menuItem: (
                                     <div className="preview-title-bar">
-                                        <div>{ t("console:branding.tabs.preview.label") }</div>
+                                        <div>{ t("branding:tabs.preview.label") }</div>
                                         { activeTab !== BrandingPreferencesConstants.TABS.TEXT_TAB_ID && (
                                             <div className="preview-screen-selection">
                                                 <ScreenDropdown

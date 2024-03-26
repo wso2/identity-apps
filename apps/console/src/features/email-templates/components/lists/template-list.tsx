@@ -122,14 +122,14 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     action={ (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
-                            { t("console:manage.features.emailTemplates.placeholders.emptyList.action") }
+                            { t("emailTemplates:placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
-                    title={ t("console:manage.features.emailTemplates.placeholders.emptyList.title") }
+                    title={ t("emailTemplates:placeholders.emptyList.title") }
                     subtitle={ [
-                        t("console:manage.features.emailTemplates.placeholders.emptyList.subtitles.0"),
-                        t("console:manage.features.emailTemplates.placeholders.emptyList.subtitles.1"),
-                        t("console:manage.features.emailTemplates.placeholders.emptyList.subtitles.2")
+                        t("emailTemplates:placeholders.emptyList.subtitles.0"),
+                        t("emailTemplates:placeholders.emptyList.subtitles.1"),
+                        t("emailTemplates:placeholders.emptyList.subtitles.2")
                     ] }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
@@ -179,7 +179,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         </div>
                     );
                 },
-                title: t("console:manage.features.emailTemplates.list.name")
+                title: t("emailTemplates:list.name")
             },
             {
                 allowToggleVisibility: false,
@@ -187,7 +187,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.emailTemplates.list.actions")
+                title: t("emailTemplates:list.actions")
             }
         ];
     };
@@ -210,7 +210,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     setCurrentViewTemplate(template.id);
                     setShowViewLocaleWizard(true);
                 },
-                popupText: (): string => t("console:manage.features.emailTemplates.buttons.viewTemplate"),
+                popupText: (): string => t("emailTemplates:buttons.viewTemplate"),
                 renderer: "semantic-icon"
             },
             {
@@ -218,7 +218,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, template: EmailTemplate) =>
                     handleEditTemplate(templateTypeId, template.id),
-                popupText: (): string => t("console:manage.features.emailTemplates.buttons.editTemplate"),
+                popupText: (): string => t("emailTemplates:buttons.editTemplate"),
                 renderer: "semantic-icon"
             },
             {
@@ -228,7 +228,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     setCurrentDeletingTemplate(template);
                     setShowTemplateDeleteConfirmation(true);
                 },
-                popupText: (): string => t("console:manage.features.emailTemplates.buttons.deleteTemplate"),
+                popupText: (): string => t("emailTemplates:buttons.deleteTemplate"),
                 renderer: "semantic-icon"
             }
         ];
@@ -277,7 +277,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey={ "console:manage.features.emailTemplates.confirmations.deleteTemplate" +
+                                    i18nKey={ "emailTemplates:confirmations.deleteTemplate" +
                                     ".assertionHint" }
                                     tOptions={ { id: currentDeletingTemplate.id } }
                                 >
@@ -299,19 +299,19 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                         >
-                            { t("console:manage.features.emailTemplates.confirmations.deleteTemplate.header") }
+                            { t("emailTemplates:confirmations.deleteTemplate.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("console:manage.features.emailTemplates.confirmations.deleteTemplate.message") }
+                            { t("emailTemplates:confirmations.deleteTemplate.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            { t("console:manage.features.emailTemplates.confirmations.deleteTemplate.content") }
+                            { t("emailTemplates:confirmations.deleteTemplate.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

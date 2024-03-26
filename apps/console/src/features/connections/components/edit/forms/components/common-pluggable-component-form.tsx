@@ -491,10 +491,10 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 name="customProperties"
-                                label={ t("console:develop.features.authenticationProvider.forms.common." +
+                                label={ t("authenticationProvider:forms.common." +
                                     "customProperties") }
                                 required={ false }
-                                requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms." +
+                                requiredErrorMessage={ t("authenticationProvider:forms." +
                                     "common.requiredErrorMessage") }
                                 type="queryParams"
                                 value={ customProperties }

@@ -49,6 +49,97 @@ export class I18nConstants {
      * Authentication Flow namespace.
      */
     public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE;
+  
+    /**
+     * remoteFetch namespace.
+     */
+    public static readonly REMOTE_FETCH_NAMESPACE: string = I18nModuleConstants.REMOTE_FETCH_NAMESPACE;
+
+    /**
+     * Roles namespace.
+     */
+    public static readonly ROLES_NAMESPACE: string = I18nModuleConstants.ROLES_NAMESPACE;
+
+    /**
+     * Server configurations namespace.
+     */
+    public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
+  
+    /**
+     * SAML 2.0 Configuration namespace.
+     */
+    public static readonly SAML2_CONFIG_NAMESPACE: string = I18nModuleConstants.SAML2_CONFIG_NAMESPACE;
+
+    /**
+     * Session management namespace.
+     */
+    public static readonly SESSION_MANAGEMENT_NAMESPACE: string = I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE;
+
+    /**
+     * WS-Federation Configuration namespace.
+     */
+    public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE;
+  
+    /**
+     * insights namespace.
+     */
+    public static readonly INSIGHTS_NAMESPACE: string = I18nModuleConstants.INSIGHTS_NAMESPACE;
+
+    /**
+     * SMS Providers namespace.
+     */
+    public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
+  
+    /**
+     * Claims namespace.
+     */
+    public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
+
+    /**
+     * Email locale namespace.
+     */
+    public static readonly EMAIL_LOCALE_NAMESPACE: string = I18nModuleConstants.EMAIL_LOCALE_NAMESPACE;
+  
+    /**
+     * Help Panel namespace.
+     */
+    public static readonly HELP_PANEL_NAMESPACE: string = I18nModuleConstants.HELP_PANEL_NAMESPACE;
+  
+    /**
+     * suborganizations namespace.
+     */
+    public static readonly SUBORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.SUBORGANIZATIONS_NAMESPACE;
+  
+    /**
+     * console settings namespace.
+     */
+    public static readonly CONSOLE_SETTINGS_NAMESPACE: string = I18nModuleConstants.CONSOLE_SETTINGS_NAMESPACE;
+  
+    /**
+     * Secrets namespace.
+     */
+    public static readonly SECRETS_NAMESPACE: string = I18nModuleConstants.SECRETS_NAMESPACE;
+  
+    /**
+     * Branding namespace.
+     */
+    public static readonly BRANDING_NAMESPACE: string = I18nModuleConstants.BRANDING_NAMESPACE;
+  
+    /**
+     * emailTemplates namespace.
+     */
+    public static readonly EMAIL_TEMPLATES_NAMESPACE: string = I18nModuleConstants.EMAIL_TEMPLATES_NAMESPACE;
+
+    /**
+     * Certificates namespace.
+     */
+    public static readonly CERTIFICATES_NAMESPACE: string = I18nModuleConstants.CERTIFICATES_NAMESPACE;
+  
+    /**
+     * authenticationProvider namespace.
+     */
+    public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string =
+      I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -57,7 +148,25 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
-        [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ]
+        [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
+        [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
+        [ I18nConstants.ROLES_NAMESPACE, "portals" ],
+        [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
+        [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
+        [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
+        [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],
+        [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
+        [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ],
+        [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
+        [ I18nConstants.EMAIL_LOCALE_NAMESPACE, "portals" ],
+        [ I18nConstants.HELP_PANEL_NAMESPACE, "portals" ],
+        [ I18nConstants.SUBORGANIZATIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.CONSOLE_SETTINGS_NAMESPACE, "portals" ],
+        [ I18nConstants.SECRETS_NAMESPACE, "portals" ],
+        [ I18nConstants.BRANDING_NAMESPACE, "portals" ],
+        [ I18nConstants.EMAIL_TEMPLATES_NAMESPACE, "portals" ],
+        [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ],
+        [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ]
     ]);
 
     /**

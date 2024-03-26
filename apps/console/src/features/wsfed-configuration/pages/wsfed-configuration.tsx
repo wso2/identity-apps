@@ -98,10 +98,10 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:wsFederationConfig.notifications." +
+                description: t("wsFederationConfig:notifications." +
                 "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:wsFederationConfig.notifications." +
+                message: t("wsFederationConfig:notifications." +
                 "getConfiguration.error.message")
             })
         );
@@ -113,10 +113,10 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:wsFederationConfig.notifications." +
+                description: t("wsFederationConfig:notifications." +
                 "updateConfiguration.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:wsFederationConfig.notifications." +
+                message: t("wsFederationConfig:notifications." +
                 "updateConfiguration.success.message")
             })
         );
@@ -128,10 +128,10 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     const handleUpdateError = () => {
         dispatch(
             addAlert({
-                description: t("console:wsFederationConfig.notifications." +
+                description: t("wsFederationConfig:notifications." +
                 "updateConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:wsFederationConfig.notifications." +
+                message: t("wsFederationConfig:notifications." +
                 "updateConfiguration.error.message")
             })
         );
@@ -196,9 +196,9 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
 
     return (
         <PageLayout
-            title={ t("console:wsFederationConfig.title") }
-            pageTitle={ t("console:wsFederationConfig.title") }
-            description={ t("console:wsFederationConfig.description") }
+            title={ t("wsFederationConfig:title") }
+            pageTitle={ t("wsFederationConfig:title") }
+            description={ t("wsFederationConfig:description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
@@ -233,7 +233,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                                             <Field.Checkbox
                                                                 ariaLabel="Enable Authentication Requests Signing"
                                                                 name="enableRequestSigning"
-                                                                label={ t("console:wsFederationConfig.form." +
+                                                                label={ t("wsFederationConfig:form." +
                                                                     "enableRequestSigning.label") }
                                                                 readOnly={ isReadOnly }
                                                                 width={ 16 }

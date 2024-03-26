@@ -76,7 +76,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                     <TextField
                         { ...params }
                         data-componentid={ `${componentId}-textfield` }
-                        placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                        placeholder= { t("roles:addRoleWizard.forms.rolePermission." +
                             "permissions.placeholder") }
                     />
                 ) }

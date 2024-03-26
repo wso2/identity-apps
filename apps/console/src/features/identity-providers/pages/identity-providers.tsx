@@ -495,7 +495,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                         >
                             <Icon name="add" />
                             { identityProviderConfig.useNewConnectionsView
-                                ? t("console:develop.features.authenticationProvider.buttons.addIDP")
+                                ? t("authenticationProvider:buttons.addIDP")
                                 : t("console:develop.features.idp.buttons.addIDP") }
                         </PrimaryButton>
                     </Show>
@@ -557,20 +557,20 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                             }
                                         ] }
                                         filterAttributePlaceholder={ t(
-                                            "console:develop.features.authenticationProvider" +
-                                            ".advancedSearch.form.inputs.filterAttribute.placeholder"
+                                            "authenticationProvider:" +
+                                            "advancedSearch.form.inputs.filterAttribute.placeholder"
                                         ) }
                                         filterConditionsPlaceholder={ t(
-                                            "console:develop.features.authenticationProvider" +
-                                            ".advancedSearch.form.inputs.filterCondition.placeholder"
+                                            "authenticationProvider:" +
+                                            "advancedSearch.form.inputs.filterCondition.placeholder"
                                         ) }
                                         filterValuePlaceholder={ t(
-                                            "console:develop.features.authenticationProvider" +
-                                            ".advancedSearch.form.inputs.filterValue.placeholder"
+                                            "authenticationProvider:" +
+                                            "advancedSearch.form.inputs.filterValue.placeholder"
                                         ) }
                                         placeholder={ t(
-                                            "console:develop.features.authenticationProvider" +
-                                            ".advancedSearch.placeholder"
+                                            "authenticationProvider:" +
+                                            "advancedSearch.placeholder"
                                         ) }
                                         defaultSearchAttribute="name"
                                         defaultSearchOperator="sw"
@@ -622,19 +622,19 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                     }
                                 ] }
                                 filterAttributePlaceholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.form.inputs.filterAttribute.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.form.inputs.filterAttribute.placeholder"
                                 ) }
                                 filterConditionsPlaceholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.form.inputs.filterCondition.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.form.inputs.filterCondition.placeholder"
                                 ) }
                                 filterValuePlaceholder={ t(
-                                    "console:develop.features.authenticationProvider" +
-                                    ".advancedSearch.form.inputs.filterValue.placeholder"
+                                    "authenticationProvider:" +
+                                    "advancedSearch.form.inputs.filterValue.placeholder"
                                 ) }
                                 placeholder={ t(
-                                    "console:develop.features.authenticationProvider" + ".advancedSearch.placeholder"
+                                    "authenticationProvider:" + "advancedSearch.placeholder"
                                 ) }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
@@ -667,22 +667,22 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                                         }
                                     ] }
                                     filterAttributePlaceholder={ t(
-                                        "console:develop.features.authenticationProvider.advancedSearch." +
+                                        "authenticationProvider:advancedSearch." +
                                         "form.inputs.filterAttribute" +
                                         ".placeholder"
                                     ) }
                                     filterConditionsPlaceholder={ t(
-                                        "console:develop.features.authenticationProvider.advancedSearch." +
+                                        "authenticationProvider:advancedSearch." +
                                         "form.inputs.filterCondition" +
                                         ".placeholder"
                                     ) }
                                     filterValuePlaceholder={ t(
-                                        "console:develop.features.authenticationProvider.advancedSearch." +
+                                        "authenticationProvider:advancedSearch." +
                                         "form.inputs.filterValue" +
                                         ".placeholder"
                                     ) }
                                     placeholder={ t(
-                                        "console:develop.features.authenticationProvider." + 
+                                        "authenticationProvider:" + 
                                         "advancedSearch.placeholder"
                                     ) }
                                     defaultSearchAttribute="name"
