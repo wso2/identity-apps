@@ -394,7 +394,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                             } }
                         />
                         <Typography className="permissions-accordion-label">
-                            { t("console:consoleSettings.roles.add.tenantPermissions.label") }
+                            { t("consoleSettings:roles.add.tenantPermissions.label") }
                         </Typography>
                         <Typography variant="body2">
                             { filteredTenantAPIResourceCollections?.apiResourceCollections?.length } Permissions
@@ -462,10 +462,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         size="small"
                                                     >
                                                         <ToggleButton value="read" aria-label="left aligned">
-                                                            { t("console:consoleSettings.roles.permissionLevels.view") }
+                                                            { t("consoleSettings:roles.permissionLevels.view") }
                                                         </ToggleButton>
                                                         <ToggleButton value="write" aria-label="right aligned">
-                                                            { t("console:consoleSettings.roles.permissionLevels.edit") }
+                                                            { t("consoleSettings:roles.permissionLevels.edit") }
                                                         </ToggleButton>
                                                     </ToggleButtonGroup>
                                                 </TableCell>
@@ -506,7 +506,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                             } }
                         />
                         <Typography className="permissions-accordion-label">
-                            { t("console:consoleSettings.roles.add.organizationPermissions.label") }
+                            { t("consoleSettings:roles.add.organizationPermissions.label") }
                         </Typography>
                         <Typography variant="body2">
                             { filteredOrganizationAPIResourceCollections?.apiResourceCollections?.length } Permissions
@@ -575,10 +575,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         size="small"
                                                     >
                                                         <ToggleButton value="read" aria-label="left aligned">
-                                                            { t("console:consoleSettings.roles.permissionLevels.view") }
+                                                            { t("consoleSettings:roles.permissionLevels.view") }
                                                         </ToggleButton>
                                                         <ToggleButton value="write" aria-label="right aligned">
-                                                            { t("console:consoleSettings.roles.permissionLevels.edit") }
+                                                            { t("consoleSettings:roles.permissionLevels.edit") }
                                                         </ToggleButton>
                                                     </ToggleButtonGroup>
                                                 </TableCell>

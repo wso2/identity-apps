@@ -95,7 +95,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 )
             },
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
+                menuItem: t("roles:edit.menuItems.permissions"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RolePermissionDetails
@@ -109,7 +109,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 )
             },
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
+                menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleUserDetails

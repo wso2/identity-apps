@@ -206,10 +206,10 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
+                    description: t("claims:local.notifications.fetchLocalClaims.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims." +
+                    message: t("claims:local.notifications.fetchLocalClaims." +
                         "genericError.message")
                 }));
             });

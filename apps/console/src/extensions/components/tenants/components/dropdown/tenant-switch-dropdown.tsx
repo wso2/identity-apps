@@ -266,7 +266,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                                 event.stopPropagation();
                                             } }
                                             placeholder={ t(
-                                                "console:manage.features.organizations.switching.search.placeholder"
+                                                "organizations:switching.search.placeholder"
                                             ) }
                                             floated="right"
                                             size="small"

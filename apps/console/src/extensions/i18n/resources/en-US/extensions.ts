@@ -3821,7 +3821,7 @@ export const extensions: Extensions = {
                     },
                     subHeading:
                         "When self registration is enabled, users can register via the " +
-                        "<1>Create an account</1> link on the application’s login page. This creates a new " +
+                        "<1>Register</1> link on the application’s login page. This creates a new " +
                         "<3>user</3> account in the organization."
                 },
                 inviteUserToSetPassword: {

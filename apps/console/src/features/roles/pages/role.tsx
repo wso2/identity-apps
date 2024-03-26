@@ -95,17 +95,17 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const filterOptions: DropdownItemProps[] = [
         {
             key: undefined,
-            text: t("console:manage.features.roles.list.filterOptions.all"),
+            text: t("roles:list.filterOptions.all"),
             value: undefined
         },
         {
             key: RoleConstants.ROLE_AUDIENCE_APPLICATION_FILTER,
-            text: t("console:manage.features.roles.list.filterOptions.applicationRoles"),
+            text: t("roles:list.filterOptions.applicationRoles"),
             value: RoleConstants.ROLE_AUDIENCE_APPLICATION_FILTER
         },
         {
             key: RoleConstants.ROLE_AUDIENCE_ORGANIZATION_FILTER,
-            text: t("console:manage.features.roles.list.filterOptions.organizationRoles"),
+            text: t("roles:list.filterOptions.organizationRoles"),
             value: RoleConstants.ROLE_AUDIENCE_ORGANIZATION_FILTER
         }
     ];
@@ -116,9 +116,9 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     useEffect(() => {
         if (rolesListError) {
             handleAlerts({
-                description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
+                description: t("roles:notifications.fetchRoles.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
+                message: t("roles:notifications.fetchRoles.genericError.message")
             });
         }
     }, [ rolesListError ]);
@@ -157,9 +157,9 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
         deleteRoleById(role.id)
             .then(() => {
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.deleteRole.success.description"),
+                    description: t("roles:notifications.deleteRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.roles.notifications.deleteRole.success.message")
+                    message: t("roles:notifications.deleteRole.success.message")
                 });
                 mutateRolesList();
             }).catch((error: AxiosError) => {
@@ -167,16 +167,16 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                     handleAlerts({
                         description: error.response.data.detail,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.deleteRole.error.message")
+                        message: t("roles:notifications.deleteRole.error.message")
                     });
 
                     return;
                 }
 
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.deleteRole.genericError.description"),
+                    description: t("roles:notifications.deleteRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.deleteRole.genericError.message")
+                    message: t("roles:notifications.deleteRole.genericError.message")
                 });
             });
     };
@@ -223,7 +223,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                                     data-componentid={ `${componentId}-add-button-icon` }
                                     name="add"
                                 />
-                                { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
+                                { t("roles:list.buttons.addButton", { type: "Role" }) }
                             </PrimaryButton>
                         </Show>
                     ) : null
@@ -242,28 +242,28 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: t("console:manage.features.roles.list.filterAttirbutes.name"),
+                                text: t("roles:list.filterAttirbutes.name"),
                                 value: "displayName"
                             },
                             {
                                 key: 1,
-                                text: t("console:manage.features.roles.list.filterAttirbutes.audience"),
+                                text: t("roles:list.filterAttirbutes.audience"),
                                 value: "audience.type"
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                            t("roles:advancedSearch.form.inputs.filterAttribute." +
                                 "placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                            t("roles:advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                            t("roles:advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+                        placeholder={ t("roles:advancedSearch.placeholder") }
                         defaultSearchAttribute="displayName"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -280,7 +280,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                             data-componentid={ `${componentId}-list-filters-dropdown` }
                             selection
                             options={ filterOptions }
-                            placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
+                            placeholder= { t("roles:list.buttons.filterDropdown") }
                             onChange={ handleFilterChange }
                         />
                     )

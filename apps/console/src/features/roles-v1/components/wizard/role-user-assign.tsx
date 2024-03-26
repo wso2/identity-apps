@@ -423,12 +423,12 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         >
             <Modal.Header>
                 {
-                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("roles:addRoleWizard.users.assignUserModal.heading",
                         { type: "Role" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
                             { type: "role" })
                     }
                 </Heading>
@@ -436,7 +436,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             <Modal.Content image>
                 <TransferComponent
                     data-testid={ `${ testId }-user-list-transfer` }
-                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
+                    searchPlaceholder={ t("roles:addRoleWizard.users.assignUserModal.list." +
                         "searchPlaceholder") }
                     addItems={ addUser }
                     removeItems={ removeUser }
@@ -448,7 +448,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         isListEmpty={ !(usersList?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("roles:addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
@@ -481,7 +481,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         isListEmpty={ !(tempUserList?.length > 0) }
                         listType="selected"
                         listHeaders={ [
-                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("roles:addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
@@ -559,7 +559,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                         data-testid={ `${ testId }-users-list-search-input` }
                                                         icon={ <Icon name="search"/> }
                                                         onChange={ handleAssignedUserListSearch }
-                                                        placeholder={ t("console:manage.features.roles.addRoleWizard." +
+                                                        placeholder={ t("roles:addRoleWizard." +
                                                         "users.assignUserModal.list.searchPlaceholder") }
                                                         floated="left"
                                                         size="small"
@@ -583,11 +583,11 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                         <Table.Row>
                                                             <Table.HeaderCell/>
                                                             <Table.HeaderCell>
-                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                { t("roles:edit.users.list." +
                                                                 "user") }
                                                             </Table.HeaderCell>
                                                             <Table.HeaderCell>
-                                                                { t("console:manage.features.roles.edit.users.list." +
+                                                                { t("roles:edit.users.list." +
                                                                 "organization") }
                                                             </Table.HeaderCell>
                                                         </Table.Row>
@@ -666,10 +666,10 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             ? (
                                                 <EmphasizedSegment>
                                                     <EmptyPlaceholder
-                                                        title={ t("console:manage.features.roles.edit.users.list." +
+                                                        title={ t("roles:edit.users.list." +
                                                         "emptyPlaceholder.title") }
                                                         subtitle={ [
-                                                            t("console:manage.features.roles.edit.users.list." +
+                                                            t("roles:edit.users.list." +
                                                             "emptyPlaceholder.subtitles", { type: "role" })
                                                         ] }
                                                         action={
@@ -680,7 +680,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                     onClick={ handleOpenAddNewGroupModal }
                                                                     icon="plus"
                                                                 >
-                                                                    { t("console:manage.features.roles.edit." +
+                                                                    { t("roles:edit." +
                                                                         "users.list.emptyPlaceholder.action") }
                                                                 </PrimaryButton>
                                                             )
@@ -707,7 +707,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             <Grid.Row columns={ 2 }>
                                 <TransferComponent
                                     data-testid={ `${ testId }-update-user-list-transfer` }
-                                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users." +
+                                    searchPlaceholder={ t("roles:addRoleWizard.users." +
                                     "assignUserModal.list.searchPlaceholder") }
                                     addItems={ addUser }
                                     removeItems={ removeUser }
@@ -719,7 +719,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         isListEmpty={ !(usersList?.length > 0) }
                                         listType="unselected"
                                         listHeaders={ [
-                                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal." +
+                                            t("roles:addRoleWizard.users.assignUserModal." +
                                             "list.listHeader")
                                         ] }
                                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
@@ -753,7 +753,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         isListEmpty={ !(tempUserList?.length > 0) }
                                         listType="selected"
                                         listHeaders={ [
-                                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal." +
+                                            t("roles:addRoleWizard.users.assignUserModal." +
                                             "list.listHeader")
                                         ] }
                                         handleHeaderCheckboxChange={ selectAllAssignedList }

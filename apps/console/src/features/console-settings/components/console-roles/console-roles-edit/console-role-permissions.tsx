@@ -296,9 +296,9 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("console:manage.features.roles.notifications.updateRole.success.description"),
+                        description: t("roles:notifications.updateRole.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.roles.notifications.updateRole.success.message")
+                        message: t("roles:notifications.updateRole.success.message")
                     })
                 );
             })
@@ -306,10 +306,10 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
-                            "console:manage.features.roles.notifications.updateRole.genericError.description"
+                            "roles:notifications.updateRole.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.updateRole.genericError.message")
+                        message: t("roles:notifications.updateRole.genericError.message")
                     })
                 );
             });
@@ -356,13 +356,13 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         <EmphasizedSegment padded="very" className="console-role-permissions">
             <div className="section-heading">
                 <Heading as="h4">
-                    { t("console:manage.features.roles.edit.permissions.heading") }
+                    { t("roles:edit.permissions.heading") }
                 </Heading>
                 <Heading as="h6" color="grey" subHeading>
                     {
                         isReadOnly
-                            ? t("console:manage.features.roles.edit.permissions.readOnlySubHeading")
-                            : t("console:manage.features.roles.edit.permissions.subHeading")
+                            ? t("roles:edit.permissions.readOnlySubHeading")
+                            : t("roles:edit.permissions.subHeading")
                     }
                 </Heading>
             </div>

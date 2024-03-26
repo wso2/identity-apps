@@ -122,7 +122,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     description: error?.response?.data?.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.organizations.notifications." +
+                        "organizations:notifications." +
                         "getOrganizationList.error.message"
                     )
                 })
@@ -133,12 +133,12 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         dispatch(
             addAlert({
                 description: t(
-                    "console:manage.features.organizations.notifications.getOrganizationList" +
+                    "organizations:notifications.getOrganizationList" +
                     ".genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "console:manage.features.organizations.notifications." +
+                    "organizations:notifications." +
                     "getOrganizationList.genericError.message"
                 )
             })
@@ -157,7 +157,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     dispatch(addAlert({
                         description: error.description,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.organizations.notifications.fetchOrganization." +
+                        message: t("organizations:notifications.fetchOrganization." +
                             "genericError.message")
                     }));
 
@@ -165,10 +165,10 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.organizations.notifications.fetchOrganization." +
+                    description: t("organizations:notifications.fetchOrganization." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.organizations.notifications.fetchOrganization." +
+                    message: t("organizations:notifications.fetchOrganization." +
                         "genericError.message")
                 }));
             });
@@ -207,12 +207,12 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.organizations.switching.notifications.switchOrganization" +
+                        "organizations:switching.notifications.switchOrganization" +
                         ".genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.organizations.switching.notifications.switchOrganization" +
+                        "organizations:switching.notifications.switchOrganization" +
                         ".genericError.message"
                     )
                 })
@@ -223,11 +223,11 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     return (
         <PageLayout
             isLoading={ isAuthorizedOrganizationListRequestLoading }
-            title={ organization?.name ?? t("console:manage.features.organizations.title") }
-            pageTitle={ organization?.name ?? t("console:manage.features.organizations.title") }
+            title={ organization?.name ?? t("organizations:title") }
+            pageTitle={ organization?.name ?? t("organizations:title") }
             description={ isReadOnly
-                ? t("console:manage.features.organizations.view.description")
-                : t("console:manage.features.organizations.edit.description") }
+                ? t("organizations:view.description")
+                : t("organizations:edit.description") }
             image={ (
                 <GenericIcon
                     defaultIcon
@@ -240,7 +240,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             backButton={ {
                 "data-testid": "org-mgt-edit-org-back-button",
                 onClick: goBackToOrganizationList,
-                text: t("console:manage.features.organizations.edit.back")
+                text: t("organizations:edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -253,7 +253,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     onClick={ handleOrganizationSwitch }
                 >
                     <Icon name="exchange" />
-                    { t("console:manage.features.organizations.switching.switchButton") }
+                    { t("organizations:switching.switchButton") }
                 </Button>
             ) }
         >

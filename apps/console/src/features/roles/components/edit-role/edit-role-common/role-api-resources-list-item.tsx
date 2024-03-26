@@ -122,9 +122,9 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                             />
                                         ) }
                                         content={ apiResource?.scopes?.length < 0
-                                            ? t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                            ? t("roles:addRoleWizard.forms.rolePermission." +
                                                 "permissions.tooltips.noScopes")
-                                            : t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                            : t("roles:addRoleWizard.forms.rolePermission." +
                                                 "permissions.tooltips.selectAllScopes")
                                         }
                                     />
@@ -139,7 +139,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                                 <XMarkIcon />
                                             </IconButton>
                                         ) }
-                                        content={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                        content={ t("roles:addRoleWizard.forms." +
                                             "rolePermission.permissions.tooltips.removeAPIResource") }
                                     >
                                     </Tooltip>

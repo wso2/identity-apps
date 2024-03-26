@@ -182,7 +182,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications." +
+                                "organizations:notifications." +
                                 "fetchOrganization.error.message"
                             )
                         })
@@ -194,12 +194,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications.fetchOrganization" +
+                            "organizations:notifications.fetchOrganization" +
                             ".genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizations.notifications." +
+                            "organizations:notifications." +
                             "fetchOrganization.genericError.message"
                         )
                     })
@@ -255,7 +255,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                     description: error.description,
                                     level: AlertLevels.ERROR,
                                     message: t(
-                                        "console:manage.features.organizations.notifications." +
+                                        "organizations:notifications." +
                                     "getOrganizationList.error.message"
                                     )
                                 })
@@ -267,12 +267,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:manage.features.organizations.notifications.getOrganizationList" +
+                                    "organizations:notifications.getOrganizationList" +
                                 ".genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications." +
+                                    "organizations:notifications." +
                                 "getOrganizationList.genericError.message"
                                 )
                             })
@@ -324,7 +324,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     description: error?.response?.data?.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.organizations.notifications." +
+                        "organizations:notifications." +
                         "getOrganizationList.error.message"
                     )
                 })
@@ -335,12 +335,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         dispatch(
             addAlert({
                 description: t(
-                    "console:manage.features.organizations.notifications.getOrganizationList" +
+                    "organizations:notifications.getOrganizationList" +
                     ".genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "console:manage.features.organizations.notifications." +
+                    "organizations:notifications." +
                     "getOrganizationList.genericError.message"
                 )
             })
@@ -494,7 +494,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 data-componentid={ `${ testId }-list-layout-add-button` }
                             >
                                 <Icon name="add" />
-                                { t("console:manage.features.organizations.list.actions.add") }
+                                { t("organizations:list.actions.add") }
                             </PrimaryButton>
                         </Show>
                     )
@@ -505,7 +505,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         ? null
                         : organization
                             ? organization.name
-                            : t("console:manage.features.organizations.homeList.name")
+                            : t("organizations:homeList.name")
                 }
                 description={
                     (<p>
@@ -575,19 +575,19 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={ t(
-                                "console:manage.features.organizations.advancedSearch.form" +
+                                "organizations:advancedSearch.form" +
                                         ".inputs.filterAttribute.placeholder"
                             ) }
                             filterConditionsPlaceholder={ t(
-                                "console:manage.features.organizations.advancedSearch.form" +
+                                "organizations:advancedSearch.form" +
                                         ".inputs.filterCondition.placeholder"
                             ) }
                             filterValuePlaceholder={ t(
-                                "console:manage.features.organizations.advancedSearch.form.inputs.filterValue" +
+                                "organizations:advancedSearch.form.inputs.filterValue" +
                                         ".placeholder"
                             ) }
                             placeholder={ t(
-                                "console:manage.features.organizations." + "advancedSearch.placeholder"
+                                "organizations:" + "advancedSearch.placeholder"
                             ) }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"

@@ -62,7 +62,7 @@ export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface>
 
     const panes = () => ([
         {
-            menuItem: t("console:manage.features.organizations.edit.tabTitles.overview"),
+            menuItem: t("organizations:edit.tabTitles.overview"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <OrganizationOverview
@@ -75,7 +75,7 @@ export const EditOrganization: FunctionComponent<EditOrganizationPropsInterface>
             )
         },
         {
-            menuItem: t("console:manage.features.organizations.edit.tabTitles.attributes"),
+            menuItem: t("organizations:edit.tabTitles.attributes"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <OrganizationAttributes

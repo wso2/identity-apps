@@ -106,9 +106,9 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
         deleteRoleById(role.id)
             .then(() => {
                 dispatch(addAlert(({
-                    description: t("console:manage.features.roles.notifications.deleteRole.success.description"),
+                    description: t("roles:notifications.deleteRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.roles.notifications.deleteRole.success.message")
+                    message: t("roles:notifications.deleteRole.success.message")
                 })));
 
                 onMutateRolesList();
@@ -117,16 +117,16 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                     dispatch(addAlert(({
                         description: error.response.data.detail,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.roles.notifications.deleteRole.error.message")
+                        message: t("roles:notifications.deleteRole.error.message")
                     })));
 
                     return;
                 }
 
                 dispatch(addAlert(({
-                    description: t("console:manage.features.roles.notifications.deleteRole.genericError.description"),
+                    description: t("roles:notifications.deleteRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.deleteRole.genericError.message")
+                    message: t("roles:notifications.deleteRole.genericError.message")
                 })));
             });
     };
@@ -168,23 +168,23 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                     filterAttributeOptions={ [
                         {
                             key: 0,
-                            text: t("console:manage.features.roles.list.filterAttirbutes.name"),
+                            text: t("roles:list.filterAttirbutes.name"),
                             value: "displayName"
                         }
                     ] }
                     filterAttributePlaceholder={
-                        t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                        t("roles:advancedSearch.form.inputs.filterAttribute." +
                             "placeholder")
                     }
                     filterConditionsPlaceholder={
-                        t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                        t("roles:advancedSearch.form.inputs.filterCondition" +
                             ".placeholder")
                     }
                     filterValuePlaceholder={
-                        t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                        t("roles:advancedSearch.form.inputs.filterValue" +
                             ".placeholder")
                     }
-                    placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+                    placeholder={ t("roles:advancedSearch.placeholder") }
                     defaultSearchAttribute="displayName"
                     defaultSearchOperator="co"
                     triggerClearQuery={ triggerClearQuery }
@@ -205,7 +205,7 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                             data-componentid={ `${componentId}-add-button-icon` }
                             name="add"
                         />
-                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
+                        { t("roles:list.buttons.addButton", { type: "Role" }) }
                     </PrimaryButton>
                 </Show>
             ) }

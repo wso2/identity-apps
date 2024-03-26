@@ -25,17 +25,17 @@ export class OrgInsightsConstants {
     public static readonly DURATION_OPTIONS: DurationDropdownOption[] = [
         {
             key: DurationOption.LAST_07_DAYS,
-            text: "console:manage.features.insights.durationOption",
+            text: "insights:durationOption",
             value: DurationOption.LAST_07_DAYS
         },
         {
             key: DurationOption.LAST_14_DAYS,
-            text: "console:manage.features.insights.durationOption",
+            text: "insights:durationOption",
             value: DurationOption.LAST_14_DAYS
         },
         {
             key: DurationOption.LAST_30_DAYS,
-            text: "console:manage.features.insights.durationOption",
+            text: "insights:durationOption",
             value: DurationOption.LAST_30_DAYS
         }
     ]

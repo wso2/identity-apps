@@ -205,12 +205,12 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     <Field
                                         type="text"
                                         name="claimURI"
-                                        label={ t("console:manage.features.claims.local.forms.attributeID.label") }
+                                        label={ t("claims:local.forms.attributeID.label") }
                                         className="mb-1"
                                         required={ true }
-                                        requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
+                                        requiredErrorMessage={ t("claims:local.forms." +
                                             "attributeID.requiredErrorMessage") }
-                                        placeholder={ t("console:manage.features.claims.local." +
+                                        placeholder={ t("claims:local." +
                                             "forms.attributeID.placeholder") }
                                         value={ values?.get("claimURI")?.toString() }
                                         maxLength={ 30 }
@@ -243,7 +243,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
                                             if (!isAttributeValid) {
                                                 validation.isValid = false;
-                                                validation.errorMessages.push(t("console:manage.features.claims."
+                                                validation.errorMessages.push(t("claims:"
                                                     +"dialects.forms.fields.attributeName.validation.invalid"));
 
                                                 return;
@@ -251,7 +251,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
                                             if (!noUniqueOIDCAttrib || !noUniqueSCIMAttrib) {
                                                 validation.isValid = false;
-                                                validation.errorMessages.push(t("console:manage.features.claims."
+                                                validation.errorMessages.push(t("claims:"
                                                     +"dialects.forms.fields.attributeName.validation.alreadyExists"));
 
                                                 return;
@@ -279,7 +279,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         data-testid={ `${ testId }-form-claim-uri-input` }
                                     />
                                     <Popup
-                                        content={ t("console:manage.features.claims.local.forms.attributeHint") }
+                                        content={ t("claims:local.forms.attributeHint") }
                                         inverted
                                         open={ isShowClaimIDHint }
                                         onClose={ () => {
@@ -475,18 +475,18 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             } }
                             type="text"
                             name="name"
-                            label={ t("console:manage.features.claims.local.forms.name.label") }
+                            label={ t("claims:local.forms.name.label") }
                             required={ true }
-                            requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
+                            requiredErrorMessage={ t("claims:local.forms." +
                                 "name.requiredErrorMessage") }
-                            placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
+                            placeholder={ t("claims:local.forms.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             maxLength={ 30 }
                             ref={ nameField }
                             data-testid={ `${ testId }-form-name-input` }
                         />
                         <Popup
-                            content={ t("console:manage.features.claims.local.forms.nameHint") }
+                            content={ t("claims:local.forms.nameHint") }
                             inverted
                             open={ isShowNameHint }
                             trigger={ <span></span> }
@@ -510,11 +510,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 <Field
                                     type="text"
                                     name="claimURI"
-                                    label={ t("console:manage.features.claims.local.forms.attributeID.label") }
+                                    label={ t("claims:local.forms.attributeID.label") }
                                     required={ true }
-                                    requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
+                                    requiredErrorMessage={ t("claims:local.forms." +
                                         "attributeID.requiredErrorMessage") }
-                                    placeholder={ t("console:manage.features.claims.local.forms.attributeID." +
+                                    placeholder={ t("claims:local.forms.attributeID." +
                                         "placeholder") }
                                     value={ values?.get("claimURI")?.toString() }
                                     maxLength={ 30 }
@@ -531,7 +531,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     data-testid={ `${ testId }-form-claim-uri-input` }
                                 />
                                 <Popup
-                                    content={ t("console:manage.features.claims.local.forms.attributeHint") }
+                                    content={ t("claims:local.forms.attributeHint") }
                                     inverted
                                     open={ isShowClaimIDHint }
                                     trigger={ <p></p> }
@@ -561,10 +561,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 <Field
                                     type="textarea"
                                     name="description"
-                                    label={ t("console:manage.features.claims.local.forms.description.label") }
+                                    label={ t("claims:local.forms.description.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("console:manage.features.claims.local.forms.description." +
+                                    placeholder={ t("claims:local.forms.description." +
                                         "placeholder") }
                                     value={ values?.get("description")?.toString() }
                                     data-testid={ `${ testId }-form-description-input` }
@@ -579,10 +579,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 <Field
                                     type="text"
                                     name="regularExpression"
-                                    label={ t("console:manage.features.claims.local.forms.regEx.label") }
+                                    label={ t("claims:local.forms.regEx.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
+                                    placeholder={ t("claims:local.forms.regEx.placeholder") }
                                     value={ values?.get("regularExpression")?.toString() }
                                     onMouseOver={ () => {
                                         delayPopup(setIsShowRegExHint, regExTimer);
@@ -596,7 +596,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 />
                                 <Popup
-                                    content={ t("console:manage.features.claims.local.forms.regExHint") }
+                                    content={ t("claims:local.forms.regExHint") }
                                     inverted
                                     open={ isShowRegExHint }
                                     trigger={ <span></span> }
@@ -621,7 +621,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     requiredErrorMessage=""
                                     children={ [
                                         {
-                                            label: t("console:manage.features.claims.local.forms." +
+                                            label: t("claims:local.forms." +
                                                 "supportedByDefault.label"),
                                             value: "Support"
                                         } ] }
@@ -643,10 +643,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     type="number"
                                     min="0"
                                     name="displayOrder"
-                                    label={ t("console:manage.features.claims.local.forms.displayOrder.label") }
+                                    label={ t("claims:local.forms.displayOrder.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("console:manage.features.claims.local.forms." +
+                                    placeholder={ t("claims:local.forms." +
                                         "displayOrder.placeholder") }
                                     value={ values?.get("displayOrder")?.toString() ?? "0" }
                                     onMouseOver={ () => {
@@ -660,7 +660,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 />
                                 <Popup
                                     content={
-                                        t("console:manage.features.claims.local.forms.displayOrderHint")
+                                        t("claims:local.forms.displayOrderHint")
                                     }
                                     inverted
                                     open={ isShowDisplayOrderHint }
@@ -685,7 +685,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     required={ false }
                                     requiredErrorMessage=""
                                     children={ [ {
-                                        label: t("console:manage.features.claims.local.forms.required.label"),
+                                        label: t("claims:local.forms.required.label"),
                                         value: "Required"
                                     } ] }
                                     value={ values?.get("required") as string[] }
@@ -707,7 +707,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     required={ false }
                                     requiredErrorMessage=""
                                     children={ [ {
-                                        label: t("console:manage.features.claims.local.forms.readOnly.label"),
+                                        label: t("claims:local.forms.readOnly.label"),
                                         value: "ReadOnly"
                                     } ] }
                                     value={ values?.get("readOnly") as string[] }

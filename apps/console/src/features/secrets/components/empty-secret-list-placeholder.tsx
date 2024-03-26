@@ -65,18 +65,18 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
             <EmptyPlaceholder
                 action={
                     <LinkButton
-                        aria-label={ t("console:develop.features.secrets.emptyPlaceholders" +
+                        aria-label={ t("secrets:emptyPlaceholders" +
                             ".buttons.backToSecrets.ariaLabel") }
                         onClick={ whenTheRequestedResourceIsNotFound }>
                         <Icon name="backward"/>
-                        { t("console:develop.features.secrets.emptyPlaceholders.buttons.backToSecrets.label") }
+                        { t("secrets:emptyPlaceholders.buttons.backToSecrets.label") }
                     </LinkButton>
                 }
                 image={ getEmptyPlaceholderIllustrations().pageNotFound }
                 imageSize="tiny"
                 subtitle={ [
-                    t("console:develop.features.secrets.emptyPlaceholders.resourceNotFound.messages.0"),
-                    t("console:develop.features.secrets.emptyPlaceholders.resourceNotFound.messages.1")
+                    t("secrets:emptyPlaceholders.resourceNotFound.messages.0"),
+                    t("secrets:emptyPlaceholders.resourceNotFound.messages.1")
                 ] }
                 data-testid={ testId }
             />
@@ -89,17 +89,17 @@ export const EmptySecretListPlaceholder: FC<EmptySecretListPlaceholderProps> = (
                 <Show when={ AccessControlConstants.SECRET_WRITE }>
                     <PrimaryButton
                         aria-label={
-                            t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.ariaLabel")
+                            t("secrets:emptyPlaceholders.buttons.addSecret.ariaLabel")
                         }
                         onClick={ onAddNewSecret }>
                         <Icon name="add"/>
-                        { t("console:develop.features.secrets.emptyPlaceholders.buttons.addSecret.label") }
+                        { t("secrets:emptyPlaceholders.buttons.addSecret.label") }
                     </PrimaryButton>
                 </Show>
             }
             image={ getEmptyPlaceholderIllustrations().newList }
             imageSize="tiny"
-            subtitle={ [ t("console:develop.features.secrets.emptyPlaceholders.emptyListOfSecrets.messages.0") ] }
+            subtitle={ [ t("secrets:emptyPlaceholders.emptyListOfSecrets.messages.0") ] }
             data-testid={ testId }
         />
     );

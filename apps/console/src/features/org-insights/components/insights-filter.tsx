@@ -42,7 +42,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   1,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "basic"
             ).toString(),
             value: AuthenticatorFilterValue.BASIC
@@ -50,7 +50,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   2,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "identifierFirst"
             ).toString(),
             value: AuthenticatorFilterValue.IDENTIFIER_FIRST
@@ -58,7 +58,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   3,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "fido2"
             ).toString(),
             value: AuthenticatorFilterValue.FIDO2
@@ -66,7 +66,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   4,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "magicLink"
             ).toString(),
             value: AuthenticatorFilterValue.MAGIC_LINK
@@ -74,7 +74,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   5,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "emailOtp"
             ).toString(),
             value: AuthenticatorFilterValue.EMAIL_OTP
@@ -82,7 +82,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   6,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "smsOtp"
             ).toString(),
             value: AuthenticatorFilterValue.SMS_OTP
@@ -90,7 +90,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   7,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "totp"
             ).toString(),
             value: AuthenticatorFilterValue.TOTP
@@ -98,7 +98,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   8,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "backupCodes"
             ).toString(),
             value: AuthenticatorFilterValue.BACK_UP_CODE
@@ -106,7 +106,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   9,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "google"
             ).toString(),
             value: AuthenticatorFilterValue.GOOGLE
@@ -114,7 +114,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   10,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "facebook"
             ).toString(),
             value: AuthenticatorFilterValue.FACEBOOK
@@ -122,7 +122,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   11,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "github"
             ).toString(),
             value: AuthenticatorFilterValue.GITHUB
@@ -130,7 +130,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   12,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "apple"
             ).toString(),
             value: AuthenticatorFilterValue.APPLE
@@ -138,7 +138,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   13,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "oidc"
             ).toString(),
             value: AuthenticatorFilterValue.OIDC
@@ -146,7 +146,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   14,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "saml"
             ).toString(),
             value: AuthenticatorFilterValue.SAML
@@ -154,7 +154,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   15,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "hypr"
             ).toString(),
             value: AuthenticatorFilterValue.HYPR
@@ -162,7 +162,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   16,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.login.filters.authenticator.values." +
+                "insights:activityType.login.filters.authenticator.values." +
                 "iproov"
             ).toString(),
             value: AuthenticatorFilterValue.IPROOV
@@ -172,7 +172,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   1,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." +
+                "insights:activityType.registration.filters.onboardingMethod.values." +
                 "adminInitiated"
             ).toString(),
             value: OnboardingMethodFilterValue.ADMIN_INITIATED
@@ -180,7 +180,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   2,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." +
+                "insights:activityType.registration.filters.onboardingMethod.values." +
                 "userInvited"
             ).toString(),
             value: OnboardingMethodFilterValue.USER_INVITE
@@ -188,7 +188,7 @@ const filterValueDropdownItems: Record<string,DropdownChild[]> = {
         {
             key:   3,
             text:  I18n.instance.t(
-                "console:manage.features.insights.activityType.registration.filters.onboardingMethod.values." +
+                "insights:activityType.registration.filters.onboardingMethod.values." +
                 "selfSignUp"
             ).toString(),
             value: OnboardingMethodFilterValue.SELF_SIGN_UP

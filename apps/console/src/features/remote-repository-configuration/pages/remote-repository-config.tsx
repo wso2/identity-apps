@@ -114,10 +114,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         })
                         .catch(() => {
                             handleAlerts({
-                                description: t("console:manage.features.remoteFetch.notifications." +
+                                description: t("remoteFetch:notifications." +
                                     "getRemoteRepoConfig.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: t("console:manage.features.remoteFetch.notifications." +
+                                message: t("remoteFetch:notifications." +
                                     "getRemoteRepoConfig.genericError.message")
                             });
                         });
@@ -125,10 +125,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
             })
             .catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.remoteFetch.notifications.getConfigList." +
+                    description: t("remoteFetch:notifications.getConfigList." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.remoteFetch.notifications.getConfigList." +
+                    message: t("remoteFetch:notifications.getConfigList." +
                         "genericError.message")
                 });
             });
@@ -212,19 +212,19 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                 setShowFetchForm(false);
 
                 handleAlerts({
-                    description: t("console:manage.features.remoteFetch.notifications.createRepoConfig.success" +
+                    description: t("remoteFetch:notifications.createRepoConfig.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.remoteFetch.notifications.createRepoConfig.success" +
+                    message: t("remoteFetch:notifications.createRepoConfig.success" +
                         ".message")
                 });
             })
             .catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.remoteFetch.notifications.createRepoConfig." +
+                    description: t("remoteFetch:notifications.createRepoConfig." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.remoteFetch.notifications.createRepoConfig." +
+                    message: t("remoteFetch:notifications.createRepoConfig." +
                         "genericError.message")
                 });
             })
@@ -254,19 +254,19 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                 setRemoteRepoConfigDetail(undefined);
 
                 handleAlerts({
-                    description: t("console:manage.features.remoteFetch.notifications.deleteRepoConfig." +
+                    description: t("remoteFetch:notifications.deleteRepoConfig." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.remoteFetch.notifications.deleteRepoConfig." +
+                    message: t("remoteFetch:notifications.deleteRepoConfig." +
                         "success.message")
                 });
             })
             .catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.remoteFetch.notifications.deleteRepoConfig." +
+                    description: t("remoteFetch:notifications.deleteRepoConfig." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.remoteFetch.notifications.deleteRepoConfig." +
+                    message: t("remoteFetch:notifications.deleteRepoConfig." +
                         "genericError.message")
                 });
             });
@@ -293,13 +293,13 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                         <label>
                                             {
-                                                t("console:manage.features.remoteFetch.forms.getRemoteFetchForm" +
+                                                t("remoteFetch:forms.getRemoteFetchForm" +
                                                     ".fields.enable.label")
                                             }
                                         </label>
                                         <Hint>
                                             {
-                                                t("console:manage.features.remoteFetch.forms.getRemoteFetchForm" +
+                                                t("remoteFetch:forms.getRemoteFetchForm" +
                                                     ".fields.enable.hint")
                                             }
                                         </Hint>
@@ -335,16 +335,16 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                 type="text"
                                 name="gitURL"
                                 label={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitURL.label")
                                 }
                                 placeholder={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitURL.placeholder")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitURL.validations.required")
                                 }
                                 disabled={ !!remoteRepoConfig }
@@ -361,16 +361,16 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                 type="text"
                                 name="gitBranch"
                                 label={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitBranch.label")
                                 }
                                 placeholder={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitBranch.placeholder")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitBranch.validations.required")
                                 }
                                 disabled={ !!remoteRepoConfig }
@@ -389,16 +389,16 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                 type="text"
                                 name="gitFolder"
                                 label={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitFolder.label")
                                 }
                                 placeholder={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitFolder.placeholder")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "gitFolder.validations.required")
                                 }
                                 disabled={ !!remoteRepoConfig }
@@ -415,14 +415,14 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         <GridColumn mobile={ 16 } tablet={ 16 } computer={ 6 }>
                             <Form.Field>
                                 {
-                                    t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                    t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                         "connectivity.label")
                                 }
                             </Form.Field>
                             <Form.Field>
                                 <Radio
                                     label={
-                                        t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
+                                        t("remoteFetch:forms.getRemoteFetchForm.fields." +
                                             "connectivity.children.polling.label")
                                     }
                                     name="radioGroup"
@@ -437,7 +437,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                             <Form.Field>
                                 <Radio
                                     label={
-                                        t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                        t("remoteFetch:forms.getRemoteFetchForm." +
                                             "fields.connectivity.children.webhook.label")
                                     }
                                     name="radioGroup"
@@ -460,11 +460,11 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         type="text"
                                         name="userName"
                                         label={
-                                            t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                            t("remoteFetch:forms.getRemoteFetchForm." +
                                                 "fields.username.label")
                                         }
                                         placeholder={
-                                            t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                            t("remoteFetch:forms.getRemoteFetchForm." +
                                                 "fields.username.placeholder")
                                         }
                                         required={ false }
@@ -483,11 +483,11 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         type="text"
                                         name="accessToken"
                                         label={
-                                            t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                            t("remoteFetch:forms.getRemoteFetchForm." +
                                                 "fields.accessToken.label")
                                         }
                                         placeholder={
-                                            t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                            t("remoteFetch:forms.getRemoteFetchForm." +
                                                 "fields.accessToken.placeholder")
                                         }
                                         required={ false }
@@ -509,7 +509,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         name="pollingFreq"
                                         disabled={ !!remoteRepoConfig }
                                         label={
-                                            t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                            t("remoteFetch:forms.getRemoteFetchForm." +
                                                 "fields.pollingFrequency.label")
                                         }
                                         required={ true }
@@ -528,7 +528,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     type="text"
                                     name="sharedKey"
                                     label={
-                                        t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
+                                        t("remoteFetch:forms.getRemoteFetchForm." +
                                             "fields.sharedKey.label")
                                     }
                                     required={ false }
@@ -551,7 +551,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     loading={ isSubmitting }
                                 >
                                     {
-                                        t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.actions.save")
+                                        t("remoteFetch:forms.getRemoteFetchForm.actions.save")
                                     }
                                 </PrimaryButton>)
                             }
@@ -565,7 +565,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     } }
                                 >
                                     {
-                                        t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.actions.remove")
+                                        t("remoteFetch:forms.getRemoteFetchForm.actions.remove")
                                     }
                                 </LinkButton>)
                             }
@@ -589,9 +589,9 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
 
     return (
         <PageLayout
-            title={ t("console:manage.features.remoteFetch.pages.listing.title") }
-            pageTitle={ t("console:manage.features.remoteFetch.pages.listing.title") }
-            description={ t("console:manage.features.remoteFetch.pages.listing.subTitle") }
+            title={ t("remoteFetch:pages.listing.title") }
+            pageTitle={ t("remoteFetch:pages.listing.title") }
+            description={ t("remoteFetch:pages.listing.subTitle") }
             data-componentid={ `${ componentId }-page-layout` }
         >
             <Grid>
@@ -611,12 +611,12 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 >
                                                     <Header>
                                                         {
-                                                            t("console:manage.features.remoteFetch.forms." +
+                                                            t("remoteFetch:forms." +
                                                                 "getRemoteFetchForm.heading.title")
                                                         }
                                                         <Header.Subheader>
                                                             {
-                                                                t("console:manage.features.remoteFetch.forms." +
+                                                                t("remoteFetch:forms." +
                                                                     "getRemoteFetchForm.heading.subTitle")
                                                             }
                                                         </Header.Subheader>
@@ -639,17 +639,17 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                     >
                                                         <Icon name="add"/>
                                                         {
-                                                            t("console:manage.features.remoteFetch.placeholders." +
+                                                            t("remoteFetch:placeholders." +
                                                                 "emptyListPlaceholder.action")
                                                         }
                                                     </PrimaryButton>)
                                                 }
                                                 title={
-                                                    t("console:manage.features.remoteFetch.placeholders." +
+                                                    t("remoteFetch:placeholders." +
                                                         "emptyListPlaceholder.title")
                                                 }
                                                 subtitle={ [
-                                                    t("console:manage.features.remoteFetch.placeholders." +
+                                                    t("remoteFetch:placeholders." +
                                                         "emptyListPlaceholder.subtitles")
                                                 ] }
                                                 image={ getEmptyPlaceholderIllustrations().add }

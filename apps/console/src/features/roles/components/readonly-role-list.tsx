@@ -77,17 +77,17 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     const filterOptions: DropdownItemProps[] = [
         {
             key: undefined,
-            text: t("console:manage.features.roles.list.filterOptions.all"),
+            text: t("roles:list.filterOptions.all"),
             value: undefined
         },
         {
             key: RoleAudienceTypes.APPLICATION,
-            text: t("console:manage.features.roles.list.filterOptions.applicationRoles"),
+            text: t("roles:list.filterOptions.applicationRoles"),
             value: RoleAudienceTypes.APPLICATION
         },
         {
             key: RoleAudienceTypes.ORGANIZATION,
-            text: t("console:manage.features.roles.list.filterOptions.organizationRoles"),
+            text: t("roles:list.filterOptions.organizationRoles"),
             value: RoleAudienceTypes.ORGANIZATION
         }
     ];
@@ -194,10 +194,10 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                     data-componentid={ `${ componentId }-search-empty-placeholder` }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.readOnlyList.emptyPlaceholders.searchAndFilter.title") }
+                    title={ t("roles:readOnlyList.emptyPlaceholders.searchAndFilter.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.readOnlyList.emptyPlaceholders.searchAndFilter.subtitles.0"),
-                        t("console:manage.features.roles.readOnlyList.emptyPlaceholders.searchAndFilter.subtitles.1")
+                        t("roles:readOnlyList.emptyPlaceholders.searchAndFilter.subtitles.0"),
+                        t("roles:readOnlyList.emptyPlaceholders.searchAndFilter.subtitles.1")
                     ] }
                 />
             );
@@ -244,7 +244,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.roles.list.columns.name")
+                title: t("roles:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -263,7 +263,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                 ),
                 title: (
                     <div className="pl-3">
-                        { t("console:manage.features.roles.list.columns.audience") }
+                        { t("roles:list.columns.audience") }
                     </div>
                 )
             },
@@ -301,23 +301,23 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                     filterAttributeOptions={ [
                         {
                             key: 0,
-                            text: t("console:manage.features.roles.list.filterAttirbutes.name"),
+                            text: t("roles:list.filterAttirbutes.name"),
                             value: "displayName"
                         }
                     ] }
                     filterAttributePlaceholder={
-                        t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                        t("roles:advancedSearch.form.inputs.filterAttribute." +
                             "placeholder")
                     }
                     filterConditionsPlaceholder={
-                        t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                        t("roles:advancedSearch.form.inputs.filterCondition" +
                             ".placeholder")
                     }
                     filterValuePlaceholder={
-                        t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                        t("roles:advancedSearch.form.inputs.filterValue" +
                             ".placeholder")
                     }
-                    placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+                    placeholder={ t("roles:advancedSearch.placeholder") }
                     defaultSearchAttribute="displayName"
                     defaultSearchOperator= { DEFAULT_SEARCH_OPERATOR }
                 />
@@ -332,7 +332,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                         data-componentid={ `${componentId}-list-filters-dropdown` }
                         selection
                         options={ filterOptions }
-                        placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
+                        placeholder= { t("roles:list.buttons.filterDropdown") }
                         onChange={ handleFilterByRoleAudience }
                     />
                 )

@@ -176,7 +176,7 @@
                                 <%
                                     String multiOptionURI = request.getParameter("multiOptionURI");
                                     if (multiOptionURI != null &&
-                                            AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                                            AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
                                             isMultiAuthAvailable(multiOptionURI)) {
                                 %>
                                     <a 

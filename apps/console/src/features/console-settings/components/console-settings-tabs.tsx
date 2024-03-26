@@ -88,7 +88,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-componentid": `${componentId}-tab-administrators`,
                     "data-tabid": ConsoleSettingsModes.ADMINISTRATORS,
                     id: ConsoleSettingsModes.ADMINISTRATORS,
-                    label: t("console:consoleSettings.administrators.tabLabel"),
+                    label: t("consoleSettings:administrators.tabLabel"),
                     pane: <ConsoleAdministrators />,
                     value: ConsoleSettingsTabIDs.ADMINISTRATORS
                 },
@@ -97,7 +97,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-componentid": `${componentId}-tab-roles`,
                     "data-tabid": ConsoleSettingsModes.ROLES,
                     id: ConsoleSettingsModes.ROLES,
-                    label: t("console:consoleSettings.roles.tabLabel"),
+                    label: t("consoleSettings:roles.tabLabel"),
                     pane: <ConsoleRolesList />,
                     value: ConsoleSettingsTabIDs.ROLES
                 },
@@ -106,7 +106,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-componentid": `${componentId}-tab-login-flow`,
                     "data-tabid": ConsoleSettingsModes.LOGIN_FLOW,
                     id: ConsoleSettingsModes.LOGIN_FLOW,
-                    label: t("console:consoleSettings.loginFlow.tabLabel"),
+                    label: t("consoleSettings:loginFlow.tabLabel"),
                     pane: <ConsoleLoginFlow />,
                     value: ConsoleSettingsTabIDs.LOGIN_FLOW
                 },
@@ -116,7 +116,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-tabid": ConsoleSettingsModes.PROTOCOL,
                     hidden: true,
                     id: ConsoleSettingsModes.PROTOCOL,
-                    label: t("console:consoleSettings.protocol.tabLabel"),
+                    label: t("consoleSettings:protocol.tabLabel"),
                     pane: <ConsoleProtocol />,
                     value: ConsoleSettingsTabIDs.PROTOCOL
                 }

@@ -121,10 +121,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:saml2Config.notifications." +
+                description: t("saml2Config:notifications." +
                 "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:saml2Config.notifications." +
+                message: t("saml2Config:notifications." +
                 "getConfiguration.error.message")
             })
         );
@@ -136,10 +136,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:saml2Config.notifications." +
+                description: t("saml2Config:notifications." +
                 "updateConfiguration.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:saml2Config.notifications." +
+                message: t("saml2Config:notifications." +
                 "updateConfiguration.success.message")
             })
         );
@@ -151,10 +151,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const handleUpdateError = () => {
         dispatch(
             addAlert({
-                description: t("console:saml2Config.notifications." +
+                description: t("saml2Config:notifications." +
                 "updateConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:saml2Config.notifications." +
+                message: t("saml2Config:notifications." +
                 "updateConfiguration.error.message")
             })
         );
@@ -177,13 +177,13 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
         if (values?.metadataValidityPeriod && (!FormValidation.isInteger(values.metadataValidityPeriod as number)
             || values.metadataValidityPeriod as number < 0)) {
             error.metadataValidityPeriod = t(
-                "console:saml2Config.form.validation.metadataValidityPeriod"
+                "saml2Config:form.validation.metadataValidityPeriod"
             );
         }
 
         if (values?.destinationURLs && values.destinationURLs.length > 0) {
             error.destinationURLs = t(
-                "console:saml2Config.form.validation.destinationURLs"
+                "saml2Config:form.validation.destinationURLs"
             );
         }
 
@@ -254,9 +254,9 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
 
     return (
         <PageLayout
-            title={ t("console:saml2Config.title") }
-            pageTitle={ t("console:saml2Config.title") }
-            description={ t("console:saml2Config.description") }
+            title={ t("saml2Config:title") }
+            pageTitle={ t("saml2Config:title") }
+            description={ t("saml2Config:description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
                 text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
@@ -289,10 +289,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                     <Grid.Row columns={ 1 } key={ 3 }>
                                                         <Grid.Column width={ 10 }>
                                                             <Field.Checkbox
-                                                                ariaLabel={ t("console:saml2Config.form." +
+                                                                ariaLabel={ t("saml2Config:form." +
                                                                 "enableMetadataSigning.label") }
                                                                 name="enableMetadataSigning"
-                                                                label={ t("console:saml2Config.form." +
+                                                                label={ t("saml2Config:form." +
                                                                     "enableMetadataSigning.label") }
                                                                 readOnly={ isReadOnly }
                                                                 data-componentid={ `${componentId}-
@@ -306,13 +306,13 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                             <Field.Input
                                                                 min={ Saml2ConfigurationConstants
                                                                     .SAML2_CONFIG_FIELD_MIN_LENGTH }
-                                                                ariaLabel={ t("console:saml2Config.form." +
+                                                                ariaLabel={ t("saml2Config:form." +
                                                                 "metadataValidityPeriod.label") }
                                                                 inputType="number"
                                                                 name="metadataValidityPeriod"
-                                                                label={ t("console:saml2Config.form." +
+                                                                label={ t("saml2Config:form." +
                                                                     "metadataValidityPeriod.label") }
-                                                                hint={ t("console:saml2Config.form." +
+                                                                hint={ t("saml2Config:form." +
                                                                     "metadataValidityPeriod.hint") }
                                                                 value={ saml2Config?.metadataValidityPeriod }
                                                                 readOnly={ isReadOnly }
@@ -339,15 +339,15 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
 
                                                                             setDestinationUrls(processedUrl);
                                                                         } }
-                                                                        labelName={ t("console:saml2Config.form." +
+                                                                        labelName={ t("saml2Config:form." +
                                                                             "destinationUrl.label") }
-                                                                        hint={ t("console:saml2Config.form." +
+                                                                        hint={ t("saml2Config:form." +
                                                                             "destinationUrl.hint") }
                                                                         required={ true }
                                                                         showError={ showURLError }
                                                                         setShowError={ setShowURLError }
                                                                         validationErrorMsg={
-                                                                            t("console:saml2Config.form." +
+                                                                            t("saml2Config:form." +
                                                                             "validation.destinationURLs") }
                                                                         validation={ (value: string) => {
                                                                             if (!URLUtils.isURLValid(value, true)) {

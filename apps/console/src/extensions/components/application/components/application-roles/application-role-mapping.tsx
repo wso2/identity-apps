@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -25,7 +26,6 @@ import {
     Heading,
     PrimaryButton
 } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -70,7 +70,7 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
 
     const [ isAuthenticatorRequestLoading, setAuthenticatorRequestLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ attributeStepAuthenticators, setAttributeStepAuthenticators ] 
+    const [ attributeStepAuthenticators, setAttributeStepAuthenticators ]
         = useState<ApplicationAuthenticatorInterface[]>([]);
     const [ formInitialValues, setFormInitialValues ] = useState<Record<string, boolean>>({});
     const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<AuthenticatorInterface[]>([]);
@@ -80,7 +80,7 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
         getFederatedAuthenticators();
     }, []);
 
-    useEffect(() => {        
+    useEffect(() => {
         getAttributeStepAuthenticators();
     }, [ application ]);
 
@@ -97,8 +97,8 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
      */
     const getAttributeStepAuthenticators = () => {
         const attributeStepId: number = application?.authenticationSequence?.attributeStepId;
-        
-        if (attributeStepId) {            
+
+        if (attributeStepId) {
             setAttributeStepAuthenticators(application?.authenticationSequence?.steps[attributeStepId - 1]?.options);
         }
     };
@@ -112,7 +112,7 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
         getAuthenticators(null, AuthenticatorTypes.FEDERATED)
             .then((response: AuthenticatorInterface[]) => {
                 // Remove Organization Login federated authenticator from the list
-                const filteredFederatedAuthenticators: AuthenticatorInterface[] 
+                const filteredFederatedAuthenticators: AuthenticatorInterface[]
                 = response.filter((authenticator: AuthenticatorInterface) => {
                     return authenticator.name !== ApplicationRolesConstants.ORGANIZATION_LOGIN;
                 });
@@ -124,28 +124,28 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:develop.features.authenticationProvider.notifications" +
+                                "authenticationProvider:notifications" +
                                 ".getIDPList.error.message",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.authenticationProvider.notifications.getIDPList.error.message"
+                                "authenticationProvider:notifications.getIDPList.error.message"
                             )
                         })
                     );
-            
+
                     return;
                 }
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.authenticationProvider.notifications" +
+                            "authenticationProvider:notifications" +
                             ".getIDPList.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:develop.features.authenticationProvider.notifications" +
+                            "authenticationProvider:notifications" +
                             ".getIDPList.genericError.message"
                         )
                     })
@@ -157,7 +157,7 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
 
     const getAutheticatorGroups = () => {
         // Filter the federated autheticators that are in the attribute step
-        const filteredFederatedAuthenticators: ApplicationAuthenticatorInterface[] 
+        const filteredFederatedAuthenticators: ApplicationAuthenticatorInterface[]
         = attributeStepAuthenticators.filter((attributeStepAuthenticator: ApplicationAuthenticatorInterface) => {
             return federatedAuthenticators.find((federatedAuthenticator: AuthenticatorInterface) => {
                 return federatedAuthenticator.name === attributeStepAuthenticator.idp;
@@ -191,7 +191,7 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
             };
 
             appRoleConfigurationData.push(appRoleConfiguration);
-        }        
+        }
 
         const applicationData: ApplicationInterface = {
             appRoleConfigurations: appRoleConfigurationData,
@@ -306,7 +306,7 @@ const ApplicationRoleMapping = (props: AssignGroupProps): ReactElement => {
                                                     label={ authenticator.idp }
                                                     tabIndex={ 3 }
                                                     width={ 16 }
-                                                    data-componentid={ 
+                                                    data-componentid={
                                                         `${ componentId }-${ authenticator.idp }-checkbox` }
                                                 />
                                             );
