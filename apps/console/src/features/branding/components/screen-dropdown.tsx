@@ -78,7 +78,7 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
         return screens.map((screen: string) => {
             return {
                 key: screen,
-                text: t(`console:branding.screens.${ screen }`),
+                text: t(`branding:screens.${ screen }`),
                 value: screen
             };
         });
@@ -90,11 +90,11 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
             ariaLabel="Branding text customization screen selection"
             className="dropdown branding-preference-custom-text-screen-dropdown"
             name="screen"
-            label={ t("console:brandingCustomText.screenSelectDropdown.label") }
+            label={ t("branding:brandingCustomText.screenSelectDropdown.label") }
             options={ supportedScreens }
             required={ required }
             data-componentid={ componentId }
-            placeholder={ t("console:brandingCustomText.screenSelectDropdown.placeholder") }
+            placeholder={ t("branding:brandingCustomText.screenSelectDropdown.placeholder") }
             defaultValue={ supportedScreens[0]?.text }
             value={ selectedScreen }
             onChange={ (

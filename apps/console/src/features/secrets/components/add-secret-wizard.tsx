@@ -140,9 +140,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     return;
                 }
                 setAlert({
-                    description: t("console:develop.features.secrets.errors.generic.description"),
+                    description: t("secrets:errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.secrets.errors.generic.message")
+                    message: t("secrets:errors.generic.message")
                 });
             })
             .finally((): void => {
@@ -187,12 +187,12 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                 }
             });
             dispatch(addAlert({
-                description: t("console:develop.features.secrets.alerts.createdSecret.description", {
+                description: t("secrets:alerts.createdSecret.description", {
                     secretName: values.secret_name,
                     secretType: values.secret_type
                 }),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.secrets.alerts.createdSecret.message")
+                message: t("secrets:alerts.createdSecret.message")
             }));
             onWizardClose(true);
             setRequestInProgress(false);
@@ -276,9 +276,9 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
             onClose={ () => onClose(false) }
             data-componentid={ `${ testId }-view-certificate-modal` }>
             <Modal.Header className="wizard-header">
-                { t("console:develop.features.secrets.wizards.addSecret.heading") }
+                { t("secrets:wizards.addSecret.heading") }
                 <Heading as="h6">
-                    { t("console:develop.features.secrets.wizards.addSecret.subheading") }
+                    { t("secrets:wizards.addSecret.subheading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container">
@@ -297,23 +297,23 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         name="secret_type"
                         options={ secretTypes }
                         value={ secretTypes.length && secretTypes[0].value }
-                        label={ t("console:develop.features.secrets.wizards.addSecret.form.secretTypeField.label") }
-                        ariaLabel={ t("console:develop.features.secrets.wizards" +
+                        label={ t("secrets:wizards.addSecret.form.secretTypeField.label") }
+                        ariaLabel={ t("secrets:wizards" +
                             ".addSecret.form.secretTypeField.ariaLabel") }
-                        hint={ t("console:develop.features.secrets.wizards.addSecret.form.secretTypeField.hint") }
+                        hint={ t("secrets:wizards.addSecret.form.secretTypeField.hint") }
                     />
                     <Field.Input
                         required
                         name="secret_name"
-                        label={ t("console:develop.features.secrets.wizards.addSecret.form.secretNameField.label") }
-                        ariaLabel={ t("console:develop.features.secrets.wizards.addSecret." +
+                        label={ t("secrets:wizards.addSecret.form.secretNameField.label") }
+                        ariaLabel={ t("secrets:wizards.addSecret." +
                             "form.secretNameField.ariaLabel") }
-                        placeholder={ t("console:develop.features.secrets.wizards.addSecret." +
+                        placeholder={ t("secrets:wizards.addSecret." +
                             "form.secretNameField.placeholder") }
                         minLength={ SECRET_NAME_LENGTH.min }
                         maxLength={ SECRET_NAME_LENGTH.max }
                         inputType="name"
-                        hint={ t("console:develop.features.secrets.wizards.addSecret.form.secretNameField.hint") }
+                        hint={ t("secrets:wizards.addSecret.form.secretNameField.hint") }
                         validate={ (value): string | undefined => {
                             const error = secretNameValidator(value, listOfSecretNamesForSecretType);
 
@@ -325,17 +325,17 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                     <Field.Textarea
                         required
                         name="secret_value"
-                        ariaLabel={ t("console:develop.features.secrets.wizards.addSecret." +
+                        ariaLabel={ t("secrets:wizards.addSecret." +
                             "form.secretValueField.ariaLabel") }
-                        label={ t("console:develop.features.secrets.wizards" +
+                        label={ t("secrets:wizards" +
                             ".addSecret.form.secretValueField.label") }
-                        placeholder={ t("console:develop.features.secrets.wizards.addSecret" +
+                        placeholder={ t("secrets:wizards.addSecret" +
                             ".form.secretValueField.placeholder") }
                         minLength={ SECRET_VALUE_LENGTH.min }
                         maxLength={ SECRET_VALUE_LENGTH.max }
                         type="textarea"
                         hint={
-                            t("console:develop.features.secrets.wizards.addSecret.form.secretValueField.hint", {
+                            t("secrets:wizards.addSecret.form.secretValueField.hint", {
                                 maxLength: SECRET_VALUE_LENGTH.max,
                                 minLength: SECRET_VALUE_LENGTH.min
                             })
@@ -354,18 +354,18 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                                 data-componentid={ `${ testId }-page-message` }
                                 type="info"
                                 content={
-                                    t("console:develop.features.secrets.banners.secretIsHidden.content",
+                                    t("secrets:banners.secretIsHidden.content",
                                         { productName: config.ui?.productName })
                                 }
                             />
                         )
                     }
                     <Field.Textarea
-                        label={ t("console:develop.features.secrets.wizards.addSecret" +
+                        label={ t("secrets:wizards.addSecret" +
                             ".form.secretDescriptionField.label") }
-                        ariaLabel={ t("console:develop.features.secrets.wizards.addSecret" +
+                        ariaLabel={ t("secrets:wizards.addSecret" +
                             ".form.secretDescriptionField.ariaLabel") }
-                        placeholder={ t("console:develop.features.secrets.wizards.addSecret.form" +
+                        placeholder={ t("secrets:wizards.addSecret.form" +
                             ".secretDescriptionField.placeholder") }
                         name="secret_description"
                         minLength={ SECRET_DESCRIPTION_LENGTH.min }
@@ -380,25 +380,25 @@ const AddSecretWizard: FC<AddSecretWizardProps> = (props: AddSecretWizardProps):
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
                                 aria-label={
-                                    t("console:develop.features.secrets.wizards.actions.cancelButton.ariaLabel")
+                                    t("secrets:wizards.actions.cancelButton.ariaLabel")
                                 }
                                 floated="left"
                                 onClick={ () => onWizardClose(false) }
                                 data-testid={ `${ testId }-form-cancel-button` }>
-                                { t("console:develop.features.secrets.wizards.actions.cancelButton.label") }
+                                { t("secrets:wizards.actions.cancelButton.label") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
                                 aria-label={
-                                    t("console:develop.features.secrets.wizards.actions.createButton.ariaLabel")
+                                    t("secrets:wizards.actions.createButton.ariaLabel")
                                 }
                                 disabled={ submitShouldBeDisabled || requestInProgress }
                                 floated="right"
                                 onClick={ () => formRef?.current?.triggerSubmit() }
                                 loading={ requestInProgress }
                                 data-testid={ `${ testId }-form-submit-button` }>
-                                { t("console:develop.features.secrets.wizards.actions.createButton.label") }
+                                { t("secrets:wizards.actions.createButton.label") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

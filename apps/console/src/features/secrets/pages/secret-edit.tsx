@@ -79,9 +79,9 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:develop.features.secrets.errors.generic.description"),
+                    description: t("secrets:errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.secrets.errors.generic.message")
+                    message: t("secrets:errors.generic.message")
                 }));
             })
             .finally(() => {
@@ -126,7 +126,7 @@ const SecretEdit: FC<SecretEditProps> = (props: SecretEditProps): ReactElement =
                     }
                     backButton={ {
                         onClick: () => history.push(AppConstants.getPaths().get(FEATURE_BASE_PATH)),
-                        text: t("console:develop.features.secrets.page.subFeatureBackButton")
+                        text: t("secrets:page.subFeatureBackButton")
                     } }>
                     {
                         (loading && !resourceNotFound)

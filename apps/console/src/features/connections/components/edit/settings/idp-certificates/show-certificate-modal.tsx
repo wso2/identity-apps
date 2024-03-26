@@ -65,12 +65,12 @@ export const ShowCertificateModal: FC<ShowCertificateModalProps> = (
     /**
      * Content to render if we cannot read the certificate content.
      */
-    const CannotReadCertificate : JSX.Element = (
+    const CannotReadCertificate: JSX.Element = (
         <Segment className="certificate" data-testid={ testId }>
             <p className="certificate-field">
                 We were unable to read this certificate. Currently we only
                 support displaying public key information in certificate types of {
-                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo:string, index:number) => (
+                    CertificateManagementConstants.SUPPORTED_KEY_ALGORITHMS.map((algo: string, index: number) => (
                         <span key={ `${ algo }+${ index }` }>
                             <Code>{ algo }</Code>&nbsp;
                         </span>

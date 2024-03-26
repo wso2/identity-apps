@@ -89,16 +89,24 @@ export class I18nModuleConstants {
     /**
      * Suborganizations namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly SUBORGANIZATIONS_NAMESPACE: string = "suborganizations";
   
     /**
+     * Secrets namespace.
+     * @constant
+     */
+    public static readonly SECRETS_NAMESPACE: string = "secrets";
+  
+    /**
+     * Branding namespace.
+     * @constant
+     */
+    public static readonly BRANDING_NAMESPACE: string = "branding";
+  
+    /**
      * emailTemplates namespace.
      * @constant
-     * @type {string}
-     * @default
      */
     public static readonly EMAIL_TEMPLATES_NAMESPACE: string = "emailTemplates";
 
