@@ -2672,7 +2672,10 @@ export const extensions: Extensions = {
                     label: "Run Query"
                 },
                 downloadButton : {
-                    label : "Download log data"
+                    label : "Download"
+                },
+                viewButton: {
+                    label : "View"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2681,7 +2684,13 @@ export const extensions: Extensions = {
             logView: {
                 toolTips: {
                     seeMore: "See more"
-                }
+                },
+                headers: {
+                    recordedAt: "Recorded Time",
+                    actionId: "Action",
+                    targetId: "Target"
+                },
+                logDataviewer : "AuditLog Data Viewer"
             },
             notifications: {
                 genericError: {

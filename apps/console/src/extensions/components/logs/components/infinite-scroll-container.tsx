@@ -16,16 +16,25 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Popup } from "@wso2is/react-components";
-import { saveAs } from "file-saver";
-import React, { MutableRefObject, ReactElement, UIEventHandler, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Accordion, Icon } from "semantic-ui-react";
+import {IdentifiableComponentInterface} from "@wso2is/core/models";
+import {Popup} from "@wso2is/react-components";
+import {saveAs} from "file-saver";
+import React, {LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, lazy, useCallback, useEffect, useRef, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {Accordion, Icon} from "semantic-ui-react";
 import CopyButton from "./copy-button";
 import LoaderPlaceholder from "./loader-placeholder";
-import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
-import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
+import {InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex} from "../models/log-models";
+import {formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp} from "../utils/datetime-utils";
+import Modal from "@mui/material/Modal";
+import Box from "@oxygen-ui/react/Box";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
+import Toolbar from "@oxygen-ui/react/Toolbar";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import Typography from "@oxygen-ui/react/Typography";
+import { SupportedEditorThemes } from "apps/console/src/features/authentication-flow-builder/models/script-editor";
+import "./log-data-viewer-panel.scss";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
@@ -40,6 +49,10 @@ interface InfiniteScrollContainerPropsInterface
     logType : TabIndex,
     setSearchQuery?: (query: InterfaceLogsFilter) => void
 }
+
+const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
+    import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+);
 
 /**
  * Infinite scrolling component for diagnostic and audit logs
@@ -59,8 +72,10 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         setSearchQuery
     } = props;
 
-    const { t } = useTranslation();
-    const [ activeIndex, setActiveIndex ] = useState<number[]>([ -1 ]);
+    const {t} = useTranslation();
+    const [activeIndex, setActiveIndex] = useState<number[]>([-1]);
+    const [view, setView] = useState<boolean>(false);
+    const [currentLog, setCurrentLog] = useState<InterfaceLogEntry>();
 
     useEffect(() => {
         /**
@@ -88,11 +103,32 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         setActiveIndex(tempIndexArr);
     };
 
+    function handleLogDataViewClose(): void {
+        setView(false);
+        setCurrentLog(null);
+    }
+
+    const handleLogDataView = (logObject: InterfaceLogEntry) => {
+        setCurrentLog(logObject);
+        setView(true);
+    }
+
     const exportDataOfLog = (logObject : InterfaceLogEntry) => {
         const blob: Blob = new Blob( [ JSON.stringify(logObject["data"], null, 2) ],
             { type: "application/json" });
 
         saveAs(blob, "log_data_" + logObject["id"] + ".json");
+    };
+
+    const copyCurrentLog = () => {
+        navigator.clipboard.writeText(JSON.stringify(currentLog["data"], null, 2));
+    };
+
+    const exportCurrentLog = () => {
+        const blob: Blob = new Blob([JSON.stringify(currentLog["data"], null, 2)],
+            {type: "application/json"});
+
+        saveAs(blob, "log_data_" + currentLog["id"] + ".json");
     };
 
     const getIconByStatus = (status: ResultStatus): JSX.Element => {
@@ -191,13 +227,24 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         propertyElements.push(
                             <tr>
                                 <td className="log-property">{ property }:</td>
+                                <td className="view-data-button">
+                                    <span
+                                        data-testid={`${componentId}-${logObject["id"]}-view-data-button`}
+                                        onClick={() => handleLogDataView(logObject)}
+                                    >
+                                        <Icon name="eye"/>
+                                        {t("extensions:develop.monitor.filter.viewButton.label")}
+                                    </span>
+                                </td>
+                                <td></td>
+                                <td></td>
                                 <td className="download-data-button">
                                     <span
                                         data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
                                         onClick={ () => exportDataOfLog(logObject) }
                                     >
-                                        <Icon name="download" />
-                                        { t("extensions:develop.monitor.filter.downloadButton.label") }
+                                        <Icon name="download"/>
+                                        {t("extensions:develop.monitor.filter.downloadButton.label")}
                                     </span>
                                 </td>
                             </tr>
@@ -241,6 +288,82 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         return propertyElements;
     };
 
+const LogDataViewerPanel  : ReactElement = (
+
+        <MonacoEditor
+            loading={<CircularProgress />}
+            className="log-data-viewer"
+            width="100%"
+            height="100%"
+            language="javascript"
+            theme={ SupportedEditorThemes.LIGHT }
+            value={currentLog ? JSON.stringify(currentLog["data"], null, 2) : '{}'}
+            options={ {
+                automaticLayout: true,
+                readOnly: true 
+            } }
+            data-componentid={ `${componentId}-data-viewer` }
+        />
+)
+
+    const LogViewerToolbar : ReactElement = (
+
+        <Box className="log-data-viewer-toolbar-container">
+            <Toolbar variant="dense">
+                <Box>
+                    <Typography>
+                        {
+                            t("extensions:develop.monitor.logView.logDataviewer")
+                        }
+                        </Typography>
+                </Box>
+                <div className="actions">
+                    <div className="editor-fullscreen">
+                        <Tooltip
+                            title={"Download"}
+                            data-componentid="log-data-viewer-download-tooltip"
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ exportCurrentLog }
+                            >
+                                {
+                                 <Icon name="download"/>
+                                }
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip
+                            title={"Copy"}
+                            data-componentid="log-data-viewer-copy-tooltip"
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ copyCurrentLog }
+                            >
+                                {
+                                 <Icon name="copy"/>
+                                }
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip
+                            title={"Exit"}
+                            data-componentid="log-data-viewer-exit-tooltip"
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ handleLogDataViewClose }
+                            >
+                                {
+                                 <Icon name="close"/>
+                                }
+                            </IconButton>
+                        </Tooltip>
+                        </div>
+                    </div>
+                </Toolbar>
+        </Box>
+    )
+
     return (
         <div
             className="main-container"
@@ -254,6 +377,33 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                 <div className="edge-container"></div>
                 { loading && (
                     <LoaderPlaceholder />
+                ) }
+                { !loading && logType === TabIndex.AUDIT_LOGS && (
+                <div className="log-header">
+                    <div className="log-Recordedtime">
+                        <Typography variant="body1">
+                            {
+                                t("extensions:develop.monitor.logView.headers.recordedAt")
+                            }
+                        </Typography>
+                    </div>
+                    <div className="log-description-header">
+                        <div className="log-actionId">
+                            <Typography variant="body1">
+                            {
+                                t("extensions:develop.monitor.logView.headers.actionId")
+                            }                        
+                            </Typography>
+                        </div>
+                        <div className="log-targetId">
+                            <Typography variant="body1">
+                            {
+                                t("extensions:develop.monitor.logView.headers.targetId")
+                            } 
+                            </Typography>
+                        </div>
+                    </div>
+                </div>
                 ) }
                 <Accordion data-componentid={ `${componentId}-log-entries-wrapper` } exclusive={ false } fluid>
                     { logs.map((log: InterfaceLogEntry, key: number) => (
@@ -303,21 +453,45 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                                 }
                                             </div>)
                                         }
-                                        { (logType === TabIndex.AUDIT_LOGS) &&
-                                            (<div>
-                                                { log.initiatorId }
-                                            </div>)
-                                        }
-                                        { log.actionId && (
-                                            <div className="log-actionid-container">
-                                                { log.actionId }
+                                        { (logType === TabIndex.AUDIT_LOGS) && (
+                                            <div>
+                                                {log.actionId && (
+                                                    <div className="log-actionid-container">
+                                                        {log.actionId}
+                                                    </div>
+                                                )}
+                                                {log.action && (
+                                                    <div className="log-actionid-container">
+                                                        {log.action}
+                                                    </div>
+                                                )}
                                             </div>
                                         ) }
-                                        { log.action && (
-                                            <div className="log-actionid-container">
-                                                { log.action }
+                                        { logType === TabIndex.DIAGNOSTIC_LOGS && (
+                                            <div>
+                                                {log.actionId && (
+                                                    <div className="log-actionid-container">
+                                                        {log.actionId}
+                                                    </div>
+                                                )}
+                                                {log.action && (
+                                                    <div className="log-actionid-container">
+                                                        {log.action}
+                                                    </div>
+                                                )}
                                             </div>
                                         ) }
+                                        { logType === TabIndex.AUDIT_LOGS && (
+                                            <div>
+                                                <div>
+                                                    {log.targetId && (
+                                                        <div className="log-targetId-container">
+                                                            {log.targetId}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </Accordion.Title>
@@ -325,13 +499,13 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 { handleExpandedView(log).map((el: ReactElement, key: number) => (
                                     <table className="log-expanded-view" key={ key }>
                                         <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            { el }
+                                        {el}
                                         </tbody>
                                     </table>
                                 )) }
@@ -339,6 +513,23 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         </div>
                     )) }
                 </Accordion>
+                { view  &&  (
+                    <Suspense fallback={ <CircularProgress /> }>
+                        <div className="log-data-viewer-panel">
+                            <Modal
+                                aria-labelledby="transition-modal-title"
+                                aria-describedby="transition-modal-description"
+                                open={ view }
+                                onClose={ handleLogDataViewClose }
+                                >
+                                <Box className="full-screen-log-data-viewer-container"> 
+                                    { LogViewerToolbar }
+                                    { LogDataViewerPanel } 
+                                </Box> 
+                            </Modal>
+                        </div>
+                    </Suspense>
+                ) }
                 { loading && (
                     <LoaderPlaceholder />
                 ) }

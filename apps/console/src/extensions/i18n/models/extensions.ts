@@ -2395,6 +2395,9 @@ export interface Extensions {
                 downloadButton: {
                     label : string;
                 };
+                viewButton: {
+                    label : string;
+                };
                 delayMessage: {
                     text: string;
                 }
@@ -2403,6 +2406,12 @@ export interface Extensions {
                 toolTips: {
                     seeMore: string;
                 };
+                headers: {
+                    recordedAt: string,
+                    actionId: string,
+                    targetId: string
+                },
+                logDataviewer : string;
             };
             notifications: {
                 genericError: {
