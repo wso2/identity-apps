@@ -87,6 +87,11 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Authentication flow namespace.
+     */
+    public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = "authenticationFlow";
+  
+    /**
      * remoteFetch namespace.
      */
     public static readonly REMOTE_FETCH_NAMESPACE: string = "remoteFetch";

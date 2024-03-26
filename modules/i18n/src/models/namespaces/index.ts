@@ -19,6 +19,7 @@
 export * from "./common-ns";
 export * from "./console-ns";
 export * from "./myaccount-ns";
+export * from "./authentication-flow-ns";
 export * from "./remote-fetch-ns";
 export * from "./roles-ns"
 export * from "./server-configs-ns";

@@ -46,6 +46,11 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Authentication Flow namespace.
+     */
+    public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE;
+  
+    /**
      * remoteFetch namespace.
      */
     public static readonly REMOTE_FETCH_NAMESPACE: string = I18nModuleConstants.REMOTE_FETCH_NAMESPACE;
@@ -143,6 +148,7 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.AUTHENTICATION_FLOW_NAMESPACE, "portals" ],
         [ I18nConstants.REMOTE_FETCH_NAMESPACE, "portals" ],
         [ I18nConstants.ROLES_NAMESPACE, "portals" ],
         [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],

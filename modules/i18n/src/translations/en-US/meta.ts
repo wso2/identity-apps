@@ -28,6 +28,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
         I18nModuleConstants.EXTENSIONS_NAMESPACE,
+        I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE,
         I18nModuleConstants.REMOTE_FETCH_NAMESPACE,
         I18nModuleConstants.ROLES_NAMESPACE,
         I18nModuleConstants.SERVER_CONFIGS_NAMESPACE,
