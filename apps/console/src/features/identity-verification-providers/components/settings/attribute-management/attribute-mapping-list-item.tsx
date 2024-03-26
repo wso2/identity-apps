@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -211,7 +211,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             setMappingHasError(true);
 
             return  t(
-                "console:develop.features.idvp.forms.attributeSettings.attributeMappingListItem.validation.required"
+                "idvp:forms.attributeSettings.attributeMappingListItem.validation.required"
             );
         }
         /**
@@ -229,7 +229,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             setMappingHasError(true);
 
             return  t(
-                "console:develop.features.idvp.forms.attributeSettings.attributeMappingListItem.validation.invalid"
+                "idvp:forms.attributeSettings.attributeMappingListItem.validation.invalid"
             );
         }
         // Check whether this attribute external name is already mapped.
@@ -250,7 +250,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             setMappingHasError(true);
 
             return  t(
-                "console:develop.features.idvp.forms.attributeSettings.attributeMappingListItem.validation.duplicate"
+                "idvp:forms.attributeSettings.attributeMappingListItem.validation.duplicate"
             );
         }
         // If there's no errors.
@@ -273,9 +273,9 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             inputType="identifier"
                             maxLength={ 120 }
                             minLength={ 1 }
-                            label={ !editingMode && t("console:develop.features.idvp.forms.attributeSettings" +
+                            label={ !editingMode && t("idvp:forms.attributeSettings" +
                                 ".attributeMappingListItem.labels.mappedValue") }
-                            placeholder= { t("console:develop.features.idvp.forms.attributeSettings" +
+                            placeholder= { t("idvp:forms.attributeSettings" +
                                 ".attributeMappingListItem.placeholders.mappedValue") }
                             aria-label="External IDVP Attribute Mapping Value"
                             value={ mappedInputValue }
@@ -297,11 +297,11 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             value={ selectedLocalAttributeInputValue }
                             initialValue={ selectedLocalAttributeInputValue }
                             options={ getListOfAvailableAttributes() }
-                            label={ !editingMode && t("console:develop.features.idvp.forms.attributeSettings" +
+                            label={ !editingMode && t("idvp:forms.attributeSettings" +
                                 ".attributeMappingListItem.labels.localClaim") }
                             aria-Label="Local Claim Attribute"
                             name="localClaimId"
-                            placeholder= { t("console:develop.features.idvp.forms.attributeSettings" +
+                            placeholder= { t("idvp:forms.attributeSettings" +
                                 ".attributeMappingListItem.placeholders.localClaim") }
                             onChange={ (e: React.SyntheticEvent<HTMLInputElement>, data: DropdownProps) => {
                                 setSelectedLocalAttributeInputValue(data.value as string);
@@ -338,7 +338,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                 name="submit-button"
                                 ariaLabel="Attribute Selection Form Submit Button"
                             >
-                                { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping" +
+                                { t("idvp:forms.attributeSettings.attributeMapping" +
                                     ".addButton") }
                             </Button>
                         </Grid.Column>

@@ -19,6 +19,7 @@
 export * from "./common";
 export * from "./console";
 export * from "./myaccount";
+export * from "./idvp";
 export * from "./invite";
 export * from "./parent-org-invitations";
 export * from "./oidc-scopes";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -250,11 +250,11 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
-                        t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.title")
+                        t("idvp:placeholders.emptyIDVPTypeList.title")
                     }
                     subtitle={ [
-                        t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.subtitles.0"),
-                        t("console:develop.features.idvp.placeholders.emptyIDVPTypeList.subtitles.1")
+                        t("idvp:placeholders.emptyIDVPTypeList.subtitles.0"),
+                        t("idvp:placeholders.emptyIDVPTypeList.subtitles.1")
                     ] }
                     data-componentid={ `${ componentID }-empty-placeholder` }
                 />

@@ -87,6 +87,11 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Identity Verification Provider namespace.
+     */
+    public static readonly IDVP_NAMESPACE: string = "idvp";
+  
+    /**
      * Invite namespace.
      */
     public static readonly INVITE_NAMESPACE: string = "invite";

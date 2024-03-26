@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,12 +39,12 @@ export const handleIDVPDeleteError = (error: IdentityAppsApiException): void => 
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.deleteIDVP.error.description",
+                    "idvp:notifications.deleteIDVP.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.deleteIDVP.error.message"
+                    "idvp:notifications.deleteIDVP.error.message"
                 )
             })
         );
@@ -55,10 +55,10 @@ export const handleIDVPDeleteError = (error: IdentityAppsApiException): void => 
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.deleteIDVP.genericError.description"
+                "idvp:notifications.deleteIDVP.genericError.description"
             ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.genericError.message")
+            message: I18n.instance.t("idvp:notifications.deleteIDVP.genericError.message")
         })
     );
 };
@@ -72,9 +72,9 @@ export const handleIDVPDeleteSuccess = (): void => {
 
     store.dispatch(
         addAlert({
-            description: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.success.description"),
+            description: I18n.instance.t("idvp:notifications.deleteIDVP.success.description"),
             level: AlertLevels.SUCCESS,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.deleteIDVP.success.message")
+            message: I18n.instance.t("idvp:notifications.deleteIDVP.success.message")
         })
     );
 };
@@ -88,9 +88,9 @@ export const handleIDVPUpdateSuccess = (): void => {
 
     store.dispatch(
         addAlert({
-            description: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.success.description"),
+            description: I18n.instance.t("idvp:notifications.updateIDVP.success.description"),
             level: AlertLevels.SUCCESS,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.success.message")
+            message: I18n.instance.t("idvp:notifications.updateIDVP.success.message")
         })
     );
 };
@@ -111,12 +111,12 @@ export const handleIDVPUpdateError = (error: IdentityAppsApiException): void => 
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.updateIDVP.error.description",
+                    "idvp:notifications.updateIDVP.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.updateIDVP.error.message"
+                    "idvp:notifications.updateIDVP.error.message"
                 )
             })
         );
@@ -127,10 +127,10 @@ export const handleIDVPUpdateError = (error: IdentityAppsApiException): void => 
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.updateIDVP.genericError.description"
+                "idvp:notifications.updateIDVP.genericError.description"
             ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.updateIDVP.genericError.message")
+            message: I18n.instance.t("idvp:notifications.updateIDVP.genericError.message")
         })
     );
 };
@@ -151,12 +151,12 @@ export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVPTemplateTypes.error.description",
+                    "idvp:notifications.getIDVPTemplateTypes.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVPTemplateTypes.error.message"
+                    "idvp:notifications.getIDVPTemplateTypes.error.message"
                 )
             })
         );
@@ -167,11 +167,11 @@ export const handleIDVPTemplateRequestError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPTemplateTypes.genericError.description"
+                "idvp:notifications.getIDVPTemplateTypes.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPTemplateTypes.genericError.message"
+                "idvp:notifications.getIDVPTemplateTypes.genericError.message"
             )
         })
     );
@@ -193,12 +193,12 @@ export const handleIDVPTemplateTypesLoadError = (error: AxiosError): void => {
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVPTemplateType.error.description",
+                    "idvp:notifications.getIDVPTemplateType.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVPTemplateType.error.message"
+                    "idvp:notifications.getIDVPTemplateType.error.message"
                 )
             })
         );
@@ -209,11 +209,11 @@ export const handleIDVPTemplateTypesLoadError = (error: AxiosError): void => {
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPTemplateTypes.genericError.description"
+                "idvp:notifications.getIDVPTemplateTypes.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPTemplateTypes.genericError.message"
+                "idvp:notifications.getIDVPTemplateTypes.genericError.message"
             )
         })
     );
@@ -234,11 +234,11 @@ export const handleIdvpListFetchRequestError = (idvpListFetchRequestError: Axios
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVPList.error.description",
+                    "idvp:notifications.getIDVPList.error.description",
                     { description: idvpListFetchRequestError.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPList.error.message")
+                message: I18n.instance.t("idvp:notifications.getIDVPList.error.message")
             })
         );
 
@@ -248,11 +248,11 @@ export const handleIdvpListFetchRequestError = (idvpListFetchRequestError: Axios
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPList.genericError.description"
+                "idvp:notifications.getIDVPList.genericError.description"
             ),
             level: AlertLevels.ERROR,
             message: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPList.genericError.message"
+                "idvp:notifications.getIDVPList.genericError.message"
             )
         })
     );
@@ -274,11 +274,11 @@ export const handleUIMetadataLoadError = (uiMetaDataLoadError: AxiosError): void
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getUIMetadata.error.description",
+                    "idvp:notifications.getUIMetadata.error.description",
                     { description: uiMetaDataLoadError.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("console:develop.features.idvp.notifications.getUIMetadata.error.message")
+                message: I18n.instance.t("idvp:notifications.getUIMetadata.error.message")
             })
         );
 
@@ -288,10 +288,10 @@ export const handleUIMetadataLoadError = (uiMetaDataLoadError: AxiosError): void
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getUIMetadata.genericError.description"
+                "idvp:notifications.getUIMetadata.genericError.description"
             ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.getUIMetadata.genericError.message")
+            message: I18n.instance.t("idvp:notifications.getUIMetadata.genericError.message")
         })
     );
 };
@@ -311,11 +311,11 @@ export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestErro
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVPTemplate.error.description",
+                    "idvp:notifications.getIDVPTemplate.error.description",
                     { description: idvpTemplateFetchRequestError.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPTemplate.error.message")
+                message: I18n.instance.t("idvp:notifications.getIDVPTemplate.error.message")
             })
         );
 
@@ -325,10 +325,10 @@ export const handleIDVPTemplateFetchRequestError = (idvpTemplateFetchRequestErro
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVPTemplate.genericError.description"
+                "idvp:notifications.getIDVPTemplate.genericError.description"
             ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVPTemplate.genericError.message")
+            message: I18n.instance.t("idvp:notifications.getIDVPTemplate.genericError.message")
         })
     );
 };
@@ -349,11 +349,11 @@ export const handleIDVPFetchRequestError = (idvpFetchError: AxiosError): void =>
         store.dispatch(
             addAlert({
                 description: I18n.instance.t(
-                    "console:develop.features.idvp.notifications.getIDVP.error.description",
+                    "idvp:notifications.getIDVP.error.description",
                     { description: idvpFetchError.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVP.error.message")
+                message: I18n.instance.t("idvp:notifications.getIDVP.error.message")
             })
         );
 
@@ -363,10 +363,10 @@ export const handleIDVPFetchRequestError = (idvpFetchError: AxiosError): void =>
     store.dispatch(
         addAlert({
             description: I18n.instance.t(
-                "console:develop.features.idvp.notifications.getIDVP.genericError.description"
+                "idvp:notifications.getIDVP.genericError.description"
             ),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("console:develop.features.idvp.notifications.getIDVP.genericError.message")
+            message: I18n.instance.t("idvp:notifications.getIDVP.genericError.message")
         })
     );
 };
