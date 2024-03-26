@@ -87,6 +87,18 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * Claims namespace.
+     * @constant
+     */
+    public static readonly CLAIMS_NAMESPACE: string = "claims";
+
+    /**
+     * Email locale namespace.
+     * @constant
+     */
+    public static readonly EMAIL_LOCALE_NAMESPACE: string = "emailLocale";
+  
+    /**
      * Help panel namespace.
      * @constant
      */

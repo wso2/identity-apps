@@ -46,6 +46,16 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Claims namespace.
+     */
+    public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
+
+    /**
+     * Email locale namespace.
+     */
+    public static readonly EMAIL_LOCALE_NAMESPACE: string = I18nModuleConstants.EMAIL_LOCALE_NAMESPACE;
+  
+    /**
      * Help Panel namespace.
      */
     public static readonly HELP_PANEL_NAMESPACE: string = I18nModuleConstants.HELP_PANEL_NAMESPACE;
@@ -93,6 +103,8 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
+        [ I18nConstants.EMAIL_LOCALE_NAMESPACE, "portals" ],
         [ I18nConstants.HELP_PANEL_NAMESPACE, "portals" ],
         [ I18nConstants.SUBORGANIZATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_SETTINGS_NAMESPACE, "portals" ],

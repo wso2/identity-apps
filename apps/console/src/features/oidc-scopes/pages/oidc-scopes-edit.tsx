@@ -92,12 +92,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         }[] = [
             {
                 key: 0,
-                text: t("console:manage.features.claims.external.attributes.attributeURI", { type: "OIDC" }),
+                text: t("claims:external.attributes.attributeURI", { type: "OIDC" }),
                 value: "localClaimDisplayName"
             },
             {
                 key: 1,
-                text: t("console:manage.features.claims.local.attributes.attributeURI"),
+                text: t("claims:local.attributes.attributeURI"),
                 value: "mappedLocalClaimURI"
             }
         ];
@@ -148,12 +148,12 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         addAlert({
                             description:
                                 error?.response?.data?.description ||
-                                t("console:manage.features.claims.local.notifications." +
+                                t("claims:local.notifications." +
                                     "getClaims.genericError.description"),
                             level: AlertLevels.ERROR,
                             message:
                                 error?.response?.data?.message ||
-                                t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                                t("claims:local.notifications.getClaims.genericError.message")
                         })
                     );
                 });

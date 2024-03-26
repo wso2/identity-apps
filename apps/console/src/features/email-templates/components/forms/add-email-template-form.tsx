@@ -257,15 +257,15 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                     <Field
                                         type="dropdown"
                                         placeholder={
-                                            t("console:manage.features.emailLocale.forms.addLocale.fields.locale" +
+                                            t("emailLocale:forms.addLocale.fields.locale" +
                                                 ".placeholder")
                                         }
                                         label={
-                                            t("console:manage.features.emailLocale.forms.addLocale.fields.locale.label")
+                                            t("emailLocale:forms.addLocale.fields.locale.label")
                                         }
                                         name="locale"
                                         requiredErrorMessage={
-                                            t("console:manage.features.emailLocale.forms.addLocale.fields.locale" +
+                                            t("emailLocale:forms.addLocale.fields.locale" +
                                                 ".validations.empty")
                                         }
                                         required={ true }
@@ -298,15 +298,15 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         <Field
                             name="emailSubject"
                             label={
-                                t("console:manage.features.emailLocale.forms.addLocale.fields.subject.label")
+                                t("emailLocale:forms.addLocale.fields.subject.label")
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:manage.features.emailLocale." +
+                                t("emailLocale:" +
                                     "forms.addLocale.fields.subject.validations.empty")
                             }
                             placeholder={
-                                t("console:manage.features.emailLocale.forms.addLocale.fields.subject.placeholder")
+                                t("emailLocale:forms.addLocale.fields.subject.placeholder")
                             }
                             type="text"
                             value={ subject }
@@ -318,7 +318,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
                             <label>
-                                { t("console:manage.features.emailLocale.forms.addLocale.fields.bodyEditor.label") }
+                                { t("emailLocale:forms.addLocale.fields.bodyEditor.label") }
                             </label>
                             <EmailTemplateEditor
                                 htmlContent={ htmlBodyContent }
@@ -337,7 +337,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                         attached
                                         type="error"
                                         content={
-                                            t("console:manage.features.emailLocale.forms.addLocale.fields." +
+                                            t("emailLocale:forms.addLocale.fields." +
                                             "bodyEditor.validations.empty")
                                         }
                                     />
@@ -350,7 +350,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
                             <label>
-                                { t("console:manage.features.emailLocale.forms.addLocale.fields.signatureEditor" +
+                                { t("emailLocale:forms.addLocale.fields.signatureEditor" +
                                     ".label") }
                             </label>
                             <EmailTemplateEditor
@@ -371,7 +371,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                         attached
                                         type="error"
                                         content={
-                                            t("console:manage.features.emailLocale.forms.addLocale.fields." +
+                                            t("emailLocale:forms.addLocale.fields." +
                                             "signatureEditor.validations.empty")
                                         }
                                     />
@@ -393,8 +393,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         >
                             {
                                 (templateId === "")
-                                    ? t("console:manage.features.emailLocale.buttons.addLocaleTemplate")
-                                    : t("console:manage.features.emailLocale.buttons.saveChanges")
+                                    ? t("emailLocale:buttons.addLocaleTemplate")
+                                    : t("emailLocale:buttons.saveChanges")
                             }
                         </Button>
                     </Grid.Column>

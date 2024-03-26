@@ -141,14 +141,14 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                         description:
                             error?.response?.data?.description ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "fetchADialect.genericError.description"
                             ),
                         level: AlertLevels.ERROR,
                         message:
                             error?.message ||
                             t(
-                                "console:manage.features.claims.dialects.notifications." +
+                                "claims:dialects.notifications." +
                                 "fetchADialect.genericError.message"
                             )
                     })
