@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler, 
-useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -26,10 +23,13 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { Popup } from "@wso2is/react-components";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Accordion, Icon } from "semantic-ui-react";
+import { Popup } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
+import React, { LazyExoticComponent, MutableRefObject, ReactElement, Suspense, UIEventHandler,
+    useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";
 import LoaderPlaceholder from "./loader-placeholder";
 import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
@@ -299,8 +299,8 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
             theme={ "vc" } // visual studio code light theme
             value={ currentLog ? JSON.stringify(currentLog["data"], null, 2) : "{}" }
             options={ {
-            automaticLayout: true, 
-            readOnly: true 
+                automaticLayout: true,
+                readOnly: true
             } }
             data-componentid={ `${componentId}-data-viewer` }
         />
@@ -346,8 +346,8 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                             </IconButton>
                         </Tooltip>
                         <Tooltip
-                        title={ "Exit" } 
-                        data-componentid="log-data-viewer-exit-tooltip"
+                            title={ "Exit" }
+                            data-componentid="log-data-viewer-exit-tooltip"
                         >
                             <IconButton
                                 size="small"
@@ -390,16 +390,16 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         <div className="log-description-header">
                             <div className="log-actionId">
                                 <Typography variant="body1">
-                                {
-                                    t("extensions:develop.monitor.logView.headers.actionId")
-                                }                        
+                                    {
+                                        t("extensions:develop.monitor.logView.headers.actionId")
+                                    }
                                 </Typography>
                             </div>
                             <div className="log-targetId">
                                 <Typography variant="body1">
-                                {
-                                    t("extensions:develop.monitor.logView.headers.targetId")
-                                } 
+                                    {
+                                        t("extensions:develop.monitor.logView.headers.targetId")
+                                    }
                                 </Typography>
                             </div>
                         </div>
@@ -491,7 +491,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                                     ) }
                                                 </div>
                                             </div>
-                                        )}
+                                        ) }
                                     </div>
                                 </div>
                             </Accordion.Title>
@@ -521,11 +521,11 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                 aria-describedby="transition-modal-description"
                                 open={ view }
                                 onClose={ handleLogDataViewClose }
-                                >
-                                <Box className="full-screen-log-data-viewer-container"> 
+                            >
+                                <Box className="full-screen-log-data-viewer-container">
                                     { LogViewerToolbar }
-                                    { LogDataViewerPanel } 
-                                </Box> 
+                                    { LogDataViewerPanel }
+                                </Box>
                             </Modal>
                         </div>
                     </Suspense>
