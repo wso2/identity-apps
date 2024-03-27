@@ -174,11 +174,11 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
             <Field.Checkbox
                 ariaLabel="implicitAccountLinking"
                 name="isEnabled"
-                label={ t("console:develop.features.idp.forms.advancedConfigs." +
+                label={ t("idp:forms.advancedConfigs." +
                     "implicitAssociation.enable.label") }
                 required={ false }
                 disabled={ false }
-                hint={ t("console:develop.features.idp.forms.advancedConfigs." +
+                hint={ t("idp:forms.advancedConfigs." +
                     "implicitAssociation.enable.hint") }
                 width={ 16 }
                 listen={ (value: boolean) => setImplicitAssociationEnabled(value) }
@@ -190,7 +190,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 ariaLabel="Primary Lookup Attribute"
                 name="primaryLookupAttribute"
                 label={
-                    t("console:develop.features.idp.forms.advancedConfigs." +
+                    t("idp:forms.advancedConfigs." +
                         "implicitAssociation.primaryAttribute.label")
                 }
                 required={ true }
@@ -202,7 +202,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                     "implicitAssociation.primaryAttribute.placeholder") }
                 enableReinitialize={ true }
                 hint={ (<Hint disabled={ !implicitAssociationEnabled }>
-                    { t("console:develop.features.idp.forms.advancedConfigs." +
+                    { t("idp:forms.advancedConfigs." +
                     "implicitAssociation.primaryAttribute.hint") }
                 </Hint>) }
             />
@@ -211,7 +211,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 ariaLabel="Secondary Lookup Attribute"
                 name="secondaryLookupAttribute"
                 label={
-                    t("console:develop.features.idp.forms.advancedConfigs." +
+                    t("idp:forms.advancedConfigs." +
                         "implicitAssociation.secondaryAttribute.label")
                 }
                 required={ false }
@@ -224,13 +224,13 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                     "implicitAssociation.secondaryAttribute.placeholder") }
                 clearable={ true }
                 hint={ (<Hint disabled={ !implicitAssociationEnabled }>
-                    { t("console:develop.features.idp.forms.advancedConfigs." +
+                    { t("idp:forms.advancedConfigs." +
                     "implicitAssociation.secondaryAttribute.hint") }
                 </Hint>) }
             />
             <Message
                 type="warning"
-                content={ t("console:develop.features.idp.forms.advancedConfigs." +
+                content={ t("idp:forms.advancedConfigs." +
                 "implicitAssociation.warning") }
                 hidden={ !implicitAssociationEnabled }
             />

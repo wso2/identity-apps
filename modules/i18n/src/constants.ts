@@ -270,4 +270,12 @@ export class I18nModuleConstants {
      * Groups namespace.
      */
     public static readonly GROUPS_NAMESPACE: string = "groups";
+
+    /**
+     * Identity Provider namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly IDP_NAMESPACE: string = "idp";
 }

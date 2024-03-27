@@ -263,7 +263,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
      */
     const checkValueIsLoopBackCall = (value: string) => {
         if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
-            return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+            return t("idp:forms.common.internetResolvableErrorMessage");
         }
 
         return undefined;

@@ -35,7 +35,7 @@ export * from "./organization-discovery-ns";
 export * from "./organizations-ns";
 export * from "./authentication-flow-ns";
 export * from "./remote-fetch-ns";
-export * from "./roles-ns"
+export * from "./roles-ns";
 export * from "./server-configs-ns";
 export * from "./saml2-config-ns";
 export * from "./session-management-ns";
@@ -54,3 +54,4 @@ export * from "./certificates-ns";
 export * from "./authentication-provider-ns";
 export * from "./governance-connectors-ns";
 export * from "./groups-ns";
+export * from "./idp-ns";

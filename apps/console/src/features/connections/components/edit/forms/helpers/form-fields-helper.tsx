@@ -339,7 +339,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                     {
                         validation.isValid = false;
                         validation.errorMessages.push(
-                            I18n.instance.t("console:develop.features.idp.forms.common." +
+                            I18n.instance.t("idp:forms.common." +
                                 "internetResolvableErrorMessage")
                         );
                     }

@@ -149,7 +149,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             maxLength={ 120 }
                             minLength={ 1 }
                             placeholder={
-                                t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                t("idp:forms.attributeSettings.attributeMapping." +
                                     "externalAttributeInput.placeHolder")
                             }
                             ariaLabel="External IdP Attribute Mapping Value"
@@ -197,7 +197,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                     }
                                     setMappingHasError(true);
 
-                                    return t("console:develop.features.idp.forms.attributeSettings.attributeMapping." +
+                                    return t("idp:forms.attributeSettings.attributeMapping." +
                                         "externalAttributeInput.existingErrorMessage");
                                 }
                                 // If there's no errors.

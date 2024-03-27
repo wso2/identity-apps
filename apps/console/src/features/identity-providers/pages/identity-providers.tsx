@@ -496,7 +496,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (props: IDPP
                             <Icon name="add" />
                             { identityProviderConfig.useNewConnectionsView
                                 ? t("authenticationProvider:buttons.addIDP")
-                                : t("console:develop.features.idp.buttons.addIDP") }
+                                : t("idp:buttons.addIDP") }
                         </PrimaryButton>
                     </Show>
                 )

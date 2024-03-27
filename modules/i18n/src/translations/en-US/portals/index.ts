@@ -54,3 +54,4 @@ export * from "./branding";
 export * from "./email-templates";
 export * from "./certificates";
 export * from "./authentication-provider";
+export * from "./idp";
