@@ -46,6 +46,21 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * userstores namespace.
+     */
+    public static readonly USERSTORES_NAMESPACE: string = I18nModuleConstants.USERSTORES_NAMESPACE;
+
+    /**
+     * Validation namespace.
+     */
+    public static readonly VALIDATION_NAMESPACE: string = I18nModuleConstants.VALIDATION_NAMESPACE;
+
+    /**
+     * JWT private key configuration namespace.
+     */
+    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE;
+
+    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = I18nModuleConstants.TRANSFER_LIST_NAMESPACE;
@@ -59,7 +74,7 @@ export class I18nConstants {
      * Users namespace.
      */
     public static readonly USERS_NAMESPACE: string = I18nModuleConstants.USERS_NAMESPACE;
-  
+
     /**
      * governanceConnectors namespace.
      */
@@ -74,17 +89,17 @@ export class I18nConstants {
      * pages namespace.
      */ 
     public static readonly PAGES_NAMESPACE: string = I18nModuleConstants.PAGES_NAMESPACE;
-  
+
     /**
      * IDVP namespace.
      */
     public static readonly IDVP_NAMESPACE: string = I18nModuleConstants.IDVP_NAMESPACE;
-  
+
     /**
      * Invite namespace.
      */
     public static readonly INVITE_NAMESPACE: string = I18nModuleConstants.INVITE_NAMESPACE;
-    
+
     /**
      * Parent org invitations namespace.
      */
@@ -94,7 +109,7 @@ export class I18nConstants {
      * OIDC scopes namespace.
      */
     public static readonly OIDC_SCOPES_NAMESPACE: string = I18nModuleConstants.OIDC_SCOPES_NAMESPACE;
-  
+
     /**
      * Onboarded namespace.
      */
@@ -109,12 +124,12 @@ export class I18nConstants {
      * Organizations namespace.
      */
     public static readonly ORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.ORGANIZATIONS_NAMESPACE;
-  
+
     /**
      * Authentication Flow namespace.
      */
     public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE;
-  
+
     /**
      * remoteFetch namespace.
      */
@@ -129,7 +144,7 @@ export class I18nConstants {
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = I18nModuleConstants.SERVER_CONFIGS_NAMESPACE;
-  
+
     /**
      * SAML 2.0 Configuration namespace.
      */
@@ -144,7 +159,7 @@ export class I18nConstants {
      * WS-Federation Configuration namespace.
      */
     public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = I18nModuleConstants.WS_FEDERATION_CONFIG_NAMESPACE;
-  
+
     /**
      * insights namespace.
      */
@@ -154,7 +169,7 @@ export class I18nConstants {
      * SMS Providers namespace.
      */
     public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
-  
+
     /**
      * Claims namespace.
      */
@@ -164,32 +179,32 @@ export class I18nConstants {
      * Email locale namespace.
      */
     public static readonly EMAIL_LOCALE_NAMESPACE: string = I18nModuleConstants.EMAIL_LOCALE_NAMESPACE;
-  
+
     /**
      * Help Panel namespace.
      */
     public static readonly HELP_PANEL_NAMESPACE: string = I18nModuleConstants.HELP_PANEL_NAMESPACE;
-  
+
     /**
      * suborganizations namespace.
      */
     public static readonly SUBORGANIZATIONS_NAMESPACE: string = I18nModuleConstants.SUBORGANIZATIONS_NAMESPACE;
-  
+
     /**
      * console settings namespace.
      */
     public static readonly CONSOLE_SETTINGS_NAMESPACE: string = I18nModuleConstants.CONSOLE_SETTINGS_NAMESPACE;
-  
+
     /**
      * Secrets namespace.
      */
     public static readonly SECRETS_NAMESPACE: string = I18nModuleConstants.SECRETS_NAMESPACE;
-  
+
     /**
      * Branding namespace.
      */
     public static readonly BRANDING_NAMESPACE: string = I18nModuleConstants.BRANDING_NAMESPACE;
-  
+
     /**
      * emailTemplates namespace.
      */
@@ -199,7 +214,7 @@ export class I18nConstants {
      * Certificates namespace.
      */
     public static readonly CERTIFICATES_NAMESPACE: string = I18nModuleConstants.CERTIFICATES_NAMESPACE;
-  
+
     /**
      * authenticationProvider namespace.
      */
@@ -213,6 +228,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.USERSTORES_NAMESPACE, "portals" ],
+        [ I18nConstants.VALIDATION_NAMESPACE, "portals" ],
+        [ I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.TRANSFER_LIST_NAMESPACE, "portals" ],
         [ I18nConstants.USER_NAMESPACE, "portals" ],
         [ I18nConstants.USERS_NAMESPACE, "portals" ],

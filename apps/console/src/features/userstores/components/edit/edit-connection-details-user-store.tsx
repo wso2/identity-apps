@@ -264,10 +264,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         patchUserStore(id, data)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications." +
+                    description: t("userstores:notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.userstores.notifications." +
+                    message: t("userstores:notifications." +
                         "updateUserstore.success.message")
                 }));
 
@@ -276,9 +276,9 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.userstores.notifications.updateDelay.description"),
+                    description: t("userstores:notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:manage.features.userstores.notifications.updateDelay.message")
+                    message: t("userstores:notifications.updateDelay.message")
                 }));
 
                 // Re-fetch the userstore details
@@ -287,10 +287,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             .catch((error: any) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error?.description
-                        || t("console:manage.features.userstores.notifications." +
+                        || t("userstores:notifications." +
                             "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message || t("console:manage.features.userstores.notifications." +
+                    message: error?.message || t("userstores:notifications." +
                         "updateUserstore.genericError.message")
                 }));
             })
@@ -333,7 +333,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             } }
                                                             disabled={ readOnly }
                                                         />
-                                                        <p>{ t("console:manage.features.userstores.forms." +
+                                                        <p>{ t("userstores:forms." +
                                                                 "connection.updatePassword") }</p>
                                                     </Box>
                                                     <Field
@@ -349,7 +349,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         showPassword={ t("common:showPassword") }
                                                         hidePassword={ t("common:hidePassword") }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -372,14 +372,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         required={ false }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                         }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -399,14 +399,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         required={ true }
                                                         label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                         }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                             "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -467,22 +467,22 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     setIsTesting(false);
                                                     if (response?.connection) {
                                                         dispatch(addAlert({
-                                                            description: t("console:manage.features.userstores" +
-                                                                ".notifications.testConnection.success.description"),
+                                                            description: t("userstores:" +
+                                                                "notifications.testConnection.success.description"),
                                                             level: AlertLevels.SUCCESS,
-                                                            message: t("console:manage.features.userstores." +
+                                                            message: t("userstores:" +
                                                                 "notifications.testConnection.success.message")
                                                         }));
                                                         setConnectionFailed(false);
                                                         setConnectionSuccessful(true);
                                                     } else {
                                                         dispatch(addAlert({
-                                                            description: t("console:manage.features.userstores." +
+                                                            description: t("userstores:" +
                                                                 "notifications.testConnection.genericError" +
                                                                 ".description"),
                                                             level: AlertLevels.ERROR,
-                                                            message: t("console:manage.features." +
-                                                                "userstores.notifications.testConnection.genericError" +
+                                                            message: t(
+                                                                "userstores:notifications.testConnection.genericError" +
                                                                 ".message")
                                                         }));
                                                         setConnectionSuccessful(false);
@@ -491,11 +491,11 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                 }).catch((error: any) => {
                                                     dispatch(addAlert({
                                                         description: error?.description
-                                                            || t("console:manage.features.userstores.notifications." +
+                                                            || t("userstores:notifications." +
                                                                 "testConnection.genericError.description"),
                                                         level: AlertLevels.ERROR,
-                                                        message: error?.message || t("console:manage.features." +
-                                                            "userstores.notifications.testConnection.genericError" +
+                                                        message: error?.message || t(
+                                                            "userstores:notifications.testConnection.genericError" +
                                                             ".message")
                                                     }));
                                                     setIsTesting(false);
@@ -520,7 +520,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     : null
                                         }
                                     />
-                                    { t("console:manage.features.userstores.forms.connection.testButton") }
+                                    { t("userstores:forms.connection.testButton") }
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>
@@ -591,7 +591,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         showPassword={ t("common:showPassword") }
                                                         hidePassword={ t("common:hidePassword") }
                                                         placeholder={
-                                                            t("console:manage.features.userstores.forms." +
+                                                            t("userstores:forms." +
                                                                 "custom.placeholder",
                                                             {
                                                                 name: property.description.split("#")[ 0 ]
@@ -612,14 +612,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                             }
                                                             placeholder={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
@@ -640,14 +640,14 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             required={ false }
                                                             label={ property.description.split("#")[ 0 ] }
                                                             requiredErrorMessage={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                             }
                                                             placeholder={
-                                                                t("console:manage.features.userstores.forms." +
+                                                                t("userstores:forms." +
                                                                 "custom.placeholder",
                                                                 {
                                                                     name: property.description.split("#")[ 0 ]

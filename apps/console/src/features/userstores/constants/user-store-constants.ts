@@ -36,8 +36,8 @@ export class UserStoreManagementConstants {
      */
     public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "SUS-60011",
-        "console:manage.features.userstores.notifications.apiLimitReachedError.error.description",
-        "console:manage.features.userstores.notifications.apiLimitReachedError.error.message",
+        "userstores:notifications.apiLimitReachedError.error.description",
+        "userstores:notifications.apiLimitReachedError.error.message",
         "165d6b4b-d384-4335-9706-19ab034a5397"
     );
 

@@ -266,20 +266,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.description"),
+                            ?? t("userstores:notifications.fetchUserstores.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.message")
+                            ?? t("userstores:notifications.fetchUserstores.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                    description: t("userstores:notifications.fetchUserstores.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                    message: t("userstores:notifications.fetchUserstores.genericError.message")
                 }));
 
                 setUserStoreError(true);
@@ -312,10 +312,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             return isReadWriteUserStore;
         }).catch(() => {
             dispatch(addAlert({
-                description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
+                description: t("userstores:notifications.fetchUserstores.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                message: t("userstores:notifications.fetchUserstores.genericError.message")
             }));
 
             return false;

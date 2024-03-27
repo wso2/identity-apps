@@ -87,6 +87,21 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * userstores namespace.
+     */
+    public static readonly USERSTORES_NAMESPACE: string = "userstores";
+
+    /**
+     * Validation namespace.
+     */
+    public static readonly VALIDATION_NAMESPACE: string = "validation";
+
+    /**
+     * JWT private key configuration namespace.
+     */ 
+    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
+
+    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";
@@ -95,12 +110,12 @@ export class I18nModuleConstants {
      * pages namespace.
      */
     public static readonly PAGES_NAMESPACE: string = "pages";
-  
+
     /**
      * Identity Verification Provider namespace.
      */
     public static readonly IDVP_NAMESPACE: string = "idvp";
-  
+
     /**
      * Invite namespace.
      */
@@ -115,7 +130,7 @@ export class I18nModuleConstants {
      * OIDC scopes namespace.
      */
     public static readonly OIDC_SCOPES_NAMESPACE: string = "oidcScopes";
-  
+
     /**
      * Onboarded namespace.
      */
@@ -130,12 +145,12 @@ export class I18nModuleConstants {
      * Organizations namespace.
      */
     public static readonly ORGANIZATIONS_NAMESPACE: string = "organizations";
-  
+
     /**
      * Authentication flow namespace.
      */
     public static readonly AUTHENTICATION_FLOW_NAMESPACE: string = "authenticationFlow";
-  
+
     /**
      * remoteFetch namespace.
      */
@@ -150,7 +165,7 @@ export class I18nModuleConstants {
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";
-  
+
     /**
      * SAML 2.0 Configuration namespace.
      */
@@ -165,7 +180,7 @@ export class I18nModuleConstants {
      * WS-Federation Configuration namespace.
      */
     public static readonly WS_FEDERATION_CONFIG_NAMESPACE: string = "wsFederationConfig";
-  
+
     /**
      * insights namespace.
      */
@@ -175,7 +190,7 @@ export class I18nModuleConstants {
      * SMS Providers namespace.
      */
     public static readonly SMS_PROVIDERS_NAMESPACE: string = "smsProviders";
-  
+
     /**
      * Claims namespace.
      * @constant
@@ -187,37 +202,37 @@ export class I18nModuleConstants {
      * @constant
      */
     public static readonly EMAIL_LOCALE_NAMESPACE: string = "emailLocale";
-  
+
     /**
      * Help panel namespace.
      * @constant
      */
     public static readonly HELP_PANEL_NAMESPACE: string = "helpPanel";
-  
+
     /**
      * Suborganizations namespace.
      * @constant
      */
     public static readonly SUBORGANIZATIONS_NAMESPACE: string = "suborganizations";
-  
+
     /**
      * Console settings namespace.
      * @constant
      */
     public static readonly CONSOLE_SETTINGS_NAMESPACE: string = "consoleSettings";
-  
+
     /**
      * Secrets namespace.
      * @constant
      */
     public static readonly SECRETS_NAMESPACE: string = "secrets";
-  
+
     /**
      * Branding namespace.
      * @constant
      */
     public static readonly BRANDING_NAMESPACE: string = "branding";
-  
+
     /**
      * emailTemplates namespace.
      * @constant
@@ -250,7 +265,7 @@ export class I18nModuleConstants {
      * Users namespace.
      */
     public static readonly USERS_NAMESPACE: string = "users";
-  
+
     /**
      * Groups namespace.
      */
