@@ -79,6 +79,7 @@
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
             }
+            System.out.println("------------------------"+ errorMessage)
         }
     }
 %>
@@ -176,7 +177,7 @@
                 <%
                     if ("true".equals(authenticationFailed)) {
                 %>
-                <div class="ui negative message" id="failed-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage))%>
+                <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
                 </div>
                 <div class="ui divider hidden"></div>
                 <% } %>
