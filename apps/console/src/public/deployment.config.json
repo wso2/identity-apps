@@ -295,7 +295,9 @@
                 }
             },
             "branding": {
-                "disabledFeatures": [ "branding.hostnameUrlBranding" ],
+                "disabledFeatures": [ 
+                    "branding.hostnameUrlBranding",
+                    "branding.ai" ],
                 "enabled": true,
                 "scopes": {
                     "feature": [
