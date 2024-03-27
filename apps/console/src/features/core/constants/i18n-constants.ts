@@ -46,6 +46,16 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * governanceConnectors namespace.
+     */
+    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
+
+    /**
+     * Groups namespace.
+     */
+    public static readonly GROUPS_NAMESPACE: string = I18nModuleConstants.GROUPS_NAMESPACE;
+
+    /**
      * pages namespace.
      */ 
     public static readonly PAGES_NAMESPACE: string = I18nModuleConstants.PAGES_NAMESPACE;
@@ -214,7 +224,9 @@ export class I18nConstants {
         [ I18nConstants.BRANDING_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.CERTIFICATES_NAMESPACE, "portals" ],
-        [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ]
+        [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ],
+        [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
+        [ I18nConstants.GROUPS_NAMESPACE, "portals" ]
     ]);
 
     /**

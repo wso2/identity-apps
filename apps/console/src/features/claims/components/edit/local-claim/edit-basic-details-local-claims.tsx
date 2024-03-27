@@ -246,13 +246,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -261,12 +261,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })

@@ -154,13 +154,13 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -170,12 +170,12 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -303,7 +303,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                 description: resolveConnectorUpdateSuccessMessage(),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.governanceConnectors.notifications." + "updateConnector.success.message"
+                    "governanceConnectors:notifications." + "updateConnector.success.message"
                 )
             })
         );
@@ -316,7 +316,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                     description: resolveConnectorUpdateErrorMessage(),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications.updateConnector.error.message"
+                        "governanceConnectors:notifications.updateConnector.error.message"
                     )
                 })
             );
@@ -325,12 +325,12 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -510,7 +510,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                                 onClick: handleBackButtonClick,
                                 text: isApplicationRedirect ?
                                     t("extensions:manage.accountLogin.goBackToApplication") :
-                                    t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                                    t("governanceConnectors:goBackLoginAndRegistration")
                             } }
                             bottomMargin={ false }
                             contentTopMargin={ true }

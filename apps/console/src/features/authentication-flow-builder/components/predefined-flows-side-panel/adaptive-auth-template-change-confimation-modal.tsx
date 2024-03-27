@@ -105,7 +105,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                             <Text>
                                 <Trans
                                     i18nKey={
-                                        "console:manage.features.governanceConnectors.connectorCategories." +
+                                        "governanceConnectors:connectorCategories." +
                                         "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
                                     }
                                 >
@@ -121,7 +121,7 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                             <Text>
                                 <Trans
                                     i18nKey={
-                                        "console:manage.features.governanceConnectors.connectorCategories." +
+                                        "governanceConnectors:connectorCategories." +
                                         "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
                                     }
                                 >

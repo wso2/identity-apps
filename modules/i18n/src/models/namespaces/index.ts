@@ -46,3 +46,5 @@ export * from "./branding-ns";
 export * from "./email-templates-ns";
 export * from "./certificates-ns";
 export * from "./authentication-provider-ns";
+export * from "./governance-connectors-ns";
+export * from "./groups-ns";

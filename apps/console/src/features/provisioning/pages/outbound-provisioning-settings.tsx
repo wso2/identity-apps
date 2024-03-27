@@ -312,7 +312,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             action={ residentProvisioningConfiguration?.
                 provisioningConfigurations?.outboundProvisioningIdps?.length > 0

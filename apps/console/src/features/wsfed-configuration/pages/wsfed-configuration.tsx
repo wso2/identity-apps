@@ -201,7 +201,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
             description={ t("wsFederationConfig:description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ false }

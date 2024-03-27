@@ -230,4 +230,20 @@ export class I18nModuleConstants {
      * @constant
      */
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
+
+    /**
+     * governanceConnectors namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = "governanceConnectors";
+
+    /**
+     * Groups namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GROUPS_NAMESPACE: string = "groups";
 }

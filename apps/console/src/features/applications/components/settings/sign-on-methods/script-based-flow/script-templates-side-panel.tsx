@@ -205,13 +205,13 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "getConnector.error.description",
                                     { description: error?.response?.data?.description }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "getConnector.error.message"
                                 )
                             })
@@ -221,12 +221,12 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "getConnector.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "getConnector.genericError.message"
                                 )
                             })
@@ -278,7 +278,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.success.message"
                             )
                         })
@@ -294,7 +294,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "updateConnector.error.message"
                                 )
                             })
@@ -304,12 +304,12 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "updateConnector.genericError.description"
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
+                                    "governanceConnectors:notifications." +
                                     "updateConnector.genericError.message"
                                 )
                             })
@@ -351,7 +351,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                     <Modal.Header>
                         { connector?.friendlyName }
                         <Heading subHeading ellipsis as="h6">
-                            { t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                            { t("governanceConnectors:connectorSubHeading", {
                                 name: connector?.friendlyName })
                             }
                         </Heading>

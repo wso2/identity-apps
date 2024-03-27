@@ -1185,7 +1185,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         exact: true,
                         icon: null,
                         id: "multiAttributeLogin",
-                        name: "console:manage.features.governanceConnectors.connectorCategories.accountManagement." +
+                        name: "governanceConnectors:connectorCategories.accountManagement." +
                         "connectors.multiattributeLoginHandler.friendlyName",
                         order: 999,
                         path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
