@@ -127,12 +127,12 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                                "organizations:notifications.updateOrganizationAttributes." +
                                 "success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
-                                "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                                "organizations:notifications.updateOrganizationAttributes." +
                                 "success.message"
                             )
                         })
@@ -147,7 +147,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                                 description: error.description,
                                 level: AlertLevels.ERROR,
                                 message: t(
-                                    "console:manage.features.organizations.notifications." +
+                                    "organizations:notifications." +
                                     "updateOrganizationAttributes." +
                                     "error.message"
                                 )
@@ -160,12 +160,12 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                                "organizations:notifications.updateOrganizationAttributes." +
                                 "genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications.updateOrganizationAttributes." +
+                                "organizations:notifications.updateOrganizationAttributes." +
                                 "genericError.message"
                             )
                         })
@@ -189,25 +189,25 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                     >
                         <p>
                             { t(
-                                "console:manage.features.organizations.edit.attributes.hint"
+                                "organizations:edit.attributes.hint"
                             ) }
                         </p>
                         <DynamicField
                             data={ organization.attributes }
                             keyType="text"
                             keyName={ t(
-                                "console:manage.features.organizations.edit.attributes.key"
+                                "organizations:edit.attributes.key"
                             ) }
                             valueName={ t(
-                                "console:manage.features.organizations.edit.attributes.value"
+                                "organizations:edit.attributes.value"
                             ) }
                             submit={ submit }
                             keyRequiredMessage={ t(
-                                "console:manage.features.organizations.edit.attributes." +
+                                "organizations:edit.attributes." +
                                 "keyRequiredErrorMessage"
                             ) }
                             valueRequiredErrorMessage={ t(
-                                "console:manage.features.organizations.edit.attributes." +
+                                "organizations:edit.attributes." +
                                 "valueRequiredErrorMessage"
                             ) }
                             requiredField={ true }

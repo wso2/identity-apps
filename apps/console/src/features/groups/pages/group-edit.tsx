@@ -79,12 +79,12 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
                 title={
                     group && group.displayName ?
                         group.displayName :
-                        t("console:manage.pages.rolesEdit.title")
+                        t("pages:rolesEdit.title")
                 }
-                pageTitle={ t("console:manage.pages.rolesEdit.title") }
+                pageTitle={ t("pages:rolesEdit.title") }
                 backButton={ {
                     onClick: handleBackButtonClick,
-                    text: t("console:manage.pages.rolesEdit.backButton", { type: "groups" })
+                    text: t("pages:rolesEdit.backButton", { type: "groups" })
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

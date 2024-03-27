@@ -124,7 +124,7 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
                     connector?.description
                         ? connector.description
                         : connector?.friendlyName
-                        && t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                        && t("governanceConnectors:connectorSubHeading", {
                             name: connector?.friendlyName
                         })
                 );

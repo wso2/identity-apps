@@ -178,13 +178,13 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization.success" +
+                            "organizations:notifications.deleteOrganization.success" +
                             ".description" // ToDo
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
                             // ToDo
-                            "console:manage.features.organizations.notifications.deleteOrganization.success.message"
+                            "organizations:notifications.deleteOrganization.success.message"
                         )
                     })
                 );
@@ -199,7 +199,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizations.notifications.deleteOrganization.error" +
+                                "organizations:notifications.deleteOrganization.error" +
                                 ".message" // ToDo
                             )
                         })
@@ -211,12 +211,12 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                 dispatch(
                     setAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization" +
+                            "organizations:notifications.deleteOrganization" +
                             ".genericError.description" // ToDo
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizations.notifications.deleteOrganization.genericError" +
+                            "organizations:notifications.deleteOrganization.genericError" +
                             ".message" // ToDo
                         )
                     })
@@ -257,7 +257,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                         </Header>
                     );
                 },
-                title: t("console:manage.features.organizations.list.columns.name")
+                title: t("organizations:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -265,7 +265,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.organizations.list.columns.actions")
+                title: t("organizations:list.columns.actions")
             }
         ];
     };
@@ -372,7 +372,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                                     } }
                                 >
                                     <Icon name="add"/>
-                                    { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                                    { t("roles:list.emptyPlaceholders.search.action") }
                                 </PrimaryButton>
                             </Show>
                         )
@@ -414,7 +414,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     type="negative"
                     open={ showDeleteConfirmationModal }
                     assertionHint={ t(
-                        "console:manage.features.roles.list.confirmations.deleteItem.assertionHint"
+                        "roles:list.confirmations.deleteItem.assertionHint"
                     ) }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
@@ -428,19 +428,19 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-testid={ `${testId}-delete-org-role-confirmation-modal-header` }>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                        { t("roles:list.confirmations.deleteItem.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         attached
                         negative
                         data-testid={ `${testId}-delete-org-role-confirmation-modal-message` }
                     >
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                        { t("roles:list.confirmations.deleteItem.message",
                             { type: "role" }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                         <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                        { t("roles:list.confirmations.deleteItem.content",
                             { type: "role" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

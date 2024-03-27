@@ -164,12 +164,12 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     }
                 });
                 dispatch(addAlert({
-                    description: t("console:develop.features.secrets.alerts.deleteSecret.description", {
+                    description: t("secrets:alerts.deleteSecret.description", {
                         secretName: deletingSecret.secretName,
                         secretType: deletingSecret.type
                     }),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.secrets.alerts.deleteSecret.message")
+                    message: t("secrets:alerts.deleteSecret.message")
                 }));
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -182,9 +182,9 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("console:develop.features.secrets.errors.generic.description"),
+                    description: t("secrets:errors.generic.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.secrets.errors.generic.message")
+                    message: t("secrets:errors.generic.message")
                 }));
             } finally {
                 const refreshSecretList = true;
@@ -418,23 +418,23 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
             onPrimaryActionClick={ onSecretDeleteClick }
             open={ showDeleteConfirmationModal }
             type="negative"
-            assertionHint={ t("console:develop.features.secrets.modals.deleteSecret.assertionHint") }
+            assertionHint={ t("secrets:modals.deleteSecret.assertionHint") }
             assertionType="checkbox"
-            primaryAction={ t("console:develop.features.secrets.modals.deleteSecret.primaryActionButtonText") }
-            secondaryAction={ t("console:develop.features.secrets.modals.deleteSecret.secondaryActionButtonText") }
+            primaryAction={ t("secrets:modals.deleteSecret.primaryActionButtonText") }
+            secondaryAction={ t("secrets:modals.deleteSecret.secondaryActionButtonText") }
             data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
             <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                { t("console:develop.features.secrets.modals.deleteSecret.title") }
+                { t("secrets:modals.deleteSecret.title") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
-                { t("console:develop.features.secrets.modals.deleteSecret.warningMessage") }
+                { t("secrets:modals.deleteSecret.warningMessage") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                { t("console:develop.features.secrets.modals.deleteSecret.content") }
+                { t("secrets:modals.deleteSecret.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -446,8 +446,8 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                     <Message
                         type="info"
                         data-componentid={ `${ testId }-page-message` }
-                        header={ t("console:develop.features.secrets.banners.adaptiveAuthSecretType.title") }
-                        content={ t("console:develop.features.secrets.banners.adaptiveAuthSecretType.content") }
+                        header={ t("secrets:banners.adaptiveAuthSecretType.title") }
+                        content={ t("secrets:banners.adaptiveAuthSecretType.content") }
                     />
                 )
             }
@@ -465,18 +465,18 @@ const SecretsList: FC<SecretsListProps> = (props: SecretsListProps): ReactElemen
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("console:develop.features.secrets.advancedSearch.form" +
+                                    t("secrets:advancedSearch.form" +
                                         ".inputs.filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("console:develop.features.secrets.advancedSearch.form" +
+                                    t("secrets:advancedSearch.form" +
                                         ".inputs.filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("console:develop.features.secrets.advancedSearch.form.inputs.filterValue" +
+                                    t("secrets:advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                                 }
-                                placeholder={ t("console:develop.features.secrets.advancedSearch.placeholder") }
+                                placeholder={ t("secrets:advancedSearch.placeholder") }
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
                                 data-testid={ `${ testId }-list-advanced-search` }

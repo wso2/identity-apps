@@ -198,16 +198,16 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             data-testid={ `${ testId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
-                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
+                            { t("roles:list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("roles:list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("roles:list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("roles:list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -223,20 +223,20 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
+                            { t("roles:list.emptyPlaceholders.emptyRoleList.action",
                                 { type: "Role" }) }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
+                    title={ t("roles:list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                        t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                             { type: "roles" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                        t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.1",
                             { type: "role" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                        t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.2",
                             { type: "role" })
                     ] }
                 />
@@ -282,7 +282,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.roles.list.columns.name")
+                title: t("roles:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -310,7 +310,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
                     handleRoleEdit(role?.id),
-                popupText: (): string => t("console:manage.features.roles.list.popups.edit",
+                popupText: (): string => t("roles:list.popups.edit",
                     { type: "Role" }),
                 renderer: "semantic-icon"
             },
@@ -322,7 +322,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     setCurrentDeletedRole(role);
                     setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                 },
-                popupText: (): string => t("console:manage.features.roles.list.popups.delete",
+                popupText: (): string => t("roles:list.popups.delete",
                     { type: "Role" }),
                 renderer: "semantic-icon"
             }
@@ -361,7 +361,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showRoleDeleteConfirmation }
-                        assertionHint={ t("console:manage.features.roles.list.confirmations.deleteItem.assertionHint") }
+                        assertionHint={ t("roles:list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
@@ -373,14 +373,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
+                            { t("roles:list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.message",
+                            { t("roles:list.confirmations.deleteItem.message",
                                 { type: "role" }) }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.roles.list.confirmations.deleteItem.content",
+                            { t("roles:list.confirmations.deleteItem.content",
                                 { type: "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

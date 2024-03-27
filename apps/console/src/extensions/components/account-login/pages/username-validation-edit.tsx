@@ -337,7 +337,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                 onClick: handleBackButtonClick,
                 text: isApplicationRedirect ?
                     t("extensions:manage.accountLogin.goBackToApplication")
-                    : t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                    : t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

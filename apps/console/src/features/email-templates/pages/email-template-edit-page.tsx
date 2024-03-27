@@ -152,21 +152,21 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
         <PageLayout
             title={
                 formMode === EmailTemplateFormModes.EDIT
-                    ? t("console:manage.pages.editTemplate.title",
+                    ? t("pages:editTemplate.title",
                         { template: emailTemplateTypeDetails?.displayName })
-                    : t("console:manage.pages.addEmailTemplate.title")
+                    : t("pages:addEmailTemplate.title")
             }
             pageTitle={
                 formMode === EmailTemplateFormModes.EDIT
-                    ? t("console:manage.pages.editTemplate.title",
+                    ? t("pages:editTemplate.title",
                         { template: emailTemplateTypeDetails?.displayName })
-                    : t("console:manage.pages.addEmailTemplate.title")
+                    : t("pages:addEmailTemplate.title")
             }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: formMode === EmailTemplateFormModes.EDIT
-                    ? t("console:manage.pages.editTemplate.backButton", { name: emailTemplateName })
-                    : t("console:manage.pages.addEmailTemplate.backButton", { name: emailTemplateName })
+                    ? t("pages:editTemplate.backButton", { name: emailTemplateName })
+                    : t("pages:addEmailTemplate.backButton", { name: emailTemplateName })
             } }
             titleTextAlign="left"
             bottomMargin={ false }

@@ -18,7 +18,7 @@
 
 import { CertificatesNS } from "../../../models";
 
-export const certificates:CertificatesNS ={
+export const certificates: CertificatesNS = {
     keystore: {
         advancedSearch: {
             error: "Filter query format incorrect",

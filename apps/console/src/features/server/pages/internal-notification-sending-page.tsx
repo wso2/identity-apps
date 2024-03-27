@@ -113,13 +113,13 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -128,12 +128,12 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -188,7 +188,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -200,13 +200,13 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "getConnector.error.description",
                             { description: error.response.data.description }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "getConnector.error.message"
                         )
                     })
@@ -215,12 +215,12 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "getConnector.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "getConnector.genericError.message"
                         )
                     })
@@ -254,13 +254,13 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -269,12 +269,12 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -318,7 +318,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.error.message"
                             )
                         })
@@ -328,12 +328,12 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.message"
                             )
                         })
@@ -368,7 +368,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "Server" })
+                text: t("pages:rolesEdit.backButton", { type: "Server" })
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -378,11 +378,11 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             <Grid className={ "mt-5" }>
                 <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                     <Checkbox
-                        ariaLabel={ t("console:manage.features.governanceConnectors.connectorCategories." +
+                        ariaLabel={ t("governanceConnectors:connectorCategories." +
                             "accountManagement.connectors.accountRecovery.properties." +
                             "recoveryNotificationInternallyManage.label") }
                         name="manageInternalNotificationSending"
-                        label={ t("console:manage.features.governanceConnectors.connectorCategories." +
+                        label={ t("governanceConnectors:connectorCategories." +
                             "accountManagement.connectors.accountRecovery.properties." +
                             "recoveryNotificationInternallyManage.label") }
                         width={ 16 }
@@ -395,7 +395,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                         checked={ isNotificationInternallyManaged }
                     />
                     <Hint>
-                        { t("console:manage.features.governanceConnectors.connectorCategories." +
+                        { t("governanceConnectors:connectorCategories." +
                             "accountManagement.connectors.accountRecovery.properties." +
                             "recoveryNotificationInternallyManage.hint") }
                     </Hint>

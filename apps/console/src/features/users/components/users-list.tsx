@@ -315,7 +315,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                     {
                                         user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg && (
                                             <Label size="mini" className="client-id-label">
-                                                { t("console:manage.features.parentOrgInvitations." +
+                                                { t("parentOrgInvitations:" +
                                                 "invitedUserLabel") }
                                             </Label>
                                         )

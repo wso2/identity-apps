@@ -115,16 +115,16 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
                             type="text"
                             name="rolename"
                             label={
-                                t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                t("roles:addRoleWizard.forms.roleBasicDetails." +
                                         "roleName.label",{ type: "Role" })
                             }
                             placeholder={
-                                t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                t("roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                                         "placeholder", { type: "Role" })
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                t("roles:addRoleWizard.forms.roleBasicDetails.roleName." +
                                         "validations.empty", { type: "Role" })
                             }
                             validation={ async (value: string, validation: Validation) => {
@@ -138,7 +138,7 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
                                 if (response?.totalResults > 0) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                        t("roles:addRoleWizard.forms.roleBasicDetails." +
                                             "roleName.validations.duplicate", { type: "Role" })
                                     );
                                 }
@@ -148,7 +148,7 @@ export const OrganizationRoleBasics: FunctionComponent<OrganizationRoleBasicProp
                                 if (!isRoleNamePatternValid) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                        t("roles:addRoleWizard.forms.roleBasicDetails." +
                                                 "roleName.validations.invalid", { type: "role" })
                                     );
                                 }

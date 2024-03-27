@@ -249,7 +249,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             backButton={ {
                 "data-testid": `${componentId}-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
+                text: t("pages:rolesEdit.backButton", { type: "APIs" })
             } }
         >
             <ListLayout

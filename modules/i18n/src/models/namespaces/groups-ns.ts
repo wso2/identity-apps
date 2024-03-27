@@ -15,8 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-export interface emailTemplateTypesNS {
+export interface groupsNS {
     advancedSearch: {
         form: {
             inputs: {
@@ -32,41 +31,43 @@ export interface emailTemplateTypesNS {
             };
         };
         placeholder: string;
-        error: string;
     };
-    buttons: {
-        createTemplateType: string;
-        deleteTemplate: string;
-        editTemplate: string;
-        newType: string;
-    };
-    confirmations: {
-        deleteTemplateType: {
-            assertionHint: string;
-            header: string;
-            message: string;
-            content: string;
-        };
-    };
-    forms: {
-        addTemplateType: {
+    edit: {
+        basics: {
             fields: {
-                type: {
-                    label: string;
+                groupName: {
+                    name: string;
+                    required: string;
                     placeholder: string;
-                    validations: {
-                        empty: string;
-                    };
+                };
+            };
+        };
+        roles: {
+            addRolesModal: {
+                heading: string;
+                subHeading: string;
+            };
+            heading: string;
+            subHeading: string;
+            placeHolders: {
+                emptyListPlaceholder: {
+                    title: string;
+                    subtitles: string;
                 };
             };
         };
     };
     list: {
-        actions: string;
-        name: string;
+        columns: {
+            actions: string;
+            lastModified: string;
+            name: string;
+            source: string;
+        };
+        storeOptions: string;
     };
     notifications: {
-        deleteTemplateType: {
+        deleteGroup: {
             error: {
                 message: string;
                 description: string;
@@ -80,7 +81,7 @@ export interface emailTemplateTypesNS {
                 description: string;
             };
         };
-        getTemplateTypes: {
+        updateGroup: {
             error: {
                 message: string;
                 description: string;
@@ -94,7 +95,7 @@ export interface emailTemplateTypesNS {
                 description: string;
             };
         };
-        updateTemplateType: {
+        createGroup: {
             error: {
                 message: string;
                 description: string;
@@ -108,7 +109,7 @@ export interface emailTemplateTypesNS {
                 description: string;
             };
         };
-        createTemplateType: {
+        createPermission: {
             error: {
                 message: string;
                 description: string;
@@ -118,36 +119,21 @@ export interface emailTemplateTypesNS {
                 description: string;
             };
             success: {
+                message: string;
+                description: string;
+            };
+        };
+        fetchGroups: {
+            genericError: {
                 message: string;
                 description: string;
             };
         };
     };
     placeholders: {
-        emptySearch: {
-            action: string;
+        groupsError: {
             title: string;
-            subtitles: string;
-        };
-        emptyList: {
-            action: string;
-            title: string;
-            subtitles: {
-                0: string;
-                1: string;
-                2: string;
-            };
-        };
-    };
-    wizards: {
-        addTemplateType: {
-            heading: string;
-            subHeading: string;
-            steps: {
-                templateType: {
-                    heading: string;
-                };
-            };
+            subtitles: string[];
         };
     };
 }

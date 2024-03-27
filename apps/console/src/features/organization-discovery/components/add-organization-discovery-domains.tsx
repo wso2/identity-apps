@@ -142,12 +142,12 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                                 "addEmailDomains.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                                 "addEmailDomains.success.message"
                         )
                     })
@@ -163,12 +163,12 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".addEmailDomains.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".addEmailDomains.error.message"
                         )
                     })
@@ -193,12 +193,12 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".checkEmailDomain.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".checkEmailDomain.error.message"
                         )
                     })
@@ -259,29 +259,29 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                 name="organizationName"
                                 type="text"
                                 label={ t(
-                                    "console:manage.features.organizationDiscovery.assign.form." +
+                                    "organizationDiscovery:assign.form." +
                                     "fields.organizationName.label"
                                 ) }
                                 placeholder={
                                     isEmpty(organizations?.organizations)
                                         ? t(
-                                            "console:manage.features.organizationDiscovery.assign.form." +
+                                            "organizationDiscovery:assign.form." +
                                             "fields.organizationName.emptyPlaceholder.0"
                                         )
                                         : (
                                             isEmpty(filteredDiscoverableOrganizations)
                                                 ? t(
-                                                    "console:manage.features.organizationDiscovery.assign.form." +
+                                                    "organizationDiscovery:assign.form." +
                                                     "fields.organizationName.emptyPlaceholder.1"
                                                 ): t(
-                                                    "console:manage.features.organizationDiscovery.assign.form." +
+                                                    "organizationDiscovery:assign.form." +
                                                     "fields.organizationName.placeholder"
                                                 ))
                                 }
                                 helperText={ (
                                     <Hint>
                                         { t(
-                                            "console:manage.features.organizationDiscovery.assign.form." +
+                                            "organizationDiscovery:assign.form." +
                                             "fields.organizationName.hint"
                                         ) }
                                     </Hint>
@@ -298,7 +298,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             <em>
                                                 {
                                                     t(
-                                                        "console:manage.features.organizationDiscovery.assign.form." +
+                                                        "organizationDiscovery:assign.form." +
                                                         "fields.organizationName.placeholder"
                                                     )
                                                 }
@@ -332,7 +332,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                     <>
                                         <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
                                             { t(
-                                                "console:manage.features.organizationDiscovery.assign.form." +
+                                                "organizationDiscovery:assign.form." +
                                                 "fields.emailDomains.label"
                                             ) }
                                         </InputLabel>
@@ -347,18 +347,18 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             helperText= {
                                                 isEmailDomainDataError
                                                     ? t(
-                                                        "console:manage.features.organizationDiscovery.assign.form." +
+                                                        "organizationDiscovery:assign.form." +
                                                         "fields.emailDomains.validations.invalid.0"
                                                     )
                                                     : isEmailDomainAvailableError
                                                         ? t(
-                                                            "console:manage.features.organizationDiscovery.assign." +
+                                                            "organizationDiscovery:assign." +
                                                             "form.fields.emailDomains.validations.invalid.1"
                                                         )
                                                         : null
                                             }
                                             placeholder={ t(
-                                                "console:manage.features.organizationDiscovery.assign.form." +
+                                                "organizationDiscovery:assign.form." +
                                                 "fields.emailDomains.placeholder"
                                             ) }
                                         />
@@ -378,7 +378,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                             <FormHelperText>
                                 <Hint>
                                     { t(
-                                        "console:manage.features.organizationDiscovery.assign.form." +
+                                        "organizationDiscovery:assign.form." +
                                         "fields.emailDomains.hint"
                                     ) }
                                 </Hint>
@@ -394,7 +394,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             loading={ submitting }
                                             type="submit"
                                         >
-                                            { t("console:manage.features.organizationDiscovery.assign.buttons.assign") }
+                                            { t("organizationDiscovery:assign.buttons.assign") }
                                         </PrimaryButton>
                                     )
                                 ) }

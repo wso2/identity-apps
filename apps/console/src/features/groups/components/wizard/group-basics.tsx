@@ -208,13 +208,13 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 <Field
                                     data-testid={ `${ testId }-domain-dropdown` }
                                     type="dropdown"
-                                    label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                    label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                         "domain.label.group") }
                                     name="domain"
                                     children={ userStoreOptions }
-                                    placeholder={ t("console:manage.features.roles.addRoleWizard." +
+                                    placeholder={ t("roles:addRoleWizard." +
                                         "forms.roleBasicDetails.domain.placeholder") }
-                                    requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                    requiredErrorMessage={ t("roles:addRoleWizard.forms." +
                                         "roleBasicDetails.domain.validation.empty.group") }
                                     required={ true }
                                     element={ <div></div> }
@@ -229,12 +229,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 data-testid={ `${ testId }-role-name-input` }
                                 type="text"
                                 name="groupName"
-                                label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                                label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
                                     "roleName.label", { type: "Group" }) }
-                                placeholder={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                placeholder={ t("roles:addRoleWizard.forms." +
                                     "roleBasicDetails.roleName.placeholder", { type: "Group" }) }
                                 required={ true }
-                                requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                requiredErrorMessage={ t("roles:addRoleWizard.forms." +
                                     "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                                 validation={ async (value: string, validation: Validation) => {
                                     if (value) {
@@ -249,7 +249,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                         if (!isGroupNameValid) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("console:manage.features.roles." +
+                                                t("roles:" +
                                                     "addRoleWizard.forms.roleBasicDetails.roleName.validations.invalid",
                                                 { type: "group" })
                                             );
@@ -268,7 +268,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                             if (response?.data?.totalResults !== 0) {
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(
-                                                    t("console:manage.features.roles.addRoleWizard." +
+                                                    t("roles:addRoleWizard." +
                                                         "forms.roleBasicDetails.roleName.validations.duplicate",
                                                     { type: "Group" })
                                                 );
@@ -291,7 +291,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                     </GridRow>
                 </Grid>
             </Forms>
-            <Heading size="tiny">{ t("console:manage.features.roles.addRoleWizard.wizardSteps.2") }</Heading>
+            <Heading size="tiny">{ t("roles:addRoleWizard.wizardSteps.2") }</Heading>
             <AddGroupUsers
                 data-testid="new-group"
                 isEdit={ false }

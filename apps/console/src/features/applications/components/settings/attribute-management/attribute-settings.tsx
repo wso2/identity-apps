@@ -451,10 +451,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.claims.local.notifications.fetchLocalClaims.genericError" +
+                    description: t("claims:local.notifications.fetchLocalClaims.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.local.notifications.fetchLocalClaims." +
+                    message: t("claims:local.notifications.fetchLocalClaims." +
                         "genericError.message")
                 }));
             }).finally(() => {
@@ -472,10 +472,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.claims.dialects.notifications.fetchDialects" +
+                    description: t("claims:dialects.notifications.fetchDialects" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.claims.dialects.notifications.fetchDialects." +
+                    message: t("claims:dialects.notifications.fetchDialects." +
                         "genericError.message")
                 }));
             });
@@ -494,10 +494,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 })
                 .catch(() => {
                     dispatch(addAlert({
-                        description: t("console:manage.features.claims.external.notifications.fetchExternalClaims" +
+                        description: t("claims:external.notifications.fetchExternalClaims" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.claims.external.notifications.fetchExternalClaims" +
+                        message: t("claims:external.notifications.fetchExternalClaims" +
                             ".genericError.message")
                     }));
                 })

@@ -429,109 +429,109 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     /**
      * The tab panes that display the drop zone and the textarea.
      */
-    const panes:{
-                    menuItem: string;
-                    render: () => JSX.Element;
-                }[] = [
-                    {
-                        menuItem: t("certificates:keystore.wizard.panes.upload"),
-                        render: () => (
-                            !file
-                                ? (
-                                    <div
-                                        onDrop={ (event: React.DragEvent<HTMLDivElement>) => {
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                            setDragOver(false);
-                                            if (event.dataTransfer.files[ 0 ]) {
-                                                const file : File = event.dataTransfer.files[ 0 ];
+    const panes: {
+        menuItem: string;
+        render: () => JSX.Element;
+    }[] = [
+        {
+            menuItem: t("certificates:keystore.wizard.panes.upload"),
+            render: () => (
+                !file
+                    ? (
+                        <div
+                            onDrop={ (event: React.DragEvent<HTMLDivElement>) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                setDragOver(false);
+                                if (event.dataTransfer.files[ 0 ]) {
+                                    const file : File = event.dataTransfer.files[ 0 ];
 
-                                                addFile(file);
-                                            }
-                                        }
-                                        }
-                                        onDragOver={ (event : React.DragEvent<HTMLDivElement>) => {
-                                            event.preventDefault();
-                                            event.stopPropagation();
-                                            setDragOver(true);
-                                        } }
-                                        onDragLeave={ () => {
-                                            setDragOver(false);
-                                        } }
-                                        data-testid={ `${ testId }-certificate-upload-dropzone` }
-                                    >
-                                        <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
-                                            <div className="certificate-upload-placeholder">
-                                                <GenericIcon
-                                                    inline
-                                                    transparent
-                                                    size="mini"
-                                                    icon={ getCertificateIllustrations().uploadPlaceholder }
-                                                />
-                                                <p className="description">
-                                                    { t("certificates:" +
-                                                        "keystore.wizard.dropZone.description") }
-                                                </p>
-                                                <p className="description">– or –</p>
-                                            </div>
-                                            <Button
-                                                basic
-                                                primary
-                                                onClick={ (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                                                    event.preventDefault();
-                                                    fileUpload.current.click();
-                                                } }
-                                            >
-                                                { t("certificates:keystore.wizard.dropZone.action") }
-                                            </Button>
-                                        </Segment>
-                                    </div >
-                                )
-                                : (
-                                    <Segment placeholder>
-                                        <Segment textAlign="center" basic>
-                                            <GenericIcon
-                                                inline
-                                                transparent
-                                                size="auto"
-                                                icon={ getCertificateIllustrations().file }
-                                            />
-                                            <p className="file-name">{ file.name }</p>
-                                            <Icon
-                                                name="trash alternate"
-                                                link
-                                                onClick={ () => {
-                                                    setFile(null);
-                                                    setFileError(false);
-                                                    setFileDecoded("");
-                                                } }
-                                            />
-                                        </Segment>
-                                    </Segment>
-                                )
-                        )
-                    },
-                    {
-                        menuItem: t("certificates:keystore.wizard.panes.paste"),
-                        render: () => (
-                            <Form>
-                                <TextArea
-                                    rows={ 13 }
-                                    placeholder={ t("certificates:keystore.wizard.pastePlaceholder") }
-                                    value={ pem }
-                                    onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-                                        setPem(event.target.value);
-                                        setCertEmpty(false);
-                                        setFileError(false);
+                                    addFile(file);
+                                }
+                            }
+                            }
+                            onDragOver={ (event : React.DragEvent<HTMLDivElement>) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                setDragOver(true);
+                            } }
+                            onDragLeave={ () => {
+                                setDragOver(false);
+                            } }
+                            data-testid={ `${ testId }-certificate-upload-dropzone` }
+                        >
+                            <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
+                                <div className="certificate-upload-placeholder">
+                                    <GenericIcon
+                                        inline
+                                        transparent
+                                        size="mini"
+                                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                                    />
+                                    <p className="description">
+                                        { t("certificates:" +
+                                            "keystore.wizard.dropZone.description") }
+                                    </p>
+                                    <p className="description">– or –</p>
+                                </div>
+                                <Button
+                                    basic
+                                    primary
+                                    onClick={ (event : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                                        event.preventDefault();
+                                        fileUpload.current.click();
                                     } }
-                                    spellCheck={ false }
-                                    className={ `certificate-editor ${dark ? "dark" : "light"}` }
-                                    data-testid={ `${ testId }-certificate-content-textarea` }
+                                >
+                                    { t("certificates:keystore.wizard.dropZone.action") }
+                                </Button>
+                            </Segment>
+                        </div >
+                    )
+                    : (
+                        <Segment placeholder>
+                            <Segment textAlign="center" basic>
+                                <GenericIcon
+                                    inline
+                                    transparent
+                                    size="auto"
+                                    icon={ getCertificateIllustrations().file }
                                 />
-                            </Form>
-                        )
-                    }
-                ];
+                                <p className="file-name">{ file.name }</p>
+                                <Icon
+                                    name="trash alternate"
+                                    link
+                                    onClick={ () => {
+                                        setFile(null);
+                                        setFileError(false);
+                                        setFileDecoded("");
+                                    } }
+                                />
+                            </Segment>
+                        </Segment>
+                    )
+            )
+        },
+        {
+            menuItem: t("certificates:keystore.wizard.panes.paste"),
+            render: () => (
+                <Form>
+                    <TextArea
+                        rows={ 13 }
+                        placeholder={ t("certificates:keystore.wizard.pastePlaceholder") }
+                        value={ pem }
+                        onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                            setPem(event.target.value);
+                            setCertEmpty(false);
+                            setFileError(false);
+                        } }
+                        spellCheck={ false }
+                        className={ `certificate-editor ${dark ? "dark" : "light"}` }
+                        data-testid={ `${ testId }-certificate-content-textarea` }
+                    />
+                </Form>
+            )
+        }
+    ];
 
     /**
      * Called when a file is added.
