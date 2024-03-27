@@ -49,13 +49,13 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
                 <div data-testid={ testId }>
                     <Heading as="h5">
                         {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                            t("authenticationProvider:templates.organizationIDP" +
                                 ".wizardHelp.name.heading")
                         }
                     </Heading>
                     <p>
                         {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                            t("authenticationProvider:templates.organizationIDP" +
                                 ".wizardHelp.name.description")
                         }
                     </p>
@@ -67,19 +67,19 @@ const OrganizationEnterpriseIdentityProviderCreateWizardHelp:
                 <div data-testid={ testId }>
                     <Heading as="h5">
                         {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                            t("authenticationProvider:templates.organizationIDP" +
                                 ".wizardHelp.description.heading")
                         }
                     </Heading>
                     <p>
                         {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                            t("authenticationProvider:templates.organizationIDP" +
                                 ".wizardHelp.description.description")
                         }
                     </p>
                     <p>
                         {
-                            t("console:develop.features.authenticationProvider.templates.organizationIDP" +
+                            t("authenticationProvider:templates.organizationIDP" +
                                 ".wizardHelp.description.example")
                         }
                     </p>

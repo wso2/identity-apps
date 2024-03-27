@@ -150,10 +150,10 @@ export const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterfac
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                        || t("claims:local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                        || t("claims:local.notifications.getClaims.genericError.message")
                 }
             ));
         }).finally(() => {

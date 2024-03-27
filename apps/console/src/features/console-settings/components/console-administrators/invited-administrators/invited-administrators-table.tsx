@@ -375,7 +375,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={
-                            t("console:manage.features.invite.confirmationModal.deleteInvite.assertionHint")
+                            t("invite:confirmationModal.deleteInvite.assertionHint")
                         }
                         assertionType="checkbox"
                         primaryAction="Confirm"
@@ -395,17 +395,17 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.header") }
+                            { t("invite:confirmationModal.deleteInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             negative
                         >
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.message") }
+                            { t("invite:confirmationModal.deleteInvite.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
-                            { t("console:manage.features.invite.confirmationModal.deleteInvite.content") }
+                            { t("invite:confirmationModal.deleteInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

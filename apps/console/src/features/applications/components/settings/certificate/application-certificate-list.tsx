@@ -413,8 +413,8 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                 type="button"
                                             >
                                                 <Icon name="add"/>
-                                                { t("console:develop.features.authenticationProvider" +
-                                                    ".buttons.addCertificate") }
+                                                { t("authenticationProvider:" +
+                                                    "buttons.addCertificate") }
                                             </PrimaryButton>
                                         ) }
                                         data-testid={ `${testId}-empty-placeholder` }

@@ -24,14 +24,13 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
-import { UserStoreDropdownItem } from "../../../../userstores/models";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
+import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
@@ -44,6 +43,7 @@ import {
 } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
+import { UserStoreDropdownItem } from "../../../../userstores/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
@@ -212,13 +212,13 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     {
                         "data-componentid": `${ componentId }-add-existing-user-dropdown-item`,
                         key: 1,
-                        text: t("console:consoleSettings.administrators.add.options.addExistingUser"),
+                        text: t("consoleSettings:administrators.add.options.addExistingUser"),
                         value: AddAdministratorModes.AddExisting
                     },
                     {
                         "data-componentid": `${ componentId }-invite-new-user-dropdown-item`,
                         key: 2,
-                        text: t("console:consoleSettings.administrators.add.options.inviteNewUser"),
+                        text: t("consoleSettings:administrators.add.options.inviteNewUser"),
                         value: AddAdministratorModes.InviteNew
                     }
                 ];
@@ -238,7 +238,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                             className="add-administrator-dropdown-trigger"
                         >
                             <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                            { t("console:consoleSettings.administrators.add.action") }
+                            { t("consoleSettings:administrators.add.action") }
                             <Icon name="dropdown" className="add-administrator-dropdown-chevron"/>
                         </PrimaryButton>
                     ) }
@@ -268,7 +268,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                 onClick={ () => setShowAddExistingUserWizard(true) }
             >
                 <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                { t("console:consoleSettings.administrators.add.action") }
+                { t("consoleSettings:administrators.add.action") }
             </PrimaryButton>
         );
     };

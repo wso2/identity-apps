@@ -113,22 +113,22 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
                 <Grid.Column textAlign="center">
                     <List>
                         { data.supportedByDefault
-                            && generateLabels(t("console:manage.features.claims.local." +
+                            && generateLabels(t("claims:local." +
                                 "wizard.summary.supportedByDefault")) }
                         { data.required &&
-                            generateLabels(t("console:manage.features.claims.local." +
+                            generateLabels(t("claims:local." +
                                 "wizard.summary.required")) }
                         { data.readOnly &&
-                            generateLabels(t("console:manage.features.claims.local." +
+                            generateLabels(t("claims:local." +
                                 "wizard.summary.readOnly")) }
                     </List>
                 </Grid.Column>
             </Grid.Row>
-            { data.claimURI ? generateSummaryLine(t("console:manage.features.claims.local." +
+            { data.claimURI ? generateSummaryLine(t("claims:local." +
                 "wizard.summary.attributeURI"), showClaimURI()) : null }
-            { data.displayOrder ? generateSummaryLine(t("console:manage.features.claims.local." +
+            { data.displayOrder ? generateSummaryLine(t("claims:local." +
                 "wizard.summary.displayOrder"), data.displayOrder) : null }
-            { data.regEx ? generateSummaryLine(t("console:manage.features.claims.local." +
+            { data.regEx ? generateSummaryLine(t("claims:local." +
                 "wizard.summary.regEx"), data.regEx) : null }
             {
                 data.attributeMapping?.length > 0 ? generateSummaryLine("Mapped attributes",
@@ -137,11 +137,11 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>
-                                        { t("console:manage.features.claims.local." +
+                                        { t("claims:local." +
                                             "wizard.summary.userstore") }
                                     </Table.HeaderCell>
                                     <Table.HeaderCell>
-                                        { t("console:manage.features.claims.local." +
+                                        { t("claims:local." +
                                             "wizard.summary.attribute") }
                                     </Table.HeaderCell>
                                 </Table.Row>

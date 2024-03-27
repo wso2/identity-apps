@@ -89,7 +89,7 @@ export const AttributeSelectionWizardOtherDialect:
                             "subHeading"
                             )
                             : t(
-                                "console:manage.features.oidcScopes.addAttributes.description", { name: scopeName }
+                                "oidcScopes:addAttributes.description", { name: scopeName }
                             )
                         }
                     </Heading>

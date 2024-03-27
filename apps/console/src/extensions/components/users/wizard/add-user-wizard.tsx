@@ -685,11 +685,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 .then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.description"
+                            "invite:notifications.sendInvite.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.message"
+                            "invite:notifications.sendInvite.success.message"
                         )
                     }));
                     closeWizard();
@@ -703,11 +703,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description"
+                                "invite:notifications.sendInvite.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
+                                "invite:notifications.sendInvite.error.message"
                             )
                         }));
                     } else if (error.response.status === 403 &&
@@ -726,12 +726,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description",
+                                "invite:notifications.sendInvite.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
+                                "invite:notifications.sendInvite.error.message"
                             )
                         }));
                     } else {
@@ -739,11 +739,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         // Generic error message
                         dispatch(addAlert({
                             description: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                                "invite:notifications.sendInvite.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.message"
+                                "invite:notifications.sendInvite.genericError.message"
                             )
                         }));
                     }

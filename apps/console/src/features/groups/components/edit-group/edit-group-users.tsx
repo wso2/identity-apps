@@ -234,12 +234,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         >
             <Modal.Header>
                 {
-                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("roles:addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -253,7 +253,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                        t("roles:addRoleWizard.users.assignUserModal.list" +
                             ".searchPlaceholder")
                     }
                     isLoading={ isLoading }
@@ -424,7 +424,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                     setSelectedUserList);
                                             } }
                                             placeholder={
-                                                t("console:manage.features.roles.addRoleWizard." +
+                                                t("roles:addRoleWizard." +
                                                     "users.assignUserModal.list.searchPlaceholder")
                                             }
                                             floated="left"
@@ -466,10 +466,10 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                         <EmphasizedSegment>
                                             <EmptyPlaceholder
-                                                title={ t("console:manage.features.roles.edit.users.list." +
+                                                title={ t("roles:edit.users.list." +
                                                     "emptyPlaceholder.title") }
                                                 subtitle={ [
-                                                    t("console:manage.features.roles.edit.users.list." +
+                                                    t("roles:edit.users.list." +
                                                         "emptyPlaceholder.subtitles", { type: "group" })
                                                 ] }
                                                 action={
@@ -481,7 +481,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                             onClick={ handleOpenAddNewGroupModal }
                                                         >
                                                             <Icon name="plus"/>
-                                                            { t("console:manage.features.roles.edit.users.list." +
+                                                            { t("roles:edit.users.list." +
                                                                 "emptyPlaceholder.action") }
                                                         </PrimaryButton>
                                                     )

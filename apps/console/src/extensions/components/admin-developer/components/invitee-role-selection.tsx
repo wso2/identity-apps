@@ -166,15 +166,15 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
             dimmer="blurring"
         >
             <Modal.Header>
-                { t("console:manage.features.invite.rolesUpdateModal.header") }
+                { t("invite:rolesUpdateModal.header") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.invite.rolesUpdateModal.subHeader") }
+                    { t("invite:rolesUpdateModal.subHeader") }
                 </Heading>
             </Modal.Header>
             <Modal.Content>
                 <TransferComponent
                     selectionComponent
-                    searchPlaceholder={ t("console:manage.features.invite.rolesUpdateModal.searchPlaceholder") }
+                    searchPlaceholder={ t("invite:rolesUpdateModal.searchPlaceholder") }
                     handleHeaderCheckboxChange={ handleSelectAllRoleList }
                     isHeaderCheckboxChecked={ isAllRoleListSelected }
                     handleUnelectedListSearch={ handleRoleListSearch }

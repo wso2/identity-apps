@@ -71,11 +71,11 @@ export const AddAdminDeveloperWizard: FunctionComponent<AddUserWizardPropsInterf
                 .then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.description"
+                            "invite:notifications.sendInvite.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.message"
+                            "invite:notifications.sendInvite.success.message"
                         )
                     }));
                     updateInviteListWizard();
@@ -90,23 +90,23 @@ export const AddAdminDeveloperWizard: FunctionComponent<AddUserWizardPropsInterf
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description"
+                                "invite:notifications.sendInvite.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
+                                "invite:notifications.sendInvite.error.message"
                             )
                         }));
                     } else if (error.response && error.response.data && error.response.data.detail) {
                         closeWizard();
                         dispatch(addAlert({
                             description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description",
+                                "invite:notifications.sendInvite.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
+                                "invite:notifications.sendInvite.error.message"
                             )
                         }));
                     } else {
@@ -114,11 +114,11 @@ export const AddAdminDeveloperWizard: FunctionComponent<AddUserWizardPropsInterf
                         // Generic error message
                         dispatch(addAlert({
                             description: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                                "invite:notifications.sendInvite.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.message"
+                                "invite:notifications.sendInvite.genericError.message"
                             )
                         }));
                     }
@@ -142,9 +142,9 @@ export const AddAdminDeveloperWizard: FunctionComponent<AddUserWizardPropsInterf
             closeOnEscape
         >
             <Modal.Header>
-                { t("console:manage.features.invite.form.sendmail.title") }
+                { t("invite:form.sendmail.title") }
                 <Heading as="h6"
-                         subHeading>{ t("console:manage.features.invite.form.sendmail.subTitle") }</Heading>
+                         subHeading>{ t("invite:form.sendmail.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }

@@ -127,7 +127,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                 size="small"
                 data-componentid={ `${ componentId }-trigger` }
             >
-                { t("console:loginFlow.scriptEditor.secretSelector.label") }
+                { t("authenticationFlow:scriptEditor.secretSelector.label") }
             </Button>
             <Popover
                 anchorEl={ secretsDropdownAnchorEl }
@@ -160,13 +160,13 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                         >
                             <ListItemText>
                                 <Typography variant="body1">
-                                    { t("console:loginFlow.scriptEditor.secretSelector.emptyPlaceholder.header") }
+                                    { t("authenticationFlow:scriptEditor.secretSelector.emptyPlaceholder.header") }
                                 </Typography>
                                 <Divider  />
                                 <Typography variant="caption">
                                     <Trans
                                         i18nKey={
-                                            "console:loginFlow.scriptEditor.secretSelector." +
+                                            "authenticationFlow:scriptEditor.secretSelector." +
                                             "emptyPlaceholder.description"
                                         }
                                     >
@@ -226,7 +226,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                                     } }
                                     data-componentid={ `${ componentId }-create-new-secret-button` }
                                 >
-                                    { t("console:loginFlow.scriptEditor.secretSelector.actions.create.label") }
+                                    { t("authenticationFlow:scriptEditor.secretSelector.actions.create.label") }
                                 </Button>
                             )
                         }

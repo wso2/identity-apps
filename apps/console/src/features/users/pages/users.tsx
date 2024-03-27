@@ -176,12 +176,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const invitationStatusOptions: DropdownItemProps[] = [
         {
             key: 2,
-            text: t("console:manage.features.parentOrgInvitations.searchdropdown.pendingLabel"),
+            text: t("parentOrgInvitations:searchdropdown.pendingLabel"),
             value: "Pending"
         },
         {
             key: 3,
-            text: t("console:manage.features.parentOrgInvitations.searchdropdown.expiredLabel"),
+            text: t("parentOrgInvitations:searchdropdown.expiredLabel"),
             value: "Expired"
         }
     ];
@@ -643,12 +643,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }).catch((error: AxiosError) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "getConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "getConnector.genericError.message"
                     )
                 });
@@ -797,7 +797,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             dropDownOptions.push({
                 "data-componentid": `${componentId}-invite-parent-user`,
                 key: 3,
-                text: t("console:manage.features.parentOrgInvitations.addUserWizard.heading"),
+                text: t("parentOrgInvitations:addUserWizard.heading"),
                 value: UserAccountTypesMain.INTERNAL
             });
         }
@@ -899,13 +899,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         panes.push({
             componentId: "users",
-            menuItem: t("console:manage.features.parentOrgInvitations.tab.usersTab"),
+            menuItem: t("parentOrgInvitations:tab.usersTab"),
             render: renderUsersList
         });
 
         panes.push({
             componentId: "invitations",
-            menuItem: t("console:manage.features.parentOrgInvitations.tab.invitationsTab"),
+            menuItem: t("parentOrgInvitations:tab.invitationsTab"),
             render: renderInvitationsList
         });
 
@@ -945,7 +945,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             options={ invitationStatusOptions }
                             onChange={ handleAccountStatusChange }
                             text={
-                                t("console:manage.features.parentOrgInvitations.filterLabel")
+                                t("parentOrgInvitations:filterLabel")
                                 +  invitationStatusOption
                             }
                             disabled={
@@ -1045,8 +1045,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 && !isReadOnlyUserStore
                 && renderUserDropDown()
             }
-            title={ t("console:manage.pages.users.title") }
-            pageTitle={ t("console:manage.pages.users.title") }
+            title={ t("pages:users.title") }
+            pageTitle={ t("pages:users.title") }
             description={ t("extensions:manage.users.usersSubTitle") }
             data-testid={ `${ testId }-page-layout` }
         >

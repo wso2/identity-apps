@@ -330,7 +330,7 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                 backButton={ {
                     "data-testid": "user-mgt-edit-user-back-button",
                     onClick: handleBackButtonClick,
-                    text: t("console:consoleSettings.administrators.edit.backButton")
+                    text: t("consoleSettings:administrators.edit.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

@@ -103,10 +103,10 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.organizations.notifications.fetchOrganization." +
+            description: t("organizations:notifications.fetchOrganization." +
                 "genericError.message"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.organizations.notifications.fetchOrganization." +
+            message: t("organizations:notifications.fetchOrganization." +
                 "genericError.message")
         }));
     }, [ organizationFetchRequestError ]);
@@ -117,10 +117,10 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
         }
 
         dispatch(addAlert({
-            description: t("console:manage.features.organizations.notifications.fetchOrganization." +
+            description: t("organizations:notifications.fetchOrganization." +
                 "error.description"),
             level: AlertLevels.ERROR,
-            message: t("console:manage.features.organizations.notifications.fetchOrganization." +
+            message: t("organizations:notifications.fetchOrganization." +
                 "error.message")
         }));
     }, [ organizationDiscoveryAttributesFetchRequestError ]);
@@ -131,9 +131,9 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
 
     return (
         <PageLayout
-            title={ organization?.name ?? t("console:manage.features.organizationDiscovery.title") }
-            pageTitle={ organization?.name ?? t("console:manage.features.organizationDiscovery.title") }
-            description={ t("console:manage.features.organizationDiscovery.edit.description") }
+            title={ organization?.name ?? t("organizationDiscovery:title") }
+            pageTitle={ organization?.name ?? t("organizationDiscovery:title") }
+            description={ t("organizationDiscovery:edit.description") }
             image={ (
                 <GenericIcon
                     defaultIcon
@@ -146,7 +146,7 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
             backButton={ {
                 "data-componentid": "org-email-domains-edit-org-back-button",
                 onClick: goBackToOrganizationListWithDomains,
-                text: t("console:manage.features.organizationDiscovery.edit.back")
+                text: t("organizationDiscovery:edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

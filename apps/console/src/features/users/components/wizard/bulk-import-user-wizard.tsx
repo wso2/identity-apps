@@ -426,14 +426,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     description:
                         error?.response?.data?.description ||
                         t(
-                            "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            "claims:dialects.notifications.fetchDialects" +
                             ".genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.response?.data?.message ||
                         t(
-                            "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            "claims:dialects.notifications.fetchDialects" +
                             ".genericError.message"
                         )
                 })
@@ -486,14 +486,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     description:
                         error[0]?.response?.data?.description ||
                         t(
-                            "console:manage.features.claims.dialects.notifications." +
+                            "claims:dialects.notifications." +
                                 "fetchExternalClaims.genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error[0]?.response?.data?.message ||
                         t(
-                            "console:manage.features.claims.dialects.notifications." +
+                            "claims:dialects.notifications." +
                                 "fetchExternalClaims.genericError.message"
                         )
                 })

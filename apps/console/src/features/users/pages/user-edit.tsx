@@ -203,9 +203,9 @@ const UserEditPage = (): ReactElement => {
 
     const getBackButtonText = (): string => {
         if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
-            return t("console:manage.pages.usersEdit.backButton", { type: "Administrators" });
+            return t("pages:usersEdit.backButton", { type: "Administrators" });
         } else {
-            return t("console:manage.pages.usersEdit.backButton", { type: "Users" });
+            return t("pages:usersEdit.backButton", { type: "Users" });
         }
     };
 

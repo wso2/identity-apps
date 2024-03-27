@@ -61,7 +61,7 @@ const SMSOTPFragment = (props: SMSOTPFragmentPropsInterface): ReactElement => {
     return (
         <div className="sms-otp-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
-                { t("console:loginFlow.nodes.smsOTP.header") }
+                { t("authenticationFlow:nodes.smsOTP.header") }
             </Typography>
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
@@ -69,10 +69,10 @@ const SMSOTPFragment = (props: SMSOTPFragmentPropsInterface): ReactElement => {
                         toRemove: IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
                     });
                 } }
-                optionRemoveTooltipContent={ t("console:loginFlow.nodes.smsOTP.controls.optionRemoveTooltipContent") }
+                optionRemoveTooltipContent={ t("authenticationFlow:nodes.smsOTP.controls.optionRemoveTooltipContent") }
             >
                 <Typography align="left" className="oxygen-sign-in-sub-header" variant="subtitle1">
-                    { t("console:loginFlow.nodes.smsOTP.form.fields.code.label") }
+                    { t("authenticationFlow:nodes.smsOTP.form.fields.code.label") }
                 </Typography>
                 <div className="pin-code-input-fields">
                     { [ ...Array(6) ].map((_: number, index: number) => (
@@ -95,7 +95,7 @@ const SMSOTPFragment = (props: SMSOTPFragmentPropsInterface): ReactElement => {
                     type="submit"
                     fullWidth
                 >
-                    { t("console:loginFlow.nodes.smsOTP.form.actions.primary") }
+                    { t("authenticationFlow:nodes.smsOTP.form.actions.primary") }
                 </Button>
                 <Button
                     color="secondary"
@@ -103,7 +103,7 @@ const SMSOTPFragment = (props: SMSOTPFragmentPropsInterface): ReactElement => {
                     className="oxygen-sign-in-cta non-interactive"
                     fullWidth
                 >
-                    { t("console:loginFlow.nodes.smsOTP.form.actions.secondary") }
+                    { t("authenticationFlow:nodes.smsOTP.form.actions.secondary") }
                 </Button>
             </div>
         </div>

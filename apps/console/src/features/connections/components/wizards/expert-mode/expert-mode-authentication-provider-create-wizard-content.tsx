@@ -146,7 +146,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             };
 
             if (!values.name) {
-                errors.name = t("console:develop.features.authenticationProvider.forms.common" +
+                errors.name = t("authenticationProvider:forms.common" +
                 ".requiredErrorMessage");
             }
 
@@ -174,11 +174,11 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                         inputType="name"
                         name="name"
                         label={
-                            t("console:develop.features.authenticationProvider.forms." +
+                            t("authenticationProvider:forms." +
                             "generalDetails.name.label")
                         }
                         placeholder={
-                            t("console:develop.features.authenticationProvider.forms." +
+                            t("authenticationProvider:forms." +
                             "generalDetails.name.placeholder")
                         }
                         required={ true }
@@ -187,8 +187,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                             () => {
                                 if (isUserInputIdpNameAlreadyTaken) {
                                     return t(
-                                        "console:develop.features." +
-                                        "authenticationProvider.forms.generalDetails.name." +
+                                        "authenticationProvider:forms.generalDetails.name." +
                                         "validations.duplicate"
                                     );
                                 }
@@ -212,11 +211,11 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                         inputType="description"
                         name="description"
                         label={
-                            t("console:develop.features.authenticationProvider.forms." +
+                            t("authenticationProvider:forms." +
                             "generalDetails.description.label")
                         }
                         placeholder={
-                            t("console:develop.features.authenticationProvider.forms." +
+                            t("authenticationProvider:forms." +
                             "generalDetails.description.placeholder")
                         }
                         required={ false }

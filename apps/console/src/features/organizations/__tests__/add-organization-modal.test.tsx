@@ -83,7 +83,7 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
         fireEvent.click(screen.getByTestId("organization-create-wizard-next-button"));
 
         expect(
-            await screen.findByText("console:manage.features.organizations.forms.addOrganization.name.validation.empty")
+            await screen.findByText("organizations:forms.addOrganization.name.validation.empty")
         ).toBeInTheDocument();
     });
 

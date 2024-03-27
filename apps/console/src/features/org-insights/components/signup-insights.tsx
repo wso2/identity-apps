@@ -32,10 +32,10 @@ export const SignupInsights: FunctionComponent = () => {
                 <InsightsGraph
                     hint={ (
                         <Hint icon="question circle" popup inline className="org-insights-mau-tooltip">
-                            { t("console:manage.features.insights.graphs.signups.titleHint") }
+                            { t("insights:graphs.signups.titleHint") }
                         </Hint>
                     ) }
-                    graphTitle={ t("console:manage.features.insights.graphs.signups.title") }
+                    graphTitle={ t("insights:graphs.signups.title") }
                     resourceType={ ResourceType.USER_REGISTRATION }
                     data-componentid="org-insights-signup-graph"
                 />

@@ -234,7 +234,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 12 } verticalAlign="middle">
-                                        <h5> { t("console:manage.features.organizations.title") } </h5>
+                                        <h5> { t("organizations:title") } </h5>
                                     </Grid.Column>
                                     <Grid.Column width={ 4 }>
                                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
@@ -268,7 +268,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                                 event.stopPropagation();
                                             } }
                                             placeholder={ t(
-                                                "console:manage.features.organizations.switching.search.placeholder"
+                                                "organizations:switching.search.placeholder"
                                             ) }
                                             floated="right"
                                             size="small"

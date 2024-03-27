@@ -558,7 +558,7 @@ const ConsumerUserEditPage = (): ReactElement => {
                     backButton={ {
                         "data-testid": "user-mgt-edit-user-back-button",
                         onClick: handleBackButtonClick,
-                        text: t("console:manage.pages.usersEdit.backButton", { type: "Users" })
+                        text: t("pages:usersEdit.backButton", { type: "Users" })
                     } }
                     titleTextAlign="left"
                     bottomMargin={ false }

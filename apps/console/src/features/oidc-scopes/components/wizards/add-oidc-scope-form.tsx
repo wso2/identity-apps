@@ -95,11 +95,11 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                     const errors:any = {};
 
                     if (!values.scopeName && !initialValues?.scopeName) {
-                        errors.scopeName = t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                        errors.scopeName = t("oidcScopes:forms.addScopeForm.inputs." +
                         "scopeName.validations.empty");
                     }
                     if (!values.displayName && !initialValues?.displayName) {
-                        errors.displayName = t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                        errors.displayName = t("oidcScopes:forms.addScopeForm.inputs." +
                         "displayName.validations.empty");
                     }
 
@@ -111,19 +111,19 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                     ariaLabel="scopeName"
                     inputType="name"
                     name="scopeName"
-                    label={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs.scopeName.label") }
+                    label={ t("oidcScopes:forms.addScopeForm.inputs.scopeName.label") }
                     required={ true }
-                    requiredErrorMessage={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    requiredErrorMessage={ t("oidcScopes:forms.addScopeForm.inputs." +
                         "scopeName.validations.empty") }
-                    placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    placeholder={ t("oidcScopes:forms.addScopeForm.inputs." +
                         "scopeName.placeholder") }
                     validation={ (value: string) => {
                         if (scopeList?.find((item: OIDCScopesListInterface) => item.name === value)) {
-                            return t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                            return t("oidcScopes:forms.addScopeForm.inputs." +
                                 "scopeName.validations.duplicate");
                         }
                         else if (!value.toString().match(/^[\w.-]+$/)) {
-                            return t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                            return t("oidcScopes:forms.addScopeForm.inputs." +
                                 "scopeName.validations.invalid");
                         }
                     } }
@@ -136,12 +136,12 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                     inputType="resource_name"
                     data-testid={ `${ testId }-oidc-scope-form-name-input` }
                     name="displayName"
-                    label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                    label={ t("oidcScopes:forms.addScopeForm." +
                         "inputs.displayName.label") }
                     required={ true }
-                    message={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    message={ t("oidcScopes:forms.addScopeForm.inputs." +
                         "displayName.validations.empty") }
-                    placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    placeholder={ t("oidcScopes:forms.addScopeForm.inputs." +
                         "displayName.placeholder") }
                     maxLength={ SCOPE_DISPLAY_NAME_MAX_LENGTH }
                     minLength={ 3 }
@@ -152,10 +152,10 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                     ariaLabel="description"
                     inputType="description"
                     name="description"
-                    label={ t("console:manage.features.oidcScopes.forms.addScopeForm." +
+                    label={ t("oidcScopes:forms.addScopeForm." +
                         "inputs.description.label") }
                     required={ false }
-                    placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                    placeholder={ t("oidcScopes:forms.addScopeForm.inputs." +
                         "description.placeholder") }
                     maxLength={ SCOPE_DESCRIPTION_MAX_LENGTH }
                     minLength={ 3 }

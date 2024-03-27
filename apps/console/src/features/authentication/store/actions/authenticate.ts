@@ -103,6 +103,7 @@ export const getProfileInformation = (
                     givenName: decodedToken.given_name ?? ""
                 },
                 profileUrl: decodedToken.profile,
+                userId: decodedToken.userid ?? "",
                 userName: decodedToken.username
             };
 

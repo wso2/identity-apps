@@ -60,7 +60,7 @@ import {
  * Optionally you can pass this key to {@link useTranslation}
  * to avoid concatenate strings.
  */
-const I18N_TARGET_KEY: string = "console:develop.features.authenticationProvider.forms.authenticatorSettings.saml";
+const I18N_TARGET_KEY: string = "authenticationProvider:forms.authenticatorSettings.saml";
 
 /**
  * SamlSettingsForm Properties interface. The data-testid is added in

@@ -135,7 +135,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 description: resolveConnectorUpdateSuccessMessage(),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "console:manage.features.governanceConnectors.notifications." + "updateConnector.success.message"
+                    "governanceConnectors:notifications." + "updateConnector.success.message"
                 )
             })
         );
@@ -148,7 +148,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     description: resolveConnectorUpdateErrorMessage(error),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications.updateConnector.error.message"
+                        "governanceConnectors:notifications.updateConnector.error.message"
                     )
                 })
             );
@@ -157,12 +157,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.governanceConnectors.notifications." +
+                        "governanceConnectors:notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -335,13 +335,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -351,12 +351,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -394,7 +394,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const resolveConnectorDescription = (connector: GovernanceConnectorInterface): string | React.ReactNode => {
         switch (connector?.id) {
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading");
+                return (<>
+                    { t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading") }
+                    <DocumentationLink link={ getLink("manage.loginSecurity.loginAttempts.learnMore") }>
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>);
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
                     ? "Enable self-service username recovery for users on the login page." +
@@ -408,7 +413,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         </div>
                     );
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading");
+                return (<>
+                    { t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading") }
+                    <DocumentationLink link={ getLink("manage.loginSecurity.botDetection.learnMore") }>
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>);
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return (
                     <>
@@ -419,7 +429,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         >
                             When self registration is enabled, users can register via the
                             <strong>
-                                Create an account
+                                Register
                             </strong> link on the application’s Login page. This creates a new{ " " }
                             <strong>user</strong> account in the organization.
                         </Trans>
@@ -441,7 +451,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return connector?.description
                     ? connector.description
                     : connector?.friendlyName &&
-                    t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                    t("governanceConnectors:connectorSubHeading", {
                         name: connector?.friendlyName
                     });
         }
@@ -483,7 +493,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 );
             default:
                 return t(
-                    "console:manage.features.governanceConnectors.notifications.updateConnector.success.description",
+                    "governanceConnectors:notifications.updateConnector.success.description",
                     { name: connector.friendlyName }
                 );
         }
@@ -520,7 +530,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 );
             default:
                 return t(
-                    "console:manage.features.governanceConnectors.notifications.updateConnector.error.description",
+                    "governanceConnectors:notifications.updateConnector.error.description",
                     { description: error.response.data.description }
                 );
         }
@@ -642,7 +652,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             backButton={ enableBackButton && {
                 "data-testid": `${ testId }-${ connectorId }-page-back-button`,
                 onClick: () => handleBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
