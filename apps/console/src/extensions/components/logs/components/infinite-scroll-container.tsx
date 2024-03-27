@@ -83,7 +83,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
 
     const { t } = useTranslation();
     const [ activeIndex, setActiveIndex ] = useState<number[]>([ -1 ]);
-    const [ view, setView ] = useState<boolean>(false);
+    const [ isViewModalOpen, setisViewModalOpenl ] = useState<boolean>(false);
     const [ currentLog, setCurrentLog ] = useState<InterfaceLogEntry>();
 
     useEffect(() => {
@@ -112,16 +112,25 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         setActiveIndex(tempIndexArr);
     };
 
-    function handleLogDataViewClose(): void {
-        setView(false);
+    /**
+     * Handles the LogData View panel close
+    */
+    const handleLogDataViewClose= (): void => {
+        setisViewModalOpenl(false);
         setCurrentLog(null);
-    }
-
-    const handleLogDataView = (logObject: InterfaceLogEntry) => {
-        setCurrentLog(logObject);
-        setView(true);
     };
 
+    /**
+     * Handles the LogData View panel open
+    */
+    const handleLogDataViewOpen = (logObject: InterfaceLogEntry) => {
+        setCurrentLog(logObject);
+        setisViewModalOpenl(true);
+    };
+
+    /**
+     * Handles the download of the data of current log.
+    */
     const exportDataOfLog = (logObject : InterfaceLogEntry) => {
         const blob: Blob = new Blob( [ JSON.stringify(logObject["data"], null, 2) ],
             { type: "application/json" });
@@ -129,6 +138,9 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         saveAs(blob, "log_data_" + logObject["id"] + ".json");
     };
 
+    /**
+     * Handles the LogData copy
+    */
     const copyCurrentLog = () => {
         navigator.clipboard.writeText(JSON.stringify(currentLog["data"], null, 2));
     };
@@ -240,7 +252,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                     <Link
                                         data-testid={ `${ componentId }-${ logObject["id"] }-view-data-button` }
                                         underline="hover"
-                                        onClick={ () => handleLogDataView(logObject) }
+                                        onClick={ () => handleLogDataViewOpen(logObject) }
                                     >
                                         <EyeIcon  className="topic"/>
                                         { t("extensions:develop.monitor.filter.viewButton.label") }
@@ -493,13 +505,13 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         </div>
                     )) }
                 </Accordion>
-                { view  &&  (
+                { isViewModalOpen  &&  (
                     <Suspense fallback={ <CircularProgress /> }>
                         <div className="log-data-viewer-panel">
                             <Modal
                                 aria-labelledby="transition-modal-title"
                                 aria-describedby="transition-modal-description"
-                                open={ view }
+                                open={ isViewModalOpen }
                                 onClose={ handleLogDataViewClose }
                             >
                                 <Box className="full-screen-log-data-viewer-container">

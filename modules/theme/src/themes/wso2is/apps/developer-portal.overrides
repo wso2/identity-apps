@@ -1594,7 +1594,6 @@ TODO : Move values to separate variables and cleanup styles.
                 margin-right: 30px;
             }
         }
-
     }
 
     .log-row {
@@ -1720,7 +1719,6 @@ TODO : Move values to separate variables and cleanup styles.
         >.log-desc-loader {
 		    width: 70%;
 	    }
-
     }
 
     .log-targetId-container {
