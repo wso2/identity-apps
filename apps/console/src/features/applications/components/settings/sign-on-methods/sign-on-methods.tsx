@@ -69,6 +69,9 @@ import {
     additionalSpProperty
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
+import LoginFLowAIComponent from "../../../../ai/components/login-flow-input";
+import LoadingScreen from "../../../../ai/components/loading-screen";
+import { BannerState } from "../../../../ai/models/banner-state";
 
 /**
  * Proptypes for the sign on methods component.
@@ -181,6 +184,18 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     ] = useState<"INTERNAL" | "EXTERNAL">(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+     /*
+    States for AI powered login flow generation.
+    */
+
+    //Defining the state to hold whether user has requested AI powered login flow generation.
+    const [isAILoginFLowRequested, setIsAILoginFLowRequested ] = useState(false);
+
+    //Defining the state to hold the trace_id for the login  flow generation request.
+    const [traceId, setTraceId ] = useState<string>("");
+
+    //Defining the state to hold the AI login flow banner state
+    const [loginFlowBannerState, setLoginFlowBannerState] = useState(BannerState.Full);
 
     /**
      * Loads federated authenticators and local authenticators on component load.
@@ -595,6 +610,35 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         return modifiedSequenceTemplate;
     };
 
+    /*
+    Function to handle the AI powered login flow generation request. 
+    */
+   
+    //Define the callback function to get the response from the AI powered login flow generation component.
+    const handleAILoginFlowGenerationResponse = (generatedLoginFlow:any) => {
+        // construct a new authentication sequence object with the generated login flow.
+        const temp: AuthenticationSequenceInterface = authenticationSequence;
+        temp.attributeStepId = generatedLoginFlow.authenticationSequence.attributeStepId;
+        temp.requestPathAuthenticators = [];
+        temp.steps = generatedLoginFlow.authenticationSequence.steps;  
+        temp.script = generatedLoginFlow.script;
+        temp.type = generatedLoginFlow.type;
+        temp.subjectStepId = generatedLoginFlow.subjectStepId;
+        setModeratedAuthenticationSequence(temp);
+    };
+
+    //Define the callback function to be passed to the AI powered login flow generation component.
+    const handleAILoginFlowGenerationProgress = (traceId: string) => {
+        setTraceId(traceId);
+        setIsAILoginFLowRequested(true);
+        setLoginFlowBannerState(BannerState.Collapsed);
+    };
+    
+    //Define the callback function to handle loadingScreen rendering
+    const handleLoadingScreen = () => {
+        setIsAILoginFLowRequested(false);
+    };
+
     /**
      * Shows the missing google authenticator modal.
      *
@@ -871,81 +915,98 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     };
 
     return (
-        <AuthenticationFlowProvider
-            application={ cloneDeep(application) }
-            isSystemApplication={ isSystemApplication }
-            authenticators={ authenticators }
-            hiddenAuthenticators={ hiddenAuthenticators }
-            onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
-            onUpdate={ onUpdate }
-            isLoading={ isAuthenticatorsFetchRequestLoading }
-            readOnly={ readOnly }
-        >
-            <AuthenticationFlowBuilder
-                legacyBuilder={ (
-                    <>
-                        { !(isLoading || isAuthenticatorsFetchRequestLoading) ? (
-                            !readOnly && !loginFlow && isDefaultFlowConfiguration() ? (
-                                <SignInMethodLanding
-                                    readOnly={ readOnly }
-                                    clientId={ clientId }
-                                    onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                        handleLoginFlowSelect(
-                                            type,
-                                            googleAuthenticators,
-                                            gitHubAuthenticators,
-                                            facebookAuthenticators,
-                                            microsoftAuthenticators,
-                                            appleAuthenticators
-                                        );
-                                    } }
-                                    data-componentid={ `${componentId}-landing` }
-                                />
-                            ) : (
-                                <SignInMethodCustomization
-                                    appId={ appId }
-                                    applicationName={ application?.name }
-                                    isApplicationShared={ isApplicationShared }
-                                    authenticators={ authenticators }
-                                    clientId={ clientId }
-                                    authenticationSequence={ moderatedAuthenticationSequence }
-                                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                                        setSelectedIDPTemplate(template);
-                                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                                        setIDPTemplateTypeToTrigger(type);
-                                        setShowMissingSocialAuthenticatorModal(false);
-                                        setShowIDPCreateWizard(true);
-                                        broadcastIDPCreateSuccessMessage = cb;
-                                    } }
-                                    onUpdate={ onUpdate }
-                                    onReset={ handleLoginFlowReset }
-                                    data-componentid={ componentId }
-                                    isLoading={ isAuthenticatorsFetchRequestLoading }
-                                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
-                                    readOnly={ readOnly }
-                                />
-                            )
-                        ) : (
-                            <ContentLoader inline="centered" active />
-                        ) }
-                    </>
-                ) }
-                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                    setSelectedIDPTemplate(template);
-                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                    setIDPTemplateTypeToTrigger(type);
-                    setShowMissingSocialAuthenticatorModal(false);
-                    setShowIDPCreateWizard(true);
-                    broadcastIDPCreateSuccessMessage = cb;
-                } }
-                readOnly={ readOnly }
-            />
-            { showIDPCreateWizard && renderIDPCreateWizard() }
-            { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
-            { showDuplicateSocialAuthenticatorSelectionModal &&
-                renderDuplicateSocialAuthenticatorSelectionModal() }
-        </AuthenticationFlowProvider>
-    );
+        <>  
+            {!isAILoginFLowRequested && (
+                <>
+                    <LoginFLowAIComponent onGenerateClick={handleAILoginFlowGenerationProgress} onGenerate={handleAILoginFlowGenerationResponse} aiBannerState={loginFlowBannerState} onComplete ={handleLoadingScreen}/>
+                    <AuthenticationFlowProvider
+                    application={ cloneDeep(application) }
+                    isSystemApplication={ isSystemApplication }
+                    authenticators={ authenticators }
+                    hiddenAuthenticators={ hiddenAuthenticators }
+                    onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
+                    onUpdate={ onUpdate }
+                    isLoading={ isAuthenticatorsFetchRequestLoading }
+                    readOnly={ readOnly }
+                    >   
+                        <AuthenticationFlowBuilder
+                            legacyBuilder={ (
+                                <>
+                                    { !(isLoading || isAuthenticatorsFetchRequestLoading) ? (
+                                        !readOnly && !loginFlow && isDefaultFlowConfiguration() ? (
+                                            <SignInMethodLanding
+                                                readOnly={ readOnly }
+                                                clientId={ clientId }
+                                                onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                                                    handleLoginFlowSelect(
+                                                        type,
+                                                        googleAuthenticators,
+                                                        gitHubAuthenticators,
+                                                        facebookAuthenticators,
+                                                        microsoftAuthenticators,
+                                                        appleAuthenticators
+                                                    );
+                                                } }
+                                                data-componentid={ `${componentId}-landing` }
+                                            />
+        
+                                        ) : (
+                                            <SignInMethodCustomization
+                                                appId={ appId }
+                                                applicationName={ application?.name }
+                                                isApplicationShared={ isApplicationShared }
+                                                authenticators={ authenticators }
+                                                clientId={ clientId }
+                                                authenticationSequence={ moderatedAuthenticationSequence }
+                                                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                                                    setSelectedIDPTemplate(template);
+                                                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                                                    setIDPTemplateTypeToTrigger(type);
+                                                    setShowMissingSocialAuthenticatorModal(false);
+                                                    setShowIDPCreateWizard(true);
+                                                    broadcastIDPCreateSuccessMessage = cb;
+                                                } }
+                                                onUpdate={ onUpdate }
+                                                onReset={ handleLoginFlowReset }
+                                                data-componentid={ componentId }
+                                                isLoading={ isAuthenticatorsFetchRequestLoading }
+                                                setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
+                                                readOnly={ readOnly }
+                                            />
+                                        )
+                                    ) : (
+                                        <ContentLoader inline="centered" active />
+                                    ) }
+                                </>
+                            ) }
+                            onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                                setSelectedIDPTemplate(template);
+                                setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                                setIDPTemplateTypeToTrigger(type);
+                                setShowMissingSocialAuthenticatorModal(false);
+                                setShowIDPCreateWizard(true);
+                                broadcastIDPCreateSuccessMessage = cb;
+                            } }
+                            readOnly={ readOnly }
+                        />
+    
+                    { showIDPCreateWizard && renderIDPCreateWizard() }
+                    { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }
+                    { showDuplicateSocialAuthenticatorSelectionModal &&
+                        renderDuplicateSocialAuthenticatorSelectionModal() }
+                    </AuthenticationFlowProvider>
+    
+                </>
+            )} 
+            {isAILoginFLowRequested && (
+                <>
+                    <LoadingScreen traceId={traceId}/>
+                </>
+            )}  
+                    
+        </>  
+            
+        );
 };
 
 /**

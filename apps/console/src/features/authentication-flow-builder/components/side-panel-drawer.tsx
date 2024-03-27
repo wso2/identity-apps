@@ -104,7 +104,7 @@ const SidePanelDrawer = (props: PropsWithChildren<SidePanelDrawerPropsInterface>
                     open={ isDrawerOpen }
                     PaperProps={ {
                         className: classNames("side-panel-drawer", { open: isDrawerOpen }, className),
-                        style: { position: "absolute" }
+                        style: { position: "relative" }
                     } }
                     BackdropProps={ { style: { position: "absolute" } } }
                     ModalProps={ {
