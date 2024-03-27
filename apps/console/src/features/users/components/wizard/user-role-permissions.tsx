@@ -91,7 +91,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
             <>
                 <Heading as="h5">
                     {
-                        t("console:manage.features.user.updateUser.roles.viewPermissionModal.heading",
+                        t("user:updateUser.roles.viewPermissionModal.heading",
                             { role: role.displayName })
                     }
                 </Heading>
@@ -102,7 +102,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                     onClick={ handleNavigateBack }
                 >
                     <Icon name="arrow left"/>
-                    { t("console:manage.features.user.updateUser.roles.viewPermissionModal.backButton") }
+                    { t("user:updateUser.roles.viewPermissionModal.backButton") }
                 </LinkButton>
                 <Divider hidden/>
                 <Divider hidden/>

@@ -363,10 +363,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.groups.unselected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                            "transferList.list.emptyPlaceholders.default") }
+                        emptyPlaceholderDefaultContent={ t(
+                            "transferList:list.emptyPlaceholders.default") }
                     >
                         {
                             usersList?.map((user: UserBasicInterface, index: number)=> {
@@ -396,10 +396,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.groups.selected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                            "transferList.list.emptyPlaceholders.default") }
+                        emptyPlaceholderDefaultContent={ t(
+                            "transferList:list.emptyPlaceholders.default") }
                     >
                         {
                             tempUserList?.map((user: UserBasicInterface, index: number)=> {
@@ -570,10 +570,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                                         data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                             "emptyPlaceholders.groups.unselected", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                                            "transferList.list.emptyPlaceholders.default") }
+                                        emptyPlaceholderDefaultContent={ t(
+                                            "transferList:list.emptyPlaceholders.default") }
                                     >
                                         {
                                             usersList?.map((user: UserBasicInterface, index: number)=> {
@@ -604,10 +604,10 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         handleHeaderCheckboxChange={ selectAllAssignedList }
                                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                                         data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                             "emptyPlaceholders.groups.selected", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features." + 
-                                            "transferList.list.emptyPlaceholders.default") }
+                                        emptyPlaceholderDefaultContent={ t(
+                                            "transferList:list.emptyPlaceholders.default") }
                                     >
                                         {
                                             tempUserList?.map((user: UserBasicInterface, index: number)=> {

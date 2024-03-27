@@ -93,7 +93,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const { getLink } = useDocumentation();
 
     // Username input validation error messages.
-    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("console:manage.features.users.guestUsers.fields." +
+    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("users:guestUsers.fields." +
         "username.validations.regExViolation");
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -328,7 +328,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                         : t("extensions:manage.users.wizard.addAdmin.internal.emptySearchResultsPlaceholder")
                     }
                     data-componentid={ `${ componentId }-unselected-transfer-list` }
-                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                    emptyPlaceholderDefaultContent={ t("transferList:list."
                         + "emptyPlaceholders.default") }
                 >
                     {
@@ -393,16 +393,16 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                 <Field
                                     data-componentid={ `${ componentId }-external-form-email-input` }
                                     label={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.email.label"
+                                        "user:forms.addUserForm.inputs.email.label"
                                     ) }
                                     name="email"
                                     placeholder={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs." +
+                                        "user:forms.addUserForm.inputs." +
                                         "email.placeholder"
                                     ) }
                                     required={ true }
                                     requiredErrorMessage={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
+                                        "user:forms.addUserForm.inputs.email.validations.empty"
                                     ) }
                                     validation={ (value: string, validation: Validation) => {
                                         // Check whether username is a valid email.
@@ -429,7 +429,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                     name="role"
                                     children={ userRoleOptions }
                                     requiredErrorMessage={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
+                                        "user:forms.addUserForm.inputs.domain.validations.empty"
                                     ) }
                                     required={ true }
                                     value={ userRoleOptions[0]?.value }

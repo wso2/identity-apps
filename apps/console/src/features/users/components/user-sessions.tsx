@@ -153,7 +153,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.users.userSessions.notifications.getUserSessions.error.message"
+                            "users:userSessions.notifications.getUserSessions.error.message"
                         )
                     }));
 
@@ -161,11 +161,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.users.userSessions.notifications.getUserSessions." +
+                    description: t("users:userSessions.notifications.getUserSessions." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.users.userSessions.notifications.getUserSessions." +
+                        "users:userSessions.notifications.getUserSessions." +
                         "genericError.message"
                     )
                 }));
@@ -352,7 +352,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column width={ 5 }>
                                     {
-                                        t("console:manage.features.users.userSessions.components.sessionDetails" +
+                                        t("users:userSessions.components.sessionDetails" +
                                             ".labels.os")
                                     }
                                 </Grid.Column>
@@ -369,7 +369,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column width={ 5 }>
                                     {
-                                        t("console:manage.features.users.userSessions.components.sessionDetails" +
+                                        t("users:userSessions.components.sessionDetails" +
                                             ".labels.browser")
                                     }
                                 </Grid.Column>
@@ -386,7 +386,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column width={ 5 }>
                                     {
-                                        t("console:manage.features.users.userSessions.components.sessionDetails" +
+                                        t("users:userSessions.components.sessionDetails" +
                                             ".labels.ip")
                                     }
                                 </Grid.Column>
@@ -400,7 +400,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                         <Grid.Row columns={ 2 }>
                                             <Grid.Column width={ 5 }>
                                                 {
-                                                    t("console:manage.features.users.userSessions.components" +
+                                                    t("users:userSessions.components" +
                                                         ".sessionDetails.labels.deviceModel")
                                                 }
                                             </Grid.Column>
@@ -418,7 +418,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column width={ 5 }>
                                     {
-                                        t("console:manage.features.users.userSessions.components" +
+                                        t("users:userSessions.components" +
                                             ".sessionDetails.labels.loginTime")
                                     }
                                 </Grid.Column>
@@ -431,7 +431,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column width={ 5 }>
                                     {
-                                        t("console:manage.features.users.userSessions.components" +
+                                        t("users:userSessions.components" +
                                             ".sessionDetails.labels.lastAccessed", {
                                             date: ""
                                         })
@@ -449,7 +449,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                         <Grid.Row columns={ 2 }>
                                             <Grid.Column width={ 5 }>
                                                 {
-                                                    t("console:manage.features.users.userSessions.components" +
+                                                    t("users:userSessions.components" +
                                                         ".sessionDetails.labels.activeApplication")
                                                 }
                                             </Grid.Column>
@@ -479,13 +479,13 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                         <Show when={ AccessControlConstants.USER_EDIT }>
                                             <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                                                 <DangerZone
-                                                    actionTitle={ t("console:manage.features.users.userSessions." +
+                                                    actionTitle={ t("users:userSessions." +
                                                         "dangerZones.terminate." +
                                                         "actionTitle") }
                                                     header={
-                                                        t("console:manage.features.users.userSessions.dangerZones." +
+                                                        t("users:userSessions.dangerZones." +
                                                         "terminate.header") }
-                                                    subheader={ t("console:manage.features.users.userSessions." +
+                                                    subheader={ t("users:userSessions." +
                                                         "dangerZones.terminate.subheader") }
                                                     onActionClick={ () => {
                                                         setTerminatingSession(session);
@@ -518,12 +518,12 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
+                        "users:userSessions.notifications.terminateAllUserSessions." +
                         "success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
+                        "users:userSessions.notifications.terminateAllUserSessions." +
                         "success.message"
                     )
                 }));
@@ -538,7 +538,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.userSessions.notifications" +
+                        message: t("users:userSessions.notifications" +
                             ".terminateAllUserSessions.error.message")
                     }));
 
@@ -547,12 +547,12 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
 
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
+                        "users:userSessions.notifications.terminateAllUserSessions." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.users.userSessions.notifications.terminateAllUserSessions." +
+                        "users:userSessions.notifications.terminateAllUserSessions." +
                         "genericError.message"
                     )
                 }));
@@ -574,11 +574,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         terminateUserSession(user.id, sessionId)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.users.userSessions.notifications.terminateUserSession." +
+                    description: t("users:userSessions.notifications.terminateUserSession." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.users.userSessions.notifications.terminateUserSession." +
+                        "users:userSessions.notifications.terminateUserSession." +
                         "success.message"
                     )
                 }));
@@ -591,7 +591,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.userSessions.notifications" +
+                        message: t("users:userSessions.notifications" +
                             ".terminateUserSession.error.message")
                     }));
 
@@ -599,11 +599,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:manage.features.users.userSessions.notifications.terminateUserSession." +
+                    description: t("users:userSessions.notifications.terminateUserSession." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.users.userSessions.notifications.terminateUserSession." +
+                        "users:userSessions.notifications.terminateUserSession." +
                         "genericError.message"
                     )
                 }));
@@ -662,7 +662,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                 <List.Description>
                                                     <Text size={ 11 }>
                                                         {
-                                                            t("console:manage.features.users.userSessions." +
+                                                            t("users:userSessions." +
                                                                 "components.sessionDetails.labels.lastAccessed",
                                                             {
                                                                 date: moment(
@@ -710,7 +710,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
                                         >
                                             {
-                                                t("console:manage.features.users.userSessions." +
+                                                t("users:userSessions." +
                                                     "components.sessionDetails.actions.terminateAllSessions")
                                             }
                                         </DangerButton>
@@ -742,9 +742,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     }
                                     assertion={ getUsername(user.userName) }
                                     assertionHint={ showSessionTerminateConfirmationModal
-                                        ? t("console:manage.features.users.confirmations." +
+                                        ? t("users:confirmations." +
                                         "terminateSession.assertionHint")
-                                        : t("console:manage.features.users.confirmations." +
+                                        : t("users:confirmations." +
                                         "terminateAllSessions.assertionHint") }
                                     assertionType="checkbox"
                                     primaryAction={ t("common:confirm") }
@@ -785,9 +785,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     >
                                         {
                                             showSessionTerminateConfirmationModal
-                                                ? t("console:manage.features.users.confirmations." +
+                                                ? t("users:confirmations." +
                                                 "terminateSession.header")
-                                                : t("console:manage.features.users.confirmations." +
+                                                : t("users:confirmations." +
                                                 "terminateAllSessions.header")
                                         }
                                     </ConfirmationModal.Header>
@@ -802,9 +802,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     >
                                         {
                                             showSessionTerminateConfirmationModal
-                                                ? t("console:manage.features.users.confirmations." +
+                                                ? t("users:confirmations." +
                                                 "terminateSession.message")
-                                                : t("console:manage.features.users.confirmations." +
+                                                : t("users:confirmations." +
                                                 "terminateAllSessions.message")
                                         }
                                     </ConfirmationModal.Message>
@@ -817,9 +817,9 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     >
                                         {
                                             showSessionTerminateConfirmationModal
-                                                ? t("console:manage.features.users.confirmations." +
+                                                ? t("users:confirmations." +
                                                 "terminateSession.content")
-                                                : t("console:manage.features.users.confirmations." +
+                                                : t("users:confirmations." +
                                                 "terminateAllSessions.content")
                                         }
                                     </ConfirmationModal.Content>
@@ -834,10 +834,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                         image={ getEmptyPlaceholderIllustrations().emptyList }
                         imageSize="tiny"
                         title={
-                            t("console:manage.features.users.userSessions.placeholders.emptyListPlaceholder.title")
+                            t("users:userSessions.placeholders.emptyListPlaceholder.title")
                         }
                         subtitle={ [
-                            t("console:manage.features.users.userSessions.placeholders.emptyListPlaceholder.subtitles")
+                            t("users:userSessions.placeholders.emptyListPlaceholder.subtitles")
                         ] }
                     />
                 )

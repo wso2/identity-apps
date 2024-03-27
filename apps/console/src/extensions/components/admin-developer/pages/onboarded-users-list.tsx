@@ -206,7 +206,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         </Header>
                     );
                 },
-                title: t("console:manage.features.users.list.columns.name")
+                title: t("users:list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -214,7 +214,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("console:manage.features.users.list.columns.actions")
+                title: t("users:list.columns.actions")
             }
         ];
 
@@ -311,7 +311,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
+            popupText: (): string => t("users:usersList.list.iconPopups.delete"),
             renderer: "semantic-icon"
         });
 
@@ -330,16 +330,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -355,16 +355,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             onClick={ () => onEmptyListPlaceholderActionClick() }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
+                            { t("users:usersList.list.emptyResultPlaceholder.addButton") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.list.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
-                        t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.2")
+                        t("users:usersList.list.emptyResultPlaceholder.subTitle.0"),
+                        t("users:usersList.list.emptyResultPlaceholder.subTitle.1"),
+                        t("users:usersList.list.emptyResultPlaceholder.subTitle.2")
                     ] }
                 />
             );

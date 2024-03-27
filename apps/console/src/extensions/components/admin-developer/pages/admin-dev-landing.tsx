@@ -88,20 +88,20 @@ const AdminDevLandingPage: FunctionComponent<UsersPageInterface> = (
             if (error?.response?.data?.description) {
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        ?? t("users:notifications.fetchUsers.error.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        ?? t("users:notifications.fetchUsers.error.message")
                 }));
 
                 return;
             }
 
             dispatch(addAlert({
-                description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                description: t("users:notifications.fetchUsers.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                message: t("users:notifications.fetchUsers.genericError.message")
             }));
 
         })

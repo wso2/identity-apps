@@ -46,6 +46,21 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * transferList namespace.
+     */
+    public static readonly TRANSFER_LIST_NAMESPACE: string = I18nModuleConstants.TRANSFER_LIST_NAMESPACE;
+
+    /**
+     * User namespace.
+     */
+    public static readonly USER_NAMESPACE: string = I18nModuleConstants.USER_NAMESPACE;
+
+    /**
+     * Users namespace.
+     */
+    public static readonly USERS_NAMESPACE: string = I18nModuleConstants.USERS_NAMESPACE;
+  
+    /**
      * governanceConnectors namespace.
      */
     public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
@@ -198,6 +213,9 @@ export class I18nConstants {
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.TRANSFER_LIST_NAMESPACE, "portals" ],
+        [ I18nConstants.USER_NAMESPACE, "portals" ],
+        [ I18nConstants.USERS_NAMESPACE, "portals" ],
         [ I18nConstants.PAGES_NAMESPACE, "portals" ],
         [ I18nConstants.IDVP_NAMESPACE, "portals" ],
         [ I18nConstants.INVITE_NAMESPACE, "portals" ],

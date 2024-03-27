@@ -292,7 +292,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 validation={ (value: string, validation: Validation) => {
                     if (propertyMetadata?.regex && !RegExp(propertyMetadata.regex).test(value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push(I18n.instance.t("console:manage.features.users.forms." +
+                        validation.errorMessages.push(I18n.instance.t("users:forms." +
                             "validation.formatError", {
                             field: propertyMetadata?.displayName
                         }));
@@ -479,7 +479,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                 validation={ (value: string, validation: Validation) => {
                     if (propertyMetadata?.regex && !RegExp(propertyMetadata.regex).test(value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push(I18n.instance.t("console:manage.features.users.forms." +
+                        validation.errorMessages.push(I18n.instance.t("users:forms." +
                             "validation.formatError", {
                             field: propertyMetadata?.displayName
                         }));

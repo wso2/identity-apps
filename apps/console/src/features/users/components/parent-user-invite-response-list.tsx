@@ -91,22 +91,22 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                 if (item.result.errorCode) {
                     switch (item.result.errorCode) {
                         case ParentOrgUserInviteErrorCode.ERROR_CODE_USER_NOT_FOUND:
-                            message = t("console:manage.features.user.modals.inviteParentUserWizard." +
+                            message = t("user:modals.inviteParentUserWizard." +
                             "tableMessages.userNotFound");
 
                             break;
                         case ParentOrgUserInviteErrorCode.ERROR_CODE_ACTIVE_INVITATION_EXISTS:
-                            message = t("console:manage.features.user.modals.inviteParentUserWizard." +
+                            message = t("user:modals.inviteParentUserWizard." +
                             "tableMessages.activeInvitationExists");
 
                             break;
                         case ParentOrgUserInviteErrorCode.ERROR_CODE_INVITED_USER_EMAIL_NOT_FOUND:
-                            message = t("console:manage.features.user.modals.inviteParentUserWizard." +
+                            message = t("user:modals.inviteParentUserWizard." +
                             "tableMessages.userEmailNotFound");
 
                             break;
                         case ParentOrgUserInviteErrorCode.ERROR_CODE_USER_ALREADY_EXISTS_INVITED_ORGANIZATION:
-                            message = t("console:manage.features.user.modals.inviteParentUserWizard." +
+                            message = t("user:modals.inviteParentUserWizard." +
                             "tableMessages.userAlreadyExist");
 
                             break;
@@ -158,7 +158,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.username")
+                title: t("user:modals.bulkImportUserWizard.wizardSummary.tableHeaders.username")
             },
             {
                 allowToggleVisibility: false,
@@ -180,7 +180,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.status")
+                title: t("user:modals.bulkImportUserWizard.wizardSummary.tableHeaders.status")
             },
             {
                 allowToggleVisibility: false,
@@ -196,7 +196,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                         </Header>
                     );
                 },
-                title: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableHeaders.message")
+                title: t("user:modals.bulkImportUserWizard.wizardSummary.tableHeaders.message")
             }
         ];
 
@@ -215,7 +215,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                 data-componentid={ `${componentId}-empty-search-result` }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
-                title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                 subtitle=""
             />
         );
@@ -233,12 +233,12 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                                     <Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
                                         <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                             {
-                                                t("console:manage.features.user.modals.inviteParentUserWizard." +
+                                                t("user:modals.inviteParentUserWizard." +
                                                 "successAlert.message")
                                             }
                                         </AlertTitle>
                                         {
-                                            t("console:manage.features.user.modals.inviteParentUserWizard." +
+                                            t("user:modals.inviteParentUserWizard." +
                                             "successAlert.description")
                                         }
                                     </Alert>
@@ -246,13 +246,13 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                                     <Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
                                         <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                             {
-                                                t("console:manage.features.user.modals.inviteParentUserWizard." +
+                                                t("user:modals.inviteParentUserWizard." +
                                                 "errorAlert.message")
                                             }
                                         </AlertTitle>
                                         <Trans
                                             i18nKey={
-                                                "console:manage.features.user.modals.inviteParentUserWizard." +
+                                                "user:modals.inviteParentUserWizard." +
                                                 "errorAlert.description"
                                             }
                                             tOptions={ {
@@ -270,7 +270,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Typography variant="body2" style={ { textAlign: "right" } }>
                         {
-                            t("console:manage.features.user.modals.inviteParentUserWizard.totalInvitations") +
+                            t("user:modals.inviteParentUserWizard.totalInvitations") +
                             " : " +  responseSummary?.totalCount
                         }
                     </Typography>

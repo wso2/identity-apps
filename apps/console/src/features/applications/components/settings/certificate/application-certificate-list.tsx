@@ -354,7 +354,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                         icon: "trash alternate",
                                                         onClick: () => setShowCertificateDeleteConfirmation(true),
                                                         popupText: deleteAllowed
-                                                            ? t("console:manage.features.users.usersList.list." +
+                                                            ? t("users:usersList.list." +
                                                                 "iconPopups.delete")
                                                             : reasonInsideTooltipWhyDeleteIsNotAllowed,
                                                         type: "button"

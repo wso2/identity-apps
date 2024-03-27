@@ -437,9 +437,9 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         isLoading={ isUsersFetchRequestLoading }
                         listType="unselected"
                         data-testid={ `${ testId }-unselected-transfer-list` }
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -706,7 +706,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     "to this role."
                                 }
                                 data-testid={ `${ testId }-unselected-transfer-list` }
-                                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                emptyPlaceholderDefaultContent={ t("transferList:list."
                                     + "emptyPlaceholders.default") }
                             >
                                 {

@@ -300,7 +300,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                 emptyPlaceholderContent = { "We couldn't find any results for search. "+
                                     "Please try a different search term." }
                                 data-testid={ `${ testId }-unselected-transfer-list` }
-                                emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                emptyPlaceholderDefaultContent={ t("transferList:list."
                                     + "emptyPlaceholders.default") }
                             >
                                 {

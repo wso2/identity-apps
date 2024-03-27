@@ -154,7 +154,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             const availableUserStoreList: UserstoreDisplayItem[] = [
                 {
                     id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-                    name: t("console:manage.features.users.userstores." +
+                    name: t("users:userstores." +
                     "userstoreOptions.primary")
                 }
             ];

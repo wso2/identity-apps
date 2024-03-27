@@ -538,7 +538,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             disabled={ shareType !== ShareType.SHARE_SELECTED }
                             selectionComponent
                             searchPlaceholder={ t(
-                                "console:manage.features.transferList.searchPlaceholder",
+                                "transferList:searchPlaceholder",
                                 { type: "organizations" }
                             ) }
                             handleUnelectedListSearch={
@@ -563,7 +563,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 listType="unselected"
                                 listHeaders={ [
                                     t(
-                                        "console:manage.features.transferList.list.headers.1"
+                                        "transferList:list.headers.1"
                                     ),
                                     ""
                                 ] }
@@ -574,7 +574,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 }
                                 data-testid="application-share-modal-organization-transfer-component-all-items"
                                 emptyPlaceholderDefaultContent={ t(
-                                    "console:manage.features.transferList.list." +
+                                    "transferList:list." +
                                         "emptyPlaceholders.default"
                                 ) }
                             >

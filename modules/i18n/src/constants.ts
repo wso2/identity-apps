@@ -87,6 +87,11 @@ export class I18nModuleConstants {
     public static readonly META_FILENAME: string = "meta.json";
 
     /**
+     * transferList namespace.
+     */
+    public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";
+
+    /**
      * pages namespace.
      */
     public static readonly PAGES_NAMESPACE: string = "pages";
@@ -232,18 +237,22 @@ export class I18nModuleConstants {
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string = "authenticationProvider";
 
     /**
+     * User namespace.
+     */
+    public static readonly USER_NAMESPACE: string = "user";
+
+    /**
      * governanceConnectors namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = "governanceConnectors";
 
     /**
+     * Users namespace.
+     */
+    public static readonly USERS_NAMESPACE: string = "users";
+  
+    /**
      * Groups namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly GROUPS_NAMESPACE: string = "groups";
 }
