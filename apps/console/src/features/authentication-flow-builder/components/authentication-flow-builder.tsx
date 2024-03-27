@@ -248,12 +248,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                            "applications:notifications.updateAuthenticationFlow" +
                                 ".success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:develop.features.applications.notifications.updateAuthenticationFlow" +
+                            "applications:notifications.updateAuthenticationFlow" +
                                 ".success.message"
                         )
                     })
@@ -278,12 +278,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        "applications:notifications.updateOnlyIdentifierFirstError" +
                         ".description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        "applications:notifications.updateOnlyIdentifierFirstError" +
                         ".message"
                     )
                 })
@@ -301,12 +301,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
                         ".description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
                         ".message"
                     )
                 })

@@ -158,14 +158,14 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                             content={
                                 (<>
                                     {
-                                        t("console:develop.features.applications.edit.sections" +
+                                        t("applications:edit.sections" +
                                         ".signOnMethod.sections.landing.flowBuilder." +
                                         "types.passkey.info.progressiveEnrollmentEnabled")
                                     }
                                     <p>
                                         <Trans
                                             i18nKey={
-                                                t("console:develop.features.applications.edit.sections" +
+                                                t("applications:edit.sections" +
                                                 ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                                 "info.progressiveEnrollmentEnabledCheckbox")
                                             }

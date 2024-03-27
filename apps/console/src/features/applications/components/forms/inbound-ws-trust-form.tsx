@@ -160,9 +160,9 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                 setShowCertificateModal(true);
             } else {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("console:common.notifications.invalidPEMFile.genericError.description"),
+                    description: t("applications:notifications.invalidPEMFile.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:common.notifications.invalidPEMFile.genericError.message")
+                    message: t("applications:notifications.invalidPEMFile.genericError.message")
                 }));
             }
         }
@@ -182,16 +182,16 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                 <Field
                                     name="audience"
                                     label={
-                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                        t("applications:forms.inboundWSTrust.fields" +
                                             ".audience.label")
                                     }
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundWSTrust" +
+                                        t("applications:forms.inboundWSTrust" +
                                             ".fields.audience.validations.empty")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                        t("applications:forms.inboundWSTrust.fields" +
                                             ".audience.placeholder")
                                     }
                                     type="text"
@@ -201,7 +201,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                 />
 
                                 <Hint disabled={ !(isEmpty(initialValues?.audience)) }>
-                                    { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                    { t("applications:forms.inboundWSTrust.fields" +
                                         ".audience.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -210,14 +210,14 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
                                     label={
-                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                        t("applications:forms.inboundWSTrust.fields" +
                                             ".certificateAlias.label")
                                     }
                                     name="certificateAlias"
                                     type="dropdown"
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                        t("applications:forms.inboundWSTrust.fields" +
                                             ".certificateAlias.validations.empty")
                                     }
                                     default={ metadata?.certificateAlias.defaultValue }
@@ -229,7 +229,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     data-testid={ `${ testId }-certificate-alias-dropdown` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
+                                    { t("applications:forms.inboundWSTrust.fields" +
                                         ".certificateAlias.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -243,12 +243,12 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Heading as="h5">
                                     {
-                                        t("console:develop.features.applications.forms." +
+                                        t("applications:forms." +
                                             "advancedConfig.sections.certificate.heading") }
                                 </Heading>
                                 <Field
                                     label={
-                                        t("console:develop.features.applications.forms." +
+                                        t("applications:forms." +
                                             "advancedConfig.sections.certificate.fields.type.label")
                                     }
                                     name="type"
@@ -262,12 +262,12 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                     value={ certificate?.type }
                                     children={ [
                                         {
-                                            label: t("console:develop.features.applications.forms." +
+                                            label: t("applications:forms." +
                                                 "advancedConfig.sections.certificate.fields.type.children.jwks.label"),
                                             value: CertificateTypeInterface.JWKS
                                         },
                                         {
-                                            label: t("console:develop.features.applications.forms." +
+                                            label: t("applications:forms." +
                                                 "advancedConfig.sections.certificate.fields.type.children.pem.label"),
                                             value: CertificateTypeInterface.PEM
                                         }
@@ -287,12 +287,12 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                 <Field
                                                     name="certificateValue"
                                                     label={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
+                                                        t("applications:forms.advancedConfig" +
                                                             ".sections.certificate.fields.pemValue.label")
                                                     }
                                                     required={ false }
                                                     requiredErrorMessage={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
+                                                        t("applications:forms.advancedConfig" +
                                                             ".sections.certificate.fields.pemValue.validations.empty")
                                                     }
                                                     placeholder={
@@ -315,7 +315,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                 />
                                                 < Hint>
                                                     {
-                                                        t("console:develop.features.applications.forms." +
+                                                        t("applications:forms." +
                                                             "advancedConfig.sections.certificate.fields.pemValue.hint")
                                                     }
                                                 </Hint>
@@ -329,7 +329,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                     data-testid={ `${ testId }-certificate-info-button` }
                                                 >
                                                     {
-                                                        t("console:develop.features.applications.forms." +
+                                                        t("applications:forms." +
                                                             "advancedConfig.sections.certificate.fields.pemValue." +
                                                             "actions.view")
                                                     }
@@ -341,16 +341,16 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                 <Field
                                                     name="jwksValue"
                                                     label={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
+                                                        t("applications:forms.advancedConfig" +
                                                             ".sections.certificate.fields.jwksValue.label")
                                                     }
                                                     required={ false }
                                                     requiredErrorMessage={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
+                                                        t("applications:forms.advancedConfig" +
                                                             ".sections.certificate.fields.jwksValue.validations.empty")
                                                     }
                                                     placeholder={
-                                                        t("console:develop.features.applications.forms.advancedConfig" +
+                                                        t("applications:forms.advancedConfig" +
                                                             ".sections.certificate.fields.jwksValue.placeholder") }
                                                     type="text"
                                                     validation={ (value: string, validation: Validation) => {
@@ -358,7 +358,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(
                                                                 t(
-                                                                    "console:develop.features.applications.forms" +
+                                                                    "applications:forms" +
                                                                     ".advancedConfig.sections.certificate.fields." +
                                                                     "jwksValue.validations.invalid"
                                                                 )

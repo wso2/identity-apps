@@ -95,10 +95,10 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchOIDCServiceEndpoints" +
+                    description: t("applications:notifications.fetchOIDCServiceEndpoints" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchOIDCServiceEndpoints." +
+                    message: t("applications:notifications.fetchOIDCServiceEndpoints." +
                         "genericError.message")
                 }));
             });
@@ -120,7 +120,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.issuer") }
                         </label>
                     </Grid.Column>
@@ -144,7 +144,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.wellKnown") }
                         </label>
                     </Grid.Column>
@@ -168,7 +168,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-authorize-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.authorize") }
                         </label>
                     </Grid.Column>
@@ -192,7 +192,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-token-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.token") }
                         </label>
                     </Grid.Column>
@@ -216,7 +216,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-userInfo-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.userInfo") }
                         </label>
                     </Grid.Column>
@@ -240,7 +240,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.introspection") }
                         </label>
                     </Grid.Column>
@@ -264,7 +264,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-jwks-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.jwks") }
                         </label>
                     </Grid.Column>
@@ -288,7 +288,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-token-revoke-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.revoke") }
                         </label>
                     </Grid.Column>
@@ -312,7 +312,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-logout-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.endSession") }
                         </label>
                     </Grid.Column>
@@ -336,7 +336,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-pushed-authorization-request-label` }>
-                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                            { t("applications:helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.pushedAuthorizationRequest") }
                         </label>
                     </Grid.Column>
@@ -368,7 +368,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                             spaced="right"
                                         />
                                         <label data-testid={ `${ testId }-session-iframe-label` }>
-                                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                            { t("applications:helpPanel.tabs.start.content." +
                                                 "oidcConfigurations.labels.sessionIframe") }
                                         </label>
                                     </Grid.Column>

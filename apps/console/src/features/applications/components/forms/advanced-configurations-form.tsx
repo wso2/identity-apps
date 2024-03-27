@@ -206,13 +206,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         if (!values.androidPackageName?.toString().trim()
             && values.androidAttestationServiceCredentials?.toString().trim()) {
 
-            errors.androidPackageName = t("console:develop.features.applications.forms.advancedConfig." +
+            errors.androidPackageName = t("applications:forms.advancedConfig." +
                 "sections.applicationNativeAuthentication.fields." +
                 "android.fields.androidPackageName.validations.empty");
         } else if (values.androidPackageName?.toString().trim()
             && !values.androidAttestationServiceCredentials?.toString().trim()) {
 
-            errors.androidAttestationServiceCredentials = t("console:develop.features.applications.forms." +
+            errors.androidAttestationServiceCredentials = t("applications:forms." +
                 "advancedConfig.sections.applicationNativeAuthentication.fields." +
                 "android.fields.androidAttestationServiceCredentials.validations.empty");
         }
@@ -234,26 +234,26 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             <Field.CheckboxLegacy
                 ariaLabel="Saas application"
                 name="saas"
-                label={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.label") }
+                label={ t("applications:forms.advancedConfig.fields.saas.label") }
                 required={ false }
                 value={ config?.saas ? [ "saas" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-sass-checkbox` }
                 data-componentid={ `${ testId }-sass-checkbox` }
-                hint={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
+                hint={ t("applications:forms.advancedConfig.fields.saas.hint") }
                 hidden={ !UIConfig?.legacyMode?.saasApplications || !applicationConfig.advancedConfigurations.showSaaS }
             />
             <Field.CheckboxLegacy
                 ariaLabel="Skip consent login"
                 name="skipConsentLogin"
-                label={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin" +
+                label={ t("applications:forms.advancedConfig.fields.skipConsentLogin" +
                     ".label") }
                 required={ false }
                 value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${ testId }-skip-login-consent-checkbox` }
                 data-componentid={ `${ testId }-skip-login-consent-checkbox` }
-                hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin.hint") }
+                hint={ t("applications:forms.advancedConfig.fields.skipConsentLogin.hint") }
             />
             {
                 SAMLWebApplicationTemplate?.id !== template?.id &&
@@ -262,7 +262,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         ariaLabel="Skip consent logout"
                         name="skipConsentLogout"
                         label={
-                            t("console:develop.features.applications.forms.advancedConfig.fields" +
+                            t("applications:forms.advancedConfig.fields" +
                                 ".skipConsentLogout.label")
                         }
                         required={ false }
@@ -270,7 +270,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-skip-logout-consent-checkbox` }
                         data-componentid={ `${ testId }-skip-logout-consent-checkbox` }
-                        hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
+                        hint={ t("applications:forms.advancedConfig.fields.skipConsentLogout" +
                             ".hint"
                         ) }
                     />
@@ -279,7 +279,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             <Field.CheckboxLegacy
                 ariaLabel="Return authenticated IDP list"
                 name="returnAuthenticatedIdpList"
-                label={ t("console:develop.features.applications.forms.advancedConfig.fields." +
+                label={ t("applications:forms.advancedConfig.fields." +
                     "returnAuthenticatedIdpList.label"
                 ) }
                 required={ false }
@@ -288,14 +288,14 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
                 data-componentid={ `${ testId }-return-authenticated-idp-list-checkbox` }
                 hidden={ !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs }
-                hint={ t("console:develop.features.applications.forms.advancedConfig.fields" +
+                hint={ t("applications:forms.advancedConfig.fields" +
                     ".returnAuthenticatedIdpList.hint"
                 ) }
             />
             <Field.CheckboxLegacy
                 ariaLabel="Enable authorization"
                 name="enableAuthorization"
-                label={ t("console:develop.features.applications.forms.advancedConfig.fields." +
+                label={ t("applications:forms.advancedConfig.fields." +
                     "enableAuthorization.label"
                 ) }
                 required={ false }
@@ -306,7 +306,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
                     || !UIConfig?.isXacmlConnectorEnabled }
-                hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
+                hint={ t("applications:forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {
                 (
@@ -334,7 +334,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             isUserClickedClientAttestationWhenDisabled
                                         ) && (
                                             <Alert severity="info" className="client-attestation-info-alert">
-                                                { t("console:develop.features.applications.forms.advancedConfig." +
+                                                { t("applications:forms.advancedConfig." +
                                                  "sections.applicationNativeAuthentication.alerts.clientAttestation") }
                                             </Alert>
                                         )
@@ -342,7 +342,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     <Field.CheckboxLegacy
                                         ariaLabel="Enable apiBasedAuthentication"
                                         name="enableAPIBasedAuthentication"
-                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
+                                        label={ t("applications:forms.advancedConfig." +
                                             "sections.applicationNativeAuthentication.fields." +
                                             "enableAPIBasedAuthentication.label") }
                                         required={ false }
@@ -356,7 +356,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         data-testid={ `${ testId }-enable-api-based-authentication` }
                                         data-componentid={ `${ testId }-enable-api-based-authentication` }
                                         hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
-                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
+                                        hint={ t("applications:forms.advancedConfig." +
                                             "sections.applicationNativeAuthentication.fields." +
                                             "enableAPIBasedAuthentication.hint") }
                                     />
@@ -376,7 +376,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                 <Field.CheckboxLegacy
                                                     ariaLabel="Enable attestation"
                                                     name="enableClientAttestation"
-                                                    label={ t("console:develop.features.applications.forms." +
+                                                    label={ t("applications:forms." +
                                                         "advancedConfig.sections.applicationNativeAuthentication." +
                                                         "fields.enableClientAttestation.label") }
                                                     required={ false }
@@ -390,7 +390,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     data-testid={ `${ testId }-enable-client-attestation` }
                                                     data-componentid={ `${ testId }-enable-api-based-authentication` }
                                                     disabled={ isClientAttestationUIDisabled }
-                                                    hint={ t("console:develop.features.applications.forms." +
+                                                    hint={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "enableClientAttestation.hint") }
@@ -408,7 +408,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                         verticalAlign="middle"
                                                         floated="left"
                                                     />
-                                                    { t("console:develop.features.applications.forms.advancedConfig." +
+                                                    { t("applications:forms.advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "android.heading") }
                                                 </Heading>
@@ -416,18 +416,18 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     ariaLabel="Android package name"
                                                     inputType="default"
                                                     name="androidPackageName"
-                                                    label={ t("console:develop.features.applications.forms." +
+                                                    label={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "android.fields.androidPackageName.label") }
                                                     required={ false }
                                                     readOnly={ readOnly }
                                                     value={ config?.attestationMetaData?.androidPackageName ?? "" }
-                                                    placeholder={ t("console:develop.features.applications.forms." +
+                                                    placeholder={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "android.fields.androidPackageName.placeholder") }
-                                                    hint={ t("console:develop.features.applications.forms." +
+                                                    hint={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "android.fields.androidPackageName.hint") }
@@ -452,11 +452,11 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     ariaLabel="Android service account credentials"
                                                     inputType="description"
                                                     name="androidAttestationServiceCredentials"
-                                                    label={ t("console:develop.features.applications.forms." +
+                                                    label={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "android.fields.androidAttestationServiceCredentials.label") }
-                                                    placeholder={ t("console:develop.features.applications.forms." +
+                                                    placeholder={ t("applications:forms." +
                                                         "advancedConfig.sections." +
                                                         "applicationNativeAuthentication.fields.android.fields." +
                                                         "androidAttestationServiceCredentials.placeholder") }
@@ -470,7 +470,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                                 null, 4)
                                                             ] : []
                                                     }
-                                                    hint={ t("console:develop.features.applications.forms." +
+                                                    hint={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "android.fields.androidAttestationServiceCredentials.hint") }
@@ -500,7 +500,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                         floated="left"
                                                         verticalAlign="middle"
                                                     />
-                                                    { t("console:develop.features.applications.forms.advancedConfig." +
+                                                    { t("applications:forms.advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "apple.heading") }
                                                 </Heading>
@@ -508,17 +508,17 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     ariaLabel="Apple App Id"
                                                     inputType="default"
                                                     name="appleAppId"
-                                                    label={ t("console:develop.features.applications.forms." +
+                                                    label={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "apple.fields.appleAppId.label") }
                                                     required={ false }
-                                                    placeholder={ t("console:develop.features.applications.forms." +
+                                                    placeholder={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "apple.fields.appleAppId.placeholder") }
                                                     value={ config?.attestationMetaData?.appleAppId ?? "" }
-                                                    hint={ t("console:develop.features.applications.forms." +
+                                                    hint={ t("applications:forms." +
                                                         "advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
                                                         "apple.fields.appleAppId.hint") }

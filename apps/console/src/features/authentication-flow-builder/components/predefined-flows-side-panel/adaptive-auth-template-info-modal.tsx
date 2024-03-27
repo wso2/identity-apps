@@ -170,7 +170,7 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                     <>
                         <h4>
                             { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                     "templateDescription.description.prerequisites"
                             ) }
                         </h4>
@@ -192,7 +192,7 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                     <>
                         <h4>
                             { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                     "templateDescription.description.parameters"
                             ) }
                         </h4>
@@ -202,7 +202,7 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                                     <Table.HeaderCell />
                                     <Table.HeaderCell>
                                         { t(
-                                            "console:develop.features.applications.edit.sections" +
+                                            "applications:edit.sections" +
                                                 ".signOnMethod.sections.templateDescription.description" +
                                                 ".description"
                                         ) }
@@ -230,7 +230,7 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                     <>
                         <h4>
                             { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                     "templateDescription.description.defaultSteps"
                             ) }
                         </h4>
@@ -255,7 +255,7 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                     <>
                         <h4>
                             { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                     "templateDescription.description.helpReference"
                             ) }
                         </h4>
@@ -273,7 +273,7 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                     <>
                         <h4>
                             { t(
-                                "console:develop.features.applications.edit.sections.signOnMethod.sections." +
+                                "applications:edit.sections.signOnMethod.sections." +
                                     "templateDescription.description.code"
                             ) }
                         </h4>

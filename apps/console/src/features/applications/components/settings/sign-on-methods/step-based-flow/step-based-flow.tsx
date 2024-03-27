@@ -300,12 +300,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.duplicateAuthenticationStep" +
+                        "applications:notifications.duplicateAuthenticationStep" +
                         ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.duplicateAuthenticationStep" +
+                        "applications:notifications.duplicateAuthenticationStep" +
                         ".genericError.message"
                     )
                 })
@@ -378,12 +378,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        "applications:notifications.secondFactorAuthenticatorToFirstStep" +
                         ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        "applications:notifications.secondFactorAuthenticatorToFirstStep" +
                         ".genericError.message"
                     )
                 })
@@ -435,10 +435,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             && isApplicationShared) {
             dispatch(
                 addAlert({
-                    description: t("console:develop.features.applications.notifications" +
+                    description: t("applications:notifications" +
                         ".authenticationStepDeleteErrorDueToAppShared.genericError.description"),
                     level: AlertLevels.WARNING,
-                    message: t("console:develop.features.applications.notifications" +
+                    message: t("applications:notifications" +
                         ".authenticationStepDeleteErrorDueToAppShared.genericError.message")
                 })
             );
@@ -576,12 +576,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         dispatch(
             addAlert({
                 description: t(
-                    "console:develop.features.applications.notifications." +
+                    "applications:notifications." +
                     "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
                 ),
                 level: AlertLevels.WARNING,
                 message: t(
-                    "console:develop.features.applications.notifications." +
+                    "applications:notifications." +
                     "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
                 )
             })
@@ -619,12 +619,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.authenticationStepMin" +
+                        "applications:notifications.authenticationStepMin" +
                         ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.authenticationStepMin.genericError" +
+                        "applications:notifications.authenticationStepMin.genericError" +
                         ".message"
                     )
                 })
@@ -664,10 +664,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             if (!containProperHandlersOnLeft) {
                 dispatch(
                     addAlert({
-                        description: t("console:develop.features.applications.notifications." +
+                        description: t("applications:notifications." +
                             "authenticationStepDeleteErrorDueToSecondFactors.genericError.description"),
                         level: AlertLevels.WARNING,
-                        message: t("console:develop.features.applications.notifications." +
+                        message: t("applications:notifications." +
                             "authenticationStepDeleteErrorDueToSecondFactors.genericError.message"
                         )
                     })
@@ -752,12 +752,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.emptyAuthenticationStep" +
+                        "applications:notifications.emptyAuthenticationStep" +
                         ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.emptyAuthenticationStep.genericError" +
+                        "applications:notifications.emptyAuthenticationStep.genericError" +
                         ".message"
                     )
                 })
@@ -774,12 +774,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        "applications:notifications.updateOnlyIdentifierFirstError" +
                         ".description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.updateOnlyIdentifierFirstError" +
+                        "applications:notifications.updateOnlyIdentifierFirstError" +
                         ".message"
                     )
                 })
@@ -797,12 +797,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
                         ".description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.updateIdentifierFirstInFirstStepError" +
+                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
                         ".message"
                     )
                 })
@@ -833,19 +833,19 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             <ConfirmationModal.Header
                 data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
             >
-                { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.header") }
+                { t("applications:confirmations.handlerAuthenticatorAddition.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
                 data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
             >
-                { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.message") }
+                { t("applications:confirmations.handlerAuthenticatorAddition.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
             >
-                { t("console:develop.features.applications.confirmations.handlerAuthenticatorAddition.content") }
+                { t("applications:confirmations.handlerAuthenticatorAddition.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -873,7 +873,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 } }
                 onClose={ () => setShowAuthenticatorAddModal(false) }
                 header={
-                    t("console:develop.features.applications.edit.sections.signOnMethod.sections.authenticationFlow." +
+                    t("applications:edit.sections.signOnMethod.sections.authenticationFlow." +
                         "sections.stepBased.addAuthenticatorModal.heading")
                 }
                 authenticators={ {
@@ -915,12 +915,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             <ConfirmationModal.Header
                 data-componentid={ `${ componentId }-backupcode-delete-confirmation-modal-header` }
             >
-                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.header") }
+                { t("applications:confirmations.backupCodeAuthenticatorDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Content
                 data-componentid={ `${ componentId }-backupcode-delete-confirmation-modal-content` }
             >
-                { t("console:develop.features.applications.confirmations.backupCodeAuthenticatorDelete.content") }
+                { t("applications:confirmations.backupCodeAuthenticatorDelete.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

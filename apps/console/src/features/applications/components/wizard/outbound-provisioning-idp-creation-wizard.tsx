@@ -118,10 +118,10 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
             updateApplicationConfigurations(id, values)
                 .then(() => {
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.notifications.updateApplication" +
+                        description: t("applications:notifications.updateApplication" +
                         ".success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:develop.features.applications.notifications" +
+                        message: t("applications:notifications" +
                             ".updateApplication.success.message")
                     }));
 
@@ -133,17 +133,17 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:develop.features.applications.notifications.updateApplication.error.message")
+                                "applications:notifications.updateApplication.error.message")
                         }));
 
                         return;
                     }
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.notifications.updateApplication" +
+                        description: t("applications:notifications.updateApplication" +
                         ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications" +
+                        message: t("applications:notifications" +
                             ".updateApplication.genericError.message")
                     }));
                 })
@@ -176,10 +176,10 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     (idp.connector === values.connector) && (idp.idp === values.idp))
             ) {
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateOutboundProvisioning" +
+                    description: t("applications:notifications.updateOutboundProvisioning" +
                     ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateOutboundProvisioning" +
+                    message: t("applications:notifications.updateOutboundProvisioning" +
                     ".genericError.message")
                 }));
                 closeWizard();
@@ -210,7 +210,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     />
                 ),
                 icon: getApplicationWizardStepIcons().general,
-                title: t("console:develop.features.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                title: t("applications:edit.sections.provisioning.outbound.addIdpWizard" +
                 ".steps.details")
             }
         ];
@@ -227,10 +227,10 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                 closeOnEscape
             >
                 <Modal.Header className="wizard-header">
-                    { t("console:develop.features.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                    { t("applications:edit.sections.provisioning.outbound.addIdpWizard" +
                     ".heading") }
                     <Heading as="h6">
-                        { t("console:develop.features.applications.edit.sections.provisioning.outbound.addIdpWizard" +
+                        { t("applications:edit.sections.provisioning.outbound.addIdpWizard" +
                         ".subHeading") }
                     </Heading>
                 </Modal.Header>

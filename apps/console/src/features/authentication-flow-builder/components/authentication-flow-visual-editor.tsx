@@ -393,14 +393,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         <>
                             <AlertTitle>
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder." +
                                     "types.passkey.info.progressiveEnrollmentEnabled")
                                 }
                             </AlertTitle>
                             <Trans
                                 i18nKey={
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                     "info.passkeyAsFirstStepWhenprogressiveEnrollmentEnabled")
                                 }
@@ -425,14 +425,14 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         <>
                             <AlertTitle>
                                 {
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder." +
                                     "types.passkey.info.progressiveEnrollmentEnabled")
                                 }
                             </AlertTitle>
                             <Trans
                                 i18nKey={
-                                    t("console:develop.features.applications.edit.sections" +
+                                    t("applications:edit.sections" +
                                     ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
                                     "info.passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled")
                                 }
@@ -454,7 +454,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     <>
                         <Trans
                             i18nKey={
-                                t("console:develop.features.applications.edit.sections" +
+                                t("applications:edit.sections" +
                                 ".signOnMethod.sections.landing.flowBuilder." +
                                 "types.passkey.info.progressiveEnrollmentDisabled")
                             }

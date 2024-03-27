@@ -98,7 +98,7 @@ export class I18nModuleConstants {
 
     /**
      * JWT private key configuration namespace.
-     */ 
+     */
     public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
 
     /**
@@ -272,10 +272,12 @@ export class I18nModuleConstants {
     public static readonly GROUPS_NAMESPACE: string = "groups";
 
     /**
+     * Applications namespace.
+     */
+    public static readonly APPLICATIONS_NAMESPACE: string = "applications";
+  
+    /**
      * Identity Provider namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly IDP_NAMESPACE: string = "idp";
 }

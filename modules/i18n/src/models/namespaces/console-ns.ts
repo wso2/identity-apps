@@ -117,22 +117,6 @@ export interface ConsoleNS {
                 sessionTimedOutDescription: string;
             };
         };
-        notifications: {
-            invalidPEMFile: {
-                error: {
-                    message: string;
-                    description: string;
-                };
-                genericError: {
-                    message: string;
-                    description: string;
-                };
-                success: {
-                    message: string;
-                    description: string;
-                };
-            };
-        };
         placeholders: {
             404: {
                 action: string;
@@ -475,102 +459,187 @@ export interface ConsoleNS {
             };
         };
     };
-    featureGate: {
-        enabledFeatures: {
-            tags: {
-                premium: {
-                    warning: string;
+    branding: {
+        form: {
+            actions: {
+                save: string;
+                resetAll: string;
+            };
+        };
+        tabs: {
+            text: {
+                label: string;
+            };
+            preview: {
+                label: string;
+            };
+        };
+        screens: {
+            common: string;
+            login: string;
+            "sms-otp": string;
+            "email-otp": string;
+            "email-template": string;
+            "sign-up": string;
+            totp: string;
+            myaccount: string;
+            "password-recovery": string;
+            "password-reset": string;
+            "password-reset-success": string;
+        };
+    };
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        revertUnsavedConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        form: {
+            genericFieldResetTooltip: string;
+            genericFieldPlaceholder: string;
+            fields: {
+                copyright: {
+                    hint: string;
                 };
+                "privacy.policy": {
+                    hint: string;
+                };
+                "site.title": {
+                    hint: string;
+                };
+                "terms.of.service": {
+                    hint: string;
+                };
+                "login.button": {
+                    hint: string;
+                };
+                "login.heading": {
+                    hint: string;
+                };
+                "sms.otp.heading": {
+                    hint: string;
+                };
+                "email.otp.heading": {
+                    hint: string;
+                };
+                "totp.heading": {
+                    hint: string;
+                };
+                "sign.up.button": {
+                    hint: string;
+                };
+                "sign.up.heading": {
+                    hint: string;
+                };
+                "password.recovery.body": {
+                    hint: string;
+                };
+                "password.recovery.button": {
+                    hint: string;
+                };
+                "password.recovery.heading": {
+                    hint: string;
+                };
+                "password.reset.button": {
+                    hint: string;
+                };
+                "password.reset.heading": {
+                    hint: string;
+                };
+                "password.reset.success.action": {
+                    hint: string;
+                };
+                "password.reset.success.body": {
+                    hint: string;
+                };
+                "password.reset.success.heading": {
+                    hint: string;
+                };
+            };
+        };
+        localeSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+        modes: {
+            text: {
+                label: string;
+            };
+            json: {
+                label: string;
+            };
+        };
+        notifications: {
+            getPreferenceError: {
+                description: string;
+                message: string;
+            };
+            revertError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            updateError: {
+                description: string;
+                message: string;
+            };
+            updateSuccess: {
+                description: string;
+                message: string;
+            };
+        };
+        screenSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+    };
+    consoleSettings: {
+        administrators: {
+            add: {
+                action: string;
+                options: {
+                    addExistingUser: string;
+                    inviteNewUser: string;
+                };
+            };
+            edit: {
+                backButton: string;
+            };
+            tabLabel: string;
+        };
+        loginFlow: {
+            tabLabel: string;
+        };
+        protocol: {
+            tabLabel: string;
+        };
+        roles: {
+            add: {
+                organizationPermissions: {
+                    label: string;
+                };
+                tenantPermissions: {
+                    label: string;
+                };
+            };
+            tabLabel: string;
+            permissionLevels: {
+                edit: string;
+                view: string;
             };
         };
     };
     develop: {
         features: {
-            URLInput: {
-                withLabel: {
-                    positive: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    negative: {
-                        header: string;
-                        content: string;
-                        detailedContent: {
-                            0: string;
-                            1: string;
-                        };
-                        leftAction: string;
-                    };
-                };
-            };
-            applications: {
-                addWizard: {
-                    steps: {
-                        generalSettings: {
-                            heading: string;
-                        };
-                        protocolConfig: {
-                            heading: string;
-                        };
-                        protocolSelection: {
-                            heading: string;
-                        };
-                        summary: {
-                            heading: string;
-                            sections: {
-                                accessURL: {
-                                    heading: string;
-                                };
-                                applicationQualifier: {
-                                    heading: string;
-                                };
-                                assertionURLs: {
-                                    heading: string;
-                                };
-                                audience: {
-                                    heading: string;
-                                };
-                                callbackURLs: {
-                                    heading: string;
-                                };
-                                certificateAlias: {
-                                    heading: string;
-                                };
-                                discoverable: {
-                                    heading: string;
-                                };
-                                grantType: {
-                                    heading: string;
-                                };
-                                issuer: {
-                                    heading: string;
-                                };
-                                metaFile: {
-                                    heading: string;
-                                };
-                                metadataURL: {
-                                    heading: string;
-                                };
-                                public: {
-                                    heading: string;
-                                };
-                                realm: {
-                                    heading: string;
-                                };
-                                renewRefreshToken: {
-                                    heading: string;
-                                };
-                                replyTo: {
-                                    heading: string;
-                                };
-                            };
-                        };
-                    };
-                };
+            authenticationProvider: {
                 advancedSearch: {
                     form: {
                         inputs: {
@@ -587,1867 +656,1790 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
+                buttons: {
+                    addIDP: string;
+                    addAuthenticator: string;
+                    addConnector: string;
+                    addAttribute: string;
+                    addCertificate: string;
+                };
                 confirmations: {
-                    addSocialLogin: {
-                        content: string;
-                        header: string;
-                        subHeader: string;
-                    };
-                    changeProtocol: {
+                    deleteIDP: {
                         header: string;
                         message: string;
                         content: string;
                         assertionHint: string;
                     };
-                    deleteApplication: {
+                    deleteIDPWithConnectedApps: {
                         header: string;
                         message: string;
                         content: string;
                         assertionHint: string;
                     };
-                    deleteChoreoApplication: {
+                    deleteAuthenticator: {
                         header: string;
                         message: string;
                         content: string;
                         assertionHint: string;
                     };
-                    deleteOutboundProvisioningIDP: {
+                    deleteConnector: {
                         header: string;
                         message: string;
                         content: string;
                         assertionHint: string;
                     };
-                    deleteProtocol: {
+                    deleteCertificate: {
                         header: string;
                         message: string;
                         content: string;
                         assertionHint: string;
                     };
-                    handlerAuthenticatorAddition: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    backupCodeAuthenticatorDelete: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    lowOIDCExpiryTimes: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    regenerateSecret: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    reactivateSPA: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    reactivateOIDC: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    removeApplicationUserAttribute: {
-                        content: string;
-                        header: string;
-                        subHeader: string;
-                    };
-                    removeApplicationUserAttributeMapping: {
-                        content: string;
-                        header: string;
-                        subHeader: string;
-                    };
-                    revokeApplication: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    };
-                    clientSecretHashDisclaimer: {
-                        modal: {
-                            header: string;
-                            message: string;
-                            content: string;
-                            assertionHint: string;
-                        };
-                        forms: {
-                            clientIdSecretForm: {
-                                clientId: {
-                                    hide: string;
-                                    show: string;
-                                    label: string;
-                                    placeholder: string;
-                                    validations: {
-                                        empty: string;
-                                    };
-                                };
-                                clientSecret: {
-                                    hide: string;
-                                    show: string;
-                                    label: string;
-                                    placeholder: string;
-                                    validations: {
-                                        empty: string;
-                                    };
-                                };
-                            };
-                        };
-                    };
-                    certificateDelete: {
-                        header: string;
-                        message: string;
-                        content: string;
-                        assertionHint: string;
-                    } & Record<string, string>;
                 };
                 dangerZoneGroup: {
                     header: string;
-                    deleteApplication: {
+                    disableIDP: {
+                        actionTitle: string;
+                        header: string;
+                        subheader: string;
+                        subheader2: string;
+                    };
+                    deleteIDP: {
                         actionTitle: string;
                         header: string;
                         subheader: string;
                     };
                 };
                 edit: {
-                    sections: {
-                        access: {
-                            addProtocolWizard: {
-                                heading: string;
-                                subHeading: string;
-                                steps: {
-                                    protocolSelection: {
-                                        manualSetup: {
-                                            emptyPlaceholder: {
-                                                title: string;
-                                                subtitles: string;
-                                            };
-                                            heading: string;
-                                            subHeading: string;
-                                        };
-                                        quickSetup: {
-                                            emptyPlaceholder: {
-                                                title: string;
-                                                subtitles: string;
-                                            };
-                                            heading: string;
-                                            subHeading: string;
-                                        };
-                                    };
-                                };
-                            };
-                            tabName: string;
-                            protocolLanding: {
-                                heading: string;
-                                subHeading: string;
-                            };
-                        };
-                        advanced: {
+                    common: {
+                        settings: {
                             tabName: string;
                         };
-                        attributes: {
-                            forms: {
-                                fields: {
-                                    dynamic: {
-                                        localRole: {
-                                            label: string;
-                                            validations: {
-                                                empty: string;
-                                            };
-                                        };
-                                        applicationRole: {
-                                            label: string;
-                                            validations: {
-                                                empty: string;
-                                                duplicate: string;
-                                            };
-                                        };
-                                    };
-                                };
-                            };
-                            selection: {
-                                addWizard: {
-                                    header: string;
-                                    subHeading: string;
-                                    steps: {
-                                        select: {
-                                            transfer: {
-                                                searchPlaceholders: {
-                                                    attribute: string;
-                                                    role: string;
-                                                };
-                                                headers: {
-                                                    attribute: string;
-                                                };
-                                            };
-                                        };
-                                    };
-                                };
-                                heading: string;
-                                scopelessAttributes: {
-                                    description: string;
-                                    displayName: string;
-                                    name: string;
-                                    hint: string;
-                                };
-                                selectedScopesComponentHint: string;
-                                howToUseScopesHint: string;
-                                attributeComponentHint: string;
-                                attributeComponentHintAlt: string;
-                                description: string;
-                                mandatoryAttributeHint: string;
-                                mappingTable: {
-                                    actions: {
-                                        enable: string;
-                                    };
-                                    columns: {
-                                        appAttribute: string;
-                                        attribute: string;
-                                        mandatory: string;
-                                        requested: string;
-                                    };
-                                    mappedAtributeHint: string;
-                                    mappingRevert: {
-                                        confirmationHeading: string;
-                                        confirmationMessage: string;
-                                        confirmationContent: string;
-                                        confirmPrimaryAction: string;
-                                        confirmSecondaryAction: string;
-                                    };
-                                    listItem: {
-                                        actions: {
-                                            makeMandatory: string;
-                                            makeRequested: string;
-                                            makeScopeRequested: string;
-                                            removeMandatory: string;
-                                            removeRequested: string;
-                                            removeScopeRequested: string;
-                                            subjectDisabledSelection: string;
-                                        };
-                                        faultyAttributeMapping: string;
-                                        faultyAttributeMappingHint: string;
-                                        fields: {
-                                            claim: {
-                                                label: string;
-                                                placeholder: string;
-                                            };
-                                        };
-                                    };
-                                    searchPlaceholder: string;
-                                };
-                                selectAll: string;
-                            };
-                            attributeMappingChange: {
-                                error: {
-                                    message: string;
-                                    description: string;
-                                };
-                            };
-                            emptySearchResults: {
-                                subtitles: {
-                                    0: string;
-                                    1: string;
-                                };
-                                title: string;
-                            };
-                            roleMapping: {
-                                heading: string;
-                            };
+                    };
+                    emailOTP: {
+                        emailTemplate: {
                             tabName: string;
                         };
-                        info: {
-                            oidcHeading: string;
-                            oidcSubHeading: string;
-                            samlHeading: string;
-                            samlSubHeading: string;
-                            wsFedHeading: string;
-                            wsFedSubHeading: string;
+                    };
+                    smsOTP: {
+                        smsProvider: {
                             tabName: string;
-                        };
-                        general: {
-                            tabName: string;
-                        };
-                        protocol: {
-                            title: string;
-                            subtitle: string;
-                            button: string;
-                        };
-                        provisioning: {
-                            tabName: string;
-                            inbound: {
-                                heading: string;
-                                subHeading: string;
-                            };
-                            outbound: {
-                                actions: {
-                                    addIdp: string;
-                                };
-                                addIdpWizard: {
-                                    heading: string;
-                                    subHeading: string;
-                                    steps: {
-                                        details: string;
-                                    };
-                                    errors: {
-                                        noProvisioningConnector: string;
-                                    };
-                                };
-                                heading: string;
-                                subHeading: string;
-                            };
-                        };
-                        signOnMethod: {
-                            tabName: string;
-                            sections: {
-                                authenticationFlow: {
-                                    heading: string;
-                                    sections: {
-                                        scriptBased: {
-                                            accordion: {
-                                                title: {
-                                                    description: string;
-                                                    heading: string;
-                                                };
-                                            };
-                                            conditionalAuthTour: {
-                                                steps: {
-                                                    0: {
-                                                        heading: string;
-                                                        content: {
-                                                            0: string;
-                                                            1: string;
-                                                        };
-                                                    };
-                                                    1: {
-                                                        heading: string;
-                                                        content: {
-                                                            0: string;
-                                                        };
-                                                    };
-                                                    2: {
-                                                        heading: string;
-                                                        content: {
-                                                            0: string;
-                                                        };
-                                                    };
-                                                };
-                                            };
-                                            heading: string;
-                                            hint: string;
-                                            editor: {
-                                                apiDocumentation: string;
-                                                changeConfirmation: {
-                                                    content: string;
-                                                    heading: string;
-                                                    message: string;
-                                                };
-                                                goToApiDocumentation: string;
-                                                resetConfirmation: {
-                                                    content: string;
-                                                    heading: string;
-                                                    message: string;
-                                                };
-                                                templates: {
-                                                    heading: string;
-                                                    darkMode: string;
-                                                };
-                                            };
-                                            secretsList: {
-                                                create: string;
-                                                emptyPlaceholder: string;
-                                                search: string;
-                                                tooltips: {
-                                                    keyIcon: string;
-                                                    plusIcon: string;
-                                                };
-                                            };
-                                        };
-                                        stepBased: {
-                                            actions: {
-                                                addAuthentication: string;
-                                                addNewStep: string;
-                                                addStep: string;
-                                                selectAuthenticator: string;
-                                            };
-                                            addAuthenticatorModal: {
-                                                description: string;
-                                                heading: string;
-                                                content: Record<string, unknown>;
-                                                primaryButton: string;
-                                                secondaryButton: string;
-                                            };
-                                            heading: string;
-                                            hint: string;
-                                            forms: {
-                                                fields: {
-                                                    attributesFrom: {
-                                                        label: string;
-                                                        placeholder: string;
-                                                    };
-                                                    subjectIdentifierFrom: {
-                                                        label: string;
-                                                        placeholder: string;
-                                                    };
-                                                    enableBackupCodes: {
-                                                        label: string;
-                                                    };
-                                                };
-                                            };
-                                            secondFactorDisabled: string;
-                                            secondFactorDisabledDueToProxyMode: string;
-                                            secondFactorDisabledInFirstStep: string;
-                                            backupCodesDisabled: string;
-                                            backupCodesDisabledInFirstStep: string;
-                                            authenticatorDisabled: string;
-                                            firstFactorDisabled: string;
-                                            federatedSMSOTPConflictNote: {
-                                                multipleIdps: string;
-                                                singleIdp: string;
-                                            };
-                                            sessionExecutorDisabledInFirstStep: string;
-                                            sessionExecutorDisabledInMultiOptionStep: string;
-                                        };
-                                    };
-                                };
-                                customization: {
-                                    heading: string;
-                                    revertToDefaultButton: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                };
-                                landing: {
-                                    defaultConfig: {
-                                        description: {
-                                            0: string;
-                                            1: string;
-                                        };
-                                        heading: string;
-                                    };
-                                    flowBuilder: {
-                                        addMissingSocialAuthenticatorModal: {
-                                            description: string;
-                                            heading: string;
-                                            content: Record<string, unknown>;
-                                            primaryButton: string;
-                                            secondaryButton: string;
-                                        };
-                                        duplicateSocialAuthenticatorSelectionModal: {
-                                            description: string;
-                                            heading: string;
-                                            content: Record<string, unknown>;
-                                            primaryButton: string;
-                                            secondaryButton: string;
-                                        };
-                                        heading: string;
-                                        headings: {
-                                            default: string;
-                                            socialLogin: string;
-                                            multiFactorLogin: string;
-                                            passwordlessLogin: string;
-                                        };
-                                        types: {
-                                            apple: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            defaultConfig: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            facebook: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            github: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            google: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            idf: {
-                                                tooltipText: string;
-                                            };
-                                            totp: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            usernameless: {
-                                                description: string;
-                                                heading: string;
-                                                info: string;
-                                            };
-                                            passkey: {
-                                                description: string;
-                                                heading: string;
-                                                info: {
-                                                    progressiveEnrollmentEnabled: string;
-                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: string;
-                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
-                                                    progressiveEnrollmentEnabledCheckbox: string;
-                                                    progressiveEnrollmentDisabled: string;
-                                                };
-                                            };
-                                            magicLink: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            microsoft: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            emailOTP: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            smsOTP: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            emailOTPFirstFactor: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                            smsOTPFirstFactor: {
-                                                description: string;
-                                                heading: string;
-                                            };
-                                        };
-                                    };
-                                };
-                                requestPathAuthenticators: {
-                                    title: string;
-                                    subTitle: string;
-                                    notifications: {
-                                        getRequestPathAuthenticators: {
-                                            error: {
-                                                message: string;
-                                                description: string;
-                                            };
-                                            genericError: {
-                                                message: string;
-                                                description: string;
-                                            };
-                                            success: {
-                                                message: string;
-                                                description: string;
-                                            };
-                                        };
-                                    };
-                                };
-                                templateDescription: {
-                                    popupContent: string;
-                                    description: {
-                                        prerequisites: string;
-                                        parameters: string;
-                                        description: string;
-                                        defaultSteps: string;
-                                        helpReference: string;
-                                        code: string;
-                                    };
-                                };
-                            };
-                        };
-                        sharedAccess: {
-                            subTitle: string;
-                            tabName: string;
-                        };
-                        shareApplication: {
-                            heading: string;
-                            shareApplication: string;
-                            addSharingNotification: {
-                                genericError: {
-                                    message: string;
-                                    description: string;
-                                };
-                                success: {
-                                    message: string;
-                                    description: string;
-                                };
-                            };
-                            stopSharingNotification: {
-                                genericError: {
-                                    message: string;
-                                    description: string;
-                                };
-                                success: {
-                                    message: string;
-                                    description: string;
-                                };
-                            };
-                            getSharedOrganizations: {
-                                genericError: {
-                                    message: string;
-                                    description: string;
-                                };
-                            };
-                            stopAllSharingNotification: {
-                                genericError: {
-                                    message: string;
-                                    description: string;
-                                };
-                                success: {
-                                    message: string;
-                                    description: string;
-                                };
-                            };
-                            switchToSelectiveShareFromSharingWithAllSuborgsWarning: string;
-                        };
-                        apiAuthorization: {
-                            m2mPolicyMessage: string;
-                        };
-                        roles: {
-                            createApplicationRoleWizard: {
-                                title: string;
-                                subTitle: string;
-                                button: string;
-                            };
                         };
                     };
                 };
                 forms: {
-                    advancedAttributeSettings: {
-                        sections: {
-                            linkedAccounts: {
-                                errorAlert: {
-                                    message: string;
-                                    description: string;
-                                };
-                                heading: string;
-                                descriptionFederated: string;
-                                fields: {
-                                    validateLocalAccount: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    mandateLocalAccount: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                };
-                            };
-                            subject: {
-                                fields: {
-                                    alternateSubjectAttribute: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    subjectAttribute: {
-                                        hintOIDC: string;
-                                        hintSAML: string;
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    subjectIncludeTenantDomain: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    subjectIncludeUserDomain: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    subjectUseMappedLocalSubject: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    subjectType: {
-                                        public: {
-                                            label: string;
-                                            hint: string;
-                                        };
-                                        pairwise: {
-                                            label: string;
-                                            hint: string;
-                                        };
-                                        label: string;
-                                    };
-                                    sectorIdentifierURI: {
-                                        multipleCallbackError: string;
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            invalid: string;
-                                            required: string;
-                                        };
-                                    };
-                                };
-                                heading: string;
-                            };
-                            role: {
-                                heading: string;
-                                fields: {
-                                    roleAttribute: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    role: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
+                    advancedConfigs: {
+                        federationHub: {
+                            hint: string;
+                            label: string;
                         };
-                    };
-                    advancedConfig: {
-                        fields: {
-                            enableAuthorization: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            returnAuthenticatedIdpList: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            saas: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            skipConsentLogin: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            skipConsentLogout: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
+                        homeRealmIdentifier: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
                         };
-                        sections: {
-                            applicationNativeAuthentication: {
-                                heading: string;
-                                alerts: {
-                                    clientAttestation: string;
-                                };
-                                fields: {
-                                    enableAPIBasedAuthentication: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    enableClientAttestation: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    android: {
-                                        heading: string;
-                                        fields: {
-                                            androidPackageName: {
-                                                hint: string;
-                                                label: string;
-                                                placeholder: string;
-                                                validations: {
-                                                    empty: string;
-                                                };
-                                            };
-                                            androidAttestationServiceCredentials: {
-                                                hint: string;
-                                                label: string;
-                                                placeholder: string;
-                                                validations: {
-                                                    empty: string;
-                                                };
-                                            };
-                                        };
-                                    };
-                                    apple: {
-                                        heading: string;
-                                        fields: {
-                                            appleAppId: {
-                                                hint: string;
-                                                label: string;
-                                                placeholder: string;
-                                            };
-                                        };
-                                    };
-                                };
-                            };
-                            certificate: {
-                                heading: string;
-                                hint: {
-                                    customOidc: string;
-                                    customPassiveSTS: string;
-                                    customSaml: string;
-                                };
-                                fields: {
-                                    jwksValue: {
-                                        description: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    pemValue: {
-                                        description: string;
-                                        actions: {
-                                            view: string;
-                                        };
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    type: {
-                                        children: {
-                                            jwks: {
-                                                label: string;
-                                            };
-                                            pem: {
-                                                label: string;
-                                            };
-                                        };
-                                        label: string;
-                                    };
-                                };
-                                invalidOperationModal: {
-                                    header: string;
-                                    message: string;
-                                };
-                            };
+                        alias: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
                         };
-                    };
-                    generalDetails: {
-                        fields: {
-                            name: {
+                        certificateType: {
+                            label: string;
+                            hint: string;
+                            certificatePEM: {
                                 label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
-                                    duplicate: string;
-                                    reserved: string;
                                 };
                             };
-                            description: {
+                            certificateJWKS: {
                                 label: string;
                                 placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalid: string;
+                                };
                             };
-                            imageUrl: {
+                        };
+                    };
+                    attributeSettings: {
+                        attributeMapping: {
+                            attributeColumnHeader: string;
+                            attributeMapColumnHeader: string;
+                            attributeMapInputPlaceholderPrefix: string;
+                            componentHeading: string;
+                            hint: string;
+                        };
+                        attributeProvisioning: {
+                            attributeColumnHeader: {
+                                0: string;
+                                1: string;
+                            };
+                            attributeMapColumnHeader: string;
+                            attributeMapInputPlaceholderPrefix: string;
+                            componentHeading: string;
+                            hint: string;
+                        };
+                        attributeListItem: {
+                            validation: {
+                                empty: string;
+                            };
+                        };
+                        attributeSelection: {
+                            searchAttributes: {
+                                placeHolder: string;
+                            };
+                        };
+                    };
+                    authenticatorAccordion: {
+                        default: {
+                            0: string;
+                            1: string;
+                        };
+                        enable: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    authenticatorSettings: {
+                        apple: {
+                            additionalQueryParameters: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            keyId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            privateKey: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            secretValidityPeriod: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    };
+                                    name: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                            teamId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                        };
+                        emailOTP: {
+                            enableBackupCodes: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            expiryTime: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
                                 validations: {
                                     invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                                unit: string;
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                };
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
+                                    required: string;
                                 };
                             };
-                            discoverable: {
+                            useAlphanumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                        };
+                        smsOTP: {
+                            hint: string;
+                            expiryTime: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: string;
+                                    required: string;
+                                };
+                                unit: string;
+                            };
+                            tokenLength: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    invalid: string;
+                                    range: {
+                                        digits: string;
+                                        characters: string;
+                                    };
+                                    required: string;
+                                };
+                                unit: {
+                                    digits: string;
+                                    characters: string;
+                                };
+                            };
+                            useNumericChars: {
+                                hint: string;
+                                label: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            allowedResendAttemptCount: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                        };
+                        fido2: {
+                            allowProgressiveEnrollment: {
                                 hint: string;
                                 label: string;
                             };
-                            accessUrl: {
+                            allowUsernamelessAuthentication: {
+                                hint: string;
+                                label: string;
+                            };
+                        };
+                        facebook: {
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    };
+                                    profile: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                            userInfo: {
+                                heading: string;
+                                hint: string;
+                                placeholder: string;
+                                list: {
+                                    ageRange: {
+                                        description: string;
+                                    };
+                                    email: {
+                                        description: string;
+                                    };
+                                    firstName: {
+                                        description: string;
+                                    };
+                                    gender: {
+                                        description: string;
+                                    };
+                                    id: {
+                                        description: string;
+                                    };
+                                    lastName: {
+                                        description: string;
+                                    };
+                                    link: {
+                                        description: string;
+                                    };
+                                    name: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                        };
+                        github: {
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    };
+                                    profile: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                        };
+                        google: {
+                            callbackUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            enableGoogleOneTap: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
+                            AdditionalQueryParameters: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
                                 ariaLabel: string;
                                 validations: {
-                                    empty: string;
-                                    invalid: string;
-                                };
-                            };
-                            isSharingEnabled: {
-                                hint: string;
-                                label: string;
-                            };
-                            isManagementApp: {
-                                hint: string;
-                                label: string;
-                            };
-                            isFapiApp: {
-                                hint: string;
-                                label: string;
-                            };
-                        };
-                        managementAppBanner: string;
-                    };
-                    inboundCustom: {
-                        fields: {
-                            checkbox: {
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            dropdown: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            generic: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            password: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                        };
-                    };
-                    inboundOIDC: {
-                        description: string;
-                        documentation: string;
-                        fields: {
-                            allowedOrigins: {
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            callBackUrls: {
-                                info: string;
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                    invalid: string;
                                     required: string;
                                 };
                             };
-                            clientID: {
+                            scopes: {
+                                heading: string;
+                                hint: string;
+                                list: {
+                                    email: {
+                                        description: string;
+                                    };
+                                    openid: {
+                                        description: string;
+                                    };
+                                    profile: {
+                                        description: string;
+                                    };
+                                };
+                            };
+                        };
+                        microsoft: {
+                            callbackUrl: {
+                                hint: string;
                                 label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
+                            };
+                            clientId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                };
                             };
                             clientSecret: {
-                                hashedDisclaimer: string;
-                                hideSecret: string;
-                                message: string;
-                                showSecret: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            grant: {
-                                children: {
-                                    client_credential: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    implicit: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    password: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                };
-                                validation: {
-                                    refreshToken: string;
-                                };
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            public: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                        };
-                        mobileApp: {
-                            discoverableHint: string;
-                            mobileAppPlaceholder: string;
-                        };
-                        dropdowns: {
-                            selectOption: string;
-                        };
-                        sections: {
-                            accessToken: {
-                                heading: string;
-                                hint: string;
-                                fields: {
-                                    bindingType: {
-                                        children: {
-                                            ssoBinding: {
-                                                label: string;
-                                            };
-                                        };
-                                        description: string;
-                                        label: string;
-                                        valueDescriptions: {
-                                            cookie: string;
-                                            none: string;
-                                            sso_session: string;
-                                        };
-                                    };
-                                    expiry: {
-                                        labelForSPA: string;
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    applicationTokenExpiry: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    type: {
-                                        label: string;
-                                        valueDescriptions: {
-                                            default: string;
-                                            jwt: string;
-                                        };
-                                    };
-                                    revokeToken: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    validateBinding: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    audience: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            duplicate: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                };
-                            };
-                            idToken: {
-                                heading: string;
-                                fields: {
-                                    expiry: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    algorithm: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    audience: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            duplicate: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    encryption: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    signing: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                    method: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
-                            logoutURLs: {
-                                heading: string;
-                                fields: {
-                                    back: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    front: {
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                };
-                            };
-                            pkce: {
-                                description: string;
-                                heading: string;
-                                hint: string;
-                                fields: {
-                                    pkce: {
-                                        children: {
-                                            mandatory: {
-                                                label: string;
-                                            };
-                                            plainAlg: {
-                                                label: string;
-                                            };
-                                        };
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
-                            clientAuthentication: {
-                                heading: string;
-                                fields: {
-                                    authenticationMethod: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                    signingAlgorithm: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                    subjectDN: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                };
-                            };
-                            pushedAuthorization: {
-                                heading: string;
-                                fields: {
-                                    requirePushAuthorizationRequest: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                };
-                            };
-                            requestObject: {
-                                heading: string;
-                                fields: {
-                                    requestObjectSigningAlg: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                    requestObjectEncryptionAlgorithm: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                    requestObjectEncryptionMethod: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                    };
-                                };
-                            };
-                            refreshToken: {
-                                heading: string;
-                                fields: {
-                                    expiry: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    renew: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
-                            requestObjectSignature: {
-                                heading: string;
-                                description: string;
-                                fields: {
-                                    signatureValidation: {
-                                        label: string;
-                                    };
-                                };
-                            };
-                            scopeValidators: {
-                                heading: string;
-                                fields: {
-                                    validator: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
-                            certificates: {
-                                disabledPopup: string;
-                            };
-                        };
-                        messages: {
-                            revokeDisclaimer: {
-                                heading: string;
-                                content: string;
-                            };
-                            customInvalidMessage: string;
-                        };
-                    };
-                    inboundSAML: {
-                        description: string;
-                        documentation: string;
-                        fields: {
-                            assertionURLs: {
-                                info: string;
                                 hint: string;
                                 label: string;
                                 placeholder: string;
                                 validations: {
-                                    empty: string;
-                                    invalid: string;
                                     required: string;
                                 };
                             };
-                            defaultAssertionURL: {
-                                hint: string;
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            idpEntityIdAlias: {
+                            commonAuthQueryParams: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
+                                ariaLabel: string;
                                 validations: {
-                                    empty: string;
-                                    invalid: string;
+                                    required: string;
                                 };
                             };
-                            issuer: {
-                                errorMessage: string;
+                            scopes: {
+                                ariaLabel: string;
+                                heading: string;
                                 hint: string;
                                 label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            metaURL: {
-                                errorMessage: string;
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                    invalid: string;
-                                };
-                            };
-                            mode: {
-                                children: {
-                                    manualConfig: {
-                                        label: string;
+                                list: {
+                                    email: {
+                                        description: string;
                                     };
-                                    metadataFile: {
-                                        label: string;
+                                    openid: {
+                                        description: string;
                                     };
-                                    metadataURL: {
-                                        label: string;
+                                    profile: {
+                                        description: string;
                                     };
                                 };
+                                placeholder: string;
+                            };
+                        };
+                        hypr: {
+                            appId: {
                                 hint: string;
                                 label: string;
+                                placeholder: string;
+
+                                validations: {
+                                    required: string;
+                                };
                             };
-                            qualifier: {
+                            apiToken: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
                                 validations: {
-                                    empty: string;
+                                    required: string;
+                                };
+                            };
+                            baseUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
                                 };
                             };
                         };
-                        sections: {
-                            assertion: {
-                                heading: string;
-                                fields: {
-                                    audience: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            invalid: string;
-                                        };
-                                    };
-                                    nameIdFormat: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    recipients: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            invalid: string;
-                                        };
-                                    };
+                        iproov: {
+                            apiKey: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
                                 };
                             };
-                            attributeProfile: {
-                                heading: string;
-                                fields: {
-                                    enable: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    includeAttributesInResponse: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    serviceIndex: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
+                            apiSecret: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
                                 };
                             };
-                            encryption: {
-                                heading: string;
-                                fields: {
-                                    assertionEncryption: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    assertionEncryptionAlgorithm: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    keyEncryptionAlgorithm: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
+                            oauthUsername: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
                                 };
                             };
-                            idpInitiatedSLO: {
-                                heading: string;
-                                fields: {
-                                    enable: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    returnToURLs: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            invalid: string;
-                                        };
-                                    };
+                            oauthPassword: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
                                 };
                             };
-                            responseSigning: {
-                                heading: string;
-                                fields: {
-                                    digestAlgorithm: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    responseSigning: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    signingAlgorithm: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
+                            baseUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
                                 };
                             };
-                            requestProfile: {
-                                heading: string;
-                                fields: {
-                                    enable: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
+                            enableProgressiveEnrollment: {
+                                hint: string;
+                                label: string;
                             };
-                            requestValidation: {
-                                heading: string;
-                                fields: {
-                                    signatureValidation: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    signatureValidationCertAlias: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
+                        };
+                        saml: {
+                            AuthRedirectUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
                             };
-                            sloProfile: {
-                                heading: string;
-                                fields: {
-                                    enable: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    logoutMethod: {
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    requestURL: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                    responseURL: {
-                                        hint: string;
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                            invalid: string;
-                                        };
-                                    };
-                                };
+                            SPEntityId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
                             };
-                            ssoProfile: {
-                                heading: string;
-                                fields: {
-                                    artifactBinding: {
-                                        hint: string;
-                                        label: string;
-                                    };
-                                    bindings: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                    idpInitiatedSSO: {
-                                        hint: string;
-                                        label: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
+                            SSOUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
                             };
-                            certificates: {
-                                disabledPopup: string;
-                                certificateRemoveConfirmation: {
-                                    header: string;
-                                    content: string;
-                                };
+                            IdPEntityId: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            NameIDType: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            RequestMethod: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IsSLORequestAccepted: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            IsLogoutEnabled: {
+                                hint: string;
+                                label: string;
+
+                                ariaLabel: string;
+                            };
+                            LogoutReqUrl: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IsAuthnRespSigned: {
+                                hint: string;
+                                label: string;
+
+                                ariaLabel: string;
+                            };
+                            IsLogoutReqSigned: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            ISAuthnReqSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            SignatureAlgorithm: {
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            DigestAlgorithm: {
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            IncludeProtocolBinding: {
+                                hint: string;
+                                label: string;
+
+                                ariaLabel: string;
+                            };
+                            IsUserIdInClaims: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            commonAuthQueryParams: {
+                                label: string;
+                                ariaLabel: string;
+                            };
+
+                            isAssertionSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            includeCert: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            includeNameIDPolicy: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            isEnableAssertionEncryption: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+
+                            authenticationContextClass: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            customAuthenticationContextClass: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+                            attributeConsumingServiceIndex: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
+                            };
+
+                            isArtifactBindingEnabled: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            artifactResolveEndpointUrl: {
+                                placeholder: string;
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            isArtifactResolveReqSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            isArtifactResponseSigned: {
+                                hint: string;
+                                label: string;
+                                ariaLabel: string;
+                            };
+                            authContextComparisonLevel: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                ariaLabel: string;
                             };
                         };
                     };
-                    inboundSTS: {
-                        fields: {
-                            realm: {
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
+                    outboundConnectorAccordion: {
+                        default: {
+                            0: string;
+                            1: string;
+                        };
+                        enable: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    common: {
+                        requiredErrorMessage: string;
+                        invalidURLErrorMessage: string;
+                        invalidQueryParamErrorMessage: string;
+                        invalidScopesErrorMessage: string;
+                        customProperties: string;
+                    };
+                    generalDetails: {
+                        name: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                duplicate: string;
+                                required: string;
+                                maxLengthReached: string;
                             };
-                            replyTo: {
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                    invalid: string;
-                                };
+                        };
+                        issuer: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        alias: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        description: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        image: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                    jitProvisioning: {
+                        enableJITProvisioning: {
+                            hint: string;
+                            label: string;
+                            disabledMessageContent: string;
+                            disabledMessageHeader: string;
+                        };
+                        provisioningUserStoreDomain: {
+                            hint: string;
+                            label: string;
+                        };
+                        provisioningScheme: {
+                            hint: string;
+                            label: string;
+                            children: {
+                                0: string;
+                                1: string;
+                                2: string;
+                                3: string;
                             };
-                            replyToLogout: {
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                    invalid: string;
-                                };
+                        };
+                        associateLocalUser: {
+                            hint: string;
+                            label: string;
+                        };
+                    };
+                    roleMapping: {
+                        heading: string;
+                        keyName: string;
+                        valueName: string;
+                        validation: {
+                            keyRequiredMessage: string;
+                            valueRequiredErrorMessage: string;
+                            duplicateKeyErrorMsg: string;
+                        };
+                        hint: string;
+                    };
+                    uriAttributeSettings: {
+                        subject: {
+                            heading: string;
+                            hint: string;
+                            placeHolder: string;
+                            label: string;
+                            validation: {
+                                empty: string;
+                            };
+                        };
+                        group: {
+                            heading: string;
+                            hint: string;
+                            mappedRolesAbsentMessage: string;
+                            mappedRolesPresentMessage: string;
+                            messageOIDC: string;
+                            messageSAML: string;
+                            placeHolder: string;
+                            roleMappingDisabledMessage: string;
+                            label: string;
+                            validation: {
+                                empty: string;
                             };
                         };
                     };
-                    inboundWSTrust: {
-                        fields: {
-                            audience: {
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                    invalid: string;
-                                };
-                            };
-                            certificateAlias: {
-                                hint: string;
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
+                    outboundProvisioningRoles: {
+                        heading: string;
+                        hint: string;
+                        placeHolder: string;
+                        label: string;
+                        popup: {
+                            content: string;
                         };
                     };
-                    outboundProvisioning: {
-                        fields: {
-                            blocking: {
-                                hint: string;
-                                label: string;
-                            };
-                            connector: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            idp: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            jit: {
-                                hint: string;
-                                label: string;
-                            };
-                            rules: {
-                                hint: string;
-                                label: string;
-                            };
+                    certificateSection: {
+                        certificateEditSwitch: {
+                            jwks: string;
+                            pem: string;
                         };
-                    };
-                    provisioningConfig: {
-                        fields: {
-                            proxyMode: {
-                                hint: string;
-                                label: string;
-                            };
-                            userstoreDomain: {
-                                hint: string;
-                                label: string;
-                            };
-                        };
-                    };
-                    spaProtocolSettingsWizard: {
-                        fields: {
-                            callBackUrls: {
-                                label: string;
-                                validations: {
-                                    empty: string;
-                                    invalid: string;
-                                };
-                            };
-                            name: {
-                                label: string;
-                                validations: {
-                                    invalid: string;
-                                };
-                            };
-                            urlDeepLinkError: string;
-                        };
+                        noCertificateAlert: string;
                     };
                 };
                 helpPanel: {
                     tabs: {
-                        configs: {
-                            content: {
-                                subTitle: string;
-                                title: string;
-                            };
-                            heading: string;
-                        };
-                        docs: {
-                            content: null;
-                            heading: string;
-                        };
                         samples: {
                             content: {
-                                sample: {
-                                    configurations: {
-                                        btn: string;
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                    downloadSample: {
-                                        btn: string;
-                                        subTitle: string;
-                                        title: string;
-                                    };
+                                docs: {
                                     goBack: string;
-                                    subTitle: string;
-                                    title: string;
-                                };
-                                technology: {
-                                    subTitle: string;
+                                    hint: string;
                                     title: string;
                                 };
                             };
                             heading: string;
                         };
-                        sdks: {
-                            content: {
-                                sdk: {
-                                    goBack: string;
-                                    subTitle: string;
-                                    title: string;
-                                };
+                    };
+                };
+                templates: {
+                    manualSetup: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    quickSetup: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    apple: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
                             };
                             heading: string;
+                            keyId: {
+                                description: string;
+                                heading: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                idpDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureAppleSignIn: string;
+                                configureReturnURL: string;
+                                configureWebDomain: string;
+                                getCredentials: string;
+                                heading: string;
+                            };
+                            privateKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            subHeading: string;
+                            teamId: {
+                                description: string;
+                                heading: string;
+                            };
                         };
-                        start: {
-                            content: {
-                                endpoints: {
-                                    subTitle: string;
-                                    title: string;
-                                };
-                                oidcConfigurations: {
-                                    labels: {
-                                        authorize: string;
-                                        dynamicClientRegistration: string;
-                                        endSession: string;
-                                        introspection: string;
-                                        issuer: string;
-                                        jwks: string;
-                                        keystore: string;
-                                        openIdServer: string;
-                                        pushedAuthorizationRequest: string;
-                                        revoke: string;
-                                        sessionIframe: string;
-                                        token: string;
-                                        userInfo: string;
-                                        webFinger: string;
-                                        wellKnown: string;
-                                    };
-                                };
-                                samlConfigurations: {
-                                    buttons: {
-                                        certificate: string;
-                                        metadata: string;
-                                    };
-                                    labels: {
-                                        certificate: string;
-                                        issuer: string;
-                                        metadata: string;
-                                        slo: string;
-                                        sso: string;
-                                        destinationURL: string;
-                                        artifactResolutionUrl: string;
-                                    };
-                                };
-                                trySample: {
-                                    btn: string;
-                                    subTitle: string;
-                                    title: string;
-                                };
-                                useSDK: {
-                                    btns: {
-                                        withSDK: string;
-                                        withoutSDK: string;
-                                    };
-                                    subTitle: string;
-                                    title: string;
-                                };
-                                wsFedConfigurations: {
-                                    labels: {
-                                        passiveSTSUrl: string;
-                                    };
-                                };
+                    };
+                    expert: {
+                        wizardHelp: {
+                            heading: string;
+                            description: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            name: {
+                                connectionDescription: string;
+                                heading: string;
+                                idpDescription: string;
+                            };
+                            subHeading: string;
+                        };
+                    };
+                    facebook: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
                             };
                             heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                configureSiteURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            };
+                            subHeading: string;
+                        };
+                    };
+                    github: {
+                        wizardHelp: {
+                            heading: string;
+                            subHeading: string;
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureHomePageURL: string;
+                                configureRedirectURL: string;
+                                heading: string;
+                                getCredentials: string;
+                            };
+                        };
+                    };
+                    google: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            };
+                            subHeading: string;
+                        };
+                    };
+                    organizationIDP: {
+                        wizardHelp: {
+                            name: {
+                                description: string;
+                                heading: string;
+                            };
+                            description: {
+                                description: string;
+                                heading: string;
+                                example: string;
+                            };
+                        };
+                    };
+                    microsoft: {
+                        wizardHelp: {
+                            clientId: {
+                                description: string;
+                                heading: string;
+                            };
+                            clientSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                configureOAuthApps: string;
+                                configureRedirectURL: string;
+                                getCredentials: string;
+                                heading: string;
+                            };
+                            subHeading: string;
+                        };
+                    };
+                    hypr: {
+                        wizardHelp: {
+                            apiToken: {
+                                description: string;
+                                heading: string;
+                            };
+                            appId: {
+                                description: string;
+                                heading: string;
+                            };
+                            baseUrl: {
+                                description: string;
+                                heading: string;
+                            };
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                rpDescription: string;
+                                tokenDescription: string;
+                                heading: string;
+                            };
+                        };
+                    };
+                    iproov: {
+                        wizardHelp: {
+                            baseUrl: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthUsername: {
+                                description: string;
+                                heading: string;
+                            };
+                            oauthPassword: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiKey: {
+                                description: string;
+                                heading: string;
+                            };
+                            apiSecret: {
+                                description: string;
+                                heading: string;
+                            };
+                            enableProgressiveEnrollment: {
+                                description: string;
+                                heading: string;
+                            }
+                            heading: string;
+                            name: {
+                                idpDescription: string;
+                                connectionDescription: string;
+                                heading: string;
+                            };
+                            preRequisites: {
+                                appDescription: string;
+                                heading: string;
+                            };
+                        }
+                    };
+                    enterprise: {
+                        addWizard: {
+                            title: string;
+                            subtitle: string;
+                        };
+                        saml: {
+                            preRequisites: {
+                                configureIdp: string;
+                                configureRedirectURL: string;
+                                heading: string;
+                                hint: string;
+                            };
+                        };
+                        validation: {
+                            name: string;
+                            invalidName: string;
+                        };
+                    };
+                    trustedTokenIssuer: {
+                        addWizard: {
+                            title: string;
+                            subtitle: string;
+                        };
+                        forms: {
+                            steps: {
+                                general: string;
+                                certificate: string;
+                            };
+                            name: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            issuer: {
+                                label: string;
+                                placeholder: string;
+                                hint: string;
+                                validation: {
+                                    notValid: string;
+                                };
+                            };
+                            alias: {
+                                label: string;
+                                placeholder: string;
+                                hint: string;
+                                validation: {
+                                    notValid: string;
+                                };
+                            };
+                            certificateType: {
+                                label: string;
+                                requiredCertificate: string;
+                            };
+                            jwksUrl: {
+                                optionLabel: string;
+                                placeholder: string;
+                                label: string;
+                                hint: string;
+                                validation: {
+                                    notValid: string;
+                                };
+                            };
+                            pem: {
+                                optionLabel: string;
+                                hint: string;
+                                uploadCertificateButtonLabel: string;
+                                dropzoneText: string;
+                                pasteAreaPlaceholderText: string;
+                            };
                         };
                     };
                 };
                 list: {
-                    columns: {
-                        actions: string;
-                        name: string;
-                        inboundKey: string;
-                    };
-                    actions: {
-                        add: string;
-                        predefined: string;
-                        custom: string;
-                    };
-                    labels: {
-                        fragment: string;
-                    };
+                    actions: string;
+                    name: string;
                 };
-                myaccount: {
-                    title: string;
-                    description: string;
-                    popup: string;
-                    enable: {
-                        0: string;
-                        1: string;
+                modals: {
+                    addAuthenticator: {
+                        title: string;
+                        subTitle: string;
                     };
-                    Confirmation: {
-                        enableConfirmation: {
-                            content: string;
-                            heading: string;
-                            message: string;
-                        };
-                        disableConfirmation: {
-                            content: string;
-                            heading: string;
-                            message: string;
-                        };
+                    addCertificate: {
+                        title: string;
+                        subTitle: string;
                     };
-                    notifications: {
-                        error: {
-                            description: string;
-                            message: string;
-                        };
-                        genericError: {
-                            description: string;
-                            message: string;
-                        };
-                        success: {
-                            description: string;
-                            message: string;
-                        };
+                    addProvisioningConnector: {
+                        title: string;
+                        subTitle: string;
                     };
-                    fetchMyAccountStatus: {
-                        error: {
-                            description: string;
-                            message: string;
-                        };
-                        genericError: {
-                            description: string;
-                            message: string;
+                    attributeSelection: {
+                        title: string;
+                        subTitle: string;
+                        content: {
+                            searchPlaceholder: string;
                         };
                     };
                 };
                 notifications: {
-                    addApplication: {
+                    addFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    addIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    changeCertType: {
+                        pem: {
+                            description: string;
+                            message: string;
+                        };
+                        jwks: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    deleteCertificate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteIDPWithConnectedApps: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteConnection: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableIDPWithConnectedApps: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    duplicateCertificateUpload: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPTemplate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getIDPTemplateList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticatorsList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getFederatedAuthenticatorMetadata: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getConnectionDetails: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnectorsList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getOutboundProvisioningConnectorMetadata: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getAllLocalClaims: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    getRolesList: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    submitAttributeSettings: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    deleteDefaultAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                    };
+                    deleteDefaultConnector: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                            genericMessage: string;
+                        };
+                    };
+                    updateAttributes: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateClaimsConfigs: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateFederatedAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateFederatedAuthenticators: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateEmailOTPAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateSMSOTPAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateGenericAuthenticator: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDP: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDPCertificate: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateIDPRoleMappings: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateJITProvisioning: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioningConnectors: {
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                        genericError: {
+                            message: string;
+                            description: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    updateOutboundProvisioningConnector: {
                         error: {
                             message: string;
                             description: string;
@@ -2463,278 +2455,150 @@ export interface ConsoleNS {
                     };
                     apiLimitReachedError: {
                         error: {
-                            message: string;
                             description: string;
+                            message: string;
                         };
                     };
-                    authenticationStepMin: {
-                        genericError: {
-                            message: string;
-                            description: string;
+                };
+                popups: {
+                    appStatus: {
+                        enabled: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
+                        };
+                        disabled: {
+                            content: string;
+                            header: string;
+                            subHeader: string;
                         };
                     };
-                    authenticationStepDeleteErrorDueToSecondFactors: {
-                        genericError: {
-                            message: string;
-                            description: string;
+                };
+                placeHolders: {
+                    emptyCertificateList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
                         };
                     };
-                    authenticationStepDeleteErrorDueToAppShared: {
-                        genericError: {
-                            message: string;
-                            description: string;
+                    emptyIDPList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
                         };
                     };
-                    deleteApplication: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
+                    emptyIDPSearchResults: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
                         };
                     };
-                    deleteOptionErrorDueToSecondFactorsOnRight: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
+                    emptyAuthenticatorList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
+                            2: string;
                         };
                     };
-                    deleteProtocolConfig: {
-                        error: {
-                            message: string;
-                            description: string;
+                    emptyConnectionTypeList: {
+                        subtitles: {
+                            0: string;
+                            1: string;
                         };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
+                        title: string;
+                    };
+                    emptyConnectorList: {
+                        title: string;
+                        subtitles: {
+                            0: string;
+                            1: string;
                         };
                     };
-                    duplicateAuthenticationStep: {
-                        genericError: {
-                            message: string;
-                            description: string;
+                    noAttributes: {
+                        title: string;
+                        subtitles: {
+                            0: string;
                         };
                     };
-                    emptyAuthenticationStep: {
-                        genericError: {
-                            message: string;
-                            description: string;
+                };
+                wizards: {
+                    addAuthenticator: {
+                        header: string;
+                        steps: {
+                            authenticatorSelection: {
+                                title: string;
+                                quickSetup: {
+                                    title: string;
+                                    subTitle: string;
+                                };
+                                manualSetup: {
+                                    title: string;
+                                    subTitle: string;
+                                };
+                            };
+                            authenticatorConfiguration: {
+                                title: string;
+                            };
+                            authenticatorSettings: {
+                                emptyPlaceholder: {
+                                    subtitles: [string, string];
+                                    title: string;
+                                };
+                            };
+                            summary: {
+                                title: string;
+                            };
                         };
                     };
-                    fetchAllowedCORSOrigins: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchApplication: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
+                    addIDP: {
+                        header: string;
+                        steps: {
+                            generalSettings: {
+                                title: string;
+                            };
+                            authenticatorConfiguration: {
+                                title: string;
+                            };
+                            provisioningConfiguration: {
+                                title: string;
+                            };
+                            summary: {
+                                title: string;
+                            };
                         };
                     };
-                    fetchMyAccountApplication: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchApplications: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
+                    addProvisioningConnector: {
+                        header: string;
+                        steps: {
+                            connectorSelection: {
+                                title: string;
+                                defaultSetup: {
+                                    title: string;
+                                    subTitle: string;
+                                };
+                            };
+                            connectorConfiguration: {
+                                title: string;
+                            };
+                            summary: {
+                                title: string;
+                            };
                         };
                     };
-                    fetchCustomInboundProtocols: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
+                    buttons: {
+                        next: string;
+                        finish: string;
+                        previous: string;
                     };
-                    fetchInboundProtocols: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchProtocolMeta: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchSAMLIDPConfigs: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchOIDCIDPConfigs: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchTemplate: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchTemplates: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    getInboundProtocolConfig: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    regenerateSecret: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    revokeApplication: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
+                };
+            };
+            suborganizations: {
+                notifications: {
                     tierLimitReachedError: {
                         emptyPlaceholder: {
                             action: string;
@@ -2743,348 +2607,17 @@ export interface ConsoleNS {
                         };
                         heading: string;
                     };
-                    updateAdvancedConfig: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateApplication: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateAuthenticationFlow: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateClaimConfig: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateInboundProtocolConfig: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateInboundProvisioningConfig: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateOutboundProvisioning: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    updateProtocol: {
-                        error: {
-                            message: string;
-                            description: string;
-                        };
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    fetchOIDCServiceEndpoints: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    secondFactorAuthenticatorToFirstStep: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    firstFactorAuthenticatorToSecondStep: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    conditionalScriptLoopingError: {
-                        message: string;
-                        description: string;
-                    };
-                    deleteCertificateSuccess: {
-                        message: string;
-                        description: string;
-                    };
-                    deleteCertificateGenericError: {
-                        message: string;
-                        description: string;
-                    };
-                    updateOnlyIdentifierFirstError: {
-                        message: string;
-                        description: string;
-                    };
-                    updateIdentifierFirstInFirstStepError: {
-                        message: string;
-                        description: string;
-                    };
-                };
-                popups: {
-                    appStatus: {
-                        active: {
-                            content: string;
-                            header: string;
-                            subHeader: string;
-                        };
-                        notConfigured: {
-                            content: string;
-                            header: string;
-                            subHeader: string;
-                        };
-                        revoked: {
-                            content: string;
-                            header: string;
-                            subHeader: string;
-                        };
-                    };
-                };
-                placeholders: {
-                    emptyAttributesList: {
-                        action: string;
-                        title: string;
-                        subtitles: string;
-                    };
-                    emptyAuthenticatorStep: {
-                        title: string;
-                        subtitles: {
-                            0: string;
-                        };
-                    };
-                    emptyAuthenticatorsList: {
-                        title: string;
-                        subtitles: string;
-                    };
-                    emptyOutboundProvisioningIDPs: {
-                        action: string;
-                        title: string;
-                        subtitles: string;
-                    };
-                    emptyList: {
-                        action: string;
-                        title: string;
-                        subtitles: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
-                    };
-                    emptyProtocolList: {
-                        action: string;
-                        title: string;
-                        subtitles: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
-                    };
-                };
-                resident: {
-                    provisioning: {
-                        outbound: {
-                            actions: {
-                                addIdp: string;
-                            };
-                            addIdpWizard: {
-                                heading: string;
-                                subHeading: string;
-                                steps: {
-                                    details: string;
-                                };
-                            };
-                            emptyPlaceholder: {
-                                action: string;
-                                title: string;
-                                subtitles: string;
-                            };
-                            form: {
-                                fields: {
-                                    connection: {
-                                        label: string;
-                                        placeholder: string;
-                                        validations: {
-                                            empty: string;
-                                        };
-                                    };
-                                };
-                            };
-                            heading: string;
-                            subHeading: string;
-                            notifications: {
-                                create: {
-                                    error: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                    genericError: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                    success: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                };
-                                delete: {
-                                    genericError: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                    success: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                };
-                                fetch: {
-                                    genericError: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                };
-                                update: {
-                                    genericError: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                    success: {
-                                        message: string;
-                                        description: string;
-                                    };
-                                };
-                            };
-                        };
-                    };
-                };
-                templates: {
-                    manualSetup: {
-                        heading: string;
-                        subHeading: string;
-                    };
-                    quickSetup: {
-                        heading: string;
-                        subHeading: string;
-                    };
-                };
-                wizards: {
-                    minimalAppCreationWizard: {
-                        help: {
-                            heading: string;
-                            subHeading: string;
-                            template: {
-                                common: {
-                                    authorizedRedirectURLs: {
-                                        example: string;
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                    heading: {
-                                        example: string;
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                    protocol: {
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                };
-                                label: string;
-                                samlWeb: {
-                                    assertionResponseURLs: {
-                                        example: string;
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                    issuer: {
-                                        example: string;
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                    metaFile: {
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                    metaURL: {
-                                        subTitle: string;
-                                        title: string;
-                                    };
-                                };
-                            };
-                        };
-                    };
-                    applicationCertificateWizard: {
-                        heading: string;
-                        subHeading: string;
-                        emptyPlaceHolder: {
+                    subOrgLevelsLimitReachedError: {
+                        emptyPlaceholder: {
+                            action: string;
                             title: string;
-                            description1: string;
-                            description2: string;
+                            subtitles: string;
                         };
+                        heading: string;
+                    };
+                    duplicateOrgError: {
+                        message: string;
+                        description: string;
                     };
                 };
             };
@@ -3148,13 +2681,6 @@ export interface ConsoleNS {
                 overview: string;
                 remoteRepo: string;
                 remoteRepoEdit: string;
-            };
-            templates: {
-                emptyPlaceholder: {
-                    action: string;
-                    title: string;
-                    subtitles: string;
-                };
             };
         };
         notifications: {

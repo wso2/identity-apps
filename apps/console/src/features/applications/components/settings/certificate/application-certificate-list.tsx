@@ -152,10 +152,10 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 ...(patchObject.general)
             });
             dispatch(addAlert({
-                description: t("console:develop.features.applications.notifications" +
+                description: t("applications:notifications" +
                     ".deleteCertificateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.applications.notifications" +
+                message: t("applications:notifications" +
                     ".deleteCertificateSuccess.message")
             }));
         } catch (error) {
@@ -169,10 +169,10 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                 return;
             }
             dispatch(addAlert({
-                description: t("console:develop.features.applications.notifications" +
+                description: t("applications:notifications" +
                     ".deleteCertificateGenericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.notifications." +
+                message: t("applications:notifications." +
                     "deleteCertificateGenericError.message")
             }));
         } finally {
@@ -191,20 +191,20 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
             onPrimaryActionClick={ deleteCertificate }
             open={ showCertificateDeleteConfirmation }
             type="negative"
-            primaryAction={ t("console:develop.features.applications.confirmations.certificateDelete.primaryAction") }
-            secondaryAction={ t("console:develop.features.applications.confirmations" +
+            primaryAction={ t("applications:confirmations.certificateDelete.primaryAction") }
+            secondaryAction={ t("applications:confirmations" +
                 ".certificateDelete.secondaryAction") }
             data-testid={ `${ testId }-delete-confirmation-modal` }
             closeOnDimmerClick={ false }>
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }>
-                { t("console:develop.features.applications.confirmations.certificateDelete.header") }
+                { t("applications:confirmations.certificateDelete.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ testId }-delete-confirmation-modal-message` }>
-                { t("console:develop.features.applications.confirmations.certificateDelete.message") }
+                { t("applications:confirmations.certificateDelete.message") }
             </ConfirmationModal.Message>
         </ConfirmationModal>
     );
@@ -396,13 +396,13 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                 <Divider hidden/>
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("console:develop.features.applications.wizards." +
+                                        title={ t("applications:wizards." +
                                             "applicationCertificateWizard.emptyPlaceHolder.title") }
                                         image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
-                                            t("console:develop.features.applications.wizards." +
+                                            t("applications:wizards." +
                                                 "applicationCertificateWizard.emptyPlaceHolder.description1"),
-                                            t("console:develop.features.applications.wizards." +
+                                            t("applications:wizards." +
                                                 "applicationCertificateWizard.emptyPlaceHolder.description2")
                                         ] }
                                         imageSize="tiny"

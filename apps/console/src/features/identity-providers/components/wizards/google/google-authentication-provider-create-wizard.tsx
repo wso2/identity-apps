@@ -403,7 +403,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                            { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>

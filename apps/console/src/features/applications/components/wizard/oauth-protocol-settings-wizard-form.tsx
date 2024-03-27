@@ -464,13 +464,13 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         <Field
                                             name="grant"
                                             label={
-                                                t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                t("applications:forms.inboundOIDC.fields." +
                                                     "grant.label")
                                             }
                                             type="checkbox"
                                             required={ true }
                                             requiredErrorMessage={
-                                                t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                t("applications:forms.inboundOIDC.fields." +
                                                     "grant.validations.empty")
                                             }
                                             children={ getAllowedGranTypeList(OIDCMeta?.allowedGrantTypes) }
@@ -480,7 +480,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         />
                                         <Hint>
                                             {
-                                                t("console:develop.features.applications.forms.inboundOIDC.fields." +
+                                                t("applications:forms.inboundOIDC.fields." +
                                                     "grant.hint")
                                             }
                                         </Hint>
@@ -505,25 +505,25 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         labelName={
                                             selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
                                                 ? "Authorized redirect URIs"
-                                                : t("console:develop.features.applications.forms." +
+                                                : t("applications:forms." +
                                                     "spaProtocolSettingsWizard.fields.callBackUrls.label")
                                         }
                                         placeholder={
                                             selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
-                                                ? t("console:develop.features.applications.forms.inboundOIDC." +
+                                                ? t("applications:forms.inboundOIDC." +
                                                     "mobileApp.mobileAppPlaceholder")
-                                                : t("console:develop.features.applications.forms.inboundOIDC." +
+                                                : t("applications:forms.inboundOIDC." +
                                                     "fields.callBackUrls.placeholder")
                                         }
                                         validationErrorMsg={
                                             isDeepLinkError
-                                                ? t("console:develop.features.applications.forms." +
+                                                ? t("applications:forms." +
                                                     "spaProtocolSettingsWizard.fields.urlDeepLinkError")
-                                                : t("console:develop.features.applications.forms." +
+                                                : t("applications:forms." +
                                                     "spaProtocolSettingsWizard.fields.callBackUrls.validations.invalid")
                                         }
                                         emptyErrorMessage={
-                                            t("console:develop.features.applications.forms." +
+                                            t("applications:forms." +
                                                 "spaProtocolSettingsWizard.fields.callBackUrls.validations.empty")
                                         }
                                         skipInternalValidation= {
@@ -556,8 +556,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         setShowError={ setShowURLError }
                                         showError={ showURLError }
                                         hint={
-                                            !hideFieldHints && t("console:develop.features.applications" +
-                                                ".forms.inboundOIDC.fields.callBackUrls.hint")
+                                            !hideFieldHints && t("applications:" +
+                                                "forms.inboundOIDC.fields.callBackUrls.hint")
                                         }
                                         addURLTooltip={ t("common:addURL") }
                                         duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -571,17 +571,17 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         customLabel={ callbackURLsErrorLabel }
                                         isAllowEnabled={ isAllowEnabled }
                                         addOriginByDefault={ addOriginByDefault }
-                                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderPositive={ t("applications:URLInput.withLabel."
                                             + "positive.header") }
-                                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupHeaderNegative={ t("applications:URLInput.withLabel."
                                             + "negative.header") }
-                                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentPositive={ t("applications:URLInput.withLabel."
                                             + "positive.content", { productName: config.ui.productName }) }
-                                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                        popupContentNegative={ t("applications:URLInput.withLabel."
                                             + "negative.content", { productName: config.ui.productName }) }
-                                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                        popupDetailedContentPositive={ t("applications:URLInput."
                                             + "withLabel.positive.detailedContent.0") }
-                                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                        popupDetailedContentNegative={ t("applications:URLInput."
                                             + "withLabel.negative.detailedContent.0") }
                                         insecureURLDescription={ t("console:common.validations.inSecureURL."
                                             + "description") }
@@ -595,8 +595,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 (<>
                                                     {
                                                         <Trans
-                                                            i18nKey={ "console:develop.features." +
-                                                                "applications.forms.inboundOIDC.fields." +
+                                                            i18nKey={ "applications:forms.inboundOIDC.fields." +
                                                                 "callBackUrls.info" }
                                                             tOptions={ {
                                                                 callBackURLFromTemplate: callBackURLFromTemplate
@@ -645,7 +644,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         value={ publicClient }
                                         children={ [
                                             {
-                                                label: t("console:develop.features.applications.forms.inboundOIDC" +
+                                                label: t("applications:forms.inboundOIDC" +
                                                     ".fields.public.label"),
                                                 value: "supportPublicClients"
                                             }
@@ -655,7 +654,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     { !hideFieldHints && (
                                         <Hint>
                                             {
-                                                t("console:develop.features.applications.forms.inboundOIDC" +
+                                                t("applications:forms.inboundOIDC" +
                                                     ".fields.public.hint")
                                             }
                                         </Hint>
@@ -671,14 +670,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         label=""
                                         required={ false }
                                         requiredErrorMessage={
-                                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            t("applications:forms.inboundOIDC.sections" +
                                                 ".refreshToken.fields.renew.validations.empty")
                                         }
                                         type="checkbox"
                                         value={ refreshToken }
                                         children={ [
                                             {
-                                                label: t("console:develop.features.applications.forms.inboundOIDC" +
+                                                label: t("applications:forms.inboundOIDC" +
                                                     ".sections.refreshToken.fields.renew.label"),
                                                 value: "refreshToken"
                                             }
@@ -687,7 +686,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     />
                                     { !hideFieldHints && (
                                         <Hint>
-                                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            { t("applications:forms.inboundOIDC.sections" +
                                                 ".refreshToken.fields.renew.hint") }
                                         </Hint>
                                     ) }

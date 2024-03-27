@@ -110,7 +110,7 @@ export const WSFederationConfigurations: FunctionComponent<WSFederationConfigura
                                 spaced="right"
                             />
                             <label data-componentid={ `${ componentId }-issuer-label` }>
-                                { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                { t("applications:helpPanel.tabs.start.content." +
                                     "wsFedConfigurations.labels.passiveSTSUrl") }
                             </label>
                         </Grid.Column>

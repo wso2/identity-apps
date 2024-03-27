@@ -46,6 +46,11 @@ export class I18nConstants {
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
 
     /**
+     * Applications namespace.
+     */
+    public static readonly APPLICATIONS_NAMESPACE: string = I18nModuleConstants.APPLICATIONS_NAMESPACE;
+  
+    /**
      * idp namespace.
      */
     public static readonly IDP_NAMESPACE: string = I18nModuleConstants.IDP_NAMESPACE;
@@ -268,6 +273,7 @@ export class I18nConstants {
         [ I18nConstants.AUTHENTICATION_PROVIDER_NAMESPACE, "portals" ],
         [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.IDP_NAMESPACE, "portals" ]
     ]);
 

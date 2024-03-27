@@ -170,7 +170,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
         <TransferComponent
             selectionComponent
             searchPlaceholder={ t(
-                "console:develop.features.applications.edit.sections.attributes.selection.addWizard" +
+                "applications:edit.sections.attributes.selection.addWizard" +
                     ".steps.select.transfer.searchPlaceholders.attribute"
             ) }
             handleHeaderCheckboxChange={ selectAllUnAssignedList }
@@ -179,7 +179,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
             handleUnelectedListSearch={ searchTempAvailable }
             data-testid={ `${ testId }-transfer-component` }
             selectAllCheckboxLabel={
-                t("console:develop.features.applications.edit.sections.attributes.selection.selectAll")
+                t("applications:edit.sections.attributes.selection.selectAll")
             }
         >
             <TransferList

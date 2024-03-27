@@ -238,7 +238,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         componentId: "general",
                         menuItem:
                                  <Menu.Item data-tourid="general">
-                                     { t("console:develop.features.applications.edit.sections.general.tabName") }
+                                     { t("applications:edit.sections.general.tabName") }
                                  </Menu.Item>,
                         render: () =>
                             applicationConfig.editApplication.
@@ -265,7 +265,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ) &&
                 panes.push({
                     componentId: "protocol",
-                    menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
+                    menuItem: t("applications:edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
             }
@@ -282,7 +282,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     componentId: "user-attributes",
                     menuItem:
                         <Menu.Item data-tourid="attributes">
-                            { t("console:develop.features.applications.edit.sections.attributes.tabName") }
+                            { t("applications:edit.sections.attributes.tabName") }
                         </Menu.Item>,
                     render: () =>
                         applicationConfig.editApplication.
@@ -307,7 +307,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                       componentId: "sign-in-method",
                       menuItem:
                           <Menu.Item data-tourid="sign-in-methods">
-                              { t("console:develop.features.applications.edit.sections.signOnMethod.tabName") }
+                              { t("applications:edit.sections.signOnMethod.tabName") }
                           </Menu.Item>,
                       render: SignOnMethodsTabPane
                   });
@@ -324,7 +324,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
                 panes.push({
                     componentId: "provisioning",
-                    menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
+                    menuItem: t("applications:edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
             }
@@ -342,7 +342,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                       componentId: "advanced",
                       menuItem: (
                           <Menu.Item data-tourid="advanced">
-                              { t("console:develop.features.applications.edit.sections.advanced.tabName") }
+                              { t("applications:edit.sections.advanced.tabName") }
                           </Menu.Item> ),
                       render: AdvancedSettingsTabPane
                   });
@@ -367,7 +367,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
-                        menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),
+                        menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                         render: SharedAccessTabPane
                     });
             }
@@ -384,7 +384,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                  panes.push({
                      componentId: "info",
                      menuItem: {
-                         content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                         content: t("applications:edit.sections.info.tabName"),
                          icon: "info circle grey"
                      },
                      render: InfoTabPane
@@ -403,43 +403,43 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         return [
             {
                 componentId: "general",
-                menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
+                menuItem: t("applications:edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
                 componentId: "protocol",
-                menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
+                menuItem: t("applications:edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
             },
             {
                 componentId: "user-attributes",
-                menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
+                menuItem: t("applications:edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
                 componentId: "sign-in-method",
-                menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
+                menuItem: t("applications:edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             applicationConfig.editApplication.showProvisioningSettings && {
                 componentId: "provisioning",
-                menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
+                menuItem: t("applications:edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
                 componentId: "advanced",
-                menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
+                menuItem: t("applications:edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             },
             {
                 componentId: "shared-access",
-                menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),
+                menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                 render: SharedAccessTabPane
             },
             {
                 componentId: "info",
                 menuItem: {
-                    content: t("console:develop.features.applications.edit.sections.info.tabName"),
+                    content: t("applications:edit.sections.info.tabName"),
                     icon: "info circle grey"
                 },
                 render: InfoTabPane
@@ -555,7 +555,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
+                            message: t("applications:notifications.fetchAllowedCORSOrigins." +
                                 "error.message")
                         }));
 
@@ -563,10 +563,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins" +
+                        description: t("applications:notifications.fetchAllowedCORSOrigins" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
+                        message: t("applications:notifications.fetchAllowedCORSOrigins." +
                             "genericError.message")
                     }));
                 });
@@ -806,7 +806,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
+                            message: t("applications:notifications.getInboundProtocolConfig" +
                                 ".error.message")
                         }));
 
@@ -814,10 +814,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }
 
                     dispatch(addAlert({
-                        description: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
+                        description: t("applications:notifications.getInboundProtocolConfig" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
+                        message: t("applications:notifications.getInboundProtocolConfig" +
                             ".genericError.message")
                     }));
                 })
@@ -1062,7 +1062,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     data-componentid={ `${ componentId }-client-secret-hash-disclaimer-modal-header` }
                 >
                     {
-                        t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
+                        t("applications:confirmations.clientSecretHashDisclaimer" +
                             ".modal.header")
                     }
                 </ConfirmationModal.Header>
@@ -1072,7 +1072,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     data-componentid={ `${ componentId }-client-secret-hash-disclaimer-modal-message` }
                 >
                     {
-                        t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
+                        t("applications:confirmations.clientSecretHashDisclaimer" +
                             ".modal.message")
                     }
                 </ConfirmationModal.Message>
@@ -1085,18 +1085,18 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.label")
                                         }
                                     </label>
                                     <CopyInputField
                                         value={ clientId }
                                         hideSecretLabel={
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.hide")
                                         }
                                         showSecretLabel={
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
                                         }
                                         data-componentid={ `${ componentId }-client-secret-readonly-input` }
@@ -1105,7 +1105,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm." +
                                                 "clientSecret.label")
                                         }
@@ -1114,11 +1114,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                         secret
                                         value={ clientSecret }
                                         hideSecretLabel={
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.hide")
                                         }
                                         showSecretLabel={
-                                            t("console:develop.features.applications.confirmations." +
+                                            t("applications:confirmations." +
                                                 "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
                                         }
                                         data-componentid={ `${ componentId }-client-secret-readonly-input` }

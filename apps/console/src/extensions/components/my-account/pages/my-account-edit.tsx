@@ -164,19 +164,19 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
             }
             dispatch(addAlert({
                 description: myAccountStatusFetchRequestError.response.data.description ??
-                    t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.description"),
+                    t("applications:myaccount.fetchMyAccountStatus.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus.error.message")
+                message: t("applications:myaccount.fetchMyAccountStatus.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+            description: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.myaccount.fetchMyAccountStatus" +
+            message: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.message")
         }));
     }, [ myAccountStatusFetchRequestError ]);
@@ -198,19 +198,19 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
             }
             dispatch(addAlert({
                 description: myAccountDataFetchRequestError.response.data.description ??
-                    t("console:develop.features.applications.myaccount.fetchMyAccountData.error.description"),
+                    t("applications:myaccount.fetchMyAccountData.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.myaccount.fetchMyAccountData.error.message")
+                message: t("applications:myaccount.fetchMyAccountData.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.myaccount.fetchMyAccountData" +
+            description: t("applications:myaccount.fetchMyAccountData" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.myaccount.fetchMyAccountData" +
+            message: t("applications:myaccount.fetchMyAccountData" +
                 ".genericError.message")
         }));
 
@@ -231,19 +231,19 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
             }
             dispatch(addAlert({
                 description: totpConfigDataFetchRequestError.response.data.description ??
-                    t("console:develop.features.applications.myaccount.fetchMyAccountData.error.description"),
+                    t("applications:myaccount.fetchMyAccountData.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:develop.features.applications.myaccount.fetchMyAccountData.error.message")
+                message: t("applications:myaccount.fetchMyAccountData.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("console:develop.features.applications.myaccount.fetchMyAccountData" +
+            description: t("applications:myaccount.fetchMyAccountData" +
                 ".genericError.description"),
             level: AlertLevels.ERROR,
-            message: t("console:develop.features.applications.myaccount.fetchMyAccountData" +
+            message: t("applications:myaccount.fetchMyAccountData" +
                 ".genericError.message")
         }));
     }, [ totpConfigDataFetchRequestError ]);
@@ -432,16 +432,16 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
-                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.heading") }
+                    { t("applications:myaccount.Confirmation.enableConfirmation.heading") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     warning
                 >
-                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.message") }
+                    { t("applications:myaccount.Confirmation.enableConfirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("console:develop.features.applications.myaccount.Confirmation.enableConfirmation.content") }
+                    { t("applications:myaccount.Confirmation.enableConfirmation.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -474,16 +474,16 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header>
-                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.heading") }
+                    { t("applications:myaccount.Confirmation.disableConfirmation.heading") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     warning
                 >
-                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.message") }
+                    { t("applications:myaccount.Confirmation.disableConfirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("console:develop.features.applications.myaccount.Confirmation.disableConfirmation.content") }
+                    { t("applications:myaccount.Confirmation.disableConfirmation.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -501,28 +501,28 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
                 setMyAccountEnabled(status);
                 mutateMyAccountStatusFetchRequest();
                 dispatch(addAlert({
-                    description: t("console:develop.features.applications.myaccount.notifications.success.description"),
+                    description: t("applications:myaccount.notifications.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.myaccount.notifications.success.message")
+                    message: t("applications:myaccount.notifications.success.message")
                 }));
 
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:develop.features.applications.myaccount.notifications.error.description"),
+                            ?? t("applications:myaccount.notifications.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:develop.features.applications.myaccount.notifications.error.message")
+                            ?? t("applications:myaccount.notifications.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
                     description: t(
-                        "console:develop.features.applications.myaccount.notifications.genericError.description"),
+                        "applications:myaccount.notifications.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.myaccount.notifications.genericError.message")
+                    message: t("applications:myaccount.notifications.genericError.message")
                 }));
             }).finally(() => {
                 setSubmitting(false);
@@ -546,28 +546,28 @@ export const MyAccountSettingsEditPage: FunctionComponent<MyAccountSettingsEditP
             mutateMyAccountDataFetchRequest();
             mutateTotpConfigDataFetchRequest();
             dispatch(addAlert({
-                description: t("console:develop.features.applications.myaccount.notifications.success.description"),
+                description: t("applications:myaccount.notifications.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:develop.features.applications.myaccount.notifications.success.message")
+                message: t("applications:myaccount.notifications.success.message")
             }));
         })
             .catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:develop.features.applications.myaccount.notifications.error.description"),
+                            ?? t("applications:myaccount.notifications.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:develop.features.applications.myaccount.notifications.error.message")
+                            ?? t("applications:myaccount.notifications.error.message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
                     description: t(
-                        "console:develop.features.applications.myaccount.notifications.genericError.description"),
+                        "applications:myaccount.notifications.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.myaccount.notifications.genericError.message")
+                    message: t("applications:myaccount.notifications.genericError.message")
                 }));
             })
             .finally(() => {

@@ -47,15 +47,15 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
         <div data-testid={ testId }>
             <React.Fragment>
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".heading.title") }
                 </Heading>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".heading.subTitle") }
                 </p>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".heading.example") }
                 </p>
             </React.Fragment>
@@ -64,15 +64,15 @@ const SinglePageApplicationCreateWizardHelp: FunctionComponent<SinglePageApplica
 
             <React.Fragment>
                 <Heading as="h5">
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".authorizedRedirectURLs.title") }
                 </Heading>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".authorizedRedirectURLs.subTitle") }
                 </p>
                 <p>
-                    { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.template.common" +
+                    { t("applications:wizards.minimalAppCreationWizard.help.template.common" +
                         ".authorizedRedirectURLs.example") }
                 </p>
             </React.Fragment>

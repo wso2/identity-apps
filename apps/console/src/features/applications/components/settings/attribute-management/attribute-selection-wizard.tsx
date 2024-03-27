@@ -176,9 +176,9 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="large" className="user-roles attribute-modal" data-testid={ testId }>
             <Modal.Header>
-                { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
+                { t("applications:edit.sections.attributes.selection.addWizard.header") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard." +
+                    { t("applications:edit.sections.attributes.selection.addWizard." +
                         "subHeading") }
                 </Heading>
             </Modal.Header>
@@ -186,7 +186,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                 <TransferComponent
                     selectionComponent
                     searchPlaceholder={
-                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
+                        t("applications:edit.sections.attributes.selection.addWizard.steps" +
                             ".select.transfer.searchPlaceholders.attribute")
                     }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }

@@ -472,7 +472,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                 />
                                             ) }
                                             content={
-                                                t("console:develop.features.applications.edit.sections.signOnMethod." +
+                                                t("applications:edit.sections.signOnMethod." +
                                                     "sections.templateDescription.popupContent")
                                             }
                                         />

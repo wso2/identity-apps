@@ -52,8 +52,8 @@ export class OrganizationManagementConstants {
      */
     public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
         "RLS-10001",
-        "console:develop.features.applications.notifications.apiLimitReachedError.error.description",
-        "console:develop.features.applications.notifications.apiLimitReachedError.error.message",
+        "applications:notifications.apiLimitReachedError.error.description",
+        "applications:notifications.apiLimitReachedError.error.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
 

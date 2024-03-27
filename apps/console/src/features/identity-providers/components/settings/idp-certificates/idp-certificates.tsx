@@ -277,7 +277,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     if (value && !FormValidation.url(value)) {
                         setIsJwksValueValid(false);
 
-                        return t("console:develop.features.applications.forms.inboundSAML" +
+                        return t("applications:forms.inboundSAML" +
                             ".fields.metaURL.validations.invalid");
                     }
                     if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {

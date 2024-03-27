@@ -386,9 +386,9 @@ export class GovernanceConnectorUtils {
                 connectors: [
                     {
                         description: I18n.instance.t(
-                            "console:develop.features.applications.resident.provisioning.outbound.subHeading"),
+                            "applications:resident.provisioning.outbound.subHeading"),
                         header: I18n.instance.t(
-                            "console:develop.features.applications.resident.provisioning.outbound.heading"),
+                            "applications:resident.provisioning.outbound.heading"),
                         id: ServerConfigurationsConstants.OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("OUTBOUND_PROVISIONING_SETTINGS"),
                         testId: "outbound-provisioning-settings-card"

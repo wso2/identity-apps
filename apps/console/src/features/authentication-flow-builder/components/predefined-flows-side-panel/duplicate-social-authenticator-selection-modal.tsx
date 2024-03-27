@@ -79,11 +79,11 @@ const DuplicateSocialAuthenticatorSelectionModal: FunctionComponent<
             className="duplicate-social-authenticator-selection-modal"
             onClose={ onClose }
             primaryAction={ t(
-                "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                "applications:edit.sections.signOnMethod.sections.landing." +
                     "flowBuilder.duplicateSocialAuthenticatorSelectionModal.primaryButton"
             ) }
             secondaryAction={ t(
-                "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                "applications:edit.sections.signOnMethod.sections.landing." +
                     "flowBuilder.duplicateSocialAuthenticatorSelectionModal.secondaryButton"
             ) }
             onSecondaryActionClick={ (event: MouseEvent<HTMLElement>): void => {
@@ -99,14 +99,14 @@ const DuplicateSocialAuthenticatorSelectionModal: FunctionComponent<
         >
             <ConfirmationModal.Header>
                 { t(
-                    "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    "applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.duplicateSocialAuthenticatorSelectionModal.heading",
                     { authenticator: authenticatorCategoryDisplayName }
                 ) }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message attached warning>
                 { t(
-                    "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                    "applications:edit.sections.signOnMethod.sections.landing." +
                         "flowBuilder.duplicateSocialAuthenticatorSelectionModal.content.message",
                     { authenticator: authenticatorCategoryDisplayName }
                 ) }
@@ -115,7 +115,7 @@ const DuplicateSocialAuthenticatorSelectionModal: FunctionComponent<
                 <Text>
                     <Trans
                         i18nKey={
-                            "console:develop.features.applications.edit.sections.signOnMethod.sections.landing." +
+                            "applications:edit.sections.signOnMethod.sections.landing." +
                             "flowBuilder.duplicateSocialAuthenticatorSelectionModal.content.body"
                         }
                         tOptions={ { authenticator: authenticatorCategoryDisplayName } }

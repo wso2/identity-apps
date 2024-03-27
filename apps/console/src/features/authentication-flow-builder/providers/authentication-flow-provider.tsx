@@ -311,12 +311,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.duplicateAuthenticationStep" +
+                        "applications:notifications.duplicateAuthenticationStep" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.duplicateAuthenticationStep" +
+                        "applications:notifications.duplicateAuthenticationStep" +
                             ".genericError.message"
                     )
                 })
@@ -377,12 +377,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        "applications:notifications.secondFactorAuthenticatorToFirstStep" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.secondFactorAuthenticatorToFirstStep" +
+                        "applications:notifications.secondFactorAuthenticatorToFirstStep" +
                             ".genericError.message"
                     )
                 })
@@ -432,12 +432,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             dispatch(
                 addAlert({
                     description: t(
-                        "console:develop.features.applications.notifications.authenticationStepMin" +
+                        "applications:notifications.authenticationStepMin" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "console:develop.features.applications.notifications.authenticationStepMin.genericError" +
+                        "applications:notifications.authenticationStepMin.genericError" +
                             ".message"
                     )
                 })
@@ -493,12 +493,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                                 "authenticationStepDeleteErrorDueToSecondFactors.genericError.description"
                         ),
                         level: AlertLevels.WARNING,
                         message: t(
-                            "console:develop.features.applications.notifications." +
+                            "applications:notifications." +
                                 "authenticationStepDeleteErrorDueToSecondFactors.genericError.message"
                         )
                     })
@@ -693,12 +693,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         dispatch(
             addAlert({
                 description: t(
-                    "console:develop.features.applications.notifications." +
+                    "applications:notifications." +
                         "deleteOptionErrorDueToSecondFactorsOnRight.genericError.description"
                 ),
                 level: AlertLevels.WARNING,
                 message: t(
-                    "console:develop.features.applications.notifications." +
+                    "applications:notifications." +
                         "deleteOptionErrorDueToSecondFactorsOnRight.genericError.message"
                 )
             })

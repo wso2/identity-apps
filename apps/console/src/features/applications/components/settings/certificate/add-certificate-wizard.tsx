@@ -127,9 +127,9 @@ export const AddApplicationCertificateWizard: FunctionComponent<AddApplicationCe
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("console:develop.features.applications.wizards.applicationCertificateWizard.heading") }
+                { t("applications:wizards.applicationCertificateWizard.heading") }
                 <Heading as="h6">
-                    { t("console:develop.features.applications.wizards.applicationCertificateWizard.subHeading") }
+                    { t("applications:wizards.applicationCertificateWizard.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>

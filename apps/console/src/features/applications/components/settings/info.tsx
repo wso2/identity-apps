@@ -134,11 +134,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                 || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) && (
                                     <>
                                         <Heading ellipsis as="h4">
-                                            { t("console:develop.features.applications.edit.sections.info." +
+                                            { t("applications:edit.sections.info." +
                                             "oidcHeading") }
                                         </Heading>
                                         <Heading as="h6" color="grey" compact>
-                                            { t("console:develop.features.applications.edit.sections.info." +
+                                            { t("applications:edit.sections.info." +
                                             "oidcSubHeading") }
                                             <DocumentationLink
                                                 link={ templateId === SinglePageApplication.id
@@ -165,11 +165,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                 { (isSAML || templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) && (
                                     <>
                                         <Heading ellipsis as="h4">
-                                            { t("console:develop.features.applications.edit.sections.info." +
+                                            { t("applications:edit.sections.info." +
                                             "samlHeading") }
                                         </Heading>
                                         <Heading as="h6" color="grey" compact>
-                                            { t("console:develop.features.applications.edit.sections.info." +
+                                            { t("applications:edit.sections.info." +
                                             "samlSubHeading") }
                                             <DocumentationLink
                                                 link={ getLink("develop.applications.editApplication." +
@@ -186,11 +186,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                     isWSFed && (
                                         <>
                                             <Heading ellipsis as="h4">
-                                                { t("console:develop.features.applications.edit.sections.info." +
+                                                { t("applications:edit.sections.info." +
                                                 "wsFedHeading") }
                                             </Heading>
                                             <Heading as="h6" color="grey" compact>
-                                                { t("console:develop.features.applications.edit.sections.info." +
+                                                { t("applications:edit.sections.info." +
                                                 "wsFedSubHeading") }
                                                 <DocumentationLink
                                                     link={ getLink("develop.applications.editApplication." +

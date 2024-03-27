@@ -746,7 +746,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         <Alert severity="info">
                                                             {
                                                                 t(
-                                                                    "console:develop.features.applications.edit." +
+                                                                    "applications:edit." +
                                                                     "sections.apiAuthorization.m2mPolicyMessage"
                                                                 )
                                                             }

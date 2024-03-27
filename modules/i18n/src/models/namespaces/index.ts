@@ -54,4 +54,5 @@ export * from "./certificates-ns";
 export * from "./authentication-provider-ns";
 export * from "./governance-connectors-ns";
 export * from "./groups-ns";
+export * from "./applications-ns";
 export * from "./idp-ns";
