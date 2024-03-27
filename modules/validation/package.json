@@ -47,7 +47,7 @@
         "typescript": "^4.6.4"
     },
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^0.28.0",
         "fastestsmallesttextencoderdecoder": "^1.0.22",
         "joi": "^17.2.0"
     }
