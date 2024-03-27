@@ -280,4 +280,12 @@ export class I18nModuleConstants {
      * Identity Provider namespace.
      */
     public static readonly IDP_NAMESPACE: string = "idp";
+
+    /**
+     * API resources namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly API_RESOURCES_NAMESPACE: string = "apiResources";
 }

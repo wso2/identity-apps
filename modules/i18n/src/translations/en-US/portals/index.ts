@@ -56,3 +56,5 @@ export * from "./certificates";
 export * from "./authentication-provider";
 export * from "./applications";
 export * from "./idp";
+export * from "./api-resources";
+

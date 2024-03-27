@@ -41,15 +41,20 @@ export class I18nConstants {
     public static readonly CONSOLE_PORTAL_NAMESPACE: string = I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE;
 
     /**
-     * Extensions namespace.
+     * apiResources namespace.
      */
     public static readonly EXTENSIONS_NAMESPACE: string = I18nModuleConstants.EXTENSIONS_NAMESPACE;
+
+    /**
+     * api resources namespace.
+     */
+    public static readonly API_RESOURCES_NAMESPACE: string = I18nModuleConstants.API_RESOURCES_NAMESPACE;
 
     /**
      * Applications namespace.
      */
     public static readonly APPLICATIONS_NAMESPACE: string = I18nModuleConstants.APPLICATIONS_NAMESPACE;
-  
+
     /**
      * idp namespace.
      */
@@ -274,7 +279,8 @@ export class I18nConstants {
         [ I18nConstants.GOVERNANCE_CONNECTORS_NAMESPACE, "portals" ],
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
-        [ I18nConstants.IDP_NAMESPACE, "portals" ]
+        [ I18nConstants.IDP_NAMESPACE, "portals" ],
+        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ]
     ]);
 
     /**

@@ -56,3 +56,4 @@ export * from "./governance-connectors-ns";
 export * from "./groups-ns";
 export * from "./applications-ns";
 export * from "./idp-ns";
+export * from "./api-resources-ns";

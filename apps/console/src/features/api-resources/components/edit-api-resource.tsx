@@ -31,7 +31,7 @@ import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
 /**
  * Prop-types for the API resources page component.
  */
-interface EditAPIResourceInterface extends SBACInterface<FeatureConfigInterface>, 
+interface EditAPIResourceInterface extends SBACInterface<FeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
      * List of API Resources
@@ -83,7 +83,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             menuItem: t("extensions:develop.apiResource.tabs.general.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <GeneralAPIResource 
+                    <GeneralAPIResource
                         apiResourceData={ apiResourceData }
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         featureConfig={ featureConfig }
@@ -94,10 +94,10 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             )
         },
         {
-            menuItem: t("console:apiResources.tabs.scopes.label"),
+            menuItem: t("apiResources:tabs.scopes.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <PermissionAPIResource 
+                    <PermissionAPIResource
                         apiResourceData={ apiResourceData }
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         isSubmitting = { isSubmitting }
@@ -149,7 +149,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             })
             .finally(() => {
                 setIsSubmitting(false);
-                
+
                 // Callback function to be executed after the update is completed.
                 callback && callback();
             });
@@ -185,7 +185,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             })
             .finally(() => {
                 setIsSubmitting(false);
-                
+
                 // Callback function to be executed after the update is completed.
                 callback && callback();
             });

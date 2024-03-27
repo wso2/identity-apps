@@ -384,7 +384,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                         floated="left"
                                         onClick={ () => handleELKAnalyticsModalClose() }
                                     >
-                                        { t("console:apiResources.tabs.scopes.form.cancelButton") }
+                                        { t("apiResources:tabs.scopes.form.cancelButton") }
                                     </LinkButton>
                                 </Grid.Column>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>

@@ -95,8 +95,8 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 },
                 popupText: (permission: APIResourcePermissionInterface): string => {
                     return clickedPermission?.name === permission.name
-                        ? t("console:apiResources.tabs.scopes.copiedPopupText")
-                        : t("console:apiResources.tabs.scopes.copyPopupText");
+                        ? t("apiResources:tabs.scopes.copiedPopupText")
+                        : t("apiResources:tabs.scopes.copyPopupText");
                 },
                 renderer: "semantic-icon"
             },
@@ -107,7 +107,7 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 onClick: (e: SyntheticEvent, permission: APIResourcePermissionInterface): void => {
                     removePermission(permission);
                 },
-                popupText: (): string => t("console:apiResources.tabs.scopes.removeScopePopupText"),
+                popupText: (): string => t("apiResources:tabs.scopes.removeScopePopupText"),
                 renderer: "semantic-icon"
             }
         ];
@@ -172,23 +172,23 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
 
     /**
      * Empty placeholder for the API resource permissions list.
-     * 
+     *
      * @returns `ReactElement`
      */
     const showPlaceholders = (): ReactElement => {
         if (permissionList?.length === 0) {
-            return ( 
+            return (
                 <EmptyPlaceholder
-                    subtitle = { [ t("console:apiResources.tabs.scopes.empty.subTitle") ] }
-                    title={ t("console:apiResources.tabs.scopes.empty.title") }
+                    subtitle = { [ t("apiResources:tabs.scopes.empty.subTitle") ] }
+                    title={ t("apiResources:tabs.scopes.empty.title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
-                    action={ 
+                    action={
                         (
                             <PrimaryButton
                                 data-componentid= { `${componentId}-add-permission-button` }
                                 onClick={ setTriggerAddAPIResourcePermissionModal }>
                                 <Icon name="add" />
-                                { t("console:apiResources.tabs.scopes.button") }
+                                { t("apiResources:tabs.scopes.button") }
                             </PrimaryButton>
                         )
                     }
@@ -199,20 +199,20 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
         if (serachedPermissionList?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ [ t("console:apiResources.tabs.scopes.emptySearch.subTitle.0"),
-                        t("console:apiResources.tabs.scopes.emptySearch.subTitle.1") ] }
-                    title={ t("console:apiResources.tabs.scopes.emptySearch.title") }
+                    subtitle={ [ t("apiResources:tabs.scopes.emptySearch.subTitle.0"),
+                        t("apiResources:tabs.scopes.emptySearch.subTitle.1") ] }
+                    title={ t("apiResources:tabs.scopes.emptySearch.title") }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={
                         (<LinkButton onClick={ clearSearchPermission }>
-                            { t("console:apiResources.tabs.scopes.emptySearch.viewAll") }
+                            { t("apiResources:tabs.scopes.emptySearch.viewAll") }
                         </LinkButton>)
                     }
                     imageSize="tiny"
                 />
             );
         }
-        
+
         return null;
     };
 

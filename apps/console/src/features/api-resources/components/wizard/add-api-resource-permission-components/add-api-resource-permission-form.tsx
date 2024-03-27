@@ -109,12 +109,12 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                         <Field
                             type="text"
                             name="identifier"
-                            label={ t("console:apiResources.tabs.scopes.form.fields.scope.label") }
-                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." +
+                            label={ t("apiResources:tabs.scopes.form.fields.scope.label") }
+                            placeholder={ t("apiResources:tabs.scopes.form.fields." +
                                 "scope.placeholder") }
                             required={ true }
                             tabIndex={ 1 }
-                            requiredErrorMessage={ t("console:apiResources.wizard.addApiResource.steps." +
+                            requiredErrorMessage={ t("apiResources:wizard.addApiResource.steps." +
                                 "scopes.form.fields.permission.emptyValidate") }
                             validation={ async (value: string, validation: Validation) => {
 
@@ -123,7 +123,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                                 if (value) {
                                     if (!APIResourcesConstants.checkValidPermissionIdentifier(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("console:apiResources.wizard." +
+                                        validation.errorMessages.push(t("apiResources:wizard." +
                                             "addApiResource.steps.scopes.form.fields.permission.invalid"));
                                     } else {
                                         const filter: string = "name eq " + value;
@@ -133,7 +133,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
 
                                         if (response?.length > 0) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("console:apiResources.wizard." +
+                                            validation.errorMessages.push(t("apiResources:wizard." +
                                             "addApiResource.steps.scopes.form.fields.permission.uniqueValidate"));
                                         }
                                     }
@@ -146,7 +146,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                         />
                         <Hint>
                             <Trans
-                                i18nKey= { "console:apiResources.wizard.addApiResource.steps." +
+                                i18nKey= { "apiResources:wizard.addApiResource.steps." +
                                     "scopes.form.fields.scope.hint" }>
                                 A unique value that acts as the scope when requesting an access token.&nbsp;
                                 <b>Note that the scope cannot be modified once created.</b>
@@ -179,14 +179,14 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                         <Field
                             type="text"
                             name="description"
-                            label={ t("console:apiResources.tabs.scopes.form.fields.description.label") }
-                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." +
+                            label={ t("apiResources:tabs.scopes.form.fields.description.label") }
+                            placeholder={ t("apiResources:tabs.scopes.form.fields." +
                                 "description.placeholder") }
                             tabIndex={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>
-                            { t("console:apiResources.wizard.addApiResource.steps." +
+                            { t("apiResources:wizard.addApiResource.steps." +
                                 "scopes.form.fields.description.hint") }
                         </Hint>
                     </Grid.Column>
