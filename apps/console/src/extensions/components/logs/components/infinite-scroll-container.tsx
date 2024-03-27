@@ -317,9 +317,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
             <Toolbar variant="dense">
                 <Box>
                     <Typography>
-                        {
-                            t("extensions:develop.monitor.logView.logDataviewer.panelName")
-                        }
+                        { t("extensions:develop.monitor.logView.logDataviewer.panelName") }
                     </Typography>
                 </Box>
                 <div className="actions">
@@ -381,24 +379,18 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                     <div className="log-header">
                         <div className="log-Recordedtime">
                             <Typography variant="body1">
-                                {
-                                    t("extensions:develop.monitor.logView.headers.recordedAt")
-                                }
+                                { t("extensions:develop.monitor.logView.headers.recordedAt") }
                             </Typography>
                         </div>
                         <div className="log-description-header">
                             <div className="log-actionId">
                                 <Typography variant="body1">
-                                    {
-                                        t("extensions:develop.monitor.logView.headers.actionId")
-                                    }
+                                    { t("extensions:develop.monitor.logView.headers.actionId") }
                                 </Typography>
                             </div>
                             <div className="log-targetId">
                                 <Typography variant="body1">
-                                    {
-                                        t("extensions:develop.monitor.logView.headers.targetId")
-                                    }
+                                    { t("extensions:develop.monitor.logView.headers.targetId") }
                                 </Typography>
                             </div>
                         </div>
