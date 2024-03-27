@@ -297,6 +297,18 @@ export interface Extensions {
                 };
             };
         };
+        organizationInfo: {
+            heading: string;
+            subHeading: string;
+            orgId: {
+                label: string;
+                heading: string;
+                subHeading: string;
+            };
+            notifications: {
+                getConfiguration: Notification;
+            }
+        }
     };
     develop: {
         apiResource: {
