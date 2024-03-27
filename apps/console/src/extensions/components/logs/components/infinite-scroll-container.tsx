@@ -41,7 +41,7 @@ import CopyButton from "./copy-button";
 import LoaderPlaceholder from "./loader-placeholder";
 import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
 import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
-import "./log-data-viewer-panel.scss";
+import "./infinite-scroll-container.scss";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
