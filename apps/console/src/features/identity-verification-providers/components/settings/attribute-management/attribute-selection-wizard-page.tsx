@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -218,10 +218,10 @@ export const AttributesSelectionWizardPage: FunctionComponent<AttributesSelectio
                 <Grid.Row columns={ 1 }>
                     <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
                         <Heading as="h4">
-                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.heading") }
+                            { t("idvp:forms.attributeSettings.attributeMapping.heading") }
                         </Heading>
                         <Hint compact>
-                            { t("console:develop.features.idvp.forms.attributeSettings.attributeMapping.hint") }
+                            { t("idvp:forms.attributeSettings.attributeMapping.hint") }
                         </Hint>
                     </Grid.Column>
                     <Grid.Column width={ 16 }>

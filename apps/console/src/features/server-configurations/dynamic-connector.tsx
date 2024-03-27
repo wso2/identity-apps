@@ -119,13 +119,13 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.description",
                             { name: connector.friendlyName }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." +
+                            "governanceConnectors:notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -136,13 +136,13 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.error.message"
                             )
                         })
@@ -152,12 +152,12 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "updateConnector.genericError.message"
                             )
                         })

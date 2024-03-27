@@ -354,7 +354,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                         icon: "trash alternate",
                                                         onClick: () => setShowCertificateDeleteConfirmation(true),
                                                         popupText: deleteAllowed
-                                                            ? t("console:manage.features.users.usersList.list." +
+                                                            ? t("users:usersList.list." +
                                                                 "iconPopups.delete")
                                                             : reasonInsideTooltipWhyDeleteIsNotAllowed,
                                                         type: "button"
@@ -413,8 +413,8 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                                 type="button"
                                             >
                                                 <Icon name="add"/>
-                                                { t("console:develop.features.authenticationProvider" +
-                                                    ".buttons.addCertificate") }
+                                                { t("authenticationProvider:" +
+                                                    "buttons.addCertificate") }
                                             </PrimaryButton>
                                         ) }
                                         data-testid={ `${testId}-empty-placeholder` }

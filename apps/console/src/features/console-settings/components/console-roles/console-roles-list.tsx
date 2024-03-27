@@ -69,9 +69,9 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
         if (consoleRolesFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
+                    description: t("roles:notifications.fetchRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
+                    message: t("roles:notifications.fetchRoles.genericError.message")
                 })
             );
         }

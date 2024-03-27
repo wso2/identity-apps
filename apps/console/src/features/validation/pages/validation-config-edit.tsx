@@ -323,13 +323,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.description",
                                 { description: error.response.data.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.error.message"
                             )
                         })
@@ -338,12 +338,12 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     dispatch(
                         addAlert({
                             description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
+                                "governanceConnectors:notifications." +
                                 "getConnector.genericError.message"
                             )
                         })
@@ -1446,7 +1446,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

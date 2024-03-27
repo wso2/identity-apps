@@ -110,10 +110,10 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
         return (
             <EmptyPlaceholder
                 subtitle={
-                    [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
+                    [ t("user:updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
                         ".subtitles") ]
                 }
-                title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
+                title={ t("user:updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
                     ".title") }
                 image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
@@ -124,14 +124,14 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     return (
         <EmphasizedSegment padded="very" className="list-user-roles-section">
             <Heading as="h4">
-                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
+                { t("user:updateUser.roles.editRoles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
+                { t("user:updateUser.roles.editRoles.subHeading") }
             </Heading>
             <Message
                 type="info"
-                content={ t("console:manage.features.user.updateUser.roles.editRoles.infoMessage") }
+                content={ t("user:updateUser.roles.editRoles.infoMessage") }
             />
             <Divider hidden/>
             <ReadOnlyRoleList

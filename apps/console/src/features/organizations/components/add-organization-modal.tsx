@@ -94,7 +94,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
         if (!values?.name) {
             return Promise.resolve({
-                name: t("console:manage.features.organizations.forms.addOrganization.name.validation.empty")
+                name: t("organizations:forms.addOrganization.name.validation.empty")
             });
         }
 
@@ -107,12 +107,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizations.notifications." +
+                            "organizations:notifications." +
                             "addOrganization.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizations.notifications." + "addOrganization.success.message"
+                            "organizations:notifications." + "addOrganization.success.message"
                         )
                     })
                 );
@@ -136,7 +136,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                         ));
                     } else {
                         setError(t(
-                            "console:manage.features.organizations.notifications." +
+                            "organizations:notifications." +
                             "addOrganization.error.description",
                             {
                                 description: error.description
@@ -145,7 +145,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     }
                 } else {
                     setError(t(
-                        "console:manage.features.organizations.notifications." +
+                        "organizations:notifications." +
                                 "addOrganization.genericError.description"
                     ));
                 }
@@ -178,37 +178,37 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                     actionLabel={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "emptyPlaceholder.action")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                            t("suborganizations:notifications.tierLimitReachedError." +
                         "emptyPlaceholder.action")
                     }
                     handleModalClose={ handleLimitReachedModalClose }
                     header={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "heading")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError.heading")
+                            t("suborganizations:notifications.tierLimitReachedError.heading")
                     }
                     description={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "emptyPlaceholder.subtitles")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                            t("suborganizations:notifications.tierLimitReachedError." +
                         "emptyPlaceholder.subtitles")
                     }
                     message={
                         orgLevelReachedError
                             ?
-                            t("console:develop.features.suborganizations.notifications.subOrgLevelsLimitReachedError." +
+                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
                         "emptyPlaceholder.title")
                             :
-                            t("console:develop.features.suborganizations.notifications.tierLimitReachedError." +
+                            t("suborganizations:notifications.tierLimitReachedError." +
                         "emptyPlaceholder.title")
                     }
                     openModal={ openLimitReachedModal }
@@ -225,13 +225,13 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                 data-componentid={ `${ testId }-modal` }
             >
                 <Modal.Header className="wizard-header">
-                    { t("console:manage.features.organizations.modals.addOrganization.header") }
+                    { t("organizations:modals.addOrganization.header") }
                     <Heading as="h6" data-componentid={ `${ testId }-subheading` }>
                         { parent?.name
-                            ? t("console:manage.features.organizations.modals.addOrganization.subtitle1", {
+                            ? t("organizations:modals.addOrganization.subtitle1", {
                                 parent: parent?.name
                             })
-                            : t("console:manage.features.organizations.modals.addOrganization.subtitle2") }
+                            : t("organizations:modals.addOrganization.subtitle2") }
                     </Heading>
                 </Modal.Header>
                 <Modal.Content>
@@ -256,12 +256,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         inputType="name"
                                         name="name"
                                         label={ t(
-                                            "console:manage.features.organizations.forms." +
+                                            "organizations:forms." +
                                             "addOrganization.name.label"
                                         ) }
                                         required={ true }
                                         placeholder={ t(
-                                            "console:manage.features.organizations.forms." +
+                                            "organizations:forms." +
                                             "addOrganization.name.placeholder"
                                         ) }
                                         maxLength={ ORGANIZATION_NAME_MAX_LENGTH }
@@ -274,12 +274,12 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                         inputType="description"
                                         name="description"
                                         label={ t(
-                                            "console:manage.features.organizations.forms." +
+                                            "organizations:forms." +
                                             "addOrganization.description.label"
                                         ) }
                                         required={ false }
                                         placeholder={ t(
-                                            "console:manage.features.organizations.forms." +
+                                            "organizations:forms." +
                                             "addOrganization.description.placeholder"
                                         ) }
                                         maxLength={ ORGANIZATION_DESCRIPTION_MAX_LENGTH }

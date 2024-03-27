@@ -146,20 +146,20 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        ?? t("users:notifications.fetchUsers.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                        ?? t("users:notifications.fetchUsers.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    description: t("users:notifications.fetchUsers.genericError." +
                     "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    message: t("users:notifications.fetchUsers.genericError.message")
                 }));
 
             })
@@ -204,7 +204,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const resolveResourcePanes = () => {
         const panes: ResourceTabPaneInterface[] = [
             {
-                menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
+                menuItem: t("roles:edit.menuItems.basic"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicGroupDetails
@@ -218,7 +218,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },{
-                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
+                menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false } loading={ isUsersFetchRequestLoading }>
                         <GroupUsersList
@@ -235,7 +235,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 )
             },
             roleV1Enabled ? {
-                menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
+                menuItem: t("roles:edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <GroupRolesV1List
@@ -248,7 +248,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 )
             } : null,
             !roleV1Enabled ? {
-                menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
+                menuItem: t("roles:edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <EditGroupRoles group={ group } />

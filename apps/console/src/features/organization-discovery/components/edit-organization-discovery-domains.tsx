@@ -141,12 +141,12 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                                 "updateOrganizationDiscoveryAttributes.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
+                            "organizationDiscovery:notifications." +
                                 "updateOrganizationDiscoveryAttributes.success.message"
                         )
                     })
@@ -158,12 +158,12 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".updateOrganizationDiscoveryAttributes.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".updateOrganizationDiscoveryAttributes.error.message"
                         )
                     })
@@ -192,12 +192,12 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".checkEmailDomain.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications" +
+                            "organizationDiscovery:notifications" +
                                 ".checkEmailDomain.error.message"
                         )
                     })
@@ -241,7 +241,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
     return (
         <EmphasizedSegment padded="very" key={ organization?.id }>
             <Alert severity="warning">
-                { t("console:manage.features.organizationDiscovery.edit.form.message") }
+                { t("organizationDiscovery:edit.form.message") }
             </Alert>
             <Divider hidden />
             <FinalForm
@@ -270,13 +270,13 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 name="organizationName"
                                 type="text"
                                 label={ t(
-                                    "console:manage.features.organizationDiscovery.edit." +
+                                    "organizationDiscovery:edit." +
                                     "form.fields.organizationName.label"
                                 ) }
                                 helperText={ (
                                     <Hint>
                                         { t(
-                                            "console:manage.features.organizationDiscovery.edit." +
+                                            "organizationDiscovery:edit." +
                                             "form.fields.organizationName.hint"
                                         ) }
                                     </Hint>
@@ -308,7 +308,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                     <>
                                         <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
                                             { t(
-                                                "console:manage.features.organizationDiscovery.edit." +
+                                                "organizationDiscovery:edit." +
                                                 "form.fields.emailDomains.label"
                                             ) }
                                         </InputLabel>
@@ -323,18 +323,18 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             helperText= {
                                                 isEmailDomainDataError
                                                     ? t(
-                                                        "console:manage.features.organizationDiscovery.edit.form." +
+                                                        "organizationDiscovery:edit.form." +
                                                         "fields.emailDomains.validations.invalid.0"
                                                     )
                                                     : isEmailDomainAvailableError
                                                         ? t(
-                                                            "console:manage.features.organizationDiscovery.edit." +
+                                                            "organizationDiscovery:edit." +
                                                             "form.fields.emailDomains.validations.invalid.1"
                                                         )
                                                         : null
                                             }
                                             placeholder={ t(
-                                                "console:manage.features.organizationDiscovery.edit." +
+                                                "organizationDiscovery:edit." +
                                                 "form.fields.emailDomains.placeholder"
                                             ) }
                                         />
@@ -361,7 +361,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                             <FormHelperText>
                                 <Hint>
                                     { t(
-                                        "console:manage.features.organizationDiscovery.edit." +
+                                        "organizationDiscovery:edit." +
                                         "form.fields.emailDomains.hint"
                                     ) }
                                 </Hint>

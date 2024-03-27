@@ -226,11 +226,11 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 .then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.deleteInvite.success.description"
+                            "invite:notifications.deleteInvite.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.users.notifications.deleteUser.success.message"
+                            "users:notifications.deleteUser.success.message"
                         )
                     }));
                     onUserDelete();
@@ -239,16 +239,16 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.users.notifications.deleteUser.error.message")
+                            message: t("users:notifications.deleteUser.error.message")
                         }));
 
                         return;
                     }
                     dispatch(addAlert({
-                        description: t("console:manage.features.users.notifications.deleteUser." +
+                        description: t("users:notifications.deleteUser." +
                             "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.deleteUser.genericError" +
+                        message: t("users:notifications.deleteUser.genericError" +
                             ".message")
                     }));
                 }).finally(() => {
@@ -273,11 +273,11 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 .then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "console:manage.features.invite.notifications.deleteInvite.success.description"
+                            "invite:notifications.deleteInvite.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.users.notifications.deleteUser.success.message"
+                            "users:notifications.deleteUser.success.message"
                         )
                     }));
                     onUserDelete();
@@ -287,16 +287,16 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.users.notifications.deleteUser.error.message")
+                            message: t("users:notifications.deleteUser.error.message")
                         }));
 
                         return;
                     }
                     dispatch(addAlert({
-                        description: t("console:manage.features.users.notifications.deleteUser." +
+                        description: t("users:notifications.deleteUser." +
                             "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.deleteUser.genericError" +
+                        message: t("users:notifications.deleteUser.genericError" +
                             ".message")
                     }));
                 }).finally(() => {
@@ -320,9 +320,9 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
             return updateRoleDetails(adminRoleId, roleData)
                 .then(() => {
                     dispatch(addAlert({
-                        description: t("console:manage.features.users.notifications.revokeAdmin.success.description"),
+                        description: t("users:notifications.revokeAdmin.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.users.notifications.revokeAdmin.success.message")
+                        message: t("users:notifications.revokeAdmin.success.message")
                     }));
                     onUserDelete();
                 })
@@ -331,16 +331,16 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         dispatch(addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.users.notifications.revokeAdmin.error.message")
+                            message: t("users:notifications.revokeAdmin.error.message")
                         }));
 
                         return;
                     }
                     dispatch(addAlert({
-                        description: t("console:manage.features.users.notifications.revokeAdmin." +
+                        description: t("users:notifications.revokeAdmin." +
                             "genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.revokeAdmin.genericError.message")
+                        message: t("users:notifications.revokeAdmin.genericError.message")
                     }));
                 }).finally(() => {
                     setLoading(false);
@@ -577,7 +577,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
+            popupText: (): string => t("users:usersList.list.iconPopups.delete"),
             renderer: "semantic-icon"
         });
 
@@ -639,16 +639,16 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -700,7 +700,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal.assertionHint") }
+                        assertionHint={ t("user:deleteUser.confirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
@@ -715,7 +715,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-componentid={ `${ componentId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={ `${ componentId }-confirmation-modal-message` }

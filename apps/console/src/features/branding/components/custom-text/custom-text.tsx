@@ -124,7 +124,7 @@ const CustomText: FunctionComponent<CustomTextProps> = (props: CustomTextProps):
                 className: "text-fields-view",
                 "data-componentid": `${componentId}-text-fields-view`,
                 id: CustomTextConfigurationModes.TEXT_FIELDS,
-                label: t("console:brandingCustomText.modes.text.label"),
+                label: t("branding:brandingCustomText.modes.text.label"),
                 pane: (
                     <div className="form-container with-max-width">
                         <CustomTextFields readOnly={ readOnly } onSubmit={ handleSubmit } fields={ customText } />
@@ -136,7 +136,7 @@ const CustomText: FunctionComponent<CustomTextProps> = (props: CustomTextProps):
                 className: "json-view",
                 "data-componentid": `${componentId}-json-view`,
                 id: CustomTextConfigurationModes.JSON,
-                label: t("console:brandingCustomText.modes.json.label"),
+                label: t("branding:brandingCustomText.modes.json.label"),
                 pane: (
                     <MonacoEditor
                         loading={ null }

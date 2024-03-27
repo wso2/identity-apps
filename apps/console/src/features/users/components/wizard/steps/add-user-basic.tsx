@@ -122,11 +122,11 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const { UIConfig } = useUIConfig();
 
     // Username input validation error messages.
-    const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
+    const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("users:consumerUsers.fields." +
         "username.validations.invalid");
-    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
+    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("users:consumerUsers.fields." +
         "username.validations.regExViolation");
-    const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
+    const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("users:consumerUsers.fields." +
         "username.validations.invalidCharacters");
     // const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string =
     // t("extensions:manage.features.user.addUser.validation." +
@@ -217,13 +217,13 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
     const askPasswordOptionData: any = {
         "data-testid": "user-mgt-add-user-form-ask-password-option-radio-button",
-        label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
+        label: t("user:forms.addUserForm.buttons.radioButton.options.askPassword"),
         value: PasswordOptionTypes.ASK_PASSWORD
     };
 
     const createPasswordOptionData: any = {
         "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
-        label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
+        label: t("user:forms.addUserForm.buttons.radioButton.options.createPassword"),
         value: PasswordOptionTypes.CREATE_PASSWORD
     };
 
@@ -333,7 +333,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         if (!emailVerificationEnabled) {
             return (
                 <Trans
-                    i18nKey="console:manage.features.user.modals.addUserWizard.askPassword.emailVerificationDisabled"
+                    i18nKey="user:modals.addUserWizard.askPassword.emailVerificationDisabled"
                 >
                     To invite users to set the password, enable email invitations for user password setup from <Link
                         onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
@@ -347,7 +347,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
         if (!isEmailFilled || !isValidEmail) {
             return t(
-                "console:manage.features.user.modals.addUserWizard.askPassword.emailInvalid"
+                "user:modals.addUserWizard.askPassword.emailInvalid"
             );
         }
 
@@ -373,7 +373,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 trigger={
                                     (
                                         <Menu.Item
-                                            name={ t("console:manage.features.user.modals.addUserWizard" +
+                                            name={ t("user:modals.addUserWizard" +
                                                 ".askPassword.inviteViaEmail") }
                                             disabled
                                         />
@@ -382,7 +382,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                             />
                         ) : (
                             <Menu.Item
-                                name={ t("console:manage.features.user.modals.addUserWizard" +
+                                name={ t("user:modals.addUserWizard" +
                                     ".askPassword.inviteViaEmail") }
                                 active={ askPasswordOption === AskPasswordOptionTypes.EMAIL }
                                 onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.EMAIL) }
@@ -390,7 +390,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         )
                     }
                     <Menu.Item
-                        name={ t("console:manage.features.user.modals.addUserWizard" +
+                        name={ t("user:modals.addUserWizard" +
                             ".askPassword.inviteOffline") }
                         active={ askPasswordOption === AskPasswordOptionTypes.OFFLINE }
                         onClick={ () => setAskPasswordOption(AskPasswordOptionTypes.OFFLINE) }
@@ -450,16 +450,16 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 className="addon-field-wrapper full-width"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
+                                    "user:forms.addUserForm.inputs.newPassword.label"
                                 ) }
                                 name="newPassword"
                                 placeholder={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs." +
+                                    "user:forms.addUserForm.inputs." +
                                     "newPassword.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm." +
+                                    "user:forms.addUserForm." +
                                     "inputs.newPassword.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }
@@ -569,12 +569,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 ".emailUsername") }
                             name="email"
                             placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "user:forms.addUserForm.inputs." +
                             "email.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                "user:forms.addUserForm.inputs.email." +
                                     "validations.empty"
                             ) }
                             validation={ async (value: string, validation: Validation) => {
@@ -651,12 +651,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 ".emailUsername") }
                             name="email"
                             placeholder={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs." +
+                                "user:forms.addUserForm.inputs." +
                             "email.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "console:manage.features.user.forms.addUserForm.inputs.email." +
+                                "user:forms.addUserForm.inputs.email." +
                                     "validations.empty"
                             ) }
                             validation={ async (value: string, validation: Validation) => {
@@ -734,7 +734,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                             ".alphanumericUsernamePlaceholder") }
                         required={ true }
                         requiredErrorMessage={ t(
-                            "console:manage.features.user.forms.addUserForm.inputs.email." +
+                            "user:forms.addUserForm.inputs.email." +
                             "validations.empty"
                         ) }
                         validation={ async (value: string, validation: Validation) => {
@@ -811,12 +811,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         label={ "Email" }
                         name="email"
                         placeholder={ t(
-                            "console:manage.features.user.forms.addUserForm.inputs." +
+                            "user:forms.addUserForm.inputs." +
                             "email.placeholder"
                         ) }
                         required={ isEmailRequired }
                         requiredErrorMessage={ t(
-                            "console:manage.features.user.forms.addUserForm.inputs.email." +
+                            "user:forms.addUserForm.inputs.email." +
                             "validations.empty"
                         ) }
                         validation={ async (value: string, validation: Validation) => {
@@ -874,7 +874,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 <div ref={ emailRef }/>
                                 <Form.Field required={ true }>
                                     <label>
-                                        { t("console:manage.features.user.forms.addUserForm.inputs."+
+                                        { t("user:forms.addUserForm.inputs."+
                                         "domain.placeholder") }
                                     </label>
                                     <Dropdown
@@ -910,16 +910,16 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 <Field
                                     data-testid="user-mgt-add-user-form-firstName-input"
                                     label={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.firstName.label"
+                                        "user:forms.addUserForm.inputs.firstName.label"
                                     ) }
                                     name="firstName"
                                     placeholder={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs." +
+                                        "user:forms.addUserForm.inputs." +
                                         "firstName.placeholder"
                                     ) }
                                     required={ isFirstNameRequired }
                                     requiredErrorMessage={ t(
-                                        "console:manage.features.user.forms.addUserForm." +
+                                        "user:forms.addUserForm." +
                                         "inputs.firstName.validations.empty"
                                     ) }
                                     type="text"
@@ -945,16 +945,16 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 <Field
                                     data-testid="user-mgt-add-user-form-lastName-input"
                                     label={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs.lastName.label"
+                                        "user:forms.addUserForm.inputs.lastName.label"
                                     ) }
                                     name="lastName"
                                     placeholder={ t(
-                                        "console:manage.features.user.forms.addUserForm.inputs." +
+                                        "user:forms.addUserForm.inputs." +
                                         "lastName.placeholder"
                                     ) }
                                     required={ isLastNameRequired }
                                     requiredErrorMessage={ t(
-                                        "console:manage.features.user.forms.addUserForm." +
+                                        "user:forms.addUserForm." +
                                         "inputs.lastName.validations.empty"
                                     ) }
                                     type="text"
@@ -981,7 +981,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                     <Form.Field
                                     >
                                         <label className="mb-3">
-                                            { t("console:manage.features.user.forms.addUserForm" +
+                                            { t("user:forms.addUserForm" +
                                                 ".buttons.radioButton.label") }
                                         </label>
                                         <Radio

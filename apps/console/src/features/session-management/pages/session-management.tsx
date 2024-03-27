@@ -107,10 +107,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("console:sessionManagement.notifications." +
+                description: t("sessionManagement:notifications." +
                 "getConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:sessionManagement.notifications." +
+                message: t("sessionManagement:notifications." +
                 "getConfiguration.error.message")
             })
         );
@@ -122,10 +122,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({
-                description: t("console:sessionManagement.notifications." +
+                description: t("sessionManagement:notifications." +
                 "updateConfiguration.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:sessionManagement.notifications." +
+                message: t("sessionManagement:notifications." +
                 "updateConfiguration.success.message")
             })
         );
@@ -137,10 +137,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const handleUpdateError = () => {
         dispatch(
             addAlert({
-                description: t("console:sessionManagement.notifications." +
+                description: t("sessionManagement:notifications." +
                 "updateConfiguration.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:sessionManagement.notifications." +
+                message: t("sessionManagement:notifications." +
                 "updateConfiguration.error.message")
             })
         );
@@ -163,14 +163,14 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
         if (values?.idleSessionTimeout && (!FormValidation.isInteger(values.idleSessionTimeout as number)
             || values.idleSessionTimeout as number < 0)) {
             error.idleSessionTimeout = t(
-                "console:sessionManagement.form.validation.idleSessionTimeout"
+                "sessionManagement:form.validation.idleSessionTimeout"
             );
         }
 
         if (values?.rememberMePeriod && (!FormValidation.isInteger(values.rememberMePeriod as number)
             || values.rememberMePeriod as number < 0)) {
             error.rememberMePeriod = t(
-                "console:sessionManagement.form.validation.rememberMePeriod"
+                "sessionManagement:form.validation.rememberMePeriod"
             );
         }
 
@@ -250,12 +250,12 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
 
     return (
         <PageLayout
-            title={ t("console:sessionManagement.title") }
-            pageTitle={ t("console:sessionManagement.title") }
-            description={ t("console:sessionManagement.description") }
+            title={ t("sessionManagement:title") }
+            pageTitle={ t("sessionManagement:title") }
+            description={ t("sessionManagement:description") }
             backButton={ {
                 onClick: () => onBackButtonClick(),
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ false }
@@ -291,11 +291,11 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 ariaLabel="Idle Session Timeout Field"
                                                                 inputType="number"
                                                                 name="idleSessionTimeout"
-                                                                label={ t("console:sessionManagement.form." +
+                                                                label={ t("sessionManagement:form." +
                                                                     "idleSessionTimeout.label") }
-                                                                placeholder={ t("console:sessionManagement.form." +
+                                                                placeholder={ t("sessionManagement:form." +
                                                                     "idleSessionTimeout.placeholder") }
-                                                                hint={ t("console:sessionManagement.form." +
+                                                                hint={ t("sessionManagement:form." +
                                                                     "idleSessionTimeout.hint") }
                                                                 required={ true }
                                                                 value={ sessionManagementConfig?.idleSessionTimeout }
@@ -316,11 +316,11 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 ariaLabel="Remember Me Period Field"
                                                                 inputType="number"
                                                                 name="rememberMePeriod"
-                                                                label={ t("console:sessionManagement.form." +
+                                                                label={ t("sessionManagement:form." +
                                                                     "rememberMePeriod.label") }
-                                                                placeholder={ t("console:sessionManagement.form." +
+                                                                placeholder={ t("sessionManagement:form." +
                                                                     "rememberMePeriod.placeholder") }
-                                                                hint={ t("console:sessionManagement.form." +
+                                                                hint={ t("sessionManagement:form." +
                                                                     "rememberMePeriod.hint") }
                                                                 required={ true }
                                                                 value={ sessionManagementConfig?.rememberMePeriod }

@@ -97,10 +97,10 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                         })
                         .catch(() => {
                             dispatch(addAlert({
-                                description: t("console:manage.features.remoteFetch.notifications." +
+                                description: t("remoteFetch:notifications." +
                                     "getConfigDeploymentDetails.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: t("console:manage.features.remoteFetch.notifications." +
+                                message: t("remoteFetch:notifications." +
                                     "getConfigDeploymentDetails.genericError.message")
                             }));
                         });
@@ -108,10 +108,10 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.remoteFetch.notifications." +
+                    description: t("remoteFetch:notifications." +
                         "getConfigList.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.remoteFetch.notifications." +
+                    message: t("remoteFetch:notifications." +
                         "getConfigList.genericError.message")
                 }));
             });
@@ -134,13 +134,13 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                 remoteConfig && (
                     <Menu data-componentid={ `${ componentId }-status` } size="small" borderless className="mb-6">
                         <Menu.Item  active header>
-                            { t("console:manage.features.remoteFetch.components.status.header") }
+                            { t("remoteFetch:components.status.header") }
                         </Menu.Item>
                         {
                             remoteConfigDetails?.status?.count === 0 && (
                                 <Menu.Item>
                                     <Hint icon="info circle" className="mt-1 mb-1">
-                                        { t("console:manage.features.remoteFetch.components.status.hint") }
+                                        { t("remoteFetch:components.status.hint") }
                                     </Hint>
                                 </Menu.Item>
                             )
@@ -195,7 +195,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                                     } }
                                                 >
                                                     {
-                                                        t("console:manage.features.remoteFetch.components" +
+                                                        t("remoteFetch:components" +
                                                             ".status.details")
                                                     }
                                                 </LinkButton>
@@ -214,7 +214,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                         <Menu.Item position="right">
                             <Popup
                                 content={ remoteConfigDetails?.repositoryManagerAttributes?.uri }
-                                header={ t("console:manage.features.remoteFetch.components.status.linkPopup.header") }
+                                header={ t("remoteFetch:components.status.linkPopup.header") }
                                 on="click"
                                 pinned
                                 position="top right"
@@ -233,10 +233,10 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                     triggerConfigDeployment(remoteConfigDetails.id)
                                         .then(() => {
                                             dispatch(addAlert({
-                                                description: t("console:manage.features.remoteFetch.notifications" +
+                                                description: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.success.description"),
                                                 level: AlertLevels.SUCCESS,
-                                                message: t("console:manage.features.remoteFetch.notifications" +
+                                                message: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.success.message")
                                             }));
 
@@ -246,17 +246,17 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                         })
                                         .catch(() => {
                                             dispatch(addAlert({
-                                                description: t("console:manage.features.remoteFetch.notifications" +
+                                                description: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.genericError.description"),
                                                 level: AlertLevels.ERROR,
-                                                message: t("console:manage.features.remoteFetch.notifications" +
+                                                message: t("remoteFetch:notifications" +
                                                     ".triggerConfigDeployment.genericError.message")
                                             }));
                                         });
                                 } }
                             >
                                 <Icon name="retweet" />
-                                { t("console:manage.features.remoteFetch.components.status.refetch") }
+                                { t("remoteFetch:components.status.refetch") }
                             </Button>
                         </Menu.Item>
                     </Menu>

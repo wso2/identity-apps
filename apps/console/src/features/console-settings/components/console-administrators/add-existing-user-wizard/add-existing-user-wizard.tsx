@@ -133,15 +133,15 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
             (error: AxiosError) => {
                 if (!error.response || error.response.status === 401) {
                     setAlert({
-                        description: t("console:manage.features.users.notifications.addUser.error.description"),
+                        description: t("users:notifications.addUser.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.addUser.error.message")
+                        message: t("users:notifications.addUser.error.message")
                     });
                 } else {
                     setAlert({
-                        description: t("console:manage.features.users.notifications.addUser.genericError.description"),
+                        description: t("users:notifications.addUser.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users.notifications.addUser.genericError.message")
+                        message: t("users:notifications.addUser.genericError.message")
                     });
                 }
             },

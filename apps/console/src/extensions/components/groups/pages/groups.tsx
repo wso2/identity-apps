@@ -469,7 +469,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             } }
                         >
                             <Icon name="add"/>
-                            { t("console:manage.features.roles.list.buttons.addButton", { type: "Group" }) }
+                            { t("roles:list.buttons.addButton", { type: "Group" }) }
                         </PrimaryButton>
                     </Show>
                 )

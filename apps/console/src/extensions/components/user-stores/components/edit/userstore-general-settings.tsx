@@ -724,7 +724,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         onClose={ (): void => setShowDisconnectConfirmationModal(false) }
                         type="warning"
                         open={ showDisconnectConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                        assertionHint={ t("user:deleteUser.confirmationModal." +
                             "assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -737,7 +737,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }
@@ -761,7 +761,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         onClose={ (): void => setShowRegenerateConfirmationModal(false) }
                         type="warning"
                         open={ showRegenerateConfirmationModal }
-                        assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                        assertionHint={ t("user:deleteUser.confirmationModal." +
                             "assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -776,7 +776,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                            { t("user:deleteUser.confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-testid={ `${ testId }-confirmation-modal-message` }

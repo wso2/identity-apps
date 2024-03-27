@@ -192,10 +192,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             dispatch(addAlert({
                 description:
                     error?.response?.data?.description
-                    || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                    || t("claims:local.notifications.getClaims.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.response?.data?.message
-                    || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                    || t("claims:local.notifications.getClaims.genericError.message")
             }));
         } finally {
             setServerSideClaimsLoading(false);
@@ -240,10 +240,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
+                        || t("claims:local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
+                        || t("claims:local.notifications.getClaims.genericError.message")
                 }
             ));
             setIsLocalClaimsLoading(false);
@@ -305,11 +305,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             }).then(() => {
                                 dispatch(addAlert(
                                     {
-                                        description: t("console:manage.features.claims.external.notifications." +
+                                        description: t("claims:external.notifications." +
                                             "addExternalAttribute.success.description",
                                         { type: resolveType(attributeType) }),
                                         level: AlertLevels.SUCCESS,
-                                        message: t("console:manage.features.claims.external.notifications." +
+                                        message: t("claims:external.notifications." +
                                             "addExternalAttribute.success.message",
                                         { type: resolveType(attributeType, true) })
                                     }
@@ -321,12 +321,12 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                 dispatch(addAlert(
                                     {
                                         description: error?.description
-                                            || t("console:manage.features.claims.external.notifications." +
+                                            || t("claims:external.notifications." +
                                                 "addExternalAttribute.genericError.description",
                                             { type: resolveType(attributeType) }),
                                         level: AlertLevels.ERROR,
                                         message: error?.message
-                                            || t("console:manage.features.claims.external.notifications." +
+                                            || t("claims:external.notifications." +
                                                 "addExternalAttribute.genericError.message")
                                     }
                                 ));
@@ -346,19 +346,19 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                         <Field
                                             name="claimURI"
                                             label={
-                                                t("console:manage.features.claims.external.forms." +
+                                                t("claims:external.forms." +
                                                 "attributeURI.label", {
                                                     type: resolveType(attributeType, true)
                                                 })
                                             }
                                             required={ true }
                                             requiredErrorMessage={
-                                                t("console:manage.features.claims.external." +
+                                                t("claims:external." +
                                                 "forms.attributeURI.requiredErrorMessage", {
                                                     type: resolveType(attributeType, true)
                                                 })
                                             }
-                                            placeholder={ t("console:manage.features.claims.external.forms." +
+                                            placeholder={ t("claims:external.forms." +
                                                 "attributeURI.placeholder",
                                             { type: resolveType(attributeType) }) }
                                             type={ "dropdown" }
@@ -370,10 +370,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 for (const claim of externalClaims) {
                                                     if (claim.claimURI === value) {
                                                         validation.isValid = false;
-                                                        validation.errorMessages.push(t("console:manage." +
-                                                            "features.claims.external.forms.attributeURI." +
+                                                        validation.errorMessages.push(t(
+                                                            "claims:external.forms.attributeURI." +
                                                             "validationErrorMessages.duplicateName",
-                                                        { type: resolveType(attributeType) }));
+                                                            { type: resolveType(attributeType) }));
 
                                                         break;
                                                     }
@@ -382,10 +382,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 if (attributeType === ClaimManagementConstants.OIDC) {
                                                     if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
                                                         validation.isValid = false;
-                                                        validation.errorMessages.push(t("console:manage.features." +
-                                                            "claims.external.forms.attributeURI." +
+                                                        validation.errorMessages.push(t(
+                                                            "claims:external.forms.attributeURI." +
                                                             "validationErrorMessages.invalidName",
-                                                        { type: resolveType(attributeType) }));
+                                                            { type: resolveType(attributeType) }));
                                                     }
                                                 }
                                             } }
@@ -405,14 +405,14 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                     (
                                         <Field
                                             name="claimURI"
-                                            label={ t("console:manage.features.claims.external.forms." +
+                                            label={ t("claims:external.forms." +
                                                 "attributeURI.label",
                                             { type: resolveType(attributeType, true) }) }
                                             required={ true }
-                                            requiredErrorMessage={ t("console:manage.features.claims.external" +
+                                            requiredErrorMessage={ t("claims:external" +
                                                 ".forms.attributeURI.requiredErrorMessage",
                                             { type: resolveType(attributeType, true) }) }
-                                            placeholder={ t("console:manage.features.claims.external.forms." +
+                                            placeholder={ t("claims:external.forms." +
                                                 "attributeURI.placeholder",
                                             { type: resolveType(attributeType) }) }
                                             type="text"
@@ -425,10 +425,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 for (const claim of externalClaims) {
                                                     if (claim.claimURI === value) {
                                                         validation.isValid = false;
-                                                        validation.errorMessages.push(t("console:manage." +
-                                                            "features.claims.external.forms.attributeURI." +
+                                                        validation.errorMessages.push(t(
+                                                            "claims:external.forms.attributeURI." +
                                                             "validationErrorMessages.duplicateName",
-                                                        { type: resolveType(attributeType) }));
+                                                            { type: resolveType(attributeType) }));
 
                                                         break;
                                                     }
@@ -437,10 +437,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                 if (attributeType === ClaimManagementConstants.OIDC) {
                                                     if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
                                                         validation.isValid = false;
-                                                        validation.errorMessages.push(t("console:manage." +
-                                                            "features.claims.external.forms.attributeURI." +
+                                                        validation.errorMessages.push(t(
+                                                            "claims:external.forms.attributeURI." +
                                                             "validationErrorMessages.invalidName",
-                                                        { type: resolveType(attributeType) }));
+                                                            { type: resolveType(attributeType) }));
                                                     }
                                                 }
                                             } }
@@ -454,11 +454,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                     loading={ isLocalClaimsLoading }
                                     type="dropdown"
                                     name="localClaim"
-                                    label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
+                                    label={ t("claims:external.forms.localAttribute.label") }
                                     required={ true }
-                                    requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
+                                    requiredErrorMessage={ t("claims:external.forms." +
                                         "localAttribute.requiredErrorMessage") }
-                                    placeholder={ t("console:manage.features.claims.external.forms." +
+                                    placeholder={ t("claims:external.forms." +
                                         "localAttribute.placeholder") }
                                     // prevent default search functionality
                                     search = { (items: DropdownItemProps[]) => {
@@ -532,7 +532,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                                 <>
                                                                     <Trans
                                                                         i18nKey={
-                                                                            "console:manage.features.claims." +
+                                                                            "claims:" +
                                                                             "external.forms.warningMessage"
                                                                         }
                                                                     >
@@ -551,7 +551,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                             ) : (
                                                                 <Trans
                                                                     i18nKey={
-                                                                        "console:manage.features.claims." +
+                                                                        "claims:" +
                                                                             "external.forms.emptyMessage"
                                                                     }
                                                                 >
@@ -577,7 +577,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             loading={ isSubmitting }
                                             disabled={ isSubmitting || isEmptyClaims || isEmptyServerSupportedClaims }
                                         >
-                                            { t("console:manage.features.claims.external.forms.submit") }
+                                            { t("claims:external.forms.submit") }
                                         </PrimaryButton>
                                     </Grid.Column>
                                 </Grid.Row>

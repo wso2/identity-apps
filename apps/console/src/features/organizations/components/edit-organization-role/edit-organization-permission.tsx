@@ -87,11 +87,11 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                     addAlert({
                         description: isGroup
                             ? t("console:manage.features.groups.notifications.updateGroup.success.description")
-                            : t("console:manage.features.roles.notifications.updateRole.success.description"),
+                            : t("roles:notifications.updateRole.success.description"),
                         level: AlertLevels.SUCCESS,
                         message: isGroup
                             ? t("console:manage.features.groups.notifications.updateGroup.success.message")
-                            : t("console:manage.features.roles.notifications.updateRole.success.message")
+                            : t("roles:notifications.updateRole.success.message")
                     })
                 );
                 onRoleUpdate();
@@ -102,11 +102,11 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                         addAlert({
                             description: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.description")
-                                : t("console:manage.features.roles.notifications.createPermission.error.description"),
+                                : t("roles:notifications.createPermission.error.description"),
                             level: AlertLevels.ERROR,
                             message: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.message")
-                                : t("console:manage.features.roles.notifications.createPermission.error.message")
+                                : t("roles:notifications.createPermission.error.message")
                         })
                     );
                 } else if (error.response && error.response.data.detail) {
@@ -115,12 +115,12 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                             description: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.description",
                                     { description: error.response.data.detail })
-                                : t("console:manage.features.roles.notifications.createPermission.error.description",
+                                : t("roles:notifications.createPermission.error.description",
                                     { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
                             message: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.error.message")
-                                : t("console:manage.features.roles.notifications.createPermission.error.message")
+                                : t("roles:notifications.createPermission.error.message")
                         })
                     );
                 } else {
@@ -129,13 +129,13 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                             description: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.genericError."+
                                 "description")
-                                : t("console:manage.features.roles.notifications.createPermission.genericError."+
+                                : t("roles:notifications.createPermission.genericError."+
                                 "description"),
                             level: AlertLevels.ERROR,
                             message: isGroup
                                 ? t("console:manage.features.groups.notifications.createPermission.genericError."+
                                 "message")
-                                : t("console:manage.features.roles.notifications.createPermission.genericError."+
+                                : t("roles:notifications.createPermission.genericError."+
                                 "message")
                         })
                     );

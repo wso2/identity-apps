@@ -154,7 +154,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         description: error.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.organizations.notifications." +
+                            "organizations:notifications." +
                                 "getOrganizationList.error.message"
                         )
                     })
@@ -166,12 +166,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             dispatch(
                 addAlert({
                     description: t(
-                        "console:manage.features.organizations.notifications.getOrganizationList" +
+                        "organizations:notifications.getOrganizationList" +
                             ".genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.organizations.notifications." +
+                        "organizations:notifications." +
                             "getOrganizationList.genericError.message"
                     )
                 })
@@ -503,12 +503,12 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             </Modal.Header>
             <Modal.Content>
                 <Heading ellipsis as="h6">
-                    { t("console:manage.features.organizations.shareApplicationSubTitle") }
+                    { t("organizations:shareApplicationSubTitle") }
                 </Heading>
                 <Segment basic>
                     <Radio
                         label={ t(
-                            "console:manage.features.organizations.shareApplicationRadio"
+                            "organizations:shareApplicationRadio"
                         ) }
                         onChange={ () => setShareType(ShareType.SHARE_ALL) }
                         checked={ shareType === ShareType.SHARE_ALL }
@@ -516,13 +516,13 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     />
                     <Hint popup inline>
                         { t(
-                            "console:manage.features.organizations.shareApplicationInfo"
+                            "organizations:shareApplicationInfo"
                         ) }
                     </Hint>
                     <Divider hidden className="mb-1 mt-0" />
                     <Radio
                         label={ t(
-                            "console:manage.features.organizations.shareWithSelectedOrgsRadio"
+                            "organizations:shareWithSelectedOrgsRadio"
                         ) }
                         onChange={ () => setShareType(ShareType.SHARE_SELECTED) }
                         checked={ shareType === ShareType.SHARE_SELECTED }
@@ -538,7 +538,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             disabled={ shareType !== ShareType.SHARE_SELECTED }
                             selectionComponent
                             searchPlaceholder={ t(
-                                "console:manage.features.transferList.searchPlaceholder",
+                                "transferList:searchPlaceholder",
                                 { type: "organizations" }
                             ) }
                             handleUnelectedListSearch={
@@ -563,7 +563,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 listType="unselected"
                                 listHeaders={ [
                                     t(
-                                        "console:manage.features.transferList.list.headers.1"
+                                        "transferList:list.headers.1"
                                     ),
                                     ""
                                 ] }
@@ -574,7 +574,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                 }
                                 data-testid="application-share-modal-organization-transfer-component-all-items"
                                 emptyPlaceholderDefaultContent={ t(
-                                    "console:manage.features.transferList.list." +
+                                    "transferList:list." +
                                         "emptyPlaceholders.default"
                                 ) }
                             >

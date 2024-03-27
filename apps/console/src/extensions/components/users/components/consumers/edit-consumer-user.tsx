@@ -114,7 +114,7 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
         if ((groupList?.length > 0 && (!user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId)) && !groupDataError) {
             return ([
                 {
-                    menuItem: t("console:manage.features.users.editUser.tab.menuItems.0"),
+                    menuItem: t("users:editUser.tab.menuItems.0"),
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <ConsumerUserProfile
@@ -130,7 +130,7 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
                     )
                 },
                 {
-                    menuItem: t("console:manage.features.users.editUser.tab.menuItems.1"),
+                    menuItem: t("users:editUser.tab.menuItems.1"),
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <ConsumerUserGroupsList
@@ -144,7 +144,7 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
                     )
                 },
                 {
-                    menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
+                    menuItem: t("users:editUser.tab.menuItems.3"),
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <UserSessions user={ user } />
@@ -155,7 +155,7 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
         } else {
             return ([
                 {
-                    menuItem: t("console:manage.features.users.editUser.tab.menuItems.0"),
+                    menuItem: t("users:editUser.tab.menuItems.0"),
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <ConsumerUserProfile
@@ -173,7 +173,7 @@ export const EditConsumerUser: FunctionComponent<EditConsumerUserPropsInterface>
                 !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId &&
                     !window[ "AppUtils" ].getConfig().organizationName
                     ? {
-                        menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
+                        menuItem: t("users:editUser.tab.menuItems.3"),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation attached={ false }>
                                 <UserSessions user={ user } />

@@ -287,7 +287,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
         return (
             <div className="oxygen-sign-in-option with-cancel-button">
-                <Tooltip title={ t("console:loginFlow.options.controls.remove") }>
+                <Tooltip title={ t("authenticationFlow:options.controls.remove") }>
                     <IconButton
                         size="small"
                         onClick={ (e: MouseEvent<HTMLButtonElement>) => {
@@ -311,7 +311,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                     {
                         authenticator.displayName.startsWith("Sign In With")
                             ? authenticator.displayName
-                            : t("console:loginFlow.options.displayName", { displayName: authenticator.displayName })
+                            : t("authenticationFlow:options.displayName", { displayName: authenticator.displayName })
                     }
                 </Button>
             </div>
@@ -347,7 +347,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                             });
                         } }
                     />
-                    <Divider>{ t("console:loginFlow.options.divider") }</Divider>
+                    <Divider>{ t("authenticationFlow:options.divider") }</Divider>
                 </>
             );
         }
@@ -373,7 +373,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                             });
                         } }
                     />
-                    <Divider>{ t("console:loginFlow.options.divider") }</Divider>
+                    <Divider>{ t("authenticationFlow:options.divider") }</Divider>
                 </>
             );
         }
@@ -516,7 +516,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 </Typography>
             </div>
             { authenticationSequence?.steps?.length > 1 && (
-                <Tooltip title={ t("console:loginFlow.options.controls.remove") }>
+                <Tooltip title={ t("authenticationFlow:options.controls.remove") }>
                     <IconButton
                         size="small"
                         onClick={ (e: MouseEvent<HTMLButtonElement>) => {
@@ -557,17 +557,17 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                         }
                                         data-componentid={ `${componentId}-add-sign-in-option` }
                                     >
-                                        { t("console:loginFlow.steps.controls.addOption") }
+                                        { t("authenticationFlow:steps.controls.addOption") }
                                     </Button>)
                                 }
                             </div>
                         </div>
                         { showSelfSignUp && (
                             <Grid container className="oxygen-sign-in-sign-up-link">
-                                <Grid>{ t("console:loginFlow.steps.controls.signUp.hint") }</Grid>
+                                <Grid>{ t("authenticationFlow:steps.controls.signUp.hint") }</Grid>
                                 <Grid>
                                     <Link href="#" className="oxygen-sign-in-sign-up-link-action">
-                                        { t("console:loginFlow.steps.controls.signUp.label") }
+                                        { t("authenticationFlow:steps.controls.signUp.label") }
                                     </Link>
                                 </Grid>
                             </Grid>
@@ -589,7 +589,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                     stepIndex: authenticationSequence?.steps?.[stepIndex]?.id
                                 });
                             } }
-                            label={ t("console:loginFlow.nodes.controls.userAttributeSelector.label") }
+                            label={ t("authenticationFlow:nodes.controls.userAttributeSelector.label") }
                             data-componentid={ `${componentId}-user-identifier-picker` }
                         />
                         <FormControlLabel
@@ -603,7 +603,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                     stepIndex: authenticationSequence?.steps?.[stepIndex]?.id
                                 });
                             } }
-                            label={ t("console:loginFlow.nodes.controls.attributeSelector.label") }
+                            label={ t("authenticationFlow:nodes.controls.attributeSelector.label") }
                             data-componentid={ `${componentId}-attribute-identifier-picker` }
                         />
                     </>
@@ -625,7 +625,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                 });
                             }
                         } }
-                        label={ t("console:loginFlow.nodes.controls.enableBackupCodes.label") }
+                        label={ t("authenticationFlow:nodes.controls.enableBackupCodes.label") }
                         data-componentid={ `${componentId}-enable-backup-code-picker` }
                     />
                 ) }

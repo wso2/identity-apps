@@ -358,12 +358,12 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "user:updateUser.groups.notifications.updateUserGroups." +
                         "success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "user:updateUser.groups.notifications.updateUserGroups." +
                         "success.message"
                     )
                 });
@@ -380,7 +380,7 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                         description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                            "user:updateUser.groups.notifications.updateUserGroups." +
                             "error.message"
                         )
                     });
@@ -390,12 +390,12 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
 
                 onAlertFired({
                     description: t(
-                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "user:updateUser.groups.notifications.updateUserGroups." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.user.updateUser.groups.notifications.updateUserGroups." +
+                        "user:updateUser.groups.notifications.updateUserGroups." +
                         "genericError.message"
                     )
                 });
@@ -423,15 +423,15 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
             className="user-roles"
         >
             <Modal.Header>
-                { t("console:manage.features.user.updateUser.groups.addGroupsModal.heading") }
+                { t("user:updateUser.groups.addGroupsModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.user.updateUser.groups.addGroupsModal.subHeading") }
+                    { t("user:updateUser.groups.addGroupsModal.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
                     selectionComponent
-                    searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                    searchPlaceholder={ t("transferList:searchPlaceholder",
                         { type: "Groups" }) }
                     handleUnelectedListSearch={ 
                         (e: React.FormEvent<HTMLInputElement>, { value }: { value: string; }) =>  searchGroups(value)
@@ -442,10 +442,10 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                     <TransferList
                         isListEmpty={ !(groupList.length > 0) }
                         listType="unselected"
-                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
+                        emptyPlaceholderContent={ t("transferList:list." +
                             "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
                         data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
-                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                        emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
                     >
                         {
@@ -560,10 +560,10 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
     return (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
-                { t("console:manage.features.user.updateUser.groups.editGroups.heading") }
+                { t("user:updateUser.groups.editGroups.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("console:manage.features.user.updateUser.groups.editGroups.subHeading") }
+                { t("user:updateUser.groups.editGroups.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid padded>
@@ -581,7 +581,7 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                                                 data-testid="user-mgt-groups-list-search-input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedGroupListSearch }
-                                                placeholder={ t("console:manage.features.user.updateUser.groups." +
+                                                placeholder={ t("user:updateUser.groups." +
                                                     "editGroups.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
@@ -607,7 +607,7 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                                                     <Table.HeaderCell/>
                                                     <Table.HeaderCell>
                                                         <strong>
-                                                            { t("console:manage.features.user.updateUser.groups." +
+                                                            { t("user:updateUser.groups." +
                                                                 "editGroups.groupList.headers.1") }
                                                         </strong>
                                                     </Table.HeaderCell>
@@ -621,10 +621,10 @@ export const ConsumerUserGroupsList: FunctionComponent<ConsumerUserGroupsPropsIn
                                 <Segment>
                                     <EmptyPlaceholder
                                         data-testid="user-mgt-empty-groups-list"
-                                        title={ t("console:manage.features.user.updateUser.groups.editGroups." +
+                                        title={ t("user:updateUser.groups.editGroups." +
                                             "groupList.emptyListPlaceholder.title") }
                                         subtitle={ [
-                                            t("console:manage.features.user.updateUser.groups.editGroups." +
+                                            t("user:updateUser.groups.editGroups." +
                                                 "groupList.emptyListPlaceholder.subTitle.0")
                                         ] }
                                         action={

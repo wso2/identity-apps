@@ -184,11 +184,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.users.notifications.deleteUser.success.description"
+                            "users:notifications.deleteUser.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.users.notifications.deleteUser.success.message"
+                            "users:notifications.deleteUser.success.message"
                         )
                     })
                 );
@@ -199,7 +199,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         addAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
-                            message: t("console:manage.features.users." +
+                            message: t("users:" +
                         "notifications.deleteUser.error.message")
                         })
                     );
@@ -208,10 +208,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 }
                 dispatch(
                     addAlert({
-                        description: t("console:manage.features.users." +
+                        description: t("users:" +
                             "notifications.deleteUser.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.users." +
+                        message: t("users:" +
                             "notifications.deleteUser.genericError.message")
                     })
                 );
@@ -315,7 +315,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                     {
                                         user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg && (
                                             <Label size="mini" className="client-id-label">
-                                                { t("console:manage.features.parentOrgInvitations." +
+                                                { t("parentOrgInvitations:" +
                                                 "invitedUserLabel") }
                                             </Label>
                                         )
@@ -488,7 +488,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: (): string => t("console:manage.features.users.usersList.list.iconPopups.delete"),
+            popupText: (): string => t("users:usersList.list.iconPopups.delete"),
             renderer: "semantic-icon"
         });
 
@@ -507,16 +507,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                            { t("users:usersList.search.emptyResultPlaceholder.clearButton") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
+                    title={ t("users:usersList.search.emptyResultPlaceholder.title") }
                     subtitle={ [
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.0",
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.0",
                             { query: searchQuery }),
-                        t("console:manage.features.users.usersList.search.emptyResultPlaceholder.subTitle.1")
+                        t("users:usersList.search.emptyResultPlaceholder.subTitle.1")
                     ] }
                 />
             );
@@ -530,18 +530,18 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     imageSize="tiny"
                     title={
                         isReadOnlyUserStore
-                            ? t("console:manage.features.users.usersList.list.emptyResultPlaceholder.emptyUsers")
-                            : t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title")
+                            ? t("users:usersList.list.emptyResultPlaceholder.emptyUsers")
+                            : t("users:usersList.list.emptyResultPlaceholder.title")
                     }
                     subtitle={
                         isReadOnlyUserStore
                             ? [
-                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0")
+                                t("users:usersList.list.emptyResultPlaceholder.subTitle.0")
                             ]
                             : [
-                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.0"),
-                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.1"),
-                                t("console:manage.features.users.usersList.list.emptyResultPlaceholder.subTitle.2")
+                                t("users:usersList.list.emptyResultPlaceholder.subTitle.0"),
+                                t("users:usersList.list.emptyResultPlaceholder.subTitle.1"),
+                                t("users:usersList.list.emptyResultPlaceholder.subTitle.2")
                             ]
                     }
                 />
@@ -581,7 +581,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                 type="negative"
                 open={ showDeleteConfirmationModal }
-                assertionHint={ t("console:manage.features.user.deleteUser.confirmationModal." +
+                assertionHint={ t("user:deleteUser.confirmationModal." +
                     "assertionHint") }
                 assertionType="checkbox"
                 primaryAction="Confirm"
@@ -600,20 +600,20 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
-                    { t("console:manage.features.user.deleteUser.confirmationModal.header") }
+                    { t("user:deleteUser.confirmationModal.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     data-testid={ `${testId}-confirmation-modal-message` }
                     attached
                     negative
                 >
-                    { t("console:manage.features.user.deleteUser.confirmationModal.message") }
+                    { t("user:deleteUser.confirmationModal.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
                     {
                         deletingUser && deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
-                            ? t("console:manage.features.user.deleteJITUser.confirmationModal.content")
-                            : t("console:manage.features.user.deleteUser.confirmationModal.content")
+                            ? t("user:deleteJITUser.confirmationModal.content")
+                            : t("user:deleteUser.confirmationModal.content")
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>

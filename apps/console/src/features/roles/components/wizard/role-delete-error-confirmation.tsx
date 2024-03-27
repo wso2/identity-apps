@@ -76,19 +76,19 @@ export const RoleDeleteErrorConfirmation: FunctionComponent<RoleDeleteErrorConfi
             <ConfirmationModal.Header
                 data-testid={ `${ componentId }-header` }
             >
-                { t("console:manage.features.roles.list.confirmations.deleteItemError.header") }
+                { t("roles:list.confirmations.deleteItemError.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 negative
                 data-testid={ `${ componentId }-message` }
             >
-                { t("console:manage.features.roles.list.confirmations.deleteItemError.message") }
+                { t("roles:list.confirmations.deleteItemError.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
                 data-testid={ `${ componentId }-content` }
             >
-                <span>{ t("console:manage.features.roles.list.confirmations.deleteItemError.content") }</span>
+                <span>{ t("roles:list.confirmations.deleteItemError.content") }</span>
                 <Divider hidden />
                 <List>
                     <ListItem>

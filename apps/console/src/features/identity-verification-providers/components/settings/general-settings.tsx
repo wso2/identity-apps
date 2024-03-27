@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -160,21 +160,21 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     <Divider hidden />
                     { (isDeletePermitted || !isReadOnly) &&(
                         <DangerZoneGroup
-                            sectionHeader={ t("console:develop.features.idvp.dangerZoneGroup.header") }>
+                            sectionHeader={ t("idvp:dangerZoneGroup.header") }>
                             <Show when={ AccessControlConstants.IDVP_EDIT }>
                                 <DangerZone
                                     actionTitle={
-                                        t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.actionTitle",
+                                        t("idvp:dangerZoneGroup.disableIDVP.actionTitle",
                                             { state: idvp.isEnabled ? t("common:disable") : t("common:enable") })
                                     }
                                     header={
-                                        t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.header",
+                                        t("idvp:dangerZoneGroup.disableIDVP.header",
                                             { state: idvp.isEnabled ? t("common:disable") : t("common:enable") } )
                                     }
                                     subheader={
                                         idvp.isEnabled ?
-                                            t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.subheader") :
-                                            t("console:develop.features.idvp.dangerZoneGroup.disableIDVP.subheader2")
+                                            t("idvp:dangerZoneGroup.disableIDVP.subheader") :
+                                            t("idvp:dangerZoneGroup.disableIDVP.subheader2")
                                     }
                                     onActionClick={ undefined }
                                     toggle={ {
@@ -186,10 +186,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             </Show>
                             <Show when={ AccessControlConstants.IDVP_DELETE }>
                                 <DangerZone
-                                    actionTitle={ t("console:develop.features.idvp.dangerZoneGroup" +
+                                    actionTitle={ t("idvp:dangerZoneGroup" +
                                         ".deleteIDVP.actionTitle") }
-                                    header={ t("console:develop.features.idvp.dangerZoneGroup.deleteIDVP.header") }
-                                    subheader={ t("console:develop.features.idvp.dangerZoneGroup" +
+                                    header={ t("idvp:dangerZoneGroup.deleteIDVP.header") }
+                                    subheader={ t("idvp:dangerZoneGroup" +
                                         ".deleteIDVP.subheader") }
                                     onActionClick={ handleIdentityVerificationProviderDeleteAction }
                                     data-componentid={ `${ componentId }-delete-idvp-danger-zone` }
@@ -204,7 +204,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                 onClose={ (): void => setShowDeleteConfirmationModal(false) }
                                 type="negative"
                                 open={ showDeleteConfirmationModal }
-                                assertionHint={ t("console:develop.features.idvp.confirmations" +
+                                assertionHint={ t("idvp:confirmations" +
                                     ".deleteIDVP.assertionHint") }
                                 assertionType="checkbox"
                                 primaryAction={ t("common:confirm") }
@@ -216,17 +216,17 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                             >
                                 <ConfirmationModal.Header
                                     data-componentid={ `${ componentId }-delete-idvp-confirmation` }>
-                                    { t("console:develop.features.idvp.confirmations.deleteIDVP.header") }
+                                    { t("idvp:confirmations.deleteIDVP.header") }
                                 </ConfirmationModal.Header>
                                 <ConfirmationModal.Message
                                     attached
                                     negative
                                     data-componentid={ `${ componentId }-delete-idvp-confirmation` }>
-                                    { t("console:develop.features.idvp.confirmations.deleteIDVP.message") }
+                                    { t("idvp:confirmations.deleteIDVP.message") }
                                 </ConfirmationModal.Message>
                                 <ConfirmationModal.Content
                                     data-componentid={ `${ componentId }-delete-idvp-confirmation` }>
-                                    { t("console:develop.features.idvp.confirmations.deleteIDVP.content") }
+                                    { t("idvp:confirmations.deleteIDVP.content") }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
                         )

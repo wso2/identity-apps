@@ -485,7 +485,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
             ),
             icon: getGroupsWizardStepIcons().general,
             name: WizardStepsFormTypes.BASIC_DETAILS,
-            title: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
+            title: t("roles:addRoleWizard.wizardSteps.0")
         };
     };
 
@@ -516,7 +516,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
             ),
             icon: getGroupsWizardStepIcons().roles,
             name: WizardStepsFormTypes.ROLE_LIST,
-            title: t("console:manage.features.roles.addRoleWizard.wizardSteps.5")
+            title: t("roles:addRoleWizard.wizardSteps.5")
         };
     };
 
@@ -555,7 +555,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         >
             <Modal.Header className="wizard-header">
                 {
-                    t("console:manage.features.roles.addRoleWizard.heading", { type: "Group" })
+                    t("roles:addRoleWizard.heading", { type: "Group" })
                 }
                 {
                     wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.groupName
@@ -605,7 +605,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                     disabled={ isWizardActionDisabled }
                                     data-componentid={ `${ componentId }-next-button` }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.next") }
+                                    { t("roles:addRoleWizard.buttons.next") }
                                     <Icon name="arrow right" data-componentid={ `${ componentId }-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
@@ -617,7 +617,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                     disabled={ isWizardActionDisabled || isSubmitting }
                                     loading={ isSubmitting }
                                 >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
+                                    { t("roles:addRoleWizard.buttons.finish") }
                                 </PrimaryButton>
                             ) }
                             { (wizardSteps?.length > 1 && currentStep > 0) && (
@@ -631,7 +631,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                         name="arrow left"
                                         data-componentid={ `${ componentId }-previous-button-icon` }
                                     />
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
+                                    { t("roles:addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
                         </Grid.Column>

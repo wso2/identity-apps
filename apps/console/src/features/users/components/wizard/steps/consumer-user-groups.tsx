@@ -234,7 +234,7 @@ export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsI
             submitState={ triggerSubmit }
         >
             <TransferComponent
-                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
+                searchPlaceholder={ t("transferList:searchPlaceholder",
                     { type: "Groups" }) }
                 addItems={ addGroups }
                 removeItems={ removeGroups }
@@ -246,14 +246,14 @@ export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsI
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
                     listHeaders={ [
-                        t("console:manage.features.transferList.list.headers.1")
+                        t("transferList:list.headers.1")
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
-                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
+                    emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders.users." +
                         "roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
-                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                    emptyPlaceholderDefaultContent={ t("transferList:list."
                         + "emptyPlaceholders.default") }
                 >
                     {
@@ -281,14 +281,14 @@ export const AddConsumerUserGroups: FunctionComponent<AddConsumerUserGroupPropsI
                     isListEmpty={ !(initialValues.tempGroupList.length > 0) }
                     listType="selected"
                     listHeaders={ [
-                        t("console:manage.features.transferList.list.headers.1")
+                        t("transferList:list.headers.1")
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
-                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
+                    emptyPlaceholderContent={ t("transferList:list.emptyPlaceholders.users." +
                         "roles.selected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-groups-select-all-checkbox"
-                    emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                    emptyPlaceholderDefaultContent={ t("transferList:list."
                         + "emptyPlaceholders.default") }
                 >
                     {

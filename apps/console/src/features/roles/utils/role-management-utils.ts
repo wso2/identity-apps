@@ -133,7 +133,7 @@ export class RoleManagementUtils {
     public static getUserStore = (nameWithUserstore: string): string =>
         nameWithUserstore?.split("/").length > 1
             ? nameWithUserstore?.split("/")[0]
-            : I18n.instance.t("console:manage.features.users.userstores.userstoreOptions.primary")
+            : I18n.instance.t("users:userstores.userstoreOptions.primary")
 
     /**
      * Get name to display of the user.

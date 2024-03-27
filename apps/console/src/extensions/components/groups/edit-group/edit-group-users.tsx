@@ -156,20 +156,20 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                            ?? t("users:notifications.fetchUsers.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                            ?? t("users:notifications.fetchUsers.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    description: t("users:notifications.fetchUsers.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    message: t("users:notifications.fetchUsers.genericError.message")
                 }));
 
                 setAllUserListPerPage([]);
@@ -211,20 +211,20 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                            ?? t("users:notifications.fetchUsers.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                            ?? t("users:notifications.fetchUsers.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    description: t("users:notifications.fetchUsers.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    message: t("users:notifications.fetchUsers.genericError.message")
                 }));
 
                 setGroupUsersListPerPage([]);
@@ -381,10 +381,10 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 setAddNewUserModalView(true);
             }).catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    description: t("users:notifications.fetchUsers.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                    message: t("users:notifications.fetchUsers.genericError.message")
                 }));
             });
     };
@@ -487,13 +487,13 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             filterAttributeOptions={ [
                 {
                     key: 0,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                         "filterAttributeOptions.username"),
                     value: "userName"
                 },
                 {
                     key: 1,
-                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    text: t("users:advancedSearch.form.dropdown." +
                         "filterAttributeOptions.email"),
                     value: "emails"
                 },
@@ -509,17 +509,17 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 }
             ] }
             filterAttributePlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute.placeholder")
+                t("users:advancedSearch.form.inputs.filterAttribute.placeholder")
             }
             filterConditionsPlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                t("users:advancedSearch.form.inputs.filterCondition" +
                     ".placeholder")
             }
             filterValuePlaceholder={
-                t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                t("users:advancedSearch.form.inputs.filterValue" +
                     ".placeholder")
             }
-            placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+            placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute="emails"
             defaultSearchOperator="co"
         />
@@ -533,7 +533,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         <Table.HeaderCell>
                             <strong>
                                 { t(
-                                    "console:manage.features.user.updateUser." +
+                                    "user:updateUser." +
                                     "groups.editGroups.groupList.headers.1"
                                 ) }
                             </strong>
@@ -554,31 +554,31 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             return (<EmptyPlaceholder
                 action={ (
                     <LinkButton onClick={ handleSearchQueryClear }>
-                        { t("console:manage.features.users.usersList.search." + 
+                        { t("users:usersList.search." + 
                             "emptyResultPlaceholder.clearButton") }
                     </LinkButton>
                 ) }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
-                title={ t("console:manage.features.users.usersList.search." + 
+                title={ t("users:usersList.search." + 
                     "emptyResultPlaceholder.title") }
                 subtitle={ [
-                    t("console:manage.features.users.usersList.search." + 
+                    t("users:usersList.search." + 
                         "emptyResultPlaceholder.subTitle.0",
                     { query: searchQuery }),
-                    t("console:manage.features.users.usersList.search." + 
+                    t("users:usersList.search." + 
                         "emptyResultPlaceholder.subTitle.1")
                 ] }
             />);
         } else {
             return (<EmptyPlaceholder
                 title={ t(
-                    "console:manage.features.roles.edit.users.list." +
+                    "roles:edit.users.list." +
                     "emptyPlaceholder.title"
                 ) }
                 subtitle={ [
                     t(
-                        "console:manage.features.roles.edit.users.list." +
+                        "roles:edit.users.list." +
                         "emptyPlaceholder.subtitles",
                         { type: "group" }
                     )
@@ -592,7 +592,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         >
                             <Icon name="plus" />
                             { t(
-                                "console:manage.features.roles.edit.users.list." +
+                                "roles:edit.users.list." +
                                 "emptyPlaceholder.action"
                             ) }
                         </PrimaryButton>
@@ -615,12 +615,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         >
             <Modal.Header>
                 {
-                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("roles:addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("roles:addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -663,7 +663,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                     className="group-add-user-model-transfer-list"
                                     selectionComponent
                                     searchPlaceholder={
-                                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list" +
+                                        t("roles:addRoleWizard.users.assignUserModal.list" +
                                             ".searchPlaceholder")
                                     }
                                     isLoading={ isUsersFetchRequestLoading }
@@ -680,9 +680,9 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         isLoading={ isUsersFetchRequestLoading }
                                         listType="unselected"
                                         data-testid={ `${ testId }-unselected-transfer-list` }
-                                        emptyPlaceholderContent={ t("console:manage.features.transferList.list." + 
+                                        emptyPlaceholderContent={ t("transferList:list." + 
                                             "emptyPlaceholders.groups.common", { type: "users" }) }
-                                        emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
+                                        emptyPlaceholderDefaultContent={ t("transferList:list."
                                             + "emptyPlaceholders.default") }
                                     >
                                         { allUserListPerPage?.map((user: UserBasicInterface, index: number) => {

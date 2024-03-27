@@ -125,18 +125,18 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         return deleteParentOrgInvite(user.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.success.description"),
+                    description: t("invite:notifications.deleteInvite.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.success.message")
+                    message: t("invite:notifications.deleteInvite.success.message")
                 }));
 
                 mutateInvitedAdministratorsListFetchRequest();
             }).catch(() => {
                 dispatch(addAlert({
-                    description: t("console:manage.features.invite.notifications.deleteInvite.genericError." +
+                    description: t("invite:notifications.deleteInvite.genericError." +
                     "description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.invite.notifications.deleteInvite.genericError.message")
+                    message: t("invite:notifications.deleteInvite.genericError.message")
                 }));
             })
             .finally(() => onComplete());
@@ -184,7 +184,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                         {
                             key: 0,
                             text: t(
-                                "console:manage.features.users.advancedSearch.form.dropdown." +
+                                "users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.username"
                             ),
                             value: "userName"
@@ -192,7 +192,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                         {
                             key: 1,
                             text: t(
-                                "console:manage.features.users.advancedSearch.form.dropdown." +
+                                "users:advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"
                             ),
                             value: "emails"
@@ -209,13 +209,13 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                         }
                     ] }
                     filterAttributePlaceholder={ t(
-                        "console:manage.features.users.advancedSearch.form.inputs.filterAttribute. " + "placeholder"
+                        "users:advancedSearch.form.inputs.filterAttribute. " + "placeholder"
                     ) }
                     filterConditionsPlaceholder={ t(
-                        "console:manage.features.users.advancedSearch.form.inputs.filterCondition" + ".placeholder"
+                        "users:advancedSearch.form.inputs.filterCondition" + ".placeholder"
                     ) }
                     filterValuePlaceholder={ t(
-                        "console:manage.features.users.advancedSearch.form.inputs.filterValue" + ".placeholder"
+                        "users:advancedSearch.form.inputs.filterValue" + ".placeholder"
                     ) }
                     placeholder={ "Search by Username" }
                     defaultSearchAttribute={ "userName" }
@@ -262,9 +262,9 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         >
             { adminUserListFetchError
                 ? (<EmptyPlaceholder
-                    subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
-                        t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
-                    title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                    subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
+                        t("users:placeholders.userstoreError.subtitles.1") ] }
+                    title={ t("users:placeholders.userstoreError.title") }
                     image={ getEmptyPlaceholderIllustrations().genericError }
                     imageSize="tiny"
                 />)
