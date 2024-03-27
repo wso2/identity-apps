@@ -79,7 +79,6 @@
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
             }
-            System.out.println("------------------------"+ errorMessage)
         }
     }
 %>
