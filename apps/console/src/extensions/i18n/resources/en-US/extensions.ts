@@ -432,6 +432,28 @@ export const extensions: Extensions = {
                     }
                 }
             }
+        },
+        organizationInfo: {
+            heading: "Organization Info",
+            subHeading: "View information related to your organization.",
+            orgId: {
+                label: "Organization ID",
+                heading: "Organization ID",
+                subHeading: "The following organization ID will be useful for you to implement and configure the Asgardeo manangement REST APIs of " +
+                    "organizations."
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while retrieving organization information"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving organization information.",
+                        message: "An error occurred"
+                    }
+                }
+            }
         }
     },
     develop: {
