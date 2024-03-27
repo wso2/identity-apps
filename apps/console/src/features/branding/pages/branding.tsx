@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,9 +48,12 @@ import { AppState } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
+import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
+import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
 import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
+import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
 import {
     BrandingPreferenceAPIResponseInterface,
@@ -164,6 +167,10 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         error: brandingPreferenceFetchRequestError,
         mutate: mutateBrandingPreferenceFetchRequest
     } = useGetBrandingPreferenceResolve(tenantDomain);
+
+    const {
+        mutate: mutateCustomTextPreferenceFetchRequest
+    } = useGetCustomTextPreferenceResolve(true, tenantDomain, "common", CustomTextPreferenceConstants.DEFAULT_LOCALE);
 
     const isBrandingPageLoading: boolean = useMemo(
         () =>
@@ -457,9 +464,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                         message: t("extensions:develop.branding.notifications.update.genericError.message")
                     }));
                 }
-                
+
                 if (originalBrandingPreference
-                    && !(originalBrandingPreference instanceof IdentityAppsApiException)) {                    
+                    && !(originalBrandingPreference instanceof IdentityAppsApiException)) {
                     setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
                         BrandingPreferenceUtils.migrateThemePreference(
                             originalBrandingPreference.preference,
@@ -512,44 +519,57 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
 
         setIsBrandingPreferenceDeleteRequestLoading(true);
 
-        deleteBrandingPreference(tenantDomain)
-            .then((response: null | IdentityAppsApiException) => {
-                if (response instanceof IdentityAppsApiException) {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.branding.notifications.delete.invalidStatus.description",
-                            { tenant: tenantDomain }),
-                        level: AlertLevels.ERROR,
-                        message: t("extensions:develop.branding.notifications.delete.invalidStatus.message")
-                    }));
+        Promise.all([ deleteBrandingPreference(tenantDomain), deleteAllCustomTextPreferences() ])
+            .then(
+                (values: any) => {
+                    const [ deleteBrandingPreferenceResponse, deleteCustomTextPreferenceResponse ] = values;
 
-                    return;
+                    const isBrandingPreferenceDeleteError: boolean =
+                    deleteBrandingPreferenceResponse instanceof IdentityAppsApiException;
+                    const isCustomTextPreferenceDeleteError: boolean =
+                    deleteCustomTextPreferenceResponse instanceof IdentityAppsApiException;
+
+                    if (isBrandingPreferenceDeleteError || isCustomTextPreferenceDeleteError) {
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.branding.notifications.delete.invalidStatus.description",
+                                { tenant: tenantDomain }),
+                            level: AlertLevels.ERROR,
+                            message: t("extensions:develop.branding.notifications.delete.invalidStatus.message")
+                        }));
+
+                        return;
+                    }
+
+                    setIsBrandingConfigured(false);
+                    setBrandingPreference(DEFAULT_PREFERENCE);
+                    mutateBrandingPreferenceFetchRequest();
+                    mutateCustomTextPreferenceFetchRequest();
+
+                    // Increment the tabs component key to remount the component on branding revert.
+                    setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
+
+                    if(organizationType !== OrganizationType.SUBORGANIZATION) {
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.branding.notifications.delete.success.description",
+                                { tenant: tenantDomain }),
+                            level: AlertLevels.SUCCESS,
+                            message: t("extensions:develop.branding.notifications.delete.success.message")
+                        }));
+                    } else {
+                        dispatch(addAlert<AlertInterface>({
+                            description: t(
+                                "extensions:develop.branding.notifications.delete." +
+                                "successWaiting.description",
+                                { tenant: tenantDomain }
+                            ),
+                            level: AlertLevels.WARNING,
+                            message: t("extensions:develop.branding.notifications.delete.successWaiting.message")
+                        }));
+
+                        handleSubOrgAlerts();
+                    }
                 }
-
-                setIsBrandingConfigured(false);
-                setBrandingPreference(DEFAULT_PREFERENCE);
-                mutateBrandingPreferenceFetchRequest();
-                // Increment the tabs component key to remount the component on branding revert.
-                setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
-
-                if(organizationType !== OrganizationType.SUBORGANIZATION) {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.branding.notifications.delete.success.description",
-                            { tenant: tenantDomain }),
-                        level: AlertLevels.SUCCESS,
-                        message: t("extensions:develop.branding.notifications.delete.success.message")
-                    }));
-                } else {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.branding.notifications.delete.successWaiting.description",
-                            { tenant: tenantDomain }),
-                        level: AlertLevels.WARNING,
-                        message: t("extensions:develop.branding.notifications.delete.successWaiting.message")
-                    }));
-
-                    handleSubOrgAlerts();
-                }
-            })
-            .catch((error: IdentityAppsApiException) => {
+            ).catch((error: IdentityAppsApiException) => {
 
                 let description: string = t("extensions:develop.branding.notifications.delete.genericError" +
                     ".description", { tenant: tenantDomain });
