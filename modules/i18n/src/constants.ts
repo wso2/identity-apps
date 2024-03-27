@@ -273,9 +273,11 @@ export class I18nModuleConstants {
 
     /**
      * Applications namespace.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly APPLICATIONS_NAMESPACE: string = "applications";
+  
+    /**
+     * Identity Provider namespace.
+     */
+    public static readonly IDP_NAMESPACE: string = "idp";
 }

@@ -55,3 +55,4 @@ export * from "./email-templates";
 export * from "./certificates";
 export * from "./authentication-provider";
 export * from "./applications";
+export * from "./idp";

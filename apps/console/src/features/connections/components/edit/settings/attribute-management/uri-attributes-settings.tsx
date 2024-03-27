@@ -346,7 +346,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             : (
                                 <Trans
                                     i18nKey={
-                                        "console:console:develop.features.idp.forms.uriAttributeSettings" +
+                                        "console:idp:forms.uriAttributeSettings" +
                                         ".subject.hint"
                                     }
                                 >

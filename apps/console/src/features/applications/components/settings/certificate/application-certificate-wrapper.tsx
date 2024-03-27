@@ -458,7 +458,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                             if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(
-                                                    t("console:develop.features.idp.forms.common." +
+                                                    t("idp:forms.common." +
                                                         "internetResolvableErrorMessage")
                                                 );
                                             }

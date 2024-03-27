@@ -179,7 +179,7 @@ export const InboundSAMLCreationForm: FunctionComponent<SAMLProtocolCreationWiza
 
                                                     validation.isValid = false;
                                                     validation.errorMessages.push(
-                                                        t("console:develop.features.idp.forms.common." +
+                                                        t("idp:forms.common." +
                                                     "internetResolvableErrorMessage")
                                                     );
                                                 }

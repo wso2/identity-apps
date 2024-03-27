@@ -578,7 +578,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back",
+                text: isConnectedAppsRedirect ? t("idp:connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
             titleTextAlign="left"

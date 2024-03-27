@@ -284,7 +284,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
                         setIsJwksValueValid(false);
 
-                        return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+                        return t("idp:forms.common.internetResolvableErrorMessage");
                     }
                     setIsJwksValueValid(true);
 
