@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.13.29
+
+### Patch Changes
+
+- [#5834](https://github.com/wso2/identity-apps/pull/5834) [`457d834336`](https://github.com/wso2/identity-apps/commit/457d834336d197b55e907e22bc56d31320861d9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Added null check to logType in audit logs
+
+* [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- [#5838](https://github.com/wso2/identity-apps/pull/5838) [`982b621840`](https://github.com/wso2/identity-apps/commit/982b6218401fdd19dc73d5ddf00e8c40f5208287) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing i18n for organization information retrieval
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/dynamic-forms@2.0.41
+  - @wso2is/theme@2.0.71
+  - @wso2is/form@2.0.42
+  - @wso2is/access-control@2.0.22
+  - @wso2is/common@2.0.52
+
 ## 2.13.28
 
 ### Patch Changes

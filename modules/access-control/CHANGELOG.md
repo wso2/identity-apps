@@ -1,5 +1,11 @@
 # @wso2is/access-control
 
+## 2.0.22
+
+### Patch Changes
+
+- [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
 ## 2.0.21
 
 ### Patch Changes
