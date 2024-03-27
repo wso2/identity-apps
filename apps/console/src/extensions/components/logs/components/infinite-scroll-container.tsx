@@ -18,10 +18,11 @@
 
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
+import Link from "@oxygen-ui/react/Link";
 import Toolbar from "@oxygen-ui/react/Toolbar";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Popup } from "@wso2is/react-components";
@@ -42,6 +43,7 @@ import LoaderPlaceholder from "./loader-placeholder";
 import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
 import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
 import "./infinite-scroll-container.scss";
+import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
@@ -235,24 +237,24 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                             <tr>
                                 <td className="log-property">{ property }:</td>
                                 <td className="view-data-button">
-                                    <span
+                                    <Link
                                         data-testid={ `${ componentId }-${ logObject["id"] }-view-data-button` }
+                                        underline="hover"
                                         onClick={ () => handleLogDataView(logObject) }
                                     >
-                                        <Icon name="eye"/>
+                                        <EyeIcon  className="topic"/>
                                         { t("extensions:develop.monitor.filter.viewButton.label") }
-                                    </span>
+                                    </Link>
                                 </td>
-                                <td></td>
-                                <td></td>
                                 <td className="download-data-button">
-                                    <span
+                                    <Link
                                         data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
+                                        underline="hover"
                                         onClick={ () => exportDataOfLog(logObject) }
                                     >
-                                        <Icon name="download" />
+                                        <DownloadIcon className="topic"/>
                                         { t("extensions:develop.monitor.filter.downloadButton.label") }
-                                    </span>
+                                    </Link>
                                 </td>
                             </tr>
                         );
@@ -317,46 +319,33 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
             <Toolbar variant="dense">
                 <Box>
                     <Typography>
-                        { t("extensions:develop.monitor.logView.logDataviewer.panelName") }
+                        {
+                            t("extensions:develop.monitor.logView.logDataviewer.panelName")
+                        }
                     </Typography>
                 </Box>
-                <div className="actions">
-                    <div className="editor-fullscreen">
-                        <Tooltip
-                            title={ "extensions:develop.monitor.logView.logDataviewer.download" }
-                            data-componentid="{ `${ componentId }-download-tooltip` }"
-                        >
-                            <IconButton
-                                size="small"
-                                onClick={ exportCurrentLog }
-                            >
-                                <Icon name="download"/>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip
-                            title={ "extensions:develop.monitor.logView.logDataviewer.copy" }
-                            data-componentid="log-data-viewer-copy-tooltip"
-                        >
-                            <IconButton
-                                size="small"
-                                onClick={ copyCurrentLog }
-                            >
-                                <Icon name="copy"/>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip
-                            title={ "extensions:develop.monitor.logView.logDataviewer.close" }
-                            data-componentid="log-data-viewer-exit-tooltip"
-                        >
-                            <IconButton
-                                size="small"
-                                onClick={ handleLogDataViewClose }
-                            >
-                                <Icon name="close"/>
-                            </IconButton>
-                        </Tooltip>
-                    </div>
-                </div>
+                <Box className="actions">
+                    <Button
+                        className="data-viewer-buttons"
+                        onClick={ exportCurrentLog }
+                        startIcon={ <DownloadIcon /> }
+                    >
+                        { t("extensions:develop.monitor.logView.logDataviewer.download") }
+                    </Button>
+                    <Button
+                        className="data-viewer-buttons"
+                        onClick={ copyCurrentLog }
+                        startIcon={ <CopyIcon /> }
+                    >
+                        { t("extensions:develop.monitor.logView.logDataviewer.copy") }
+                    </Button>
+                    <IconButton
+                        size="small"
+                        onClick={ handleLogDataViewClose }
+                    >
+                        <XMarkIcon />
+                    </IconButton>
+                </Box>
             </Toolbar>
         </Box>
     );

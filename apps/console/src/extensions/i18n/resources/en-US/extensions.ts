@@ -2659,7 +2659,7 @@ export const extensions: Extensions = {
                 },
                 searchBar: {
                     placeholderDiagnostic: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status",
-                    placeholderAudit: "Search Logs by actionId, targetId, initiatorId, traceId"
+                    placeholderAudit: "Search logs that contain ..."
                 },
                 refreshMessage: {
                     text: "Last fetched logs at ",
