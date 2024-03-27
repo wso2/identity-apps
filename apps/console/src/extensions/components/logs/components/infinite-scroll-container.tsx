@@ -17,6 +17,7 @@
  */
 
 import Modal from "@mui/material/Modal";
+import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -43,7 +44,6 @@ import LoaderPlaceholder from "./loader-placeholder";
 import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
 import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
 import "./infinite-scroll-container.scss";
-import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
