@@ -504,7 +504,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() => {
                                     // eslint-disable-next-line max-len
-                                    return import("../../organization-discovery/pages/assign-organization-discovery-domains-page");
+                                    return import("../../admin-organization-discovery-v1/pages/assign-organization-discovery-domains-page");
                                 }),
                                 exact: true,
                                 icon: {
@@ -519,7 +519,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() => {
                                     // eslint-disable-next-line max-len
-                                    return import("../../organization-discovery/pages/edit-organization-discovery-domains-page");
+                                    return import("../../admin-organization-discovery-v1/pages/edit-organization-discovery-domains-page");
                                 }),
                                 exact: true,
                                 icon: {
@@ -533,7 +533,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             }
                         ],
                         component: lazy(() => {
-                            return import("../../organization-discovery/pages/organization-discovery-domains-page");
+                            return import("../../admin-organization-discovery-v1/pages/organization-discovery-domains-page");
                         }),
                         exact: true,
                         icon: {
@@ -964,7 +964,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.monitor",
-                        component: lazy(() => import("../../org-insights/pages/org-insights")),
+                        component: lazy(() => import("../../admin-org-insights-v1/pages/org-insights")),
                         exact: true,
                         featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
                         featureStatus: "BETA",
@@ -1028,7 +1028,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../server/pages/admin-session-advisory-banner-page")
+                                    import("../../admin-server-v1/pages/admin-session-advisory-banner-page")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1042,7 +1042,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../server/pages/remote-logging-page")
+                                    import("../../admin-server-v1/pages/remote-logging-page")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1056,7 +1056,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../server/pages/internal-notification-sending-page")
+                                    import("../../admin-server-v1/pages/internal-notification-sending-page")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1071,7 +1071,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server/pages/server"
+                                "../../admin-server-v1/pages/server"
                             )
                         ),
                         exact: true,
@@ -1101,7 +1101,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",
-                        component: lazy(() => import("../../certificates/pages/certificates-keystore")),
+                        component: lazy(() => import("../../admin-certificates-v1/pages/certificates-keystore")),
                         icon: {
                             icon: getSidePanelIcons().certificate
                         },
