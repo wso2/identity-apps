@@ -45,7 +45,7 @@ import { getServerConfigurationsResourceEndpoints } from "../../server-configura
 import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
-import { getValidationServiceEndpoints } from "../../validation/configs";
+import { getValidationServiceEndpoints } from "../../admin-validation-v1/configs";
 import { getApprovalsResourceEndpoints } from "../../admin-workflow-approvals-v1";
 import { I18nConstants, UIConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";

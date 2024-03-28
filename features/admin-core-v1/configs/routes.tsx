@@ -900,7 +900,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../validation/pages/validation-config-edit")
+                                    import("../../admin-validation-v1/pages/validation-config-edit")
                                 ),
                                 exact: true,
                                 icon: {

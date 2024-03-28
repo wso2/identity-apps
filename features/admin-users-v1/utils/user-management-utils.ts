@@ -26,7 +26,7 @@ import {
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
-} from "../../validation/models";
+} from "../../admin-validation-v1/models";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models";
 

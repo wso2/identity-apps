@@ -50,8 +50,8 @@ import {
     createEmptyUserDetails
 } from "../../../users/models/user";
 import { getUsernameConfiguration } from "../../../users/utils";
-import { useValidationConfigData } from "../../../validation/api";
-import { ValidationFormInterface } from "../../../validation/models";
+import { useValidationConfigData } from "../../../admin-validation-v1/api";
+import { ValidationFormInterface } from "../../../admin-validation-v1/models";
 
 interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;

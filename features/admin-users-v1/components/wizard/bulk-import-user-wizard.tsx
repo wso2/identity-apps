@@ -82,8 +82,8 @@ import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-
 import { PatchRoleDataInterface } from "../../../roles/models";
 import { getAUserStore, getUserStores } from "../../../userstores/api";
 import { UserStoreManagementConstants } from "../../../userstores/constants";
-import { useValidationConfigData } from "../../../validation/api";
-import { ValidationFormInterface } from "../../../validation/models";
+import { useValidationConfigData } from "../../../admin-validation-v1/api";
+import { ValidationFormInterface } from "../../../admin-validation-v1/models";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,

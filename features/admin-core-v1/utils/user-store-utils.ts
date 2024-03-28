@@ -23,7 +23,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { userstoresConfig } from "../../../extensions";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStore, UserStoreListItem, UserStoreProperty } from "../../userstores/models";
-import { ValidationFormInterface } from "../../validation/models";
+import { ValidationFormInterface } from "../../admin-validation-v1/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
 import { UserStoreDetails } from "../models";

@@ -46,8 +46,8 @@ import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { updateGroupDetails, useGroupList } from "../../../groups/api";
-import { useValidationConfigData } from "../../../validation/api";
-import { ValidationFormInterface } from "../../../validation/models";
+import { useValidationConfigData } from "../../../admin-validation-v1/api";
+import { ValidationFormInterface } from "../../../admin-validation-v1/models";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
 import {

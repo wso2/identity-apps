@@ -44,7 +44,7 @@ import { ServerConfigurationsResourceEndpointsInterface } from "../../server-con
 import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
-import { ValidationServiceEndpointsInterface } from "../../validation/models";
+import { ValidationServiceEndpointsInterface } from "../../admin-validation-v1/models";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,

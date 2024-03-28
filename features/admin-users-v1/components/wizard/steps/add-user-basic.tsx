@@ -40,7 +40,7 @@ import {
     USERSTORE_REGEX_PROPERTIES, UserStoreManagementConstants
 } from "../../../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../../../userstores/models";
-import { ValidationDataInterface, ValidationFormInterface } from "../../../../validation/models";
+import { ValidationDataInterface, ValidationFormInterface } from "../../../../admin-validation-v1/models";
 import { getUsersList } from "../../../api/users";
 import {
     AskPasswordOptionTypes,
