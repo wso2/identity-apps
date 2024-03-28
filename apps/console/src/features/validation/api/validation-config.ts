@@ -20,12 +20,12 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { store } from "../../core";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../features/core/hooks/use-request";
-import { store } from "../../core";
+} from "../../core/hooks/use-request";
 import { OrganizationType } from "../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ValidationManagementConstants } from "../constants/validation-config-constants";

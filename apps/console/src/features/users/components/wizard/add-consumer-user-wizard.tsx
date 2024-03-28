@@ -35,23 +35,23 @@ import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-s
 import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { userstoresConfig } from "../../../../extensions/configs/userstores";
-import { UserBasicInterface } from "../../../../features/core";
+import { UserBasicInterface } from "../../../core";
 import {
     GroupsInterface,
     PatchGroupDataInterface,
     getGroupList,
     updateGroupDetails
-} from "../../../../features/groups";
-import { addUser } from "../../../../features/users/api/users";
-import { getUserWizardStepIcons } from "../../../../features/users/configs/ui";
+} from "../../../groups";
+import { addUser } from "../../../users/api/users";
+import { getUserWizardStepIcons } from "../../../users/configs/ui";
 import {
     AddUserWizardStateInterface,
     UserDetailsInterface,
     createEmptyUserDetails
-} from "../../../../features/users/models/user";
-import { getUsernameConfiguration } from "../../../../features/users/utils";
-import { useValidationConfigData } from "../../../../features/validation/api";
-import { ValidationFormInterface } from "../../../../features/validation/models";
+} from "../../../users/models/user";
+import { getUsernameConfiguration } from "../../../users/utils";
+import { useValidationConfigData } from "../../../validation/api";
+import { ValidationFormInterface } from "../../../validation/models";
 
 interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;

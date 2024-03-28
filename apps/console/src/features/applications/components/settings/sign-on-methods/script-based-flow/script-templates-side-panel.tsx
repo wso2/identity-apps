@@ -44,26 +44,26 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Accordion,  Grid, Icon, Menu, Modal, Segment, Sidebar } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../../../../extensions/configs/server-configuration";
+// eslint-disable-next-line max-len
+import AdaptiveAuthTemplateInfoModal from "../../../../../authentication-flow-builder/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
-} from "../../../../../../features/authentication-flow-builder/constants/template-constants";
+} from "../../../../../authentication-flow-builder/constants/template-constants";
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../../../../features/server-configurations/api/governance-connectors";
+} from "../../../../../server-configurations/api/governance-connectors";
 import {
     ServerConfigurationsConstants
-} from "../../../../../../features/server-configurations/constants/server-configurations-constants";
-import { AnalyticsConfigurationForm } from "../../../../../../features/server-configurations/forms/analytics-form";
+} from "../../../../../server-configurations/constants/server-configurations-constants";
+import { AnalyticsConfigurationForm } from "../../../../../server-configurations/forms/analytics-form";
 import {
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../../../features/server-configurations/models/governance-connectors";
+} from "../../../../../server-configurations/models/governance-connectors";
 import {
     GovernanceConnectorUtils
-} from "../../../../../../features/server-configurations/utils/governance-connector-utils";
-// eslint-disable-next-line max-len
-import AdaptiveAuthTemplateInfoModal from "../../../../../authentication-flow-builder/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
+} from "../../../../../server-configurations/utils/governance-connector-utils";
 import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**

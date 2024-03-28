@@ -20,13 +20,13 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { LocalAuthenticatorInterface } from "../../../features/identity-providers/models/identity-provider";
 import { store } from "../../core";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
+import { LocalAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
 import { ServerConfigurationsConstants } from "../constants";
 import {
     GovernanceCategoryForOrgsInterface,
@@ -45,12 +45,15 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 /**
  * Get governance connector categories.
  *
+ *
  * @returns the governance connector categories.
  */
 export const useGovernanceConnectorCategories = <
     Data = GovernanceCategoryForOrgsInterface[],
     Error = RequestErrorInterface
->(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+>
+    (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",

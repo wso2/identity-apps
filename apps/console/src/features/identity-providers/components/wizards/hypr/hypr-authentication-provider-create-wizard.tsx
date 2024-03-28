@@ -42,7 +42,7 @@ import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
     EventPublisher,
     ModalWithSidePanel
-} from "../../../../../features/core";
+} from "../../../../core";
 import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";

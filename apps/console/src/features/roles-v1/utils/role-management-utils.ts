@@ -18,7 +18,7 @@
 
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { AppConstants } from "../../../features/core";
+import { AppConstants } from "../../core";
 import { getPermissionList, searchRoleList } from "../api/roles";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject, TreeNode } from "../models/permission";

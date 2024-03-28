@@ -25,11 +25,11 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Message } from "semantic-ui-react";
-import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import {
     AppConstants,
     history
 } from "../../../../core";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
