@@ -1075,6 +1075,358 @@ importers:
         specifier: ^4.6.4
         version: 4.8.2
 
+  features:
+    dependencies:
+      '@asgardeo/auth-react':
+        specifier: ^4.0.1
+        version: 4.0.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
+      '@emotion/react':
+        specifier: ^11.11.0
+        version: 11.11.0(@types/react@18.0.18)(react@18.2.0)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.11.0(@emotion/react@11.11.0)(@types/react@18.0.18)(react@18.2.0)
+      '@microsoft/applicationinsights-core-js':
+        specifier: ^3.0.0
+        version: 3.0.0(tslib@2.4.0)(typescript@4.8.2)
+      '@microsoft/applicationinsights-react-js':
+        specifier: ^3.4.2
+        version: 3.4.2(history@4.10.1)(react@18.2.0)(tslib@2.4.0)
+      '@microsoft/applicationinsights-web':
+        specifier: ^3.0.0
+        version: 3.0.0(tslib@2.4.0)(typescript@4.8.2)
+      '@monaco-editor/react':
+        specifier: ^4.5.1
+        version: 4.5.2(monaco-editor@0.43.0)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/icons-material':
+        specifier: ^5.11.16
+        version: 5.11.16(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.2.0)
+      '@mui/lab':
+        specifier: 5.0.0-alpha.129
+        version: 5.0.0-alpha.129(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/material':
+        specifier: ^5.13.0
+        version: 5.13.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/system':
+        specifier: ^5.12.3
+        version: 5.12.3(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.18)(react@18.2.0)
+      '@mui/utils':
+        specifier: ^5.12.3
+        version: 5.14.10(@types/react@18.0.18)(react@18.2.0)
+      '@oxygen-ui/react':
+        specifier: ^1.11.0
+        version: 1.11.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
+      '@oxygen-ui/react-icons':
+        specifier: ^1.11.0
+        version: 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
+      '@wso2is/access-control':
+        specifier: ^2.0.22
+        version: link:../modules/access-control
+      '@wso2is/common':
+        specifier: ^2.0.52
+        version: link:../modules/common
+      '@wso2is/core':
+        specifier: ^2.0.37
+        version: link:../modules/core
+      '@wso2is/dynamic-forms':
+        specifier: ^2.0.41
+        version: link:../modules/dynamic-forms
+      '@wso2is/form':
+        specifier: ^2.0.42
+        version: link:../modules/form
+      '@wso2is/forms':
+        specifier: ^2.0.27
+        version: link:../modules/forms
+      '@wso2is/i18n':
+        specifier: ^2.1.5
+        version: link:../modules/i18n
+      '@wso2is/react-components':
+        specifier: ^2.1.12
+        version: link:../modules/react-components
+      '@wso2is/theme':
+        specifier: ^2.0.71
+        version: link:../modules/theme
+      '@wso2is/validation':
+        specifier: ^2.0.3
+        version: link:../modules/validation
+      axios:
+        specifier: ^0.19.2
+        version: 0.19.2
+      codemirror:
+        specifier: ^5.52.0
+        version: 5.65.8
+      country-language:
+        specifier: ^0.1.7
+        version: 0.1.7
+      deep-equal:
+        specifier: ^2.2.2
+        version: 2.2.2
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
+      history:
+        specifier: ^4.9.0
+        version: 4.10.1
+      html-react-parser:
+        specifier: ^2.0.0
+        version: 2.0.0(react@18.2.0)
+      i18next:
+        specifier: ^21.9.1
+        version: 21.9.1
+      i18next-browser-languagedetector:
+        specifier: ^6.1.5
+        version: 6.1.5
+      i18next-xhr-backend:
+        specifier: ^3.2.2
+        version: 3.2.2
+      js-beautify:
+        specifier: ^1.13.0
+        version: 1.14.6
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      moment:
+        specifier: ^2.24.0
+        version: 2.29.4
+      mustache:
+        specifier: ^4.2.0
+        version: 4.2.0
+      node-forge:
+        specifier: ^0.10.0
+        version: 0.10.0
+      rc-tree:
+        specifier: ^4.0.0-beta.2
+        version: 4.2.2(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-beautiful-dnd:
+        specifier: ^12.2.0
+        version: 12.2.0(react-dom@18.2.0)(react@18.2.0)
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-draggable:
+        specifier: ^4.2.0
+        version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
+      react-helmet:
+        specifier: ^5.2.1
+        version: 5.2.1(react@18.2.0)
+      react-i18next:
+        specifier: ^11.18.5
+        version: 11.18.5(i18next@21.9.1)(react-dom@18.2.0)(react@18.2.0)
+      react-joyride:
+        specifier: ^2.3.0
+        version: 2.5.1(react-dom@18.2.0)(react@18.2.0)
+      react-notification-system:
+        specifier: ^0.4.0
+        version: 0.4.0(react-dom@18.2.0)(react@18.2.0)
+      react-redux:
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.2.0)(react@18.2.0)
+      react-router-dom:
+        specifier: ^4.3.1
+        version: 4.3.1(react@18.2.0)
+      reactflow:
+        specifier: ^11.7.2
+        version: 11.8.3(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
+      reactour:
+        specifier: ^1.18.0
+        version: 1.18.7(@types/react@18.0.18)(react-dom@18.2.0)(react-is@17.0.2)(react@18.2.0)(styled-components@4.4.1)
+      recharts:
+        specifier: ^2.6.2
+        version: 2.6.2(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      reduce-reducers:
+        specifier: ^1.0.4
+        version: 1.0.4
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.0
+      redux-form:
+        specifier: ^8.3.7
+        version: 8.3.8(react-redux@7.2.9)(react@18.2.0)(redux@4.2.0)
+      redux-mock-store:
+        specifier: ^1.5.4
+        version: 1.5.4
+      redux-thunk:
+        specifier: ^2.3.0
+        version: 2.4.1(redux@4.2.0)
+      regenerator-runtime:
+        specifier: ^0.13.9
+        version: 0.13.9
+      semantic-ui-react:
+        specifier: ^2.1.3
+        version: 2.1.3(react-dom@18.2.0)(react@18.2.0)
+      slashes:
+        specifier: ^2.0.2
+        version: 2.0.2
+      styled-components:
+        specifier: ^4.4.1
+        version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
+      swr:
+        specifier: ^1.3.0
+        version: 1.3.0(react@18.2.0)
+      ua-parser-js:
+        specifier: 0.7.28
+        version: 0.7.28
+      uuid:
+        specifier: ^8.3.0
+        version: 8.3.2
+    devDependencies:
+      '@pmmmwh/react-refresh-webpack-plugin':
+        specifier: ^0.4.3
+        version: 0.4.3(react-refresh@0.9.0)(webpack-dev-server@3.11.3)(webpack@5.84.1)
+      '@svgr/webpack':
+        specifier: 4.3.2
+        version: 4.3.2
+      '@testing-library/dom':
+        specifier: ^7.24.3
+        version: 7.31.2
+      '@testing-library/jest-dom':
+        specifier: ^5.11.9
+        version: 5.16.5
+      '@testing-library/user-event':
+        specifier: ^12.7.3
+        version: 12.8.3(@testing-library/dom@7.31.2)
+      '@types/file-saver':
+        specifier: ^2.0.1
+        version: 2.0.5
+      '@types/history':
+        specifier: ^4.7.3
+        version: 4.7.11
+      '@types/jest':
+        specifier: ^26.0.14
+        version: 26.0.24
+      '@types/lodash-es':
+        specifier: ^4.17.4
+        version: 4.17.6
+      '@types/node':
+        specifier: ^13.9.2
+        version: 13.13.52
+      '@types/node-forge':
+        specifier: ^0.9.3
+        version: 0.9.10
+      '@types/react':
+        specifier: ^18.0.18
+        version: 18.0.18
+      '@types/react-beautiful-dnd':
+        specifier: ^12.1.1
+        version: 12.1.5
+      '@types/react-dom':
+        specifier: ^18.0.6
+        version: 18.0.6
+      '@types/react-notification-system':
+        specifier: 0.2.39
+        version: 0.2.39
+      '@types/react-redux':
+        specifier: ^7.1.25
+        version: 7.1.25
+      '@types/react-router':
+        specifier: ^5.1.18
+        version: 5.1.18
+      '@types/react-router-dom':
+        specifier: ^5.1.3
+        version: 5.3.3
+      '@types/reactour':
+        specifier: ^1.18.1
+        version: 1.18.2
+      '@types/redux-mock-store':
+        specifier: ^1.0.2
+        version: 1.0.3
+      '@types/testing-library__jest-dom':
+        specifier: ^5.14.3
+        version: 5.14.5
+      '@types/ua-parser-js':
+        specifier: 0.7.36
+        version: 0.7.36
+      '@types/uuid':
+        specifier: ^9.0.1
+        version: 9.0.1
+      '@types/webpack-env':
+        specifier: ^1.16.0
+        version: 1.18.0
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^4.32.0
+        version: 4.33.0(@typescript-eslint/parser@4.33.0)(eslint@7.32.0)(typescript@4.8.2)
+      '@typescript-eslint/parser':
+        specifier: ^4.32.0
+        version: 4.33.0(eslint@7.32.0)(typescript@4.8.2)
+      connect-history-api-fallback:
+        specifier: ^2.0.0
+        version: 2.0.0
+      copy-webpack-plugin:
+        specifier: ^12.0.2
+        version: 12.0.2(webpack@5.84.1)
+      css-loader:
+        specifier: ^1.0.0
+        version: 1.0.1(webpack@5.84.1)
+      eslint:
+        specifier: ^7.20.0
+        version: 7.32.0
+      eslint-plugin-import:
+        specifier: ^2.20.2
+        version: 2.26.0(@typescript-eslint/parser@4.33.0)(eslint@7.32.0)
+      eslint-plugin-jest-dom:
+        specifier: ^4.0.1
+        version: 4.0.2(eslint@7.32.0)
+      eslint-plugin-react:
+        specifier: ^7.18.3
+        version: 7.31.1(eslint@7.32.0)
+      eslint-plugin-react-hooks:
+        specifier: ^4.0.0
+        version: 4.6.0(eslint@7.32.0)
+      eslint-plugin-testing-library:
+        specifier: ^5.0.5
+        version: 5.6.0(eslint@7.32.0)(typescript@4.8.2)
+      eslint-webpack-plugin:
+        specifier: ^2.5.3
+        version: 2.7.0(eslint@7.32.0)(webpack@5.84.1)
+      fork-ts-checker-webpack-plugin:
+        specifier: ^6.1.0
+        version: 6.5.2(eslint@7.32.0)(typescript@4.8.2)(webpack@5.84.1)
+      jest:
+        specifier: ^26.4.2
+        version: 26.6.3(ts-node@10.9.1)
+      jest-environment-jsdom:
+        specifier: ^26.3.0
+        version: 26.6.2
+      jest-environment-jsdom-global:
+        specifier: ^2.0.4
+        version: 2.0.4(jest-environment-jsdom@26.6.2)
+      json-minimizer-webpack-plugin:
+        specifier: ^4.0.0
+        version: 4.0.0(webpack@5.84.1)
+      msw:
+        specifier: ^0.36.8
+        version: 0.36.8
+      process:
+        specifier: ^0.11.10
+        version: 0.11.10
+      react-refresh:
+        specifier: ^0.9.0
+        version: 0.9.0
+      redux-devtools-extension:
+        specifier: ^2.13.8
+        version: 2.13.9(redux@4.2.0)
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      style-loader:
+        specifier: ^0.23.1
+        version: 0.23.1
+      thread-loader:
+        specifier: ^2.1.3
+        version: 2.1.3(webpack@5.84.1)
+      ts-jest:
+        specifier: ^26.4.0
+        version: 26.5.6(jest@26.6.3)(typescript@4.8.2)
+      ts-node:
+        specifier: ^10.8.1
+        version: 10.9.1(@swc/core@1.3.11)(@types/node@13.13.52)(typescript@4.8.2)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.8.2
+
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
@@ -1210,10 +1562,10 @@ importers:
         version: 7.18.13
       '@nrwl/jest':
         specifier: latest
-        version: 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(ts-node@10.9.1)(typescript@4.8.2)
+        version: 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(ts-node@10.9.1)(typescript@4.8.2)
       '@nrwl/web':
         specifier: latest
-        version: 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
+        version: 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
       '@rollup/plugin-url':
         specifier: ^7.0.0
         version: 7.0.0(rollup@2.79.0)
@@ -4860,7 +5212,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/helper-plugin-utils': 7.18.9
+      '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
   /@babel/plugin-transform-react-display-name@7.18.6(@babel/core@7.18.13):
@@ -5763,8 +6115,8 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.9
-      '@babel/helper-plugin-utils': 7.18.9
-      '@babel/helper-validator-option': 7.18.6
+      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-validator-option': 7.23.5
       '@babel/plugin-transform-react-display-name': 7.18.6(@babel/core@7.23.9)
       '@babel/plugin-transform-react-jsx': 7.18.10(@babel/core@7.23.9)
       '@babel/plugin-transform-react-jsx-development': 7.18.6(@babel/core@7.23.9)
@@ -8862,14 +9214,6 @@ packages:
       - typescript
     dev: true
 
-  /@nrwl/devkit@18.1.3(nx@18.1.2):
-    resolution: {integrity: sha512-qIP/RrOfPBqSPgMHKe13/YXnOxasL64Pv+i/aDdY/Fk5zvQIxe+qOizSus7przTwdpu6Jm+JWrYXrwIj4Tmy6g==}
-    dependencies:
-      '@nx/devkit': 18.1.3(nx@18.1.2)
-    transitivePeerDependencies:
-      - nx
-    dev: true
-
   /@nrwl/devkit@18.1.3(nx@18.1.3):
     resolution: {integrity: sha512-qIP/RrOfPBqSPgMHKe13/YXnOxasL64Pv+i/aDdY/Fk5zvQIxe+qOizSus7przTwdpu6Jm+JWrYXrwIj4Tmy6g==}
     dependencies:
@@ -8933,10 +9277,10 @@ packages:
       - typescript
     dev: true
 
-  /@nrwl/jest@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(ts-node@10.9.1)(typescript@4.8.2):
+  /@nrwl/jest@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(ts-node@10.9.1)(typescript@4.8.2):
     resolution: {integrity: sha512-R8IPVHoLDLRFjdOC4f80LEUv4BYH2VoeyJlBw33u3xnTpb94XThMC//f1k+js/+iVPyFUqlHhOfw2X3HwcIYew==}
     dependencies:
-      '@nx/jest': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(ts-node@10.9.1)(typescript@4.8.2)
+      '@nx/jest': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(ts-node@10.9.1)(typescript@4.8.2)
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -8983,10 +9327,10 @@ packages:
       - typescript
     dev: true
 
-  /@nrwl/js@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2):
+  /@nrwl/js@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2):
     resolution: {integrity: sha512-7Wmmpk64CfmXTA/bvBm4z3xHMnf/TfPUjIcuzPrOFt25rBNPU0YhI9ULBAAnTDs0YZEiDe6pm+k6c8+ykT9mtA==}
     dependencies:
-      '@nx/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
+      '@nx/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -9194,18 +9538,6 @@ packages:
       - debug
     dev: true
 
-  /@nrwl/tao@18.1.2(@swc-node/register@1.5.4)(@swc/core@1.3.11):
-    resolution: {integrity: sha512-IA+osZ5TlKMwJmcP7TECW7TO0JdNNQud9Dgkh1ZfJ4GWnT7WEkE9b2Yf1IFeeB81kCTXXq8jfISa8ZY21MjRaQ==}
-    hasBin: true
-    dependencies:
-      nx: 18.1.2(@swc-node/register@1.5.4)(@swc/core@1.3.11)
-      tslib: 2.4.0
-    transitivePeerDependencies:
-      - '@swc-node/register'
-      - '@swc/core'
-      - debug
-    dev: true
-
   /@nrwl/tao@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11):
     resolution: {integrity: sha512-cRs5kDRhiYVZ9SLQ2ol+2+zltgPemDtsHKz2h2whazHF+d39zsPLYbFm1ZJuDKpZp6TJJercqSH1UQCdOXEkdQ==}
     hasBin: true
@@ -9275,10 +9607,10 @@ packages:
       - webpack-cli
     dev: true
 
-  /@nrwl/web@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2):
+  /@nrwl/web@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2):
     resolution: {integrity: sha512-UvsJpofic/lJqTVaWxCUT4Os+R7oKzdx2bA9AJ6CXNwq+w6/60EtUXFsw1l9QSx3OuKGLV7o5lhH0XWsOKPWaQ==}
     dependencies:
-      '@nx/web': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
+      '@nx/web': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -9425,22 +9757,6 @@ packages:
       - debug
     dev: true
 
-  /@nx/devkit@18.1.3(nx@18.1.2):
-    resolution: {integrity: sha512-/LA1VTcSOHun06bsLFREFsy3K2XvRIZKPhUgXbrPAjwVZzH91a+9jUYoCwrxXrp21c2Ndh6y3zq3qPfjJr7DzQ==}
-    peerDependencies:
-      nx: '>= 16 <= 18'
-    dependencies:
-      '@nrwl/devkit': 18.1.3(nx@18.1.2)
-      ejs: 3.1.8
-      enquirer: 2.3.6
-      ignore: 5.3.1
-      nx: 18.1.2(@swc-node/register@1.5.4)(@swc/core@1.3.11)
-      semver: 7.5.4
-      tmp: 0.2.1
-      tslib: 2.4.0
-      yargs-parser: 21.1.1
-    dev: true
-
   /@nx/devkit@18.1.3(nx@18.1.3):
     resolution: {integrity: sha512-/LA1VTcSOHun06bsLFREFsy3K2XvRIZKPhUgXbrPAjwVZzH91a+9jUYoCwrxXrp21c2Ndh6y3zq3qPfjJr7DzQ==}
     peerDependencies:
@@ -9457,14 +9773,14 @@ packages:
       yargs-parser: 21.1.1
     dev: true
 
-  /@nx/jest@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(ts-node@10.9.1)(typescript@4.8.2):
+  /@nx/jest@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(ts-node@10.9.1)(typescript@4.8.2):
     resolution: {integrity: sha512-vGN3r5DhEDZDtKkA1iJ9bGqFzmxI3KGnv8rkTDoXlrhGZQULxMwnqFEEp4OHPMdXB98wlA/sYGQcqPZXPhWVyA==}
     dependencies:
       '@jest/reporters': 29.7.0
       '@jest/test-result': 29.7.0
-      '@nrwl/jest': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(ts-node@10.9.1)(typescript@4.8.2)
-      '@nx/devkit': 18.1.3(nx@18.1.2)
-      '@nx/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
+      '@nrwl/jest': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(ts-node@10.9.1)(typescript@4.8.2)
+      '@nx/devkit': 18.1.3(nx@18.1.3)
+      '@nx/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
       '@phenomnomnominal/tsquery': 5.0.1(typescript@4.8.2)
       chalk: 4.1.2
       identity-obj-proxy: 3.0.0
@@ -9491,7 +9807,7 @@ packages:
       - verdaccio
     dev: true
 
-  /@nx/js@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2):
+  /@nx/js@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2):
     resolution: {integrity: sha512-nXDTgyyM3/rfLFORroOzgaeD1+sI+QU+lrVMbW0JW0SkqrzpEXzo8VdlFoA2DQrbaChT3lyZQwGQ/CZYF+76Sw==}
     peerDependencies:
       verdaccio: ^5.0.4
@@ -9506,8 +9822,8 @@ packages:
       '@babel/preset-env': 7.23.9(@babel/core@7.23.9)
       '@babel/preset-typescript': 7.23.0(@babel/core@7.23.9)
       '@babel/runtime': 7.22.15
-      '@nrwl/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
-      '@nx/devkit': 18.1.3(nx@18.1.2)
+      '@nrwl/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
+      '@nx/devkit': 18.1.3(nx@18.1.3)
       '@nx/workspace': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)
       '@phenomnomnominal/tsquery': 5.0.1(typescript@4.8.2)
       babel-plugin-const-enum: 1.2.0(@babel/core@7.23.9)
@@ -9541,28 +9857,10 @@ packages:
       - typescript
     dev: true
 
-  /@nx/nx-darwin-arm64@18.1.2:
-    resolution: {integrity: sha512-KduC9WBmeTLP8HyTg4NOgQGLk9LEd5qd9dGuYKPU0jA4b+eJIa0rRHEjFdc5WulQrcUAvTIKfmScRCgzR96ogg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /@nx/nx-darwin-arm64@18.1.3:
     resolution: {integrity: sha512-h3/1ywpLa56RwBnz8Lr9yyUvPvfGvKFxIo8LNptc8fMoONuuIOeZTAmaBxKBOaKtL7g64/LKDs0Ts+mSXzmbqA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@nx/nx-darwin-x64@18.1.2:
-    resolution: {integrity: sha512-mBf3X8m4P4QHoW8g/L/YoK8zkndDyIw4bojLg8Q3xc47s5JZFCqSSMeOXZ9NicM2DpPiDWSQALtQX7A8lIsoAA==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
@@ -9577,29 +9875,11 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-freebsd-x64@18.1.2:
-    resolution: {integrity: sha512-ZqzT2BTsOHhWip1PvNm7AZ4Pzn4I+IZNRvtRgpETYvIH+nqoCmi5rrEi1avnhnr6P5hyzh2mISRSyk186SbZew==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [freebsd]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /@nx/nx-freebsd-x64@18.1.3:
     resolution: {integrity: sha512-ppSkJJVKnfDWYJBKqjEM/p4qdMZsZVV++dkFN/n50p6uwHstv0Kth7dNdsu3ZyPqmg6+IYUZql7JSTeNqKne5A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [freebsd]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@nx/nx-linux-arm-gnueabihf@18.1.2:
-    resolution: {integrity: sha512-V9Dp9uuuce+/f50dXxaYz1C9ULo5+5VS35yc6gN7b6SchCWjNK+xg1YcHBTRNc2ChBtayO2z+mBQ1s6wMDNs/Q==}
-    engines: {node: '>= 10'}
-    cpu: [arm]
-    os: [linux]
     requiresBuild: true
     dev: true
     optional: true
@@ -9613,26 +9893,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-arm64-gnu@18.1.2:
-    resolution: {integrity: sha512-aM860T4Hy2JCLcU56mtARIp1MdT1Ms7cGUQzE+a5irM8ZdaHsPdRnYqIgEKd3hoF6PQ6/piHFXWa4xm7pe/2KA==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /@nx/nx-linux-arm64-gnu@18.1.3:
     resolution: {integrity: sha512-7B5YXjDzzFdEMUzhFifXgsg741Afp3v7vNdPL2joQ7xrERKYEge7eXCjp5/GYhl9J4y5BmdeV2Joqr4WQ6R7Pg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@nx/nx-linux-arm64-musl@18.1.2:
-    resolution: {integrity: sha512-BgBoOeIgCQ56xii7fKNWiE7UIP/0G+OQhdWJQmh+q6NN0kk78WsdCSq+f7f7LQIji5HiNqUUVx9fd1s6xRSb/w==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -9649,26 +9911,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-x64-gnu@18.1.2:
-    resolution: {integrity: sha512-WDOjtk+K2Tc9SNjGe+zmyy05VUerZpEQ5kvB6Ude0v/W2bMnmpVrLZwwTF5Yrq0ebbUlXM/9wtc1Zjjc75MU2g==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /@nx/nx-linux-x64-gnu@18.1.3:
     resolution: {integrity: sha512-qDinHpGZ9FhoOtdfO23pwN7pBCu25ElJ1InLCeCarl9CQYS1CDZNimrcSOFl20DAZqINQamPqBFJ7nKeDRBy7g==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@nx/nx-linux-x64-musl@18.1.2:
-    resolution: {integrity: sha512-I7jTmbfR5CHC3KVlU3SkqYKJnn25MbH8pdRZJY4gaHnqL9JzbHw9rxddhKBj41lez7jQZTGLnPFUV7JPLXTzKg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -9685,28 +9929,10 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-win32-arm64-msvc@18.1.2:
-    resolution: {integrity: sha512-KQobKvkrdkmaJmx0Pyt2lzHkNugO0gE7q9F4h22KIECyGW1tC3nSPAB4F3mmdE2KuWKgYG5WLafvzusysLsR7g==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /@nx/nx-win32-arm64-msvc@18.1.3:
     resolution: {integrity: sha512-EYHPIcanVn6ZWkELnW4wW+gl8Itulmpi7f7s83CFrYxRW0U8SAG2sW4JrlvZgrK2CMyluiCGqZGHDUJZST4CVA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
-    os: [win32]
-    requiresBuild: true
-    dev: true
-    optional: true
-
-  /@nx/nx-win32-x64-msvc@18.1.2:
-    resolution: {integrity: sha512-uvJvROSwHBwkTOoOPkb56jEsKJjr4LnZ3fCHmEbrtGhAUC0gAUL+dWJUDHoatrGzN+bM2VqrvgNCGkityK96hw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
@@ -9721,12 +9947,12 @@ packages:
     dev: true
     optional: true
 
-  /@nx/web@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2):
+  /@nx/web@18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2):
     resolution: {integrity: sha512-vC9VimiBpJ/wtJAFGp2zBHbDKU5XAUiC64ypm7xYRwb+1uXx9Z/SQSLPbGaCiKhdDe/v1l87BwVLB281u2OFEg==}
     dependencies:
-      '@nrwl/web': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
-      '@nx/devkit': 18.1.3(nx@18.1.2)
-      '@nx/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.2)(typescript@4.8.2)
+      '@nrwl/web': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
+      '@nx/devkit': 18.1.3(nx@18.1.3)
+      '@nx/js': 18.1.3(@swc-node/register@1.5.4)(@swc/core@1.3.11)(@types/node@13.13.52)(nx@18.1.3)(typescript@4.8.2)
       chalk: 4.1.2
       detect-port: 1.5.1
       http-server: 14.1.0
@@ -9975,6 +10201,42 @@ packages:
       - '@types/react'
     dev: false
 
+  /@oxygen-ui/react@1.11.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2):
+    resolution: {integrity: sha512-Ij9E3CvX/fNGQkWbH6ic9LNsldFHeuy/2adksNsJLQgVsbvPct/coXyPYF8duH17dPEu6nksEHJwIfxoz9ekww==}
+    peerDependencies:
+      '@emotion/react': ^11.10.5
+      '@emotion/styled': ^11.10.5
+      '@mui/icons-material': ^5.10.16
+      '@mui/lab': 5.0.0-alpha.110
+      '@mui/material': ^5.10.16
+      '@mui/system': ^5.10.16
+      '@mui/utils': ^5.10.16
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+      typescript: '>=4.0.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@emotion/react': 11.11.0(@types/react@18.0.18)(react@18.2.0)
+      '@emotion/styled': 11.11.0(@emotion/react@11.11.0)(@types/react@18.0.18)(react@18.2.0)
+      '@mui/icons-material': 5.11.16(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.2.0)
+      '@mui/lab': 5.0.0-alpha.129(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/material': 5.13.0(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
+      '@mui/system': 5.12.3(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@types/react@18.0.18)(react@18.2.0)
+      '@mui/utils': 5.14.10(@types/react@18.0.18)(react@18.2.0)
+      '@mui/x-data-grid': 6.14.0(@mui/material@5.13.0)(@mui/system@5.12.3)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)
+      '@oxygen-ui/primitives': 1.11.0
+      '@oxygen-ui/react-icons': 1.11.0(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
+      clsx: 1.2.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-world-flags: 1.5.1(react@18.2.0)
+      typescript: 4.8.2
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
   /@parcel/watcher@2.0.4:
     resolution: {integrity: sha512-cTDi+FUDBIUOBKEtj+nhiJ71AZVlkAsQFuGQTun5tV9mwQBQgZvhCzG+URPQc8myeN32yRVZEfVAPCs1RW+Jvg==}
     engines: {node: '>= 10.0.0'}
@@ -9989,7 +10251,7 @@ packages:
     peerDependencies:
       typescript: ^3 || ^4
     dependencies:
-      esquery: 1.4.0
+      esquery: 1.5.0
       typescript: 4.8.2
     dev: true
 
@@ -11872,7 +12134,7 @@ packages:
       prompts: 2.4.2
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
-      regenerator-runtime: 0.13.7
+      regenerator-runtime: 0.13.9
       serve-favicon: 2.5.0
       slash: 3.0.0
       telejson: 5.3.3
@@ -12305,7 +12567,7 @@ packages:
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
       read-pkg-up: 7.0.1
-      regenerator-runtime: 0.13.7
+      regenerator-runtime: 0.13.9
       resolve-from: 5.0.0
       style-loader: 2.0.0(webpack@5.84.1)
       telejson: 5.3.3
@@ -12613,7 +12875,7 @@ packages:
       react-dom: 16.14.0(react@16.14.0)
       react-refresh: 0.11.0
       read-pkg-up: 7.0.1
-      regenerator-runtime: 0.13.7
+      regenerator-runtime: 0.13.9
       ts-dedent: 2.2.0
       typescript: 4.8.2
       webpack: 5.84.1(@swc/core@1.3.11)(webpack-cli@4.10.0)
@@ -13273,7 +13535,7 @@ packages:
     resolution: {integrity: sha512-cLOCSpNWQnDB1/v+SUENHH7a0XY09bfuMKdq9+gYvtuwzC2rU4I0wKGFEp1i24holdQdwodCtDQdFtJiTCWc+w==}
     engines: {node: '>=8'}
     dependencies:
-      '@babel/core': 7.18.13
+      '@babel/core': 7.23.9
       '@svgr/babel-preset': 4.3.3
       '@svgr/hast-util-to-babel-ast': 4.3.2
       svg-parser: 2.0.4
@@ -15467,16 +15729,6 @@ packages:
     transitivePeerDependencies:
       - debug
     dev: false
-
-  /axios@1.4.0:
-    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
-    dependencies:
-      follow-redirects: 1.15.5(debug@4.3.4)
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    dev: true
 
   /axios@1.6.7:
     resolution: {integrity: sha512-/hDJGff6/c7u0hDkvkGxR/oy6CbCs8ziCsC7SqmhjfozqiJGc8Z11wrv9z9lYfY4K8l+H9TpjcMDX0xOZmx+RA==}
@@ -19537,13 +19789,6 @@ packages:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
     hasBin: true
-
-  /esquery@1.4.0:
-    resolution: {integrity: sha512-cCDispWt5vHHtwMY2YrAQ4ibFkAL8RbH5YGBnZBc90MolvvfkkQcJro/aZiAQUlQ3qgrYS6D6v8Gc5G5CQsc9w==}
-    engines: {node: '>=0.10'}
-    dependencies:
-      estraverse: 5.3.0
-    dev: true
 
   /esquery@1.5.0:
     resolution: {integrity: sha512-YQLXUplAwJgCydQ78IMJywZCceoqk1oH01OERdSAJc/7U2AylwjhSCLDEtqwg811idIS/9fIU5GjG73IgjKMVg==}
@@ -24353,8 +24598,6 @@ packages:
     peerDependenciesMeta:
       webpack:
         optional: true
-      webpack-sources:
-        optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.11)(webpack-cli@4.10.0)
       webpack-sources: 3.2.3
@@ -25927,7 +26170,7 @@ packages:
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.48.1
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.4.0
+      axios: 1.6.7
       chalk: 4.1.0
       chokidar: 3.5.3
       cli-cursor: 3.1.0
@@ -25956,70 +26199,6 @@ packages:
       v8-compile-cache: 2.3.0
       yargs: 17.7.2
       yargs-parser: 21.0.1
-    transitivePeerDependencies:
-      - debug
-    dev: true
-
-  /nx@18.1.2(@swc-node/register@1.5.4)(@swc/core@1.3.11):
-    resolution: {integrity: sha512-E414xp6lVtiTGdDUMVo72G96G66t7oJMqmcHRMEZ/mVq5ZpNWUhfMuRq5Fh8orXPtrM3xk5SHokmmFvo5PKC+g==}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@swc-node/register': ^1.8.0
-      '@swc/core': ^1.3.85
-    peerDependenciesMeta:
-      '@swc-node/register':
-        optional: true
-      '@swc/core':
-        optional: true
-    dependencies:
-      '@nrwl/tao': 18.1.2(@swc-node/register@1.5.4)(@swc/core@1.3.11)
-      '@swc-node/register': 1.5.4(@swc/core@1.3.11)(typescript@4.8.2)
-      '@swc/core': 1.3.11
-      '@yarnpkg/lockfile': 1.1.0
-      '@yarnpkg/parsers': 3.0.0-rc.46
-      '@zkochan/js-yaml': 0.0.6
-      axios: 1.6.7
-      chalk: 4.1.2
-      cli-cursor: 3.1.0
-      cli-spinners: 2.6.1
-      cliui: 8.0.1
-      dotenv: 16.3.1
-      dotenv-expand: 10.0.0
-      enquirer: 2.3.6
-      figures: 3.2.0
-      flat: 5.0.2
-      fs-extra: 11.1.1
-      ignore: 5.3.1
-      jest-diff: 29.7.0
-      js-yaml: 4.1.0
-      jsonc-parser: 3.2.0
-      lines-and-columns: 2.0.3
-      minimatch: 9.0.3
-      node-machine-id: 1.1.12
-      npm-run-path: 4.0.1
-      open: 8.4.0
-      ora: 5.3.0
-      semver: 7.5.4
-      string-width: 4.2.3
-      strong-log-transformer: 2.1.0
-      tar-stream: 2.2.0
-      tmp: 0.2.1
-      tsconfig-paths: 4.2.0
-      tslib: 2.4.0
-      yargs: 17.7.2
-      yargs-parser: 21.1.1
-    optionalDependencies:
-      '@nx/nx-darwin-arm64': 18.1.2
-      '@nx/nx-darwin-x64': 18.1.2
-      '@nx/nx-freebsd-x64': 18.1.2
-      '@nx/nx-linux-arm-gnueabihf': 18.1.2
-      '@nx/nx-linux-arm64-gnu': 18.1.2
-      '@nx/nx-linux-arm64-musl': 18.1.2
-      '@nx/nx-linux-x64-gnu': 18.1.2
-      '@nx/nx-linux-x64-musl': 18.1.2
-      '@nx/nx-win32-arm64-msvc': 18.1.2
-      '@nx/nx-win32-x64-msvc': 18.1.2
     transitivePeerDependencies:
       - debug
     dev: true
@@ -27877,7 +28056,7 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.22.15
       classnames: 2.3.1
       rc-motion: 2.6.2(react-dom@16.14.0)(react@16.14.0)
       rc-util: 5.23.0(react-dom@16.14.0)(react@16.14.0)
@@ -27999,7 +28178,7 @@ packages:
       object-assign: 4.1.1
       promise: 8.2.0
       raf: 3.4.1
-      regenerator-runtime: 0.13.7
+      regenerator-runtime: 0.13.9
       whatwg-fetch: 3.6.2
     dev: false
 
@@ -28328,7 +28507,7 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@babel/runtime': 7.18.9
+      '@babel/runtime': 7.22.15
       html-parse-stringify: 3.0.1
       i18next: 21.9.1
       react: 18.2.0
@@ -29213,9 +29392,6 @@ packages:
 
   /regenerator-runtime@0.11.1:
     resolution: {integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==}
-
-  /regenerator-runtime@0.13.7:
-    resolution: {integrity: sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==}
 
   /regenerator-runtime@0.13.9:
     resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
