@@ -1540,7 +1540,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         !userConfig?.enableBulkImportSecondaryUserStore
                                         && (
                                             <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Grid.Column mobile={ 16 }>
                                                     <Alert severity="info">
                                                         <Trans
                                                             i18nKey={
@@ -1787,7 +1787,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 !userConfig?.enableBulkImportSecondaryUserStore
                                 && (
                                     <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Grid.Column mobile={ 16 }>
                                             <Alert severity="info">
                                                 <Trans
                                                     i18nKey={
@@ -1798,8 +1798,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         userstore: camelCase(userstore)
                                                     } }
                                                 >
-                                            The created users will be added to
-                                            the <b>{ camelCase(userstore) }</b> user store.
+                                                    The created users will be added to
+                                                    the <b>{ camelCase(userstore) }</b> user store.
                                                 </Trans>
                                             </Alert>
                                         </Grid.Column>
