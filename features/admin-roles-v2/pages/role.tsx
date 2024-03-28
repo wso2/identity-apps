@@ -31,7 +31,7 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import { useApplicationList } from "../../admin-applications-v1/api";
 import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants } from "../../admin-core-v1";
 import { history } from "../../admin-core-v1/helpers";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { deleteRoleById, useRolesList } from "../api";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";

@@ -38,14 +38,14 @@ import { commonConfig } from "../../../../extensions/configs";
 import useAuthorization from "../../../admin-authorization-v1/hooks/use-authorization";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../admin-core-v1";
 import { EventPublisher } from "../../../admin-core-v1/utils";
-import { getOrganizationRoles } from "../../../organizations/api";
-import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
-import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { getOrganizationRoles } from "../../../admin-organizations-v1/api";
+import { OrganizationRoleManagementConstants } from "../../../admin-organizations-v1/constants";
+import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 import {
     GenericOrganization,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../../organizations/models";
+} from "../../../admin-organizations-v1/models";
 import { getRolesList, updateRole } from "../../../admin-roles-v2/api";
 import { RoleConstants } from "../../../admin-roles-v2/constants";
 import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../admin-roles-v2/models";

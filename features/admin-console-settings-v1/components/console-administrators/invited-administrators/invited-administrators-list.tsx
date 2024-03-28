@@ -35,7 +35,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations
 } from "../../../../admin-core-v1";
-import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { deleteParentOrgInvite } from "../../../../admin-users-v1/components/guests/api/invite";
 import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 import { UserInviteInterface } from "../../../../admin-users-v1/models";

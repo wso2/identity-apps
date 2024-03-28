@@ -56,7 +56,7 @@ import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../identity-providers/models/identity-provider";
-import { OrganizationType } from "../../../../organizations/constants";
+import { OrganizationType } from "../../../../admin-organizations-v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface

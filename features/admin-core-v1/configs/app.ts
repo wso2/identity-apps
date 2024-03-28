@@ -35,8 +35,8 @@ import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoi
 import { getIDVPResourceEndpoints } from "../../identity-verification-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getInsightsResourceEndpoints } from "../../org-insights/config/org-insights";
-import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
-import { OrganizationUtils } from "../../organizations/utils";
+import { getOrganizationsResourceEndpoints } from "../../admin-organizations-v1/configs";
+import { OrganizationUtils } from "../../admin-organizations-v1/utils";
 import { getJWTAuthenticationServiceEndpoints } from "../../admin-private-key-jwt-v1/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../admin-remote-repository-configuration-v1";
 import { getRolesResourceEndpoints } from "../../admin-roles-v2/configs/endpoints";

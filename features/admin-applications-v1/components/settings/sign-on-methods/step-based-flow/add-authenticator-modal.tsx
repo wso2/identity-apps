@@ -87,7 +87,7 @@ import {
 import {
     IdentityProviderTemplateManagementUtils
 } from "../../../../../identity-providers/utils/identity-provider-template-management-utils";
-import { OrganizationType } from "../../../../../organizations/constants";
+import { OrganizationType } from "../../../../../admin-organizations-v1/constants";
 import { getGeneralIcons } from "../../../../configs/ui";
 import { AuthenticationStepInterface } from "../../../../models";
 

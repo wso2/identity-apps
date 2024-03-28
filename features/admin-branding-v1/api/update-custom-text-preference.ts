@@ -22,7 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { I18nConstants } from "../../admin-core-v1/constants/i18n-constants";
 import { store } from "../../admin-core-v1/store";
-import { OrganizationType } from "../../organizations/constants/organization-constants";
+import { OrganizationType } from "../../admin-organizations-v1/constants/organization-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import {

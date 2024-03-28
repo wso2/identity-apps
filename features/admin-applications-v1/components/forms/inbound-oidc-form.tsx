@@ -57,9 +57,9 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../admin-core-v1";
-import { getSharedOrganizations } from "../../../organizations/api";
-import { OrganizationType } from "../../../organizations/constants";
-import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
+import { getSharedOrganizations } from "../../../admin-organizations-v1/api";
+import { OrganizationType } from "../../../admin-organizations-v1/constants";
+import { OrganizationInterface, OrganizationResponseInterface } from "../../../admin-organizations-v1/models";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate

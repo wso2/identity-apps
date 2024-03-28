@@ -57,8 +57,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../admin-core-v1";
-import { OrganizationType } from "../../organizations/constants";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { OrganizationType } from "../../admin-organizations-v1/constants";
+import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {

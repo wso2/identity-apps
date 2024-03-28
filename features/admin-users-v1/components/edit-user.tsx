@@ -36,7 +36,7 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { userstoresConfig } from "../../../extensions/configs/userstores";
 import { FeatureConfigInterface } from "../../admin-core-v1/models";
 import { AppState, store } from "../../admin-core-v1/store";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../admin-organizations-v1/hooks/use-get-organization-type";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../admin-server-configurations-v1";
 import { ConnectorPropertyInterface } from "../../admin-server-configurations-v1/models";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";

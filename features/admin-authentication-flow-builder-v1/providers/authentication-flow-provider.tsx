@@ -52,7 +52,7 @@ import {
     GenericAuthenticatorInterface,
     SupportedAuthenticators
 } from "../../identity-providers/models/identity-provider";
-import { OrganizationType } from "../../organizations/constants";
+import { OrganizationType } from "../../admin-organizations-v1/constants";
 import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants/editor-constants";
 import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";

@@ -18,19 +18,19 @@
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DynamicField, KeyValue } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
-import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState } from "../../../../admin-core-v1";
-import { getOrganizationRoles } from "../../../../organizations/api";
+import { getOrganizationRoles } from "../../../../admin-organizations-v1/api";
 import {
     OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../../../organizations/models";
+} from "../../../../admin-organizations-v1/models";
 import { getRolesList } from "../../../../admin-roles-v2/api/roles";
 import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";

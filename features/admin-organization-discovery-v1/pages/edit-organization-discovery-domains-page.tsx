@@ -27,7 +27,7 @@ import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { AppConstants, history } from "../../admin-core-v1";
 import { AppState } from "../../admin-core-v1/store";
-import useGetOrganization from "../../organizations/api/use-get-organization";
+import useGetOrganization from "../../admin-organizations-v1/api/use-get-organization";
 import useGetOrganizationDiscoveryAttributes from "../api/use-get-organization-discovery-attributes";
 import EditOrganizationDiscoveryDomains from "../components/edit-organization-discovery-domains";
 import { OrganizationIcon } from "../configs/ui";

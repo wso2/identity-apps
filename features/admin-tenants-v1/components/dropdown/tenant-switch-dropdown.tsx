@@ -32,9 +32,9 @@ import {
 } from "../../../../../themes/default/assets/images/icons/cross-icon.svg";
 import { getMiscellaneousIcons } from "../../../admin-core-v1";
 import OrganizationSwitcherList from
-    "../../../organizations/components/organization-switch/organization-switch-list";
-import { OrganizationManagementConstants } from "../../../organizations/constants";
-import { OrganizationInterface } from "../../../organizations/models";
+    "../../../admin-organizations-v1/components/organization-switch/organization-switch-list";
+import { OrganizationManagementConstants } from "../../../admin-organizations-v1/constants";
+import { OrganizationInterface } from "../../../admin-organizations-v1/models";
 import { getAssociatedTenants } from "../../api";
 import { TenantInfo, TenantRequestResponse } from "../../models";
 import { AddTenantWizard } from "../add-modal";

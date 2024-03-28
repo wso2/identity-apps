@@ -25,13 +25,13 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState } from "../../../../../admin-core-v1";
-import { getOrganizationRoles } from "../../../../../organizations/api";
-import { useGetCurrentOrganizationType } from "../../../../../organizations/hooks/use-get-organization-type";
+import { getOrganizationRoles } from "../../../../../admin-organizations-v1/api";
+import { useGetCurrentOrganizationType } from "../../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import {
     OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
-} from "../../../../../organizations/models";
+} from "../../../../../admin-organizations-v1/models";
 import { getRolesList } from "../../../../../admin-roles-v2/api/roles";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionRoleMappingInterface } from "../../../../models/connection";

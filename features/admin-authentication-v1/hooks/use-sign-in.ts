@@ -53,9 +53,9 @@ import {
     setOrganizationType,
     setUserOrganizationId
 } from "../../admin-core-v1/store/actions/organization";
-import { OrganizationType } from "../../organizations/constants";
-import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
-import useOrganizations from "../../organizations/hooks/use-organizations";
+import { OrganizationType } from "../../admin-organizations-v1/constants";
+import useOrganizationSwitch from "../../admin-organizations-v1/hooks/use-organization-switch";
+import useOrganizations from "../../admin-organizations-v1/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 

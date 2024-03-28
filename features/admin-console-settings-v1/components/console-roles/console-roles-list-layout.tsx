@@ -33,7 +33,7 @@ import { AppConstants } from "../../../admin-core-v1/constants/app-constants";
 import { history } from "../../../admin-core-v1/helpers/history";
 import { deleteRoleById } from "../../../admin-roles-v2/api/roles";
 import { RoleConstants } from "../../../admin-roles-v2/constants/role-constants";
-import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../admin-organizations-v1/hooks/use-get-organization-type";
 
 /**
  * Props interface of {@link ConsoleRolesListLayout}
