@@ -326,7 +326,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../identity-verification-providers/pages/" +
+                                    import("../../admin-identity-verification-providers-v1/pages/" +
                                     "identity-verification-provider-template")
                                 ),
                                 exact: true,
@@ -341,7 +341,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() => import(
-                                    "../../identity-verification-providers/pages/identity-verification-provider-edit")
+                                    "../../admin-identity-verification-providers-v1/pages/identity-verification-provider-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -355,7 +355,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             }
                         ],
                         component: lazy(
-                            () => import("../../identity-verification-providers/pages/identity-verification-providers")
+                            () => import("../../admin-identity-verification-providers-v1/pages/identity-verification-providers")
                         ),
                         exact: true,
                         icon: { icon: getSidePanelIcons().identityVerificationProviders },
