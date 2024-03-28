@@ -7,6 +7,10 @@
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
+        "build": "pnpm build",
+        "postinstall": "node scripts/post-install.js",
+        "copy:themes:features": "node scripts/copy-themes-to-features.js",
+        "clean:themes:features": "pnpm rimraf ./themes"
     },
     "dependencies": {
         "@asgardeo/auth-react": "^4.0.1",

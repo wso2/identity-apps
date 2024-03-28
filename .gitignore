@@ -101,6 +101,7 @@ modules/react-components/.cache
 modules/react-components/public/themes
 apps/*/build/
 apps/*/dist/
+features/themes/
 apps/myaccount/src/main/
 apps/console/src/main/
 apps/*/cache
