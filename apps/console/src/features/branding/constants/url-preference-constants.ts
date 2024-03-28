@@ -28,4 +28,10 @@ export class BrandingURLPreferenceConstants {
     public static readonly LANGUAGE_PLACEHOLDER: string = "{{lang}}";
     public static readonly COUNTRY_PLACEHOLDER: string = "{{country}}";
     public static readonly LOCALE_PLACEHOLDER: string = "{{locale}}";
+
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("ORG:SELF_SIGN_UP_URL", "org:branding.urls.selfSignUp");
 }

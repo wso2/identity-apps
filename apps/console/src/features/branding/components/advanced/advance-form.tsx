@@ -22,9 +22,20 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    Ref,
+    forwardRef,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
+import { AppState } from "../../../core/store";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { BrandingPreferencesConstants } from "../../constants";
 import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";
@@ -94,7 +105,11 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
 
     const { t } = useTranslation();
 
-    const { isFirstLevelOrganization, isSuperOrganization  } = useGetCurrentOrganizationType();
+    const { isSubOrganization  } = useGetCurrentOrganizationType();
+
+    const disabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.branding?.disabledFeatures;
+    });
 
     const [ privacyPolicyURL, setPrivacyPolicyURL ] = useState<string>(initialValues.urls.privacyPolicyURL);
     const [ termsOfUseURL, setTermsOfUseURL ] = useState<string>(initialValues.urls.termsOfUseURL);
@@ -117,6 +132,16 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
             }
         });
     }, [ cookiePolicyURL, privacyPolicyURL, termsOfUseURL ]);
+
+    const shouldShowSignUpUrl: boolean = useMemo(() => {
+        if (isSubOrganization()) {
+            return !disabledFeatures.includes(
+                BrandingURLPreferenceConstants.FEATURE_DICTIONARY.get("ORG:SELF_SIGN_UP_URL")
+            );
+        }
+
+        return true;
+    }, [ disabledFeatures ]);
 
     if (isLoading) {
         return (
@@ -264,7 +289,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 data-testid={ `${ componentId }-cookie-policy-url` }
                 validation={ validateTemplatableURLs }
             />
-            { (isFirstLevelOrganization() || isSuperOrganization()) && (
+            { shouldShowSignUpUrl && (
                 <Field.Input
                     ariaLabel="Branding preference self signup URL"
                     inputType="url"
