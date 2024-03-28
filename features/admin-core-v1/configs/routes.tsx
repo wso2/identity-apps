@@ -446,7 +446,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.attributeManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
+                                component: lazy(() => import("../../admin-oidc-scopes-v1/pages/oidc-scopes-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -458,7 +458,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
+                        component: lazy(() => import("../../admin-oidc-scopes-v1/pages/oidc-scopes")),
                         exact: true,
                         icon: {
                             icon: <UserCircleDotIcon fill="black" className="icon" />
