@@ -49,7 +49,7 @@ import {
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "../../admin-applications-v1/models";
-import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
+import { ClaimManagementConstants } from "../../admin-claims-v1/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
 import { ApplicationRoles } from "../../features/roles/components/application-roles";

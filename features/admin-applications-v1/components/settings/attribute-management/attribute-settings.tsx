@@ -48,7 +48,7 @@ import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
 import { applicationConfig } from "../../../../../extensions";
 import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
-import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
+import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin-claims-v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
 import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";

@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
-import { getAllExternalClaims, getAllLocalClaims } from "../../../claims/api";
+import { getAllExternalClaims, getAllLocalClaims } from "../../../admin-claims-v1/api";
 import { AttributeSelectList } from "../../../core";
 import { createOIDCScope } from "../../api";
 import { getOIDCScopeWizardStepIcons } from "../../configs";

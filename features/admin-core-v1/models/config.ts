@@ -30,7 +30,7 @@ import {
 } from "../../admin-applications-v1/models";
 import { BrandingPreferenceResourceEndpointsInterface } from "../../admin-branding-v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
-import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
+import { ClaimResourceEndpointsInterface } from "../../admin-claims-v1/models/endpoints";
 import { ConsoleSettingsResourceEndpointsInterface } from "../../console-settings/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";

@@ -30,7 +30,7 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
 import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
-import { getAllLocalClaims } from "../../claims/api";
+import { getAllLocalClaims } from "../../admin-claims-v1/api";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

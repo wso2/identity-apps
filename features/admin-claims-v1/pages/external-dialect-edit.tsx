@@ -33,7 +33,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
-import { getAllExternalClaims } from "../../claims/api";
+import { getAllExternalClaims } from "../../admin-claims-v1/api";
 import { AppConstants, history, sortList } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";

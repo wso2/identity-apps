@@ -36,7 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Icon, Image, List, Placeholder } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
-import { getDialects } from "../../claims/api";
+import { getDialects } from "../../admin-claims-v1/api";
 import {
     AppConstants,
     AppState,

@@ -26,7 +26,7 @@ import { getApplicationsResourceEndpoints } from "../../admin-applications-v1/co
 import isLegacyAuthzRuntime from "../../admin-authorization-v1/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "../../admin-branding-v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
-import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
+import { getClaimResourceEndpoints } from "../../admin-claims-v1/configs/endpoints";
 import { getConnectionResourceEndpoints } from "../../connections";
 import { getConsoleSettingsResourceEndpoints } from "../../console-settings/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";

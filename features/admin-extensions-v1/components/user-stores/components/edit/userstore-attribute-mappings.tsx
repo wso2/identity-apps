@@ -45,7 +45,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Header, Segment } from "semantic-ui-react";
-import { getAllLocalClaims } from "../../../../../features/claims/api";
+import { getAllLocalClaims } from "../../../../../admin-claims-v1/api";
 import { AppState, sortList } from "../../../../../features/core";
 import { updateUserStoreAttributeMappings } from "../../../../../features/userstores/api/user-stores";
 import { DISABLED } from "../../../../../features/userstores/constants/user-store-constants";

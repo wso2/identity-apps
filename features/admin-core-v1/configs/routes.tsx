@@ -370,7 +370,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.attributeManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../claims/pages/local-claims-edit")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/local-claims-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -382,7 +382,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/local-claims")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/local-claims")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -394,7 +394,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/external-dialect-edit")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/external-dialect-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -406,7 +406,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/attribute-mappings")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/attribute-mappings")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -418,7 +418,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/attribute-verification-settings")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/attribute-verification-settings")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -430,7 +430,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../claims/pages/claim-dialects")),
+                        component: lazy(() => import("../../admin-claims-v1/pages/claim-dialects")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().claims

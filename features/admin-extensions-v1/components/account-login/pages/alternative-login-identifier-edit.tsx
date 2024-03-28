@@ -60,8 +60,8 @@ import { ApplicationManagementConstants } from "../../../../admin-applications-v
 import {
     getAllLocalClaims,
     updateAClaim
-} from "../../../../features/claims/api/claims";
-import { ClaimManagementConstants } from "../../../../features/claims/constants";
+} from "../../../../admin-claims-v1/api/claims";
+import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";
 import {
     AppConstants,
     AppState,

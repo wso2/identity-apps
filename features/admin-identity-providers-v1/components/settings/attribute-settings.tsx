@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributeSelection, UriAttributesSettings } from "./attribute-management";
 import { AttributesSelectionV2 } from "./attribute-management/attribute-selection-v2";
-import { getAllLocalClaims } from "../../../claims/api";
+import { getAllLocalClaims } from "../../../admin-claims-v1/api";
 import {
     IdentityProviderClaimInterface,
     IdentityProviderClaimMappingInterface,
