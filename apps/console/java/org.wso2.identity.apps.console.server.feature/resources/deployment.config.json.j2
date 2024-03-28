@@ -1738,6 +1738,12 @@
         {% if console.enable_identity_claims is defined %}
         "enableIdentityClaims": {{ console.enable_identity_claims }},
         {% endif %}
+<<<<<<< HEAD
+=======
+        {% if scim2.custom_user_schema_uri is defined %}
+        "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
+        {% endif %}
+>>>>>>> 812ee1b7c2 (fix j2 file issue)
         {% if tenant_mgt.enable_email_domain is defined %}
         "enableEmailDomain": {{ tenant_mgt.enable_email_domain }},
         {% endif %}
