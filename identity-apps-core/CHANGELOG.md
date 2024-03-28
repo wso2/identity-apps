@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.1.50
+
+### Patch Changes
+
+- [#5841](https://github.com/wso2/identity-apps/pull/5841) [`8da751214c`](https://github.com/wso2/identity-apps/commit/8da751214c9d5f5826b9642190d2806f19e9c152) Thanks [@sandushi](https://github.com/sandushi)! - Fix email otp error message translating issue
+
 ## 2.1.49
 
 ### Patch Changes
