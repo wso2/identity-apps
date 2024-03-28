@@ -103,7 +103,7 @@ export const commonConfig: CommonConfig = {
     enableDefaultBrandingPreviewSection: true,
     enableDefaultPreLoader: true,
     enableOrganizationAssociations: false,
-    extendedRoutes: [
+    extendedRoutes: () => [
         {
             category: "console:develop.features.sidePanel.categories.applicatin",
             children: [

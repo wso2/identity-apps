@@ -1092,7 +1092,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ) ? (
                                                 <Show when={ AccessControlConstants.USER_EDIT }>
                                                     <DangerZone
-                                                        data-testid={ `${ testId }-change-password-delete-button` }
+                                                        data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("console:manage.features.user.editUser." +
                                                             "dangerZoneGroup.passwordResetZone.actionTitle") }
                                                         header={ t("console:manage.features.user.editUser." +
@@ -1174,7 +1174,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     )
                                     }
                                     <DangerZone
-                                        data-testid={ `${ testId }-danger-zone-delete-button` }
+                                        data-testid={ `${ testId }-danger-zone` }
                                         actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
                                         "deleteUserZone.actionTitle") }
                                         header={ t("console:manage.features.user.editUser.dangerZoneGroup." +

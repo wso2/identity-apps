@@ -620,6 +620,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     text: t("console:manage.features.users.advancedSearch.form.dropdown." +
                         "filterAttributeOptions.email"),
                     value: "emails"
+                },
+                {
+                    key: 2,
+                    text: "First Name",
+                    value: "name.givenName"
+                },
+                {
+                    key: 3,
+                    text: "Last Name",
+                    value: "name.familyName"
                 }
             ] }
             filterAttributePlaceholder={
@@ -989,7 +999,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             mutateParentOrgUserInviteList();
                             mutateUserListFetchRequest();
                             eventPublisher.publish("manage-users-finish-creating-user");
-                            history.push(AppConstants.getPaths().get("USERS").replace(":id", id));
+                            history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", id));
                         } }
                         defaultUserTypeSelection={ selectedAddUserType }
                         userTypeSelection={ userType }

@@ -55,7 +55,7 @@ export interface CommonConfig {
         isGuestUser: boolean;
         showEmail: boolean;
     };
-    extendedRoutes: RouteInterface[]
+    extendedRoutes: () => RouteInterface[]
 }
 
 /**

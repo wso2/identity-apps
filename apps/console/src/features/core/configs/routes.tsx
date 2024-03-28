@@ -1213,7 +1213,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         protected: true,
                         showOnSidePanel: false
                     },
-                    ...commonConfig.extendedRoutes
+                    ...commonConfig.extendedRoutes()
                 ]),
                 "id"
             )

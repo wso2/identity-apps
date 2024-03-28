@@ -344,7 +344,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                     key={ index }
                                     listItem={ {
                                         listItemElement: resolveListItemElement(header),
-                                        listItemValue: header
+                                        listItemValue: subHeader
                                     } }
                                     listItemId={ user.id }
                                     listItemIndex={ index }
