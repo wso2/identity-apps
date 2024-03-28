@@ -58,6 +58,7 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
+import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -1535,6 +1536,25 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         !showManualInviteTable
                             ? (
                                 <>
+                                    { !userConfig?.enableBulkImportSecondaryUserStore
+                                    && (<Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Alert severity="info">
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        ".wizardSummary.userstoreMessage"
+                                                    }
+                                                    tOptions={ {
+                                                        userstore: camelCase(userstore)
+                                                    } }
+                                                >
+                                                    The created users will be added to
+                                                    the <b>{ camelCase(userstore) }</b> user store.
+                                                </Trans>
+                                            </Alert>
+                                        </Grid.Column>
+                                    </Grid.Row>) }
                                     { !hideUserStoreDropdown() &&
                                         (<Grid.Row columns={ 1 } className="mb-0 pb-0">
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1758,6 +1778,26 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         </Grid.Column>
                                     </Grid.Row>
                                 )
+                            }
+                            { !userConfig?.enableBulkImportSecondaryUserStore &&
+                                (<Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Alert severity="info">
+                                            <Trans
+                                                i18nKey={
+                                                    "console:manage.features.user.modals.bulkImportUserWizard" +
+                                                ".wizardSummary.userstoreMessage"
+                                                }
+                                                tOptions={ {
+                                                    userstore: camelCase(userstore)
+                                                } }
+                                            >
+                                            The created users will be added to
+                                            the <b>{ camelCase(userstore) }</b> user store.
+                                            </Trans>
+                                        </Alert>
+                                    </Grid.Column>
+                                </Grid.Row>)
                             }
                             { !isLoading && !hideUserStoreDropdown() &&
                                 (
