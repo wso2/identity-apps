@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.13.30
+
+### Patch Changes
+
+- [#5840](https://github.com/wso2/identity-apps/pull/5840) [`4daa5d3ed3`](https://github.com/wso2/identity-apps/commit/4daa5d3ed35c45f1f8c05955ae5780b00a29bd21) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Delete all custom text preference configurations upon reverting branding configs
+
 ## 2.13.29
 
 ### Patch Changes
