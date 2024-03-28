@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -32,6 +33,7 @@ import React,
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
+import { SCIMConfigs } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
@@ -221,7 +223,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 {
                     "op": "add",
                     "value": {
-                        [ customUserSchemaURI ]: {
+                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.askPassword?.
+                            startsWith(customUserSchemaURI)
+                            ? customUserSchemaURI
+                            : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
                             "forcePasswordReset": true
                         }
                     }
