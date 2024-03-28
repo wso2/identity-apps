@@ -23,7 +23,7 @@ import { getFeatureGateResourceEndpoints } from "../../../extensions/components/
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
 import { getAPIResourceEndpoints } from "../../admin-api-resources-v1/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../admin-applications-v1/configs/endpoints";
-import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
+import isLegacyAuthzRuntime from "../../admin-authorization-v1/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";

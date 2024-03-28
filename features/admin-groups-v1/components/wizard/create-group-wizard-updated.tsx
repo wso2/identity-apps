@@ -35,7 +35,7 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsersUpdated } from "./group-assign-users-updated";
 import { commonConfig } from "../../../../extensions/configs";
-import useAuthorization from "../../../authorization/hooks/use-authorization";
+import useAuthorization from "../../../admin-authorization-v1/hooks/use-authorization";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { EventPublisher } from "../../../core/utils";
 import { getOrganizationRoles } from "../../../organizations/api";
