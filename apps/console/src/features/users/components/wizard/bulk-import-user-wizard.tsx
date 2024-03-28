@@ -1551,8 +1551,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                                 userstore: camelCase(userstore)
                                                             } }
                                                         >
-                                                    The created users will be added to
-                                                    the <b>{ camelCase(userstore) }</b> user store.
+                                                            The created users will be added to
+                                                            the <b>{ camelCase(userstore) }</b> user store.
                                                         </Trans>
                                                     </Alert>
                                                 </Grid.Column>
@@ -1792,7 +1792,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 <Trans
                                                     i18nKey={
                                                         "console:manage.features.user.modals.bulkImportUserWizard" +
-                                                ".wizardSummary.userstoreMessage"
+                                                        ".wizardSummary.userstoreMessage"
                                                     }
                                                     tOptions={ {
                                                         userstore: camelCase(userstore)
