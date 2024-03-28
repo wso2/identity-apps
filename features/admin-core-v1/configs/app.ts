@@ -30,7 +30,7 @@ import { getClaimResourceEndpoints } from "../../admin-claims-v1/configs/endpoin
 import { getConnectionResourceEndpoints } from "../../admin-connections-v1";
 import { getConsoleSettingsResourceEndpoints } from "../../admin-console-settings-v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../admin-email-templates-v1";
-import { getGroupsResourceEndpoints } from "../../groups";
+import { getGroupsResourceEndpoints } from "../../admin-groups-v1";
 import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
 import { getIDVPResourceEndpoints } from "../../identity-verification-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";

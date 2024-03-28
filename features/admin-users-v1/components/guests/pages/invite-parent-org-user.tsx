@@ -27,7 +27,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
-import { GroupsInterface, useGroupList } from "../../../../groups";
+import { GroupsInterface, useGroupList } from "../../../../admin-groups-v1";
 import { PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";
 import { UserManagementConstants } from "../../../constants";
 import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";

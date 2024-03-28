@@ -56,14 +56,14 @@ import {
     Table
 } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../../admin-core-v1";
-import { getGroupList } from "../../../groups/api";
+import { getGroupList } from "../../../admin-groups-v1/api";
 import {
     GroupListInterface,
     GroupsInterface,
     PatchGroupAddOpInterface,
     PatchGroupOpInterface,
     PatchGroupRemoveOpInterface
-} from "../../../groups/models";
+} from "../../../admin-groups-v1/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants/role-constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {

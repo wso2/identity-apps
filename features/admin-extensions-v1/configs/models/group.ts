@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GroupsInterface } from "../../../features/groups";
+import { GroupsInterface } from "../../../admin-groups-v1";
 
 export interface GroupConfig {
     addGroupWizard: {

@@ -30,13 +30,13 @@ import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
 import { AppConstants, history } from "../../../../admin-core-v1";
 import { EventPublisher } from "../../../../admin-core-v1/utils";
-import { createGroup } from "../../../../features/groups/api";
-import { CreateGroupSummary } from "../../../../features/groups/components/wizard";
-import { getGroupsWizardStepIcons } from "../../../../features/groups/configs";
+import { createGroup } from "../../../../admin-groups-v1/api";
+import { CreateGroupSummary } from "../../../../admin-groups-v1/components/wizard";
+import { getGroupsWizardStepIcons } from "../../../../admin-groups-v1/configs";
 import {
     CreateGroupInterface,
     CreateGroupMemberInterface
-} from "../../../../features/groups/models";
+} from "../../../../admin-groups-v1/models";
 import { updateRole } from "../../../../features/roles/api";
 import { PatchRoleDataInterface } from "../../../../features/roles/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../features/userstores/constants";

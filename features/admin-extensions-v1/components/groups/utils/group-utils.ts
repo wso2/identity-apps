@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GroupsInterface } from "../../../../features/groups/models";
+import { GroupsInterface } from "../../../../admin-groups-v1/models";
 
 export const resolveGroupName = (groupName: GroupsInterface): string => {
     if (groupName?.displayName?.split("/").length > 1) {

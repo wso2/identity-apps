@@ -51,8 +51,8 @@ import {
     deleteGroupById,
     searchGroupList,
     useGroupList
-} from "../../../../features/groups";
-import { GroupConstants } from "../../../../features/groups/constants";
+} from "../../../../admin-groups-v1";
+import { GroupConstants } from "../../../../admin-groups-v1/constants";
 import { useUserStores } from "../../../../features/userstores/api/user-stores";
 import { CONSUMER_USERSTORE } from "../../../../features/userstores/constants/user-store-constants";
 import { UserStoreListItem } from "../../../../features/userstores/models/user-stores";

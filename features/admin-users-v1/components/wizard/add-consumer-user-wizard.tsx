@@ -41,7 +41,7 @@ import {
     PatchGroupDataInterface,
     getGroupList,
     updateGroupDetails
-} from "../../../groups";
+} from "../../../admin-groups-v1";
 import { addUser } from "../../../admin-users-v1/api/users";
 import { getUserWizardStepIcons } from "../../../admin-users-v1/configs/ui";
 import {

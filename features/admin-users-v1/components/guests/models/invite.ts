@@ -17,7 +17,7 @@
  */
 
 import { ReactNode } from "react";
-import { GroupsInterface } from "../../../../groups";
+import { GroupsInterface } from "../../../../admin-groups-v1";
 import { InviteUserStatus } from "../../../models/user";
 
 /**

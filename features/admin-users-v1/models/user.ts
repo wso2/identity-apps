@@ -21,7 +21,7 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../admin-core-v1";
-import { GroupsInterface, GroupsMemberInterface } from "../../groups";
+import { GroupsInterface, GroupsMemberInterface } from "../../admin-groups-v1";
 import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 
 /**

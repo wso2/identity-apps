@@ -21,7 +21,7 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AddRoleUsers } from "./role-user-assign";
 import { AssignGroups } from "../../../admin-core-v1";
-import { GroupsInterface } from "../../../groups/models/groups";
+import { GroupsInterface } from "../../../admin-groups-v1/models/groups";
 import { UserBasicInterface } from "../../../admin-users-v1/models/user";
 
 /**

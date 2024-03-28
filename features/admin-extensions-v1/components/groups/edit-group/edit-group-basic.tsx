@@ -45,8 +45,8 @@ import {
     deleteGroupById,
     searchGroupList,
     updateGroupDetails
-} from "../../../../features/groups";
-import { CONSUMER_USERSTORE } from "../../../../features/userstores/constants";
+} from "../../../../admin-groups-v1";
+import { CONSUMER_USERSTORE } from "../../../../admin-userstores-v1/constants";
 
 /**
  * Interface to contain props needed for component

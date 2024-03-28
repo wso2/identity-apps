@@ -32,7 +32,7 @@ import { CreateRoleSummary } from "./role-sumary";
 import { AddRoleUsers } from "./role-user-assign";
 import { AppConstants } from "../../../../../admin-core-v1/constants";
 import { history } from "../../../../../admin-core-v1/helpers";
-import { CreateGroupMemberInterface } from "../../../../../features/groups/models";
+import { CreateGroupMemberInterface } from "../../../../../admin-groups-v1/models";
 import { createRole } from "../../../../../features/roles/api";
 import { getRolesWizardStepIcons } from "../../../../../features/roles/configs";
 import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../../../../features/roles/models";
