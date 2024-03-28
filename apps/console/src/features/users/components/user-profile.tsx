@@ -950,15 +950,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * The method handles the locking and disabling of user account.
      */
     const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
-        const data: PatchRoleDataInterface = {
+        let data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "replace",
                     "value": {
-                        [ SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled.startsWith(customUserSchemaURI) &&
-                        SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked.startsWith(customUserSchemaURI)
-                            ? customUserSchemaURI
-                            : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             [attributeName]: attributeValue
                         }
                     }
@@ -966,6 +963,25 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             ],
             "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
+        if (adminUserType === "internal") {
+            data = {
+                "Operations": [
+                    {
+                        "op": "replace",
+                        "value": {
+                            [ SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled.startsWith(customUserSchemaURI) &&
+                                SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked.startsWith(customUserSchemaURI)
+                                ? customUserSchemaURI
+                                : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
+                                [attributeName]: attributeValue
+                            }
+                        }
+                    }
+                ],
+                "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            };
+        }
 
         updateUserInfo(user.id, data)
             .then(() => {
