@@ -504,7 +504,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() => {
                                     // eslint-disable-next-line max-len
-                                    return import("../../organization-discovery/pages/assign-organization-discovery-domains-page");
+                                    return import("../../admin-organization-discovery-v1/pages/assign-organization-discovery-domains-page");
                                 }),
                                 exact: true,
                                 icon: {
@@ -519,7 +519,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() => {
                                     // eslint-disable-next-line max-len
-                                    return import("../../organization-discovery/pages/edit-organization-discovery-domains-page");
+                                    return import("../../admin-organization-discovery-v1/pages/edit-organization-discovery-domains-page");
                                 }),
                                 exact: true,
                                 icon: {
@@ -533,7 +533,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             }
                         ],
                         component: lazy(() => {
-                            return import("../../organization-discovery/pages/organization-discovery-domains-page");
+                            return import("../../admin-organization-discovery-v1/pages/organization-discovery-domains-page");
                         }),
                         exact: true,
                         icon: {
