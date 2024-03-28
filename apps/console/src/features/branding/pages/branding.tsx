@@ -542,13 +542,17 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         setGeneratingBranding(false);
         const { theme } = removeEmptyKeys(data);
         const { activeTheme, LIGHT } = theme;
+
+        console.log("########## existing branding preference ##########\n", brandingPreference);
+        console.log("########## AI generated ##########\n", data);
         const mergedBrandingPreference: BrandingPreferenceInterface =  merge(cloneDeep(brandingPreference), {
-            activeTheme: activeTheme,
+            // activeTheme: activeTheme,
             theme: {
                 ...brandingPreference.theme,
                 LIGHT: LIGHT
             }
         });
+        console.log("########## merged preference ##########\n", mergedBrandingPreference);
 
         setBrandingPreference(mergedBrandingPreference);
     };

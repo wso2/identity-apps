@@ -97,6 +97,7 @@ export const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element =
     const fetchProgress = async () => {
         try {
             const response: AxiosResponse<any> = await axios.get(
+                // "http://0.0.0.0:8080/branding/status",
                 "http://localhost:3000/status",
                 { headers: { "trace-id": traceId } }
             );
@@ -188,56 +189,31 @@ export const LoadingScreen = ( { traceId }: { traceId: string } ): JSX.Element =
     return (
         <AIContextProvider>
 
-            <Box sx={ { alignItems: "center", display: "flex", justifyContent: "center" } }>
-                <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", width: "75%" } }>
-                    <Box
-                        sx={ {
-                            alignItems: "center",
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                            marginBottom: "20px"
-                        } }>
-                        <Box sx={ { alignItems: "center", display: "flex", flexDirection: "column", mt: 2 } }>
-                            <Box
-                                sx={ {
-                                    alignItems: "left",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    maxWidth: "75%"
-                                } }>
-                                <Typography variant="h5" sx={ { color: "rgba(0, 0, 0, 0.6)", fontWeight: "bold" } }>
+            <Box className="loading-screen-container">
+                <Box className="loading-screen-content">
+                    <Box className="loading-screen-row">
+                        <Box className="loading-screen-facts">
+                            <Box className="loading-screen-facts-content">
+                                <Typography variant="h5" className="loading-screen-facts-text">
                                 Did you know?
                                 </Typography>
                                 <Typography
                                     variant="body1"
                                     align="justify"
-                                    sx={ {
-                                        color: "#757575",
-                                        height: "150px",
-                                        mt: 2,
-                                        overflow: "auto"
-                                    } }>
+                                    className="loading-screen-facts-detail">
                                     { facts[factIndex] }
                                 </Typography>
                             </Box>
                         </Box>
-                        <Box sx={ { display: "flex", justifyContent: "left" } }>
+                        <Box className="loading-screen-placeholder">
                             <LoadingPlaceholder />
                         </Box>
                     </Box>
-                    <Box sx={ { width: "100%" } }>
+                    <Box className="loading-screen-progress">
                         <LinearProgress variant="determinate" value={ progress } />
                     </Box>
-                    <Box
-                        sx={ {
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "flex-start",
-                            mt: 2,
-                            width: "100%"
-                        } }>
-                        { polling && <CircularProgress size={ 20 } sx={ { mr: 2 } } /> }
+                    <Box className="loading-screen-status">
+                        { polling && <CircularProgress size={ 20 } className="loading-screen-status-progress" /> }
                         <Typography variant="h6">
                             { currentStatus }
                         </Typography>

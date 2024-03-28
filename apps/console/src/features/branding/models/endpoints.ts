@@ -38,25 +38,25 @@
     /**
      * Endpoint to generate the branding preferences.
      */
-    brandingPreferenceGenerate: string;
+    // brandingPreferenceGenerate: string;
     /**
      * Endpoint to generate the branding preference for a sub organization.
      */
-    brandingPreferenceGenerateSubOrg: string;
-    /**
-     * Endpoint to get the status of the branding preference generation.
-     */
-    brandingPreferenceGenerateStatus: string;
-    /**
-     * Endpoint to get the status of the branding preference generation for a sub organization.
-     */
-    brandingPreferenceGenerateStatusSubOrg: string;
-    /**
-     * Endpoint to get the result of the branding preference generation.
-     */
-    brandingPreferenceGenerateResult: string;
-    /**
-     * Endpoint to get the result of the branding preference generation for a sub organization.
-     */
-    brandingPreferenceGenerateResultSubOrg: string;
+    // brandingPreferenceGenerateSubOrg: string;
+    // /**
+    //  * Endpoint to get the status of the branding preference generation.
+    //  */
+    // brandingPreferenceGenerateStatus: string;
+    // /**
+    //  * Endpoint to get the status of the branding preference generation for a sub organization.
+    //  */
+    // brandingPreferenceGenerateStatusSubOrg: string;
+    // /**
+    //  * Endpoint to get the result of the branding preference generation.
+    //  */
+    // brandingPreferenceGenerateResult: string;
+    // /**
+    //  * Endpoint to get the result of the branding preference generation for a sub organization.
+    //  */
+    // brandingPreferenceGenerateResultSubOrg: string;
 }

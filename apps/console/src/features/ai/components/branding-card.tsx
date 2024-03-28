@@ -28,6 +28,7 @@ import { Header, Icon, Input, Segment } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { ReactComponent as AIIcon } from "../../../themes/wso2is/assets/images/icons/solid-icons/twinkle-ai-solid.svg";
 import AIContextProvider from "../providers/ai-context-provider";
+import "./branding-card.scss";
 
 enum BannerState {
     Full = "banner-full",
@@ -61,7 +62,9 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
         onGenerateBrandingClick(traceId);
 
         try {
+            // const response: any = await axios.post("http://0.0.0.0:8080/branding/generate", {
             const response: any = await axios.post("http://localhost:3000/generate", {
+
                 website_url: websiteUrl
             }, {
                 headers: {
@@ -81,18 +84,9 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                 { bannerState === BannerState.Full && (
                     <Segment
                         basic
-                        style={ {
-                            background: "linear-gradient(90deg, rgba(255,115,0,0.42) 0%, rgba(255,244,235,1) 37%)",
-                            borderRadius: "8px"
-                        } }
+                        className="branding-card-banner-full"
                     >
-                        <div
-                            style={ {
-                                alignItems: "center",
-                                display: "flex",
-                                justifyContent: "space-between",
-                                padding: "45px"
-                            } }>
+                        <div className="branding-card-banner-full-heading">
                             <div>
                                 <Header as="h3">{ t("console:branding.ai.banner.full.heading") }</Header>
                                 <p>{ t("console:branding.ai.banner.full.subHeading") }</p>
@@ -100,7 +94,7 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                             <Button onClick={ handleExpandClick } color="secondary" variant="outlined">
                                 <GenericIcon
                                     icon={ AIIcon }
-                                    style={ { paddingRight: "5px" } }
+                                    className="branding-card-banner-full-button"
                                 />
                                 { t("console:branding.ai.banner.full.button") }
                             </Button>
@@ -109,28 +103,16 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                 ) }
                 { bannerState === BannerState.Input && (
                     <Segment>
-                        <div
-                            style={ {
-                                display: "flex",
-                                flexDirection: "column",
-                                height: "100%",
-                                position: "relative"
-                            } }>
+                        <div className="branding-card-banner-input">
                             <Icon
                                 name="dropdown"
                                 onClick={ handleCollapseClick }
-                                style={ { cursor: "pointer", position: "absolute", right: 0, top: 0 } }
+                                className="branding-card-banner-input-icon"
                             />
 
-                            <div
-                                style={ {
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    justifyContent: "space-between",
-                                    padding: "10px"
-                                } }>
+                            <div className="branding-card-banner-input-content">
                                 <div>
-                                    <Header as="h3" style={ { marginBottom: "5px" } }>
+                                    <Header as="h3" className="branding-card-banner-input-heading">
                                         { t("console:branding.ai.banner.input.heading") }
                                     </Header>
                                     <p>{ t("console:branding.ai.banner.input.subHeading") }
@@ -147,20 +129,13 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                         </DocumentationLink>
                                     </p>
                                 </div>
-                                <div
-                                    style={ {
-                                        alignItems: "center",
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        paddingRight: "20px",
-                                        paddingTop: "20px"
-                                    } }>
+                                <div className="branding-card-banner-input-actions">
                                     <Input
+                                        className="branding-input-field"
                                         placeholder={ t("console:branding.ai.banner.input.placeholder") }
                                         value={ websiteUrl }
                                         onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                             setWebsiteUrl(e.target.value) }
-                                        style={ { width: "40%" } }
                                     />
                                     <Button
                                         onClick={ handleGenerateClick }
@@ -169,8 +144,8 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                         style={ { marginLeft: "auto" } }
                                     >
                                         <GenericIcon
+                                            className="branding-card-banner-input-button"
                                             icon={ AIIcon }
-                                            style={ { paddingRight: "5px" } }
                                         />
                                         { t("console:branding.ai.banner.input.button") }
                                     </Button>
@@ -181,15 +156,9 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                 ) }
                 { bannerState === BannerState.Collapsed && (
                     <Segment>
-                        <div
-                            style={ {
-                                alignItems: "center",
-                                display: "flex",
-                                justifyContent: "space-between",
-                                padding: "10px"
-                            } }>
+                        <div className="branding-card-banner-collapsed">
                             <div>
-                                <Header as="h3" style={ { marginBottom: "5px" } }>
+                                <Header as="h3" className="branding-card-banner-collapsed-heading">
                                     { t("console:branding.ai.banner.input.heading") }</Header>
                                 <p>{ t("console:branding.ai.banner.collapsed.subHeading") }
                                     <DocumentationLink
@@ -211,8 +180,8 @@ export const BrandingAIComponent: FunctionComponent<BrandingAIComponentProps> = 
                                 variant="outlined"
                             >
                                 <GenericIcon
+                                    className="branding-card-banner-collapsed-button"
                                     icon={ AIIcon }
-                                    style={ { paddingRight: "5px" } }
                                 />
                                 { t("console:branding.ai.banner.collapsed.button") }
                             </Button>

@@ -31,14 +31,14 @@ export const getBrandingResourceEndpoints =
 
         return {
             brandingPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference`,
-            brandingPreferenceGenerate: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/generate`,
-            brandingPreferenceGenerateResult: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/result`,
-            brandingPreferenceGenerateResultSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/result`,
-            brandingPreferenceGenerateStatus: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/` +
-                "/status",
-            brandingPreferenceGenerateStatusSubOrg: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/` +
-                "/status",
-            brandingPreferenceGenerateSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/generate`,
+            // brandingPreferenceGenerate: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/generate`,
+            // brandingPreferenceGenerateResult: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/result`,
+            // brandingPreferenceGenerateResultSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/result`,
+            // brandingPreferenceGenerateStatus: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/` +
+                // "/status",
+            // brandingPreferenceGenerateStatusSubOrg: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/` +
+            //     "/status",
+            // brandingPreferenceGenerateSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/generate`,
             brandingPreferenceSubOrg: `${ subOrgPath }/api/server/v1/branding-preference`,
             brandingTextPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/text`,
             brandingTextPreferenceSubOrg: `${ subOrgPath }/api/server/v1/branding-preference/text`
