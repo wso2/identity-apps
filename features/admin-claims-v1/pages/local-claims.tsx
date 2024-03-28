@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import { getAllLocalClaims } from "../../claims/api";
 import {
     AdvancedSearchWithBasicFilters,

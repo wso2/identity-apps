@@ -23,7 +23,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
 import { deleteIDVP } from "../../api";
 import { IdentityVerificationProviderInterface } from "../../models";
 import {

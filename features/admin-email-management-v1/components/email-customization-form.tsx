@@ -36,7 +36,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import { I18nConstants } from "../../core";
 import { EmailTemplate } from "../models";
 

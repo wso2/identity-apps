@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions/configs/userstores";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

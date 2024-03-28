@@ -22,7 +22,7 @@ import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components"
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import { AppConstants, UIConstants, history } from "../../core";
 import { useIDVPTemplateTypeMetadataList, useIdentityVerificationProviderList } from "../api";
 import { IdentityVerificationProviderList } from "../components";

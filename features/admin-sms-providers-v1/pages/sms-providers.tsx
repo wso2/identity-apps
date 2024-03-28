@@ -40,7 +40,7 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
 import {
     AppConstants,
