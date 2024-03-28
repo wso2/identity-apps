@@ -35,7 +35,7 @@ import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../../../admin-authentication-v1/store";
-import { AppState, FeatureConfigInterface, history, store } from "../../../../features/core";
+import { AppState, FeatureConfigInterface, history, store } from "../../../../admin-core-v1";
 import { PatchRoleDataInterface } from "../../../../features/roles/models/roles";
 import {
     ServerConfigurationsInterface,

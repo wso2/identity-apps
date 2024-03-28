@@ -23,7 +23,7 @@ import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { store } from "../../../core";
+import { store } from "../../../admin-core-v1";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../server-configurations";
 import { RoleConstants } from "../../constants/role-constants";
 import { TreeNode } from "../../models/permission";

@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,

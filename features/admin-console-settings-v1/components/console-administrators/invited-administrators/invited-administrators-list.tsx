@@ -34,7 +34,7 @@ import {
     AdvancedSearchWithBasicFilters,
     UIConstants,
     getEmptyPlaceholderIllustrations
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { deleteParentOrgInvite } from "../../../../users/components/guests/api/invite";
 import { UserManagementConstants } from "../../../../users/constants";

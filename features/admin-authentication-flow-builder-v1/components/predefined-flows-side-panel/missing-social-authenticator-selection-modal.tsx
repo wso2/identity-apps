@@ -21,8 +21,8 @@ import { Code, ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2i
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ModalProps } from "semantic-ui-react";
-import { AppConstants } from "../../../core/constants/app-constants";
-import { history } from "../../../core/helpers/history";
+import { AppConstants } from "../../../admin-core-v1/constants/app-constants";
+import { history } from "../../../admin-core-v1/helpers/history";
 import {
     AuthenticatorCreateWizardFactory
 } from "../../../identity-providers/components/wizards/authenticator-create-wizard-factory";

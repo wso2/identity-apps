@@ -30,7 +30,7 @@ import {
     FeatureConfigInterface,
     UIConstants,
     UserListInterface
-} from "../../../../../features/core";
+} from "../../../../../admin-core-v1";
 import { PRIMARY_USERSTORE } from "../../../../../features/userstores/constants/user-store-constants";
 import { InvitationStatus, UserInviteInterface } from "../../../../../features/users/models";
 import { AdministratorConstants } from "../../constants";

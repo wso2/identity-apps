@@ -50,7 +50,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import { CreateIdPGroupWizard } from "./create-identity-provider-group-wizard";
-import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../../../../core";
+import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../../../../admin-core-v1";
 import { useConnectionGroups, updateConnectionGroup } from "../../../../api/connections";
 import { ConnectionGroupInterface } from "../../../../models/connection";
 

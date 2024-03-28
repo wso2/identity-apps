@@ -35,7 +35,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     AddAdminUserBasic
 } from "./steps/admin-user-basic";
-import { UserBasicInterface } from "../../../../features/core";
+import { UserBasicInterface } from "../../../../admin-core-v1";
 import { updateRoleDetails } from "../../../../features/roles/api/roles";
 import { PatchRoleDataInterface } from "../../../../features/roles/models/roles";
 import { getUserWizardStepIcons } from "../../../../features/users/configs/ui";

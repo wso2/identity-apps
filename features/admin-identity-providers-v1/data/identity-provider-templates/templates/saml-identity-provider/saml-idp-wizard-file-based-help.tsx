@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../admin-core-v1";
 
 /**
  * No component specific props. Hence unnecessary

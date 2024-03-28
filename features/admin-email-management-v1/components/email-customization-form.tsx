@@ -37,7 +37,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
-import { I18nConstants } from "../../core";
+import { I18nConstants } from "../../admin-core-v1";
 import { EmailTemplate } from "../models";
 
 interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInterface {

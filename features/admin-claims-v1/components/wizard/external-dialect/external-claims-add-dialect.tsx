@@ -25,7 +25,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimEventClickItem, ClaimsList, ListType } from "../..";
-import { getEmptyPlaceholderIllustrations } from "../../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../../admin-core-v1";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { resolveType } from "../../../utils";

@@ -50,7 +50,7 @@ import {
     EventPublisher,
     FeatureConfigInterface,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
 import {
     IdentityProviderManagementConstants

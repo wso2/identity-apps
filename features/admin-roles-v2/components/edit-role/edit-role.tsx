@@ -29,7 +29,7 @@ import { RoleConnectedApps } from "./edit-role-connected-apps";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
-import { AppState, FeatureConfigInterface } from "../../../core";
+import { AppState, FeatureConfigInterface } from "../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { UserManagementConstants } from "../../../users/constants";
 import { RoleConstants as LocalRoleConstants, RoleAudienceTypes } from "../../constants";

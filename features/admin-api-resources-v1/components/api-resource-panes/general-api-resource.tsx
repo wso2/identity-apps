@@ -34,7 +34,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
-import { FeatureConfigInterface, history } from "../../../core";
+import { FeatureConfigInterface, history } from "../../../admin-core-v1";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {

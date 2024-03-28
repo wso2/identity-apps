@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../core";
+import { store } from "../../admin-core-v1";
 import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";
 
 /**

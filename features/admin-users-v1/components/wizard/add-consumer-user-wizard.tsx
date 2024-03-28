@@ -35,7 +35,7 @@ import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-s
 import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { userstoresConfig } from "../../../../extensions/configs/userstores";
-import { UserBasicInterface } from "../../../core";
+import { UserBasicInterface } from "../../../admin-core-v1";
 import {
     GroupsInterface,
     PatchGroupDataInterface,

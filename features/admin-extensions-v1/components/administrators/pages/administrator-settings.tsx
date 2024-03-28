@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
-import { history, store } from "../../../../features/core";
+import { history, store } from "../../../../admin-core-v1";
 import { updateOrganizationConfig, useOrganizationConfig } from "../api/organization";
 import { AdministratorConstants } from "../constants";
 

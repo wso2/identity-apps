@@ -69,7 +69,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
-import { EventPublisher } from "../../../core";
+import { EventPublisher } from "../../../admin-core-v1";
 import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";

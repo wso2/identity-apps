@@ -26,7 +26,7 @@ import { RoleGroupsList } from "./edit-organization-groups";
 import { RolePermissionDetails } from "./edit-organization-permission";
 import { BasicRoleDetails } from "./edit-organization-role-basic";
 import { RoleUserDetails } from "./edit-organization-role-users";
-import { AppState, FeatureConfigInterface, history } from "../../../core";
+import { AppState, FeatureConfigInterface, history } from "../../../admin-core-v1";
 import { OrganizationRoleManagementConstants } from "../../constants";
 import { OrganizationRoleInterface } from "../../models";
 

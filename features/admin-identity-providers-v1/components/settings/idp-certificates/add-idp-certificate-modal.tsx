@@ -33,7 +33,7 @@ import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../../core";
+import { getCertificateIllustrations } from "../../../../admin-core-v1";
 import { updateIDPCertificate } from "../../../api";
 import { IdentityProviderInterface } from "../../../models";
 

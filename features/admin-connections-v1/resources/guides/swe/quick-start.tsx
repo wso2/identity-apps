@@ -38,11 +38,11 @@ import {
     ConnectionInterface,
     ConnectionTemplateInterface
 } from "../../../../admin-connections-v1/models/connection";
-import { AdvancedSearchWithBasicFilters } from "../../../../core/components";
-import { AppConstants } from "../../../../core/constants";
-import { history } from "../../../../core/helpers";
-import { FeatureConfigInterface } from "../../../../core/models";
-import { AppState } from "../../../../core/store";
+import { AdvancedSearchWithBasicFilters } from "../../../../admin-core-v1/components";
+import { AppConstants } from "../../../../admin-core-v1/constants";
+import { history } from "../../../../admin-core-v1/helpers";
+import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
+import { AppState } from "../../../../admin-core-v1/store";
 
 /**
  * Prop types of the component.

@@ -19,8 +19,8 @@
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { administratorConfig } from "../../../extensions/configs/administrator";
-import { UserRoleInterface } from "../../core/models";
-import { store } from "../../core/store";
+import { UserRoleInterface } from "../../admin-core-v1/models";
+import { store } from "../../admin-core-v1/store";
 import {
     ValidationConfInterface,
     ValidationDataInterface,

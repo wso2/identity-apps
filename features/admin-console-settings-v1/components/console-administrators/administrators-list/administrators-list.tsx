@@ -39,7 +39,7 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { UserManagementConstants } from "../../../../users/constants";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";

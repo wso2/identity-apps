@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { AppConstants, history } from "../../../../features/core";
+import { AppConstants, history } from "../../../../admin-core-v1";
 import { useMyAccountStatus } from "../api";
 
 /**

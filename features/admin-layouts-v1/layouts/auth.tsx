@@ -21,10 +21,10 @@ import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { PreLoader } from "../features/core";
-import { ProtectedRoute } from "../features/core/components";
-import { getAuthLayoutRoutes } from "../features/core/configs";
-import { AppConstants } from "../features/core/constants";
+import { PreLoader } from "../admin-core-v1";
+import { ProtectedRoute } from "../admin-core-v1/components";
+import { getAuthLayoutRoutes } from "../admin-core-v1/configs";
+import { AppConstants } from "../admin-core-v1/constants";
 
 /**
  * Auth layout props interface.

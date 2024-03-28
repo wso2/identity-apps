@@ -29,7 +29,7 @@ import orderBy from "lodash-es/orderBy";
 import React, { FunctionComponent, ReactElement, SVGAttributes, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../core/store";
+import { AppState } from "../../../admin-core-v1/store";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { CustomTextInterface } from "../../models/custom-text-preference";

@@ -27,7 +27,7 @@ import {
 } from "../../../../admin-applications-v1/models";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { store, toggleHelpPanelVisibility, AppState } from "../../../../features/core";
+import { store, toggleHelpPanelVisibility, AppState } from "../../../../admin-core-v1";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";

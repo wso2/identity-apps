@@ -48,7 +48,7 @@ import {
     AuthenticatorInterface
 } from "../../admin-applications-v1/models/application";
 import { AdaptiveScriptUtils } from "../../admin-applications-v1/utils/adaptive-script-utils";
-import { AppState } from "../../core/store";
+import { AppState } from "../../admin-core-v1/store";
 import {
     IdentityProviderManagementConstants
 } from "../../identity-providers/constants/identity-provider-management-constants";

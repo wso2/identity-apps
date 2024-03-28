@@ -33,7 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../admin-authentication-v1/store";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "../../server-configurations/api";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";

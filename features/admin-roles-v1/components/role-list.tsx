@@ -49,7 +49,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { APPLICATION_DOMAIN, RoleConstants as LocalRoleConstants } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {

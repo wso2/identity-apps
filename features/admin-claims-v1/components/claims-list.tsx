@@ -70,7 +70,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { getProfileSchemas } from "../../users/api";
 import { getUserStores } from "../../userstores/api/user-stores";
 import { UserStoreListItem } from "../../userstores/models/user-stores";

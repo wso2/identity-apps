@@ -41,7 +41,7 @@ import { serverConfigurationConfig } from "../../../../extensions";
 import {
     AppState,
     FeatureConfigInterface
-} from "../../../core";
+} from "../../../admin-core-v1";
 import { ServerConfigurationsConstants } from "../../constants";
 import {
     ConnectorPropertyInterface,

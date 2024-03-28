@@ -58,7 +58,7 @@ import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { SCIMConfigs } from "../../../../../extensions/configs/scim";
 import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin-core-v1";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,

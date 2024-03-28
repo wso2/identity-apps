@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
-import { AppState } from "../../../../core";
+import { AppState } from "../../../../admin-core-v1";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,

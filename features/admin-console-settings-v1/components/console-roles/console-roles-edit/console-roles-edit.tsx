@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleRolePermissions from "./console-role-permissions";
-import { AppState } from "../../../../core";
+import { AppState } from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { BasicRoleDetails } from "../../../../roles/components/edit-role/edit-role-basic";
 import { RoleConnectedApps } from "../../../../roles/components/edit-role/edit-role-connected-apps";

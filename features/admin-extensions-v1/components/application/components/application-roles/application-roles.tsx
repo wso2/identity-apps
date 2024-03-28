@@ -61,7 +61,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../../features/core";
+} from "../../../../../admin-core-v1";
 import { OrganizationResponseInterface } from "../../../../../features/organizations/models";
 import { deleteRole, getApplicationRolesList, useSharedApplicationData } from "../../api/application-roles";
 import {

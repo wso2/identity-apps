@@ -40,8 +40,8 @@ import {
     ExpertModeAuthenticationProviderCreateWizardContent
 } from "./expert-mode-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
-import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../core/components";
-import { EventPublisher } from "../../../../core/utils";
+import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../admin-core-v1/components";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../../constants";

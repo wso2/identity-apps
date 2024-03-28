@@ -20,7 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../core/store";
+import { store } from "../../admin-core-v1/store";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 

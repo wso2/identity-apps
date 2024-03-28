@@ -66,7 +66,7 @@ import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
 import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../../../../admin-authentication-flow-builder-v1/constants/template-constants";
 import useAuthenticationFlow from "../../../../../admin-authentication-flow-builder-v1/hooks/use-authentication-flow";
-import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "../../../../../core";
+import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "../../../../../admin-core-v1";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";

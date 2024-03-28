@@ -54,7 +54,7 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../../admin-core-v1";
 import { getOrganizationRoles } from "../../../organizations/api";
 import {
     OrganizationResponseInterface,

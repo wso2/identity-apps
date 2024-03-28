@@ -31,7 +31,7 @@ import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../core";
+import { AppState, ConfigReducerStateInterface } from "../../admin-core-v1";
 import { createSecret, getSecretList } from "../api/secret";
 import { EMPTY_STRING } from "../constants/secrets.common";
 import { SecretModel } from "../models/secret";

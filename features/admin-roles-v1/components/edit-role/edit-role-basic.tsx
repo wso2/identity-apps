@@ -38,7 +38,7 @@ import {
     UserStoreDetails,
     UserStoreProperty,
     history
-} from "../../../core";
+} from "../../../admin-core-v1";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores/constants/user-store-constants";
 import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api/roles";
 import { PatchRoleDataInterface, SearchRoleInterface } from "../../models/roles";

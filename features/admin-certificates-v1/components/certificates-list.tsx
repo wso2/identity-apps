@@ -49,7 +49,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
+import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../admin-core-v1";
 import {
     deleteKeystoreCertificate,
     retrieveCertificateAlias,

@@ -30,7 +30,7 @@ import {
     UIConstants,
     history,
     sortList
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import { useUserStores } from "../../../../features/userstores/api";
 import { UserStoresList } from "../../../../features/userstores/components";
 import { UserStoreManagementConstants } from "../../../../features/userstores/constants";

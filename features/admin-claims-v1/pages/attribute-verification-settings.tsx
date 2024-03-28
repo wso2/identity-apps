@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { getConnectorDetails, updateGovernanceConnector } from "../../server-configurations/api";
 import {
     ConnectorPropertyInterface,

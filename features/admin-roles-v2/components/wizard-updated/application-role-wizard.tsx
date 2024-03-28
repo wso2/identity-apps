@@ -43,7 +43,7 @@ import { APIResourceUtils } from "../../../admin-api-resources-v1/utils/api-reso
 import useSubscribedAPIResources from "../../../admin-applications-v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "../../../admin-applications-v1/models/api-authorization";
 import { ApplicationInterface } from "../../../admin-applications-v1/models/application";
-import { history } from "../../../core";
+import { history } from "../../../admin-core-v1";
 import { createRole, useRolesList } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";

@@ -27,8 +27,8 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import isLegacyAuthzRuntime from "../../admin-authorization-v1/utils/get-legacy-authz-runtime";
-import { store } from "../../core";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
+import { store } from "../../admin-core-v1";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../admin-core-v1/hooks/use-request";
 import {
     AddOrganizationInterface,
     BreadcrumbList,

@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { AppState } from "../../../../core/store";
+import { AppState } from "../../../../admin-core-v1/store";
 import { sendParentOrgUserInvite } from "../../../../users/components/guests/api/invite";
 import {
     AdministratorInviteInterface,

@@ -51,7 +51,7 @@ import {
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { deleteOIDCScope } from "../api";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";

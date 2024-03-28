@@ -17,12 +17,12 @@
  */
 
 import { AcceptHeaderValues ,HttpMethods } from "@wso2is/core/models";
-import { store } from "../../core";
+import { store } from "../../admin-core-v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../core/hooks/use-request";
+} from "../../admin-core-v1/hooks/use-request";
 import { IDVPTypeMetadataInterface, IdentityVerificationProviderInterface, UIMetaDataForIDVP } from "../models";
 
 /**

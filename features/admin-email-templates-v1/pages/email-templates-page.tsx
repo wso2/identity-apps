@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AppConstants, UIConstants, history } from "../../core";
+import { AppConstants, UIConstants, history } from "../../admin-core-v1";
 import { deleteLocaleTemplate, getEmailTemplate } from "../api";
 import { EmailTemplateList } from "../components";
 import { EmailTemplate, EmailTemplateDetails } from "../models";

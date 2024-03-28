@@ -36,8 +36,8 @@ import {
     SupportedAuthProtocolTypes
 } from "../../../../admin-applications-v1/models";
 import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
-import { Config, getTechnologyLogos } from "../../../../features/core/configs";
-import { EventPublisher } from "../../../../features/core/utils";
+import { Config, getTechnologyLogos } from "../../../../admin-core-v1/configs";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface

@@ -31,8 +31,8 @@ import {
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Card, Form, Grid } from "semantic-ui-react";
-import { EventPublisher } from "../../../../features/core";
-import { Config } from "../../../../features/core/configs";
+import { EventPublisher } from "../../../../admin-core-v1";
+import { Config } from "../../../../admin-core-v1/configs";
 
 const DEFAULT_REQUESTED_SCOPES: string = "openid profile";
 

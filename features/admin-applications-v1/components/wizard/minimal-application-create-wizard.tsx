@@ -72,8 +72,8 @@ import {
     getTechnologyLogos,
     history,
     store
-} from "../../../core";
-import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
+} from "../../../admin-core-v1";
+import { TierLimitReachErrorModal } from "../../../admin-core-v1/components/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";

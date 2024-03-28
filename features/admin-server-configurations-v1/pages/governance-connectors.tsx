@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../admin-core-v1";
 import { getConnectorCategory } from "../api/governance-connectors";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";

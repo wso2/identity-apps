@@ -47,8 +47,8 @@ import {
     SupportedAuthProtocolTypes
 } from "../../../../admin-applications-v1/models";
 import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
-import { Config } from "../../../../features/core/configs";
-import { EventPublisher } from "../../../../features/core/utils";
+import { Config } from "../../../../admin-core-v1/configs";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import ReactLogoDataURL from "../../../assets/images/icons/react-icon.svg";
 import {
     VerticalStepper,

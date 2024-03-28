@@ -19,8 +19,8 @@
 import orderBy from "lodash-es/orderBy";
 import pull from "lodash-es/pull";
 import moment from "moment";
-import { FeatureConfigInterface } from "../../core/models";
-import { store } from "../../core/store";
+import { FeatureConfigInterface } from "../../admin-core-v1/models";
+import { store } from "../../admin-core-v1/store";
 import { getInsights } from "../api/insights";
 import { 
     DurationOption, 

@@ -43,7 +43,7 @@ import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";
-import { AppConstants, history } from "../../../core";
+import { AppConstants, history } from "../../../admin-core-v1";
 import {
     createApplication,
     getApplicationTemplateData,

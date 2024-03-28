@@ -51,7 +51,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { deleteOrganizationRole } from "../api/organization-role";
 import { OrganizationRoleManagementConstants } from "../constants";
 import { OrganizationRoleListItemInterface } from "../models";

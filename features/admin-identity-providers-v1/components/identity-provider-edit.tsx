@@ -43,7 +43,7 @@ import {
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../extensions";
 import { ConnectionTabTypes } from "../../admin-connections-v1";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { AppState, FeatureConfigInterface } from "../../admin-core-v1";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderAdvanceInterface,

@@ -45,7 +45,7 @@ import {
     ProtectedRoute,
     UIConstants,
     getDefaultLayoutRoutes
-} from "../features/core";
+} from "../admin-core-v1";
 
 /**
  * Default page layout component Prop types.

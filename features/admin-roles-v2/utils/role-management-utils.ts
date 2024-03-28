@@ -21,7 +21,7 @@ import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
-import { AppConstants } from "../../core";
+import { AppConstants } from "../../admin-core-v1";
 import { UserBasicInterface } from "../../users/models/user";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";

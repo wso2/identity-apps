@@ -70,7 +70,7 @@ import {
     EventPublisher,
     ModalWithSidePanel,
     getCertificateIllustrations
-} from "../../../core";
+} from "../../../admin-core-v1";
 import { createIdentityProvider, getIdentityProviderList } from "../../api";
 import { getIdPIcons, getIdentityProviderWizardStepIcons } from "../../configs/ui";
 import { IdentityProviderManagementConstants } from "../../constants";

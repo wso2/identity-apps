@@ -44,7 +44,7 @@ import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core";
+import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../admin-core-v1";
 import { useGetConnectionTemplates } from "../api/connections";
 import {
     AuthenticatorCreateWizardFactory

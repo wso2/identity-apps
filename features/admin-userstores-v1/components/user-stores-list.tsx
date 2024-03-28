@@ -50,7 +50,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";

@@ -66,7 +66,7 @@ import {
     UIConstants, 
     getEmptyPlaceholderIllustrations, 
     history
-} from "../../../core";
+} from "../../../admin-core-v1";
 import { getIDPConnectedApps } from "../../api";
 import { 
     ConnectedAppInterface,

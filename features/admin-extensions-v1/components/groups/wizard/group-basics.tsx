@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { SharedUserStoreConstants, SharedUserStoreUtils } from "../../../../features/core";
+import { SharedUserStoreConstants, SharedUserStoreUtils } from "../../../../admin-core-v1";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../../../../features/groups";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../features/userstores/constants";
 import { commonConfig } from "../../../configs/common";

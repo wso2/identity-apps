@@ -24,8 +24,8 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../../../features/core/hooks/use-request";
-import { store } from "../../../../features/core/store";
+} from "../../../../admin-core-v1/hooks/use-request";
+import { store } from "../../../../admin-core-v1/store";
 import { MyAccountManagementConstants } from "../constants";
 import {
     MyAccountConfigInterface,

@@ -53,7 +53,7 @@ import {
     getEmptyPlaceholderIllustrations,
     getSidePanelIcons,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { getIdPIcons } from "../../identity-providers/configs/ui";
 import { useGovernanceConnectors } from "../../server-configurations/api";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";

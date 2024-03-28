@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants } from "../../admin-core-v1";
 import { getUserStoreList } from "../../userstores/api";
 import { deleteRoleById, getRolesList, searchRoleList } from "../api/roles";
 import { RoleList } from "../components/role-list";

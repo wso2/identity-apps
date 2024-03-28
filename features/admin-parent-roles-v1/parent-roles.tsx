@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { ExtendedFeatureConfigInterface } from "../../extensions/configs/models";
-import { AppConstants, AppState, history } from "../core";
+import { AppConstants, AppState, history } from "../admin-core-v1";
 
 /**
  * Parent role page props interface

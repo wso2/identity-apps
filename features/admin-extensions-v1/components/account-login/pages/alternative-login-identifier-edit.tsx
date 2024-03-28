@@ -66,7 +66,7 @@ import {
     AppConstants,
     AppState,
     history
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import {
     getConnectorDetails,
     updateGovernanceConnector

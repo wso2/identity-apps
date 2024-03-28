@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { getAllLocalClaims } from "../../../../admin-claims-v1/api";
-import { AppState, sortList } from "../../../../core";
+import { AppState, sortList } from "../../../../admin-core-v1";
 import { getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";

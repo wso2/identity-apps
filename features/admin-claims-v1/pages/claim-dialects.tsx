@@ -44,7 +44,7 @@ import {
     getSidePanelIcons,
     getTechnologyLogos,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { AddDialect } from "../components";
 import { ClaimManagementConstants } from "../constants";
 

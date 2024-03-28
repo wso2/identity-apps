@@ -18,8 +18,8 @@
 
 import { useContext } from "react";
 import AuthenticationFlowContext, { AuthenticationFlowContextProps } from "./../context/authentication-flow-context";
-import useUserPreferences from "../../core/hooks/use-user-preferences";
-import { UserPreferencesInterface } from "../../core/models/user-preferences";
+import useUserPreferences from "../../admin-core-v1/hooks/use-user-preferences";
+import { UserPreferencesInterface } from "../../admin-core-v1/models/user-preferences";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 
 /**

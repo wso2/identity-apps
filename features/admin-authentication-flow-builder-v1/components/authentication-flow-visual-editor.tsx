@@ -63,7 +63,7 @@ import {
 } from "../../admin-applications-v1/models/application";
 import { AuthenticatorManagementConstants } from "../../admin-connections-v1";
 import useMultiFactorAuthenticatorDetails from "../../admin-connections-v1/api/use-multi-factor-authentication-details";
-import { history } from "../../core";
+import { history } from "../../admin-core-v1";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";

@@ -62,7 +62,7 @@ import {
     ConfigReducerStateInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,

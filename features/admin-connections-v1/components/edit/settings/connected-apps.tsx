@@ -72,7 +72,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getConnectedApps } from "../../../api/connections";
 import {

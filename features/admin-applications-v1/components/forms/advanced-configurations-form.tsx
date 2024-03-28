@@ -38,7 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { AppState, FeatureConfigInterface, getTechnologyLogos } from "../../../core";
+import { AppState, FeatureConfigInterface, getTechnologyLogos } from "../../../admin-core-v1";
 import { ApplicationManagementConstants } from "../../constants";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";

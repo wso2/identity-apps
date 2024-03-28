@@ -17,13 +17,13 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../../core";
-import { I18nConstants } from "../../core/constants/i18n-constants";
+import { store } from "../../admin-core-v1";
+import { I18nConstants } from "../../admin-core-v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../core/hooks/use-request";
+} from "../../admin-core-v1/hooks/use-request";
 import { OrganizationType } from "../../organizations/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {

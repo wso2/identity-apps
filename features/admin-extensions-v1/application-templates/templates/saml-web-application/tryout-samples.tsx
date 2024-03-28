@@ -36,9 +36,9 @@ import {
     SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
 } from "../../../../admin-applications-v1/models";
-import { getTechnologyLogos } from "../../../../features/core/configs";
-import { AppState } from "../../../../features/core/store";
-import { EventPublisher } from "../../../../features/core/utils";
+import { getTechnologyLogos } from "../../../../admin-core-v1/configs";
+import { AppState } from "../../../../admin-core-v1/store";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface

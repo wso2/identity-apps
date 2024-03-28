@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "../../../../features/core";
+import { AppConstants } from "../../../../admin-core-v1";
 
 /**
  * Class containing Groups constants.

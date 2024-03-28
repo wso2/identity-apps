@@ -41,7 +41,7 @@ import {
     AuthenticatorAccordion,
     FeatureConfigInterface,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { useIdentityProviderList } from "../../identity-providers/api/identity-provider";
 import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";
 import { updateResidentApplicationOutboundProvisioningList } from "../api/outbound-provisioning";

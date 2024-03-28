@@ -28,7 +28,7 @@ import {
     HttpMethods
 } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../core";
+import { store } from "../../admin-core-v1";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
 

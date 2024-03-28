@@ -43,8 +43,8 @@ import {
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations
-} from "../../../../features/core";
-import { EventPublisher } from "../../../../features/core/utils";
+} from "../../../../admin-core-v1";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import {
     GroupsInterface,
     SearchGroupInterface,

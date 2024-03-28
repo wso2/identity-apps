@@ -17,12 +17,12 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { AppConstants } from "../../core/constants/app-constants";
+import { AppConstants } from "../../admin-core-v1/constants/app-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../core/hooks/use-request";
+} from "../../admin-core-v1/hooks/use-request";
 import { CustomTextPreferenceMeta } from "../models/custom-text-preference";
 
 /**

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppConstants } from "../../core";
+import { AppConstants } from "../../admin-core-v1";
 
 const IMAGES_PATH: string = "libs/themes/default/assets/images";
 

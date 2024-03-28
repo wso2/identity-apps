@@ -28,9 +28,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
 import { userConfig, userstoresConfig } from "../../../../../extensions/configs";
-import { AppConstants } from "../../../../core/constants";
-import { history } from "../../../../core/helpers/history";
-import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
+import { AppConstants } from "../../../../admin-core-v1/constants";
+import { history } from "../../../../admin-core-v1/helpers/history";
+import { EventPublisher, SharedUserStoreUtils } from "../../../../admin-core-v1/utils";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import {
     ServerConfigurationsConstants

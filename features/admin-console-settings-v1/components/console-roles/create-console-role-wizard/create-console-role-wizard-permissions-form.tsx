@@ -46,7 +46,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState } from "../../../../core/store";
+import { AppState } from "../../../../admin-core-v1/store";
 import { CreateRolePermissionInterface } from "../../../../roles/models/roles";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";

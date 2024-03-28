@@ -20,7 +20,7 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
-import { UserRoleInterface } from "../../core";
+import { UserRoleInterface } from "../../admin-core-v1";
 import { GroupsInterface, GroupsMemberInterface } from "../../groups";
 import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 

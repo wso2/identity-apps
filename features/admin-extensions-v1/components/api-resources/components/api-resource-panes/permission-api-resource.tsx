@@ -28,7 +28,7 @@ import {
     ListLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../../../features/core";
+import { getEmptyPlaceholderIllustrations } from "../../../../../admin-core-v1";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";

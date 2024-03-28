@@ -39,7 +39,7 @@ import {
     filterList,
     history,
     sortList
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { addExternalClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";

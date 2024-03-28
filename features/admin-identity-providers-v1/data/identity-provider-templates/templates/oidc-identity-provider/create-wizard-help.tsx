@@ -21,8 +21,8 @@ import { CopyInputField, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
-import { store } from "../../../../../core";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { store } from "../../../../../admin-core-v1";
+import { AppState, ConfigReducerStateInterface } from "../../../../../admin-core-v1";
 
 /**
  * Prop types of the component.

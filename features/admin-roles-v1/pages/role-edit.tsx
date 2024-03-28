@@ -23,7 +23,7 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, history } from "../../core";
+import { AppConstants, AppState, history } from "../../admin-core-v1";
 import { getRoleById } from "../api/roles";
 import { EditRole } from "../components/edit-role/edit-role";
 import { RoleConstants } from "../constants/role-constants";

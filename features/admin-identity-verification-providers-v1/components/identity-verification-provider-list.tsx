@@ -42,7 +42,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { deleteIDVP } from "../api";
 import { IDVPListResponseInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";

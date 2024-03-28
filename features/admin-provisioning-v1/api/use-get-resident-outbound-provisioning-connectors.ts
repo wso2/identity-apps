@@ -19,8 +19,8 @@
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
 import { ProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
-import { store } from "../../core/store";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../admin-core-v1/hooks/use-request";
+import { store } from "../../admin-core-v1/store";
 
 /**
  * Hook to get resident application outbound provisioning connectors.

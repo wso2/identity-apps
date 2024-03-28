@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { SimpleUserStoreListItemInterface } from "../../../admin-applications-v1/models";
-import { store } from "../../../core";
+import { store } from "../../../admin-core-v1";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getUserStoreList } from "../../../userstores/api";
 import { updateJITProvisioningConfigs } from "../../api";

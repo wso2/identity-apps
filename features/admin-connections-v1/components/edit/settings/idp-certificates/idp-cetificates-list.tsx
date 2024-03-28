@@ -43,7 +43,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../admin-core-v1";
 import { updateIDPCertificate } from "../../../../api/connections";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 

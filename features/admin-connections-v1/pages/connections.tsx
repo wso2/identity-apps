@@ -49,7 +49,7 @@ import {
     EventPublisher,
     UIConstants,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { OrganizationType } from "../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";

@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { updateSessionManagmentConfigurations, useSessionManagementConfig } from "../api/session-management";
 import { SessionManagementConstants } from "../constants/session-management";
 import {

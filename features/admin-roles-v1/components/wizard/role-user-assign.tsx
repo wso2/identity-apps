@@ -38,7 +38,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
+import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
 import { OrganizationManagementConstants } from "../../../organizations/constants";
 import { getUsersList } from "../../../users/api/users";
 import { UserBasicInterface, UserListInterface } from "../../../users/models/user";

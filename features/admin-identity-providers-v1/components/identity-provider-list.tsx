@@ -46,7 +46,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import {

@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { OrganizationPermissionList } from "./organization-role-permission";
-import { AppState } from "../../../core";
+import { AppState } from "../../../admin-core-v1";
 import { patchOrganizationRoleDetails } from "../../api";
 import { OrganizationResponseInterface, OrganizationRoleInterface, TreeNode } from "../../models";
 

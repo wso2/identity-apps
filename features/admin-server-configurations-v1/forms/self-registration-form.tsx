@@ -20,7 +20,7 @@ import { ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core
 import { Field, Form, FormFieldMessage } from "@wso2is/form";
 import { ConfirmationModal, Text } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { AppState } from "../../core";
+import { AppState } from "../../admin-core-v1";
 import { getUsernameConfiguration } from "../../users/utils/user-management-utils";
 import { useValidationConfigData } from "../../validation/api";
 import get from "lodash-es/get";

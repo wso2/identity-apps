@@ -48,7 +48,7 @@ import {
     UserBasicInterface,
     UserRoleInterface,
     getEmptyPlaceholderIllustrations
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { useServerConfigs } from "../../../../server-configurations";
 import { UserManagementConstants } from "../../../../users/constants";

@@ -36,8 +36,8 @@ import {
     ConnectionInterface,
     ConnectionTemplateInterface
 } from "../../../../admin-connections-v1/models/connection";
-import { FeatureConfigInterface } from "../../../../core/models";
-import { AppState } from "../../../../core/store";
+import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
+import { AppState } from "../../../../admin-core-v1/store";
 
 /**
  * Prop types of the component.

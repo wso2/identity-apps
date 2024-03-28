@@ -20,7 +20,7 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { getOrganizationRoleById } from "../api";
 import { EditOrganizationRole } from "../components/edit-organization-role";
 import { OrganizationResponseInterface, OrganizationRoleInterface } from "../models";

@@ -42,7 +42,7 @@ import {
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";

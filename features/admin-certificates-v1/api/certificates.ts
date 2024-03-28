@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
-import { store } from "../../core/store";
+import { store } from "../../admin-core-v1/store";
 
 /**
  * Initialize an axios Http client.

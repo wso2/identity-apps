@@ -63,7 +63,7 @@ import {
     EventPublisher,
     TierLimitReachErrorModal,
     getCertificateIllustrations
-} from "../../../core";
+} from "../../../admin-core-v1";
 import {
     CertificateType,
     GenericIdentityProviderCreateWizardPropsInterface,

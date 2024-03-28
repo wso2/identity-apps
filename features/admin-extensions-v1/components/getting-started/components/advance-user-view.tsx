@@ -50,7 +50,7 @@ import {
     FeatureConfigInterface,
     history,
     setActiveView
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import { OrganizationType } from "../../../../features/organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../../configs";

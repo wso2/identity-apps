@@ -23,7 +23,7 @@ import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, PreLoader, history } from "../../core";
+import { AppState, PreLoader, history } from "../../admin-core-v1";
 import useOrganizations from "../../organizations/hooks/use-organizations";
 
 /**

@@ -42,7 +42,7 @@ import {
     getEmptyPlaceholderIllustrations,
     getTechnologyLogos,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { InboundProtocolsMeta } from "../components/meta";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { getApplicationTemplateIllustrations } from "../configs/ui";

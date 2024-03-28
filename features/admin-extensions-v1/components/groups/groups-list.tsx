@@ -43,7 +43,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../features/core";
+} from "../../../admin-core-v1";
 import { GroupConstants } from "../../../features/groups/constants";
 import { GroupsInterface } from "../../../features/groups/models";
 import { CONSUMER_USERSTORE } from "../../../features/userstores/constants";

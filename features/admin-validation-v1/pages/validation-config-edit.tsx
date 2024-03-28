@@ -46,7 +46,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,

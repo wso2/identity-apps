@@ -20,9 +20,9 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
-import { store } from "../../core/store";
-import { sortList } from "../../core/utils";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../admin-core-v1/hooks/use-request";
+import { store } from "../../admin-core-v1/store";
+import { sortList } from "../../admin-core-v1/utils";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
 

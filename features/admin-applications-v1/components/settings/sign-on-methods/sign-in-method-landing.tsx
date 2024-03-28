@@ -24,7 +24,7 @@ import { Grid, Segment } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import useAuthenticationFlow from "../../../../admin-authentication-flow-builder-v1/hooks/use-authentication-flow";
 import { ConnectionManagementConstants } from "../../../../admin-connections-v1/constants/connection-constants";
-import { EventPublisher, FeatureConfigInterface } from "../../../../core";
+import { EventPublisher, FeatureConfigInterface } from "../../../../admin-core-v1";
 import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";

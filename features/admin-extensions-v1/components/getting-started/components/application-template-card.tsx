@@ -36,7 +36,7 @@ import {
 import {
     ApplicationTemplateManagementUtils
 } from "../../../../admin-applications-v1/utils/application-template-management-utils";
-import { AppState, EventPublisher } from "../../../../features/core";
+import { AppState, EventPublisher } from "../../../../admin-core-v1";
 
 export type DynamicApplicationContextCardPropsInterface = {
     applications: ApplicationListItemInterface[];

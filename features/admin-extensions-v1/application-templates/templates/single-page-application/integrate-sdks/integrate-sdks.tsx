@@ -37,7 +37,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface
 } from "../../../../../admin-applications-v1/models";
-import { AppState, ConfigReducerStateInterface } from "../../../../../features/core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../admin-core-v1";
 import { SDKInitConfig } from "../../../shared";
 import { AddUserStepContent } from "../../../shared/components";
 import { SupportedSPATechnologyTypes } from "../models";

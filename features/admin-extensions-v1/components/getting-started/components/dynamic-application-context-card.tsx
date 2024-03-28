@@ -34,7 +34,7 @@ import {
 import {
     ApplicationTemplateManagementUtils
 } from "../../../../admin-applications-v1/utils/application-template-management-utils";
-import { AppConstants, AppState, EventPublisher, history } from "../../../../features/core";
+import { AppConstants, AppState, EventPublisher, history } from "../../../../admin-core-v1";
 
 export type DynamicApplicationContextCardPropsInterface = {
     onTemplateSelected: (group: ApplicationTemplateListItemInterface) => void;

@@ -34,7 +34,7 @@ import {
     ConnectionRolesInterface
 } from "../models/connection";
 import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
-import { store } from "../../core";
+import { store } from "../../admin-core-v1";
 import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
 
 /**

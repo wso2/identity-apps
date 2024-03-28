@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Segment } from "semantic-ui-react";
-import { store } from "../../../core";
+import { store } from "../../../admin-core-v1";
 import { getInboundProtocolConfig } from "../../api";
 import { DocumentationConstants } from "../../constants";
 import { ApplicationInterface, SupportedAuthProtocolTypes } from "../../models";

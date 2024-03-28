@@ -50,7 +50,7 @@ import {
     UIConstants,
     getHelpPanelActionIcons,
     toggleHelpPanelVisibility
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import { deleteRoleById, getRolesList, searchRoleList } from "../../../../features/roles/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../features/roles/constants";
 import { SearchRoleInterface } from "../../../../features/roles/models";

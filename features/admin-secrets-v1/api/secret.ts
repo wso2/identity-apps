@@ -20,12 +20,12 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpCodes, HttpMethods } from "@wso2is/core/models";
 import { AxiosInstance, AxiosResponse } from "axios";
-import { store } from "../../core";
+import { store } from "../../admin-core-v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../core/hooks/use-request";
+} from "../../admin-core-v1/hooks/use-request";
 import {
     CreateSecretRequest,
     CreateSecretResponse,

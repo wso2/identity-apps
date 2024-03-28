@@ -17,7 +17,7 @@
  */
 
 import { ExtendedFeatureResourceEndpointsInterface } from "./models";
-import { DeploymentConfigInterface, store } from "../../features/core";
+import { DeploymentConfigInterface, store } from "../../admin-core-v1";
 
 /**
  * Get the resource endpoints for the extended features.

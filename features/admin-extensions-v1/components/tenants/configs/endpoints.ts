@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Config } from "../../../../features/core/configs";
+import { Config } from "../../../../admin-core-v1/configs";
 import { TenantResourceEndpointsInterface } from "../models";
 
 /**

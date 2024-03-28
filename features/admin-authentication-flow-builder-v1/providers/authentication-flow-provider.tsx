@@ -43,7 +43,7 @@ import { AuthenticatorManagementConstants } from "../../admin-connections-v1/con
 import { AuthenticatorMeta } from "../../admin-connections-v1/meta/authenticator-meta";
 import { ConnectionInterface } from "../../admin-connections-v1/models/connection";
 import { ConnectionsManagementUtils } from "../../admin-connections-v1/utils/connection-utils";
-import { AppState } from "../../core/store";
+import { AppState } from "../../admin-core-v1/store";
 import {
     IdentityProviderManagementConstants
 } from "../../identity-providers/constants/identity-provider-management-constants";

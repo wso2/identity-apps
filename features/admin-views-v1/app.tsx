@@ -78,9 +78,9 @@ import {
     getAppViewRoutes,
     getEmptyPlaceholderIllustrations,
     history
-} from "../features/core";
-import { setActiveView } from "../features/core/store/actions";
-import { CommonUtils as ConsoleCommonUtils } from "../features/core/utils";
+} from "../admin-core-v1";
+import { setActiveView } from "../admin-core-v1/store/actions";
+import { CommonUtils as ConsoleCommonUtils } from "../admin-core-v1/utils";
 
 /**
  * Parent component for Admin features inherited from Dashboard layout skeleton.

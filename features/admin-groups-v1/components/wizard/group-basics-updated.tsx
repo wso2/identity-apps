@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
-import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../core";
+import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../admin-core-v1";
 import { RootOnlyComponent } from "../../../organizations/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getAUserStore, getUserStoreList } from "../../../userstores/api/user-stores";

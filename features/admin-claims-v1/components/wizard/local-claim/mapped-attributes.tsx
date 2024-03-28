@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { AppState } from "../../../../core";
+import { AppState } from "../../../../admin-core-v1";
 import { getUserStoreList } from "../../../../userstores/api";
 import { UserStoreListItem } from "../../../../userstores/models/user-stores";
 

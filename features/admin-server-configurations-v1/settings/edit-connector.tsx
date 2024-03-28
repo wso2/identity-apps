@@ -21,7 +21,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { SettingsSection } from "./settings-section";
 import { serverConfigurationConfig } from "../../../extensions/configs";
-import { AppConstants, history } from "../../core";
+import { AppConstants, history } from "../../admin-core-v1";
 import { getSettingsSectionIcons } from "../configs";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../models/governance-connectors";

@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 import { AccessConfiguration } from "../../../admin-applications-v1/components/settings/access-configuration";
 import { ApplicationManagementConstants } from "../../../admin-applications-v1/constants/application-management";
 import { SupportedAuthProtocolTypes } from "../../../admin-applications-v1/models/application-inbound";
-import { AppState } from "../../../core/store";
+import { AppState } from "../../../admin-core-v1/store";
 import useConsoleSettings from "../../hooks/use-console-settings";
 
 /**
