@@ -115,7 +115,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" +
+                                        "../../server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -137,7 +137,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" +
+                                        "../../server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -193,7 +193,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/pages/connector-listing-page"
+                                "../../server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: false,
@@ -474,7 +474,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../../features/organizations/pages/organization-edit")
+                                    import("../../organizations/pages/organization-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -487,7 +487,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../../features/organizations/pages/organizations")),
+                        component: lazy(() => import("../../organizations/pages/organizations")),
                         exact: true,
                         icon: {
                             icon: <BuildingIcon />
@@ -548,7 +548,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
-                        component: lazy(() => import("../../../features/branding/pages/branding")),
+                        component: lazy(() => import("../../branding/pages/branding")),
                         exact: true,
                         icon: {
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
@@ -563,7 +563,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../features/email-management/" + "pages/email-customization")
+                            import("../../email-management/" + "pages/email-customization")
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeIcon fill="black" className="icon" /> },
@@ -577,7 +577,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../features/email-and-sms/" + "pages/email-and-sms")
+                            import("../../email-and-sms/" + "pages/email-and-sms")
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
@@ -591,7 +591,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../features/email-providers" + "/pages/email-providers")
+                            import("../../email-providers" + "/pages/email-providers")
                         ),
                         exact: true,
                         icon: {
@@ -607,7 +607,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.smsProvider",
                         component: lazy(() =>
-                            import("../../../features/sms-providers" + "/pages/sms-providers")
+                            import("../../sms-providers" + "/pages/sms-providers")
                         ),
                         exact: true,
                         icon: {
@@ -686,7 +686,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" +
+                                        "../../server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -706,7 +706,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" +
+                                        "../../server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -727,7 +727,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" +
+                                        "../../server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -748,7 +748,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/pages/connector-listing-page"
+                                "../../server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -772,7 +772,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/pages/connector-edit-page"
+                                        "../../server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -797,7 +797,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/pages/connector-edit-page"
+                                        "../../server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -826,7 +826,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/pages/connector-listing-page"
+                                "../../server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -850,7 +850,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" +
+                                        "../../server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -876,7 +876,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/pages/connector-edit-page"
+                                        "../../server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -900,7 +900,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../../features/validation/pages/validation-config-edit")
+                                    import("../../validation/pages/validation-config-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -914,7 +914,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../../features/private-key-jwt/pages/private-key-jwt-config-edit")
+                                    import("../../private-key-jwt/pages/private-key-jwt-config-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -929,7 +929,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/pages/connector-listing-page"
+                                "../../server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -983,7 +983,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.monitor",
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/pages/connector-edit-page"
+                                "../../server-configurations/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1008,7 +1008,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/pages/connector-edit-page"
+                                "../../server-configurations/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1071,7 +1071,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server/pages/server"
+                                "../../server/pages/server"
                             )
                         ),
                         exact: true,
