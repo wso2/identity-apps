@@ -607,7 +607,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.smsProvider",
                         component: lazy(() =>
-                            import("../../sms-providers" + "/pages/sms-providers")
+                            import("../../admin-sms-providers-v1" + "/pages/sms-providers")
                         ),
                         exact: true,
                         icon: {
