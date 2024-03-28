@@ -33,8 +33,8 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddConsumerUser, AddConsumerUserProps } from "./steps/add-consumer-user";
 import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-summary";
 import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
-import { SCIMConfigs } from "../../../../extensions/configs/scim";
-import { userstoresConfig } from "../../../../extensions/configs/userstores";
+import { SCIMConfigs } from "../../../admin-extensions-v1/configs/scim";
+import { userstoresConfig } from "../../../admin-extensions-v1/configs/userstores";
 import { UserBasicInterface } from "../../../admin-core-v1";
 import {
     GroupsInterface,

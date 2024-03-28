@@ -31,7 +31,7 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import smsProviderConfig from "../../../extensions/configs/sms-provider";
+import smsProviderConfig from "../../admin-extensions-v1/configs/sms-provider";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

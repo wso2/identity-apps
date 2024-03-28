@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { commonConfig } from "../../../extensions/configs";
+import { commonConfig } from "../../admin-extensions-v1/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,

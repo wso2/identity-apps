@@ -27,7 +27,7 @@ import React, { PropsWithChildren, ReactElement, useCallback, useEffect, useMemo
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
+import { identityProviderConfig } from "../../admin-extensions-v1/configs/identity-provider";
 import { useGetAdaptiveAuthTemplates } from "../../admin-applications-v1/api";
 import { ApplicationManagementConstants } from "../../admin-applications-v1/constants/application-management";
 import {

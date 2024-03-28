@@ -40,9 +40,9 @@ import { AddUserGroups } from "./steps/add-user-groups";
 import { AddUserType } from "./steps/add-user-type";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { userstoresConfig } from "../../../../extensions/configs";
-import { administratorConfig } from "../../../../extensions/configs/administrator";
-import { SCIMConfigs } from "../../../../extensions/configs/scim";
+import { userstoresConfig } from "../../../admin-extensions-v1/configs";
+import { administratorConfig } from "../../../admin-extensions-v1/configs/administrator";
+import { SCIMConfigs } from "../../../admin-extensions-v1/configs/scim";
 import { AppState } from "../../../admin-core-v1/store";
 import { GroupsInterface } from "../../../admin-groups-v1";
 import { updateGroupDetails, useGroupList } from "../../../admin-groups-v1/api";

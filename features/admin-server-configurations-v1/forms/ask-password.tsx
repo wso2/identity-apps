@@ -22,7 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../extensions/configs";
+import { serverConfigurationConfig } from "../../admin-extensions-v1/configs";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {

@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../extensions/configs";
+import { serverConfigurationConfig } from "../../admin-extensions-v1/configs";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {

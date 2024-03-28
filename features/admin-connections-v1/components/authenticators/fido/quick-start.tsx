@@ -35,7 +35,7 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import ApplicationSelectionModal from "../../../../../extensions/components/shared/application-selection-modal";
+import ApplicationSelectionModal from "../../../../admin-extensions-v1/components/shared/application-selection-modal";
 
 /**
  * Prop types of the component.

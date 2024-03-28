@@ -29,7 +29,7 @@ import {
     UserPlusIcon,
     VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
-import UsernameValidationIcon from "../../../extensions/assets/images/icons/username-validation-icon.svg";
+import UsernameValidationIcon from "../../admin-extensions-v1/assets/images/icons/username-validation-icon.svg";
 import {
     default as LockRecoverIcon
 } from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
