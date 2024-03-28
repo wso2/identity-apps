@@ -50,7 +50,7 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions";
-import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
+import { FeatureGateConstants } from "../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,

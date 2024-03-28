@@ -27,7 +27,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { userConfig, userstoresConfig } from "../../../../../extensions/configs";
+import { userConfig, userstoresConfig } from "../../../../admin-extensions-v1/configs";
 import { AppConstants } from "../../../../admin-core-v1/constants";
 import { history } from "../../../../admin-core-v1/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../admin-core-v1/utils";

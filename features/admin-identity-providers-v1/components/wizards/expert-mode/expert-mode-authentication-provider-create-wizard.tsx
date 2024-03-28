@@ -39,7 +39,7 @@ import { Grid } from "semantic-ui-react";
 import {
     ExpertModeAuthenticationProviderCreateWizardContent
 } from "./expert-mode-authentication-provider-create-wizard-content";
-import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
+import { identityProviderConfig } from "../../../../admin-extensions-v1/configs/identity-provider";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../admin-core-v1/components";
 import { EventPublisher } from "../../../../admin-core-v1/utils";
 import { createIdentityProvider } from "../../../api";

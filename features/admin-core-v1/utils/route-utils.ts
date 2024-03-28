@@ -25,7 +25,7 @@ import { FeatureStatus } from "@wso2is/access-control";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
-import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
+import { FeatureGateConstants } from "../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 

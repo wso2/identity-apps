@@ -41,7 +41,7 @@ import EnterpriseSAMLIdentityProviderTemplate
 import { ExtensionsManager, identityProviderConfig } from "../../../../extensions";
 import {
     EnterpriseIdentityProviderTemplateExtension
-} from "../../../../extensions/configs/identity-providers-templates";
+} from "../../../admin-extensions-v1/configs/identity-providers-templates";
 import { AppConstants, store } from "../../../admin-core-v1";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 

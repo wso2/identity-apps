@@ -21,7 +21,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
-import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { SCIMConfigs } from "../../admin-extensions-v1/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin-core-v1/models/users";
 import { AppState } from "../../admin-core-v1/store";
 import { useUsersList } from "../../admin-users-v1/api/users";

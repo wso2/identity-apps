@@ -53,7 +53,7 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { userstoresConfig } from "../../../extensions/configs/userstores";
+import { userstoresConfig } from "../../admin-extensions-v1/configs/userstores";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../admin-core-v1";
 import { useGroupList } from "../../admin-groups-v1/api";
 import { GroupsInterface, GroupsMemberInterface } from "../../admin-groups-v1/models";

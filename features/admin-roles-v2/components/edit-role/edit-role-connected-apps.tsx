@@ -46,7 +46,7 @@ import {
     Input, 
     SemanticICONS
 } from "semantic-ui-react";
-import { applicationListConfig } from "../../../../extensions/configs/application-list";
+import { applicationListConfig } from "../../../admin-extensions-v1/configs/application-list";
 import { ApplicationManagementConstants } from "../../../admin-applications-v1/constants";
 import {  
     AppConstants,
