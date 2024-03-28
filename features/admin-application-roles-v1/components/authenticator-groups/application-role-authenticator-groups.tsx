@@ -26,13 +26,13 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthenticatorGroupsList } from "./authenticator-groups-list";
 import { ApplicationRolesConstants } from "../../../../extensions/components/application/constants";
-import { getApplicationDetails } from "../../../applications/api";
+import { getApplicationDetails } from "../../../admin-applications-v1/api";
 import {
     AuthenticatorInterface as ApplicationAuthenticatorInterface,
     ApplicationInterface,
     AuthenticationStepInterface
-} from "../../../applications/models";
-import { AuthenticatorManagementConstants } from "../../../connections";
+} from "../../../admin-applications-v1/models";
+import { AuthenticatorManagementConstants } from "../../../admin-connections-v1";
 import { getAuthenticators } from "../../../identity-providers/api";
 import { AuthenticatorInterface, AuthenticatorTypes } from "../../../identity-providers/models";
 

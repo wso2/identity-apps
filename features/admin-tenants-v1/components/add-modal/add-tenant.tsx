@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { EventPublisher } from "../../../core/utils";
+import { EventPublisher } from "../../../admin-core-v1/utils";
 import { addNewTenant, checkDuplicateTenants } from "../../api";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizardForm, AddTenantWizardFormValuesInterface } from "../forms";

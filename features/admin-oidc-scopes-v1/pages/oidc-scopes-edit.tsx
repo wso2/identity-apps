@@ -42,8 +42,8 @@ import {
     Label,
     Placeholder
 } from "semantic-ui-react";
-import { getAllExternalClaims, getAllLocalClaims } from "../../claims/api";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../core";
+import { getAllExternalClaims, getAllLocalClaims } from "../../admin-claims-v1/api";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../admin-core-v1";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
 import { OIDCScopesManagementConstants } from "../constants";

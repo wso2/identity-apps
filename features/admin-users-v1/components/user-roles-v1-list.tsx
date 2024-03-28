@@ -46,7 +46,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, Input, InputOnChangeData, Label, Modal, Table } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard/user-role-permissions";
-import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../core";
+import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../admin-core-v1";
 import { getOrganizationRoles } from "../../organizations/api";
 import {
     OrganizationResponseInterface,

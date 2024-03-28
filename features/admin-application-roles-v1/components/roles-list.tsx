@@ -28,8 +28,8 @@ import React, { ChangeEvent, ReactElement, ReactNode, SyntheticEvent, useState }
 import { useTranslation } from "react-i18next";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import { RoleBasicInterface } from "../../../extensions/components/groups/models";
-import { history } from "../../core";
-import { AppConstants, UIConstants } from "../../core/constants";
+import { history } from "../../admin-core-v1";
+import { AppConstants, UIConstants } from "../../admin-core-v1/constants";
 
 interface RolesListProps extends IdentifiableComponentInterface {
     rolesList: RoleBasicInterface[];

@@ -51,8 +51,8 @@ import {
     AppConstants,
     AppState,
     FeatureConfigInterface
-} from "../../core";
-import { history } from "../../core/helpers";
+} from "../../admin-core-v1";
+import { history } from "../../admin-core-v1/helpers";
 import { deleteEmailProviderConfigurations, updateEmailProviderConfigurations, useEmailProviderConfig } from "../api";
 import { EmailProviderConstants } from "../constants";
 import {

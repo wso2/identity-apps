@@ -33,8 +33,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../access-control/constants/access-control";
-import { FeatureConfigInterface, history } from "../../../core";
+import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
+import { FeatureConfigInterface, history } from "../../../admin-core-v1";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {

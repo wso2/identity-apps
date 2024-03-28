@@ -29,7 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { AppConstants, AppState, UIConfigInterface } from "../../../core";
+import { AppConstants, AppState, UIConfigInterface } from "../../../admin-core-v1";
 import { OrganizationType } from "../../../organizations/constants";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";

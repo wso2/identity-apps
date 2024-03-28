@@ -20,7 +20,7 @@ import { AsgardeoSPAClient, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../../../features/core";
+import { store } from "../../../../admin-core-v1";
 import {
     UpdateMultipleGovernanceConnectorsInterface
 } from "../../../../features/server-configurations";

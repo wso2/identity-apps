@@ -20,10 +20,10 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { AccessConfiguration } from "../../../applications/components/settings/access-configuration";
-import { ApplicationManagementConstants } from "../../../applications/constants/application-management";
-import { SupportedAuthProtocolTypes } from "../../../applications/models/application-inbound";
-import { AppState } from "../../../core/store";
+import { AccessConfiguration } from "../../../admin-applications-v1/components/settings/access-configuration";
+import { ApplicationManagementConstants } from "../../../admin-applications-v1/constants/application-management";
+import { SupportedAuthProtocolTypes } from "../../../admin-applications-v1/models/application-inbound";
+import { AppState } from "../../../admin-core-v1/store";
 import useConsoleSettings from "../../hooks/use-console-settings";
 
 /**

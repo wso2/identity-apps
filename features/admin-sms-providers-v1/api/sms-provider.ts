@@ -24,8 +24,8 @@ import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../core/hooks/use-request";
-import { store } from "../../core/store";
+} from "../../admin-core-v1/hooks/use-request";
+import { store } from "../../admin-core-v1/store";
 import { SMSProviderConstants } from "../constants";
 import {
     SMSProviderAPIInterface,

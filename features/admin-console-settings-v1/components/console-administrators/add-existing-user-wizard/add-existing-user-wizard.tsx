@@ -27,7 +27,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { UserBasicInterface } from "../../../../core/models/users";
+import { UserBasicInterface } from "../../../../admin-core-v1/models/users";
 import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";

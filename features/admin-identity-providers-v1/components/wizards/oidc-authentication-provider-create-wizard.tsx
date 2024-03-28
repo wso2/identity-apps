@@ -37,7 +37,7 @@ import {
     EventPublisher,
     ModalWithSidePanel,
     store
-} from "../../../core";
+} from "../../../admin-core-v1";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata

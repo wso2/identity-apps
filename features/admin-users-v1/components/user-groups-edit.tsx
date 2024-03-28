@@ -54,7 +54,7 @@ import {
     Table
 } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions/configs/userstores";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../core";
+import { getEmptyPlaceholderIllustrations, updateResources } from "../../admin-core-v1";
 import { useGroupList } from "../../groups/api";
 import { GroupsInterface, GroupsMemberInterface } from "../../groups/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../roles/constants";

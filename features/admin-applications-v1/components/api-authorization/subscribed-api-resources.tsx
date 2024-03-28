@@ -31,16 +31,16 @@ import {
     SegmentedAccordion,
     SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations, history } from "../../../core";
-import { RequestErrorInterface } from "../../../core/hooks/use-request";
+import { getEmptyPlaceholderIllustrations, history } from "../../../admin-core-v1";
+import { RequestErrorInterface } from "../../../admin-core-v1/hooks/use-request";
 import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
-import { APIResourcesConstants } from "../../../api-resources/constants";
-import { APIResourceInterface } from "../../../api-resources/models";
-import { FeatureConfigInterface } from "../../../core";
+import { APIResourcesConstants } from "../../../admin-api-resources-v1/constants";
+import { APIResourceInterface } from "../../../admin-api-resources-v1/models";
+import { FeatureConfigInterface } from "../../../admin-core-v1";
 import { Policy } from "../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../models";
 import {

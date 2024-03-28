@@ -39,11 +39,11 @@ import axios, { AxiosResponse } from "axios";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import useAuthorization from "../../authorization/hooks/use-authorization";
-import { Config } from "../../core/configs/app";
-import { AppConstants, CommonConstants } from "../../core/constants";
-import { DeploymentConfigInterface } from "../../core/models/config";
-import { AppState } from "../../core/store";
+import useAuthorization from "../../admin-authorization-v1/hooks/use-authorization";
+import { Config } from "../../admin-core-v1/configs/app";
+import { AppConstants, CommonConstants } from "../../admin-core-v1/constants";
+import { DeploymentConfigInterface } from "../../admin-core-v1/models/config";
+import { AppState } from "../../admin-core-v1/store";
 import {
     getServerConfigurations,
     setCurrentOrganization,
@@ -52,7 +52,7 @@ import {
     setOrganization,
     setOrganizationType,
     setUserOrganizationId
-} from "../../core/store/actions/organization";
+} from "../../admin-core-v1/store/actions/organization";
 import { OrganizationType } from "../../organizations/constants";
 import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
 import useOrganizations from "../../organizations/hooks/use-organizations";

@@ -42,7 +42,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
 

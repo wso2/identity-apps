@@ -25,8 +25,8 @@ import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch, SetStateAction } from "react";
 import { handleUpdateIDPRoleMappingsError } from "./common-utils";
-import { getAllLocalClaims } from "../../../claims/api";
-import { store } from "../../../core";
+import { getAllLocalClaims } from "../../../admin-claims-v1/api";
+import { store } from "../../../admin-core-v1";
 import { updateClaimsConfigs, updateIDPRoleMappings } from "../../api";
 import {
     IdentityProviderClaimInterface,

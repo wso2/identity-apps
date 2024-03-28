@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../admin-core-v1";
 import { getAuthProtocolMetadata } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate

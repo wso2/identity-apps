@@ -19,7 +19,7 @@
 import { AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
-import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
+import isLegacyAuthzRuntime from "../../admin-authorization-v1/utils/get-legacy-authz-runtime";
 
 /**
  * Response mode fallback.

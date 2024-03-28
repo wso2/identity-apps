@@ -31,7 +31,7 @@ import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Ref } from "semantic-ui-react";
-import { AppConstants, history } from "../../core";
+import { AppConstants, history } from "../../admin-core-v1";
 import "./server.scss";
 
 /**

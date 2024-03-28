@@ -33,15 +33,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Icon, Segment } from "semantic-ui-react";
-import { OutboundProvisioningConfigurationInterface } from "../../applications/models/application";
-import { OutboundProvisioningConnectorInterface } from "../../connections/models/connection";
+import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
+import { OutboundProvisioningConnectorInterface } from "../../admin-connections-v1/models/connection";
 import {
     AppConstants,
     AppState,
     AuthenticatorAccordion,
     FeatureConfigInterface,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { useIdentityProviderList } from "../../identity-providers/api/identity-provider";
 import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";
 import { updateResidentApplicationOutboundProvisioningList } from "../api/outbound-provisioning";

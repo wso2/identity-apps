@@ -23,7 +23,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Header, Label, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../core";
+import { FeatureConfigInterface } from "../../../../admin-core-v1";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
 
 /**

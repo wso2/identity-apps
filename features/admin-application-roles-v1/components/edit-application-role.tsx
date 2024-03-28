@@ -24,8 +24,8 @@ import ApplicationRoleGroups from "./application-role-groups";
 import ApplicationRoleInvitedUserGroups from "./application-role-invited-user-groups";
 import ApplicationRoleAuthenticatorGroups from "./authenticator-groups/application-role-authenticator-groups";
 import { ExtendedFeatureConfigInterface } from "../../../extensions";
-import { URLFragmentTypes } from "../../applications/models";
-import { AppState, history } from "../../core";
+import { URLFragmentTypes } from "../../admin-applications-v1/models";
+import { AppState, history } from "../../admin-core-v1";
 
 interface EditApplicationRolesProps extends IdentifiableComponentInterface {
     appId: string;

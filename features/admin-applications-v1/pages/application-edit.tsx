@@ -45,7 +45,7 @@ import {
     history,
     setHelpPanelDocsContentURL,
     toggleHelpPanelVisibility
-} from "../../core";
+} from "../../admin-core-v1";
 import { IdentityProviderConstants } from "../../identity-providers/constants";
 import { useGetApplication } from "../api/use-get-application";
 import { EditApplication } from "../components/edit-application";

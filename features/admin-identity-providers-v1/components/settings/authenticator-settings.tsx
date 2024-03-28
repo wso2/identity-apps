@@ -34,8 +34,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AccordionTitleProps, CheckboxProps, Grid, Icon } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../extensions/configs/identity-provider";
-import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../core";
-import { AuthenticatorAccordion } from "../../../core/components";
+import { AppState, ConfigReducerStateInterface, getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
+import { AuthenticatorAccordion } from "../../../admin-core-v1/components";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -64,7 +64,7 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
-import { ConnectionManagementConstants } from "../../../connections";
+import { ConnectionManagementConstants } from "../../../admin-connections-v1";
 
 /**
  * Proptypes for the identity providers settings component.

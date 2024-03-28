@@ -24,8 +24,8 @@ import { AxiosError } from "axios";
 import groupBy from "lodash-es/groupBy";
 import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
-import { getTechnologyLogos } from "../../core/configs";
-import { store } from "../../core/store";
+import { getTechnologyLogos } from "../../admin-core-v1/configs";
+import { store } from "../../admin-core-v1/store";
 import {
     getApplicationTemplateList
 } from "../api";

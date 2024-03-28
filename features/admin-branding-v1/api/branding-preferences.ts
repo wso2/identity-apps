@@ -20,8 +20,8 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { I18nConstants } from "../../core/constants";
-import { store } from "../../core/store";
+import { I18nConstants } from "../../admin-core-v1/constants";
+import { store } from "../../admin-core-v1/store";
 import { OrganizationType } from "../../organizations/constants/organization-constants";
 import { BrandingPreferencesConstants } from "../constants";
 import {

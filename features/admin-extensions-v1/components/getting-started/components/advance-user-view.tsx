@@ -32,16 +32,16 @@ import {
     getApplicationDetails,
     getInboundProtocolConfig,
     useApplicationList
-} from "../../../../features/applications/api";
+} from "../../../../admin-applications-v1/api";
 import {
     MinimalAppCreateWizard
-} from "../../../../features/applications/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "../../../../features/applications/constants";
+} from "../../../../admin-applications-v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../features/applications/models";
-import { ApplicationManagementUtils } from "../../../../features/applications/utils/application-management-utils";
+} from "../../../../admin-applications-v1/models";
+import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
 import {
     AppConstants,
     AppState,
@@ -50,7 +50,7 @@ import {
     FeatureConfigInterface,
     history,
     setActiveView
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import { OrganizationType } from "../../../../features/organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../../configs";

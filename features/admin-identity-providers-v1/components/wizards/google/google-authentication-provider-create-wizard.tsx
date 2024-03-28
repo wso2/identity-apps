@@ -47,8 +47,8 @@ import {
     ConfigReducerStateInterface,
     EventPublisher,
     ModalWithSidePanel
-} from "../../../../core";
-import { TierLimitReachErrorModal } from "../../../../core/components/tier-limit-reach-error-modal";
+} from "../../../../admin-core-v1";
+import { TierLimitReachErrorModal } from "../../../../admin-core-v1/components/tier-limit-reach-error-modal";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata

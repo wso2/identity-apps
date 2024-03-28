@@ -29,12 +29,12 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import InvitedAdministratorsTable from "./invited-administrators-table";
-import { AccessControlConstants } from "../../../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     UIConstants,
     getEmptyPlaceholderIllustrations
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { deleteParentOrgInvite } from "../../../../admin-users-v1/components/guests/api/invite";
 import { UserManagementConstants } from "../../../../admin-users-v1/constants";

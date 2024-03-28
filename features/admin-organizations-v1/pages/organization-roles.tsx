@@ -46,7 +46,7 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { CreateGroupMemberInterface } from "../../groups/models";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "../../roles/models/roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";

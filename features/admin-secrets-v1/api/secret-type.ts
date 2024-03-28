@@ -20,7 +20,7 @@ import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpCodes, HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
-import { store } from "../../core";
+import { store } from "../../admin-core-v1";
 import {
     CreateSecretTypeRequestModel,
     DeleteSecretTypeRequestModel,

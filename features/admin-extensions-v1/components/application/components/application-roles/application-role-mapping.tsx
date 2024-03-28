@@ -31,12 +31,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { updateApplicationDetails } from "../../../../../features/applications/api";
+import { updateApplicationDetails } from "../../../../../admin-applications-v1/api";
 import {
     AuthenticatorInterface as ApplicationAuthenticatorInterface,
     ApplicationInterface,
     IdpRoleMappingInterface
-} from "../../../../../features/applications/models";
+} from "../../../../../admin-applications-v1/models";
 import { getAuthenticators } from "../../../../../features/identity-providers/api";
 import { AuthenticatorInterface, AuthenticatorTypes } from "../../../../../features/identity-providers/models";
 import { ApplicationRolesConstants } from "../../constants";

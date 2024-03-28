@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -35,7 +35,7 @@ import {
     UIConstants,
     filterList,
     sortList
-} from "../../core";
+} from "../../admin-core-v1";
 import { listCertificateAliases } from "../api";
 import { CertificatesList, ImportCertificate } from "../components";
 

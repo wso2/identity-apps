@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { FeatureConfigInterface } from "../../core";
+import { FeatureConfigInterface } from "../../admin-core-v1";
 import { APIResourceCategories, APIResourcesConstants } from "../constants/api-resources-constants";
 
 export class APIResourceUtils {

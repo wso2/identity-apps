@@ -53,9 +53,9 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../../applications/models/application";
-import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
-import { ConnectionManagementConstants } from "../../../connections/constants/connection-constants";
+} from "../../../admin-applications-v1/models/application";
+import { AdaptiveScriptUtils } from "../../../admin-applications-v1/utils/adaptive-script-utils";
+import { ConnectionManagementConstants } from "../../../admin-connections-v1/constants/connection-constants";
 import { getAuthenticatorIcons } from "../../../identity-providers/configs/ui";
 import { GenericAuthenticatorInterface } from "../../../identity-providers/models";
 import {

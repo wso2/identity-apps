@@ -32,9 +32,9 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { useGetApplication } from "../../../applications/api/use-get-application";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../applications/models/application";
-import { AuthenticatorManagementConstants } from "../../../connections/constants/autheticator-constants";
+import { useGetApplication } from "../../../admin-applications-v1/api/use-get-application";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../admin-applications-v1/models/application";
+import { AuthenticatorManagementConstants } from "../../../admin-connections-v1/constants/autheticator-constants";
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface

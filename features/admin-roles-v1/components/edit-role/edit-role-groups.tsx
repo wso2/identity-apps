@@ -55,7 +55,7 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { getEmptyPlaceholderIllustrations, updateResources } from "../../../admin-core-v1";
 import { getGroupList } from "../../../groups/api";
 import {
     GroupListInterface,

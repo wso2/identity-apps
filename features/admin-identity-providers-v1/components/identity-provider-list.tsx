@@ -37,8 +37,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Header, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
-import { getApplicationDetails } from "../../applications/api";
-import { ApplicationBasicInterface } from "../../applications/models";
+import { getApplicationDetails } from "../../admin-applications-v1/api";
+import { ApplicationBasicInterface } from "../../admin-applications-v1/models";
 import {
     AppConstants,
     AppState,
@@ -46,7 +46,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { deleteIdentityProvider, getIDPConnectedApps } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import {

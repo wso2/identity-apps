@@ -36,9 +36,9 @@ import ApplicationSelectionModal
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
-} from "../../../../connections/models/connection";
-import { FeatureConfigInterface } from "../../../../core/models";
-import { AppState } from "../../../../core/store";
+} from "../../../../admin-connections-v1/models/connection";
+import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
+import { AppState } from "../../../../admin-core-v1/store";
 
 interface HyprAuthenticatorQuickStartPropsInterface extends IdentifiableComponentInterface {
     /**

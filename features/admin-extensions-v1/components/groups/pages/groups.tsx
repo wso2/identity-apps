@@ -36,15 +36,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../../features/access-control/constants/access-control";
+import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations
-} from "../../../../features/core";
-import { EventPublisher } from "../../../../features/core/utils";
+} from "../../../../admin-core-v1";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import {
     GroupsInterface,
     SearchGroupInterface,

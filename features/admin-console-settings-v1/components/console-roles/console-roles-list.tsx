@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import ConsoleRolesListLayout from "./console-roles-list-layout";
 import CreateConsoleRoleWizard from "./create-console-role-wizard/create-console-role-wizard";
-import { UIConstants } from "../../../core/constants/ui-constants";
+import { UIConstants } from "../../../admin-core-v1/constants/ui-constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import useConsoleRoles from "../../hooks/use-console-roles";
 

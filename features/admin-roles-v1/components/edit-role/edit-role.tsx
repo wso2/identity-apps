@@ -27,7 +27,7 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
-import { AppState, FeatureConfigInterface, history } from "../../../core";
+import { AppState, FeatureConfigInterface, history } from "../../../admin-core-v1";
 import { UserManagementConstants } from "../../../admin-users-v1/constants";
 
 /**

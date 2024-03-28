@@ -23,7 +23,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState } from "../../../../../../features/core/store";
+import { AppState } from "../../../../../../admin-core-v1/store";
 import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";

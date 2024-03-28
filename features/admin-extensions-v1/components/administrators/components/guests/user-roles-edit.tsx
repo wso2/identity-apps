@@ -46,7 +46,7 @@ import {
     AppState,
     FeatureConfigInterface,
     updateResources
-} from "../../../../../features/core";
+} from "../../../../../admin-core-v1";
 import { getRolesList } from "../../../../../features/roles/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../../../features/roles/constants";
 import { RealmConfigInterface } from "../../../../../features/server-configurations/models";

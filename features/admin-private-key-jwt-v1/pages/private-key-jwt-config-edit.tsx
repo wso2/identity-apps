@@ -38,7 +38,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message } from "semantic-ui-react";
-import { AppConstants, history } from "../../core";
+import { AppConstants, history } from "../../admin-core-v1";
 import { updateJWTConfig, useTokenReuseConfigData } from "../api";
 
 /**

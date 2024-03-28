@@ -63,7 +63,7 @@ import {
     UserStoreDetails,
     history,
     store
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import { getRoleById, searchRoleList } from "../../../../features/roles/api/roles";
 import { SearchRoleInterface } from "../../../../features/roles/models/roles";
 import { useServerConfigs } from "../../../../features/server-configurations";

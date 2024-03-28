@@ -18,7 +18,7 @@
 
 import { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
-import { RequestErrorInterface, RequestResultInterface } from "../../../features/core/hooks/use-request";
+import { RequestErrorInterface, RequestResultInterface } from "../../../admin-core-v1/hooks/use-request";
 import { GovernanceConnectorInterface } from "../../../features/server-configurations";
 import { ValidationFormInterface } from "../../../features/validation/models";
 

@@ -28,8 +28,8 @@ import {
     Message
 } from "semantic-ui-react";
 import { userstoresConfig } from "../../../../../extensions/configs/userstores";
-import { AppState } from "../../../../core";
-import { SharedUserStoreUtils } from "../../../../core/utils";
+import { AppState } from "../../../../admin-core-v1";
+import { SharedUserStoreUtils } from "../../../../admin-core-v1/utils";
 import { getUsersList } from "../../../../admin-users-v1/api/users";
 import { UserListInterface } from "../../../../admin-users-v1/models/user";
 import { getConfiguration, getUsernameConfiguration } from "../../../../admin-users-v1/utils";

@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { MarketingConsentModal } from "./marketing-consent-modal";
-import { AppState } from "../../../../../features/core";
+import { AppState } from "../../../../../admin-core-v1";
 import { useUserConsentList } from "../api";
 import { ConsentResponseInterface, ConsentStatus, ConsentTypes } from "../models";
 import { getMarketingConsentStatusFromLocalStorage, setMarketingConsentStatusToLocalStorage } from "../utils";

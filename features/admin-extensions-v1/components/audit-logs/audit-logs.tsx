@@ -21,7 +21,7 @@ import { EmptyPlaceholder,
     LinkButton,
     Message,
     PrimaryButton } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "../../../features/core";
+import { getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
 import React, {
     MutableRefObject,
     ReactElement,

@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { SimpleUserStoreListItemInterface } from "../../../../applications/models";
+import { SimpleUserStoreListItemInterface } from "../../../../admin-applications-v1/models";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../../../admin-userstores-v1/api";
 import { updateJITProvisioningConfigs } from "../../../api/connections";

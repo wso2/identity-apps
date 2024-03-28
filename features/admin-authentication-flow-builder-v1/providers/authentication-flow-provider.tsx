@@ -28,22 +28,22 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
-import { useGetAdaptiveAuthTemplates } from "../../applications/api";
-import { ApplicationManagementConstants } from "../../applications/constants/application-management";
+import { useGetAdaptiveAuthTemplates } from "../../admin-applications-v1/api";
+import { ApplicationManagementConstants } from "../../admin-applications-v1/constants/application-management";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../applications/models/application";
-import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
-import { SignInMethodUtils } from "../../applications/utils/sign-in-method-utils";
-import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
-import { AuthenticatorMeta } from "../../connections/meta/authenticator-meta";
-import { ConnectionInterface } from "../../connections/models/connection";
-import { ConnectionsManagementUtils } from "../../connections/utils/connection-utils";
-import { AppState } from "../../core/store";
+} from "../../admin-applications-v1/models/application";
+import { AdaptiveScriptUtils } from "../../admin-applications-v1/utils/adaptive-script-utils";
+import { SignInMethodUtils } from "../../admin-applications-v1/utils/sign-in-method-utils";
+import { AuthenticatorManagementConstants } from "../../admin-connections-v1/constants/autheticator-constants";
+import { AuthenticatorMeta } from "../../admin-connections-v1/meta/authenticator-meta";
+import { ConnectionInterface } from "../../admin-connections-v1/models/connection";
+import { ConnectionsManagementUtils } from "../../admin-connections-v1/utils/connection-utils";
+import { AppState } from "../../admin-core-v1/store";
 import {
     IdentityProviderManagementConstants
 } from "../../identity-providers/constants/identity-provider-management-constants";

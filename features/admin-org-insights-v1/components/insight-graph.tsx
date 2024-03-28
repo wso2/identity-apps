@@ -27,7 +27,7 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import { CustomGraphTooltip } from "./custom-graph-tooltip";
-import { AppState, getThemeVariables } from "../../core";
+import { AppState, getThemeVariables } from "../../admin-core-v1";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
 import { ChartDataPoint, DurationOption, GraphLineType, InsightsData, ResourceType } from "../models/insights";

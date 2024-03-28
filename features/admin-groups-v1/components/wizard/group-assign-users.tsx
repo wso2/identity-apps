@@ -41,7 +41,7 @@ import {
     UserListInterface,
     getEmptyPlaceholderIllustrations,
     getUsersList
-} from "../../../core";
+} from "../../../admin-core-v1";
 import { GroupsMemberInterface } from "../../models";
 
 /**

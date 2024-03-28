@@ -44,7 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Label } from "semantic-ui-react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
-import { getProfileInformation } from "../../authentication/store";
+import { getProfileInformation } from "../../admin-authentication-v1/store";
 import {
     AppConstants,
     AppState,
@@ -53,7 +53,7 @@ import {
     getEmptyPlaceholderIllustrations,
     getSidePanelIcons,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import { getIdPIcons } from "../../identity-providers/configs/ui";
 import { useGovernanceConnectors } from "../../admin-server-configurations-v1/api";
 import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";

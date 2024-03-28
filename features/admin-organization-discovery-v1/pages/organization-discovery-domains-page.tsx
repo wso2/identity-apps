@@ -48,7 +48,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -57,7 +57,7 @@ import {
     FeatureConfigInterface,
     UIConstants,
     history
-} from "../../core";
+} from "../../admin-core-v1";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";

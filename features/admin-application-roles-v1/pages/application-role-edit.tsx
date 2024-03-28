@@ -33,7 +33,7 @@ import {
     ApplicationRolesResponseInterface,
     RoleListItemInterface
 } from "../../../extensions/components/application/models";
-import { AppConstants, history } from "../../core";
+import { AppConstants, history } from "../../admin-core-v1";
 import EditApplicationRoles from "../components/edit-application-role";
 
 type ApplicationRoleEditPageProps = IdentifiableComponentInterface

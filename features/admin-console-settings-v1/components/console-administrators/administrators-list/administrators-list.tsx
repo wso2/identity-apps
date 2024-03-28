@@ -30,7 +30,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
-import { AccessControlConstants } from "../../../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -39,7 +39,7 @@ import {
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 import { PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";

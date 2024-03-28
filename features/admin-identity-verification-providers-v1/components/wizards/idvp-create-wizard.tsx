@@ -35,7 +35,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
-import { ModalWithSidePanel } from "../../../core";
+import { ModalWithSidePanel } from "../../../admin-core-v1";
 import {
     createIdentityVerificationProvider,
     useIDVPTemplate,

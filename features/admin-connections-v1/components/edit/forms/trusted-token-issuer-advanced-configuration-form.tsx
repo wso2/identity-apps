@@ -25,9 +25,9 @@ import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { IdentityAppsApiException } from "../../../../../../../../modules/core/dist/types/exceptions";
-import { DropdownOptionsInterface } from "../../../../applications/components/settings";
-import { getExternalClaims } from "../../../../claims/api";
-import { ClaimManagementConstants } from "../../../../claims/constants";
+import { DropdownOptionsInterface } from "../../../../admin-applications-v1/components/settings";
+import { getExternalClaims } from "../../../../admin-claims-v1/api";
+import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";

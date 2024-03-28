@@ -37,15 +37,15 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
 import {
     AppConstants,
     AppState,
     EventPublisher,
     UIConstants,
     history
-} from "../../core";
-import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+} from "../../admin-core-v1";
+import { getEmptyPlaceholderIllustrations } from "../../admin-core-v1/configs/ui";
 import { OrganizationIcon } from "../configs/ui";
 import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 import {

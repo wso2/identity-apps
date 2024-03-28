@@ -29,7 +29,7 @@ import {
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Header, Label, SemanticICONS } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../admin-core-v1";
 import { RoleAudienceTypes } from "../constants";
 
 const DEFAULT_SEARCH_OPERATOR: string = "co";

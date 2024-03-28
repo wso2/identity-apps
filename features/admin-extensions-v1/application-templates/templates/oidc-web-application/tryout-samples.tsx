@@ -28,16 +28,16 @@ import { Button, Divider, Form, Icon, InputOnChangeData } from "semantic-ui-reac
 import { dotNetSDKInstallerConfigCode, tomcatOIDCSamplePropertiesFileCode } from "./code-blocks";
 import { SDKMeta } from "./meta";
 import { SupportedTraditionalOIDCAppTechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../features/applications/api";
+import { updateAuthProtocolConfig } from "../../../../admin-applications-v1/api";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "../../../../features/applications/models";
-import { ApplicationManagementUtils } from "../../../../features/applications/utils/application-management-utils";
-import { Config, getTechnologyLogos } from "../../../../features/core/configs";
-import { EventPublisher } from "../../../../features/core/utils";
+} from "../../../../admin-applications-v1/models";
+import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
+import { Config, getTechnologyLogos } from "../../../../admin-core-v1/configs";
+import { EventPublisher } from "../../../../admin-core-v1/utils";
 import {
     VerticalStepper,
     VerticalStepperStepInterface

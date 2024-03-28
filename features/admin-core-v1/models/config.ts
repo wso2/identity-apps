@@ -27,11 +27,11 @@ import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
-} from "../../applications/models";
-import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
-import { CertificatesResourceEndpointsInterface } from "../../certificates";
-import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
-import { ConsoleSettingsResourceEndpointsInterface } from "../../console-settings/models/endpoints";
+} from "../../admin-applications-v1/models";
+import { BrandingPreferenceResourceEndpointsInterface } from "../../admin-branding-v1/models/endpoints";
+import { CertificatesResourceEndpointsInterface } from "../../admin-certificates-v1";
+import { ClaimResourceEndpointsInterface } from "../../admin-claims-v1/models/endpoints";
+import { ConsoleSettingsResourceEndpointsInterface } from "../../admin-console-settings-v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";
 import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";

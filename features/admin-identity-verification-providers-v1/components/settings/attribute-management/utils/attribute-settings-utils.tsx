@@ -23,7 +23,7 @@ import { I18n } from "@wso2is/i18n";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
-import { getEmptyPlaceholderIllustrations, store } from "../../../../../core";
+import { getEmptyPlaceholderIllustrations, store } from "../../../../../admin-core-v1";
 
 /**
  * Handle error scenarios of getting all local claims.

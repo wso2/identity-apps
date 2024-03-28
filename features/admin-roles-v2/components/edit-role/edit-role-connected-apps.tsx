@@ -47,7 +47,7 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { applicationListConfig } from "../../../../extensions/configs/application-list";
-import { ApplicationManagementConstants } from "../../../applications/constants";
+import { ApplicationManagementConstants } from "../../../admin-applications-v1/constants";
 import {  
     AppConstants,
     AppState, 
@@ -55,7 +55,7 @@ import {
     UIConstants, 
     getEmptyPlaceholderIllustrations, 
     history
-} from "../../../core";
+} from "../../../admin-core-v1";
 
 /**
  * Proptypes for the advance settings component.

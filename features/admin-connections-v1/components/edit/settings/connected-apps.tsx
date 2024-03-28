@@ -52,18 +52,18 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { applicationListConfig } from "../../../../../extensions/configs/application-list";
-import { getApplicationDetails } from "../../../../applications/api";
-import { ApplicationManagementConstants } from "../../../../applications/constants";
+import { getApplicationDetails } from "../../../../admin-applications-v1/api";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
 import {
     ApplicationAccessTypes,
     ApplicationBasicInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../applications/models";
+} from "../../../../admin-applications-v1/models";
 import {
     ApplicationTemplateManagementUtils
-} from "../../../../applications/utils/application-template-management-utils";
-import { ConsoleSettingsModes } from "../../../../console-settings/models/ui";
+} from "../../../../admin-applications-v1/utils/application-template-management-utils";
+import { ConsoleSettingsModes } from "../../../../admin-console-settings-v1/models/ui";
 import {
     AppConstants,
     AppState,
@@ -72,7 +72,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getConnectedApps } from "../../../api/connections";
 import {

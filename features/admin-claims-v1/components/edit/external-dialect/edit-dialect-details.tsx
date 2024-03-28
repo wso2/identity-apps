@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../admin-core-v1";
 import { updateADialect } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 import { resolveType } from "../../../utils";

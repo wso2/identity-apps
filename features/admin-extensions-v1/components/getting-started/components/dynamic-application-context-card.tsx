@@ -25,16 +25,16 @@ import { useSelector } from "react-redux";
 import { Card, Grid } from "semantic-ui-react";
 import { CategoryItem } from "./app-category-item";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
-import { getApplicationTemplateIllustrations } from "../../../../features/applications/configs/ui";
+import { getApplicationTemplateIllustrations } from "../../../../admin-applications-v1/configs/ui";
 import CustomApplicationTemplate from
-    "../../../../features/applications/data/application-templates/templates/custom-application/custom-application.json";
+    "../../../../admin-applications-v1/data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateListItemInterface
-} from "../../../../features/applications/models";
+} from "../../../../admin-applications-v1/models";
 import {
     ApplicationTemplateManagementUtils
-} from "../../../../features/applications/utils/application-template-management-utils";
-import { AppConstants, AppState, EventPublisher, history } from "../../../../features/core";
+} from "../../../../admin-applications-v1/utils/application-template-management-utils";
+import { AppConstants, AppState, EventPublisher, history } from "../../../../admin-core-v1";
 
 export type DynamicApplicationContextCardPropsInterface = {
     onTemplateSelected: (group: ApplicationTemplateListItemInterface) => void;

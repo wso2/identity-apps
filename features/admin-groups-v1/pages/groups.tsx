@@ -41,7 +41,7 @@ import {
     UserStoreProperty,
     getAUserStore,
     getEmptyPlaceholderIllustrations
-} from "../../core";
+} from "../../admin-core-v1";
 import { RootOnlyComponent } from "../../organizations/components";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../admin-userstores-v1/api";

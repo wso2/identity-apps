@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
-import { AppConstants, history } from "../../../core";
+import { AppConstants, history } from "../../../admin-core-v1";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
 import { EmailTemplate, EmailTemplateFormModes, EmailTemplateType } from "../../models";
 import { EmailTemplateEditor } from "../email-template-editor";

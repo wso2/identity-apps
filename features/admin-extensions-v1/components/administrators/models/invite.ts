@@ -17,7 +17,7 @@
  */
 
 import { RolesInterface } from "@wso2is/core/models";
-import { UserBasicInterface } from "../../../../features/core";
+import { UserBasicInterface } from "../../../../admin-core-v1";
 
 
 export interface InviteValidationInterface {

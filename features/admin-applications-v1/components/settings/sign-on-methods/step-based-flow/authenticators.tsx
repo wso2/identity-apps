@@ -20,15 +20,15 @@ import Chip from "@oxygen-ui/react/Chip";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
-import { AppState } from "../../../../../core";
+import { AppState } from "../../../../../admin-core-v1";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
-import { AuthenticatorManagementConstants } from "../../../../../connections";
-import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
+import { AuthenticatorManagementConstants } from "../../../../../admin-connections-v1";
+import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";

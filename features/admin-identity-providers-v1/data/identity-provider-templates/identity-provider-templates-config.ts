@@ -42,7 +42,7 @@ import { ExtensionsManager, identityProviderConfig } from "../../../../extension
 import {
     EnterpriseIdentityProviderTemplateExtension
 } from "../../../../extensions/configs/identity-providers-templates";
-import { AppConstants, store } from "../../../core";
+import { AppConstants, store } from "../../../admin-core-v1";
 import { IdentityProviderTemplateCategoryInterface, IdentityProviderTemplateGroupInterface } from "../../models";
 
 /**

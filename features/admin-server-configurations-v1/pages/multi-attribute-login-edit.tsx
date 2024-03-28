@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Ref } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { getConnectorDetails } from "../api/governance-connectors";
 import { DynamicGovernanceConnector } from "../components/governance-connectors/dynamic-governance-connector";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";

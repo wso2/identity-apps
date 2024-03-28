@@ -21,7 +21,7 @@ import {
     AdaptiveAuthTemplateCategoryListItemInterface,
     ApplicationInterface,
     AuthenticationSequenceInterface
-} from "../../applications/models/application";
+} from "../../admin-applications-v1/models/application";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";

@@ -41,8 +41,8 @@ import {
     organizationReducer
 } from "./reducers";
 import { routeReducer } from "./reducers/routes";
-import { applicationReducer } from "../../applications/store";
-import { commonAuthenticateReducerInitialState } from "../../authentication/store";
+import { applicationReducer } from "../../admin-applications-v1/store";
+import { commonAuthenticateReducerInitialState } from "../../admin-authentication-v1/store";
 import { identityProviderReducer } from "../../identity-providers/store";
 import {
     AuthReducerStateInterface,

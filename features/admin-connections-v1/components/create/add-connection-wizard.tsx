@@ -45,7 +45,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import CreateConnectionWizardHelp from "./create-wizard-help";
-import { EventPublisher } from "../../../core";
+import { EventPublisher } from "../../../admin-core-v1";
 import { createConnection, useGetConnectionMetaData } from "../../api/connections";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {

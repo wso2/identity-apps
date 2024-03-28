@@ -55,18 +55,18 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import {
     ExtendedClaimInterface
-} from "../../../../features/applications/components/settings/attribute-management";
-import { ApplicationManagementConstants } from "../../../../features/applications/constants";
+} from "../../../../admin-applications-v1/components/settings/attribute-management";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
 import {
     getAllLocalClaims,
     updateAClaim
-} from "../../../../features/claims/api/claims";
-import { ClaimManagementConstants } from "../../../../features/claims/constants";
+} from "../../../../admin-claims-v1/api/claims";
+import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";
 import {
     AppConstants,
     AppState,
     history
-} from "../../../../features/core";
+} from "../../../../admin-core-v1";
 import {
     getConnectorDetails,
     updateGovernanceConnector

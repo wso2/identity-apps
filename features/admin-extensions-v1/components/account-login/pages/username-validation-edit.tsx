@@ -46,8 +46,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Ref } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../../../features/applications/constants";
-import { AppConstants, history } from "../../../../features/core";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
+import { AppConstants, history } from "../../../../admin-core-v1";
 import { UsernameValidationConstants } from "../constants/username-validation-constants";
 import { UsernameTypes } from "../models";
 

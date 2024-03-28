@@ -20,8 +20,8 @@ import { UserGroupIcon } from "@oxygen-ui/react-icons";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import React, { lazy } from "react";
 import { CommonConfig } from "./models";
-import { getSidePanelIcons } from "../../features/core/configs/ui";
-import { AppConstants } from "../../features/core/constants";
+import { getSidePanelIcons } from "../../admin-core-v1/configs/ui";
+import { AppConstants } from "../../admin-core-v1/constants";
 
 const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
 
@@ -109,7 +109,7 @@ export const commonConfig: CommonConfig = {
             children: [
                 {
                     component: lazy(() =>
-                        import("../../features/api-resources/pages/api-resource-edit")
+                        import("../../admin-api-resources-v1/pages/api-resource-edit")
                     ),
                     exact: true,
                     id: "apiResources-edit",
@@ -120,7 +120,7 @@ export const commonConfig: CommonConfig = {
                 },
                 {
                     component: lazy(() =>
-                        import("../../features/api-resources/pages/api-resources-internal-list")
+                        import("../../admin-api-resources-v1/pages/api-resources-internal-list")
                     ),
                     exact: true,
                     id: "apiResources-list",
@@ -131,7 +131,7 @@ export const commonConfig: CommonConfig = {
                 }
             ],
             component: lazy(() =>
-                import("../../features/api-resources/pages/api-resources")
+                import("../../admin-api-resources-v1/pages/api-resources")
             ),
             exact: true,
             icon: {

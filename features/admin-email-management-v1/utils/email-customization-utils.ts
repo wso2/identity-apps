@@ -21,10 +21,10 @@ import {
     BrandingPreferenceThemeInterface,
     PredefinedThemes,
     ThemeConfigInterface
-} from "../../branding/models";
-import { CustomTextInterface } from "../../branding/models/custom-text-preference";
-import { BrandingPreferenceUtils } from "../../branding/utils";
-import processCustomTextTemplateLiterals from "../../branding/utils/process-custom-text-template-literals";
+} from "../../admin-branding-v1/models";
+import { CustomTextInterface } from "../../admin-branding-v1/models/custom-text-preference";
+import { BrandingPreferenceUtils } from "../../admin-branding-v1/utils";
+import processCustomTextTemplateLiterals from "../../admin-branding-v1/utils/process-custom-text-template-literals";
 
 export class EmailCustomizationUtils {
 

@@ -33,18 +33,18 @@ import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
-import { getApplicationList } from "../../../../applications/api";
-import { ApplicationList } from "../../../../applications/components/application-list";
-import { ApplicationListInterface } from "../../../../applications/models";
+import { getApplicationList } from "../../../../admin-applications-v1/api";
+import { ApplicationList } from "../../../../admin-applications-v1/components/application-list";
+import { ApplicationListInterface } from "../../../../admin-applications-v1/models";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
-} from "../../../../connections/models/connection";
-import { AdvancedSearchWithBasicFilters } from "../../../../core/components";
-import { AppConstants } from "../../../../core/constants";
-import { history } from "../../../../core/helpers";
-import { FeatureConfigInterface } from "../../../../core/models";
-import { AppState } from "../../../../core/store";
+} from "../../../../admin-connections-v1/models/connection";
+import { AdvancedSearchWithBasicFilters } from "../../../../admin-core-v1/components";
+import { AppConstants } from "../../../../admin-core-v1/constants";
+import { history } from "../../../../admin-core-v1/helpers";
+import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
+import { AppState } from "../../../../admin-core-v1/store";
 
 /**
  * Prop types of the component.

@@ -45,8 +45,8 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../../extensions";
-import { FeatureConfigInterface } from "../../../core/models/config";
-import { AppState } from "../../../core/store";
+import { FeatureConfigInterface } from "../../../admin-core-v1/models/config";
+import { AppState } from "../../../admin-core-v1/store";
 import {
     IdentityProviderManagementConstants
 } from "../../../identity-providers/constants/identity-provider-management-constants";

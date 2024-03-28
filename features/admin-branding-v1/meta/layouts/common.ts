@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Config } from "../../../core/configs";
+import { Config } from "../../../admin-core-v1/configs";
 
 /**
  * Data set required to generate layout html code.

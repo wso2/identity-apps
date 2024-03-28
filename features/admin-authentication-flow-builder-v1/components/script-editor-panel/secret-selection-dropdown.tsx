@@ -33,8 +33,8 @@ import React, { MouseEvent, ReactElement, SVGProps, SyntheticEvent, useEffect, u
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import SecretDeleteConfirmationModal from "./secret-delete-confirmation-modal";
-import { FeatureConfigInterface } from "../../../core/models";
-import { AppState } from "../../../core/store";
+import { FeatureConfigInterface } from "../../../admin-core-v1/models";
+import { AppState } from "../../../admin-core-v1/store";
 import { useGetSecrets } from "../../../admin-secrets-v1/api/secret";
 import AddSecretWizard from "../../../admin-secrets-v1/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "../../../admin-secrets-v1/constants/secrets.common";

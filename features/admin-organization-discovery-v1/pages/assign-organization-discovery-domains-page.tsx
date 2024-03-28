@@ -22,8 +22,8 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, FeatureConfigInterface, history } from "../../core";
-import { AppState } from "../../core/store";
+import { AppConstants, FeatureConfigInterface, history } from "../../admin-core-v1";
+import { AppState } from "../../admin-core-v1/store";
 import AddOrganizationDiscoveryDomains from "../components/add-organization-discovery-domains";
 import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 

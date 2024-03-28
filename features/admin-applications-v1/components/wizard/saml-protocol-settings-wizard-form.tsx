@@ -24,7 +24,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../admin-core-v1";
 import { Grid } from "semantic-ui-react";
 
 /**

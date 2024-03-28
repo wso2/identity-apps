@@ -44,7 +44,7 @@ import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { commonConfig } from "../../../../../../extensions/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../../../admin-core-v1";
 import { updateIDPCertificate } from "../../../../api/connections";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";

@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     PageLayout,
     ResourceTab } from "@wso2is/react-components";
-import { AppState, FeatureConfigInterface } from "../../../../features/core";
+import { AppState, FeatureConfigInterface } from "../../../../admin-core-v1";
 import React, {
     FunctionComponent,
     ReactElement,

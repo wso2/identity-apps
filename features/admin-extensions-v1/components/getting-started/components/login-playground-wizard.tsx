@@ -33,11 +33,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { createApplication, getApplicationList } from "../../../../features/applications/api";
-import { ApplicationManagementConstants } from "../../../../features/applications/constants";
-import { ApplicationListInterface, MainApplicationInterface } from "../../../../features/applications/models";
-import { AppState, EventPublisher } from "../../../../features/core";
-import { TierLimitReachErrorModal } from "../../../../features/core/components/tier-limit-reach-error-modal";
+import { createApplication, getApplicationList } from "../../../../admin-applications-v1/api";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
+import { ApplicationListInterface, MainApplicationInterface } from "../../../../admin-applications-v1/models";
+import { AppState, EventPublisher } from "../../../../admin-core-v1";
+import { TierLimitReachErrorModal } from "../../../../admin-core-v1/components/tier-limit-reach-error-modal";
 import { getUserDetails } from "../../../../features/users/api/users";
 import { AddConsumerUserWizard } from "../../../../features/users/components/wizard/add-consumer-user-wizard";
 import LoginApplicationTemplate from

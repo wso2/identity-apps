@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Header } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../core";
+import { FeatureConfigInterface } from "../../../admin-core-v1";
 import { patchScopesOfAuthorizedAPI } from "../../api/api-authorization";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import {

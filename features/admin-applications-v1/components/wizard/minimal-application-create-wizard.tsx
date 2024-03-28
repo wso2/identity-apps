@@ -59,8 +59,8 @@ import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizar
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
-import { AccessControlConstants } from "../../../access-control/constants/access-control";
-import useAuthorization from "../../../authorization/hooks/use-authorization";
+import { AccessControlConstants } from "../../../admin-access-control-v1/constants/access-control";
+import useAuthorization from "../../../admin-authorization-v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -72,8 +72,8 @@ import {
     getTechnologyLogos,
     history,
     store
-} from "../../../core";
-import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
+} from "../../../admin-core-v1";
+import { TierLimitReachErrorModal } from "../../../admin-core-v1/components/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";

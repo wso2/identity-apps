@@ -27,7 +27,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import { applicationConfig, commonConfig } from "../../../../extensions";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
+import { AppState, ConfigReducerStateInterface } from "../../../admin-core-v1";
 import { getAvailableNameIDFormats } from "../../../identity-providers/components/utils/saml-idp-utils";
 import {
     ApplicationInterface,

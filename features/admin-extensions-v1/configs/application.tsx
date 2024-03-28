@@ -36,22 +36,22 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
-import { APIAuthorization } from "../../features/applications/components/api-authorization/api-authorization";
+import { APIAuthorization } from "../../admin-applications-v1/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "../../features/applications/components/settings";
-import { ApplicationManagementConstants } from "../../features/applications/constants";
+} from "../../admin-applications-v1/components/settings";
+import { ApplicationManagementConstants } from "../../admin-applications-v1/constants";
 import {
     ApplicationInterface,
     ApplicationTabTypes,
     SupportedAuthProtocolTypes,
     additionalSpProperty
-} from "../../features/applications/models";
-import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
-import { EventPublisher, FeatureConfigInterface } from "../../features/core";
-import { AppConstants } from "../../features/core/constants";
+} from "../../admin-applications-v1/models";
+import { ClaimManagementConstants } from "../../admin-claims-v1/constants/claim-management-constants";
+import { EventPublisher, FeatureConfigInterface } from "../../admin-core-v1";
+import { AppConstants } from "../../admin-core-v1/constants";
 import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";

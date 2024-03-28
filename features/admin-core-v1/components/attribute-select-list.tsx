@@ -22,7 +22,7 @@ import sortBy from "lodash-es/sortBy";
 import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ExtendedExternalClaimInterface } from "../../applications/components/settings";
+import { ExtendedExternalClaimInterface } from "../../admin-applications-v1/components/settings";
 
 interface AttributeSelectListPropsInterface extends TestableComponentInterface {
     setAvailableExternalClaims: (claims: ExtendedExternalClaimInterface[]) => void;

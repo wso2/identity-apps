@@ -27,12 +27,12 @@ import React, {
     useState
 } from "react";
 import { useSelector } from "react-redux";
-import useGetBrandingPreference from "../../branding/api/use-get-branding-preference";
-import { BrandingPreferencesConstants } from "../../branding/constants";
-import useBrandingPreference from "../../branding/hooks/use-branding-preference";
-import { BrandingPreferenceThemeInterface } from "../../branding/models";
-import { BrandingPreferenceUtils } from "../../branding/utils";
-import { AppState, store } from "../../core";
+import useGetBrandingPreference from "../../admin-branding-v1/api/use-get-branding-preference";
+import { BrandingPreferencesConstants } from "../../admin-branding-v1/constants";
+import useBrandingPreference from "../../admin-branding-v1/hooks/use-branding-preference";
+import { BrandingPreferenceThemeInterface } from "../../admin-branding-v1/models";
+import { BrandingPreferenceUtils } from "../../admin-branding-v1/utils";
+import { AppState, store } from "../../admin-core-v1";
 import { EmailTemplate } from "../models";
 import { EmailCustomizationUtils } from "../utils";
 

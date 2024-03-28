@@ -211,7 +211,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "console:develop.features.sidePanel.categories.application",
                         children: [
                             {
-                                component: lazy(() => import("../../applications/pages/application-template")),
+                                component: lazy(() => import("../../admin-applications-v1/pages/application-template")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -223,7 +223,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../applications/pages/application-edit")),
+                                component: lazy(() => import("../../admin-applications-v1/pages/application-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -235,7 +235,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../applications/pages/applications")),
+                        component: lazy(() => import("../../admin-applications-v1/pages/applications")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().applications
@@ -280,7 +280,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../connections/pages/connection-templates")
+                                    import("../../admin-connections-v1/pages/connection-templates")
                                 ),
                                 exact: true,
                                 icon: {
@@ -294,7 +294,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../connections/pages/connection-edit")
+                                    import("../../admin-connections-v1/pages/connection-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -307,7 +307,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../connections/pages/connections")),
+                        component: lazy(() => import("../../admin-connections-v1/pages/connections")),
                         exact: true,
                         icon: {
                             icon: <NodesIcon />
@@ -370,7 +370,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.attributeManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../claims/pages/local-claims-edit")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/local-claims-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -382,7 +382,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/local-claims")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/local-claims")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -394,7 +394,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/external-dialect-edit")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/external-dialect-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -406,7 +406,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/attribute-mappings")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/attribute-mappings")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -418,7 +418,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../claims/pages/attribute-verification-settings")),
+                                component: lazy(() => import("../../admin-claims-v1/pages/attribute-verification-settings")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -430,7 +430,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../claims/pages/claim-dialects")),
+                        component: lazy(() => import("../../admin-claims-v1/pages/claim-dialects")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().claims
@@ -548,7 +548,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
-                        component: lazy(() => import("../../branding/pages/branding")),
+                        component: lazy(() => import("../../admin-branding-v1/pages/branding")),
                         exact: true,
                         icon: {
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
@@ -577,7 +577,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../email-and-sms/" + "pages/email-and-sms")
+                            import("../../admin-email-and-sms-v1/" + "pages/email-and-sms")
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
@@ -1139,7 +1139,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         children: [
                             {
-                                component: lazy(() => import("../../console-settings/pages/console-roles-edit-page")),
+                                component: lazy(() => import("../../admin-console-settings-v1/pages/console-roles-edit-page")),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "consoleRolesEdit",
@@ -1150,7 +1150,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() => {
-                                    return import("../../console-settings/pages/console-administrator-edit-page");
+                                    return import("../../admin-console-settings-v1/pages/console-administrator-edit-page");
                                 }),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
@@ -1161,7 +1161,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../console-settings/pages/console-settings-page")),
+                        component: lazy(() => import("../../admin-console-settings-v1/pages/console-settings-page")),
                         exact: true,
                         icon: {
                             icon: <GearIcon fill="black" className="icon" />
@@ -1335,7 +1335,7 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("../../authentication/pages/sign-out")),
+            component: lazy(() => import("../../admin-authentication-v1/pages/sign-out")),
             icon: null,
             id: "authLayoutLogout",
             name: "Logout",

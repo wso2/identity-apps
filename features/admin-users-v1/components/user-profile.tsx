@@ -53,8 +53,8 @@ import { SCIMConfigs, commonConfig, userConfig } from "../../../extensions";
 import { TenantInfo } from "../../../extensions/components/tenants/models";
 import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
 import { administratorConfig } from "../../../extensions/configs/administrator";
-import { AccessControlConstants } from "../../access-control/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AccessControlConstants } from "../../admin-access-control-v1/constants/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
 import {
     OperationValueInterface,

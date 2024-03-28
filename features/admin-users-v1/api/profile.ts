@@ -21,8 +21,8 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { Config } from "../../core/configs";
-import { store } from "../../core/store";
+import { Config } from "../../admin-core-v1/configs";
+import { store } from "../../admin-core-v1/store";
 
 /**
  * Initialize an axios Http client.

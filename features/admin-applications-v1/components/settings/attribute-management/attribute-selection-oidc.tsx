@@ -55,14 +55,14 @@ import {
     SelectedDialectInterface
 } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
-import { ClaimManagementConstants } from "../../../../claims/constants";
+import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";
 import {
     AppConstants,
     AppState,
     ConfigReducerStateInterface,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../../../core";
+} from "../../../../admin-core-v1";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
