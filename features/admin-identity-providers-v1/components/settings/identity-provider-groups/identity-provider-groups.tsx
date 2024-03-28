@@ -39,7 +39,7 @@ import {
     IdentityProviderClaimMappingInterface,
     IdentityProviderClaimsInterface,
     IdentityProviderInterface
-} from "../../../../identity-providers/models/identity-provider";
+} from "../../../../admin-identity-providers-v1/models/identity-provider";
 import { updateClaimsConfigs, useClaimConfigs } from "../../../api/identity-provider";
 import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 

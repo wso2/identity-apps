@@ -26,7 +26,7 @@ import { Modal } from "semantic-ui-react";
 import { OutboundProvisioningConnectorSetupForm } from "./outbound-provisioning-connector-setup-form";
 import { getApplicationWizardStepIcons } from "../../admin-applications-v1/configs/ui";
 import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
-import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";
+import { IdentityProviderInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 
 /**
  * Interface for the outbound provisioning IDP setup wizard props.

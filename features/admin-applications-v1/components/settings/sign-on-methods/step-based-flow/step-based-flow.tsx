@@ -32,12 +32,12 @@ import { AuthenticatorManagementConstants } from "../../../../../admin-connectio
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../admin-core-v1";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../identity-providers/constants/identity-provider-management-constants";
+} from "../../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     SupportedAuthenticators
-} from "../../../../../identity-providers/models";
+} from "../../../../../admin-identity-providers-v1/models";
 import { getSignInFlowIcons } from "../../../../configs/ui";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {

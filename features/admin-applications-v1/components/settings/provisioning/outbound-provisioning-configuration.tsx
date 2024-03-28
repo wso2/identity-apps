@@ -31,11 +31,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "../../../../admin-core-v1";
-import { getIdentityProviderList } from "../../../../identity-providers/api/identity-provider";
+import { getIdentityProviderList } from "../../../../admin-identity-providers-v1/api/identity-provider";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
-} from "../../../../identity-providers/models/identity-provider";
+} from "../../../../admin-identity-providers-v1/models/identity-provider";
 import { updateApplicationConfigurations } from "../../../api";
 import {
     ApplicationInterface,

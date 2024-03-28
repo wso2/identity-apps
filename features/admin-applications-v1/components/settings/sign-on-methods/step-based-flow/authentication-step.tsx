@@ -30,11 +30,11 @@ import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/
 import { getGeneralIcons } from "../../../../../admin-core-v1";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../identity-providers/constants/identity-provider-management-constants";
+} from "../../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
-} from "../../../../../identity-providers/models/identity-provider";
+} from "../../../../../admin-identity-providers-v1/models/identity-provider";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
 
 /**

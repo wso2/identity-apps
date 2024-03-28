@@ -29,11 +29,11 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
-import { useOIDCScopesList } from "../../../../oidc-scopes/api/oidc-scopes";
+import { useOIDCScopesList } from "../../../../admin-oidc-scopes-v1/api/oidc-scopes";
 import {
     OIDCScopesClaimsListInterface,
     OIDCScopesListInterface
-} from "../../../../oidc-scopes/models/oidc-scopes";
+} from "../../../../admin-oidc-scopes-v1/models/oidc-scopes";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
@@ -50,7 +50,7 @@ import { applicationConfig } from "../../../../../extensions";
 import { AccessControlConstants } from "../../../../admin-access-control-v1/constants/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin-claims-v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin-core-v1";
-import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
+import { SubjectAttributeListItem } from "../../../../admin-identity-providers-v1/components/settings";
 import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,

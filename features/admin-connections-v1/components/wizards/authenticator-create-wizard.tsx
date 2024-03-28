@@ -38,7 +38,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorTemplateSelection } from "./steps/authenticator-template-selection";
-import { AuthenticatorSettings } from "../../../identity-providers/components/wizards/steps";
+import { AuthenticatorSettings } from "../../../admin-identity-providers-v1/components/wizards/steps";
 import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator

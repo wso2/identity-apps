@@ -33,7 +33,7 @@ import { history } from "../../../../admin-core-v1/helpers";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface
-} from "../../../../features/identity-providers/models/identity-provider";
+} from "../../../../admin-identity-providers-v1/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 
 /**

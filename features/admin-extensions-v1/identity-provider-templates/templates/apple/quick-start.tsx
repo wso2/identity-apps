@@ -26,7 +26,7 @@ import CustomizeStepsIllustration from "./assets/customize-steps.png";
 import {
     IdentityProviderInterface,
     IdentityProviderTemplateInterface
-} from "../../../../features/identity-providers/models/identity-provider";
+} from "../../../../admin-identity-providers-v1/models/identity-provider";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
 import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
 

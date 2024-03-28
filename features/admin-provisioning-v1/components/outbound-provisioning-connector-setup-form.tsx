@@ -25,8 +25,8 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
 import { OutboundProvisioningConnectorInterface } from "../../admin-connections-v1/models/connection";
-import { getIdentityProviderDetail } from "../../identity-providers/api/identity-provider";
-import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";
+import { getIdentityProviderDetail } from "../../admin-identity-providers-v1/api/identity-provider";
+import { IdentityProviderInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 
 /**
  * Proptypes for the outbound provisioning connector setup form component.

@@ -22,7 +22,7 @@ import {
     ApplicationInterface,
     AuthenticationSequenceInterface
 } from "../../admin-applications-v1/models/application";
-import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { GenericAuthenticatorInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 import { VisualEditorFlowNodeMetaInterface } from "../models/visual-editor";
 

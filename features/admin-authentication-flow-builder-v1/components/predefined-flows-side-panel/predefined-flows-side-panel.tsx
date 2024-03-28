@@ -56,8 +56,8 @@ import {
 } from "../../../admin-applications-v1/models/application";
 import { AdaptiveScriptUtils } from "../../../admin-applications-v1/utils/adaptive-script-utils";
 import { ConnectionManagementConstants } from "../../../admin-connections-v1/constants/connection-constants";
-import { getAuthenticatorIcons } from "../../../identity-providers/configs/ui";
-import { GenericAuthenticatorInterface } from "../../../identity-providers/models";
+import { getAuthenticatorIcons } from "../../../admin-identity-providers-v1/configs/ui";
+import { GenericAuthenticatorInterface } from "../../../admin-identity-providers-v1/models";
 import {
     getConnectorDetails,
     updateGovernanceConnector

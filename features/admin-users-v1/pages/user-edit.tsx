@@ -54,7 +54,7 @@ import {
     getSidePanelIcons,
     history
 } from "../../admin-core-v1";
-import { getIdPIcons } from "../../identity-providers/configs/ui";
+import { getIdPIcons } from "../../admin-identity-providers-v1/configs/ui";
 import { useGovernanceConnectors } from "../../admin-server-configurations-v1/api";
 import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin-server-configurations-v1/models";

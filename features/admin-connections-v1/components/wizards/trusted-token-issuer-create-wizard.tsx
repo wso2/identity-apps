@@ -72,7 +72,7 @@ import {
     IdentityProviderInterface,
     TrsutedTokenIssuerWizardStep,
     TrustedTokenIssuerWizardStepInterface
-} from "../../../identity-providers/models";
+} from "../../../admin-identity-providers-v1/models";
 import { createConnection } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";

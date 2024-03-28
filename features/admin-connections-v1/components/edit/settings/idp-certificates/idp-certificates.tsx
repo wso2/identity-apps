@@ -34,7 +34,7 @@ import {
     SwitcherOptionProps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityProviderManagementConstants } from "../../../../../identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../../../../admin-identity-providers-v1/constants";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
