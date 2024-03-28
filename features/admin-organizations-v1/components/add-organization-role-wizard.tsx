@@ -31,7 +31,7 @@ import { AssignGroupsUsers } from "../../roles/components/wizard/assign-groups-u
 import { getRolesWizardStepIcons } from "../../roles/configs/ui";
 import { TreeNode } from "../../roles/models/permission";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "../../roles/models/roles";
-import { UserBasicInterface } from "../../users/models/user";
+import { UserBasicInterface } from "../../admin-users-v1/models/user";
 
 /**
  * Interface which captures create role props.

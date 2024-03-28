@@ -36,9 +36,9 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
-import { deleteParentOrgInvite } from "../../../../users/components/guests/api/invite";
-import { UserManagementConstants } from "../../../../users/constants";
-import { UserInviteInterface } from "../../../../users/models";
+import { deleteParentOrgInvite } from "../../../../admin-users-v1/components/guests/api/invite";
+import { UserManagementConstants } from "../../../../admin-users-v1/constants";
+import { UserInviteInterface } from "../../../../admin-users-v1/models";
 import { PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";
 import { UserStoreDropdownItem } from "../../../../admin-userstores-v1/models";
 import useAdministrators from "../../../hooks/use-administrators";

@@ -63,8 +63,8 @@ import {
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList } from "../../../roles/api/roles";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../roles/constants/role-constants";
-import { UserRolePermissions } from "../../../users/components/user-role-permissions";
-import { RolePermissions } from "../../../users/components/wizard/user-role-permissions";
+import { UserRolePermissions } from "../../../admin-users-v1/components/user-role-permissions";
+import { RolePermissions } from "../../../admin-users-v1/components/wizard/user-role-permissions";
 import { GroupsInterface } from "../../models";
 
 interface GroupRolesV1PropsInterface extends TestableComponentInterface {

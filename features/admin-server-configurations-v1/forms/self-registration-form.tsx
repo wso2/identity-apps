@@ -21,7 +21,7 @@ import { Field, Form, FormFieldMessage } from "@wso2is/form";
 import { ConfirmationModal, Text } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AppState } from "../../core";
-import { getUsernameConfiguration } from "../../users/utils/user-management-utils";
+import { getUsernameConfiguration } from "../../admin-users-v1/utils/user-management-utils";
 import { useValidationConfigData } from "../../admin-validation-v1/api";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";

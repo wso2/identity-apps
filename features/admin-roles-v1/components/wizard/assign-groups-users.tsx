@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { AddRoleUsers } from "./role-user-assign";
 import { AssignGroups } from "../../../core";
 import { GroupsInterface } from "../../../groups/models/groups";
-import { UserBasicInterface } from "../../../users/models/user";
+import { UserBasicInterface } from "../../../admin-users-v1/models/user";
 
 /**
  * Captures props needed for the assign roles and users component.

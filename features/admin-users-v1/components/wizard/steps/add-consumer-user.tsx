@@ -30,9 +30,9 @@ import {
 import { userstoresConfig } from "../../../../../extensions/configs/userstores";
 import { AppState } from "../../../../core";
 import { SharedUserStoreUtils } from "../../../../core/utils";
-import { getUsersList } from "../../../../users/api/users";
-import { UserListInterface } from "../../../../users/models/user";
-import { getConfiguration, getUsernameConfiguration } from "../../../../users/utils";
+import { getUsersList } from "../../../../admin-users-v1/api/users";
+import { UserListInterface } from "../../../../admin-users-v1/models/user";
+import { getConfiguration, getUsernameConfiguration } from "../../../../admin-users-v1/utils";
 import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin-userstores-v1/constants/user-store-constants";
 import { useValidationConfigData } from "../../../../admin-validation-v1/api";
 import { ValidationFormInterface } from "../../../../admin-validation-v1/models";

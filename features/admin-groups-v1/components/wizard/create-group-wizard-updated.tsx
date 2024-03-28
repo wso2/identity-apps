@@ -49,7 +49,7 @@ import {
 import { getRolesList, updateRole } from "../../../roles/api";
 import { RoleConstants } from "../../../roles/constants";
 import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../roles/models";
-import { UserBasicInterface } from "../../../users/models";
+import { UserBasicInterface } from "../../../admin-users-v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../admin-userstores-v1/constants";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";

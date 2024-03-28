@@ -251,7 +251,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.userManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../users/pages/user-edit")),
+                                component: lazy(() => import("../../admin-users-v1/pages/user-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -263,7 +263,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../users/pages/users")),
+                        component: lazy(() => import("../../admin-users-v1/pages/users")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().users

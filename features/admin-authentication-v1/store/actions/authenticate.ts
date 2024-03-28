@@ -36,7 +36,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { Dispatch } from "redux";
 import { Config } from "../../../core/configs";
 import { store } from "../../../core/store";
-import { getProfileInfo, getProfileSchemas } from "../../../users/api";
+import { getProfileInfo, getProfileSchemas } from "../../../admin-users-v1/api";
 
 /**
  *  Gets profile information by making an API call

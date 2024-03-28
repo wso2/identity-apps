@@ -71,7 +71,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { getProfileSchemas } from "../../users/api";
+import { getProfileSchemas } from "../../admin-users-v1/api";
 import { getUserStores } from "../../admin-userstores-v1/api/user-stores";
 import { UserStoreListItem } from "../../admin-userstores-v1/models/user-stores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";

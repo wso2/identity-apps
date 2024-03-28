@@ -46,7 +46,7 @@ import { Header, Segment } from "semantic-ui-react";
 import { GroupBasicsUpdated } from "./group-basics-updated";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "../../../core";
-import { UserManagementUtils } from "../../../users/utils";
+import { UserManagementUtils } from "../../../admin-users-v1/utils";
 import { GroupsMemberInterface } from "../../models";
 
 /**

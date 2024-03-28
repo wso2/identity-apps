@@ -43,7 +43,7 @@ import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
-import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
+import { getUsersResourceEndpoints } from "../../admin-users-v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../admin-userstores-v1/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../admin-validation-v1/configs";
 import { getApprovalsResourceEndpoints } from "../../admin-workflow-approvals-v1";

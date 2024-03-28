@@ -41,7 +41,7 @@ import {
     history
 } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../../users/constants";
+import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 import { PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";
 import { UserStoreDropdownItem } from "../../../../admin-userstores-v1/models";
 import useAdministrators from "../../../hooks/use-administrators";

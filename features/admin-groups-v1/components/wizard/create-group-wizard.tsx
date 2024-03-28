@@ -40,7 +40,7 @@ import {
 } from "../../../organizations/models";
 import { getRolesList, updateRolesBulk } from "../../../roles/api";
 import { PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../roles/models";
-import { WizardStepInterface } from "../../../users/models";
+import { WizardStepInterface } from "../../../admin-users-v1/models";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
 import {
