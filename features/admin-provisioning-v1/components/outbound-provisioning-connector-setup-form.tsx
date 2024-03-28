@@ -23,7 +23,7 @@ import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { OutboundProvisioningConfigurationInterface } from "../../applications/models/application";
+import { OutboundProvisioningConfigurationInterface } from "../../admin-applications-v1/models/application";
 import { OutboundProvisioningConnectorInterface } from "../../connections/models/connection";
 import { getIdentityProviderDetail } from "../../identity-providers/api/identity-provider";
 import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";

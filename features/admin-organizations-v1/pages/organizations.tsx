@@ -49,7 +49,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../applications/constants";
+import { ApplicationManagementConstants } from "../../admin-applications-v1/constants";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,

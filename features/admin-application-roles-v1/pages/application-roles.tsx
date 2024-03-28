@@ -33,8 +33,8 @@ import { Dispatch } from "redux";
 import { Icon, Input } from "semantic-ui-react";
 import { getAllApplicationRolesList } from "../../../extensions/components/groups/api";
 import { ApplicationRoleInterface } from "../../../extensions/components/groups/models";
-import { getApplicationList } from "../../applications/api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "../../applications/models";
+import { getApplicationList } from "../../admin-applications-v1/api";
+import { ApplicationListInterface, ApplicationListItemInterface } from "../../admin-applications-v1/models";
 import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { ApplicationRolesList } from "../components";
 

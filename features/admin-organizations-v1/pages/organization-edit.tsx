@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../applications/constants";
+import { ApplicationManagementConstants } from "../../admin-applications-v1/constants";
 import useSignIn from "../../authentication/hooks/use-sign-in";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";

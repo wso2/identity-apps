@@ -33,7 +33,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confirmation-modal";
 import ScriptEditorPanel from "./script-editor-panel";
-import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
+import { AdaptiveScriptUtils } from "../../../admin-applications-v1/utils/adaptive-script-utils";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
 

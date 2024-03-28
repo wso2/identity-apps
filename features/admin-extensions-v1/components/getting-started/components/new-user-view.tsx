@@ -28,12 +28,12 @@ import { ApplicationTemplateCard } from "./application-template-card";
 import { PlaygroundApplicationCard } from "./playground-app-card";
 import {
     MinimalAppCreateWizard
-} from "../../../../features/applications/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "../../../../features/applications/constants";
+} from "../../../../admin-applications-v1/components/wizard/minimal-application-create-wizard";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../../../../features/applications/models";
+} from "../../../../admin-applications-v1/models";
 import { AppState, ConfigReducerStateInterface } from "../../../../features/core";
 import { FeatureConfigInterface } from "../../../../features/core/models";
 

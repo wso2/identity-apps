@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { AuthenticationSequenceInterface } from "../../../applications/models/application";
+import { AuthenticationSequenceInterface } from "../../../admin-applications-v1/models/application";
 
 /**
  * Proptypes for the basic login flow change confirmation modal component.

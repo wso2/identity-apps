@@ -60,7 +60,7 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface
-} from "../../applications/models/application";
+} from "../../admin-applications-v1/models/application";
 import { AuthenticatorManagementConstants } from "../../connections";
 import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
 import { history } from "../../core";

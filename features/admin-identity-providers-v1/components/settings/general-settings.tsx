@@ -27,8 +27,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
-import { getApplicationDetails } from "../../../applications/api";
-import { ApplicationBasicInterface } from "../../../applications/models";
+import { getApplicationDetails } from "../../../admin-applications-v1/api";
+import { ApplicationBasicInterface } from "../../../admin-applications-v1/models";
 import {
     deleteIdentityProvider,
     getIDPConnectedApps,

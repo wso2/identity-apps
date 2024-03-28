@@ -46,7 +46,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import SecretSelectionDropdown from "./secret-selection-dropdown";
-import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
+import { AdaptiveScriptUtils } from "../../../admin-applications-v1/utils/adaptive-script-utils";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { SecretModel } from "../../../secrets/models/secret";

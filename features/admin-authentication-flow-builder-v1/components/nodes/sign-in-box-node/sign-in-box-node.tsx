@@ -51,7 +51,7 @@ import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
-import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../../applications/models/application";
+import { AuthenticationSequenceInterface, AuthenticatorInterface } from "../../../../admin-applications-v1/models/application";
 import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";

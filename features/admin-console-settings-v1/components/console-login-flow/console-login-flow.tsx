@@ -21,7 +21,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { SignOnMethods } from "../../../applications/components/settings/sign-on-methods/sign-on-methods";
+import { SignOnMethods } from "../../../admin-applications-v1/components/settings/sign-on-methods/sign-on-methods";
 import { AppState } from "../../../core/store";
 import { IdentityProviderManagementConstants } from "../../../identity-providers/constants";
 import useConsoleSettings from "../../hooks/use-console-settings";

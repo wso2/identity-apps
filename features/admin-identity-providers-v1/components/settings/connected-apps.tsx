@@ -50,15 +50,15 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { applicationListConfig } from "../../../../extensions/configs/application-list";
-import { getApplicationDetails } from "../../../applications/api";
-import { ApplicationManagementConstants } from "../../../applications/constants";
+import { getApplicationDetails } from "../../../admin-applications-v1/api";
+import { ApplicationManagementConstants } from "../../../admin-applications-v1/constants";
 import { 
     ApplicationAccessTypes, 
     ApplicationBasicInterface, 
     ApplicationListItemInterface, 
     ApplicationTemplateListItemInterface 
-} from "../../../applications/models";
-import { ApplicationTemplateManagementUtils } from "../../../applications/utils/application-template-management-utils";
+} from "../../../admin-applications-v1/models";
+import { ApplicationTemplateManagementUtils } from "../../../admin-applications-v1/utils/application-template-management-utils";
 import {  
     AppConstants,
     AppState, 

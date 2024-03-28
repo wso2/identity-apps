@@ -28,7 +28,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     URLFragmentTypes
-} from "../../../../features/applications/models";
+} from "../../../../admin-applications-v1/models";
 import { history } from "../../../../features/core";
 import { getTechnologyLogos } from "../../../../features/core/configs";
 import JavaLogo from "../../../assets/images/icons/java-logo.svg";

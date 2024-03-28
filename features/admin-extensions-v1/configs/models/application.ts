@@ -23,8 +23,8 @@ import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "../../../features/applications/components/settings";
-import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
+} from "../../../admin-applications-v1/components/settings";
+import { ApplicationInterface, ApplicationTabTypes } from "../../../admin-applications-v1/models";
 import { FeatureConfigInterface } from "../../../features/core";
 import { OIDCSDKMeta } from "../../application-templates/templates/oidc-web-application/models";
 import { SAMLSDKMeta } from "../../application-templates/templates/saml-web-application/models";

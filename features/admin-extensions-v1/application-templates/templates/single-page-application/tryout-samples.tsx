@@ -39,14 +39,14 @@ import { Button, Divider, Icon } from "semantic-ui-react";
 import { ReactComponent as JavaScriptLogo } from "./assets/javascript-logo.svg";
 import { SDKMeta } from "./meta";
 import { SupportedSPATechnologyTypes } from "./models";
-import { updateAuthProtocolConfig } from "../../../../features/applications/api";
+import { updateAuthProtocolConfig } from "../../../../admin-applications-v1/api";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "../../../../features/applications/models";
-import { ApplicationManagementUtils } from "../../../../features/applications/utils/application-management-utils";
+} from "../../../../admin-applications-v1/models";
+import { ApplicationManagementUtils } from "../../../../admin-applications-v1/utils/application-management-utils";
 import { Config } from "../../../../features/core/configs";
 import { EventPublisher } from "../../../../features/core/utils";
 import ReactLogoDataURL from "../../../assets/images/icons/react-icon.svg";

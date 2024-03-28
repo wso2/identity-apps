@@ -20,11 +20,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useSelector } from "react-redux";
 import { CodeEditor } from "@wso2is/react-components";
 import { Divider, Button, Icon, Card, Form } from "semantic-ui-react";
-import { getInboundProtocolConfig } from "../../../../features/applications/api";
+import { getInboundProtocolConfig } from "../../../../admin-applications-v1/api";
 import {
     ApplicationInterface,
     SupportedAuthProtocolTypes
-} from "../../../../features/applications/models";
+} from "../../../../admin-applications-v1/models";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { store, toggleHelpPanelVisibility, AppState } from "../../../../features/core";

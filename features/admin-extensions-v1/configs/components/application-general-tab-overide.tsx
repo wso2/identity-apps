@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, useState  } from "react";
 import { Trans } from "react-i18next";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { Divider } from "semantic-ui-react";
-import { ApplicationDangerZoneComponent } from "../../../features/applications/components/application-danger-zone";
+import { ApplicationDangerZoneComponent } from "../../../admin-applications-v1/components/application-danger-zone";
 import { loginPlaygroundUserTourSteps } 
     from "../../components/application/components/login-playground/playground-user-tour-modal";
 import { TryItApplicationConstants } from "../../components/application/constants/try-it-constants";

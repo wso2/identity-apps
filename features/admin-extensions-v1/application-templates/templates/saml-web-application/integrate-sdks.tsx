@@ -48,7 +48,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     SAMLApplicationConfigurationInterface
-} from "../../../../features/applications/models";
+} from "../../../../admin-applications-v1/models";
 import { AppState } from "../../../../features/core";
 import { Config } from "../../../../features/core/configs";
 import MavenLogo from "../../../assets/images/icons/maven-logo.svg";

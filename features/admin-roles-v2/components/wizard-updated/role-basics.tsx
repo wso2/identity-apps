@@ -35,8 +35,8 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
-import { useApplicationList } from "../../../applications/api/application";
-import { ApplicationListItemInterface } from "../../../applications/models";
+import { useApplicationList } from "../../../admin-applications-v1/api/application";
+import { ApplicationListItemInterface } from "../../../admin-applications-v1/models";
 import { history, store } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { useRolesList } from "../../api/roles";

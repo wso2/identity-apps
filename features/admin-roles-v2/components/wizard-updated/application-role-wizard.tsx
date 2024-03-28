@@ -40,9 +40,9 @@ import { Policy } from "../../../../extensions/components/application/constants"
 import { APIResourceCategories, APIResourcesConstants } from "../../../api-resources/constants";
 import { APIResourceInterface } from "../../../api-resources/models";
 import { APIResourceUtils } from "../../../api-resources/utils/api-resource-utils";
-import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
-import { AuthorizedAPIListItemInterface } from "../../../applications/models/api-authorization";
-import { ApplicationInterface } from "../../../applications/models/application";
+import useSubscribedAPIResources from "../../../admin-applications-v1/api/use-subscribed-api-resources";
+import { AuthorizedAPIListItemInterface } from "../../../admin-applications-v1/models/api-authorization";
+import { ApplicationInterface } from "../../../admin-applications-v1/models/application";
 import { history } from "../../../core";
 import { createRole, useRolesList } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";

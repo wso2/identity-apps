@@ -55,8 +55,8 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import {
     ExtendedClaimInterface
-} from "../../../../features/applications/components/settings/attribute-management";
-import { ApplicationManagementConstants } from "../../../../features/applications/constants";
+} from "../../../../admin-applications-v1/components/settings/attribute-management";
+import { ApplicationManagementConstants } from "../../../../admin-applications-v1/constants";
 import {
     getAllLocalClaims,
     updateAClaim

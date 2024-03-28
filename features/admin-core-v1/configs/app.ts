@@ -22,7 +22,7 @@ import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBa
 import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
 import { getAPIResourceEndpoints } from "../../api-resources/configs/endpoint";
-import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
+import { getApplicationsResourceEndpoints } from "../../admin-applications-v1/configs/endpoints";
 import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";

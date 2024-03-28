@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
-import { ApplicationBasicInterface } from "../../applications/models";
+import { ApplicationBasicInterface } from "../../admin-applications-v1/models";
 import { GovernanceConnectorInterface } from "../../server-configurations/models";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
 

@@ -32,8 +32,8 @@ import { DropdownProps, Grid, Modal, PaginationProps } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
-import { useApplicationList } from "../../../../applications/api";
-import { ApplicationList } from "../../../../applications/components/application-list";
+import { useApplicationList } from "../../../../admin-applications-v1/api";
+import { ApplicationList } from "../../../../admin-applications-v1/components/application-list";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
