@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,5 +16,19 @@
  * under the License.
  */
 
-import "@testing-library/jest-dom";
-import "babel-polyfill";
+import { DecodedIDTokenPayload } from "@asgardeo/auth-react";
+
+export default {
+    getDecodedIDToken: (): Promise<DecodedIDTokenPayload> => {
+        return new Promise((resolve, reject) => {
+            resolve({
+                aud: "",
+                sub: "",
+                iss: "",
+                email: "",
+                preferred_username: "",
+                tenant_domain: "",
+            })
+        });
+    }
+};

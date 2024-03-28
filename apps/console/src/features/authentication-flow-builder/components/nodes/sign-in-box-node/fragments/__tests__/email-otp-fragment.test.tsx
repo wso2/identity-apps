@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { render, screen } from "@unit-testing";
+import "@testing-library/jest-dom";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
 import { fullPermissions } from "./__mocks__/permissions";
+import { render, screen } from "../../../../../../../../test-configs/utils";
 import EmailOTPFragment, { EmailOTPFragmentPropsInterface } from "../email-otp-fragment";
 
 describe("EmailOTPFragment", () => {

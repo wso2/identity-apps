@@ -33,7 +33,7 @@ export interface ThemeSwatchInterface extends IdentifiableComponentInterface {
     /**
      * Color Palette of the theme.
      */
-    colors: ThemeSwatchRenderColorsInterface;
+    colors: Partial<ThemeSwatchRenderColorsInterface>;
     /**
      * Additional CSS classes.
      */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,11 +18,6 @@
 
 module.exports = {
     displayName: "myaccount",
-    globals: {
-        "ts-jest": {
-            tsconfig: "tsconfig.json"
-        }
-    },
     moduleDirectories: [
         "node_modules",
         "test-configs",
@@ -63,7 +58,9 @@ module.exports = {
     ],
     transform: {
         "^.+\\.(js|jsx)?$": "babel-jest",
-        "^.+\\.(ts|tsx)?$": "ts-jest"
+        "^.+\\.(ts|tsx)?$": [ "ts-jest", {
+            tsconfig: "<rootDir>/tsconfig.json"
+        } ]
     },
     transformIgnorePatterns: [
         "/node_modules/?(?!@wso2is)"
