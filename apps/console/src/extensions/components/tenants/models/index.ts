@@ -18,3 +18,4 @@
 
 export * from "./tenant";
 export * from "./endpoints";
+export * from "./environment"
