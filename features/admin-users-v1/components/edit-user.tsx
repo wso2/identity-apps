@@ -37,8 +37,8 @@ import { userstoresConfig } from "../../../extensions/configs/userstores";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { ServerConfigurationsInterface, getServerConfigs } from "../../server-configurations";
-import { ConnectorPropertyInterface } from "../../server-configurations/models";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../admin-server-configurations-v1";
+import { ConnectorPropertyInterface } from "../../admin-server-configurations-v1/models";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 

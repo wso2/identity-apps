@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getServerConfigurationsResourceEndpoints } from "../../server-configurations/configs";
+import { getServerConfigurationsResourceEndpoints } from "../../admin-server-configurations-v1/configs";
 import { IDPResourceEndpointsInterface } from "../models";
 
 /**

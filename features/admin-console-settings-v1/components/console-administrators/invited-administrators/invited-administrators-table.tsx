@@ -45,7 +45,7 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
-import { useServerConfigs } from "../../../../server-configurations";
+import { useServerConfigs } from "../../../../admin-server-configurations-v1";
 import { UserInviteInterface } from "../../../../admin-users-v1/components/guests/models/invite";
 import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 

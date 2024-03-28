@@ -20,8 +20,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { AppConstants, history } from "../../core";
-import { getSettingsSectionIcons } from "../../server-configurations";
-import { SettingsSection } from "../../server-configurations/settings/settings-section";
+import { getSettingsSectionIcons } from "../../admin-server-configurations-v1";
+import { SettingsSection } from "../../admin-server-configurations-v1/settings/settings-section";
 
 /**
  * Props for my account settings page.

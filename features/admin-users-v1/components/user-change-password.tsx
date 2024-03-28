@@ -37,7 +37,7 @@ import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
-} from "../../server-configurations";
+} from "../../admin-server-configurations-v1";
 import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES

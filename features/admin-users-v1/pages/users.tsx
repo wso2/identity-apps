@@ -73,7 +73,7 @@ import {
     ServerConfigurationsConstants,
     getConnectorCategory,
     useServerConfigs
-} from "../../server-configurations";
+} from "../../admin-server-configurations-v1";
 import { useUserStores } from "../../admin-userstores-v1/api";
 import {
     UserStoreItem,

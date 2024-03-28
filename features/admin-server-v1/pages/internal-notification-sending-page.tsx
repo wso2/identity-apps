@@ -27,12 +27,12 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
-import { getConnectorDetails, updateGovernanceConnector } from "../../server-configurations/api";
+import { getConnectorDetails, updateGovernanceConnector } from "../../admin-server-configurations-v1/api";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../server-configurations/models";
+} from "../../admin-server-configurations-v1/models";
 import { ServerConstants } from "../constants/server";
 
 /**

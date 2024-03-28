@@ -41,7 +41,7 @@ import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/conf
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
-import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
+import { getServerConfigurationsResourceEndpoints } from "../../admin-server-configurations-v1";
 import { getTenantResourceEndpoints } from "../../admin-tenants-v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../admin-users-v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "../../admin-userstores-v1/configs/endpoints";

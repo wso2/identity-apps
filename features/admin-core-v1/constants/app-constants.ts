@@ -24,7 +24,7 @@ import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils
-} from "../../server-configurations";
+} from "../../admin-server-configurations-v1";
 
 /**
  * Class containing app constants.

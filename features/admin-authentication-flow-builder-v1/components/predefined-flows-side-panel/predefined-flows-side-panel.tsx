@@ -61,16 +61,16 @@ import { GenericAuthenticatorInterface } from "../../../identity-providers/model
 import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "../../../server-configurations/api/governance-connectors";
+} from "../../../admin-server-configurations-v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
-} from "../../../server-configurations/constants/server-configurations-constants";
-import { AnalyticsConfigurationForm } from "../../../server-configurations/forms/analytics-form";
+} from "../../../admin-server-configurations-v1/constants/server-configurations-constants";
+import { AnalyticsConfigurationForm } from "../../../admin-server-configurations-v1/forms/analytics-form";
 import {
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../server-configurations/models/governance-connectors";
-import { GovernanceConnectorUtils } from "../../../server-configurations/utils/governance-connector-utils";
+} from "../../../admin-server-configurations-v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "../../../admin-server-configurations-v1/utils/governance-connector-utils";
 import { APPLE_LOGIN_SEQUENCE, ELK_RISK_BASED_TEMPLATE_NAME } from "../../constants/template-constants";
 import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";

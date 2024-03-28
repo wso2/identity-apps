@@ -40,7 +40,7 @@ import { commonConfig, identityProviderConfig } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AppView, FullScreenView } from "../../admin-views-v1";
-import { ServerConfigurationsConstants } from "../../server-configurations";
+import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1";
 import { AppConstants } from "../constants";
 
 /**
@@ -115,7 +115,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -137,7 +137,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -193,7 +193,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: false,
@@ -686,7 +686,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -706,7 +706,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -727,7 +727,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -748,7 +748,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -772,7 +772,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/pages/connector-edit-page"
+                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -797,7 +797,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/pages/connector-edit-page"
+                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -826,7 +826,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -850,7 +850,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -876,7 +876,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/pages/connector-edit-page"
+                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -929,7 +929,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -983,7 +983,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.monitor",
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-edit-page"
+                                "../../admin-server-configurations-v1/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1008,7 +1008,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-edit-page"
+                                "../../admin-server-configurations-v1/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1191,7 +1191,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
-                        component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
+                        component: lazy(() => import("../../admin-server-configurations-v1/pages/governance-connectors")),
                         exact: true,
                         icon: null,
                         id: "governanceConnectors",
@@ -1202,7 +1202,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
-                        component: lazy(() => import("../../server-configurations/pages/multi-attribute-login-edit")),
+                        component: lazy(() => import("../../admin-server-configurations-v1/pages/multi-attribute-login-edit")),
                         exact: true,
                         icon: null,
                         id: "multiAttributeLogin",

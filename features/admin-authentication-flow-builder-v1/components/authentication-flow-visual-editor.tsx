@@ -65,7 +65,7 @@ import { AuthenticatorManagementConstants } from "../../connections";
 import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
 import { history } from "../../core";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
-import { ConnectorPropertyInterface } from "../../server-configurations";
+import { ConnectorPropertyInterface } from "../../admin-server-configurations-v1";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import "reactflow/dist/style.css";

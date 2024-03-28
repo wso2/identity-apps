@@ -29,7 +29,7 @@ import {
 } from "./types";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationResponseInterface } from "../../../organizations/models";
-import { ServerConfigurationsInterface, getServerConfigs } from "../../../server-configurations";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../../admin-server-configurations-v1";
 
 /**
  * This action sets an organization in the redux store.
