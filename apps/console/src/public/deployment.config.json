@@ -1160,6 +1160,7 @@
         "listAllAttributeDialects": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "customUserSchemaURI": "urn:scim:wso2:schema",
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

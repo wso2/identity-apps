@@ -106,6 +106,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -239,15 +241,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             return;
                         }
 
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
+                        if (schema?.extended
+                            && profileDetails?.profileInfo[customUserSchemaURI]
+                            && profileDetails?.profileInfo[customUserSchemaURI][schemaNames[0]]) {
                             tempProfileInfo.set(
                                 schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                    ][schemaNames[0]]
+                                profileDetails?.profileInfo[customUserSchemaURI]
+                                    ? profileDetails?.profileInfo[customUserSchemaURI][schemaNames[0]]
                                     : ""
                             );
 
