@@ -21,7 +21,7 @@ import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
-import { getAPIResourceEndpoints } from "../../api-resources/configs/endpoint";
+import { getAPIResourceEndpoints } from "../../admin-api-resources-v1/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../admin-applications-v1/configs/endpoints";
 import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
