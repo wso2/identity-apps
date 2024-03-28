@@ -280,7 +280,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../connections/pages/connection-templates")
+                                    import("../../admin-connections-v1/pages/connection-templates")
                                 ),
                                 exact: true,
                                 icon: {
@@ -294,7 +294,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../connections/pages/connection-edit")
+                                    import("../../admin-connections-v1/pages/connection-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -307,7 +307,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../connections/pages/connections")),
+                        component: lazy(() => import("../../admin-connections-v1/pages/connections")),
                         exact: true,
                         icon: {
                             icon: <NodesIcon />

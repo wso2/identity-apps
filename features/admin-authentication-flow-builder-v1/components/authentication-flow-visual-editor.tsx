@@ -61,8 +61,8 @@ import {
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "../../admin-applications-v1/models/application";
-import { AuthenticatorManagementConstants } from "../../connections";
-import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
+import { AuthenticatorManagementConstants } from "../../admin-connections-v1";
+import useMultiFactorAuthenticatorDetails from "../../admin-connections-v1/api/use-multi-factor-authentication-details";
 import { history } from "../../core";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";

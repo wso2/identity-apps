@@ -39,7 +39,7 @@ import { ApplicationListInterface } from "../../../../admin-applications-v1/mode
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
-} from "../../../../connections/models/connection";
+} from "../../../../admin-connections-v1/models/connection";
 import { AdvancedSearchWithBasicFilters } from "../../../../core/components";
 import { AppConstants } from "../../../../core/constants";
 import { history } from "../../../../core/helpers";

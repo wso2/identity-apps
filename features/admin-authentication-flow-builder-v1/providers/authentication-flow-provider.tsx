@@ -39,10 +39,10 @@ import {
 } from "../../admin-applications-v1/models/application";
 import { AdaptiveScriptUtils } from "../../admin-applications-v1/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "../../admin-applications-v1/utils/sign-in-method-utils";
-import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
-import { AuthenticatorMeta } from "../../connections/meta/authenticator-meta";
-import { ConnectionInterface } from "../../connections/models/connection";
-import { ConnectionsManagementUtils } from "../../connections/utils/connection-utils";
+import { AuthenticatorManagementConstants } from "../../admin-connections-v1/constants/autheticator-constants";
+import { AuthenticatorMeta } from "../../admin-connections-v1/meta/authenticator-meta";
+import { ConnectionInterface } from "../../admin-connections-v1/models/connection";
+import { ConnectionsManagementUtils } from "../../admin-connections-v1/utils/connection-utils";
 import { AppState } from "../../core/store";
 import {
     IdentityProviderManagementConstants

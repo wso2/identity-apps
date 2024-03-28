@@ -28,7 +28,7 @@ import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
-import { AuthenticatorManagementConstants } from "../../../../../connections/constants/autheticator-constants";
+import { AuthenticatorManagementConstants } from "../../../../../admin-connections-v1/constants/autheticator-constants";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../../core";
 import {
     IdentityProviderManagementConstants

@@ -42,7 +42,7 @@ import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import useAuthenticationFlow from "../../../../admin-authentication-flow-builder-v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "../../../../connections";
+import { AuthenticatorManagementConstants } from "../../../../admin-connections-v1";
 import {
     AppConstants,
     AppState,

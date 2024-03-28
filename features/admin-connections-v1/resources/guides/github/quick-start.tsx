@@ -35,7 +35,7 @@ import ApplicationSelectionModal
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
-} from "../../../../connections/models/connection";
+} from "../../../../admin-connections-v1/models/connection";
 import { FeatureConfigInterface } from "../../../../core/models";
 import { AppState } from "../../../../core/store";
 

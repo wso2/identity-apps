@@ -32,7 +32,7 @@ import {
     ApplicationInterface,
     AuthenticationStepInterface
 } from "../../../admin-applications-v1/models";
-import { AuthenticatorManagementConstants } from "../../../connections";
+import { AuthenticatorManagementConstants } from "../../../admin-connections-v1";
 import { getAuthenticators } from "../../../identity-providers/api";
 import { AuthenticatorInterface, AuthenticatorTypes } from "../../../identity-providers/models";
 

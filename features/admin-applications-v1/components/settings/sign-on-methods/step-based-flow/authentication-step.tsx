@@ -24,9 +24,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
 import useAuthenticationFlow from "../../../../../admin-authentication-flow-builder-v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "../../../../../connections";
-import { AuthenticatorCategories } from "../../../../../connections/models/authenticators";
-import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
+import { AuthenticatorManagementConstants } from "../../../../../admin-connections-v1";
+import { AuthenticatorCategories } from "../../../../../admin-connections-v1/models/authenticators";
+import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/utils/connection-utils";
 import { getGeneralIcons } from "../../../../../core";
 import {
     IdentityProviderManagementConstants

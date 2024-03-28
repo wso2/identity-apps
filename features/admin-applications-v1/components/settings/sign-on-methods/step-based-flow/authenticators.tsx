@@ -27,8 +27,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
-import { AuthenticatorManagementConstants } from "../../../../../connections";
-import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
+import { AuthenticatorManagementConstants } from "../../../../../admin-connections-v1";
+import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
