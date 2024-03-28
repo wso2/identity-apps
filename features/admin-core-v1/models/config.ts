@@ -37,7 +37,7 @@ import { IDPResourceEndpointsInterface } from "../../identity-providers/models/e
 import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
-import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
+import { JWTAuthenticationServiceEndpointsInterface } from "../../admin-private-key-jwt-v1/models";
 import { RolesResourceEndpointsInterface } from "../../admin-roles-v2/models/endpoints";
 import { SecretsManagementEndpoints } from "../../admin-secrets-v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../admin-server-configurations-v1";

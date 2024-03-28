@@ -914,7 +914,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../private-key-jwt/pages/private-key-jwt-config-edit")
+                                    import("../../admin-private-key-jwt-v1/pages/private-key-jwt-config-edit")
                                 ),
                                 exact: true,
                                 icon: {
