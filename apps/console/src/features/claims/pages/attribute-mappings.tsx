@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -27,7 +28,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import Axios from "axios";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
