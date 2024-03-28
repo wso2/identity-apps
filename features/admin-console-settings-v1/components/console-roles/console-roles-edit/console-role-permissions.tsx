@@ -43,10 +43,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState } from "../../../../admin-core-v1/store";
-import { updateRoleDetails } from "../../../../roles/api/roles";
-import { RenderChip } from "../../../../roles/components/edit-role/edit-role-common/render-chip";
-import { Schemas } from "../../../../roles/constants/role-constants";
-import { CreateRolePermissionInterface, PatchRoleDataInterface } from "../../../../roles/models/roles";
+import { updateRoleDetails } from "../../../../admin-roles-v2/api/roles";
+import { RenderChip } from "../../../../admin-roles-v2/components/edit-role/edit-role-common/render-chip";
+import { Schemas } from "../../../../admin-roles-v2/constants/role-constants";
+import { CreateRolePermissionInterface, PatchRoleDataInterface } from "../../../../admin-roles-v2/models/roles";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {

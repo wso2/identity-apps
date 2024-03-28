@@ -32,7 +32,7 @@ import {
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../../../organizations/models";
-import { getRolesList } from "../../../../../roles/api/roles";
+import { getRolesList } from "../../../../../admin-roles-v2/api/roles";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionRoleMappingInterface } from "../../../../models/connection";
 import { handleGetRoleListError } from "../../../../utils/connection-utils";

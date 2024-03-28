@@ -39,7 +39,7 @@ import { getOrganizationsResourceEndpoints } from "../../organizations/configs";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getJWTAuthenticationServiceEndpoints } from "../../private-key-jwt/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
-import { getRolesResourceEndpoints } from "../../roles/configs/endpoints";
+import { getRolesResourceEndpoints } from "../../admin-roles-v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "../../admin-secrets-v1/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../admin-server-configurations-v1";
 import { getTenantResourceEndpoints } from "../../admin-tenants-v1/configs/endpoints";

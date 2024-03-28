@@ -29,8 +29,8 @@ import { Label } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../admin-core-v1/configs/ui";
 import { AppConstants } from "../../admin-core-v1/constants/app-constants";
 import { history } from "../../admin-core-v1/helpers/history";
-import { useGetRoleById } from "../../roles/api/roles";
-import { RoleAudienceTypes } from "../../roles/constants/role-constants";
+import { useGetRoleById } from "../../admin-roles-v2/api/roles";
+import { RoleAudienceTypes } from "../../admin-roles-v2/constants/role-constants";
 import ConsoleRolesEdit from "../components/console-roles/console-roles-edit/console-roles-edit";
 import { ConsoleSettingsModes } from "../models/ui";
 

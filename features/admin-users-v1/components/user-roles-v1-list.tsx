@@ -54,8 +54,8 @@ import {
     OrganizationRoleListResponseInterface
 } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
-import { getRolesList } from "../../roles/api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../roles/constants";
+import { getRolesList } from "../../admin-roles-v2/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../admin-roles-v2/constants";
 
 interface UserRolesV1PropsInterface {
     /**

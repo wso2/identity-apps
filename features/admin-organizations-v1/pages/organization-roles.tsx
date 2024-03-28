@@ -48,7 +48,7 @@ import {
     history
 } from "../../admin-core-v1";
 import { CreateGroupMemberInterface } from "../../groups/models";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../roles/models/roles";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "../../admin-roles-v2/models/roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
 import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";
