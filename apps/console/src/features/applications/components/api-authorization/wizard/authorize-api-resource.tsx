@@ -114,14 +114,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
 
-    // const {
-    //     data: currentAPIResourcesListData,
-    //     isLoading: iscurrentAPIResourcesListLoading,
-    //     isValidating: iscurrentAPIResourcesListValidating,
-    //     error: currentAPIResourcesFetchRequestError,
-    //     mutate: mutatecurrentAPIResourcesList
-    // } = useAPIResources(apiCallNextAfterValue);
-
     const {
         data: currentAPIResourceScopeListData,
         isLoading: isCurrentAPIResourceScopeListDataLoading,
