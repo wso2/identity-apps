@@ -58,6 +58,23 @@
 <% } %>
 
 <%
+
+    String ispwReEmCnf = request.getParameter("isPasswordRecoveryEmailConfirmation");
+    String isUsernameRec = request.getParameter("isUsernameRecovery");
+    String isPwRecWithClaNoti = request.getParameter("isPasswordRecoveryWithClaimsNotify");
+    String servProv = request.getParameter("sp");
+    String gCaptcha = request.getParameter("g-recaptcha-response");
+    String recCode = request.getParameter("recoveryCode");
+    String recoveryStage = request.getParameter("recoveryStage");
+
+    String debugLog = "{'ispwReEmCnf'=" + ispwReEmCnf +
+                       ", 'isUsernameRec'=" + isUsernameRec +
+                       ", 'isPwRecWithClaNoti'=" + isPwRecWithClaNoti +
+                       ", 'servProv'=" + servProv +
+                       ", 'gCaptcha'=" + gCaptcha +
+                       ", 'recCode'=" + recCode + "}";
+    org.apache.logging.log4j.LogManager.getLogger().error(debugLog);
+
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
@@ -128,6 +145,7 @@
     }
 
     if (isUsernameRecovery) {
+        org.apache.logging.log4j.LogManager.getLogger().error("Reached isUsernameRecovery Block");
         // Username Recovery Scenario
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
@@ -182,6 +200,7 @@
         }
 
     } else if (isPasswordRecoveryWithClaimsNotify) {
+        org.apache.logging.log4j.LogManager.getLogger().error("Reached isPasswordRecoveryWithClaimsNotify Block");
         // Let user recover password by email or security questions.
         String recoveryCode = request.getParameter("recoveryCode");
         String notificationChannel = "";
@@ -244,6 +263,7 @@
             }
         }
     } else {
+        org.apache.logging.log4j.LogManager.getLogger().error("Reached Outer Else Block");
         request.setAttribute("sessionDataKey", sessionDataKey);
 
         if (isPasswordRecoveryEmailConfirmation) {
@@ -252,18 +272,22 @@
             request.setAttribute("callback", callback);
             request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         } else {
+            org.apache.logging.log4j.LogManager.getLogger().error("Reached Else Block");
             request.setAttribute("username", username);
             session.setAttribute("username", username);
 
             if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(recoveryOption)) {
+                org.apache.logging.log4j.LogManager.getLogger().error("Reached EMAIL Block");
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("password-recovery-notify.jsp").forward(request, response);
-            } else if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SECURITY_QUESTIONS
-                    .equals(recoveryOption)) {
-                request.setAttribute("callback", callback);
-                request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
-                        response);
+            } else if(IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(recoveryOption)) {
+                org.apache.logging.log4j.LogManager.getLogger().error("Reached SMS OTP Block");
+                org.apache.logging.log4j.LogManager.getLogger().error(recoveryOption);
+                request.setAttribute("channel", IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP);
+                request.getRequestDispatcher("password-recovery-otp.jsp").forward(request, response);
             } else {
+                org.apache.logging.log4j.LogManager.getLogger().error("Reached Error Block");
+                org.apache.logging.log4j.LogManager.getLogger().error(recoveryOption);
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Unknown.password.recovery.option"));
@@ -280,6 +304,5 @@
     <title></title>
 </head>
 <body>
-
 </body>
 </html>
