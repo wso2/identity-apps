@@ -24,7 +24,7 @@ import { Hint, Message } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { IdentityAppsApiException } from "../../../../../../../../modules/core/dist/types/exceptions";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { DropdownOptionsInterface } from "../../../../admin-applications-v1/components/settings";
 import { getExternalClaims } from "../../../../admin-claims-v1/api";
 import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";

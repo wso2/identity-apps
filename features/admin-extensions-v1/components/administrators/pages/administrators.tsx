@@ -89,7 +89,7 @@ import {
 import { AddAdministratorWizard } from "../wizard";
 import { getUserStores } from "../../../../admin-userstores-v1/api";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../../admin-userstores-v1/constants";
-import { UserManagementConstants } from "apps/console/src/admin-users-v1/constants";
+import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 
 /**
  * Props for the Users page.

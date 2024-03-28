@@ -61,8 +61,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
-import { applicationConfig } from "../extensions";
-import { FeatureGateConstants } from "../extensions/components/feature-gate/constants/feature-gate";
+import { applicationConfig } from "../admin-extensions-v1";
+import { FeatureGateConstants } from "../admin-extensions-v1/components/feature-gate/constants/feature-gate";
 import { getProfileInformation } from "../admin-authentication-v1/store";
 import {
     AppConstants,
