@@ -39,7 +39,7 @@ import { getSidePanelIcons } from "./ui";
 import { commonConfig, identityProviderConfig } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
-import { AppView, FullScreenView } from "../../../views";
+import { AppView, FullScreenView } from "../../admin-views-v1";
 import { ServerConfigurationsConstants } from "../../server-configurations";
 import { AppConstants } from "../constants";
 
