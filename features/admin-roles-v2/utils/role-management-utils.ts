@@ -22,7 +22,7 @@ import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { AppConstants } from "../../admin-core-v1";
-import { UserBasicInterface } from "../../users/models/user";
+import { UserBasicInterface } from "../../admin-users-v1/models/user";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject, SearchRoleInterface, TreeNode } from "../models";

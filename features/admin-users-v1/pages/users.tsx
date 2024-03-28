@@ -73,14 +73,14 @@ import {
     ServerConfigurationsConstants,
     getConnectorCategory,
     useServerConfigs
-} from "../../server-configurations";
-import { useUserStores } from "../../userstores/api";
+} from "../../admin-server-configurations-v1";
+import { useUserStores } from "../../admin-userstores-v1/api";
 import {
     UserStoreItem,
     UserStoreListItem,
     UserStorePostData,
     UserStoreProperty
-} from "../../userstores/models/user-stores";
+} from "../../admin-userstores-v1/models/user-stores";
 import { useUsersList } from "../api";
 import { useGetParentOrgUserInvites } from "../components/guests/api/use-get-parent-org-user-invites";
 import { UserInviteInterface } from "../components/guests/models/invite";

@@ -27,11 +27,11 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin-core-v1/models/users";
 import { AppState } from "../../admin-core-v1/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { useUsersList } from "../../users/api/users";
-import { useGetParentOrgUserInvites } from "../../users/components/guests/api/use-get-parent-org-user-invites";
-import { InvitationsInterface } from "../../users/components/guests/models/invite";
-import { UserAccountTypes } from "../../users/constants/user-management-constants";
-import { UserManagementUtils } from "../../users/utils/user-management-utils";
+import { useUsersList } from "../../admin-users-v1/api/users";
+import { useGetParentOrgUserInvites } from "../../admin-users-v1/components/guests/api/use-get-parent-org-user-invites";
+import { InvitationsInterface } from "../../admin-users-v1/components/guests/models/invite";
+import { UserAccountTypes } from "../../admin-users-v1/constants/user-management-constants";
+import { UserManagementUtils } from "../../admin-users-v1/utils/user-management-utils";
 
 /**
  * Props interface of {@link UseAdministrators}

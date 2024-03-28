@@ -32,8 +32,8 @@ import { SharedUserStoreUtils } from "../../../admin-core-v1/utils";
 // TODO: Remove this once the api is updated.
 import { RootOnlyComponent } from "../../../organizations/components";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../../userstores/api";
-import { UserStoreProperty } from "../../../userstores/models";
+import { getUserStoreList } from "../../../admin-userstores-v1/api";
+import { UserStoreProperty } from "../../../admin-userstores-v1/models";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
 

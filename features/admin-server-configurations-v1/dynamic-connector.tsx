@@ -37,7 +37,7 @@ import { serverConfigurationConfig } from "../../extensions/configs/server-confi
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../server-configurations/models/governance-connectors";
+} from "../admin-server-configurations-v1/models/governance-connectors";
 
 /**
  * Interface of the prop types of the `ExtendedDynamicConnector`.

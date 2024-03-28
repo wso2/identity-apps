@@ -21,7 +21,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
-import { ServerConfigurationsConstants } from "../../server-configurations/constants";
+import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
@@ -29,13 +29,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin-core-v1";
-import { getConnectorDetails, updateGovernanceConnector } from "../../server-configurations/api";
+import { getConnectorDetails, updateGovernanceConnector } from "../../admin-server-configurations-v1/api";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../server-configurations/models/governance-connectors";
-import { GovernanceConnectorUtils } from "../../server-configurations/utils";
+} from "../../admin-server-configurations-v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "../../admin-server-configurations-v1/utils";
 
 /**
  * Props for alternative login identifier edit page.

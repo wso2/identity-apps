@@ -28,7 +28,7 @@ import { RoleGroupsList } from "./edit-role-groups";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
 import { AppState, FeatureConfigInterface, history } from "../../../admin-core-v1";
-import { UserManagementConstants } from "../../../users/constants";
+import { UserManagementConstants } from "../../../admin-users-v1/constants";
 
 /**
  * Captures props needed for edit role component

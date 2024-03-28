@@ -62,7 +62,7 @@ import {
     ScimOperationsInterface,
     SearchRoleInterface
 } from "../../roles/models/roles";
-import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin-server-configurations-v1";
 import { updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";

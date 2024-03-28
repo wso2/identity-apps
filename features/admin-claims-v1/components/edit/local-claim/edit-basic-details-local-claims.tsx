@@ -63,11 +63,11 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants,
-    getConnectorDetails } from "../../../../server-configurations";
-import { getProfileSchemas } from "../../../../users/api";
-import { getUsernameConfiguration } from "../../../../users/utils/user-management-utils";
-import { useValidationConfigData } from "../../../../validation/api";
-import { ValidationFormInterface } from "../../../../validation/models";
+    getConnectorDetails } from "../../../../admin-server-configurations-v1";
+import { getProfileSchemas } from "../../../../admin-users-v1/api";
+import { getUsernameConfiguration } from "../../../../admin-users-v1/utils/user-management-utils";
+import { useValidationConfigData } from "../../../../admin-validation-v1/api";
+import { ValidationFormInterface } from "../../../../admin-validation-v1/models";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
 

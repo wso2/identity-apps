@@ -24,9 +24,9 @@ import useConsoleRoles from "./use-console-roles";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../admin-core-v1/models/users";
 import { AppState } from "../../admin-core-v1/store";
-import { useUsersList } from "../../users/api/users";
-import { UserAccountTypes } from "../../users/constants/user-management-constants";
-import { UserManagementUtils } from "../../users/utils/user-management-utils";
+import { useUsersList } from "../../admin-users-v1/api/users";
+import { UserAccountTypes } from "../../admin-users-v1/constants/user-management-constants";
+import { UserManagementUtils } from "../../admin-users-v1/utils/user-management-utils";
 
 /**
  * Props interface of {@link UseAdministrators}

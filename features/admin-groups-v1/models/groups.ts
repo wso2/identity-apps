@@ -20,7 +20,7 @@ import { RolesMemberInterface } from "@wso2is/core/models";
 import { GenericIconProps } from "@wso2is/react-components";
 import { ReactElement } from "react";
 import { BasicRoleInterface } from "../../roles/models";
-import { UserBasicInterface } from "../../users/models";
+import { UserBasicInterface } from "../../admin-users-v1/models";
 
 /**
  * Interface to store data for create group api.

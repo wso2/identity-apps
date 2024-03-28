@@ -168,7 +168,7 @@ import { ReactComponent as PythonLogo } from "../../../themes/default/assets/ima
 import { ReactComponent as ReactLogo } from "../../../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../../themes/default/assets/images/technologies/windows-logo.svg";
-import { ServerConfigurationsConstants } from "../../server-configurations/constants";
+import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";
 
 /**
  * Typed interface of {@link getTechnologyLogos}

@@ -21,7 +21,7 @@ import {
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
-} from "../../validation/models";
+} from "../../admin-validation-v1/models";
 
 /**
  * The following function is for generating random numbers in range of [0 - upperlimit).

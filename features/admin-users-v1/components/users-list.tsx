@@ -53,7 +53,7 @@ import {
     history
 } from "../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { RealmConfigInterface } from "../../server-configurations";
+import { RealmConfigInterface } from "../../admin-server-configurations-v1";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";

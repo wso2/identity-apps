@@ -53,8 +53,8 @@ import {
     GovernanceConnectorUtils,
     ServerConfigurationsConstants,
     getConnectorDetails
-} from "../../server-configurations";
-import { getConfiguration } from "../../users/utils/generate-password.utils";
+} from "../../admin-server-configurations-v1";
+import { getConfiguration } from "../../admin-users-v1/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
 import { ValidationDataInterface, ValidationFormInterface } from "../models";

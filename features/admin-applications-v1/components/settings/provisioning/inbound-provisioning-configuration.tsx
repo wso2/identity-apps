@@ -28,7 +28,7 @@ import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../../../userstores/api";
+import { getUserStoreList } from "../../../../admin-userstores-v1/api";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
 import { ProvisioningConfigurationsForm } from "../../forms";

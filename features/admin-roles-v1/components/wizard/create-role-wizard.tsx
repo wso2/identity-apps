@@ -34,7 +34,7 @@ import { AppConstants } from "../../../admin-core-v1/constants";
 import { history } from "../../../admin-core-v1/helpers";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
-import { UserBasicInterface } from "../../../users/models/user";
+import { UserBasicInterface } from "../../../admin-users-v1/models/user";
 import { createRole } from "../../api/roles";
 import { getRolesWizardStepIcons } from "../../configs/ui";
 import { TreeNode } from "../../models/permission";

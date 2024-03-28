@@ -50,10 +50,10 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
-import { useServerConfigs } from "../../../../server-configurations";
-import { UserManagementConstants } from "../../../../users/constants";
-import { UserListInterface } from "../../../../users/models";
-import { UserManagementUtils } from "../../../../users/utils";
+import { useServerConfigs } from "../../../../admin-server-configurations-v1";
+import { UserManagementConstants } from "../../../../admin-users-v1/constants";
+import { UserListInterface } from "../../../../admin-users-v1/models";
+import { UserManagementUtils } from "../../../../admin-users-v1/utils";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./administrators-table.scss";
 

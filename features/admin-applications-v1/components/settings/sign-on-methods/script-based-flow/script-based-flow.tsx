@@ -69,10 +69,10 @@ import useAuthenticationFlow from "../../../../../admin-authentication-flow-buil
 import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "../../../../../admin-core-v1";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { OrganizationUtils } from "../../../../../organizations/utils";
-import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
-import AddSecretWizard from "../../../../../secrets/components/add-secret-wizard";
-import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../secrets/constants/secrets.common";
-import { GetSecretListResponse, SecretModel } from "../../../../../secrets/models/secret";
+import { deleteSecret, getSecretList } from "../../../../../admin-secrets-v1/api/secret";
+import AddSecretWizard from "../../../../../admin-secrets-v1/components/add-secret-wizard";
+import { ADAPTIVE_SCRIPT_SECRETS } from "../../../../../admin-secrets-v1/constants/secrets.common";
+import { GetSecretListResponse, SecretModel } from "../../../../../admin-secrets-v1/models/secret";
 import { getAdaptiveAuthTemplates } from "../../../../api";
 import { ApplicationManagementConstants } from "../../../../constants";
 import {

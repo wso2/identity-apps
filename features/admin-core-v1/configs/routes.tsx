@@ -39,8 +39,8 @@ import { getSidePanelIcons } from "./ui";
 import { commonConfig, identityProviderConfig } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
-import { AppView, FullScreenView } from "../../../views";
-import { ServerConfigurationsConstants } from "../../server-configurations";
+import { AppView, FullScreenView } from "../../admin-views-v1";
+import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1";
 import { AppConstants } from "../constants";
 
 /**
@@ -86,7 +86,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         children: [
                             {
-                                component: lazy(() => import("../../session-management/pages/session-management")),
+                                component: lazy(() => import("../../admin-session-management-v1/pages/session-management")),
                                 exact: true,
                                 id: "sessionManagement",
                                 name: "sessionManagement:title",
@@ -104,7 +104,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
+                                component: lazy(() => import("../../admin-wsfed-configuration-v1/pages/wsfed-configuration")),
                                 exact: true,
                                 id: "wsFedConfiguration",
                                 name: "wsFederationConfig:title",
@@ -115,7 +115,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -137,7 +137,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -193,7 +193,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: false,
@@ -251,7 +251,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.userManagement",
                         children: [
                             {
-                                component: lazy(() => import("../../users/pages/user-edit")),
+                                component: lazy(() => import("../../admin-users-v1/pages/user-edit")),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -263,7 +263,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../users/pages/users")),
+                        component: lazy(() => import("../../admin-users-v1/pages/users")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().users
@@ -607,7 +607,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "extensions:develop.sidePanel.categories.smsProvider",
                         component: lazy(() =>
-                            import("../../sms-providers" + "/pages/sms-providers")
+                            import("../../admin-sms-providers-v1" + "/pages/sms-providers")
                         ),
                         exact: true,
                         icon: {
@@ -686,7 +686,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -706,7 +706,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -727,7 +727,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -748,7 +748,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -772,7 +772,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/pages/connector-edit-page"
+                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -797,7 +797,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/pages/connector-edit-page"
+                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -826,7 +826,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -850,7 +850,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/" +
+                                        "../../admin-server-configurations-v1/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -876,7 +876,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../server-configurations/pages/connector-edit-page"
+                                        "../../admin-server-configurations-v1/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -900,7 +900,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../validation/pages/validation-config-edit")
+                                    import("../../admin-validation-v1/pages/validation-config-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -929,7 +929,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         ],
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-listing-page"
+                                "../../admin-server-configurations-v1/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -983,7 +983,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "extensions:manage.sidePanel.categories.monitor",
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-edit-page"
+                                "../../admin-server-configurations-v1/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1008,7 +1008,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         component: lazy(() =>
                             import(
-                                "../../server-configurations/pages/connector-edit-page"
+                                "../../admin-server-configurations-v1/pages/connector-edit-page"
                             )
                         ),
                         exact: true,
@@ -1087,7 +1087,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.userManagement",
-                        component: lazy(() => import("../../workflow-approvals/pages/approvals")),
+                        component: lazy(() => import("../../admin-workflow-approvals-v1/pages/approvals")),
                         exact: true,
                         icon: {
                             icon: <DocumentCheckIcon fill="black" className="icon" />
@@ -1116,7 +1116,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "console:manage.features.sidePanel.categories.legacy",
                         children: [
                             {
-                                component: lazy(() => import("../../secrets/pages/secret-edit")),
+                                component: lazy(() => import("../../admin-secrets-v1/pages/secret-edit")),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "secretManagementEdit",
@@ -1126,7 +1126,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../secrets/pages/secrets")),
+                        component: lazy(() => import("../../admin-secrets-v1/pages/secrets")),
                         exact: true,
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secretsManagement",
@@ -1191,7 +1191,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
-                        component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
+                        component: lazy(() => import("../../admin-server-configurations-v1/pages/governance-connectors")),
                         exact: true,
                         icon: null,
                         id: "governanceConnectors",
@@ -1202,7 +1202,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         showOnSidePanel: false
                     },
                     {
-                        component: lazy(() => import("../../server-configurations/pages/multi-attribute-login-edit")),
+                        component: lazy(() => import("../../admin-server-configurations-v1/pages/multi-attribute-login-edit")),
                         exact: true,
                         icon: null,
                         id: "multiAttributeLogin",

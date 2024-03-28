@@ -55,9 +55,9 @@ import {
     history
 } from "../../admin-core-v1";
 import { getIdPIcons } from "../../identity-providers/configs/ui";
-import { useGovernanceConnectors } from "../../server-configurations/api";
-import { ServerConfigurationsConstants } from "../../server-configurations/constants";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../server-configurations/models";
+import { useGovernanceConnectors } from "../../admin-server-configurations-v1/api";
+import { ServerConfigurationsConstants } from "../../admin-server-configurations-v1/constants";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin-server-configurations-v1/models";
 import { updateUserInfo, useUserDetails } from "../api";
 import { EditUser } from "../components/edit-user";
 import UserManagementProvider from "../providers/user-management-provider";

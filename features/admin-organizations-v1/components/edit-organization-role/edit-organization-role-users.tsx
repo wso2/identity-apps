@@ -24,7 +24,7 @@ import { Dispatch } from "redux";
 import { AppState } from "../../../admin-core-v1";
 import { AddRoleUsers } from "../../../roles/components/wizard/role-user-assign";
 import { ScimOperationsInterface } from "../../../roles/models/roles";
-import { UserBasicInterface } from "../../../users/models/user";
+import { UserBasicInterface } from "../../../admin-users-v1/models/user";
 import { patchOrganizationRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import {

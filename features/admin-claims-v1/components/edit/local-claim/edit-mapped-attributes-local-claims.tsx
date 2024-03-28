@@ -28,8 +28,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../../../admin-core-v1";
-import { getUserStoreList } from "../../../../userstores/api";
-import { UserStoreListItem } from "../../../../userstores/models/user-stores";
+import { getUserStoreList } from "../../../../admin-userstores-v1/api";
+import { UserStoreListItem } from "../../../../admin-userstores-v1/models/user-stores";
 import { updateAClaim } from "../../../api";
 
 /**

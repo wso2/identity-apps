@@ -49,7 +49,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
-import { UserBasicInterface } from "../../../users/models/user";
+import { UserBasicInterface } from "../../../admin-users-v1/models/user";
 import { updateGroupDetails } from "../../api";
 import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
 

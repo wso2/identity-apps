@@ -32,13 +32,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import { AppState } from "../../../../admin-core-v1/store";
-import { sendParentOrgUserInvite } from "../../../../users/components/guests/api/invite";
+import { sendParentOrgUserInvite } from "../../../../admin-users-v1/components/guests/api/invite";
 import {
     AdministratorInviteInterface,
     ParentOrgUserInvitationResult,
     ParentOrgUserInviteResultStatus
-} from "../../../../users/components/guests/models/invite";
-import { UserManagementConstants } from "../../../../users/constants";
+} from "../../../../admin-users-v1/components/guests/models/invite";
+import { UserManagementConstants } from "../../../../admin-users-v1/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./invite-new-administrator-wizard.scss";
