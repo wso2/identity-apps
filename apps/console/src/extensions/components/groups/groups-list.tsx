@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,7 +46,7 @@ import {
 } from "../../../features/core";
 import { GroupConstants } from "../../../features/groups/constants";
 import { GroupsInterface } from "../../../features/groups/models";
-import { CONSUMER_USERSTORE } from "../users/constants";
+import { CONSUMER_USERSTORE } from "../../../features/userstores/constants";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
@@ -350,7 +350,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     : "PRIMARY";
 
                 return !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.delete, allowedScopes)
-                    || readOnlyUserStores?.includes(userStore.toString()) 
+                    || readOnlyUserStores?.includes(userStore.toString())
                     || userStore.toString() !== CONSUMER_USERSTORE;
             },
             icon: (): SemanticICONS => "trash alternate",

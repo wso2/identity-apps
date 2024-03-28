@@ -27,12 +27,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
-import { UsersConstants } from "../../../../extensions/components/users/constants/users";
 import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../core";
 import { RootOnlyComponent } from "../../../organizations/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getAUserStore, getUserStoreList } from "../../../userstores/api/user-stores";
-import { PRIMARY_USERSTORE } from "../../../userstores/constants";
+import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../userstores/constants";
 import { UserStoreProperty } from "../../../userstores/models";
 
 /**
@@ -140,7 +139,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             const response: UserStoreDetails = await getAUserStore(userStoreID);
 
             return response?.properties?.some(({ name, value }: UserStoreProperty) =>
-                name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY && value === "false"
+                name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY && value === "false"
             ) || false;
         } catch (error) {
             dispatch(addAlert({

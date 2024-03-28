@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { ProfileInfoInterface } from "@wso2is/core/models";
+import { AskPasswordOptionTypes, PasswordOptionTypes } from "../../../features/users/constants";
 
 export interface User {
     bulkUserImportLimit: {
@@ -25,8 +26,11 @@ export interface User {
         userCount: number;
     };
     enableBulkImportSecondaryUserStore: boolean;
+    defaultPasswordOption: PasswordOptionTypes;
+    defautlAskPasswordOption: AskPasswordOptionTypes;
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
     disableManagedByColumn: boolean;
     enableAdminPrivilegeRevokeOption: boolean;
     enableUsernameValidation: boolean;
+    userProfileSchema: string;
 }

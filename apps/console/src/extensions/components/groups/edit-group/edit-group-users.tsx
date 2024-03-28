@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -39,7 +41,6 @@ import {
 } from "@wso2is/react-components";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, {
     Dispatch,
     FormEvent,
@@ -53,7 +54,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Divider, Grid, Header, Icon, Modal, PaginationProps, Table } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants, 
+import { AdvancedSearchWithBasicFilters, UIConstants,
     getEmptyPlaceholderIllustrations } from "../../../../features/core";
 import {
     CreateGroupMemberInterface,
@@ -64,8 +65,8 @@ import {
 } from "../../../../features/groups";
 import { getUsersList } from "../../../../features/users/api/users";
 import { UserBasicInterface, UserListInterface } from "../../../../features/users/models/user";
+import { UserManagementUtils } from "../../../../features/users/utils";
 import { SCIMConfigs } from "../../../configs/scim";
-import { UserManagementUtils } from "../../users/utils";
 
 /**
  * Proptypes for the group users list component.
@@ -143,7 +144,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         return getUsersList(listItemLimit, modalListOffset, query, null, userstore)
             .then((response: UserListInterface) => {
-                let moderatedUserList: UserBasicInterface[] = moderateUsersList(response?.Resources, 
+                let moderatedUserList: UserBasicInterface[] = moderateUsersList(response?.Resources,
                     listItemLimit, USER_LIST_TYPE.ALL_USERS);
 
                 // Exclude JIT users.
@@ -199,7 +200,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         getUsersList(listItemLimit, listOffset, query, null, userstore)
             .then((response: UserListInterface) => {
-                let moderatedUserList: UserBasicInterface[] = moderateUsersList(response?.Resources, 
+                let moderatedUserList: UserBasicInterface[] = moderateUsersList(response?.Resources,
                     listItemLimit, USER_LIST_TYPE.GROUP_USERS);
 
                 // Exclude JIT users.
@@ -234,7 +235,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             });
     };
 
-    const moderateUsersList = (list: UserBasicInterface[] | null, requestedLimit: number, 
+    const moderateUsersList = (list: UserBasicInterface[] | null, requestedLimit: number,
         listType: USER_LIST_TYPE): UserBasicInterface[] => {
 
         if (list?.length < requestedLimit) {
@@ -317,10 +318,10 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
             user.groups?.map((group: GroupsMemberInterface) => {
 
-                if(group.display?.indexOf("/") != -1 && 
+                if(group.display?.indexOf("/") != -1 &&
                     group.display?.split("/")[ 1 ] === currentGroupName) {
-                    isInGroup =  true;                    
-                } 
+                    isInGroup =  true;
+                }
             });
         }
 
@@ -412,8 +413,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         }
 
         const groupData: PatchGroupDataInterface = {
-            Operations: 
-            [ 
+            Operations:
+            [
                 {
                     "op": "add",
                     "value": {
@@ -554,19 +555,19 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             return (<EmptyPlaceholder
                 action={ (
                     <LinkButton onClick={ handleSearchQueryClear }>
-                        { t("users:usersList.search." + 
+                        { t("users:usersList.search." +
                             "emptyResultPlaceholder.clearButton") }
                     </LinkButton>
                 ) }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
-                title={ t("users:usersList.search." + 
+                title={ t("users:usersList.search." +
                     "emptyResultPlaceholder.title") }
                 subtitle={ [
-                    t("users:usersList.search." + 
+                    t("users:usersList.search." +
                         "emptyResultPlaceholder.subTitle.0",
                     { query: searchQuery }),
-                    t("users:usersList.search." + 
+                    t("users:usersList.search." +
                         "emptyResultPlaceholder.subTitle.1")
                 ] }
             />);
@@ -601,7 +602,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
             />);
-        
         }
     };
 
@@ -633,7 +633,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             <EmphasizedSegment>
                                 { advancedSearchFilter() }
                             </EmphasizedSegment>
-                        
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -668,7 +667,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                     }
                                     isLoading={ isUsersFetchRequestLoading }
                                     showListSearch={ false }
-                                    handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, 
+                                    handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>,
                                         { value }: { value: string }) => {
                                         handleSearchFieldChange(e, value, allUserListPerPage, setAddModalUserList);
                                     } }
@@ -680,14 +679,14 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         isLoading={ isUsersFetchRequestLoading }
                                         listType="unselected"
                                         data-testid={ `${ testId }-unselected-transfer-list` }
-                                        emptyPlaceholderContent={ t("transferList:list." + 
+                                        emptyPlaceholderContent={ t("transferList:list." +
                                             "emptyPlaceholders.groups.common", { type: "users" }) }
                                         emptyPlaceholderDefaultContent={ t("transferList:list."
                                             + "emptyPlaceholders.default") }
                                     >
                                         { allUserListPerPage?.map((user: UserBasicInterface, index: number) => {
-                                            const header: string = UserManagementUtils.resolveUserListHeader(user);
-                                            const subHeader: string = 
+                                            const header: string = getUserNameWithoutDomain(user?.userName);
+                                            const subHeader: string =
                                                 UserManagementUtils.resolveUserListSubheader(user);
 
                                             return (
@@ -696,7 +695,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                     key={ index }
                                                     listItem={ {
                                                         listItemElement: resolveListItemElement(header),
-                                                        listItemValue: header
+                                                        listItemValue: subHeader
                                                     } }
                                                     listItemId={ user.id }
                                                     listItemIndex={ index }
@@ -706,7 +705,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                     listSubItem={ header !== subHeader && (
                                                         <Code compact withBackground={ false }>{ subHeader }</Code>
                                                     ) }
-                                                    data-testid={ 
+                                                    data-testid={
                                                         `${ testId }-unselected-transfer-list-item-${ index }` }
                                                 />
                                             );
@@ -752,7 +751,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     const renderUserTableRow = (user: UserBasicInterface): ReactElement => {
 
-        const header: string = UserManagementUtils.resolveUserListHeader(user);
+        const header: string = getUserNameWithoutDomain(user?.userName);
         const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
         const isNameAvailable: boolean = user.name?.familyName === undefined && user.name?.givenName === undefined;
 

@@ -35,7 +35,6 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import { UserManagementUtils } from "../../../../../extensions/components/users/utils/user-management-utils";
 import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,6 +53,7 @@ import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/u
 import { useServerConfigs } from "../../../../server-configurations";
 import { UserManagementConstants } from "../../../../users/constants";
 import { UserListInterface } from "../../../../users/models";
+import { UserManagementUtils } from "../../../../users/utils";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./administrators-table.scss";
 

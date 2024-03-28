@@ -51,12 +51,11 @@ export interface CommonConfig {
         };
     };
     primaryUserstoreOnly: boolean;
-    useExtendedRoutes: boolean;
     userEditSection: {
         isGuestUser: boolean;
         showEmail: boolean;
     };
-    extendedRoutes: RouteInterface[]
+    extendedRoutes: () => RouteInterface[]
 }
 
 /**

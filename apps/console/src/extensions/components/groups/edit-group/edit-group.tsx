@@ -33,9 +33,9 @@ import { AppState, FeatureConfigInterface } from "../../../../features/core";
 import { GroupsInterface } from "../../../../features/groups";
 import { GroupConstants } from "../../../../features/groups/constants";
 import useGroupManagement from "../../../../features/groups/hooks/use-group-management";
+import { CONSUMER_USERSTORE } from "../../../../features/userstores/constants";
 import { ExtendedFeatureConfigInterface } from "../../../configs/models";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
-import { CONSUMER_USERSTORE } from "../../users/constants";
 import { getAllApplicationRolesList } from "../api";
 import { ApplicationRoleInterface } from "../models";
 
@@ -128,7 +128,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             setReadOnly(true);
         }
 
-        if(userStore[0]?.toString()!==CONSUMER_USERSTORE) {
+        if(userStore[0]?.toString() !== CONSUMER_USERSTORE) {
             setUserstoreRemote(true);
         }
     }, [ group, readOnlyUserStoresList ]);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,8 +20,9 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
+import { userstoresConfig } from "../../../extensions";
 import { getUserStoreList } from "../../userstores/api";
-import { UserStoreListItem, UserStoreProperty } from "../../userstores/models";
+import { UserStore, UserStoreListItem, UserStoreProperty } from "../../userstores/models";
 import { ValidationFormInterface } from "../../validation/models";
 import { getAUserStore, getPrimaryUserStore } from "../api";
 import { SharedUserStoreConstants } from "../constants";
@@ -197,7 +198,7 @@ export class SharedUserStoreUtils {
      * The following method will fetch the primary user store details.
      */
     public static async getPrimaryUserStore(): Promise<void | UserStoreDetails> {
-        return getPrimaryUserStore().then((response: any) => {
+        return getPrimaryUserStore(userstoresConfig.primaryUserstoreId).then((response: any) => {
             return response;
         }).catch(() => {
             store.dispatch(addAlert({
@@ -214,23 +215,26 @@ export class SharedUserStoreUtils {
      * The following method fetch the readonly user stores list.
      *
      * @param userstores - Externally provided usertores list.
-     * @deprecated Write these functionalities seperately get the caching support from SWR.
      */
     public static async getReadOnlyUserStores(userstores?: UserStoreListItem[]): Promise<string[]> {
-        const ids: string[] = await SharedUserStoreUtils.getUserStoreIds(userstores) as string[];
-        const primaryUserStore: void | UserStoreDetails = await SharedUserStoreUtils.getPrimaryUserStore();
         const readOnlyUserStores: string[] = [];
+        const ids: string[] = await SharedUserStoreUtils.getUserStoreIds(userstores) as string[];
 
-        // Checks if the primary user store is readonly as well.
-        if ( primaryUserStore && primaryUserStore.properties.find((property: UserStoreProperty) => {
-            return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
-        ) {
-            readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
+        if (!ids.includes(userstoresConfig.primaryUserstoreId)) {
+            const primaryUserStore: void | UserStoreDetails = await SharedUserStoreUtils
+                .getPrimaryUserStore();
+
+            // Checks if the primary user store is readonly as well.
+            if (primaryUserStore && primaryUserStore.properties.find((property: UserStoreProperty) => {
+                return property.name === SharedUserStoreConstants.READONLY_USER_STORE; }).value === "true"
+            ) {
+                readOnlyUserStores.push(primaryUserStore.name.toUpperCase());
+            }
         }
 
         for (const id of ids) {
             await getAUserStore(id)
-                .then((res: any) => {
+                .then((res: UserStore) => {
                     res.properties.map((property: UserStoreProperty) => {
                         if (property.name === SharedUserStoreConstants.READONLY_USER_STORE
                             && property.value === "true") {

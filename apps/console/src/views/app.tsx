@@ -61,7 +61,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
-import { applicationConfig, commonConfig } from "../extensions";
+import { applicationConfig } from "../extensions";
 import { FeatureGateConstants } from "../extensions/components/feature-gate/constants/feature-gate";
 import { getProfileInformation } from "../features/authentication/store";
 import {
@@ -133,7 +133,7 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
 
     const [ selectedRoute, setSelectedRoute ] = useState<
         RouteInterface | ChildRouteInterface
-    >(getAppViewRoutes(commonConfig.useExtendedRoutes)[ 0 ]);
+    >(getAppViewRoutes()[ 0 ]);
 
     const { isMobileViewport } = useMediaContext();
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserStoreDetails } from "../models";
 import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
  *
- * @type { AxiosHttpClientInstance }
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
@@ -34,28 +34,28 @@ const httpClient = AsgardeoSPAClient.getInstance()
  * Gets details of the primary user store.
  *
  *
- * @return {Promise<any>} response.
+ * @returns the primary userstore
  */
-export const getPrimaryUserStore = (): Promise<UserStoreDetails> => {
-    const requestConfig = {
+export const getPrimaryUserStore = (primaryUserstore: string): Promise<UserStoreDetails> => {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.userStores}/primary`
+        url: `${store.getState().config.endpoints.userStores}/${primaryUserstore}`
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -63,12 +63,12 @@ export const getPrimaryUserStore = (): Promise<UserStoreDetails> => {
 /**
  * Gets a userstore by its id.
  *
- * @param {string} id Userstore ID.
+ * @param id - Userstore ID.
  *
- * @return {Promise<any>} response.
+ * @returns the userstore of the given ID.
  */
 export const getAUserStore = (id: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -79,14 +79,14 @@ export const getAUserStore = (id: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
             return Promise.resolve(response.data);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };

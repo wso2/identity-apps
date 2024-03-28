@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -42,9 +41,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { UserManagementUtils } from "../../../extensions/components/users/utils";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { userConfig } from "../../../extensions/configs/user";
+import { userstoresConfig } from "../../../extensions/configs/userstores";
 import {
     AppConstants,
     AppState,
@@ -58,6 +57,7 @@ import { RealmConfigInterface } from "../../server-configurations";
 import { deleteUser } from "../api";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
+import { UserManagementUtils } from "../utils/user-management-utils";
 
 /**
  * Prop types for the liked accounts component.
@@ -239,11 +239,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const resolveAvatarUsername = ( user: UserBasicInterface ): string => {
         const usernameUUID: string = getUserNameWithoutDomain(user?.userName);
 
-        if (user.name?.givenName){
+        if (user?.name?.givenName){
             return user.name.givenName[0];
-        } else if (user.name?.familyName) {
+        } else if (user?.name?.familyName) {
             return user.name.familyName[0];
-        } else if (user.emails[0]){
+        } else if (user?.emails?.length > 0){
             return user.emails[0][0];
         } else if (!checkUUID(usernameUUID)){
             return usernameUUID[0];
@@ -255,7 +255,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const renderUserIdp = (user: UserBasicInterface): string => {
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]?.toUpperCase()
-            : "PRIMARY";
+            : userstoresConfig.primaryUserstoreName;
 
         const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
 
@@ -441,12 +441,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 icon: (user: UserBasicInterface): SemanticICONS => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : "PRIMARY";
+                        : userstoresConfig.primaryUserstoreName;
 
                     return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
+                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -455,7 +456,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 popupText: (user: UserBasicInterface): string => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : "PRIMARY";
+                        : userstoresConfig.primaryUserstoreName;
 
                     return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
                     || !isFeatureEnabled(featureConfig?.users,
@@ -474,14 +475,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore: string = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
-                    : UserstoreConstants.PRIMARY_USER_STORE;
+                    : userstoresConfig.primaryUserstoreName;
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === realmConfigs?.adminUser && !isSubOrganization())
-                    || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName));
+                    || authenticatedUser === getUserNameWithoutDomain(user?.userName);
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

@@ -17,13 +17,11 @@
  */
 
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,6 +33,7 @@ import { UserRolesList } from "./user-roles-list";
 import { UserRolesV1List } from "./user-roles-v1-list";
 import { UserSessions } from "./user-sessions";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
+import { userstoresConfig } from "../../../extensions/configs/userstores";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
@@ -80,7 +79,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 ): JSX.Element => {
 
     const {
-        user: selectedUser,
+        user,
         handleUserUpdate,
         featureConfig,
         readOnlyUserStores,
@@ -108,26 +107,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         setIsSuperAdminIdentifierFetchRequestLoading
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
-    const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
     const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     useEffect(() => {
-        //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
-        //see if they are the same values. If they are the same values we do not do anything.
-        //This makes sure the child components or side effects depending on the user object won't
-        //re-render or re-trigger.
-        if (!selectedUser || isEqual(user, selectedUser)) {
-            return;
-        }
-        setUser(selectedUser);
-    }, [ selectedUser ]);
-
-    useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
-            : UserstoreConstants.PRIMARY_USER_STORE;
+            : userstoresConfig.primaryUserstoreName;
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
@@ -245,7 +232,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        isSuperOrganization && roleV1Enabled ? {
+        isSuperOrganization() && roleV1Enabled ? {
             menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -260,7 +247,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isSuperOrganization && !roleV1Enabled ? {
+        isSuperOrganization() && !roleV1Enabled ? {
             menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -268,7 +255,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         } : null,
-        isSuperOrganization && {
+        {
             menuItem: t("users:editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>

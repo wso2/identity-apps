@@ -21,11 +21,148 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { Config } from "../../core/configs";
+import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { store } from "../../core/store";
 import { UserManagementConstants } from "../constants";
+import { UserInviteInterface } from "../models/user";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance());
+
+
+export const getInvitedUserList = (): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.inviteEndpoint
+    };
+
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error);
+    });
+};
+
+/**
+ * Hook to get the invited users list.
+ *
+ * @returns invited users list.
+ */
+export const useInvitedUsersList = <Data = UserInviteInterface[],
+    Error = RequestErrorInterface>(
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.inviteEndpoint
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+export const sendInvite = (userInvite: UserInviteInterface): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: userInvite,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.inviteEndpoint
+    };
+
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error);
+    });
+};
+
+export const deleteInvite = (traceID: string): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.inviteEndpoint + "/" + traceID
+    };
+
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error);
+    });
+};
+
+export const updateInvite = (inviteID: string, inviteeData: Record<string, unknown>): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: inviteeData,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.inviteEndpoint + "/" + inviteID
+    };
+
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error);
+    });
+};
+
+export const deleteGuestUser = (traceID: string): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.userEndpoint + "/" + traceID
+    };
+
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error);
+    });
+};
+
+export const resendInvite = (traceID: string): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.resendEndpoint.replace("{}", traceID)
+    };
+
+    return httpClient(requestConfig).then((response: AxiosResponse) => {
+        return Promise.resolve(response);
+    }).catch((error: AxiosError) => {
+        return Promise.reject(error);
+    });
+};
 
 /**
  * Get invitation link for each user.
@@ -49,7 +186,7 @@ export const generateInviteLink = (username: string, domain: string): Promise<an
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {            
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
                     UserManagementConstants.INVALID_STATUS_CODE_ERROR,
@@ -61,7 +198,7 @@ export const generateInviteLink = (username: string, domain: string): Promise<an
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {            
+        }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? UserManagementConstants.RESOURCE_NOT_FOUND_ERROR_MESSAGE,
                 error.stack,

@@ -65,8 +65,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { UsersConstants } from "../../../../extensions/components/users/constants";
-import { userConfig } from "../../../../extensions/configs";
+import { userConfig, userstoresConfig } from "../../../../extensions/configs";
 import { ClaimManagementConstants } from "../../../../features/claims/constants";
 import { getGroupList, useGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
@@ -82,7 +81,7 @@ import {
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { PatchRoleDataInterface } from "../../../roles/models";
 import { getAUserStore, getUserStores } from "../../../userstores/api";
-import { PRIMARY_USERSTORE } from "../../../userstores/constants";
+import { UserStoreManagementConstants } from "../../../userstores/constants";
 import { useValidationConfigData } from "../../../validation/api";
 import { ValidationFormInterface } from "../../../validation/models";
 import { addBulkUsers } from "../../api";
@@ -303,7 +302,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
             response?.properties?.some((property: UserStoreProperty) => {
-                if (property.name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY) {
+                if (property.name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY) {
                     isReadWriteUserStore = property.value === "false";
 
                     return true;
@@ -736,7 +735,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     }
 
                     dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
                         ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
 
@@ -889,7 +888,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             uniqueCSVGroups.forEach((group: string) => {
                 if (isEmptyAttribute(group)) return;
                 const domainGroupName: string = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
                     ? `${selectedUserStore}/${group}`
                     : group;
 
@@ -1054,10 +1053,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
                 ],
                 userName:
-                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    selectedUserStore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                [ userstore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
                     ? UserManagementConstants.CUSTOMSCHEMA
                     : UserManagementConstants.ENTERPRISESCHEMA
                 ]: {

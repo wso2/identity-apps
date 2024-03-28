@@ -45,6 +45,9 @@ export class UserStoreManagementConstants {
      * The error code that is returned when there is no item in the list.
      */
     public static readonly RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
+
+    // Name of the readonly DEFAULT userstore property.
+    public static readonly USER_STORE_PROPERTY_READ_ONLY: string = "ReadOnly";
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,7 +48,7 @@ import { Grid, Header, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../../../features/core";
 import { getUsersList } from "../../../../../features/users/api/users";
 import { UserBasicInterface, UserListInterface } from "../../../../../features/users/models/user";
-import { CONSUMER_USERSTORE } from "../../../users/constants";
+import { userstoresConfig } from "../../../../configs/userstores";
 
 /**
  * Proptypes for the role user list component.
@@ -180,7 +180,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         getUsersList(limit, offset, filter, attribute, userStore)
             .then((response: UserListInterface) => {
                 const responseUsers: UserBasicInterface[] = response.Resources
-                    .filter((user: UserBasicInterface) => user.userName.split("/")[0] !== CONSUMER_USERSTORE);
+                    .filter((user: UserBasicInterface) => user.userName.split("/")[0] !==
+                        userstoresConfig.primaryUserstoreName);
 
                 responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
                     userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
@@ -711,7 +712,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             >
                                 {
                                     originalUserList?.map((user: UserBasicInterface, index: number) => {
-                                        const resolvedGivenName: string 
+                                        const resolvedGivenName: string
                                             = (user.name && user.name.givenName !== undefined)
                                                 ? `${ user.name.givenName } ${ user.name.familyName ?? "" }`
                                                 : undefined;

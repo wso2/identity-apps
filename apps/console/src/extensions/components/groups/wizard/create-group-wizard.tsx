@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,8 +39,8 @@ import {
 } from "../../../../features/groups/models";
 import { updateRole } from "../../../../features/roles/api";
 import { PatchRoleDataInterface } from "../../../../features/roles/models";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../features/userstores/constants";
 import { commonConfig } from "../../../configs";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../users/constants";
 
 /**
  * Interface which captures create group props.

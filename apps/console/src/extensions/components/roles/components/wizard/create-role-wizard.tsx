@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,7 @@ import { createRole } from "../../../../../features/roles/api";
 import { getRolesWizardStepIcons } from "../../../../../features/roles/configs";
 import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../../../../features/roles/models";
 import { UserBasicInterface } from "../../../../../features/users/models/user";
-import { CONSUMER_USERSTORE } from "../../../users/constants";
+import { CONSUMER_USERSTORE } from "../../../../../features/userstores/constants";
 
 /**
  * Interface which captures create role props.

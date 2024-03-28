@@ -17,28 +17,36 @@
  */
 
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Button, Link, PasswordValidation, Popup } from "@wso2is/react-components";
+import { Button, Hint, Link, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Menu, Message, Radio } from "semantic-ui-react";
-import { AppConstants, SharedUserStoreConstants } from "../../../../core/constants";
+import { userConfig, userstoresConfig } from "../../../../../extensions/configs";
+import { AppConstants } from "../../../../core/constants";
 import { history } from "../../../../core/helpers/history";
 import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import {
     ServerConfigurationsConstants
 } from "../../../../server-configurations/constants/server-configurations-constants";
+import { getAUserStore, useUserStore, useUserStores } from "../../../../userstores/api";
 import {
-    PRIMARY_USERSTORE,
-    USERSTORE_REGEX_PROPERTIES
+    USERSTORE_REGEX_PROPERTIES, UserStoreManagementConstants
 } from "../../../../userstores/constants/user-store-constants";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../../../userstores/models";
 import { ValidationDataInterface, ValidationFormInterface } from "../../../../validation/models";
 import { getUsersList } from "../../../api/users";
 import {
     AskPasswordOptionTypes,
     HiddenFieldNames,
-    PasswordOptionTypes
+    PasswordOptionTypes,
+    UserManagementConstants
 } from "../../../constants";
 import {
     BasicUserDetailsInterface,
@@ -49,6 +57,7 @@ import {
     getConfiguration,
     getUsernameConfiguration
 } from "../../../utils";
+
 
 /**
  * Proptypes for the add user component.
@@ -67,11 +76,10 @@ export interface AddUserProps {
     setUserSummaryEnabled: (toggle: boolean) => void;
     setAskPasswordFromUser?: (toggle: boolean) => void;
     setOfflineUser?: (toggle: boolean) => void;
+    selectedUserStore?: string;
     setSelectedUserStore?: (selectedUserStore: string) => void;
     isBasicDetailsLoading?: boolean;
     setBasicDetailsLoading?: (toggle: boolean) => void;
-    isUserStoreError: boolean;
-    readWriteUserStoresList: DropdownItemProps[];
 }
 
 /**
@@ -93,26 +101,25 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         isEmailRequired,
         setUserSummaryEnabled,
         setAskPasswordFromUser,
+        selectedUserStore,
         setSelectedUserStore,
         setOfflineUser,
         isBasicDetailsLoading,
         setBasicDetailsLoading,
-        validationConfig,
-        isUserStoreError,
-        readWriteUserStoresList
+        validationConfig
     } = props;
 
-    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(PasswordOptionTypes.CREATE_PASSWORD);
-    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(AskPasswordOptionTypes.OFFLINE);
+    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(userConfig.defaultPasswordOption);
+    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
-    const [ userStoreRegex, setUserStoreRegex ] = useState<string>("");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
     const [ randomPassword, setRandomPassword ] = useState<string>(undefined);
-    const [ userStore, setUserStore ] = useState<string>(PRIMARY_USERSTORE);
+    const [ userStore, setUserStore ] = useState<string>(userstoresConfig.primaryUserstoreId);
     const [ isValidEmail, setIsValidEmail ] = useState<boolean>(false);
     const [ isEmailFilled, setIsEmailFilled ] = useState<boolean>(false);
+    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
 
     const formBottomRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const emailRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
@@ -121,6 +128,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
     const { UIConfig } = useUIConfig();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const dispatch: Dispatch = useDispatch();
+
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("users:consumerUsers.fields." +
         "username.validations.invalid");
@@ -128,16 +139,93 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         "username.validations.regExViolation");
     const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("users:consumerUsers.fields." +
         "username.validations.invalidCharacters");
-    // const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string =
-    // t("extensions:manage.features.user.addUser.validation." +
-    //     "usernameSymbols");
-    // const USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE: string =
-    //     t("extensions:manage.features.user.addUser.validation.usernameLength", {
-    //         maxLength: usernameConfig?.maxLength,
-    //         minLength: usernameConfig?.minLength
-    //     });
+    const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string =
+    t("extensions:manage.features.user.addUser.validation." +
+        "usernameSymbols");
+    const USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE: string =
+        t("extensions:manage.features.user.addUser.validation.usernameLength", {
+            maxLength: usernameConfig?.maxLength,
+            minLength: usernameConfig?.minLength
+        });
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    // Hook to get the userstore details of the selected userstore.
+    const {
+        data: originalUserStore
+    } = useUserStore(
+        userStore
+    );
+
+    // Hook to get the user store list.
+    const {
+        data: orginalUserStoreList,
+        isLoading: isUserStoreListFetchRequestLoading,
+        isValidating: isUserStoreListFetchRequestValidating,
+        error: userStoreListFetchRequestError
+    } = useUserStores(
+        null,
+        !isSubOrganization()
+    );
+
+    /**
+     * Set read-write userstores list.
+     */
+    const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
+        const storeOptions: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreId
+            }
+        ];
+
+        if (isUserStoreListFetchRequestLoading || isUserStoreListFetchRequestValidating) {
+            return storeOptions;
+        }
+
+        if (orginalUserStoreList?.length > 0) {
+            orginalUserStoreList.map((store: UserStoreListItem, index: number) => {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled: boolean = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+                        const isReadOnly: boolean = response.properties.find(
+                            (property: UserStoreProperty) =>
+                                property.name === UserStoreManagementConstants.
+                                    USER_STORE_PROPERTY_READ_ONLY)?.value === "true";
+
+                        if (!isDisabled && !isReadOnly) {
+                            const storeOption: DropdownItemProps = {
+                                key: index,
+                                text: store.name,
+                                value: store.id
+                            };
+
+                            storeOptions.push(storeOption);
+                        }
+                    });
+                }
+            });
+        }
+
+        return storeOptions;
+    }, [ orginalUserStoreList ]);
+
+    const userStoreRegex: string = useMemo(() => {
+        if (originalUserStore) {
+            return originalUserStore?.properties?.find(
+                (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.UsernameRegEx)?.value;
+        }
+    }, [ originalUserStore ]);
+
+    const passwordRegex: string = useMemo(() => {
+        if (originalUserStore) {
+            return originalUserStore?.properties?.find(
+                (property: UserStoreProperty) => property.name === USERSTORE_REGEX_PROPERTIES.PasswordRegEx)?.value;
+        }
+    }, [ originalUserStore ]);
 
     /**
      *
@@ -172,13 +260,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         }
     }, [ validationConfig ]);
 
-    /**
-     * This gets regex for each userstore.
-     */
-    useEffect(() => {
-        getUserStoreRegex();
-    }, [ userStore ]);
-
     useEffect(() => {
         if (!isAlphanumericUsernameEnabled()) {
             setIsValidEmail(true);
@@ -186,6 +267,37 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             setIsValidEmail(false);
         }
     }, [ usernameConfig ]);
+
+    /**
+     * Handles the userstore list fetch request error.
+     */
+    useEffect(() => {
+        if (!userStoreListFetchRequestError) {
+            return;
+        }
+
+        setUserStoreError(true);
+
+        if (userStoreListFetchRequestError.response
+            && userStoreListFetchRequestError.response.data
+            && userStoreListFetchRequestError.response.data.description) {
+            dispatch(addAlert({
+                description: userStoreListFetchRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications." +
+                    "fetchUsers.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:manage.features.users.notifications.fetchUserstores.genericError." +
+                "description"),
+            level: AlertLevels.ERROR,
+            message: t("console:manage.features.users.notifications.fetchUserstores.genericError.message")
+        }));
+    }, [ userStoreListFetchRequestError ]);
 
     /**
      * Check whether the alphanumeric usernames are enabled.
@@ -202,17 +314,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      */
     const onPasswordValidate = (valid: boolean): void => {
         setIsValidPassword(valid);
-    };
-
-    /**
-     * The following function gets the user store regex that validates user name.
-     */
-    const getUserStoreRegex = async () => {
-        await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-            SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
-            .then((response: string) => {
-                setUserStoreRegex(response);
-            });
     };
 
     const askPasswordOptionData: any = {
@@ -257,7 +358,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         });
 
         return {
-            domain: userStore,
+            domain: selectedUserStore,
             email: values.get("email")?.toString(),
             firstName: values.get("firstName")?.toString(),
             lastName: values.get("lastName")?.toString(),
@@ -303,9 +404,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         if (passwordConfig) {
             return isValidPassword;
         }
-        const passwordRegex: string = await SharedUserStoreUtils.getUserStoreRegEx(
-            userStore,
-            USERSTORE_REGEX_PROPERTIES.PasswordRegEx);
 
         return SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex);
     };
@@ -601,7 +699,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         const usersList: UserListInterface
                                         = await getUsersList(null, null,
                                             "userName eq " + value, null,
-                                            userStore);
+                                            selectedUserStore);
 
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
@@ -683,7 +781,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         const usersList: UserListInterface
                                         = await getUsersList(null, null,
                                             "userName eq " + value, null,
-                                            userStore);
+                                            selectedUserStore);
 
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
@@ -738,24 +836,21 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                             "validations.empty"
                         ) }
                         validation={ async (value: string, validation: Validation) => {
-                            // TODO: Fix the validation issues and re-enable the validation.
-                            // Tracker: https://github.com/wso2/product-is/issues/18010
-                            // /// Regular expression to validate having alphanumeric characters.
-                            // const regExpInvalidUsername: RegExp
-                            // = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
+                            const regExpInvalidUsername: RegExp
+                            = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
 
-                            // // Check username length validations.
-                            // if (value.length < Number(usernameConfig.minLength)
-                            //     || value.length > Number(usernameConfig.maxLength)) {
-                            //     validation.isValid = false;
-                            //     validation.errorMessages.push(
-                            //         USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
-                            // // Check username validity against userstore regex.
-                            // } else if (!regExpInvalidUsername.test(value)) {
-                            //     validation.isValid = false;
-                            //     validation.errorMessages.push(
-                            //         USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
-                            // }
+                            // Check username length validations.
+                            if (value.length < Number(usernameConfig.minLength)
+                                || value.length > Number(usernameConfig.maxLength)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(
+                                    USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
+                            // Check username validity against userstore regex.
+                            } else if (!regExpInvalidUsername.test(value)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(
+                                    USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
+                            }
 
                             try {
                                 setBasicDetailsLoading(true);
@@ -768,7 +863,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                     const usersList: UserListInterface
                                     = await getUsersList(null, null,
                                         "userName eq " + value, null,
-                                        userStore);
+                                        selectedUserStore);
 
                                     if (usersList?.totalResults > 0) {
                                         validation.isValid = false;
@@ -800,12 +895,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         tabIndex={ 1 }
                         maxLength={ 60 }
                     />
-                    { /* <Hint>
+                    <Hint>
                         { t("extensions:manage.features.user.addUser.validation.usernameHint", {
                             maxLength: usernameConfig?.maxLength,
                             minLength: usernameConfig?.minLength
                         }) }
-                    </Hint> */ }
+                    </Hint>
                     <Field
                         data-testid="user-mgt-add-user-form-alphanumeric-email-input"
                         label={ "Email" }
@@ -868,7 +963,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             <Grid>
                 {
                     !hiddenFields.includes(HiddenFieldNames.USERSTORE) &&
-                        !isUserStoreError && (
+                        !isUserStoreError && (readWriteUserStoresList.length > 1) && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <div ref={ emailRef }/>
@@ -889,7 +984,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         onChange={
                                             (e: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
                                                 setUserStore(data.value.toString());
-                                                setSelectedUserStore(data.value.toString());
+                                                setSelectedUserStore(readWriteUserStoresList.find(
+                                                    (userStore: DropdownItemProps) =>
+                                                        userStore.value === data.value)?.text?.toString());
                                             }
                                         }
                                         tabIndex={ 1 }

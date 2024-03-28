@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,15 +27,16 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
-import { CONSUMER_USERSTORE, UsersConstants } from "../../../../../extensions/components/users/constants/users";
-import { AppState } from "../../../../../features/core";
-import { SharedUserStoreUtils } from "../../../../../features/core/utils";
-import { getUsersList } from "../../../../../features/users/api/users";
-import { UserListInterface } from "../../../../../features/users/models/user";
-import { getConfiguration, getUsernameConfiguration } from "../../../../../features/users/utils";
-import { USERSTORE_REGEX_PROPERTIES } from "../../../../../features/userstores/constants/user-store-constants";
-import { useValidationConfigData } from "../../../../../features/validation/api";
-import { ValidationFormInterface } from "../../../../../features/validation/models";
+import { userstoresConfig } from "../../../../../extensions/configs/userstores";
+import { AppState } from "../../../../core";
+import { SharedUserStoreUtils } from "../../../../core/utils";
+import { getUsersList } from "../../../../users/api/users";
+import { UserListInterface } from "../../../../users/models/user";
+import { getConfiguration, getUsernameConfiguration } from "../../../../users/utils";
+import { USERSTORE_REGEX_PROPERTIES } from "../../../../userstores/constants/user-store-constants";
+import { useValidationConfigData } from "../../../../validation/api";
+import { ValidationFormInterface } from "../../../../validation/models";
+import { UserManagementConstants } from "../../../constants";
 
 /**
  * Proptypes for the add consumer user component.
@@ -74,7 +75,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
     const [ isEmailRequired, setEmailRequired ] = useState<boolean>(true);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
-    const [ userstore ] = useState<string>(CONSUMER_USERSTORE);
+    const [ userstore ] = useState<string>(userstoresConfig.primaryUserstoreName);
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
@@ -231,7 +232,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
 
     const getFormValues = (values: Map<string, FormValue>) => {
         return {
-            domain: CONSUMER_USERSTORE,
+            domain: userstoresConfig.primaryUserstoreName,
             email: values.get("email")?.toString(),
             firstName: values.get("firstName")?.toString(),
             lastName: values.get("lastName")?.toString(),
@@ -358,7 +359,8 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
      */
     const validateUserNamePattern = async (): Promise<string> => {
         try {
-            let regex: string = await SharedUserStoreUtils.getUserStoreRegEx(CONSUMER_USERSTORE, USERNAME_JAVA_REGEX);
+            let regex: string = await SharedUserStoreUtils.getUserStoreRegEx(
+                userstoresConfig.primaryUserstoreName, USERNAME_JAVA_REGEX);
 
             if (!regex.startsWith("^")) {
                 regex = "^" + regex;
@@ -425,7 +427,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                                         null,
                                                         "userName eq " + value,
                                                         null,
-                                                        CONSUMER_USERSTORE);
+                                                        userstoresConfig.primaryUserstoreName);
 
                                                     if (usersList?.totalResults > 0) {
                                                         validation.isValid = false;
@@ -471,7 +473,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         validation={ async (value: string, validation: Validation) => {
                                         // Regular expression to validate having alphanumeric characters.
                                             const regExpInvalidUsername: RegExp
-                                            = new RegExp(UsersConstants.USERNAME_VALIDATION_REGEX);
+                                            = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
 
                                             // Check username length validations.
                                             if (value.length < Number(usernameConfig.minLength)

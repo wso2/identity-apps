@@ -84,7 +84,7 @@ export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInte
     domain: string,
     excludedAttributes?: string,
     filter?: string,
-    shouldFetch?: boolean
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

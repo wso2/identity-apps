@@ -52,7 +52,6 @@ import { ChangePasswordComponent } from "./user-change-password";
 import { SCIMConfigs, commonConfig, userConfig } from "../../../extensions";
 import { TenantInfo } from "../../../extensions/components/tenants/models";
 import { getAssociationType } from "../../../extensions/components/tenants/utils/tenants";
-import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/users/constants";
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
@@ -64,7 +63,7 @@ import {
     SearchRoleInterface
 } from "../../roles/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../server-configurations";
-import { getUserDetails, updateUserInfo } from "../api";
+import { updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
@@ -181,10 +180,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         accountLock: "false",
         forcePasswordReset: "false"
     });
-    const [ forcePasswordTriggered, setForcePasswordTriggered ] = useState<boolean>(false);
-    const [ accountLocked, setAccountLock ] = useState<boolean>(false);
-    const [ accountDisabled, setAccountDisable ] = useState<boolean>(false);
-    const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -193,6 +188,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
+    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked;
+    const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
+    const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
 
     useEffect(() => {
 
@@ -228,41 +226,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
     }, [ connectorProperties ]);
 
-    useEffect(() => {
-        if (user?.id === undefined) {
-            return;
-        }
-
-        const attributes: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
-
-        getUserDetails(user?.id, attributes)
-            .then((response: ProfileInfoInterface) => {
-                setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
-            });
-    }, [ forcePasswordTriggered ]);
-
-    useEffect(() => {
-        if (user?.id === undefined) {
-            return;
-        }
-
-        const attributes: string = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED") + "," +
-            UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_DISABLED") + "," +
-            UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
-
-        getUserDetails(user?.id, attributes)
-            .then((response: ProfileInfoInterface) => {
-                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked ?? false);
-                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled ?? false);
-                setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
-            });
-    }, [ user ]);
-
     /**
-     *  This will load the countries to the dropdown.
+     *  .
      */
     useEffect(() => {
+        // This will load the countries to the dropdown
         setCountryList(CommonUtils.getCountryList());
+        // This will load authenticated user's association type to the current organization.
+        setAssociationType(getAssociationType(authUserTenants, currentOrganization));
+
         if (adminUserType === AdminAccountTypes.INTERNAL && userConfig?.enableAdminPrivilegeRevokeOption) {
             // Admin role ID is only used by internal admins.
             getAdminRoleId();
@@ -270,11 +242,28 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     }, []);
 
     /**
-     * This will load authenticated user's association type to the current organization.
+     * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        setAssociationType(getAssociationType(authUserTenants, currentOrganization));
-    }, []);
+        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
+            .filter((item: ProfileSchemaInterface) =>
+                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
+            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
+                if (!a.displayOrder) {
+                    return -1;
+                } else if (!b.displayOrder) {
+                    return 1;
+                } else {
+                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+                }
+            });
+
+        setProfileSchema(sortedSchemas);
+    }, [ profileSchemas ]);
+
+    useEffect(() => {
+        mapUserToSchema(profileSchema, user);
+    }, [ profileSchema, user ]);
 
     /**
      * This will add role attribute to countries search input to prevent autofill suggestions.
@@ -314,19 +303,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
 
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
 
                                 return;
@@ -346,15 +335,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
                                 schemaName && schemaSecondaryProperty &&
-                                    userInfo[ProfileConstants
-                                        .SCIM2_WSO2_USER_SCHEMA][schemaName] &&
-                                    userInfo[ProfileConstants
-                                        .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
+                                    userInfo[userConfig.userProfileSchema][schemaName] &&
+                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
-                                        userInfo[ProfileConstants
-                                            .SCIM2_WSO2_USER_SCHEMA][schemaName][schemaSecondaryProperty])
+                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -398,17 +384,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
 
                                 return;
                             }
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]
+                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                                 );
@@ -430,14 +416,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
+                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
                                 schemaName && schemaSecondaryProperty &&
-                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName] &&
-                                    userInfo[ProfileConstants
-                                        .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty] && (
+                                    userInfo[userConfig.userProfileSchema][schemaName] &&
+                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
-                                        userInfo[ProfileConstants
-                                            .SCIM2_ENT_USER_SCHEMA][schemaName][schemaSecondaryProperty])
+                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -466,30 +450,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             setProfileInfo(tempProfileInfo);
         }
     };
-
-    /**
-     * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
-     */
-    useEffect(() => {
-        const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
-            .filter((item: ProfileSchemaInterface) =>
-                item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
-            .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                if (!a.displayOrder) {
-                    return -1;
-                } else if (!b.displayOrder) {
-                    return 1;
-                } else {
-                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
-                }
-            });
-
-        setProfileSchema(sortedSchemas);
-    }, [ profileSchemas ]);
-
-    useEffect(() => {
-        mapUserToSchema(profileSchema, user);
-    }, [ profileSchema, user ]);
 
     /**
      * This function handles deletion of the user.
@@ -718,7 +678,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -737,7 +697,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if(schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -848,7 +808,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -867,7 +827,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if(schema.extended) {
                                     const schemaId: string = schema?.schemaId
                                         ? schema.schemaId
-                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                        : userConfig.userProfileSchema;
 
                                     opValue = {
                                         [schemaId]: {
@@ -987,13 +947,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * The method handles the locking and disabling of user account.
      */
-    const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
+    const handleDangerActions = (attributeName: string, attributeValue: boolean): Promise<void> => {
         let data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "replace",
                     "value": {
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [userConfig.userProfileSchema]: {
                             [attributeName]: attributeValue
                         }
                     }
@@ -1023,7 +983,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         }
 
-        updateUserInfo(user.id, data)
+        return updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
                     description:
@@ -1127,19 +1087,26 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         (
                                             !isReadOnly &&
                                             !isReadOnlyUserStore &&
-                                            user.userName !== adminUsername &&
-                                            !isUserManagedByParentOrg
+                                            !isUserManagedByParentOrg &&
+                                            user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ AccessControlConstants.USER_EDIT }>
                                                     <DangerZone
-                                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                                        data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("user:editUser." +
-                                                    "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                            "dangerZoneGroup.passwordResetZone.actionTitle") }
                                                         header={ t("user:editUser." +
-                                                        "dangerZoneGroup.passwordResetZone.header") }
-                                                        subheader={ t("user:editUser" +
-                                                    ".dangerZoneGroup.passwordResetZone.subheader") }
-                                                        onActionClick={ () => setOpenChangePasswordModal(true) }
+                                                            "dangerZoneGroup.passwordResetZone.header") }
+                                                        subheader={ t("user:editUser." +
+                                                            "dangerZoneGroup.passwordResetZone.subheader") }
+                                                        onActionClick={ (): void => {
+                                                            setOpenChangePasswordModal(true);
+                                                        } }
+                                                        isButtonDisabled={ accountLocked
+                                                            ? accountLocked
+                                                            : user[ userConfig.userProfileSchema ]?.accountLocked }
+                                                        buttonDisableHint={ t("user:editUser." +
+                                                            "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
                                                 </Show>
                                             ) : null
@@ -1147,7 +1114,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                             <DangerZone
-                                                data-testid={ `${ testId }-danger-zone` }
+                                                data-testid={ `${ testId }-account-disable-button` }
                                                 actionTitle={ t("user:editUser." +
                                                 "dangerZoneGroup.disableUserZone.actionTitle") }
                                                 header={ t("user:editUser.dangerZoneGroup." +
@@ -1166,7 +1133,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         !allowDeleteOnly && !isUserManagedByParentOrg  && (
                                             <DangerZone
-                                                data-testid={ `${ testId }-danger-zone` }
+                                                data-testid={ `${ testId }-danger-zone-toggle` }
                                                 actionTitle={ t("user:editUser." +
                                                     "dangerZoneGroup.lockUserZone.actionTitle") }
                                                 header={
@@ -1189,7 +1156,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         userConfig?.enableAdminPrivilegeRevokeOption && !isPrivilegedUser &&
                                     adminUserType === AdminAccountTypes.INTERNAL &&
-                                    associationType !== GUEST_ADMIN_ASSOCIATION_TYPE &&
+                                    associationType !== UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE &&
                                     (
                                         <DangerZone
                                             data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
@@ -1757,7 +1724,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     )
                 }
                 <ChangePasswordComponent
-                    handleForcePasswordResetTrigger={ () => setForcePasswordTriggered(true) }
+                    handleForcePasswordResetTrigger={ null }
                     connectorProperties={ connectorProperties }
                     handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
                     openChangePasswordModal={ openChangePasswordModal }

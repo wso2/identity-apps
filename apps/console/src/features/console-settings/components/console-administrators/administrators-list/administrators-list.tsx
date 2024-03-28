@@ -30,7 +30,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
-import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import {
     AdvancedSearchWithBasicFilters,
@@ -42,6 +41,7 @@ import {
     history
 } from "../../../../core";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { UserManagementConstants } from "../../../../users/constants";
 import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
 import { UserStoreDropdownItem } from "../../../../userstores/models";
 import useAdministrators from "../../../hooks/use-administrators";
@@ -140,7 +140,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         searchQuery,
         null,
         selectedUserStore,
-        UsersConstants.GROUPS_ATTRIBUTE
+        UserManagementConstants.GROUPS_ATTRIBUTE
     );
 
     const [ loading, setLoading ] = useState(false);

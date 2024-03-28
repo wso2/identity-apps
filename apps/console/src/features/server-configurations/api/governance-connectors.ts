@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,15 +44,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 
 /**
  * Get governance connector categories.
- * 
+ *
  * @returns the governance connector categories.
  */
 export const useGovernanceConnectorCategories = <
-    Data = GovernanceCategoryForOrgsInterface[], 
+    Data = GovernanceCategoryForOrgsInterface[],
     Error = RequestErrorInterface
-> 
-    (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
-
+>(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -60,6 +58,40 @@ export const useGovernanceConnectorCategories = <
         },
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.governanceConnectorCategories
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
+ * Get governance connectors of a given category.
+ *
+ * @param categoryId - ID of the connector category
+ * @returns the governance connector.
+ */
+export const useGovernanceConnectors = <
+    Data = GovernanceConnectorInterface[],
+    Error = RequestErrorInterface
+    >(
+        categoryId: string,
+        shouldFetch: boolean = true
+    ): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.governanceConnectorCategories + "/"
+            + categoryId + "/connectors/"
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);

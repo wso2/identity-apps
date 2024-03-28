@@ -22,7 +22,6 @@ import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
-import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { UserManagementConstants } from "../../constants";
 import { sendParentOrgUserInvite } from "../guests/api/invite";
 import {
@@ -89,7 +88,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                 message: t("invite:notifications.sendInvite.error.message")
             });
         } else if (error?.response?.status === 403 &&
-            error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+            error?.response?.data?.code === UserManagementConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
             setAlert({
                 description: t("extensions:manage.invite.notifications.sendInvite.limitReachError.description"),
                 level: AlertLevels.ERROR,

@@ -22,7 +22,6 @@ import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig } from "../../../extensions/configs/common";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getAppViewRoutes } from "../configs/routes";
@@ -163,7 +162,7 @@ const useRoutes = (): useRoutesInterface => {
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(commonConfig.useExtendedRoutes),
+            getAppViewRoutes(),
             featureConfig,
             allowedScopes,
             checkConsoleScopes,

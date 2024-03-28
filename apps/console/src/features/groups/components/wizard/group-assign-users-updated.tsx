@@ -44,9 +44,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Header, Segment } from "semantic-ui-react";
 import { GroupBasicsUpdated } from "./group-basics-updated";
-import { UserManagementUtils } from "../../../../extensions/components/users/utils";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { UIConstants, UserBasicInterface, UserListInterface, getUsersList } from "../../../core";
+import { UserManagementUtils } from "../../../users/utils";
 import { GroupsMemberInterface } from "../../models";
 
 /**

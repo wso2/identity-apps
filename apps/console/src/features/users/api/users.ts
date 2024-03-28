@@ -248,7 +248,7 @@ export const addUserRole = (data: PatchGroupDataInterface, groupId: string): Pro
  *
  * @returns `Promise<ProfileInfoInterface>` a promise containing the user details.
  */
-export const useUserDetails = <Data = ProfileInfoInterface, Error = AxiosError>(
+export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestErrorInterface>(
     userId: string, attributes?: string
 ): RequestResultInterface<Data, Error> => {
 

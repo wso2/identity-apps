@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,15 +33,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
-import { deleteInvite, resendInvite } from "../../../../../extensions/components/users/api";
-import { InvitationStatus } from "../../../../../extensions/components/users/models";
 import {
     AppState,
     FeatureConfigInterface,
     UserListInterface,
     getEmptyPlaceholderIllustrations
 } from "../../../../core";
+import { deleteInvite, resendInvite } from "../../../api/invite";
 import { UserAccountTypesMain } from "../../../constants";
+import { InvitationStatus } from "../../../models";
 import { deleteParentOrgInvite } from "../api/invite";
 import { UserInviteInterface } from "../models/invite";
 
@@ -252,7 +252,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                     <EmptyPlaceholder
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        subtitle={ 
+                        subtitle={
                             [ userTypeSelection === UserAccountTypesMain.EXTERNAL
                                 ?  t("parentOrgInvitations:" +
                                     "emptyPlaceholder.noExpiredInvitations")
@@ -267,7 +267,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                     <EmptyPlaceholder
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        subtitle={ 
+                        subtitle={
                             [ userTypeSelection === UserAccountTypesMain.EXTERNAL
                                 ? t("parentOrgInvitations:" +
                                 "emptyPlaceholder.noPendingInvitations")
@@ -304,9 +304,9 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 id: "email",
                 key: 0,
                 render: (invite: UserInviteInterface) => (
-                    <Header 
+                    <Header
                         image
-                        as="h6" 
+                        as="h6"
                         className="header-with-icon"
                         data-componentid={ `${ componentId }-item-image` }
                     >
@@ -357,7 +357,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 title: ""
             }
         ];
-        
+
         return defaultColumns;
     };
 
@@ -374,7 +374,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 }
                 actions={ [
                     {
-                        hidden: () => 
+                        hidden: () =>
                             userTypeSelection === UserAccountTypesMain.EXTERNAL
                             || !hasRequiredScopes(
                                 featureConfig?.users,
@@ -404,7 +404,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 ] }
                 data={ guestUsersList }
                 columns={ resolveTableColumns() }
-                onRowClick={ null }
+                onRowClick={ () => null }
                 showHeader={ false }
                 transparent={ !isGuestUsersRequestLoading && (showPlaceholders() !== null) }
             />

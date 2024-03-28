@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,7 +46,7 @@ import {
     searchGroupList,
     updateGroupDetails
 } from "../../../../features/groups";
-import { CONSUMER_USERSTORE } from "../../users/constants";
+import { CONSUMER_USERSTORE } from "../../../../features/userstores/constants";
 
 /**
  * Interface to contain props needed for component
@@ -166,7 +166,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
         setRegExLoading(false);
 
-        return new Promise((resolve: (value: string | PromiseLike<string>) => void, 
+        return new Promise((resolve: (value: string | PromiseLike<string>) => void,
             reject: (reason?: string) => void) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
@@ -275,7 +275,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     let isGroupNameValid: boolean = true;
 
                                                     await validateGroupNamePattern().then((regex: string) => {
-                                                        isGroupNameValid = 
+                                                        isGroupNameValid =
                                                         SharedUserStoreUtils.validateInputAgainstRegEx(value
                                                             , regex);
                                                     });
@@ -322,7 +322,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             <Hint>
                                                 A name for the group.
                                                 { " " }
-                                                Can contain between 3 to 30 alphanumeric characters, dashes 
+                                                Can contain between 3 to 30 alphanumeric characters, dashes
                                                 (<Code>-</Code>),{ " " }
                                                 and underscores (<Code>_</Code>).
                                             </Hint>)
@@ -394,7 +394,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                     : `${ testId }-role-danger-zone`
                             }
                             isButtonDisabled={ isReadOnly || isUserstoreRemote }
-                            buttonDisableHint = { 
+                            buttonDisableHint = {
                                 isGroup
                                     ? t("roles:edit.basics.dangerZone." +
                                         "buttonDisableHint", { type: "group" })
