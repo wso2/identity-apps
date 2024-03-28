@@ -17,7 +17,7 @@
  */
 
 import useConsoleSettings from "./use-console-settings";
-import { useRolesList } from "../../roles/api/roles";
+import { useRolesList } from "../../admin-roles-v2/api/roles";
 
 /**
  * Props interface of {@link useConsoleRoles}

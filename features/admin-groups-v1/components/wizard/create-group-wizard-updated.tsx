@@ -46,9 +46,9 @@ import {
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../organizations/models";
-import { getRolesList, updateRole } from "../../../roles/api";
-import { RoleConstants } from "../../../roles/constants";
-import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../roles/models";
+import { getRolesList, updateRole } from "../../../admin-roles-v2/api";
+import { RoleConstants } from "../../../admin-roles-v2/constants";
+import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../admin-roles-v2/models";
 import { UserBasicInterface } from "../../../admin-users-v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../admin-userstores-v1/constants";
 import { createGroup } from "../../api";

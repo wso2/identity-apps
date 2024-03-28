@@ -17,7 +17,7 @@
  */
 
 import { UserDetailsInterface } from "./user";
-import { PatchRoleDataInterface } from "../../roles/models";
+import { PatchRoleDataInterface } from "../../admin-roles-v2/models";
 
 /**
  * Interface for the Users feature resource endpoints.

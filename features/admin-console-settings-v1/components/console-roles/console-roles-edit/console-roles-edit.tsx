@@ -27,11 +27,11 @@ import { useSelector } from "react-redux";
 import ConsoleRolePermissions from "./console-role-permissions";
 import { AppState } from "../../../../admin-core-v1";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
-import { BasicRoleDetails } from "../../../../roles/components/edit-role/edit-role-basic";
-import { RoleConnectedApps } from "../../../../roles/components/edit-role/edit-role-connected-apps";
-import { RoleGroupsList } from "../../../../roles/components/edit-role/edit-role-groups";
-import { RoleUsersList } from "../../../../roles/components/edit-role/edit-role-users";
-import { RoleAudienceTypes } from "../../../../roles/constants/role-constants";
+import { BasicRoleDetails } from "../../../../admin-roles-v2/components/edit-role/edit-role-basic";
+import { RoleConnectedApps } from "../../../../admin-roles-v2/components/edit-role/edit-role-connected-apps";
+import { RoleGroupsList } from "../../../../admin-roles-v2/components/edit-role/edit-role-groups";
+import { RoleUsersList } from "../../../../admin-roles-v2/components/edit-role/edit-role-users";
+import { RoleAudienceTypes } from "../../../../admin-roles-v2/constants/role-constants";
 import "./console-roles-edit.scss";
 
 /**

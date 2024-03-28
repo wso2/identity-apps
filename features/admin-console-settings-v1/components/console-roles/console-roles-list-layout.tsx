@@ -31,8 +31,8 @@ import { AccessControlConstants } from "../../../admin-access-control-v1/constan
 import { AdvancedSearchWithBasicFilters } from "../../../admin-core-v1/components";
 import { AppConstants } from "../../../admin-core-v1/constants/app-constants";
 import { history } from "../../../admin-core-v1/helpers/history";
-import { deleteRoleById } from "../../../roles/api/roles";
-import { RoleConstants } from "../../../roles/constants/role-constants";
+import { deleteRoleById } from "../../../admin-roles-v2/api/roles";
+import { RoleConstants } from "../../../admin-roles-v2/constants/role-constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**

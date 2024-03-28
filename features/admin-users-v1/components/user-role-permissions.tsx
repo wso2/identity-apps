@@ -26,8 +26,8 @@ import { AppConstants, AppState, history } from "../../admin-core-v1";
 import { getOrganizationRoleById } from "../../organizations/api";
 import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
-import { getRoleById } from "../../roles/api/roles";
-import { PermissionList } from "../../roles/components/wizard/role-permission";
+import { getRoleById } from "../../admin-roles-v2/api/roles";
+import { PermissionList } from "../../admin-roles-v2/components/wizard/role-permission";
 
 /**
  * Proptypes for the user role permission component.

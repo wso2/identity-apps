@@ -31,7 +31,7 @@ import {
     InterfaceRemoteFetchStatus,
     getConfigDeploymentDetails,
     triggerConfigDeployment
-} from "../../../remote-repository-configuration";
+} from "../../../admin-remote-repository-configuration-v1";
 
 /**
  * Remote fetch details props interface.

@@ -914,7 +914,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() =>
-                                    import("../../private-key-jwt/pages/private-key-jwt-config-edit")
+                                    import("../../admin-private-key-jwt-v1/pages/private-key-jwt-config-edit")
                                 ),
                                 exact: true,
                                 icon: {
@@ -1177,7 +1177,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() =>
-                            import("../../remote-repository-configuration/pages/remote-repository-config")
+                            import("../../admin-remote-repository-configuration-v1/pages/remote-repository-config")
                         ),
                         exact: true,
                         icon: {

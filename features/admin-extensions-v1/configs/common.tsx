@@ -30,7 +30,7 @@ const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
         category: "extensions:manage.sidePanel.categories.userManagement",
         children: [
             {
-                component: lazy(() => import("../../features/roles-v1/pages/role-edit")),
+                component: lazy(() => import("../../admin-roles-v1/pages/role-edit")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().childIcon
@@ -42,7 +42,7 @@ const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
                 showOnSidePanel: false
             }
         ],
-        component: lazy(() => import("../../features/roles-v1/pages/role")),
+        component: lazy(() => import("../../admin-roles-v1/pages/role")),
         exact: true,
         icon: {
             icon: getSidePanelIcons().applicationRoles
