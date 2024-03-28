@@ -56,7 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
-import { commonConfig } from "../../../../extensions";
+import { commonConfig } from "../../../admin-extensions-v1";
 import {
     AppState,
     ConfigReducerStateInterface,

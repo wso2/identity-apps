@@ -31,7 +31,7 @@ import { AuthenticatorFormFactory } from "./forms/factories";
 import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
-} from "../../../extensions";
+} from "../../admin-extensions-v1";
 import { updateMultiFactorAuthenticatorDetails } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorInterface, AuthenticatorSettingsFormModes, MultiFactorAuthenticatorInterface } from "../models";

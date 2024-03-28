@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,26 @@
  * under the License.
  */
 
-import { AppViewExtensionTypes } from "../../admin-extensions-v1";
+declare module "*.json" {
+    const value: any;
 
-/**
- * Types of views supported by default in the application.
- * @readonly
- * @enum {string}
- */
-export enum StrictAppViewTypes {
-    DEVELOP = "DEVELOP",
-    MANAGE = "MANAGE"
+    export default value;
 }
 
-/**
- * Combination of views in the application with extensions.
- */
-export type AppViewTypes = StrictAppViewTypes | AppViewExtensionTypes;
+declare module "*.svg" {
+    import React = require("react");
+
+    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    const src: string;
+
+    export default src;
+}
+
+declare module "*.png" {
+    const content: string;
+
+    export default content;
+}
+
+declare module "*.md";
+

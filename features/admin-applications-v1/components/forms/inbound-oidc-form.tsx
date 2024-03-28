@@ -55,7 +55,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
-import { applicationConfig } from "../../../../extensions";
+import { applicationConfig } from "../../../admin-extensions-v1";
 import { AppState, ConfigReducerStateInterface } from "../../../admin-core-v1";
 import { getSharedOrganizations } from "../../../admin-organizations-v1/api";
 import { OrganizationType } from "../../../admin-organizations-v1/constants";

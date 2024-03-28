@@ -63,7 +63,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
-import { commonConfig, identityProviderConfig } from "../../../../extensions";
+import { commonConfig, identityProviderConfig } from "../../../admin-extensions-v1";
 import {
     AppState,
     ConfigReducerStateInterface,

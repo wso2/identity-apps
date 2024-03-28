@@ -47,7 +47,7 @@ import {
     Placeholder,
     SemanticICONS 
 } from "semantic-ui-react";
-import { organizationConfigs } from "../../../../extensions";
+import { organizationConfigs } from "../../../admin-extensions-v1";
 import { 
     FeatureGateConstants 
 } from "../../../admin-extensions-v1/components/feature-gate/constants/feature-gate";

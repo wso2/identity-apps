@@ -45,7 +45,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { organizationConfigs } from "../../../extensions";
+import { organizationConfigs } from "../../admin-extensions-v1";
 import { FeatureGateConstants } from "../../admin-extensions-v1/components/feature-gate/constants/feature-gate";
 import { SubscriptionContext } from "../../admin-extensions-v1/components/subscription/contexts/subscription-context";
 import {

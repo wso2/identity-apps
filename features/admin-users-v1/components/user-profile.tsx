@@ -49,7 +49,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { SCIMConfigs, commonConfig, userConfig } from "../../../extensions";
+import { SCIMConfigs, commonConfig, userConfig } from "../../admin-extensions-v1";
 import { TenantInfo } from "../../admin-extensions-v1/components/tenants/models";
 import { getAssociationType } from "../../admin-extensions-v1/components/tenants/utils/tenants";
 import { administratorConfig } from "../../admin-extensions-v1/configs/administrator";

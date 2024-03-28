@@ -33,7 +33,7 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
-import { ExtensionsManager, applicationConfig } from "../../../../extensions";
+import { ExtensionsManager, applicationConfig } from "../../../admin-extensions-v1";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,

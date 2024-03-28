@@ -55,7 +55,7 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { applicationConfig } from "../../../extensions";
+import { applicationConfig } from "../../admin-extensions-v1";
 import isLegacyAuthzRuntime from "../../admin-authorization-v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,

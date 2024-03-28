@@ -22,7 +22,7 @@ import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Placeholder } from "semantic-ui-react";
-import { organizationConfigs } from "../../../../extensions";
+import { organizationConfigs } from "../../../admin-extensions-v1";
 import { AppConstants, getMiscellaneousIcons, history } from "../../../admin-core-v1";
 import { GenericOrganization } from "../../models";
 import { OrganizationUtils } from "../../utils";

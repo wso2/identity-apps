@@ -24,7 +24,7 @@ import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../extensions";
+import { identityProviderConfig } from "../../../admin-extensions-v1";
 import { SimpleUserStoreListItemInterface } from "../../../admin-applications-v1/models";
 import {
     IdentityProviderInterface,

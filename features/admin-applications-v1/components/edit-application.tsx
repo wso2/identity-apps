@@ -44,7 +44,7 @@ import {
     SignOnMethods
 } from "./settings";
 import { Info } from "./settings/info";
-import { applicationConfig } from "../../../extensions";
+import { applicationConfig } from "../../admin-extensions-v1";
 import {
     AppState,
     CORSOriginsListInterface,

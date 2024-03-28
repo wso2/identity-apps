@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,18 @@
  * under the License.
  */
 
-import { AppViewExtensionTypes } from "../../admin-extensions-v1";
+declare global {
+    interface Window {
+        themeHash: any;
+        publicPath: any;
+    }
 
-/**
- * Types of views supported by default in the application.
- * @readonly
- * @enum {string}
- */
-export enum StrictAppViewTypes {
-    DEVELOP = "DEVELOP",
-    MANAGE = "MANAGE"
+    const contextPathGlobal: string;
+    const serverOriginGlobal: string;
+    const superTenantGlobal: string;
+    const tenantPrefixGlobal: string;
+    const isAdaptiveAuthenticationAvailable: boolean;
+    const isOrganizationManagementEnabled: boolean;
 }
 
-/**
- * Combination of views in the application with extensions.
- */
-export type AppViewTypes = StrictAppViewTypes | AppViewExtensionTypes;
+export {};

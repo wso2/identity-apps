@@ -42,7 +42,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { userstoresConfig } from "../../../extensions";
+import { userstoresConfig } from "../../admin-extensions-v1";
 import {
     AppConstants,
     AppState,
