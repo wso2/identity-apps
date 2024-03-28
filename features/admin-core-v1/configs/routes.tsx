@@ -95,7 +95,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
+                                component: lazy(() => import("../../admin-saml2-configuration-v1/pages/saml2-configuration")),
                                 exact: true,
                                 id: "saml2Configuration",
                                 name: "saml2Config:title",
