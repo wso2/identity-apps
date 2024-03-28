@@ -24,7 +24,7 @@ import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs
 import { getAPIResourceEndpoints } from "../../admin-api-resources-v1/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../admin-applications-v1/configs/endpoints";
 import isLegacyAuthzRuntime from "../../admin-authorization-v1/utils/get-legacy-authz-runtime";
-import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
+import { getBrandingResourceEndpoints } from "../../admin-branding-v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
 import { getConnectionResourceEndpoints } from "../../connections";
