@@ -30,8 +30,8 @@ import { Divider, Grid } from "semantic-ui-react";
 import { getAllLocalClaims } from "../../../../admin-claims-v1/api";
 import { ClaimManagementConstants } from "../../../../admin-claims-v1/constants";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../../../admin-core-v1";
-import { addUserStore, getAType } from "../../../../features/userstores/api/user-stores";
-import { UserStoreManagementConstants } from "../../../../features/userstores/constants/user-store-constants";
+import { addUserStore, getAType } from "../../../../admin-users-v1tores/api/user-stores";
+import { UserStoreManagementConstants } from "../../../../admin-users-v1tores/constants/user-store-constants";
 import {
     AttributeMapping,
     TypeProperty,
@@ -39,7 +39,7 @@ import {
     UserStorePostData,
     UserStoreProperty,
     UserstoreType
-} from "../../../../features/userstores/models/user-stores";
+} from "../../../../admin-users-v1tores/models/user-stores";
 import { userstoresConfig } from "../../../configs";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import { AttributeMappingsComponent, GeneralUserStoreDetails } from "../components";

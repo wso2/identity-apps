@@ -37,9 +37,9 @@ import {
     CreateGroupInterface,
     CreateGroupMemberInterface
 } from "../../../../admin-groups-v1/models";
-import { updateRole } from "../../../../features/roles/api";
-import { PatchRoleDataInterface } from "../../../../features/roles/models";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../features/userstores/constants";
+import { updateRole } from "../../../../admin-roles-v2/api";
+import { PatchRoleDataInterface } from "../../../../admin-roles-v2/models";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../admin-users-v1tores/constants";
 import { commonConfig } from "../../../configs";
 
 /**

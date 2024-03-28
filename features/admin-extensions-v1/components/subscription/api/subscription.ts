@@ -23,7 +23,7 @@ import useRequest, {
 } from "../../../../admin-core-v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
 import { Config } from "../../../../admin-core-v1";
-import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../admin-organizations-v1/hooks/use-get-organization-type";
 import { getDomainQueryParam } from "../../tenants/api/tenants";
 import { getTenantResourceEndpoints } from "../../tenants/configs";
 import { TenantTierRequestResponse } from "../models/subscription";

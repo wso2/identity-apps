@@ -33,8 +33,8 @@ import {
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
-} from "../../features/server-configurations";
-import { ValidationFormInterface } from "../../features/validation/models";
+} from "../../admin-server-configurations-v1";
+import { ValidationFormInterface } from "../../admin-validation-v1/models";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties

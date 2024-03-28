@@ -51,17 +51,17 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../../../../admin-core-v1";
-import { updateRoleDetails } from "../../../../../features/roles/api/roles";
-import { PatchRoleDataInterface } from "../../../../../features/roles/models/roles";
-import { RealmConfigInterface } from "../../../../../features/server-configurations";
-import { deleteGuestUser } from "../../../../../features/users/api";
-import { UserManagementConstants } from "../../../../../features/users/constants";
+import { updateRoleDetails } from "../../../../../admin-roles-v2/api/roles";
+import { PatchRoleDataInterface } from "../../../../../admin-roles-v2/models/roles";
+import { RealmConfigInterface } from "../../../../../admin-server-configurations-v1";
+import { deleteGuestUser } from "../../../../../admin-users-v1/api";
+import { UserManagementConstants } from "../../../../../admin-users-v1/constants";
 import {
     InternalAdminUserListInterface,
     UserBasicInterface,
     UserListInterface
-} from "../../../../../features/users/models";
-import { UserManagementUtils } from "../../../../../features/users/utils";
+} from "../../../../../admin-users-v1/models";
+import { UserManagementUtils } from "../../../../../admin-users-v1/utils";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import {

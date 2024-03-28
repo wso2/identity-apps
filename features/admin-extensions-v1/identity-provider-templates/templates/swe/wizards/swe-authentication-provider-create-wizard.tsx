@@ -37,7 +37,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { SIWEAuthenticationProviderCreateWizardContent } from "./swe-authentication-provider-create-wizard-content";
-import { CommonPluggableComponentPropertyInterface } from "../../../../../features/connections";
+import { CommonPluggableComponentPropertyInterface } from "../../../../../admin-connections-v1";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../../admin-core-v1/components";
 import { EventPublisher } from "../../../../../admin-core-v1/utils";
 import { createIdentityProvider } from "../../../../../admin-identity-providers-v1/api";

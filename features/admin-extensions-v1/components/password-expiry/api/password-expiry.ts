@@ -29,7 +29,7 @@ import useRequest, {
 import {
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../../../features/server-configurations";
+} from "../../../../admin-server-configurations-v1";
 
 /**
  * Initialize an axios Http client.

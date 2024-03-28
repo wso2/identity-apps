@@ -52,7 +52,7 @@ import {
 import { ClaimManagementConstants } from "../../admin-claims-v1/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../admin-core-v1";
 import { AppConstants } from "../../admin-core-v1/constants";
-import { ApplicationRoles } from "../../features/roles/components/application-roles";
+import { ApplicationRoles } from "../../admin-roles-v2/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate

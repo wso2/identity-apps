@@ -37,9 +37,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
 import { AppConstants, SharedUserStoreUtils, history } from "../../../../../admin-core-v1";
-import { deleteRoleById, updateRoleDetails } from "../../../../../features/roles/api";
-import { PatchRoleDataInterface } from "../../../../../features/roles/models";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../../../features/userstores/constants/user-store-constants";
+import { deleteRoleById, updateRoleDetails } from "../../../../../admin-roles-v2/api";
+import { PatchRoleDataInterface } from "../../../../../admin-roles-v2/models";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../../../admin-users-v1tores/constants/user-store-constants";
 
 /**
  * Interface to contain props needed for component

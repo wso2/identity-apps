@@ -57,7 +57,7 @@ const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
         category: "extensions:manage.sidePanel.categories.userManagement",
         children: [
             {
-                component: lazy(() => import("../../features/roles/pages/role-edit")),
+                component: lazy(() => import("../../admin-roles-v2/pages/role-edit")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().childIcon
@@ -69,7 +69,7 @@ const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../features/roles/pages/create-role-wizard")),
+                component: lazy(() => import("../../admin-roles-v2/pages/create-role-wizard")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().childIcon
@@ -81,7 +81,7 @@ const resolvedRoleRoute: RouteInterface = legacyMode?.rolesV1
                 showOnSidePanel: false
             }
         ],
-        component: lazy(() => import("../../features/roles/pages/role")),
+        component: lazy(() => import("../../admin-roles-v2/pages/role")),
         exact: true,
         icon: {
             icon: getSidePanelIcons().applicationRoles
@@ -222,7 +222,7 @@ export const commonConfig: CommonConfig = {
             category: "extensions:manage.sidePanel.categories.userManagement",
             children: [
                 {
-                    component: lazy(() => import("../../features/userstores/pages/user-stores-edit")),
+                    component: lazy(() => import("../../admin-users-v1tores/pages/user-stores-edit")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -235,7 +235,7 @@ export const commonConfig: CommonConfig = {
                 },
                 {
                     component: lazy(() =>
-                        import("../../features/userstores/pages/userstores-templates")
+                        import("../../admin-users-v1tores/pages/userstores-templates")
                     ),
                     exact: true,
                     icon: {
@@ -248,7 +248,7 @@ export const commonConfig: CommonConfig = {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("../../features/userstores/pages/user-stores")),
+            component: lazy(() => import("../../admin-users-v1tores/pages/user-stores")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().userStore
@@ -262,7 +262,7 @@ export const commonConfig: CommonConfig = {
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() => import("../../features/provisioning/pages/outbound-provisioning-settings")),
+            component: lazy(() => import("../../admin-provisioning-v1/pages/outbound-provisioning-settings")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().childIcon
