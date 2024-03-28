@@ -1741,6 +1741,9 @@
         {% if tenant_mgt.enable_email_domain is defined %}
         "enableEmailDomain": {{ tenant_mgt.enable_email_domain }},
         {% endif %}
+        {% if scim2.custom_user_schema_uri is defined %}
+        "customUserSchemaURI": {{ scim2.custom_user_schema_uri }},
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if console.privacy_policy_configs.items() is defined %}
             {% for key, value in console.privacy_policy_configs.items() %}

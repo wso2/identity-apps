@@ -166,6 +166,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -312,10 +314,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            if (schema.extended && userInfo[customUserSchemaURI]
+                                && userInfo[customUserSchemaURI][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
+                                    schema.name, userInfo[customUserSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -335,12 +337,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             const schemaName: string = schemaNames[0];
                             const schemaSecondaryProperty: string = schemaNames[1];
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]) {
+                            if (schema.extended && userInfo[customUserSchemaURI]) {
                                 schemaName && schemaSecondaryProperty &&
-                                    userInfo[userConfig.userProfileSchema][schemaName] &&
-                                    userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty] && (
+                                    userInfo[customUserSchemaURI][schemaName] &&
+                                    userInfo[customUserSchemaURI][schemaName][schemaSecondaryProperty] && (
                                     tempProfileInfo.set(schema.name,
-                                        userInfo[userConfig.userProfileSchema][schemaName][schemaSecondaryProperty])
+                                        userInfo[customUserSchemaURI][schemaName][schemaSecondaryProperty])
                                 );
                             } else {
                                 const subValue: SubValueInterface = userInfo[schemaName] &&
@@ -393,10 +395,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            if (schema.extended && userInfo[customUserSchemaURI]
+                                && userInfo[customUserSchemaURI][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[customUserSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -947,13 +949,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * The method handles the locking and disabling of user account.
      */
-    const handleDangerActions = (attributeName: string, attributeValue: boolean): Promise<void> => {
-        let data: PatchRoleDataInterface = {
+    const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
+        const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "replace",
                     "value": {
-                        [userConfig.userProfileSchema]: {
+                        [ SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled.startsWith(customUserSchemaURI) &&
+                        SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked.startsWith(customUserSchemaURI)
+                            ? customUserSchemaURI
+                            : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
                             [attributeName]: attributeValue
                         }
                     }
@@ -962,28 +967,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        if (adminUserType === "internal") {
-            data = {
-                "Operations": [
-                    {
-                        "op": "replace",
-                        "value": {
-                            [ SCIMConfigs?.scimEnterpriseUserClaimUri?.accountDisabled?.
-                                startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA) &&
-                                SCIMConfigs?.scimEnterpriseUserClaimUri?.accountLocked?.
-                                    startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA)
-                                ? ProfileConstants.SCIM2_WSO2_USER_SCHEMA
-                                : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
-                                [attributeName]: attributeValue
-                            }
-                        }
-                    }
-                ],
-                "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-            };
-        }
-
-        return updateUserInfo(user.id, data)
+        updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
                     description:

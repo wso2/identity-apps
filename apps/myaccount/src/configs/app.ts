@@ -18,6 +18,7 @@
 
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
+import { UserManagementConstants } from "../constants/user-management-constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AppUtils } from "../init/app-utils";
@@ -149,6 +150,8 @@ export class Config {
             copyrightText: window["AppUtils"]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),
+            customUserSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
+                ?? UserManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI,
             disableMFAForFederatedUsers: window["AppUtils"]?.getConfig()?.ui?.disableMFAForFederatedUsers,
             disableMFAforSuperTenantUser: window["AppUtils"]?.getConfig()?.ui?.disableMFAforSuperTenantUser,
             enableMFAUserWise: window["AppUtils"]?.getConfig()?.ui?.enableMFAUserWise,

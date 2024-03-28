@@ -26,7 +26,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label } from "semantic-ui-react";
-import { SCIMConfigs, attributeConfig } from "../../../../extensions";
+import { SCIMConfigs } from "../../../../extensions";
 import { getAllLocalClaims } from "../../../claims/api";
 import { AppConstants, AppState, history } from "../../../core";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
@@ -123,6 +123,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     const enableIdentityClaims: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableIdentityClaims);
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const { t } = useTranslation();
 
@@ -131,7 +133,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         if (attributeType !== "oidc"
-            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            && claimDialectUri !== customUserSchemaURI) {
             if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
                 || filteredLocalClaims.length === 0) {
                 setEmptyClaims(true);
@@ -153,7 +155,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             setEmptyServerSupportedClaims(false);
         }
         if (attributeType !== "oidc"
-            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            && claimDialectUri !== customUserSchemaURI) {
             if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
                 setEmptyClaims(false);
             } else {
@@ -164,7 +166,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                 }
             }
         } else if (attributeType !== "oidc" &&
-            claimDialectUri === attributeConfig.localAttributes.customDialectURI
+            claimDialectUri === customUserSchemaURI
             && (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
             setEmptyClaims(true);
         } else {

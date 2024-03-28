@@ -97,6 +97,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const skipSCIM: MutableRefObject<boolean> = useRef(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -167,7 +169,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
             await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((available: string) => {
                 if (available === "") {
-                    addDialect(attributeConfig.localAttributes.customDialectURI);
+                    addDialect(customUserSchemaURI);
                 }
             });
 
@@ -193,8 +195,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${ attributeConfig.localAttributes.customDialectURI
-                                }:${ customMappings.get("scim") }`,
+                                claimURI: `${customUserSchemaURI}:${ customMappings.get("scim") }`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();

@@ -171,4 +171,9 @@ export class ClaimManagementConstants {
      */
      public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
      public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
+
+    /**
+     * Default scim2 custom user schema URI.
+     */
+    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:wso2:schema";
 }
