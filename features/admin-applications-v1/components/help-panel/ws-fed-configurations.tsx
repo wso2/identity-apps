@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid } from "semantic-ui-react";
-import { useWSFederationConfig } from "../../../wsfed-configuration/api/wsfed-configuration";
+import { useWSFederationConfig } from "../../../admin-wsfed-configuration-v1/api/wsfed-configuration";
 import { getHelpPanelIcons } from "../../configs/ui";
 import { WSFederationApplicationConfigurationInterface } from "../../models";
 
