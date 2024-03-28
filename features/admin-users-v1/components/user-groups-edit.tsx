@@ -55,8 +55,8 @@ import {
 } from "semantic-ui-react";
 import { userstoresConfig } from "../../../extensions/configs/userstores";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../admin-core-v1";
-import { useGroupList } from "../../groups/api";
-import { GroupsInterface, GroupsMemberInterface } from "../../groups/models";
+import { useGroupList } from "../../admin-groups-v1/api";
+import { GroupsInterface, GroupsMemberInterface } from "../../admin-groups-v1/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../roles/constants";
 
 interface UserGroupsPropsInterface {

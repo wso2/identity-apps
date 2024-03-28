@@ -26,7 +26,7 @@ import useRequest, {
     RequestResultInterface
 } from "../../admin-core-v1/hooks/use-request";
 import { store } from "../../admin-core-v1/store";
-import { PatchGroupDataInterface } from "../../groups";
+import { PatchGroupDataInterface } from "../../admin-groups-v1";
 import { PatchRoleDataInterface } from "../../roles/models";
 import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface, UserDetailsInterface, UserListInterface, UserSessionsInterface } from "../models";

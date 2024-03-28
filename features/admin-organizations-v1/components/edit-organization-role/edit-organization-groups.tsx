@@ -56,8 +56,8 @@ import {
     Table
 } from "semantic-ui-react";
 import { AppState, getEmptyPlaceholderIllustrations } from "../../../admin-core-v1";
-import { getGroupList } from "../../../groups/api";
-import { GroupListInterface, GroupsInterface } from "../../../groups/models";
+import { getGroupList } from "../../../admin-groups-v1/api";
+import { GroupListInterface, GroupsInterface } from "../../../admin-groups-v1/models";
 import { patchOrganizationRoleDetails } from "../../api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
 import {
