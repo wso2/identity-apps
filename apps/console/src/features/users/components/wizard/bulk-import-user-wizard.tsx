@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -61,7 +61,7 @@ import Axios,  { AxiosResponse }from "axios";
 import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
@@ -70,6 +70,7 @@ import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../.
 import { ClaimManagementConstants } from "../../../claims/constants";
 import {
     AppConstants,
+    AppState,
     ModalWithSidePanel,
     UserStoreDetails,
     UserStoreProperty,
@@ -178,6 +179,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const dispatch: Dispatch = useDispatch();
+
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
@@ -1057,7 +1061,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         ? `${selectedUserStore}/${email}`
                         : email,
                 [ userstore.toLowerCase() !== userstoresConfig.primaryUserstoreName.toLowerCase()
-                    ? UserManagementConstants.CUSTOMSCHEMA
+                    ? customUserSchemaURI
                     : UserManagementConstants.ENTERPRISESCHEMA
                 ]: {
                     askPassword: "true"

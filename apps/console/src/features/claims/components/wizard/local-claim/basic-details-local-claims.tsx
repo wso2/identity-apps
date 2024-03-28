@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,9 +21,10 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
-import { getTechnologyLogos } from "../../../../core";
+import { AppState, getTechnologyLogos } from "../../../../core";
 import { ClaimManagementConstants } from "../../../constants";
 
 /**
@@ -74,6 +75,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
         setValidateMapping,
         [ "data-testid" ]: testId
     } = props;
+
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const [ claimID, setClaimID ] = useState<string>("");
     const [ isShow, setIsShow ] = useState(false);
@@ -397,7 +401,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                 <Grid.Column width={ 11 }>
                                                                     <InlineEditInput
                                                                         maxLength={ 30 }
-                                                                        textPrefix="urn:scim:wso2:schema:"
+                                                                        textPrefix={ `${customUserSchemaURI}:` }
                                                                         validation="^[a-zA-Z0-9_.-]*$"
                                                                         errorHandler={ (status: boolean) => {
                                                                             setShowScimMappingError(status);

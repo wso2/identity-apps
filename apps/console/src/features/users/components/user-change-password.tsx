@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
@@ -32,6 +33,7 @@ import React,
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
+import { SCIMConfigs } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
@@ -121,6 +123,8 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const customUserSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.customUserSchemaURI);
 
     const {
         data: validationConfig
@@ -219,7 +223,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 {
                     "op": "add",
                     "value": {
-                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.askPassword?.
+                            startsWith(customUserSchemaURI)
+                            ? customUserSchemaURI
+                            : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
                             "forcePasswordReset": true
                         }
                     }
