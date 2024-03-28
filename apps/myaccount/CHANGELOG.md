@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.4.9
+
+### Patch Changes
+
+- [#5835](https://github.com/wso2/identity-apps/pull/5835) [`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve audit log ux
+
+- Updated dependencies [[`48d274b6b2`](https://github.com/wso2/identity-apps/commit/48d274b6b25895fe3254dc392f0b722dbc4caa74)]:
+  - @wso2is/react-components@2.1.12
+  - @wso2is/theme@2.0.71
+  - @wso2is/access-control@2.0.22
+
 ## 2.4.8
 
 ### Patch Changes
