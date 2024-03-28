@@ -39,7 +39,7 @@ import {
 } from "../../../../admin-groups-v1/models";
 import { updateRole } from "../../../../admin-roles-v2/api";
 import { PatchRoleDataInterface } from "../../../../admin-roles-v2/models";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../admin-users-v1tores/constants";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";
 import { commonConfig } from "../../../configs";
 
 /**

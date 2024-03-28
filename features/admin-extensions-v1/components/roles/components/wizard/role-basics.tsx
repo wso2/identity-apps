@@ -30,8 +30,8 @@ import { AppState } from "../../../../../admin-core-v1/store";
 import { SharedUserStoreUtils } from "../../../../../admin-core-v1/utils";
 import { searchRoleList } from "../../../../../admin-roles-v2/api";
 import { CreateRoleFormData, SearchRoleInterface, TreeNode } from "../../../../../admin-roles-v2/models";
-import { getUserStoreList } from "../../../../../admin-users-v1tores/api";
-import { CONSUMER_USERSTORE } from "../../../../../admin-users-v1tores/constants";
+import { getUserStoreList } from "../../../../../admin-userstores-v1/api";
+import { CONSUMER_USERSTORE } from "../../../../../admin-userstores-v1/constants";
 
 /**
  * Interface to capture role basics props.

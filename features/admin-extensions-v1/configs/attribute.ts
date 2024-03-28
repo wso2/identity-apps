@@ -22,8 +22,8 @@ import { SemanticICONS } from "semantic-ui-react";
 import { AttributeConfig } from "./models";
 import { deleteADialect } from "../../admin-claims-v1/api/claims";
 import { ClaimManagementConstants } from "../../admin-claims-v1/constants/claim-management-constants";
-import { getUserStoreList } from "../../admin-users-v1tores/api";
-import { UserStoreListItem } from "../../admin-users-v1tores/models";
+import { getUserStoreList } from "../../admin-userstores-v1/api";
+import { UserStoreListItem } from "../../admin-userstores-v1/models";
 import { getClaimsForDialect, getDialects } from "../components/claims/api";
 
 /**

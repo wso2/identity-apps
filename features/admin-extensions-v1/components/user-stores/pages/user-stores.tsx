@@ -31,10 +31,10 @@ import {
     history,
     sortList
 } from "../../../../admin-core-v1";
-import { useUserStores } from "../../../../admin-users-v1tores/api";
-import { UserStoresList } from "../../../../admin-users-v1tores/components";
-import { UserStoreManagementConstants } from "../../../../admin-users-v1tores/constants";
-import { UserStoreListItem } from "../../../../admin-users-v1tores/models/user-stores";
+import { useUserStores } from "../../../../admin-userstores-v1/api";
+import { UserStoresList } from "../../../../admin-userstores-v1/components";
+import { UserStoreManagementConstants } from "../../../../admin-userstores-v1/constants";
+import { UserStoreListItem } from "../../../../admin-userstores-v1/models/user-stores";
 import { RemoteUserStoreConstants } from "../constants";
 
 /**
