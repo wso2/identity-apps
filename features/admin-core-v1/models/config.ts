@@ -39,7 +39,7 @@ import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { OrganizationResourceEndpointsInterface } from "../../organizations/models";
 import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jwt/models";
 import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
-import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
+import { SecretsManagementEndpoints } from "../../admin-secrets-v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../admin-server-configurations-v1";
 import { TenantResourceEndpointsInterface } from "../../admin-tenants-v1/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../admin-users-v1/models/endpoints";

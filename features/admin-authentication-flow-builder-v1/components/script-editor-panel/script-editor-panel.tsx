@@ -49,7 +49,7 @@ import SecretSelectionDropdown from "./secret-selection-dropdown";
 import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
-import { SecretModel } from "../../../secrets/models/secret";
+import { SecretModel } from "../../../admin-secrets-v1/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { ScriptEditorPanelSizeModes, SupportedEditorThemes } from "../../models/script-editor";
 import "./script-editor-panel.scss";

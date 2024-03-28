@@ -1116,7 +1116,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         category: "console:manage.features.sidePanel.categories.legacy",
                         children: [
                             {
-                                component: lazy(() => import("../../secrets/pages/secret-edit")),
+                                component: lazy(() => import("../../admin-secrets-v1/pages/secret-edit")),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "secretManagementEdit",
@@ -1126,7 +1126,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../secrets/pages/secrets")),
+                        component: lazy(() => import("../../admin-secrets-v1/pages/secrets")),
                         exact: true,
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secretsManagement",
