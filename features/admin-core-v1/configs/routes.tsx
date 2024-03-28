@@ -1177,7 +1177,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() =>
-                            import("../../remote-repository-configuration/pages/remote-repository-config")
+                            import("../../admin-remote-repository-configuration-v1/pages/remote-repository-config")
                         ),
                         exact: true,
                         icon: {
