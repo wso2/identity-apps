@@ -47,7 +47,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions";
 import { applicationListConfig } from "../../../extensions/configs/application-list";
-import { ConsoleSettingsModes } from "../../console-settings/models/ui";
+import { ConsoleSettingsModes } from "../../admin-console-settings-v1/models/ui";
 import {
     AppConstants,
     AppState,

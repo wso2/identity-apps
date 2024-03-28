@@ -1139,7 +1139,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         children: [
                             {
-                                component: lazy(() => import("../../console-settings/pages/console-roles-edit-page")),
+                                component: lazy(() => import("../../admin-console-settings-v1/pages/console-roles-edit-page")),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
                                 id: "consoleRolesEdit",
@@ -1150,7 +1150,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                             },
                             {
                                 component: lazy(() => {
-                                    return import("../../console-settings/pages/console-administrator-edit-page");
+                                    return import("../../admin-console-settings-v1/pages/console-administrator-edit-page");
                                 }),
                                 exact: false,
                                 icon: { icon: getSidePanelIcons().childIcon },
@@ -1161,7 +1161,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../console-settings/pages/console-settings-page")),
+                        component: lazy(() => import("../../admin-console-settings-v1/pages/console-settings-page")),
                         exact: true,
                         icon: {
                             icon: <GearIcon fill="black" className="icon" />

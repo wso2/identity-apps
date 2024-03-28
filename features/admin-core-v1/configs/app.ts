@@ -28,7 +28,7 @@ import { getBrandingResourceEndpoints } from "../../admin-branding-v1/configs/en
 import { getCertificatesResourceEndpoints } from "../../admin-certificates-v1";
 import { getClaimResourceEndpoints } from "../../admin-claims-v1/configs/endpoints";
 import { getConnectionResourceEndpoints } from "../../admin-connections-v1";
-import { getConsoleSettingsResourceEndpoints } from "../../console-settings/configs/endpoints";
+import { getConsoleSettingsResourceEndpoints } from "../../admin-console-settings-v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
