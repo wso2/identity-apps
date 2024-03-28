@@ -45,10 +45,10 @@ import { Dispatch } from "redux";
 import { Accordion,  Grid, Icon, Menu, Modal, Segment, Sidebar } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../../../../extensions/configs/server-configuration";
 // eslint-disable-next-line max-len
-import AdaptiveAuthTemplateInfoModal from "../../../../../authentication-flow-builder/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
+import AdaptiveAuthTemplateInfoModal from "../../../../../admin-authentication-flow-builder-v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
-} from "../../../../../authentication-flow-builder/constants/template-constants";
+} from "../../../../../admin-authentication-flow-builder-v1/constants/template-constants";
 import {
     getConnectorDetails,
     updateGovernanceConnector

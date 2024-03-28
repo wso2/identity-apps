@@ -23,7 +23,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
-import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import useAuthenticationFlow from "../../../../../admin-authentication-flow-builder-v1/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "../../../../../connections";
 import { AuthenticatorCategories } from "../../../../../connections/models/authenticators";
 import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";

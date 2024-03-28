@@ -40,8 +40,8 @@ import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-emai
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
 import SmsOTPSequenceTemplate from "./templates/sms-otp-sequence.json";
-import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
-import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
+import AuthenticationFlowBuilder from "../../../../admin-authentication-flow-builder-v1/components/authentication-flow-builder";
+import AuthenticationFlowProvider from "../../../../admin-authentication-flow-builder-v1/providers/authentication-flow-provider";
 import { ConnectionsManagementUtils } from "../../../../connections/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
