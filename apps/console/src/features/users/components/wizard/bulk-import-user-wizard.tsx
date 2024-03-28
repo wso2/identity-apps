@@ -1536,25 +1536,29 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         !showManualInviteTable
                             ? (
                                 <>
-                                    { !userConfig?.enableBulkImportSecondaryUserStore
-                                    && (<Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Alert severity="info">
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:manage.features.user.modals.bulkImportUserWizard" +
-                                                        ".wizardSummary.userstoreMessage"
-                                                    }
-                                                    tOptions={ {
-                                                        userstore: camelCase(userstore)
-                                                    } }
-                                                >
+                                    {
+                                        !userConfig?.enableBulkImportSecondaryUserStore
+                                        && (
+                                            <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                    <Alert severity="info">
+                                                        <Trans
+                                                            i18nKey={
+                                                                "console:manage.features.user.modals." +
+                                                                "bulkImportUserWizard.wizardSummary.userstoreMessage"
+                                                            }
+                                                            tOptions={ {
+                                                                userstore: camelCase(userstore)
+                                                            } }
+                                                        >
                                                     The created users will be added to
                                                     the <b>{ camelCase(userstore) }</b> user store.
-                                                </Trans>
-                                            </Alert>
-                                        </Grid.Column>
-                                    </Grid.Row>) }
+                                                        </Trans>
+                                                    </Alert>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                    }
                                     { !hideUserStoreDropdown() &&
                                         (<Grid.Row columns={ 1 } className="mb-0 pb-0">
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1779,25 +1783,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     </Grid.Row>
                                 )
                             }
-                            { !userConfig?.enableBulkImportSecondaryUserStore &&
-                                (<Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Alert severity="info">
-                                            <Trans
-                                                i18nKey={
-                                                    "console:manage.features.user.modals.bulkImportUserWizard" +
+                            {
+                                !userConfig?.enableBulkImportSecondaryUserStore
+                                && (
+                                    <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Alert severity="info">
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:manage.features.user.modals.bulkImportUserWizard" +
                                                 ".wizardSummary.userstoreMessage"
-                                                }
-                                                tOptions={ {
-                                                    userstore: camelCase(userstore)
-                                                } }
-                                            >
+                                                    }
+                                                    tOptions={ {
+                                                        userstore: camelCase(userstore)
+                                                    } }
+                                                >
                                             The created users will be added to
                                             the <b>{ camelCase(userstore) }</b> user store.
-                                            </Trans>
-                                        </Alert>
-                                    </Grid.Column>
-                                </Grid.Row>)
+                                                </Trans>
+                                            </Alert>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
                             }
                             { !isLoading && !hideUserStoreDropdown() &&
                                 (
