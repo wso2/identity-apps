@@ -86,7 +86,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     {
                         children: [
                             {
-                                component: lazy(() => import("../../session-management/pages/session-management")),
+                                component: lazy(() => import("../../admin-session-management-v1/pages/session-management")),
                                 exact: true,
                                 id: "sessionManagement",
                                 name: "sessionManagement:title",
