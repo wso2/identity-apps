@@ -39,8 +39,8 @@ import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/u
 import { deleteParentOrgInvite } from "../../../../users/components/guests/api/invite";
 import { UserManagementConstants } from "../../../../users/constants";
 import { UserInviteInterface } from "../../../../users/models";
-import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
-import { UserStoreDropdownItem } from "../../../../userstores/models";
+import { PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";
+import { UserStoreDropdownItem } from "../../../../admin-userstores-v1/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import InviteNewAdministratorWizard from "../invite-new-administrator-wizard/invite-new-administrator-wizard";
 

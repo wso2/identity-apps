@@ -33,7 +33,7 @@ import { SharedUserStoreUtils } from "../../../../core/utils";
 import { getUsersList } from "../../../../users/api/users";
 import { UserListInterface } from "../../../../users/models/user";
 import { getConfiguration, getUsernameConfiguration } from "../../../../users/utils";
-import { USERSTORE_REGEX_PROPERTIES } from "../../../../userstores/constants/user-store-constants";
+import { USERSTORE_REGEX_PROPERTIES } from "../../../../admin-userstores-v1/constants/user-store-constants";
 import { useValidationConfigData } from "../../../../admin-validation-v1/api";
 import { ValidationFormInterface } from "../../../../admin-validation-v1/models";
 import { UserManagementConstants } from "../../../constants";

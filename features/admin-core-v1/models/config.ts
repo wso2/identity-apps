@@ -43,7 +43,7 @@ import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
 import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
-import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
+import { UserstoreResourceEndpointsInterface } from "../../admin-userstores-v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../admin-validation-v1/models";
 
 export type ConfigInterface = CommonConfigInterface<

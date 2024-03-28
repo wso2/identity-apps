@@ -60,8 +60,8 @@ import {
     PatchUserRemoveOpInterface,
     UserBasicInterface
 } from "../../../users/models";
-import { useUserStores } from "../../../userstores/api";
-import { UserStoreListItem } from "../../../userstores/models/user-stores";
+import { useUserStores } from "../../../admin-userstores-v1/api";
+import { UserStoreListItem } from "../../../admin-userstores-v1/models/user-stores";
 import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";

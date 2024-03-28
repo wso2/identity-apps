@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
 import { GroupsInterface, useGroupList } from "../../../../groups";
-import { PRIMARY_USERSTORE } from "../../../../userstores/constants";
+import { PRIMARY_USERSTORE } from "../../../../admin-userstores-v1/constants";
 import { UserManagementConstants } from "../../../constants";
 import { GroupsAutoCompleteOption, InviteParentOrgUserFormValuesInterface } from "../models/invite";
 

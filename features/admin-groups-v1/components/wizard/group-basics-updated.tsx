@@ -30,9 +30,9 @@ import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../.
 import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "../../../core";
 import { RootOnlyComponent } from "../../../organizations/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
-import { getAUserStore, getUserStoreList } from "../../../userstores/api/user-stores";
-import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../userstores/constants";
-import { UserStoreProperty } from "../../../userstores/models";
+import { getAUserStore, getUserStoreList } from "../../../admin-userstores-v1/api/user-stores";
+import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin-userstores-v1/constants";
+import { UserStoreProperty } from "../../../admin-userstores-v1/models";
 
 /**
  * Interface to capture group basics props.

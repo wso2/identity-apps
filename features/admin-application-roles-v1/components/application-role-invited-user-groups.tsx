@@ -41,7 +41,7 @@ import {
     ApplicationRoleGroupInterface, DescendantDataInterface
 } from "../../../extensions/components/application/models";
 import { UIConstants } from "../../core";
-import { CONSUMER_USERSTORE } from "../../userstores/constants";
+import { CONSUMER_USERSTORE } from "../../admin-userstores-v1/constants";
 
 interface ApplicationRoleGroupsProps extends IdentifiableComponentInterface {
     appId: string;

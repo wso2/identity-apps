@@ -72,8 +72,8 @@ import {
     history
 } from "../../core";
 import { getProfileSchemas } from "../../users/api";
-import { getUserStores } from "../../userstores/api/user-stores";
-import { UserStoreListItem } from "../../userstores/models/user-stores";
+import { getUserStores } from "../../admin-userstores-v1/api/user-stores";
+import { UserStoreListItem } from "../../admin-userstores-v1/models/user-stores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";

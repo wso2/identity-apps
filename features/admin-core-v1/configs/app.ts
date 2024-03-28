@@ -44,7 +44,7 @@ import { getSecretsManagementEndpoints } from "../../secrets/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getTenantResourceEndpoints } from "../../tenants/configs/endpoints";
 import { getUsersResourceEndpoints } from "../../users/configs/endpoints";
-import { getUserstoreResourceEndpoints } from "../../userstores/configs/endpoints";
+import { getUserstoreResourceEndpoints } from "../../admin-userstores-v1/configs/endpoints";
 import { getValidationServiceEndpoints } from "../../admin-validation-v1/configs";
 import { getApprovalsResourceEndpoints } from "../../admin-workflow-approvals-v1";
 import { I18nConstants, UIConstants } from "../constants";
