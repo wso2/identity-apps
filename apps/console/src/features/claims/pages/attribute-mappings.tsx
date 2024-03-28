@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -27,7 +28,6 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import Axios from "axios";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,6 +70,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const listAllAttributeDialects: boolean = useSelector(
             (state: AppState) => state.config.ui.listAllAttributeDialects
         );
+        const customUserSchemaURI: string = useSelector(
+            (state: AppState) => state?.config?.ui?.customUserSchemaURI);
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
 
@@ -90,18 +92,18 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         }, [ dialects, triggerFetchMappedClaims ]);
 
         /**
-         * This will fetch external claims for each dialect 
-         * and create a list of already mapped local claims 
+         * This will fetch external claims for each dialect
+         * and create a list of already mapped local claims
          * for filteration purpose.
-         * 
-         * TODO : This is not the ideal way to fetch and 
+         *
+         * TODO : This is not the ideal way to fetch and
          *        identify the already mapped claims. Need
          *        API support for this.
          */
-        const generateMappedLocalClaimList = (dialectIdList: string[], 
-            limit?: number, 
-            offset?: number, 
-            sort?: string, 
+        const generateMappedLocalClaimList = (dialectIdList: string[],
+            limit?: number,
+            offset?: number,
+            sort?: string,
             filter?: string) => {
 
             const mappedLocalClaimPromises: Promise<ExternalClaim[]>[] = [];
@@ -331,7 +333,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             );
                         }
 
-                        return claim.id !== "local" && 
+                        return claim?.id !== "local" &&
                             claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
                             claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET");
                     });
@@ -357,11 +359,11 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     });
 
                     if (type === ClaimManagementConstants.SCIM) {
-                        if (attributeConfig.showCustomDialectInSCIM 
-                            && filteredDialect.filter((e: ClaimDialect) => e.dialectURI 
-                                === attributeConfig.localAttributes.customDialectURI).length > 0  ) {
-                            attributeMappings.push(filteredDialect.filter((e: ClaimDialect) => e.dialectURI 
-                                === attributeConfig.localAttributes.customDialectURI)[0]);
+                        if (attributeConfig?.showCustomDialectInSCIM
+                            && filteredDialect?.filter((e: ClaimDialect) => e?.dialectURI
+                                === customUserSchemaURI)?.length > 0  ) {
+                            attributeMappings?.push(filteredDialect?.filter((e: ClaimDialect) => e?.dialectURI
+                                === customUserSchemaURI)[0]);
                         }
                     }
 
@@ -406,12 +408,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                                 menuItem: tab.name,
                                 render: () => (
                                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                        <ExternalDialectEditPage 
-                                            id={ dialect.id } 
-                                            attributeUri={ tab.uri } 
+                                        <ExternalDialectEditPage
+                                            id={ dialect?.id }
+                                            attributeUri={ tab?.uri }
                                             attributeType={ type }
                                             mappedLocalClaims={ mappedLocalclaims }
-                                            updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                            updateMappedClaims={ setTriggerFetchMappedClaims }
                                         />
                                     </ResourceTab.Pane>
                                 )
@@ -420,8 +422,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 });
 
                 if (attributeConfig.showCustomDialectInSCIM) {
-                    const dialect: ClaimDialect = dialects?.find((dialect: ClaimDialect) => 
-                        dialect.dialectURI === attributeConfig.localAttributes.customDialectURI
+                    const dialect: ClaimDialect = dialects?.find((dialect: ClaimDialect) =>
+                        dialect?.dialectURI === customUserSchemaURI
                     );
 
                     if (dialect) {
@@ -429,12 +431,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             menuItem: "Custom Schema",
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage 
-                                        id={ dialect.id } 
+                                    <ExternalDialectEditPage
+                                        id={ dialect?.id }
                                         attributeType={ type }
-                                        attributeUri={ dialect.dialectURI } 
+                                        attributeUri={ dialect?.dialectURI }
                                         mappedLocalClaims={ mappedLocalclaims }
-                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                        updateMappedClaims={ setTriggerFetchMappedClaims }
                                     />
                                 </ResourceTab.Pane>
                             )
@@ -458,12 +460,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             menuItem: tab.name,
                             render: () => (
                                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                    <ExternalDialectEditPage 
-                                        id={ dialect.id } 
-                                        attributeUri={ tab.uri } 
+                                    <ExternalDialectEditPage
+                                        id={ dialect?.id }
+                                        attributeUri={ tab?.uri }
                                         attributeType={ type }
                                         mappedLocalClaims={ mappedLocalclaims }
-                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                        updateMappedClaims={ setTriggerFetchMappedClaims }
                                     />
                                 </ResourceTab.Pane>
                             )
@@ -479,12 +481,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     menuItem: dialect.dialectURI,
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <ExternalDialectEditPage 
-                                id={ dialect.id  }
-                                attributeType={ type } 
-                                attributeUri={ dialect.dialectURI } 
+                            <ExternalDialectEditPage
+                                id={ dialect?.id  }
+                                attributeType={ type }
+                                attributeUri={ dialect?.dialectURI }
                                 mappedLocalClaims={ mappedLocalclaims }
-                                updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                updateMappedClaims={ setTriggerFetchMappedClaims }
                             />
                         </ResourceTab.Pane>
                     )
@@ -510,12 +512,12 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 { dialects?.length > 1 ? (
                     <ResourceTab panes={ generatePanes() } data-testid={ `${ testId }-tabs` } />
                 ) : (
-                    <ExternalDialectEditPage 
-                        id={ dialects && dialects[ 0 ]?.id } 
-                        attributeType={ type } 
-                        attributeUri={ dialects &&  dialects[ 0 ]?.dialectURI } 
+                    <ExternalDialectEditPage
+                        id={ dialects && dialects[ 0 ]?.id }
+                        attributeType={ type }
+                        attributeUri={ dialects &&  dialects[ 0 ]?.dialectURI }
                         mappedLocalClaims={ mappedLocalclaims }
-                        updateMappedClaims={ setTriggerFetchMappedClaims } 
+                        updateMappedClaims={ setTriggerFetchMappedClaims }
                     />
                 ) }
             </PageLayout>
