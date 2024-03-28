@@ -46,12 +46,12 @@ import { ConnectionsManagementUtils } from "../../admin-connections-v1/utils/con
 import { AppState } from "../../admin-core-v1/store";
 import {
     IdentityProviderManagementConstants
-} from "../../identity-providers/constants/identity-provider-management-constants";
+} from "../../admin-identity-providers-v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     SupportedAuthenticators
-} from "../../identity-providers/models/identity-provider";
+} from "../../admin-identity-providers-v1/models/identity-provider";
 import { OrganizationType } from "../../organizations/constants";
 import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants/editor-constants";
 import AuthenticationFlowContext from "../context/authentication-flow-context";

@@ -26,7 +26,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../admin-core-v1/hooks/use-request";
-import { LocalAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { LocalAuthenticatorInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 import { ServerConfigurationsConstants } from "../constants";
 import {
     GovernanceCategoryForOrgsInterface,

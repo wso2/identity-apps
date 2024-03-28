@@ -31,12 +31,12 @@ import { AuthenticatorManagementConstants } from "../../../../../admin-connectio
 import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../identity-providers/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
+} from "../../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "../../../../../admin-identity-providers-v1/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
-} from "../../../../../identity-providers/models/identity-provider";
+} from "../../../../../admin-identity-providers-v1/models/identity-provider";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";

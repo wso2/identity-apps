@@ -42,8 +42,8 @@ import {
     FeatureConfigInterface,
     history
 } from "../../admin-core-v1";
-import { useIdentityProviderList } from "../../identity-providers/api/identity-provider";
-import { IdentityProviderInterface } from "../../identity-providers/models/identity-provider";
+import { useIdentityProviderList } from "../../admin-identity-providers-v1/api/identity-provider";
+import { IdentityProviderInterface } from "../../admin-identity-providers-v1/models/identity-provider";
 import { updateResidentApplicationOutboundProvisioningList } from "../api/outbound-provisioning";
 import {
     useGetResidentApplicationOutboundProvisioningConnectors

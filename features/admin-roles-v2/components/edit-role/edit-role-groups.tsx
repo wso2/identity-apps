@@ -39,8 +39,8 @@ import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
 } from "../../../admin-groups-v1";
-import { useIdentityProviderList } from "../../../identity-providers/api/identity-provider";
-import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../identity-providers/models";
+import { useIdentityProviderList } from "../../../admin-identity-providers-v1/api/identity-provider";
+import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../admin-identity-providers-v1/models";
 import { updateRoleDetails } from "../../api";
 import { RoleAudienceTypes, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";

@@ -24,11 +24,11 @@ import { FeatureConfigInterface } from "../../../../admin-core-v1/models";
 import { AppState } from "../../../../admin-core-v1/store";
 import {
     SMSOTPAuthenticatorForm
-} from "../../../../features/identity-providers/components/forms/authenticators/sms-otp-authenticator-form";
+} from "../../../../admin-identity-providers-v1/components/forms/authenticators/sms-otp-authenticator-form";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
-} from "../../../../features/identity-providers/models/identity-provider";
+} from "../../../../admin-identity-providers-v1/models/identity-provider";
 import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 
 interface SmsOTPAuthenticatorInterface extends IdentifiableComponentInterface {

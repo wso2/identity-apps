@@ -42,8 +42,8 @@ import { RenderChip } from "./edit-role-common/render-chip";
 import { EditRoleLocalGroupsAccordionPropsInterface } from "./edit-role-local-groups-accordion";
 import { getConnectionIcons } from "../../../admin-connections-v1/configs/ui";
 import { ConnectionsManagementUtils } from "../../../admin-connections-v1/utils/connection-utils";
-import { useGetIdentityProviderGroupList } from "../../../identity-providers/api/use-get-identity-provider-groups-list";
-import { IdentityProviderGroupInterface, StrictIdentityProviderInterface } from "../../../identity-providers/models";
+import { useGetIdentityProviderGroupList } from "../../../admin-identity-providers-v1/api/use-get-identity-provider-groups-list";
+import { IdentityProviderGroupInterface, StrictIdentityProviderInterface } from "../../../admin-identity-providers-v1/models";
 import { RoleConstants } from "../../constants/role-constants";
 
 interface EditRoleFederatedGroupsAccordionPropsInterface extends EditRoleLocalGroupsAccordionPropsInterface {

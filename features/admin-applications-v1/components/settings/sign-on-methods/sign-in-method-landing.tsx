@@ -27,7 +27,7 @@ import { ConnectionManagementConstants } from "../../../../admin-connections-v1/
 import { EventPublisher, FeatureConfigInterface } from "../../../../admin-core-v1";
 import {
     IdentityProviderManagementConstants
-} from "../../../../identity-providers/constants/identity-provider-management-constants";
+} from "../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
 import { OrganizationType } from "../../../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorIcons } from "../../../configs/ui";

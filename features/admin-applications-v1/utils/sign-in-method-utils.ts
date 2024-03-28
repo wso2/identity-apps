@@ -19,11 +19,11 @@
 import flatten from "lodash-es/flatten";
 import {
     IdentityProviderManagementConstants
-} from "../../identity-providers/constants/identity-provider-management-constants";
+} from "../../admin-identity-providers-v1/constants/identity-provider-management-constants";
 import {
     GenericAuthenticatorInterface,
     ProvisioningInterface
-} from "../../identity-providers/models/identity-provider";
+} from "../../admin-identity-providers-v1/models/identity-provider";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AuthenticationStepInterface,

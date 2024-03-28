@@ -29,7 +29,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { IdentityProviderManagementUtils } from "../../../../features/identity-providers/utils";
+import { IdentityProviderManagementUtils } from "../../../../admin-identity-providers-v1/utils";
 import { SIWEConstants } from "../../../components/identity-providers/constants";
 import { identityProviderConfig } from "../../../configs/identity-provider";
 

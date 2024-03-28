@@ -64,7 +64,7 @@ import {
 import { AuthenticatorManagementConstants } from "../../admin-connections-v1";
 import useMultiFactorAuthenticatorDetails from "../../admin-connections-v1/api/use-multi-factor-authentication-details";
 import { history } from "../../admin-core-v1";
-import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
+import { IdentityProviderManagementConstants } from "../../admin-identity-providers-v1/constants";
 import { ConnectorPropertyInterface } from "../../admin-server-configurations-v1";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";

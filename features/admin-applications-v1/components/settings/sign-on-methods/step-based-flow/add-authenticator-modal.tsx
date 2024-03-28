@@ -69,24 +69,24 @@ import { ConnectionsManagementUtils } from "../../../../../admin-connections-v1/
 import { getEmptyPlaceholderIllustrations } from "../../../../../admin-core-v1/configs/ui";
 import { AppState } from "../../../../../admin-core-v1/store";
 import { EventPublisher } from "../../../../../admin-core-v1/utils/event-publisher";
-import { getIdPIcons } from "../../../../../identity-providers/configs/ui";
+import { getIdPIcons } from "../../../../../admin-identity-providers-v1/configs/ui";
 import {
     IdentityProviderManagementConstants
-} from "../../../../../identity-providers/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
+} from "../../../../../admin-identity-providers-v1/constants/identity-provider-management-constants";
+import { AuthenticatorMeta } from "../../../../../admin-identity-providers-v1/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface,
     IdentityProviderTemplateCategoryInterface,
     IdentityProviderTemplateInterface,
     IdentityProviderTemplateItemInterface
-} from "../../../../../identity-providers/models/identity-provider";
+} from "../../../../../admin-identity-providers-v1/models/identity-provider";
 import {
     IdentityProviderManagementUtils
-} from "../../../../../identity-providers/utils/identity-provider-management-utils";
+} from "../../../../../admin-identity-providers-v1/utils/identity-provider-management-utils";
 import {
     IdentityProviderTemplateManagementUtils
-} from "../../../../../identity-providers/utils/identity-provider-template-management-utils";
+} from "../../../../../admin-identity-providers-v1/utils/identity-provider-template-management-utils";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { getGeneralIcons } from "../../../../configs/ui";
 import { AuthenticationStepInterface } from "../../../../models";

@@ -40,14 +40,14 @@ import { SIWEAuthenticationProviderCreateWizardContent } from "./swe-authenticat
 import { CommonPluggableComponentPropertyInterface } from "../../../../../features/connections";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../../admin-core-v1/components";
 import { EventPublisher } from "../../../../../admin-core-v1/utils";
-import { createIdentityProvider } from "../../../../../features/identity-providers/api";
-import { getIdPIcons } from "../../../../../features/identity-providers/configs/ui";
-import { IdentityProviderManagementConstants } from "../../../../../features/identity-providers/constants";
+import { createIdentityProvider } from "../../../../../admin-identity-providers-v1/api";
+import { getIdPIcons } from "../../../../../admin-identity-providers-v1/configs/ui";
+import { IdentityProviderManagementConstants } from "../../../../../admin-identity-providers-v1/constants";
 import {
     GenericIdentityProviderCreateWizardPropsInterface,
     IdentityProviderInterface
-} from "../../../../../features/identity-providers/models";
-import { IdentityProviderManagementUtils } from "../../../../../features/identity-providers/utils";
+} from "../../../../../admin-identity-providers-v1/models";
+import { IdentityProviderManagementUtils } from "../../../../../admin-identity-providers-v1/utils";
 import { identityProviderConfig } from "../../../../configs/identity-provider";
 
 /**

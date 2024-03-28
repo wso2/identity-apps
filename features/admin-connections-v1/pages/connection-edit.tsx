@@ -58,7 +58,7 @@ import {
 } from "../../admin-core-v1";
 import {
     EditMultiFactorAuthenticator
-} from "../../identity-providers/components/edit-multi-factor-authenticator";
+} from "../../admin-identity-providers-v1/components/edit-multi-factor-authenticator";
 import {
     getLocalAuthenticator,
     getMultiFactorAuthenticatorDetails
