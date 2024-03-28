@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -115,13 +115,14 @@ log("Cleaning the tmp directory...");
 execSync("pnpm clean:i18n:dist");
 
 // Path of the build directory.
-const layoutsDirectory = path.join(__dirname, "..", "..", "..", "identity-apps-core", "components", "login-portal-layouts", "layouts");
+const layoutsDirectory = path.join(
+    __dirname, "..", "..", "..", "identity-apps-core", "components", "login-portal-layouts", "layouts");
 const layoutsSrc = path.join(__dirname, "..", "src", "login-portal-layouts");
 
 // Remove the src directory if it exists.
 if (fs.existsSync(layoutsSrc)) {
-  log("Removing existing layouts directory in src");
-  fs.removeSync(layoutsSrc);
+    log("Removing existing layouts directory in src");
+    fs.removeSync(layoutsSrc);
 }
 
 // Copy the layouts directory to the src directory.
